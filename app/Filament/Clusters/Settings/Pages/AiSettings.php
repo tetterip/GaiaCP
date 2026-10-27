@@ -101,6 +101,9 @@ class AiSettings extends SettingsFormPage
                         Toggle::make('ai.features.clients')
                             ->label('Suggestions about clients')
                             ->helperText(__('On a client\'s page: Suggestions lists what they might buy, signs they may leave and what to look after. Sends their services, prices, payment history and ticket subjects, and the products on offer; not who they are. Only for admins who also see billing.')),
+                        Toggle::make('ai.features.language_files')
+                            ->label('Translate the panel')
+                            ->helperText(__('Settings → Languages → Translate with AI (super admins): the panel\'s texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.')),
                         Toggle::make('ai.features.domains')
                             ->label('Suggest domain names')
                             ->helperText(__('In the client area\'s domain search, a Suggest other names button that clients and visitors press: names close to the one searched, each checked like a search. Sends only the name searched. Each press uses tokens, so a client or an address gets at most :count presses an hour.', ['count' => SearchDomains::AI_PER_HOUR])),

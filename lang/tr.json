@@ -3206,5 +3206,16 @@
     "Suggestions": "Öneriler",
     "Suggestions about clients": "Müşteriler hakkında öneriler",
     "Suggestions by the AI assistant": "Yapay zeka asistanının önerileri",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "E-posta şablonundan, bu müşterinin ödeme alışkanlığına göre :service tarafından yazıldı. İsterseniz değiştirin; Gönder şimdi :email adresine gönderir."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "E-posta şablonundan, bu müşterinin ödeme alışkanlığına göre :service tarafından yazıldı. İsterseniz değiştirin; Gönder şimdi :email adresine gönderir.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count İngilizce kalıyor: bu dilde aynı, ya da yer tutucuları olmadan çevrilmiş.",
+    ":language: :count texts translated with AI": ":language: yapay zekayla :count metin çevrildi",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language: :saved metin çevrildi, :left kaldı. Bu sayfayı açık tutun; her grup birkaç saniye sürer.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": ":service bir dilde eksik olan panel metinlerini grup grup çevirir ve yüklenen çeviriler gibi kaydedilir. Yalnızca metinler gönderilir. Tamamen yeni bir dil yaklaşık :tokens token tutar; sonrasında birkaç sayfayı kontrol edin.",
+    "Language files": "Dil dosyaları",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Ayarlar → Diller → Yapay zekayla çevir (süper yöneticiler): bir dilde eksik olan panel metinleri, grup grup, yüklenen çeviriler gibi kaydedilir. Yalnızca bu metinleri gönderir; tamamen yeni bir dil yaklaşık 300.000 token tutar.",
+    "Stop": "Durdur",
+    "Translate missing texts with AI": "Eksik metinleri yapay zekayla çevir",
+    "Translate the panel": "Paneli çevir",
+    "Translate with AI": "Yapay zekayla çevir",
+    "Translating with AI": "Yapay zekayla çevriliyor"
 }

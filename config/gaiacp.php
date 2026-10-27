@@ -212,6 +212,7 @@ return [
             'kb_article' => true, // Write a knowledge base article from a solved ticket
             'reminders' => true, // Personal reminder: a payment notice email rewritten for how the client pays
             'clients' => true, // Suggestions on a client's page: what they might buy, signs they may leave
+            'language_files' => true, // Settings → Languages → Translate with AI: the panel's missing texts in a language
         ],
         'monthly_tokens' => null, // tokens (sent + received) all admins may use a calendar month; null = no limit
     ],

@@ -176,6 +176,7 @@ class Settings
         'ai.features.kb_article',
         'ai.features.reminders',
         'ai.features.clients',
+        'ai.features.language_files',
         'ai.monthly_tokens',
     ];
 

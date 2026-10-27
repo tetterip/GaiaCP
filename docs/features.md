@@ -154,7 +154,8 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   the conversation goes without notes, files or the client's name, company, emails and phone numbers. A payment
   notice's Personal reminder rewrites its reminder email for how the client pays, and a client's Suggestions list what
   they might buy, signs they may leave and what to look after (facts only: services, prices, payment history, ticket
-  subjects; never who they are). ChatGPT (OpenAI), DeepSeek and Kimi
+  subjects; never who they are). Settings → Languages → Translate with AI fills a language's missing texts in batches
+  (only the texts sent; a translation that loses a placeholder is left out). ChatGPT (OpenAI), DeepSeek and Kimi
   (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models); Settings → AI
   assistant picks one when several are on
 - The admin panel as an app (PWA): add it to a phone's home screen or install it from the browser, and turn on push

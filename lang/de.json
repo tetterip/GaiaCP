@@ -3206,5 +3206,16 @@
     "Suggestions": "Vorschläge",
     "Suggestions about clients": "Vorschläge zu Kunden",
     "Suggestions by the AI assistant": "Vorschläge des KI-Assistenten",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Von :service passend dazu geschrieben, wie dieser Kunde zahlt, aus der E-Mail-Vorlage. Ändern Sie sie nach Belieben; Senden schickt sie jetzt an :email."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Von :service passend dazu geschrieben, wie dieser Kunde zahlt, aus der E-Mail-Vorlage. Ändern Sie sie nach Belieben; Senden schickt sie jetzt an :email.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count bleiben auf Englisch: gleich in dieser Sprache oder ohne ihre Platzhalter übersetzt.",
+    ":language: :count texts translated with AI": ":language: :count Texte mit KI übersetzt",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language: :saved Texte übersetzt, :left übrig. Lassen Sie diese Seite offen; jeder Stapel dauert ein paar Sekunden.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": ":service übersetzt die Texte des Panels, die einer Sprache fehlen, stapelweise, und sie werden wie hochgeladene Übersetzungen gespeichert. Nur die Texte werden gesendet. Eine ganze neue Sprache sind etwa :tokens Tokens; prüfen Sie danach ein paar Seiten.",
+    "Language files": "Sprachdateien",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Einstellungen → Sprachen → Mit KI übersetzen (Super-Admins): die Texte des Panels, die einer Sprache fehlen, stapelweise, gespeichert wie hochgeladene Übersetzungen. Sendet nur diese Texte; eine ganze neue Sprache sind etwa 300.000 Tokens.",
+    "Stop": "Stopp",
+    "Translate missing texts with AI": "Fehlende Texte mit KI übersetzen",
+    "Translate the panel": "Das Panel übersetzen",
+    "Translate with AI": "Mit KI übersetzen",
+    "Translating with AI": "Übersetzung mit KI läuft"
 }

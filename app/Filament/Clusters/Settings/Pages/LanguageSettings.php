@@ -2,6 +2,8 @@
 
 namespace App\Filament\Clusters\Settings\Pages;
 
+use App\Ai\AiException;
+use App\Ai\Assistant;
 use App\Enums\AdminArea;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Support\Locales;
@@ -12,7 +14,9 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
@@ -25,7 +29,8 @@ use UnitEnum;
 /**
  * Settings → Languages: which of the languages found (App\Support\Translations) admins and clients can pick, the
  * default one, and how complete each is, core and plugin by plugin. Super admins download a language's missing texts
- * and upload the translated file (or a new language), kept in storage so updates never replace it.
+ * and upload the translated file (or a new language), kept in storage so updates never replace it, or have the AI
+ * assistant translate the missing texts a batch at a time (Translate with AI).
  */
 class LanguageSettings extends SettingsFormPage
 {
@@ -38,6 +43,19 @@ class LanguageSettings extends SettingsFormPage
     protected static ?string $title = 'Languages';
 
     protected static ?string $slug = 'languages';
+
+    /** Texts sent to the AI assistant at once, and their English characters at most. */
+    public const AI_BATCH = 40;
+
+    public const AI_BATCH_CHARS = 6000;
+
+    /** The language Translate with AI is filling now, one batch per request; null = not running. */
+    public ?string $aiLocale = null;
+
+    public int $aiSaved = 0;
+
+    /** @var list<string> texts still missing after their batch: left in English, not asked again this time */
+    public array $aiSkipped = [];
 
     public static function adminArea(): ?AdminArea
     {
@@ -90,6 +108,21 @@ class LanguageSettings extends SettingsFormPage
                             ->required()
                             ->in(fn (Get $get) => (array) $get('languages.enabled'))
                             ->helperText(__('For admins and clients without a language of their own, the login pages and the daily emails to admins.')),
+                    ]),
+                Section::make(__('Translating with AI'))
+                    ->visible(fn () => $this->aiLocale !== null)
+                    ->schema([
+                        Text::make(fn () => __(':language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.', [
+                            'language' => Translations::name((string) $this->aiLocale),
+                            'saved' => $this->aiSaved,
+                            'left' => $this->aiLocale !== null ? max(0, count(Translations::export($this->aiLocale)) - count($this->aiSkipped)) : 0,
+                        ])),
+                        Actions::make([
+                            Action::make('aiStop')
+                                ->label('Stop')
+                                ->color('gray')
+                                ->action(fn () => $this->aiLocale = null),
+                        ])->key('aiProgress'),
                     ]),
                 Section::make(__('Missing texts'))
                     ->description(__('A plugin update can bring new texts: they show in English until translated. Download a language\'s missing texts, translate the values and upload the file; uploaded translations are kept when GaiaCP or a plugin updates.'))
@@ -157,6 +190,34 @@ class LanguageSettings extends SettingsFormPage
                         ['Content-Type' => 'application/json'],
                     );
                 }),
+            Action::make('aiTranslate')
+                ->label('Translate with AI')
+                ->icon(Heroicon::OutlinedSparkles)
+                ->color('gray')
+                ->visible(fn () => self::managesFiles() && Assistant::enabled('language_files'))
+                ->modalHeading(__('Translate missing texts with AI'))
+                ->modalDescription(fn () => __(':service translates the panel\'s texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.', [
+                    'service' => Assistant::provider()?->aiLabel(),
+                    'tokens' => number_format(300000),
+                ]))
+                ->schema([
+                    Select::make('locale')
+                        ->label('Language')
+                        ->options(fn () => self::newLanguageOptions())
+                        ->searchable()
+                        ->required(),
+                ])
+                ->modalSubmitActionLabel(__('Start'))
+                ->action(function (array $data) {
+                    abort_unless(self::managesFiles(), 403);
+                    $locale = (string) $data['locale'];
+                    abort_unless(Translations::validCode($locale) && $locale !== 'en', 422);
+
+                    $this->aiLocale = $locale;
+                    $this->aiSaved = 0;
+                    $this->aiSkipped = [];
+                    $this->translateBatch();
+                }),
             Action::make('upload')
                 ->label('Upload translations')
                 ->icon(Heroicon::OutlinedArrowUpTray)
@@ -200,6 +261,57 @@ class LanguageSettings extends SettingsFormPage
                         ->send();
                 }),
         ];
+    }
+
+    /**
+     * One batch of Translate with AI: the next missing texts of $aiLocale, saved like an upload; then the browser asks
+     * for the next one, until none is left, the admin presses Stop or the AI service gives no answer.
+     */
+    public function translateBatch(): void
+    {
+        abort_unless(self::managesFiles() && Assistant::enabled('language_files'), 403);
+
+        if ($this->aiLocale === null) {
+            return;
+        }
+
+        $locale = $this->aiLocale;
+        $batch = [];
+        $chars = 0;
+        foreach (array_keys(Translations::export($locale)) as $text) {
+            if (in_array($text, $this->aiSkipped, true)) {
+                continue;
+            }
+            if ($batch !== [] && (count($batch) >= self::AI_BATCH || $chars + mb_strlen($text) > self::AI_BATCH_CHARS)) {
+                break;
+            }
+            $batch[] = $text;
+            $chars += mb_strlen($text);
+        }
+
+        if ($batch === []) {
+            $this->aiLocale = null;
+            $this->mount();
+            Notification::make()->success()->title(__(':language: :count texts translated with AI', ['language' => Translations::name($locale), 'count' => $this->aiSaved]))
+                ->body($this->aiSkipped !== [] ? __(':count stay in English: the same in this language, or translated without their placeholders.', ['count' => count($this->aiSkipped)]) : null)
+                ->send();
+
+            return;
+        }
+
+        try {
+            $translated = app(Assistant::class)->translateTexts($batch, $locale);
+        } catch (AiException $e) {
+            $this->aiLocale = null;
+            Notification::make()->danger()->title(__('The AI assistant gave no answer'))->body($e->getMessage())->send();
+
+            return;
+        }
+
+        $this->aiSaved += Translations::import($locale, $translated)['saved'];
+        // Still missing (no answer, a lost placeholder, or the same as the English): not asked again this time
+        array_push($this->aiSkipped, ...array_values(array_intersect($batch, array_keys(Translations::export($locale)))));
+        $this->js('$wire.translateBatch()');
     }
 
     /** @return array<string, string> every language GaiaCP could have, the ones found first */

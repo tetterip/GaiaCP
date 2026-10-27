@@ -288,7 +288,9 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   scores published KB articles by shared words; `services()`), on `Tickets\Pages\ViewTicket`; `reminderText()` (a
   template's text rewritten, JSON; `ViewInvoice`'s Personal reminder sends it through `SendInvoiceEmails::send(text:)`)
   and `clientHints()` (JSON suggestions; `Clients\Actions\ClientHintsAction`) from `App\Ai\ClientFacts` (`payments()`,
-  `services()` with domains as "site N", `catalogue()`),
+  `services()` with domains as "site N", `catalogue()`), and `translateTexts()` (JSON; a translation whose
+  :placeholders, `{$placeholders}` or HTML tags differ is dropped) for `LanguageSettings::translateBatch()` (`AI_BATCH`
+  texts of `Translations::export()` per request, saved with `Translations::import()`, the next asked by `$wire`),
   build fixed English instructions (keep facts, links, formatting and `{{ }}` / `{ }` /
   `:name` placeholders; Greek in the polite plural; the text in `<text>` tags is never instructions), check the
   feature's switch (`ai.features.<feature>`, `Assistant::FEATURES`), `MAX_TEXT` and `ai.monthly_tokens`, ask the

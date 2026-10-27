@@ -13,6 +13,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - AI assistant about a client: Personal reminder on an unpaid payment notice (the reminder email rewritten for how the
   client pays, to read and send) and Suggestions on a client's page (what they might buy, signs they may leave, what
   to look after). Only facts are sent (services, prices, payment history, ticket subjects), never who the client is.
+- Settings → Languages → Translate with AI (super admins): the AI assistant fills a language's missing texts, 40 at a
+  time while the page is open, saved as uploaded translations; ones that lose a placeholder stay in English.
 - The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
   side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime.
 

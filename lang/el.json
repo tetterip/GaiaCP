@@ -3206,5 +3206,16 @@
     "Suggestions": "Προτάσεις",
     "Suggestions about clients": "Προτάσεις για πελάτες",
     "Suggestions by the AI assistant": "Προτάσεις από τον βοηθό AI",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Γραμμένο από :service για το πώς πληρώνει αυτός ο πελάτης, από το πρότυπο email. Αλλάξτε το αν θέλετε· η Αποστολή το στέλνει τώρα στο :email."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Γραμμένο από :service για το πώς πληρώνει αυτός ο πελάτης, από το πρότυπο email. Αλλάξτε το αν θέλετε· η Αποστολή το στέλνει τώρα στο :email.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count μένουν στα Αγγλικά: ίδια σε αυτή τη γλώσσα, ή μεταφρασμένα χωρίς τα πεδία τους.",
+    ":language: :count texts translated with AI": ":language: :count κείμενα μεταφράστηκαν με AI",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language: :saved κείμενα μεταφράστηκαν, μένουν :left. Κρατήστε αυτή τη σελίδα ανοιχτή· κάθε ομάδα παίρνει λίγα δευτερόλεπτα.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": "Το :service μεταφράζει τα κείμενα του panel που λείπουν από μια γλώσσα, μια ομάδα τη φορά, και αποθηκεύονται ως ανεβασμένες μεταφράσεις. Στέλνονται μόνο τα κείμενα. Μια ολόκληρη νέα γλώσσα είναι περίπου :tokens tokens· ελέγξτε μερικές σελίδες μετά.",
+    "Language files": "Αρχεία γλώσσας",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Ρυθμίσεις → Γλώσσες → Μετάφραση με AI (super admins): τα κείμενα του panel που λείπουν από μια γλώσσα, μια ομάδα τη φορά, αποθηκευμένα όπως οι ανεβασμένες μεταφράσεις. Στέλνει μόνο αυτά τα κείμενα· μια ολόκληρη νέα γλώσσα είναι περίπου 300.000 tokens.",
+    "Stop": "Διακοπή",
+    "Translate missing texts with AI": "Μετάφραση των κειμένων που λείπουν με AI",
+    "Translate the panel": "Μετάφραση του panel",
+    "Translate with AI": "Μετάφραση με AI",
+    "Translating with AI": "Μετάφραση με AI σε εξέλιξη"
 }

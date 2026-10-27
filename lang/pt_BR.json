@@ -3206,5 +3206,16 @@
     "Suggestions": "Sugestões",
     "Suggestions about clients": "Sugestões sobre clientes",
     "Suggestions by the AI assistant": "Sugestões do assistente de IA",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Escrito por :service conforme este cliente paga, a partir do modelo de e-mail. Altere se quiser; Enviar manda agora para :email."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Escrito por :service conforme este cliente paga, a partir do modelo de e-mail. Altere se quiser; Enviar manda agora para :email.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count ficam em inglês: iguais neste idioma, ou traduzidos sem seus marcadores.",
+    ":language: :count texts translated with AI": ":language: :count textos traduzidos com IA",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language: :saved textos traduzidos, faltam :left. Mantenha esta página aberta; cada lote leva alguns segundos.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": ":service traduz os textos do painel que faltam em um idioma, um lote por vez, e eles são salvos como traduções enviadas. Só os textos são enviados. Um idioma novo inteiro são cerca de :tokens tokens; confira algumas páginas depois.",
+    "Language files": "Arquivos de idioma",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Configurações → Idiomas → Traduzir com IA (superadministradores): os textos do painel que faltam em um idioma, um lote por vez, salvos como traduções enviadas. Envia só esses textos; um idioma novo inteiro são cerca de 300.000 tokens.",
+    "Stop": "Parar",
+    "Translate missing texts with AI": "Traduzir com IA os textos que faltam",
+    "Translate the panel": "Traduzir o painel",
+    "Translate with AI": "Traduzir com IA",
+    "Translating with AI": "Traduzindo com IA"
 }

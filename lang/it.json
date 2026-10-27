@@ -3206,5 +3206,16 @@
     "Suggestions": "Suggerimenti",
     "Suggestions about clients": "Suggerimenti sui clienti",
     "Suggestions by the AI assistant": "Suggerimenti dell’assistente IA",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Scritto da :service in base a come paga questo cliente, dal modello email. Modificatelo se volete; Invia lo spedisce ora a :email."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Scritto da :service in base a come paga questo cliente, dal modello email. Modificatelo se volete; Invia lo spedisce ora a :email.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count restano in inglese: uguali in questa lingua, o tradotti senza i loro segnaposto.",
+    ":language: :count texts translated with AI": ":language: :count testi tradotti con l’IA",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language: :saved testi tradotti, ne restano :left. Tenete aperta questa pagina; ogni blocco richiede qualche secondo.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": ":service traduce i testi del pannello che mancano a una lingua, un blocco alla volta, e vengono salvati come traduzioni caricate. Vengono inviati solo i testi. Un’intera nuova lingua sono circa :tokens token; controllate qualche pagina dopo.",
+    "Language files": "File di lingua",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Impostazioni → Lingue → Traduci con IA (super amministratori): i testi del pannello che mancano a una lingua, un blocco alla volta, salvati come traduzioni caricate. Invia solo quei testi; un’intera nuova lingua sono circa 300.000 token.",
+    "Stop": "Interrompi",
+    "Translate missing texts with AI": "Traduci con l’IA i testi mancanti",
+    "Translate the panel": "Tradurre il pannello",
+    "Translate with AI": "Traduci con IA",
+    "Translating with AI": "Traduzione con IA in corso"
 }

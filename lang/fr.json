@@ -3206,5 +3206,16 @@
     "Suggestions": "Suggestions",
     "Suggestions about clients": "Suggestions sur les clients",
     "Suggestions by the AI assistant": "Suggestions de l’assistant IA",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Rédigé par :service selon la façon dont ce client paie, à partir du modèle d’e-mail. Modifiez-le si vous voulez ; Envoyer l’adresse maintenant à :email."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Rédigé par :service selon la façon dont ce client paie, à partir du modèle d’e-mail. Modifiez-le si vous voulez ; Envoyer l’adresse maintenant à :email.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count restent en anglais : identiques dans cette langue, ou traduits sans leurs variables.",
+    ":language: :count texts translated with AI": ":language : :count textes traduits avec l’IA",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language : :saved textes traduits, :left restants. Gardez cette page ouverte ; chaque lot prend quelques secondes.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": ":service traduit les textes du panneau qui manquent à une langue, un lot à la fois, et ils sont enregistrés comme des traductions envoyées. Seuls les textes sont envoyés. Une nouvelle langue entière représente environ :tokens tokens ; vérifiez quelques pages ensuite.",
+    "Language files": "Fichiers de langue",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Paramètres → Langues → Traduire avec l’IA (super administrateurs) : les textes du panneau qui manquent à une langue, un lot à la fois, enregistrés comme des traductions envoyées. N’envoie que ces textes ; une nouvelle langue entière représente environ 300 000 tokens.",
+    "Stop": "Arrêter",
+    "Translate missing texts with AI": "Traduire les textes manquants avec l’IA",
+    "Translate the panel": "Traduire le panneau",
+    "Translate with AI": "Traduire avec l’IA",
+    "Translating with AI": "Traduction avec l’IA en cours"
 }
