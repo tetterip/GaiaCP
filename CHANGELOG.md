@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-27
+
 - New GaiaCP releases are announced: a daily check rings the bell for super admins once per version (linking to
   Settings → Updates, or saying to deploy on a copy from Git) and the daily summary email mentions it.
   `GAIACP_UPDATE_CHECK=false` turns it off.
