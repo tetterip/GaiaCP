@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
+  side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime.
+
 ## [0.3.1] - 2026-10-27
 
 - New GaiaCP releases are announced: a daily check rings the bell for super admins once per version (linking to
