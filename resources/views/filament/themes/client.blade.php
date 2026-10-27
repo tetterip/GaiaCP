@@ -172,7 +172,9 @@
     /* Server uptime on a hosting account's page: the dashboard's squares light up one after the other */
     .gcp-server-uptime {
         display: grid;
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+        gap: 1rem 1.5rem;
+        align-items: start;
     }
 
     .gcp-server-uptime .gx-meter [role="img"] > span[data-on] {
