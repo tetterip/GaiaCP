@@ -144,6 +144,11 @@ Two more look at one client, without sending who they are:
   "site 2"…), warnings that their hosting was nearly full, open cancellation requests, the last year's ticket subjects
   and your products on offer.
 
+**Translate the panel** adds **Translate with AI** to Settings → Languages (super admins): the panel's texts that a
+language misses go to the AI service in batches of 40 and come back as uploaded translations. Only those texts are
+sent; a translation that loses a placeholder or an HTML tag is left out and stays in English. A whole new language is
+up to about 300,000 tokens.
+
 **ChatGPT** (OpenAI), **DeepSeek** and **Kimi** (Moonshot AI) work the same way, each with its own plugin, API key
 and model; DeepSeek and Kimi are often cheaper. ChatGPT needs an API key with credit from platform.openai.com: a
 ChatGPT Plus subscription does not include the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can

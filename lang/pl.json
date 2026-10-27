@@ -3206,5 +3206,16 @@
     "Suggestions": "Sugestie",
     "Suggestions about clients": "Sugestie dotyczące klientów",
     "Suggestions by the AI assistant": "Sugestie asystenta AI",
-    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Napisane przez :service pod kątem tego, jak płaci ten klient, na podstawie szablonu e-maila. Zmień, jeśli chcesz; Wyślij wysyła go teraz na :email."
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Napisane przez :service pod kątem tego, jak płaci ten klient, na podstawie szablonu e-maila. Zmień, jeśli chcesz; Wyślij wysyła go teraz na :email.",
+    ":count stay in English: the same in this language, or translated without their placeholders.": ":count zostaje po angielsku: tak samo w tym języku albo przetłumaczone bez swoich pól.",
+    ":language: :count texts translated with AI": ":language: :count tekstów przetłumaczonych przez AI",
+    ":language: :saved texts translated, :left left. Keep this page open; each batch takes a few seconds.": ":language: przetłumaczono :saved tekstów, zostało :left. Nie zamykaj tej strony; każda partia trwa kilka sekund.",
+    ":service translates the panel's texts that a language misses, a batch at a time, and they are saved as uploaded translations. Only the texts are sent. A whole new language is about :tokens tokens; check a few pages afterwards.": ":service tłumaczy teksty panelu, których brakuje w języku, partia po partii, i zapisuje je jak przesłane tłumaczenia. Wysyłane są tylko teksty. Cały nowy język to około :tokens tokenów; sprawdź potem kilka stron.",
+    "Language files": "Pliki językowe",
+    "Settings → Languages → Translate with AI (super admins): the panel's texts that a language misses, a batch at a time, saved like uploaded translations. Sends only those texts; a whole new language is about 300,000 tokens.": "Ustawienia → Języki → Przetłumacz przez AI (superadministratorzy): teksty panelu, których brakuje w języku, partia po partii, zapisane jak przesłane tłumaczenia. Wysyła tylko te teksty; cały nowy język to około 300 000 tokenów.",
+    "Stop": "Zatrzymaj",
+    "Translate missing texts with AI": "Przetłumacz brakujące teksty przez AI",
+    "Translate the panel": "Tłumaczenie panelu",
+    "Translate with AI": "Przetłumacz przez AI",
+    "Translating with AI": "Tłumaczenie przez AI w toku"
 }
