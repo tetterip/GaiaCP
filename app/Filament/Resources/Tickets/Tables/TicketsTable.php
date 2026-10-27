@@ -20,7 +20,7 @@ class TicketsTable
             ->modifyQueryUsing(fn (Builder $query) => $query->with('client', 'department', 'assignee'))
             ->columns([
                 TextColumn::make('subject')
-                    ->description(fn (Ticket $record) => $showClient && $record->requesterName() !== '' ? "{$record->number} · {$record->requesterName()}" : $record->number)
+                    ->description(fn (Ticket $record) => implode(' · ', array_filter([$record->number, $showClient ? $record->requesterName() : '', $record->summary])))
                     ->searchable(query: fn (Builder $query, string $search) => $query->where(fn (Builder $query) => $query
                         ->where('subject', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
