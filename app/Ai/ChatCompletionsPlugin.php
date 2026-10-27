@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Http;
 
 /**
  * An AI service with an OpenAI-style Chat Completions API (`POST {base}/chat/completions`, bearer key,
- * `GET {base}/models`), such as DeepSeek, Kimi and OpenAI. A plugin names its base URL and suggested models; settings are
- * `<id>.api_key` (encrypted) and `<id>.model`, edited on a ChatCompletionsSettings page.
+ * `GET {base}/models`), such as DeepSeek, Kimi, OpenAI and Ollama. A plugin names its base URL and suggested models; settings are
+ * `<id>.api_key` (encrypted) and `<id>.model`, edited on a ChatCompletionsSettings page. Without a key no Authorization
+ * header is sent (a local Ollama needs none).
  */
 abstract class ChatCompletionsPlugin extends Plugin implements AiModule
 {
@@ -71,6 +72,12 @@ abstract class ChatCompletionsPlugin extends Plugin implements AiModule
     protected function tokenLimitField(): string
     {
         return 'max_tokens';
+    }
+
+    /** How long an answer may take, in seconds: a model on the admin's own machine can be slow. */
+    protected function timeout(): int
+    {
+        return 120;
     }
 
     /** Whether a model the key lists can write texts (OpenAI also lists image, audio and embedding models). */
@@ -163,11 +170,11 @@ abstract class ChatCompletionsPlugin extends Plugin implements AiModule
         $key = trim((string) config("gaiacp.{$this->id()}.api_key"));
 
         try {
-            $response = $call(Http::timeout(120)
+            $response = $call(Http::timeout($this->timeout())
                 ->connectTimeout(10)
                 ->acceptJson()
-                ->withToken($key)
-                ->withMiddleware(ModuleLogger::middleware($this->id(), $action, [$key])));
+                ->when($key !== '', fn (PendingRequest $request) => $request->withToken($key))
+                ->withMiddleware(ModuleLogger::middleware($this->id(), $action, array_filter([$key]))));
         } catch (ConnectionException $e) {
             throw new AiException(__('Could not reach :service: :error', ['service' => $this->name(), 'error' => $e->getMessage()]), previous: $e);
         }

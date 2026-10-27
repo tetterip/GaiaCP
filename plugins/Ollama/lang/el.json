@@ -1,0 +1,8 @@
+{
+    "Base url": "Διεύθυνση",
+    "Install Ollama (<strong>ollama.com</strong>) on this server or on a machine it can reach, download a model (<strong>ollama pull llama3.3</strong>) and fill in its address. On another machine, start Ollama with OLLAMA_HOST=0.0.0.0 and let only this server reach port 11434.": "Εγκατέστησε το Ollama (<strong>ollama.com</strong>) σε αυτόν τον server ή σε ένα μηχάνημα που μπορεί να φτάσει, κατέβασε ένα μοντέλο (<strong>ollama pull llama3.3</strong>) και συμπλήρωσε τη διεύθυνσή του. Σε άλλο μηχάνημα, ξεκίνα το Ollama με OLLAMA_HOST=0.0.0.0 και άφησε μόνο αυτόν τον server να φτάνει στη θύρα 11434.",
+    "Nothing is billed: the model runs on your machine, which needs enough memory for it (about 8 GB for a small model). Texts are sent only when an admin presses an AI button.": "Δεν χρεώνεται τίποτα: το μοντέλο τρέχει στο μηχάνημά σου, που χρειάζεται αρκετή μνήμη γι' αυτό (περίπου 8 GB για ένα μικρό μοντέλο). Κείμενα στέλνονται μόνο όταν ένας διαχειριστής πατά ένα κουμπί AI.",
+    "Ollama": "Ollama",
+    "Ollama for the AI assistant: an open model such as Llama, Qwen or Gemma on your own server or computer, so texts never leave your machines.": "Το Ollama για τον βοηθό AI: ένα ανοιχτό μοντέλο όπως Llama, Qwen ή Gemma στον δικό σου server ή υπολογιστή, ώστε τα κείμενα να μη φεύγουν ποτέ από τα μηχανήματά σου.",
+    "Ollama's OpenAI-compatible address, ending in /v1.": "Η διεύθυνση του Ollama που είναι συμβατή με το OpenAI, με κατάληξη /v1."
+}

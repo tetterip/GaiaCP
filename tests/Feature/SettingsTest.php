@@ -57,6 +57,7 @@ use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\HetrixTools\HetrixToolsSettings;
 use Plugins\Kimi\KimiSettings;
+use Plugins\Ollama\OllamaSettings;
 use Plugins\OpenAi\OpenAiSettings;
 use Plugins\Proxmox\ProxmoxSettings;
 use Plugins\Recaptcha\RecaptchaSettings;
@@ -77,7 +78,7 @@ class SettingsTest extends TestCase
 
     /** Every card on the Settings page, in order. */
     private const PAGES = [
-        GeneralSettings::class, LanguageSettings::class, CompanySettings::class, PaymentMethodsSettings::class, TaxSettings::class, CreditSettings::class, SalesSettings::class, AadeSettings::class, ViesSettings::class, ClientFieldResource::class, GoogleLoginSettings::class, RecaptchaSettings::class, TurnstileSettings::class, UptimeKumaSettings::class, UptimeRobotSettings::class, HetrixToolsSettings::class, BetterStackSettings::class, GoGetSslSettings::class, BlacklistsSettings::class, SiteChecksSettings::class, ProxmoxSettings::class, AiSettings::class, ClaudeSettings::class, DeepSeekSettings::class, KimiSettings::class, OpenAiSettings::class,
+        GeneralSettings::class, LanguageSettings::class, CompanySettings::class, PaymentMethodsSettings::class, TaxSettings::class, CreditSettings::class, SalesSettings::class, AadeSettings::class, ViesSettings::class, ClientFieldResource::class, GoogleLoginSettings::class, RecaptchaSettings::class, TurnstileSettings::class, UptimeKumaSettings::class, UptimeRobotSettings::class, HetrixToolsSettings::class, BetterStackSettings::class, GoGetSslSettings::class, BlacklistsSettings::class, SiteChecksSettings::class, ProxmoxSettings::class, AiSettings::class, ClaudeSettings::class, DeepSeekSettings::class, KimiSettings::class, OpenAiSettings::class, OllamaSettings::class,
         ProductResource::class, ProductOptionGroupResource::class, ServerResource::class, RegistrarResource::class, DomainSettings::class, ClientAreaSettings::class, PublicAreaSettings::class, CookieSettings::class,
         SupportSettings::class, TicketDepartmentResource::class, CannedReplyResource::class, TicketMailSettings::class,
         MailSettings::class, EmailTemplates::class,
