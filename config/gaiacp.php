@@ -211,6 +211,9 @@ return [
             'outage' => true, // Write the server problem notice from what the monitors say
             'questions' => true, // Reports → Ask in plain words: read which ready-made question a question is
             'help' => true, // System → Help: answer a "how do I…" question from the admin guide
+            'ticket_reply' => true, // Draft a ticket reply from the conversation, the client's services and the knowledge base
+            'ticket_summary' => true, // Summarise a ticket and suggest its priority and department
+            'kb_article' => true, // Write a knowledge base article from a solved ticket
         ],
         'monthly_tokens' => null, // tokens (sent + received) all admins may use a calendar month; null = no limit
     ],

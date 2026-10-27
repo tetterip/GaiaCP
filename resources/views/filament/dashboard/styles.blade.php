@@ -486,6 +486,14 @@
         gap: .6rem;
     }
 
+    /* The squares fill the card: stacked on a narrow card, side by side once each still gets 22rem */
+    .gx-server-bars {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+        gap: .6rem 1.5rem;
+        align-items: start;
+    }
+
     .gx-server-row {
         display: flex;
         align-items: baseline;

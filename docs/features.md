@@ -148,7 +148,10 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   domain search (only the name sent, 5 presses an hour per client or address). Reports → Ask in plain words answers
   questions such as "who owes more than €100?" from the data, read-only: the AI service only picks one of GaiaCP's
   ready-made questions and its dates or amounts, and never sees the answer; System → Help answers "how do I…" from
-  the admin guide's closest sections. ChatGPT (OpenAI), DeepSeek and Kimi
+  the admin guide's closest sections. On a ticket it drafts a reply (from the conversation, the client's services and
+  the closest knowledge base articles), summarises it with a suggested priority, department and mood (kept under the
+  subject in the list until the client writes again), and turns an answered one into a draft knowledge base article;
+  the conversation goes without notes, files or the client's name, company, emails and phone numbers. ChatGPT (OpenAI), DeepSeek and Kimi
   (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models); Settings → AI
   assistant picks one when several are on
 - The admin panel as an app (PWA): add it to a phone's home screen or install it from the browser, and turn on push

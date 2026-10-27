@@ -172,6 +172,9 @@ class Settings
         'ai.features.outage',
         'ai.features.questions',
         'ai.features.help',
+        'ai.features.ticket_reply',
+        'ai.features.ticket_summary',
+        'ai.features.kb_article',
         'ai.monthly_tokens',
     ];
 

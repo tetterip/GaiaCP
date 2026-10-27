@@ -38,7 +38,7 @@ class AiSettings extends SettingsFormPage
 
     public static function settingsDescription(): string
     {
-        return __('Buttons that improve, translate and write texts and suggest domain names, with an AI service such as Claude.');
+        return __('Buttons that improve, translate and write texts, draft ticket replies and suggest domain names, with an AI service such as Claude.');
     }
 
     public static function keys(): array
@@ -66,7 +66,7 @@ class AiSettings extends SettingsFormPage
                             ->visible($modules->count() > 1),
                     ]),
                 Section::make(__('What it may do'))
-                    ->description(__('Each button sends only what its switch says, with fixed instructions; never client details, passwords or anything else from GaiaCP.'))
+                    ->description(__('Each button sends only what its switch says, with fixed instructions; never passwords or anything else from GaiaCP.'))
                     ->schema([
                         Toggle::make('ai.features.improve')
                             ->label('Improve texts')
@@ -86,6 +86,15 @@ class AiSettings extends SettingsFormPage
                         Toggle::make('ai.features.help')
                             ->label('Panel help')
                             ->helperText(__('System → Help: Ask the AI assistant answers what you typed in the guide\'s search, such as "how do I add a TLD?", from the closest parts of the admin guide, with links to them. Sends the question and those parts; nothing about clients.')),
+                        Toggle::make('ai.features.ticket_reply')
+                            ->label('Draft ticket replies')
+                            ->helperText(__('In a ticket\'s Reply: Draft a reply from the conversation, the client\'s services (type, name, status, paid until) and the closest knowledge base articles. The client\'s name, email addresses and phone numbers are replaced before it is sent; notes and files are never sent.')),
+                        Toggle::make('ai.features.ticket_summary')
+                            ->label('Summarise tickets')
+                            ->helperText(__('On a ticket: Summarise reads what the client needs in one line, with the priority, department and mood it suggests; you keep what you agree with. Sends the conversation, without the client\'s details.')),
+                        Toggle::make('ai.features.kb_article')
+                            ->label('Knowledge base articles from tickets')
+                            ->helperText(__('On an answered ticket: Write a knowledge base article for anyone with the same question, saved as a draft once you agree. Sends the conversation without the client\'s details or domain names.')),
                         Toggle::make('ai.features.domains')
                             ->label('Suggest domain names')
                             ->helperText(__('In the client area\'s domain search, a Suggest other names button that clients and visitors press: names close to the one searched, each checked like a search. Sends only the name searched. Each press uses tokens, so a client or an address gets at most :count presses an hour.', ['count' => SearchDomains::AI_PER_HOUR])),

@@ -24,7 +24,7 @@ use Illuminate\Support\Str;
  * @property CarbonImmutable|null $closed_at
  */
 #[Hidden(['access_token'])]
-#[Fillable(['client_id', 'email', 'name', 'access_token', 'service_id', 'department_id', 'assigned_to', 'subject', 'status', 'priority', 'last_reply_at', 'closed_at'])]
+#[Fillable(['client_id', 'email', 'name', 'access_token', 'service_id', 'department_id', 'assigned_to', 'subject', 'summary', 'status', 'priority', 'last_reply_at', 'closed_at'])]
 class Ticket extends Model
 {
     protected $attributes = [

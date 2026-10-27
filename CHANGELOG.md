@@ -10,6 +10,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   zone on Plesk) instead of emailing the client, and installs the issued certificate on the account. SSL → Install on
   hosting does it by hand; Settings → Domains → Set up certificates on our own hosting turns it off. Not yet tried on
   a real cPanel or Plesk server.
+- AI assistant on tickets, each with its own switch under Settings → AI assistant: Draft a reply in a ticket's Reply
+  (from the conversation, the client's services and the closest knowledge base articles), Summarise (one line with a
+  suggested priority, department and mood; Keep shows it under the subject in the list) and More → Write a knowledge
+  base article from an answered ticket (saved unpublished). The client's name, company, emails and phone numbers are
+  replaced before anything is sent; notes and files are never sent.
+- The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
+  side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime.
 
 ## [0.3.1] - 2026-10-27
 
