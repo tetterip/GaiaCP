@@ -25,5 +25,6 @@
         'label' => __('Uptime: :percent', ['percent' => $percent ?? '—']),
         'cells' => $cells,
         'rows' => $rows ?? 1,
+        'fill' => $fill ?? false,
     ])
 </div>
