@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up erreichbar, :down ausgefallen",
+    "API token": "API-Token",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack antwortete mit HTTP :status.",
+    "Better Stack answered: :error": "Better Stack antwortete: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack bat um Verlangsamung (zu viele Anfragen). Bei der nächsten Prüfung wird erneut gelesen.",
+    "Better Stack refused the API token.": "Better Stack hat das API-Token abgelehnt.",
+    "Connected: :count monitor(s)": "Verbunden: :count Monitor(e)",
+    "Connection": "Verbindung",
+    "Could not reach Better Stack: :error": "Better Stack nicht erreichbar: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Geben Sie das Better-Stack-API-Token unter Einstellungen → Better Stack ein.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP liest alle 5 Minuten den Status jedes Monitors über die API (v2) von Better Stack Uptime; auch der Free-Plan hat die API. Öffnen Sie in Better Stack <strong>Settings → API tokens</strong>, kopieren Sie das Uptime-API-Token Ihres Teams und fügen Sie es hier ein. Verknüpfen Sie dann jeden Server im Serverformular mit seinem Monitor (Einstellungen → Server).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Pausierte Monitore zeigen „Unbekannt“, Monitore in Wartung zeigen „Wartung“.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Zeigt anhand seines Better-Stack-Uptime-Monitors, ob jeder Server erreichbar ist, und meldet über die Glocke, wenn einer ausfällt.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Verschlüsselt gespeichert. Leer lassen, um den gespeicherten Wert zu behalten. GaiaCP liest damit nur."
+}

@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up online, :down offline",
+    "API key / password": "API-sleutel / wachtwoord",
+    "Connected: :count monitor(s)": "Verbonden: :count monitor(s)",
+    "Connection": "Verbinding",
+    "Could not reach Uptime Kuma: :error": "Kon Uptime Kuma niet bereiken: :error",
+    "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Vul het adres van Uptime Kuma in onder Instellingen → Uptime Kuma.",
+    "GaiaCP reads the status of every monitor from Uptime Kuma's <code>/metrics</code> page every 5 minutes. In Uptime Kuma open <strong>Settings → API Keys</strong>, press <strong>Generate</strong> and paste the key here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP leest elke 5 minuten de status van elke monitor van de pagina <code>/metrics</code> van Uptime Kuma. Open in Uptime Kuma <strong>Settings → API Keys</strong>, druk op <strong>Generate</strong> en plak de sleutel hier. Koppel daarna elke server aan zijn monitor op het serverformulier (Instellingen → Servers).",
+    "Leave empty with an API key. Only for an older Uptime Kuma without API keys: its login, with the password in the field next to it.": "Laat leeg bij een API-sleutel. Alleen voor een oudere Uptime Kuma zonder API-sleutels: de login, met het wachtwoord in het veld ernaast.",
+    "No monitors found at :url. Check the address, and that Uptime Kuma has at least one active monitor.": "Geen monitors gevonden op :url. Controleer het adres, en of Uptime Kuma minstens één actieve monitor heeft.",
+    "Paused monitors are not on the metrics page, so their servers show Unknown.": "Gepauzeerde monitors staan niet op de metrics-pagina, dus hun servers tonen Onbekend.",
+    "Shows whether each server is up from its Uptime Kuma monitor, and tells you in the bell when one goes down.": "Toont of elke server online is via de monitor in Uptime Kuma, en meldt in de bel als er een offline gaat.",
+    "Uptime Kuma": "Uptime Kuma",
+    "Uptime Kuma address": "Adres van Uptime Kuma",
+    "Uptime Kuma answered with HTTP :status.": "Uptime Kuma antwoordde met HTTP :status.",
+    "Uptime Kuma refused the API key.": "Uptime Kuma weigerde de API-sleutel."
+}

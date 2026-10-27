@@ -1,0 +1,8 @@
+{
+    "At <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google reCAPTCHA → Create</a> choose <strong>reCAPTCHA v2</strong>, <strong>\"I'm not a robot\" Checkbox</strong>, and add your domains (e.g. :host). Paste the site key and secret key it gives you here, then pick Google reCAPTCHA under Settings → General.": "Sur <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google reCAPTCHA → Create</a>, choisissez <strong>reCAPTCHA v2</strong>, <strong>\"I'm not a robot\" Checkbox</strong>, et ajoutez vos domaines (p. ex. :host). Collez ici la clé de site et la clé secrète obtenues, puis choisissez Google reCAPTCHA dans Paramètres → Général.",
+    "Google reCAPTCHA": "Google reCAPTCHA",
+    "Google's \"I'm not a robot\" check on the login and sign up forms.": "La vérification « Je ne suis pas un robot » de Google sur les formulaires de connexion et d'inscription.",
+    "Keys": "Clés",
+    "Secret key": "Clé secrète",
+    "Site key": "Clé de site"
+}

@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": "działa: :up, nie działa: :down",
+    "API token": "Token API",
+    "Connected: :count monitor(s)": "Połączono, monitory: :count",
+    "Connection": "Połączenie",
+    "Could not reach HetrixTools: :error": "Nie udało się połączyć z HetrixTools: :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Wpisz token API HetrixTools w Ustawienia → HetrixTools.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP co 5 minut odczytuje status i dostępność każdego monitora dostępności z API HetrixTools (v3); plan Free też ma API. W HetrixTools otwórz <strong>Account → API Keys</strong>, utwórz klucz z dostępem do odczytu monitorów dostępności i wklej go tutaj. Następnie połącz każdy serwer z jego monitorem w formularzu serwera (Ustawienia → Serwery).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "HetrixTools odpowiedział HTTP :status.",
+    "HetrixTools answered: :error": "HetrixTools odpowiedział: :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "HetrixTools poprosił o zwolnienie tempa (zbyt wiele żądań). Odczyt zostanie ponowiony przy następnym sprawdzeniu.",
+    "HetrixTools refused the API token.": "HetrixTools odrzucił token API.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Wstrzymane monitory pokazują Nieznany, a monitory w konserwacji pokazują Konserwacja.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Pokazuje, czy każdy serwer działa, na podstawie jego monitora dostępności HetrixTools i powiadamia dzwonkiem, gdy któryś przestanie działać.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Przechowywany w postaci zaszyfrowanej. Zostaw puste, aby zachować zapisany. Wystarczy klucz tylko do odczytu."
+}

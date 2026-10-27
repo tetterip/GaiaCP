@@ -1,0 +1,6 @@
+{
+    "Discord": "Discord",
+    "In Discord, open the channel's settings → Integrations → Webhooks → New Webhook, then Copy Webhook URL (https://discord.com/api/webhooks/…) and paste it here.": "Στο Discord, άνοιξε τις ρυθμίσεις του καναλιού → Integrations → Webhooks → New Webhook, πάτησε Copy Webhook URL (https://discord.com/api/webhooks/…) και επικόλλησέ το εδώ.",
+    "Post new orders, payments, tickets and server problems to a Discord channel.": "Δημοσίευσε νέες παραγγελίες, πληρωμές, tickets και προβλήματα servers σε κανάλι του Discord.",
+    "Posts GaiaCP's events (new orders, payments, tickets, servers down) to a Discord channel.": "Δημοσιεύει τα events του GaiaCP (νέες παραγγελίες, πληρωμές, tickets, servers εκτός λειτουργίας) σε κανάλι του Discord."
+}

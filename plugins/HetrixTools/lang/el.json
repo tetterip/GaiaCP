@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up σε λειτουργία, :down εκτός λειτουργίας",
+    "API token": "API token",
+    "Connected: :count monitor(s)": "Συνδέθηκε: :count monitor",
+    "Connection": "Σύνδεση",
+    "Could not reach HetrixTools: :error": "Δεν ήταν δυνατή η σύνδεση με το HetrixTools: :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Συμπλήρωσε το API token του HetrixTools στις Ρυθμίσεις → HetrixTools.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "Το GaiaCP διαβάζει την κατάσταση και το uptime κάθε uptime monitor από το API (v3) του HetrixTools κάθε 5 λεπτά· το API υπάρχει και στο δωρεάν πλάνο. Στο HetrixTools άνοιξε <strong>Account → API Keys</strong>, δημιούργησε ένα κλειδί με δικαίωμα ανάγνωσης στους uptime monitors και επικόλλησέ το εδώ. Μετά σύνδεσε κάθε server με τον monitor του στη φόρμα του server (Ρυθμίσεις → Servers).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "Το HetrixTools απάντησε με HTTP :status.",
+    "HetrixTools answered: :error": "Το HetrixTools απάντησε: :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "Το HetrixTools ζήτησε λιγότερες κλήσεις (πάρα πολλά αιτήματα). Θα διαβαστεί ξανά στον επόμενο έλεγχο.",
+    "HetrixTools refused the API token.": "Το HetrixTools απέρριψε το API token.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Οι monitors σε παύση δείχνουν Άγνωστη και όσοι είναι σε συντήρηση δείχνουν Συντήρηση.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Δείχνει αν κάθε server λειτουργεί από τον uptime monitor του στο HetrixTools και σε ειδοποιεί στο καμπανάκι όταν κάποιος πέσει.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Αποθηκεύεται κρυπτογραφημένο. Άφησέ το κενό για να κρατηθεί το αποθηκευμένο. Αρκεί ένα κλειδί που μόνο διαβάζει."
+}

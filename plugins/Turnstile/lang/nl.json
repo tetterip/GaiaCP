@@ -1,0 +1,8 @@
+{
+    "Cloudflare Turnstile": "Cloudflare Turnstile",
+    "Cloudflare's privacy-friendly check that a visitor is not a robot, on the login and sign up forms.": "De privacyvriendelijke controle van Cloudflare dat een bezoeker geen robot is, op de formulieren voor inloggen en registreren.",
+    "In the <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Cloudflare dashboard → Turnstile</a> press <strong>Add widget</strong>, add your domains (e.g. :host) and choose the <strong>Managed</strong> mode. Paste the site key and secret key it gives you here, then pick Cloudflare Turnstile under Settings → General.": "Druk in het <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Cloudflare-dashboard → Turnstile</a> op <strong>Add widget</strong>, voeg uw domeinen toe (bijv. :host) en kies de modus <strong>Managed</strong>. Plak hier de sitesleutel en geheime sleutel die u krijgt, en kies daarna Cloudflare Turnstile onder Instellingen → Algemeen.",
+    "Keys": "Sleutels",
+    "Secret key": "Geheime sleutel",
+    "Site key": "Sitesleutel"
+}

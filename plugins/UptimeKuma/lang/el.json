@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up σε λειτουργία, :down εκτός λειτουργίας",
+    "API key / password": "API key / κωδικός",
+    "Connected: :count monitor(s)": "Συνδέθηκε: :count monitor",
+    "Connection": "Σύνδεση",
+    "Could not reach Uptime Kuma: :error": "Δεν ήταν δυνατή η σύνδεση με το Uptime Kuma: :error",
+    "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Συμπλήρωσε τη διεύθυνση του Uptime Kuma στις Ρυθμίσεις → Uptime Kuma.",
+    "GaiaCP reads the status of every monitor from Uptime Kuma's <code>/metrics</code> page every 5 minutes. In Uptime Kuma open <strong>Settings → API Keys</strong>, press <strong>Generate</strong> and paste the key here. Then link each server to its monitor on the server's form (Settings → Servers).": "Το GaiaCP διαβάζει την κατάσταση κάθε monitor από τη σελίδα <code>/metrics</code> του Uptime Kuma κάθε 5 λεπτά. Στο Uptime Kuma άνοιξε <strong>Settings → API Keys</strong>, πάτησε <strong>Generate</strong> και επικόλλησε εδώ το κλειδί. Μετά σύνδεσε κάθε server με τον monitor του στη φόρμα του server (Ρυθμίσεις → Servers).",
+    "Leave empty with an API key. Only for an older Uptime Kuma without API keys: its login, with the password in the field next to it.": "Άφησέ το κενό με API key. Μόνο για παλαιότερο Uptime Kuma χωρίς API keys: το όνομα χρήστη του, με τον κωδικό στο διπλανό πεδίο.",
+    "No monitors found at :url. Check the address, and that Uptime Kuma has at least one active monitor.": "Δεν βρέθηκαν monitors στο :url. Έλεγξε τη διεύθυνση και ότι το Uptime Kuma έχει τουλάχιστον έναν ενεργό monitor.",
+    "Paused monitors are not on the metrics page, so their servers show Unknown.": "Οι monitors σε παύση δεν εμφανίζονται στη σελίδα metrics, οπότε οι servers τους δείχνουν Άγνωστη.",
+    "Shows whether each server is up from its Uptime Kuma monitor, and tells you in the bell when one goes down.": "Δείχνει αν κάθε server λειτουργεί από τον monitor του στο Uptime Kuma και σε ειδοποιεί στο καμπανάκι όταν κάποιος πέσει.",
+    "Uptime Kuma": "Uptime Kuma",
+    "Uptime Kuma address": "Διεύθυνση Uptime Kuma",
+    "Uptime Kuma answered with HTTP :status.": "Το Uptime Kuma απάντησε με HTTP :status.",
+    "Uptime Kuma refused the API key.": "Το Uptime Kuma απέρριψε το API key."
+}

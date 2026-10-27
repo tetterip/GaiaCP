@@ -1,0 +1,18 @@
+{
+    ":count listing(s) found": ":count Listung(en) gefunden",
+    ":ips IP address(es) of :servers server(s) checked.": ":ips IP-Adresse(n) von :servers Server(n) geprüft.",
+    ":server (:ip) on :zone since :date": ":server (:ip) auf :zone seit :date",
+    "Blacklists": "Blacklists",
+    "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Prüft die IP-Adressen Ihrer Server stündlich gegen Spam-Blacklists und meldet über die Glocke, wenn eine gelistet ist, bevor Kunden ihre E-Mails im Spam finden.",
+    "DNS blacklists": "DNS-Blacklists",
+    "Did not answer: :zones.": "Keine Antwort: :zones.",
+    "Every hour GaiaCP asks each list about every active server's IP address (the server's IP address field, else what its hostname points to). A new listing and its removal are in the bell for super admins and in the activity log.": "Jede Stunde fragt GaiaCP jede Liste nach der IP-Adresse jedes aktiven Servers (das Feld IP-Adresse des Servers, sonst wohin sein Hostname zeigt). Eine neue Listung und ihre Entfernung erscheinen in der Glocke der Super-Admins und im Aktivitätsprotokoll.",
+    "IP blacklist check": "IP-Blacklist-Prüfung",
+    "Last check: :time.": "Letzte Prüfung: :time.",
+    "Listed now": "Jetzt gelistet",
+    "No server is listed": "Kein Server ist gelistet",
+    "No server is listed.": "Kein Server ist gelistet.",
+    "Not checked yet.": "Noch nicht geprüft.",
+    "One per line, e.g. zen.spamhaus.org. Spamhaus answers only through a DNS resolver of your server's own, not a public one like 8.8.8.8; when a list refuses to answer it counts as not checked, never as listed.": "Eine pro Zeile, z. B. zen.spamhaus.org. Spamhaus antwortet nur über einen eigenen DNS-Resolver Ihres Servers, nicht über einen öffentlichen wie 8.8.8.8; verweigert eine Liste die Antwort, gilt das als nicht geprüft, nie als gelistet.",
+    "Zones": "Zonen"
+}

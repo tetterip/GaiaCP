@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up çalışıyor, :down kapalı",
+    "API token": "API token",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack HTTP :status ile yanıt verdi.",
+    "Better Stack answered: :error": "Better Stack yanıtı: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack yavaşlamayı istedi (çok fazla istek). Sonraki kontrolde yeniden okunur.",
+    "Better Stack refused the API token.": "Better Stack API token'ını reddetti.",
+    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connection": "Bağlantı",
+    "Could not reach Better Stack: :error": "Better Stack'e ulaşılamadı: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Ayarlar → Better Stack altında Better Stack API token'ını doldurun.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP her monitörün durumunu her 5 dakikada bir Better Stack Uptime API'sinden (v2) okur; Ücretsiz planda da API vardır. Better Stack'te <strong>Settings → API tokens</strong>'ı açın, ekibinizin Uptime API token'ını kopyalayın ve buraya yapıştırın. Sonra her sunucuyu sunucunun formunda monitörüne bağlayın (Ayarlar → Sunucular).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Duraklatılmış monitörler Bilinmiyor, bakımdaki monitörler Bakım gösterir.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Her sunucunun çalışıp çalışmadığını Better Stack Uptime monitöründen gösterir ve biri kapandığında zilde size bildirir.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Şifreli saklanır. Kayıtlı olanı korumak için boş bırakın. GaiaCP bununla yalnızca okuma yapar."
+}

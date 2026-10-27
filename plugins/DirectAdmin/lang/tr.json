@@ -1,0 +1,8 @@
+{
+    "Creates, suspends and removes hosting accounts on DirectAdmin servers.": "DirectAdmin sunucularında hosting hesapları oluşturur, askıya alır ve kaldırır.",
+    "DirectAdmin: a login key of that user (Login Keys, allowing the CMD_API commands), or its password. Stored encrypted.": "DirectAdmin: o kullanıcının bir giriş anahtarı (Login Keys, CMD_API komutlarına izin veren) veya parolası. Şifreli saklanır.",
+    "IP for new accounts": "Yeni hesaplar için IP",
+    "Leave empty to use the first IP address of the login above.": "Yukarıdaki girişin ilk IP adresini kullanmak için boş bırakın.",
+    "Shared ip": "Paylaşılan IP",
+    "The admin or a reseller (e.g. admin). New accounts are created under it, on its packages.": "Yönetici veya bir bayi (ör. admin). Yeni hesaplar onun altında, onun paketleriyle oluşturulur."
+}

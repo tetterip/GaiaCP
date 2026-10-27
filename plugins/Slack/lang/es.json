@@ -1,0 +1,7 @@
+{
+    "In Slack, create an app at api.slack.com/apps, turn on Incoming Webhooks, add one for the channel and copy its URL (https://hooks.slack.com/services/…) here.": "En Slack, cree una app en api.slack.com/apps, active Incoming Webhooks, añada uno para el canal y copie aquí su URL (https://hooks.slack.com/services/…).",
+    "Open in GaiaCP": "Abrir en GaiaCP",
+    "Post new orders, payments, tickets and server problems to a Slack channel.": "Publicar pedidos nuevos, pagos, tickets y problemas de servidor en un canal de Slack.",
+    "Posts GaiaCP's events (new orders, payments, tickets, servers down) to a Slack channel.": "Publica los eventos de GaiaCP (pedidos nuevos, pagos, tickets, servidores caídos) en un canal de Slack.",
+    "Slack": "Slack"
+}

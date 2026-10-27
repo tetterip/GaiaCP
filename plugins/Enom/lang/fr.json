@@ -1,0 +1,10 @@
+{
+    "API token": "Jeton API",
+    "Leave empty to keep the current token. Stored encrypted. Enom answers only the IP addresses you allow under API settings in its reseller panel.": "Laissez vide pour garder le jeton actuel. Stocké chiffré. Enom ne répond qu'aux adresses IP autorisées dans les paramètres API de son panneau revendeur.",
+    "Login ID": "Login ID",
+    "Registers, renews, transfers and syncs domains through an Enom reseller account.": "Enregistre, renouvelle, transfère et synchronise des domaines via un compte revendeur Enom.",
+    "Sends every call to Enom's reseller test environment (resellertest.enom.com), with that account's login.": "Envoie chaque appel à l'environnement de test revendeur d'Enom (resellertest.enom.com), avec l'identifiant de ce compte.",
+    "Stored encrypted. Enom answers only the IP addresses you allow under API settings in its reseller panel.": "Stocké chiffré. Enom ne répond qu'aux adresses IP autorisées dans les paramètres API de son panneau revendeur.",
+    "Test mode": "Mode test",
+    "Uid": "UID"
+}

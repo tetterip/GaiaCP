@@ -1,0 +1,11 @@
+{
+    "Backups": "Αντίγραφα ασφαλείας",
+    "Creates, suspends and removes hosting accounts on cPanel servers through WHM.": "Δημιουργεί, αναστέλλει και διαγράφει λογαριασμούς φιλοξενίας σε servers cPanel μέσω WHM.",
+    "Email accounts": "Λογαριασμοί email",
+    "File Manager": "Διαχείριση αρχείων",
+    "MySQL databases": "Βάσεις δεδομένων MySQL",
+    "Statistics": "Στατιστικά",
+    "WHM user: root or a reseller.": "Χρήστης WHM: root ή ένας reseller.",
+    "WHM: Development → Manage API Tokens. Stored encrypted.": "WHM: Development → Manage API Tokens. Αποθηκεύεται κρυπτογραφημένο.",
+    "phpMyAdmin": "phpMyAdmin"
+}

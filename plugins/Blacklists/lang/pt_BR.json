@@ -1,0 +1,18 @@
+{
+    ":count listing(s) found": ":count listagem(ns) encontrada(s)",
+    ":ips IP address(es) of :servers server(s) checked.": ":ips endereço(s) IP de :servers servidor(es) verificado(s).",
+    ":server (:ip) on :zone since :date": ":server (:ip) em :zone desde :date",
+    "Blacklists": "Blacklists",
+    "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Verifica os endereços IP dos seus servidores em blacklists de spam a cada hora e avisa você no sino quando um é listado, antes que os clientes encontrem os e-mails deles no spam.",
+    "DNS blacklists": "Blacklists de DNS",
+    "Did not answer: :zones.": "Não responderam: :zones.",
+    "Every hour GaiaCP asks each list about every active server's IP address (the server's IP address field, else what its hostname points to). A new listing and its removal are in the bell for super admins and in the activity log.": "A cada hora o GaiaCP consulta cada lista sobre o endereço IP de cada servidor ativo (o campo Endereço IP do servidor, senão para onde o hostname aponta). Uma nova listagem e a remoção dela aparecem no sino para os super admins e no log de atividade.",
+    "IP blacklist check": "Verificação de blacklist de IP",
+    "Last check: :time.": "Última verificação: :time.",
+    "Listed now": "Listados agora",
+    "No server is listed": "Nenhum servidor está listado",
+    "No server is listed.": "Nenhum servidor está listado.",
+    "Not checked yet.": "Ainda não verificado.",
+    "One per line, e.g. zen.spamhaus.org. Spamhaus answers only through a DNS resolver of your server's own, not a public one like 8.8.8.8; when a list refuses to answer it counts as not checked, never as listed.": "Uma por linha, por ex. zen.spamhaus.org. O Spamhaus só responde por um resolvedor DNS do próprio servidor, não por um público como 8.8.8.8; quando uma lista se recusa a responder, conta como não verificado, nunca como listado.",
+    "Zones": "Zonas"
+}

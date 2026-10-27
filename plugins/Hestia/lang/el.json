@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting accounts on HestiaCP servers.": "Δημιουργεί, αναστέλλει και διαγράφει λογαριασμούς φιλοξενίας σε servers HestiaCP.",
+    "HestiaCP: an access key of the admin user, as ACCESS_KEY:SECRET_KEY (admin → Access keys, all permissions), or the admin password if the username is filled in. Stored encrypted.": "HestiaCP: ένα access key του χρήστη admin, ως ACCESS_KEY:SECRET_KEY (admin → Access keys, όλα τα δικαιώματα), ή ο κωδικός του admin αν έχεις συμπληρώσει το όνομα χρήστη. Αποθηκεύεται κρυπτογραφημένο.",
+    "Leave empty to use an access key (recommended). Fill in the admin user (admin) only to log in with its password instead.": "Άφησέ το κενό για σύνδεση με access key (προτείνεται). Συμπλήρωσε τον χρήστη διαχειριστή (admin) μόνο για σύνδεση με τον κωδικό του."
+}

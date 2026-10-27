@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up en ligne, :down hors ligne",
+    "API token": "Jeton API",
+    "Connected: :count monitor(s)": "Connecté : :count sonde(s)",
+    "Connection": "Connexion",
+    "Could not reach HetrixTools: :error": "Impossible de joindre HetrixTools : :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Renseignez le jeton API HetrixTools dans Paramètres → HetrixTools.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP lit l'état et la disponibilité de chaque sonde via l'API (v3) de HetrixTools toutes les 5 minutes ; l'offre gratuite inclut aussi l'API. Dans HetrixTools, ouvrez <strong>Account → API Keys</strong>, créez une clé avec accès en lecture aux sondes de disponibilité et collez-la ici. Liez ensuite chaque serveur à sa sonde sur le formulaire du serveur (Paramètres → Serveurs).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "HetrixTools a répondu avec HTTP :status.",
+    "HetrixTools answered: :error": "HetrixTools a répondu : :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "HetrixTools a demandé de ralentir (trop de requêtes). Il sera relu à la prochaine vérification.",
+    "HetrixTools refused the API token.": "HetrixTools a refusé le jeton API.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Les sondes en pause affichent Inconnu, et celles en maintenance affichent Maintenance.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Indique si chaque serveur est en ligne d'après sa sonde HetrixTools, et vous avertit dans la cloche quand l'un tombe.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Stocké chiffré. Laissez vide pour garder celui enregistré. Une clé en lecture seule suffit."
+}

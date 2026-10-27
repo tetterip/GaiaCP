@@ -1,0 +1,22 @@
+{
+    "\"Continue with Google\" shows on the client area's login page once both are filled in. It logs in the client whose email address Google confirms; an address that is not a client here goes to the sign up form when Settings → Client area lets new clients sign up.": "Το «Συνέχεια με Google» εμφανίζεται στη σελίδα σύνδεσης της περιοχής πελατών μόλις συμπληρωθούν και τα δύο. Συνδέει τον πελάτη του οποίου τη διεύθυνση email επιβεβαιώνει η Google· μια διεύθυνση που δεν είναι πελάτης εδώ πηγαίνει στη φόρμα εγγραφής, όταν οι Ρυθμίσεις → Περιοχή πελατών επιτρέπουν την εγγραφή νέων πελατών.",
+    ":email can't log in to the client area. Please contact us.": "Η διεύθυνση :email δεν μπορεί να συνδεθεί στην περιοχή πελατών. Παρακαλούμε επικοινωνήστε μαζί μας.",
+    "Authorized redirect URI": "Εγκεκριμένο URI ανακατεύθυνσης (Authorized redirect URI)",
+    "Client ID": "Client ID",
+    "Client secret": "Client secret",
+    "Clients log in or sign up in the client area with their Google account.": "Οι πελάτες συνδέονται ή εγγράφονται στην περιοχή πελατών με τον λογαριασμό τους Google.",
+    "Continue with Google": "Συνέχεια με Google",
+    "Google OAuth client": "Google OAuth client",
+    "Google could not be reached. Please try again.": "Δεν ήταν δυνατή η επικοινωνία με την Google. Παρακαλούμε δοκιμάστε ξανά.",
+    "Google did not accept the sign-in (:error). Please try again.": "Η Google δεν αποδέχτηκε τη σύνδεση (:error). Παρακαλούμε δοκιμάστε ξανά.",
+    "Google did not send your email address. Please try again.": "Η Google δεν έστειλε τη διεύθυνση email σας. Παρακαλούμε δοκιμάστε ξανά.",
+    "Google has not confirmed :email, so it can't be used to log in.": "Η Google δεν έχει επιβεβαιώσει τη διεύθυνση :email, οπότε δεν μπορεί να χρησιμοποιηθεί για σύνδεση.",
+    "Google sign-in": "Σύνδεση με Google",
+    "Google sign-in was cancelled.": "Η σύνδεση με Google ακυρώθηκε.",
+    "In <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> press <strong>Create credentials → OAuth client ID</strong>, type <strong>Web application</strong>, and add the address below under <strong>Authorized redirect URIs</strong>. Google first asks you to set up the consent screen: your company name, support email and logo; the scopes needed are only email, profile and openid. Then paste the client ID and secret here.": "Στο <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> πάτησε <strong>Create credentials → OAuth client ID</strong>, τύπος <strong>Web application</strong>, και πρόσθεσε την παρακάτω διεύθυνση στα <strong>Authorized redirect URIs</strong>. Η Google ζητά πρώτα να ρυθμίσεις την οθόνη συναίνεσης (consent screen): όνομα εταιρείας, email υποστήριξης και λογότυπο· χρειάζονται μόνο τα scopes email, profile και openid. Μετά επικόλλησε εδώ το client ID και το secret.",
+    "More than one client uses :email. Please contact us.": "Περισσότεροι από ένας πελάτες χρησιμοποιούν τη διεύθυνση :email. Παρακαλούμε επικοινωνήστε μαζί μας.",
+    "No client account uses :email. Log in with the address you gave us, or contact us.": "Κανένας λογαριασμός πελάτη δεν χρησιμοποιεί τη διεύθυνση :email. Συνδεθείτε με τη διεύθυνση που μας έχετε δώσει ή επικοινωνήστε μαζί μας.",
+    "Redirect uri": "URI ανακατεύθυνσης",
+    "The Google sign-in expired. Please try again.": "Η σύνδεση με Google έληξε. Παρακαλούμε δοκιμάστε ξανά.",
+    "Two-factor authentication is on for :email: log in with your password and code instead.": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ενεργός για τη διεύθυνση :email: συνδεθείτε με τον κωδικό σας και τον κωδικό της εφαρμογής."
+}

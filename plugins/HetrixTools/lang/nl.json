@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up online, :down offline",
+    "API token": "API-token",
+    "Connected: :count monitor(s)": "Verbonden: :count monitor(s)",
+    "Connection": "Verbinding",
+    "Could not reach HetrixTools: :error": "Kon HetrixTools niet bereiken: :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Vul het API-token van HetrixTools in onder Instellingen → HetrixTools.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP leest elke 5 minuten de status en uptime van elke uptime-monitor via de API (v3) van HetrixTools; ook het gratis abonnement heeft de API. Open in HetrixTools <strong>Account → API Keys</strong>, maak een sleutel met leestoegang tot uptime-monitors en plak hem hier. Koppel daarna elke server aan zijn monitor op het serverformulier (Instellingen → Servers).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "HetrixTools antwoordde met HTTP :status.",
+    "HetrixTools answered: :error": "HetrixTools antwoordde: :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "HetrixTools vroeg om het rustiger aan te doen (te veel verzoeken). Bij de volgende controle wordt opnieuw gelezen.",
+    "HetrixTools refused the API token.": "HetrixTools weigerde het API-token.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Gepauzeerde monitors tonen Onbekend, en monitors in onderhoud tonen Onderhoud.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Toont of elke server online is via de uptime-monitor in HetrixTools, en meldt in de bel als er een offline gaat.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Versleuteld opgeslagen. Laat leeg om het opgeslagen token te behouden. Een sleutel die alleen kan lezen is genoeg."
+}

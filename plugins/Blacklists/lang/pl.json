@@ -1,0 +1,18 @@
+{
+    ":count listing(s) found": "Znalezione wpisy: :count",
+    ":ips IP address(es) of :servers server(s) checked.": "Sprawdzono adresy IP (:ips) serwerów (:servers).",
+    ":server (:ip) on :zone since :date": ":server (:ip) na :zone od :date",
+    "Blacklists": "Czarne listy",
+    "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Co godzinę sprawdza adresy IP Twoich serwerów na czarnych listach spamu i powiadamia dzwonkiem, gdy któryś się na nich znajdzie, zanim klienci znajdą swoje e-maile w spamie.",
+    "DNS blacklists": "Czarne listy DNS",
+    "Did not answer: :zones.": "Nie odpowiedziały: :zones.",
+    "Every hour GaiaCP asks each list about every active server's IP address (the server's IP address field, else what its hostname points to). A new listing and its removal are in the bell for super admins and in the activity log.": "Co godzinę GaiaCP pyta każdą listę o adres IP każdego aktywnego serwera (pole adresu IP serwera, w przeciwnym razie adres, na który wskazuje jego nazwa hosta). Nowy wpis i jego usunięcie trafiają do dzwonka superadministratorów i do dziennika aktywności.",
+    "IP blacklist check": "Sprawdzanie czarnych list IP",
+    "Last check: :time.": "Ostatnie sprawdzenie: :time.",
+    "Listed now": "Obecnie na liście",
+    "No server is listed": "Żaden serwer nie jest na liście",
+    "No server is listed.": "Żaden serwer nie jest na liście.",
+    "Not checked yet.": "Jeszcze nie sprawdzono.",
+    "One per line, e.g. zen.spamhaus.org. Spamhaus answers only through a DNS resolver of your server's own, not a public one like 8.8.8.8; when a list refuses to answer it counts as not checked, never as listed.": "Jedna w wierszu, np. zen.spamhaus.org. Spamhaus odpowiada tylko przez własny resolver DNS Twojego serwera, nie przez publiczny, taki jak 8.8.8.8; gdy lista odmawia odpowiedzi, liczy się to jako niesprawdzone, nigdy jako wpis.",
+    "Zones": "Strefy"
+}

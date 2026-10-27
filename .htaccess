@@ -1,0 +1,29 @@
+# GaiaCP when the site's document root is this folder instead of public/ (shared hosting where it can't be changed),
+# at a domain's root or in a subfolder (example.com/billing/): only what is in public/ is ever served, everything
+# else (.env, storage, vendor, the code) answers 404. Pointing the document root at public/ is still best, and nginx
+# ignores this file: README.md → Installation has both.
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Any file or folder that exists here (outside public/) is GaiaCP's own: never served. Certificate checks
+    # (.well-known) still work, and /storage/ goes on to public/storage (`storage:link`), never to storage/ itself.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^(?!public(?:/|$)|\.well-known(?:/|$)|storage/). - [R=404,L]
+
+    # The same for dotfiles that don't exist yet, so a new .env is never served either
+    RewriteRule (?:^|/)\.(?!well-known(?:/|$)) - [R=404,L]
+
+    # Everything else is public/: its files, or Laravel through public/index.php
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Without mod_rewrite nothing here can be kept private: refuse everything
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>

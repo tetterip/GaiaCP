@@ -1,0 +1,20 @@
+{
+    "API key": "API-Schlüssel",
+    "Api key": "API-Schlüssel",
+    "Claude": "Claude",
+    "Claude answered: :error": "Claude antwortete: :error",
+    "Claude declined to answer this text.": "Claude hat die Antwort auf diesen Text verweigert.",
+    "Claude did not accept the API key. Check it under Settings → Claude.": "Claude hat den API-Schlüssel nicht akzeptiert. Prüfen Sie ihn unter Einstellungen → Claude.",
+    "Claude is busy right now. Try again in a minute.": "Claude ist gerade ausgelastet. Versuchen Sie es in einer Minute erneut.",
+    "Claude's answer was too long and was cut off. Try a shorter text.": "Die Antwort von Claude war zu lang und wurde abgeschnitten. Versuchen Sie einen kürzeren Text.",
+    "Claude, Anthropic's AI, for the AI assistant: it improves and translates texts you write, with your own API key.": "Claude, die KI von Anthropic, für den KI-Assistenten: Sie verbessert und übersetzt Ihre Texte, mit Ihrem eigenen API-Schlüssel.",
+    "Connected: :model": "Verbunden: :model",
+    "Connection": "Verbindung",
+    "Could not reach Claude: :error": "Claude nicht erreichbar: :error",
+    "Create an API key at <strong>console.anthropic.com</strong> (Settings → API keys) and paste it here. Anthropic bills your account for what is used; set a monthly limit there and under Settings → AI assistant. Texts are sent only when an admin presses an AI button, and by default Anthropic does not use API data to train its models.": "Erstellen Sie einen API-Schlüssel unter <strong>console.anthropic.com</strong> (Settings → API keys) und fügen Sie ihn hier ein. Anthropic berechnet Ihrem Konto die Nutzung; legen Sie dort und unter Einstellungen → KI-Assistent ein Monatslimit fest. Texte werden nur gesendet, wenn ein Admin auf eine KI-Schaltfläche klickt, und standardmäßig verwendet Anthropic API-Daten nicht zum Training seiner Modelle.",
+    "Fill in the API key first.": "Geben Sie zuerst den API-Schlüssel ein.",
+    "Fill in the Claude API key under Settings → Claude.": "Geben Sie den Claude-API-Schlüssel unter Einstellungen → Claude ein.",
+    "Model": "Modell",
+    "Opus writes best; Sonnet is half the price; Haiku is the cheapest and fastest, good enough for spelling and translations.": "Opus schreibt am besten; Sonnet kostet die Hälfte; Haiku ist am günstigsten und schnellsten, gut genug für Rechtschreibung und Übersetzungen.",
+    "What the assistant may do, and a monthly limit: <a href=\":url\" class=\"underline\">Settings → AI assistant</a>.": "Was der Assistent tun darf und ein Monatslimit: <a href=\":url\" class=\"underline\">Einstellungen → KI-Assistent</a>."
+}

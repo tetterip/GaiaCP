@@ -1,0 +1,14 @@
+{
+    "Applications": "Applications",
+    "Creates, suspends and removes hosting subscriptions on Plesk servers.": "Crée, suspend et supprime les abonnements d'hébergement sur les serveurs Plesk.",
+    "Databases": "Bases de données",
+    "File Manager": "Gestionnaire de fichiers",
+    "IP for new subscriptions": "IP des nouveaux abonnements",
+    "Leave empty to use the server's first shared IPv4 address.": "Laissez vide pour utiliser la première adresse IPv4 partagée du serveur.",
+    "Mail": "Messagerie",
+    "Plesk admin login. Leave empty to authenticate with a secret key instead.": "Identifiant admin Plesk. Laissez vide pour vous authentifier plutôt avec une clé secrète.",
+    "Plesk: the admin password, or a secret key (plesk bin secret_key -c) if the login is empty. Stored encrypted.": "Plesk : le mot de passe admin, ou une clé secrète (plesk bin secret_key -c) si l'identifiant est vide. Stocké chiffré.",
+    "Shared ip": "IP partagée",
+    "Statistics": "Statistiques",
+    "Users": "Utilisateurs"
+}

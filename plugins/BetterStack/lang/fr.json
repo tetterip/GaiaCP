@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up en ligne, :down hors ligne",
+    "API token": "Jeton API",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack a répondu avec HTTP :status.",
+    "Better Stack answered: :error": "Better Stack a répondu : :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack a demandé de ralentir (trop de requêtes). Il sera relu à la prochaine vérification.",
+    "Better Stack refused the API token.": "Better Stack a refusé le jeton API.",
+    "Connected: :count monitor(s)": "Connecté : :count sonde(s)",
+    "Connection": "Connexion",
+    "Could not reach Better Stack: :error": "Impossible de joindre Better Stack : :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Renseignez le jeton API Better Stack dans Paramètres → Better Stack.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP lit l'état de chaque sonde via l'API (v2) de Better Stack Uptime toutes les 5 minutes ; l'offre gratuite inclut aussi l'API. Dans Better Stack, ouvrez <strong>Settings → API tokens</strong>, copiez le jeton API Uptime de votre équipe et collez-le ici. Liez ensuite chaque serveur à sa sonde sur le formulaire du serveur (Paramètres → Serveurs).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Les sondes en pause affichent Inconnu, et celles en maintenance affichent Maintenance.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Indique si chaque serveur est en ligne d'après sa sonde Better Stack Uptime, et vous avertit dans la cloche quand l'un tombe.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Stocké chiffré. Laissez vide pour garder celui enregistré. GaiaCP ne fait que lire avec."
+}

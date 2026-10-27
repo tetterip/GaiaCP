@@ -1,0 +1,51 @@
+#!/usr/bin/env php
+<?php
+
+// Signs GaiaCP releases with Ed25519 (docs/releases.md). Needs only PHP's sodium extension.
+//
+//   php bin/release-key keygen          a new key pair: the secret goes in the RELEASE_SIGNING_KEY secret of the
+//                                       repository's GitHub Actions, the public key in config/gaiacp.php
+//                                       (gaiacp.updates.keys). Run it on your own computer, never in CI.
+//   php bin/release-key sign <file>     writes <file>.sig, the base64 signature of the file's exact bytes, with the
+//                                       secret key in RELEASE_SIGNING_KEY (the release workflow signs the .sha256)
+//   php bin/release-key verify <file> <public key>   checks <file>.sig
+
+if (! function_exists('sodium_crypto_sign_detached')) {
+    fwrite(STDERR, "The sodium PHP extension is needed.\n");
+    exit(1);
+}
+
+$command = $argv[1] ?? null;
+
+if ($command === 'keygen') {
+    $pair = sodium_crypto_sign_keypair();
+    echo 'Public key (config/gaiacp.php, gaiacp.updates.keys): '.base64_encode(sodium_crypto_sign_publickey($pair))."\n";
+    echo 'Secret key (GitHub → Settings → Secrets and variables → Actions → RELEASE_SIGNING_KEY; keep no other copy you don\'t need): '
+        .base64_encode(sodium_crypto_sign_secretkey($pair))."\n";
+    exit(0);
+}
+
+if ($command === 'sign' && isset($argv[2])) {
+    $secret = base64_decode(trim((string) getenv('RELEASE_SIGNING_KEY')), true);
+    if (! is_string($secret) || strlen($secret) !== SODIUM_CRYPTO_SIGN_SECRETKEYBYTES) {
+        fwrite(STDERR, "RELEASE_SIGNING_KEY is not set to a secret key from `php bin/release-key keygen`.\n");
+        exit(1);
+    }
+    $file = $argv[2];
+    file_put_contents("{$file}.sig", base64_encode(sodium_crypto_sign_detached((string) file_get_contents($file), $secret))."\n");
+    echo "Signed {$file} with the key ".base64_encode(sodium_crypto_sign_publickey_from_secretkey($secret))."\n";
+    exit(0);
+}
+
+if ($command === 'verify' && isset($argv[2], $argv[3])) {
+    $signature = base64_decode(trim((string) @file_get_contents("{$argv[2]}.sig")), true);
+    $public = base64_decode(trim($argv[3]), true);
+    $ok = is_string($signature) && strlen($signature) === SODIUM_CRYPTO_SIGN_BYTES
+        && is_string($public) && strlen($public) === SODIUM_CRYPTO_SIGN_PUBLICKEYBYTES
+        && sodium_crypto_sign_verify_detached($signature, (string) file_get_contents($argv[2]), $public);
+    echo $ok ? "Good signature\n" : "Bad signature\n";
+    exit($ok ? 0 : 1);
+}
+
+fwrite(STDERR, "Usage: php bin/release-key keygen | sign <file> | verify <file> <public key>\n");
+exit(1);

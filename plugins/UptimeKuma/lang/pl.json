@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": "działa: :up, nie działa: :down",
+    "API key / password": "Klucz API / hasło",
+    "Connected: :count monitor(s)": "Połączono, monitory: :count",
+    "Connection": "Połączenie",
+    "Could not reach Uptime Kuma: :error": "Nie udało się połączyć z Uptime Kuma: :error",
+    "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Wpisz adres Uptime Kuma w Ustawienia → Uptime Kuma.",
+    "GaiaCP reads the status of every monitor from Uptime Kuma's <code>/metrics</code> page every 5 minutes. In Uptime Kuma open <strong>Settings → API Keys</strong>, press <strong>Generate</strong> and paste the key here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP co 5 minut odczytuje status każdego monitora ze strony <code>/metrics</code> Uptime Kuma. W Uptime Kuma otwórz <strong>Settings → API Keys</strong>, kliknij <strong>Generate</strong> i wklej klucz tutaj. Następnie połącz każdy serwer z jego monitorem w formularzu serwera (Ustawienia → Serwery).",
+    "Leave empty with an API key. Only for an older Uptime Kuma without API keys: its login, with the password in the field next to it.": "Zostaw puste przy kluczu API. Tylko dla starszej wersji Uptime Kuma bez kluczy API: jej login, z hasłem w polu obok.",
+    "No monitors found at :url. Check the address, and that Uptime Kuma has at least one active monitor.": "Nie znaleziono monitorów pod :url. Sprawdź adres i czy Uptime Kuma ma co najmniej jeden aktywny monitor.",
+    "Paused monitors are not on the metrics page, so their servers show Unknown.": "Wstrzymanych monitorów nie ma na stronie metryk, więc ich serwery pokazują Nieznany.",
+    "Shows whether each server is up from its Uptime Kuma monitor, and tells you in the bell when one goes down.": "Pokazuje, czy każdy serwer działa, na podstawie jego monitora Uptime Kuma i powiadamia dzwonkiem, gdy któryś przestanie działać.",
+    "Uptime Kuma": "Uptime Kuma",
+    "Uptime Kuma address": "Adres Uptime Kuma",
+    "Uptime Kuma answered with HTTP :status.": "Uptime Kuma odpowiedział HTTP :status.",
+    "Uptime Kuma refused the API key.": "Uptime Kuma odrzucił klucz API."
+}

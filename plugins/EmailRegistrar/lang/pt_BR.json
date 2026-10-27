@@ -1,0 +1,12 @@
+{
+    "A registrar for TLDs with no integrated registrar: registrations, transfers, renewals, nameserver changes and EPP code requests are emailed to the admins, who do them by hand.": "Um registrador para TLDs sem registrador integrado: registros, transferências, renovações, alterações de nameservers e pedidos de código EPP são enviados por e-mail aos admins, que os fazem manualmente.",
+    "Change the nameservers of :domain": "Alterar os nameservers de :domain",
+    "Open the domain": "Abrir o domínio",
+    "Register :domain for :years year(s)": "Registrar :domain por :years ano(s)",
+    "Registrant": "Titular",
+    "Renew :domain for :years year(s)": "Renovar :domain por :years ano(s)",
+    "Send the EPP code of :domain to the client": "Enviar o código EPP de :domain ao cliente",
+    "The EPP code is on the domain's page.": "O código EPP está na página do domínio.",
+    "This domain uses the Email Notifications registrar, so nothing was booked at any registrar. Please do it by hand, then update the domain here (expiry date, nameservers) if anything changed.": "Este domínio usa o registrador Notificações por e-mail, então nada foi feito em nenhum registrador. Faça isso manualmente e depois atualize o domínio aqui (data de expiração, nameservers) se algo mudou.",
+    "Transfer :domain in": "Transferir :domain para cá"
+}

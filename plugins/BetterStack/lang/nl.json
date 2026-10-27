@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up online, :down offline",
+    "API token": "API-token",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack antwoordde met HTTP :status.",
+    "Better Stack answered: :error": "Better Stack antwoordde: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack vroeg om het rustiger aan te doen (te veel verzoeken). Bij de volgende controle wordt opnieuw gelezen.",
+    "Better Stack refused the API token.": "Better Stack weigerde het API-token.",
+    "Connected: :count monitor(s)": "Verbonden: :count monitor(s)",
+    "Connection": "Verbinding",
+    "Could not reach Better Stack: :error": "Kon Better Stack niet bereiken: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Vul het API-token van Better Stack in onder Instellingen → Better Stack.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP leest elke 5 minuten de status van elke monitor via de API (v2) van Better Stack Uptime; ook het gratis abonnement heeft de API. Open in Better Stack <strong>Settings → API tokens</strong>, kopieer het Uptime-API-token van uw team en plak het hier. Koppel daarna elke server aan zijn monitor op het serverformulier (Instellingen → Servers).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Gepauzeerde monitors tonen Onbekend, en monitors in onderhoud tonen Onderhoud.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Toont of elke server online is via de monitor in Better Stack Uptime, en meldt in de bel als er een offline gaat.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Versleuteld opgeslagen. Laat leeg om het opgeslagen token te behouden. GaiaCP leest er alleen mee."
+}

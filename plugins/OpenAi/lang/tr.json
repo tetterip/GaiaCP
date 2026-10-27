@@ -1,0 +1,5 @@
+{
+    "ChatGPT": "ChatGPT",
+    "ChatGPT, OpenAI's models, for the AI assistant: it improves and translates texts you write, with your own API key.": "Yapay zekâ asistanı için OpenAI'ın modelleri ChatGPT: yazdığınız metinleri kendi API anahtarınızla iyileştirir ve çevirir.",
+    "Create an API key on OpenAI's platform (<strong>platform.openai.com</strong>, API keys), add some credit under Billing and paste the key here. A ChatGPT Plus subscription does not include API use.": "OpenAI platformunda (<strong>platform.openai.com</strong>, API keys) bir API anahtarı oluşturun, Billing altında biraz bakiye ekleyin ve anahtarı buraya yapıştırın. ChatGPT Plus aboneliği API kullanımını içermez."
+}

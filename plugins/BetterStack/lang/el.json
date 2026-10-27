@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up σε λειτουργία, :down εκτός λειτουργίας",
+    "API token": "API token",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Το Better Stack απάντησε με HTTP :status.",
+    "Better Stack answered: :error": "Το Better Stack απάντησε: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Το Better Stack ζήτησε λιγότερες κλήσεις (πάρα πολλά αιτήματα). Θα διαβαστεί ξανά στον επόμενο έλεγχο.",
+    "Better Stack refused the API token.": "Το Better Stack απέρριψε το API token.",
+    "Connected: :count monitor(s)": "Συνδέθηκε: :count monitor",
+    "Connection": "Σύνδεση",
+    "Could not reach Better Stack: :error": "Δεν ήταν δυνατή η σύνδεση με το Better Stack: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Συμπλήρωσε το API token του Better Stack στις Ρυθμίσεις → Better Stack.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "Το GaiaCP διαβάζει την κατάσταση κάθε monitor από το API (v2) του Better Stack Uptime κάθε 5 λεπτά· το API υπάρχει και στο δωρεάν πλάνο. Στο Better Stack άνοιξε <strong>Settings → API tokens</strong>, αντίγραψε το Uptime API token της ομάδας σου και επικόλλησέ το εδώ. Μετά σύνδεσε κάθε server με τον monitor του στη φόρμα του server (Ρυθμίσεις → Servers).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Οι monitors σε παύση δείχνουν Άγνωστη και όσοι είναι σε συντήρηση δείχνουν Συντήρηση.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Δείχνει αν κάθε server λειτουργεί από τον monitor του στο Better Stack Uptime και σε ειδοποιεί στο καμπανάκι όταν κάποιος πέσει.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Αποθηκεύεται κρυπτογραφημένο. Άφησέ το κενό για να κρατηθεί το αποθηκευμένο. Το GaiaCP μόνο διαβάζει με αυτό."
+}

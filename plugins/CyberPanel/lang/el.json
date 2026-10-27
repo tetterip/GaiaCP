@@ -1,0 +1,12 @@
+{
+    "Add each CyberPanel server under Settings → Servers, with its admin user and password. A hosting account there is a website with an owner user of the same username.": "Πρόσθεσε κάθε server CyberPanel στις Ρυθμίσεις → Servers, με τον χρήστη admin και τον κωδικό του. Ένας λογαριασμός φιλοξενίας εκεί είναι ένα website με χρήστη-ιδιοκτήτη με το ίδιο username.",
+    "Creates, suspends and removes hosting accounts on CyberPanel servers.": "Δημιουργεί, αναστέλλει και διαγράφει λογαριασμούς φιλοξενίας σε servers CyberPanel.",
+    "CyberPanel": "CyberPanel",
+    "CyberPanel's admin user (admin), with API access turned on under Users → API Access. New websites and their owners are created under it.": "Ο χρήστης admin του CyberPanel (admin), με ενεργή πρόσβαση API στο Users → API Access. Τα νέα websites και οι ιδιοκτήτες τους δημιουργούνται κάτω από αυτόν.",
+    "CyberPanel: the admin user's password (CyberPanel's API takes no other key). Two-factor authentication must be off for it. Stored encrypted.": "CyberPanel: ο κωδικός του χρήστη admin (το API του CyberPanel δεν δέχεται άλλο κλειδί). Η επαλήθευση δύο βημάτων πρέπει να είναι κλειστή γι' αυτόν. Αποθηκεύεται κρυπτογραφημένος.",
+    "It must be installed on the server. The client can change it later in CyberPanel.": "Πρέπει να είναι εγκατεστημένη στον server. Ο πελάτης μπορεί να την αλλάξει αργότερα στο CyberPanel.",
+    "New websites": "Νέα websites",
+    "PHP version": "Έκδοση PHP",
+    "Php version": "Έκδοση PHP",
+    "The PHP version new websites start on, on CyberPanel servers.": "Η έκδοση PHP με την οποία ξεκινούν τα νέα websites στους servers CyberPanel."
+}

@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting accounts on HestiaCP servers.": "Cria, suspende e remove contas de hospedagem em servidores HestiaCP.",
+    "HestiaCP: an access key of the admin user, as ACCESS_KEY:SECRET_KEY (admin → Access keys, all permissions), or the admin password if the username is filled in. Stored encrypted.": "HestiaCP: uma access key do usuário admin, como ACCESS_KEY:SECRET_KEY (admin → Access keys, todas as permissões), ou a senha do admin se o nome de usuário estiver preenchido. Guardada criptografada.",
+    "Leave empty to use an access key (recommended). Fill in the admin user (admin) only to log in with its password instead.": "Deixe vazio para usar uma access key (recomendado). Preencha o usuário admin (admin) só para entrar com a senha dele."
+}

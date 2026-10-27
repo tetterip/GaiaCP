@@ -1,0 +1,12 @@
+{
+    "A registrar for TLDs with no integrated registrar: registrations, transfers, renewals, nameserver changes and EPP code requests are emailed to the admins, who do them by hand.": "Entegre kayıt kuruluşu olmayan TLD'ler için bir kayıt kuruluşu: kayıtlar, transferler, yenilemeler, ad sunucusu değişiklikleri ve EPP kodu istekleri, bunları elle yapan yöneticilere e-postayla gönderilir.",
+    "Change the nameservers of :domain": ":domain ad sunucularını değiştir",
+    "Open the domain": "Alan adını aç",
+    "Register :domain for :years year(s)": ":domain alan adını :years yıllığına kaydet",
+    "Registrant": "Kayıt sahibi",
+    "Renew :domain for :years year(s)": ":domain alan adını :years yıllığına yenile",
+    "Send the EPP code of :domain to the client": ":domain EPP kodunu müşteriye gönder",
+    "The EPP code is on the domain's page.": "EPP kodu alan adının sayfasında.",
+    "This domain uses the Email Notifications registrar, so nothing was booked at any registrar. Please do it by hand, then update the domain here (expiry date, nameservers) if anything changed.": "Bu alan adı E-posta Bildirimleri kayıt kuruluşunu kullanıyor, bu yüzden hiçbir kayıt kuruluşunda bir işlem yapılmadı. Lütfen elle yapın, sonra bir şey değiştiyse alan adını burada güncelleyin (bitiş tarihi, ad sunucuları).",
+    "Transfer :domain in": ":domain alan adını içeri transfer et"
+}

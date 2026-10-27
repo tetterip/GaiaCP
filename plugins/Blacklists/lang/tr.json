@@ -1,0 +1,18 @@
+{
+    ":count listing(s) found": ":count listelenme bulundu",
+    ":ips IP address(es) of :servers server(s) checked.": ":servers sunucunun :ips IP adresi kontrol edildi.",
+    ":server (:ip) on :zone since :date": ":date tarihinden beri :zone üzerinde :server (:ip)",
+    "Blacklists": "Kara listeler",
+    "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Sunucularınızın IP adreslerini her saat spam kara listelerine karşı kontrol eder ve biri listelendiğinde, müşteriler e-postalarını spam'de bulmadan önce zilde size bildirir.",
+    "DNS blacklists": "DNS kara listeleri",
+    "Did not answer: :zones.": "Yanıt vermedi: :zones.",
+    "Every hour GaiaCP asks each list about every active server's IP address (the server's IP address field, else what its hostname points to). A new listing and its removal are in the bell for super admins and in the activity log.": "GaiaCP her saat her listeye her etkin sunucunun IP adresini sorar (sunucunun IP adresi alanı, yoksa ana bilgisayar adının işaret ettiği adres). Yeni bir listelenme ve kaldırılması süper yöneticiler için zilde ve etkinlik günlüğünde yer alır.",
+    "IP blacklist check": "IP kara liste kontrolü",
+    "Last check: :time.": "Son kontrol: :time.",
+    "Listed now": "Şu an listelenen",
+    "No server is listed": "Listelenen sunucu yok",
+    "No server is listed.": "Listelenen sunucu yok.",
+    "Not checked yet.": "Henüz kontrol edilmedi.",
+    "One per line, e.g. zen.spamhaus.org. Spamhaus answers only through a DNS resolver of your server's own, not a public one like 8.8.8.8; when a list refuses to answer it counts as not checked, never as listed.": "Her satıra bir tane, ör. zen.spamhaus.org. Spamhaus yalnızca sunucunuzun kendi DNS çözümleyicisi üzerinden yanıt verir, 8.8.8.8 gibi herkese açık bir çözümleyiciden değil; bir liste yanıt vermeyi reddettiğinde kontrol edilmedi sayılır, asla listelendi sayılmaz.",
+    "Zones": "Bölgeler"
+}

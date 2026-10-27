@@ -1,0 +1,22 @@
+{
+    "\"Continue with Google\" shows on the client area's login page once both are filled in. It logs in the client whose email address Google confirms; an address that is not a client here goes to the sign up form when Settings → Client area lets new clients sign up.": "\"Doorgaan met Google\" verschijnt op de inlogpagina van de klantomgeving zodra beide zijn ingevuld. Het logt de klant in van wie Google het e-mailadres bevestigt; een adres dat hier geen klant is, gaat naar het registratieformulier als Instellingen → Klantomgeving nieuwe klanten laat registreren.",
+    ":email can't log in to the client area. Please contact us.": ":email kan niet inloggen op de klantomgeving. Neem contact met ons op.",
+    "Authorized redirect URI": "Geautoriseerde omleidings-URI",
+    "Client ID": "Client-ID",
+    "Client secret": "Clientgeheim",
+    "Clients log in or sign up in the client area with their Google account.": "Klanten loggen in of registreren zich in de klantomgeving met hun Google-account.",
+    "Continue with Google": "Doorgaan met Google",
+    "Google OAuth client": "Google OAuth-client",
+    "Google could not be reached. Please try again.": "Google kon niet worden bereikt. Probeer het opnieuw.",
+    "Google did not accept the sign-in (:error). Please try again.": "Google heeft de aanmelding niet geaccepteerd (:error). Probeer het opnieuw.",
+    "Google did not send your email address. Please try again.": "Google heeft uw e-mailadres niet verstuurd. Probeer het opnieuw.",
+    "Google has not confirmed :email, so it can't be used to log in.": "Google heeft :email niet bevestigd, dus het kan niet worden gebruikt om in te loggen.",
+    "Google sign-in": "Aanmelden met Google",
+    "Google sign-in was cancelled.": "Aanmelden met Google is geannuleerd.",
+    "In <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> press <strong>Create credentials → OAuth client ID</strong>, type <strong>Web application</strong>, and add the address below under <strong>Authorized redirect URIs</strong>. Google first asks you to set up the consent screen: your company name, support email and logo; the scopes needed are only email, profile and openid. Then paste the client ID and secret here.": "Druk in <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> op <strong>Create credentials → OAuth client ID</strong>, type <strong>Web application</strong>, en voeg het adres hieronder toe onder <strong>Authorized redirect URIs</strong>. Google vraagt eerst het toestemmingsscherm in te stellen: uw bedrijfsnaam, support-e-mail en logo; de benodigde scopes zijn alleen email, profile en openid. Plak daarna hier de client-ID en het geheim.",
+    "More than one client uses :email. Please contact us.": "Meer dan één klant gebruikt :email. Neem contact met ons op.",
+    "No client account uses :email. Log in with the address you gave us, or contact us.": "Geen klantaccount gebruikt :email. Log in met het adres dat u ons gaf, of neem contact met ons op.",
+    "Redirect uri": "Omleidings-URI",
+    "The Google sign-in expired. Please try again.": "De aanmelding met Google is verlopen. Probeer het opnieuw.",
+    "Two-factor authentication is on for :email: log in with your password and code instead.": "Tweestapsverificatie staat aan voor :email: log in plaats daarvan in met uw wachtwoord en code."
+}

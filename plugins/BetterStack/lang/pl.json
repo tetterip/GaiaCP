@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": "działa: :up, nie działa: :down",
+    "API token": "Token API",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack odpowiedział HTTP :status.",
+    "Better Stack answered: :error": "Better Stack odpowiedział: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack poprosił o zwolnienie tempa (zbyt wiele żądań). Odczyt zostanie ponowiony przy następnym sprawdzeniu.",
+    "Better Stack refused the API token.": "Better Stack odrzucił token API.",
+    "Connected: :count monitor(s)": "Połączono, monitory: :count",
+    "Connection": "Połączenie",
+    "Could not reach Better Stack: :error": "Nie udało się połączyć z Better Stack: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Wpisz token API Better Stack w Ustawienia → Better Stack.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP co 5 minut odczytuje status każdego monitora z API Better Stack Uptime (v2); plan Free też ma API. W Better Stack otwórz <strong>Settings → API tokens</strong>, skopiuj token Uptime API swojego zespołu i wklej go tutaj. Następnie połącz każdy serwer z jego monitorem w formularzu serwera (Ustawienia → Serwery).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Wstrzymane monitory pokazują Nieznany, a monitory w konserwacji pokazują Konserwacja.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Pokazuje, czy każdy serwer działa, na podstawie jego monitora Better Stack Uptime i powiadamia dzwonkiem, gdy któryś przestanie działać.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Przechowywany w postaci zaszyfrowanej. Zostaw puste, aby zachować zapisany. GaiaCP tylko odczytuje nim dane."
+}

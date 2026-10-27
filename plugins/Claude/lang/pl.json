@@ -1,0 +1,20 @@
+{
+    "API key": "Klucz API",
+    "Api key": "Klucz API",
+    "Claude": "Claude",
+    "Claude answered: :error": "Claude odpowiedział: :error",
+    "Claude declined to answer this text.": "Claude odmówił odpowiedzi na ten tekst.",
+    "Claude did not accept the API key. Check it under Settings → Claude.": "Claude nie przyjął klucza API. Sprawdź go w Ustawienia → Claude.",
+    "Claude is busy right now. Try again in a minute.": "Claude jest teraz zajęty. Spróbuj za minutę.",
+    "Claude's answer was too long and was cut off. Try a shorter text.": "Odpowiedź Claude była za długa i została ucięta. Spróbuj krótszego tekstu.",
+    "Claude, Anthropic's AI, for the AI assistant: it improves and translates texts you write, with your own API key.": "Claude, AI firmy Anthropic, dla asystenta AI: poprawia i tłumaczy pisane przez Ciebie teksty, z Twoim własnym kluczem API.",
+    "Connected: :model": "Połączono: :model",
+    "Connection": "Połączenie",
+    "Could not reach Claude: :error": "Nie udało się połączyć z Claude: :error",
+    "Create an API key at <strong>console.anthropic.com</strong> (Settings → API keys) and paste it here. Anthropic bills your account for what is used; set a monthly limit there and under Settings → AI assistant. Texts are sent only when an admin presses an AI button, and by default Anthropic does not use API data to train its models.": "Utwórz klucz API na <strong>console.anthropic.com</strong> (Settings → API keys) i wklej go tutaj. Anthropic obciąża Twoje konto za wykorzystanie; ustaw miesięczny limit tam oraz w Ustawienia → Asystent AI. Teksty są wysyłane tylko wtedy, gdy administrator kliknie przycisk AI, a domyślnie Anthropic nie używa danych z API do trenowania swoich modeli.",
+    "Fill in the API key first.": "Najpierw wpisz klucz API.",
+    "Fill in the Claude API key under Settings → Claude.": "Wpisz klucz API Claude w Ustawienia → Claude.",
+    "Model": "Model",
+    "Opus writes best; Sonnet is half the price; Haiku is the cheapest and fastest, good enough for spelling and translations.": "Opus pisze najlepiej; Sonnet kosztuje połowę; Haiku jest najtańszy i najszybszy, wystarczający do pisowni i tłumaczeń.",
+    "What the assistant may do, and a monthly limit: <a href=\":url\" class=\"underline\">Settings → AI assistant</a>.": "Co asystent może robić i miesięczny limit: <a href=\":url\" class=\"underline\">Ustawienia → Asystent AI</a>."
+}

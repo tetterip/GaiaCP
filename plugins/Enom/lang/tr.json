@@ -1,0 +1,10 @@
+{
+    "API token": "API token",
+    "Leave empty to keep the current token. Stored encrypted. Enom answers only the IP addresses you allow under API settings in its reseller panel.": "Mevcut token'ı korumak için boş bırakın. Şifreli saklanır. Enom yalnızca bayi panelindeki API ayarları altında izin verdiğiniz IP adreslerine yanıt verir.",
+    "Login ID": "Giriş kimliği",
+    "Registers, renews, transfers and syncs domains through an Enom reseller account.": "Bir Enom bayi hesabı üzerinden alan adlarını kaydeder, yeniler, transfer eder ve eşitler.",
+    "Sends every call to Enom's reseller test environment (resellertest.enom.com), with that account's login.": "Her çağrıyı o hesabın girişiyle Enom'un bayi test ortamına (resellertest.enom.com) gönderir.",
+    "Stored encrypted. Enom answers only the IP addresses you allow under API settings in its reseller panel.": "Şifreli saklanır. Enom yalnızca bayi panelindeki API ayarları altında izin verdiğiniz IP adreslerine yanıt verir.",
+    "Test mode": "Test modu",
+    "Uid": "UID"
+}

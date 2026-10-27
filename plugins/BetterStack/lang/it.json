@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up online, :down non raggiungibili",
+    "API token": "Token API",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack ha risposto con HTTP :status.",
+    "Better Stack answered: :error": "Better Stack ha risposto: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack ha chiesto di rallentare (troppe richieste). Verrà letto di nuovo al prossimo controllo.",
+    "Better Stack refused the API token.": "Better Stack ha rifiutato il token API.",
+    "Connected: :count monitor(s)": "Connesso: :count monitor",
+    "Connection": "Connessione",
+    "Could not reach Better Stack: :error": "Impossibile raggiungere Better Stack: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Inserisci il token API di Better Stack in Impostazioni → Better Stack.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP legge lo stato di ogni monitor dall'API di Better Stack Uptime (v2) ogni 5 minuti; anche il piano Free ha l'API. In Better Stack apri <strong>Settings → API tokens</strong>, copia l'Uptime API token del tuo team e incollalo qui. Poi collega ogni server al suo monitor nel modulo del server (Impostazioni → Server).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "I monitor in pausa mostrano Sconosciuto, e i monitor in manutenzione mostrano Manutenzione.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Mostra se ogni server è online dal suo monitor Better Stack Uptime, e ti avvisa nella campanella quando uno va offline.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Salvato cifrato. Lascia vuoto per mantenere quello salvato. GaiaCP lo usa solo in lettura."
+}

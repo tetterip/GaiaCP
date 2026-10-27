@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up çalışıyor, :down kapalı",
+    "API key / password": "API anahtarı / parola",
+    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connection": "Bağlantı",
+    "Could not reach Uptime Kuma: :error": "Uptime Kuma'ya ulaşılamadı: :error",
+    "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Ayarlar → Uptime Kuma altında Uptime Kuma adresini doldurun.",
+    "GaiaCP reads the status of every monitor from Uptime Kuma's <code>/metrics</code> page every 5 minutes. In Uptime Kuma open <strong>Settings → API Keys</strong>, press <strong>Generate</strong> and paste the key here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP her monitörün durumunu her 5 dakikada bir Uptime Kuma'nın <code>/metrics</code> sayfasından okur. Uptime Kuma'da <strong>Settings → API Keys</strong>'i açın, <strong>Generate</strong>'e basın ve anahtarı buraya yapıştırın. Sonra her sunucuyu sunucunun formunda monitörüne bağlayın (Ayarlar → Sunucular).",
+    "Leave empty with an API key. Only for an older Uptime Kuma without API keys: its login, with the password in the field next to it.": "API anahtarı varsa boş bırakın. Yalnızca API anahtarı olmayan eski bir Uptime Kuma için: girişi, parolası yanındaki alanda.",
+    "No monitors found at :url. Check the address, and that Uptime Kuma has at least one active monitor.": ":url adresinde monitör bulunamadı. Adresi ve Uptime Kuma'nın en az bir etkin monitörü olduğunu kontrol edin.",
+    "Paused monitors are not on the metrics page, so their servers show Unknown.": "Duraklatılmış monitörler metrics sayfasında yer almaz, bu yüzden sunucuları Bilinmiyor gösterir.",
+    "Shows whether each server is up from its Uptime Kuma monitor, and tells you in the bell when one goes down.": "Her sunucunun çalışıp çalışmadığını Uptime Kuma monitöründen gösterir ve biri kapandığında zilde size bildirir.",
+    "Uptime Kuma": "Uptime Kuma",
+    "Uptime Kuma address": "Uptime Kuma adresi",
+    "Uptime Kuma answered with HTTP :status.": "Uptime Kuma HTTP :status ile yanıt verdi.",
+    "Uptime Kuma refused the API key.": "Uptime Kuma API anahtarını reddetti."
+}

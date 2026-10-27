@@ -1,0 +1,22 @@
+{
+    "\"Continue with Google\" shows on the client area's login page once both are filled in. It logs in the client whose email address Google confirms; an address that is not a client here goes to the sign up form when Settings → Client area lets new clients sign up.": "\"Google ile devam et\", ikisi de doldurulduğunda müşteri panelinin giriş sayfasında görünür. E-posta adresini Google'ın doğruladığı müşteriyi giriş yaptırır; burada müşteri olmayan bir adres, Ayarlar → Müşteri paneli yeni müşterilerin kayıt olmasına izin veriyorsa kayıt formuna gider.",
+    ":email can't log in to the client area. Please contact us.": ":email müşteri paneline giriş yapamaz. Lütfen bize ulaşın.",
+    "Authorized redirect URI": "Yetkili yönlendirme URI'si",
+    "Client ID": "İstemci kimliği",
+    "Client secret": "İstemci gizli anahtarı",
+    "Clients log in or sign up in the client area with their Google account.": "Müşteriler müşteri paneline Google hesaplarıyla giriş yapar veya kayıt olur.",
+    "Continue with Google": "Google ile devam et",
+    "Google OAuth client": "Google OAuth istemcisi",
+    "Google could not be reached. Please try again.": "Google'a ulaşılamadı. Lütfen yeniden deneyin.",
+    "Google did not accept the sign-in (:error). Please try again.": "Google girişi kabul etmedi (:error). Lütfen yeniden deneyin.",
+    "Google did not send your email address. Please try again.": "Google e-posta adresinizi göndermedi. Lütfen yeniden deneyin.",
+    "Google has not confirmed :email, so it can't be used to log in.": "Google :email adresini doğrulamadı, bu yüzden giriş için kullanılamaz.",
+    "Google sign-in": "Google ile giriş",
+    "Google sign-in was cancelled.": "Google ile giriş iptal edildi.",
+    "In <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> press <strong>Create credentials → OAuth client ID</strong>, type <strong>Web application</strong>, and add the address below under <strong>Authorized redirect URIs</strong>. Google first asks you to set up the consent screen: your company name, support email and logo; the scopes needed are only email, profile and openid. Then paste the client ID and secret here.": "<a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> içinde <strong>Create credentials → OAuth client ID</strong>'ye basın, tür olarak <strong>Web application</strong> seçin ve aşağıdaki adresi <strong>Authorized redirect URIs</strong> altına ekleyin. Google önce onay ekranını ayarlamanızı ister: şirket adınız, destek e-postası ve logo; gereken kapsamlar yalnızca email, profile ve openid'dir. Sonra istemci kimliğini ve gizli anahtarı buraya yapıştırın.",
+    "More than one client uses :email. Please contact us.": "Birden fazla müşteri :email kullanıyor. Lütfen bize ulaşın.",
+    "No client account uses :email. Log in with the address you gave us, or contact us.": "Hiçbir müşteri hesabı :email kullanmıyor. Bize verdiğiniz adresle giriş yapın veya bize ulaşın.",
+    "Redirect uri": "Yönlendirme URI'si",
+    "The Google sign-in expired. Please try again.": "Google ile girişin süresi doldu. Lütfen yeniden deneyin.",
+    "Two-factor authentication is on for :email: log in with your password and code instead.": ":email için iki adımlı doğrulama açık: bunun yerine parolanız ve kodunuzla giriş yapın."
+}

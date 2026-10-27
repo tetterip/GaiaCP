@@ -1,0 +1,13 @@
+{
+    "API password": "API-Passwort",
+    "API username": "API-Benutzername",
+    "Account balance: :balance": "Kontoguthaben: :balance",
+    "Connected: :count certificate(s) for sale": "Verbunden: :count Zertifikat(e) im Angebot",
+    "Connection": "Verbindung",
+    "Dcv method": "DCV-Methode",
+    "GoGetSSL": "GoGetSSL",
+    "How the client proves the domain is theirs, unless they pick another way in the client area.": "Wie der Kunde nachweist, dass die Domain ihm gehört, außer er wählt im Kundenbereich einen anderen Weg.",
+    "In GoGetSSL open <strong>Reseller modules</strong> (or API settings) and create the API password; the username is your GoGetSSL login. Orders are paid from your GoGetSSL balance, so keep it topped up. Then make a product of type SSL certificate and pick its certificate.": "Öffnen Sie in GoGetSSL <strong>Reseller modules</strong> (oder die API-Einstellungen) und erstellen Sie das API-Passwort; der Benutzername ist Ihr GoGetSSL-Login. Bestellungen werden aus Ihrem GoGetSSL-Guthaben bezahlt, halten Sie es also aufgeladen. Erstellen Sie dann ein Produkt vom Typ SSL-Zertifikat und wählen Sie sein Zertifikat.",
+    "Sells SSL certificates (Sectigo, DigiCert, GeoTrust, RapidSSL) through a GoGetSSL reseller account.": "Verkauft SSL-Zertifikate (Sectigo, DigiCert, GeoTrust, RapidSSL) über ein GoGetSSL-Reseller-Konto.",
+    "Validation of a new certificate": "Validierung eines neuen Zertifikats"
+}

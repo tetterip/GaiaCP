@@ -1,0 +1,11 @@
+{
+    "Backups": "Backups",
+    "Creates, suspends and removes hosting accounts on cPanel servers through WHM.": "Erstellt, sperrt und entfernt Hosting-Konten auf cPanel-Servern über WHM.",
+    "Email accounts": "E-Mail-Konten",
+    "File Manager": "Dateimanager",
+    "MySQL databases": "MySQL-Datenbanken",
+    "Statistics": "Statistiken",
+    "WHM user: root or a reseller.": "WHM-Benutzer: root oder ein Reseller.",
+    "WHM: Development → Manage API Tokens. Stored encrypted.": "WHM: Development → Manage API Tokens. Verschlüsselt gespeichert.",
+    "phpMyAdmin": "phpMyAdmin"
+}

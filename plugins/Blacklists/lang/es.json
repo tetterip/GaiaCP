@@ -1,0 +1,18 @@
+{
+    ":count listing(s) found": ":count inclusión(es) encontrada(s)",
+    ":ips IP address(es) of :servers server(s) checked.": "Se comprobaron :ips dirección(es) IP de :servers servidor(es).",
+    ":server (:ip) on :zone since :date": ":server (:ip) en :zone desde el :date",
+    "Blacklists": "Listas negras",
+    "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Comprueba cada hora las direcciones IP de sus servidores en listas negras de spam y le avisa en la campana cuando una aparece, antes de que los clientes encuentren sus emails en spam.",
+    "DNS blacklists": "Listas negras DNS",
+    "Did not answer: :zones.": "No respondieron: :zones.",
+    "Every hour GaiaCP asks each list about every active server's IP address (the server's IP address field, else what its hostname points to). A new listing and its removal are in the bell for super admins and in the activity log.": "Cada hora GaiaCP consulta a cada lista por la dirección IP de cada servidor activo (el campo Dirección IP del servidor, o si no, a lo que apunta su nombre de host). Una inclusión nueva y su retirada aparecen en la campana para los superadministradores y en el registro de actividad.",
+    "IP blacklist check": "Comprobación de listas negras de IP",
+    "Last check: :time.": "Última comprobación: :time.",
+    "Listed now": "En lista ahora",
+    "No server is listed": "Ningún servidor está en lista",
+    "No server is listed.": "Ningún servidor está en lista.",
+    "Not checked yet.": "Aún sin comprobar.",
+    "One per line, e.g. zen.spamhaus.org. Spamhaus answers only through a DNS resolver of your server's own, not a public one like 8.8.8.8; when a list refuses to answer it counts as not checked, never as listed.": "Una por línea, p. ej. zen.spamhaus.org. Spamhaus solo responde a través de un resolvedor DNS propio de su servidor, no a uno público como 8.8.8.8; cuando una lista se niega a responder cuenta como no comprobada, nunca como incluida.",
+    "Zones": "Zonas"
+}

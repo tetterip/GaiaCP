@@ -1,0 +1,12 @@
+{
+    "Add each CyberPanel server under Settings → Servers, with its admin user and password. A hosting account there is a website with an owner user of the same username.": "Her CyberPanel sunucusunu Ayarlar → Sunucular altında yönetici kullanıcısı ve parolasıyla ekleyin. Oradaki bir hosting hesabı, aynı kullanıcı adına sahip bir sahip kullanıcıyla bir web sitesidir.",
+    "Creates, suspends and removes hosting accounts on CyberPanel servers.": "CyberPanel sunucularında hosting hesapları oluşturur, askıya alır ve kaldırır.",
+    "CyberPanel": "CyberPanel",
+    "CyberPanel's admin user (admin), with API access turned on under Users → API Access. New websites and their owners are created under it.": "CyberPanel'in yönetici kullanıcısı (admin), Users → API Access altında API erişimi açık olarak. Yeni web siteleri ve sahipleri onun altında oluşturulur.",
+    "CyberPanel: the admin user's password (CyberPanel's API takes no other key). Two-factor authentication must be off for it. Stored encrypted.": "CyberPanel: yönetici kullanıcının parolası (CyberPanel API'si başka anahtar kabul etmez). Bunun için iki adımlı doğrulama kapalı olmalıdır. Şifreli saklanır.",
+    "It must be installed on the server. The client can change it later in CyberPanel.": "Sunucuda kurulu olmalıdır. Müşteri bunu daha sonra CyberPanel'de değiştirebilir.",
+    "New websites": "Yeni web siteleri",
+    "PHP version": "PHP sürümü",
+    "Php version": "PHP sürümü",
+    "The PHP version new websites start on, on CyberPanel servers.": "CyberPanel sunucularında yeni web sitelerinin başladığı PHP sürümü."
+}

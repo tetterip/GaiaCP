@@ -1,0 +1,18 @@
+{
+    ":count listing(s) found": ":count inscription(s) trouvée(s)",
+    ":ips IP address(es) of :servers server(s) checked.": ":ips adresse(s) IP de :servers serveur(s) vérifiée(s).",
+    ":server (:ip) on :zone since :date": ":server (:ip) sur :zone depuis le :date",
+    "Blacklists": "Listes noires",
+    "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Vérifie chaque heure les adresses IP de vos serveurs dans les listes noires anti-spam et vous avertit dans la cloche quand l'une est listée, avant que les clients ne trouvent leurs emails dans les spams.",
+    "DNS blacklists": "Listes noires DNS",
+    "Did not answer: :zones.": "Sans réponse : :zones.",
+    "Every hour GaiaCP asks each list about every active server's IP address (the server's IP address field, else what its hostname points to). A new listing and its removal are in the bell for super admins and in the activity log.": "Chaque heure, GaiaCP interroge chaque liste sur l'adresse IP de chaque serveur actif (le champ Adresse IP du serveur, sinon ce vers quoi pointe son nom d'hôte). Une nouvelle inscription et son retrait apparaissent dans la cloche des super admins et dans le journal d'activité.",
+    "IP blacklist check": "Vérification des listes noires IP",
+    "Last check: :time.": "Dernière vérification : :time.",
+    "Listed now": "Listé actuellement",
+    "No server is listed": "Aucun serveur n'est listé",
+    "No server is listed.": "Aucun serveur n'est listé.",
+    "Not checked yet.": "Pas encore vérifié.",
+    "One per line, e.g. zen.spamhaus.org. Spamhaus answers only through a DNS resolver of your server's own, not a public one like 8.8.8.8; when a list refuses to answer it counts as not checked, never as listed.": "Une par ligne, p. ex. zen.spamhaus.org. Spamhaus ne répond que via un résolveur DNS propre à votre serveur, pas un public comme 8.8.8.8 ; quand une liste refuse de répondre, cela compte comme non vérifié, jamais comme listé.",
+    "Zones": "Zones"
+}

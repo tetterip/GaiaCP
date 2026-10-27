@@ -1,0 +1,22 @@
+{
+    "\"Continue with Google\" shows on the client area's login page once both are filled in. It logs in the client whose email address Google confirms; an address that is not a client here goes to the sign up form when Settings → Client area lets new clients sign up.": "\"Continuar com o Google\" aparece na página de login da área do cliente quando os dois estiverem preenchidos. Ele conecta o cliente cujo endereço de e-mail o Google confirma; um endereço que não é de um cliente aqui vai para o formulário de cadastro quando Configurações → Área do cliente permite que novos clientes se cadastrem.",
+    ":email can't log in to the client area. Please contact us.": ":email não pode entrar na área do cliente. Fale conosco.",
+    "Authorized redirect URI": "URI de redirecionamento autorizado",
+    "Client ID": "ID do cliente",
+    "Client secret": "Chave secreta do cliente",
+    "Clients log in or sign up in the client area with their Google account.": "Os clientes entram ou se cadastram na área do cliente com a conta do Google.",
+    "Continue with Google": "Continuar com o Google",
+    "Google OAuth client": "Cliente OAuth do Google",
+    "Google could not be reached. Please try again.": "Não foi possível acessar o Google. Tente novamente.",
+    "Google did not accept the sign-in (:error). Please try again.": "O Google não aceitou o login (:error). Tente novamente.",
+    "Google did not send your email address. Please try again.": "O Google não enviou seu endereço de e-mail. Tente novamente.",
+    "Google has not confirmed :email, so it can't be used to log in.": "O Google não confirmou :email, então ele não pode ser usado para entrar.",
+    "Google sign-in": "Login com Google",
+    "Google sign-in was cancelled.": "O login com Google foi cancelado.",
+    "In <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs & Services → Credentials</a> press <strong>Create credentials → OAuth client ID</strong>, type <strong>Web application</strong>, and add the address below under <strong>Authorized redirect URIs</strong>. Google first asks you to set up the consent screen: your company name, support email and logo; the scopes needed are only email, profile and openid. Then paste the client ID and secret here.": "No <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Google Cloud Console → APIs e serviços → Credenciais</a>, clique em <strong>Criar credenciais → ID do cliente OAuth</strong>, tipo <strong>Aplicativo da Web</strong>, e adicione o endereço abaixo em <strong>URIs de redirecionamento autorizados</strong>. Antes o Google pede que você configure a tela de consentimento: nome da empresa, e-mail de suporte e logo; os escopos necessários são só email, profile e openid. Depois cole aqui o ID do cliente e a chave secreta.",
+    "More than one client uses :email. Please contact us.": "Mais de um cliente usa :email. Fale conosco.",
+    "No client account uses :email. Log in with the address you gave us, or contact us.": "Nenhuma conta de cliente usa :email. Entre com o endereço que você nos informou, ou fale conosco.",
+    "Redirect uri": "URI de redirecionamento",
+    "The Google sign-in expired. Please try again.": "O login com Google expirou. Tente novamente.",
+    "Two-factor authentication is on for :email: log in with your password and code instead.": "A autenticação em dois fatores está ativada para :email: entre com sua senha e o código."
+}

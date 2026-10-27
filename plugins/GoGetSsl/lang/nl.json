@@ -1,0 +1,13 @@
+{
+    "API password": "API-wachtwoord",
+    "API username": "API-gebruikersnaam",
+    "Account balance: :balance": "Accountsaldo: :balance",
+    "Connected: :count certificate(s) for sale": "Verbonden: :count certificaat/certificaten te koop",
+    "Connection": "Verbinding",
+    "Dcv method": "DCV-methode",
+    "GoGetSSL": "GoGetSSL",
+    "How the client proves the domain is theirs, unless they pick another way in the client area.": "Hoe de klant bewijst dat het domein van hem is, tenzij hij in de klantomgeving een andere manier kiest.",
+    "In GoGetSSL open <strong>Reseller modules</strong> (or API settings) and create the API password; the username is your GoGetSSL login. Orders are paid from your GoGetSSL balance, so keep it topped up. Then make a product of type SSL certificate and pick its certificate.": "Open in GoGetSSL <strong>Reseller modules</strong> (of API settings) en maak het API-wachtwoord aan; de gebruikersnaam is uw GoGetSSL-login. Bestellingen worden betaald uit uw GoGetSSL-saldo, dus houd dat aangevuld. Maak daarna een product van het type SSL-certificaat en kies het certificaat.",
+    "Sells SSL certificates (Sectigo, DigiCert, GeoTrust, RapidSSL) through a GoGetSSL reseller account.": "Verkoopt SSL-certificaten (Sectigo, DigiCert, GeoTrust, RapidSSL) via een reselleraccount bij GoGetSSL.",
+    "Validation of a new certificate": "Validatie van een nieuw certificaat"
+}

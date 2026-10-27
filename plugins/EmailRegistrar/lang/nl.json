@@ -1,0 +1,12 @@
+{
+    "A registrar for TLDs with no integrated registrar: registrations, transfers, renewals, nameserver changes and EPP code requests are emailed to the admins, who do them by hand.": "Een registrar voor TLD's zonder geïntegreerde registrar: registraties, verhuizingen, verlengingen, wijzigingen van nameservers en aanvragen van EPP-codes worden naar de beheerders gemaild, die ze handmatig uitvoeren.",
+    "Change the nameservers of :domain": "De nameservers van :domain wijzigen",
+    "Open the domain": "Het domein openen",
+    "Register :domain for :years year(s)": ":domain registreren voor :years jaar",
+    "Registrant": "Registrant",
+    "Renew :domain for :years year(s)": ":domain verlengen voor :years jaar",
+    "Send the EPP code of :domain to the client": "De EPP-code van :domain naar de klant sturen",
+    "The EPP code is on the domain's page.": "De EPP-code staat op de pagina van het domein.",
+    "This domain uses the Email Notifications registrar, so nothing was booked at any registrar. Please do it by hand, then update the domain here (expiry date, nameservers) if anything changed.": "Dit domein gebruikt de registrar E-mailmeldingen, dus er is bij geen enkele registrar iets geboekt. Doe het handmatig en werk daarna het domein hier bij (verloopdatum, nameservers) als er iets is veranderd.",
+    "Transfer :domain in": ":domain inkomend verhuizen"
+}

@@ -1,0 +1,8 @@
+{
+    "Creates, suspends and removes hosting accounts on DirectAdmin servers.": "Crée, suspend et supprime les comptes d'hébergement sur les serveurs DirectAdmin.",
+    "DirectAdmin: a login key of that user (Login Keys, allowing the CMD_API commands), or its password. Stored encrypted.": "DirectAdmin : une clé de connexion de cet utilisateur (Login Keys, autorisant les commandes CMD_API), ou son mot de passe. Stocké chiffré.",
+    "IP for new accounts": "IP des nouveaux comptes",
+    "Leave empty to use the first IP address of the login above.": "Laissez vide pour utiliser la première adresse IP de l'identifiant ci-dessus.",
+    "Shared ip": "IP partagée",
+    "The admin or a reseller (e.g. admin). New accounts are created under it, on its packages.": "L'admin ou un revendeur (p. ex. admin). Les nouveaux comptes sont créés sous celui-ci, avec ses forfaits."
+}

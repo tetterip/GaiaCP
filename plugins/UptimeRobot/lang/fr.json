@@ -1,0 +1,18 @@
+{
+    ":up up, :down down": ":up en ligne, :down hors ligne",
+    "Api key": "Clé API",
+    "Connected: :count monitor(s)": "Connecté : :count sonde(s)",
+    "Connection": "Connexion",
+    "Could not reach UptimeRobot: :error": "Impossible de joindre UptimeRobot : :error",
+    "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Renseignez la clé API UptimeRobot dans Paramètres → UptimeRobot.",
+    "GaiaCP reads the status and uptime of every monitor from UptimeRobot's API every 5 minutes; the Free plan has the API too. In UptimeRobot open <strong>Integrations & API</strong> (<strong>My Settings</strong> on older accounts), create a <strong>Read-Only API Key</strong> and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP lit l'état et la disponibilité de chaque sonde via l'API d'UptimeRobot toutes les 5 minutes ; l'offre gratuite inclut aussi l'API. Dans UptimeRobot, ouvrez <strong>Integrations & API</strong> (<strong>My Settings</strong> sur les anciens comptes), créez une <strong>Read-Only API Key</strong> et collez-la ici. Liez ensuite chaque serveur à sa sonde sur le formulaire du serveur (Paramètres → Serveurs).",
+    "Paused monitors show Unknown, and a monitor UptimeRobot has not confirmed down yet shows Pending.": "Les sondes en pause affichent Inconnu, et une sonde qu'UptimeRobot n'a pas encore confirmée hors ligne affiche En attente.",
+    "Read-Only API key": "Clé API en lecture seule",
+    "Shows whether each server is up from its UptimeRobot monitor, and tells you in the bell when one goes down.": "Indique si chaque serveur est en ligne d'après sa sonde UptimeRobot, et vous avertit dans la cloche quand l'un tombe.",
+    "Stored encrypted. Leave blank to keep the saved one. The main API key works too, but the read-only one can change nothing.": "Stockée chiffrée. Laissez vide pour garder celle enregistrée. La clé API principale fonctionne aussi, mais celle en lecture seule ne peut rien modifier.",
+    "UptimeRobot": "UptimeRobot",
+    "UptimeRobot answered with HTTP :status.": "UptimeRobot a répondu avec HTTP :status.",
+    "UptimeRobot answered: :error": "UptimeRobot a répondu : :error",
+    "UptimeRobot asked to slow down (too many requests). It is read again at the next check.": "UptimeRobot a demandé de ralentir (trop de requêtes). Il sera relu à la prochaine vérification.",
+    "UptimeRobot refused the API key.": "UptimeRobot a refusé la clé API."
+}

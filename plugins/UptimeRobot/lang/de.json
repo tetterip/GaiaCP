@@ -1,0 +1,18 @@
+{
+    ":up up, :down down": ":up erreichbar, :down ausgefallen",
+    "Api key": "API-Schlüssel",
+    "Connected: :count monitor(s)": "Verbunden: :count Monitor(e)",
+    "Connection": "Verbindung",
+    "Could not reach UptimeRobot: :error": "UptimeRobot nicht erreichbar: :error",
+    "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Geben Sie den UptimeRobot-API-Schlüssel unter Einstellungen → UptimeRobot ein.",
+    "GaiaCP reads the status and uptime of every monitor from UptimeRobot's API every 5 minutes; the Free plan has the API too. In UptimeRobot open <strong>Integrations & API</strong> (<strong>My Settings</strong> on older accounts), create a <strong>Read-Only API Key</strong> and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP liest alle 5 Minuten Status und Verfügbarkeit jedes Monitors über die API von UptimeRobot; auch der Free-Plan hat die API. Öffnen Sie in UptimeRobot <strong>Integrations & API</strong> (<strong>My Settings</strong> bei älteren Konten), erstellen Sie einen <strong>Read-Only API Key</strong> und fügen Sie ihn hier ein. Verknüpfen Sie dann jeden Server im Serverformular mit seinem Monitor (Einstellungen → Server).",
+    "Paused monitors show Unknown, and a monitor UptimeRobot has not confirmed down yet shows Pending.": "Pausierte Monitore zeigen „Unbekannt“, und ein Monitor, den UptimeRobot noch nicht als ausgefallen bestätigt hat, zeigt „Ausstehend“.",
+    "Read-Only API key": "Read-Only-API-Schlüssel",
+    "Shows whether each server is up from its UptimeRobot monitor, and tells you in the bell when one goes down.": "Zeigt anhand seines UptimeRobot-Monitors, ob jeder Server erreichbar ist, und meldet über die Glocke, wenn einer ausfällt.",
+    "Stored encrypted. Leave blank to keep the saved one. The main API key works too, but the read-only one can change nothing.": "Verschlüsselt gespeichert. Leer lassen, um den gespeicherten Wert zu behalten. Der Haupt-API-Schlüssel funktioniert auch, aber der Read-Only-Schlüssel kann nichts ändern.",
+    "UptimeRobot": "UptimeRobot",
+    "UptimeRobot answered with HTTP :status.": "UptimeRobot antwortete mit HTTP :status.",
+    "UptimeRobot answered: :error": "UptimeRobot antwortete: :error",
+    "UptimeRobot asked to slow down (too many requests). It is read again at the next check.": "UptimeRobot bat um Verlangsamung (zu viele Anfragen). Bei der nächsten Prüfung wird erneut gelesen.",
+    "UptimeRobot refused the API key.": "UptimeRobot hat den API-Schlüssel abgelehnt."
+}

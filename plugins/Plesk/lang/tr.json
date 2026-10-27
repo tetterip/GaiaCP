@@ -1,0 +1,14 @@
+{
+    "Applications": "Uygulamalar",
+    "Creates, suspends and removes hosting subscriptions on Plesk servers.": "Plesk sunucularında hosting abonelikleri oluşturur, askıya alır ve kaldırır.",
+    "Databases": "Veritabanları",
+    "File Manager": "Dosya Yöneticisi",
+    "IP for new subscriptions": "Yeni abonelikler için IP",
+    "Leave empty to use the server's first shared IPv4 address.": "Sunucunun ilk paylaşılan IPv4 adresini kullanmak için boş bırakın.",
+    "Mail": "E-posta",
+    "Plesk admin login. Leave empty to authenticate with a secret key instead.": "Plesk yönetici girişi. Bunun yerine gizli anahtarla kimlik doğrulamak için boş bırakın.",
+    "Plesk: the admin password, or a secret key (plesk bin secret_key -c) if the login is empty. Stored encrypted.": "Plesk: yönetici parolası veya giriş boşsa bir gizli anahtar (plesk bin secret_key -c). Şifreli saklanır.",
+    "Shared ip": "Paylaşılan IP",
+    "Statistics": "İstatistikler",
+    "Users": "Kullanıcılar"
+}

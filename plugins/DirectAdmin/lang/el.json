@@ -1,0 +1,8 @@
+{
+    "Creates, suspends and removes hosting accounts on DirectAdmin servers.": "Δημιουργεί, αναστέλλει και διαγράφει λογαριασμούς φιλοξενίας σε servers DirectAdmin.",
+    "DirectAdmin: a login key of that user (Login Keys, allowing the CMD_API commands), or its password. Stored encrypted.": "DirectAdmin: ένα login key αυτού του χρήστη (Login Keys, με άδεια για τις εντολές CMD_API) ή ο κωδικός του. Αποθηκεύεται κρυπτογραφημένο.",
+    "IP for new accounts": "IP για νέους λογαριασμούς",
+    "Leave empty to use the first IP address of the login above.": "Άφησέ το κενό για να χρησιμοποιηθεί η πρώτη διεύθυνση IP του χρήστη παραπάνω.",
+    "Shared ip": "Κοινόχρηστη IP",
+    "The admin or a reseller (e.g. admin). New accounts are created under it, on its packages.": "Ο admin ή ένας reseller (π.χ. admin). Οι νέοι λογαριασμοί δημιουργούνται κάτω από αυτόν, στα πακέτα του."
+}

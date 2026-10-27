@@ -1,0 +1,20 @@
+{
+    "API key": "API anahtarı",
+    "Api key": "API anahtarı",
+    "Claude": "Claude",
+    "Claude answered: :error": "Claude yanıtı: :error",
+    "Claude declined to answer this text.": "Claude bu metne yanıt vermeyi reddetti.",
+    "Claude did not accept the API key. Check it under Settings → Claude.": "Claude API anahtarını kabul etmedi. Ayarlar → Claude altından kontrol edin.",
+    "Claude is busy right now. Try again in a minute.": "Claude şu anda meşgul. Bir dakika sonra yeniden deneyin.",
+    "Claude's answer was too long and was cut off. Try a shorter text.": "Claude'un yanıtı çok uzundu ve kesildi. Daha kısa bir metin deneyin.",
+    "Claude, Anthropic's AI, for the AI assistant: it improves and translates texts you write, with your own API key.": "Yapay zekâ asistanı için Anthropic'in yapay zekâsı Claude: yazdığınız metinleri kendi API anahtarınızla iyileştirir ve çevirir.",
+    "Connected: :model": "Bağlandı: :model",
+    "Connection": "Bağlantı",
+    "Could not reach Claude: :error": "Claude'a ulaşılamadı: :error",
+    "Create an API key at <strong>console.anthropic.com</strong> (Settings → API keys) and paste it here. Anthropic bills your account for what is used; set a monthly limit there and under Settings → AI assistant. Texts are sent only when an admin presses an AI button, and by default Anthropic does not use API data to train its models.": "<strong>console.anthropic.com</strong> adresinde (Settings → API keys) bir API anahtarı oluşturun ve buraya yapıştırın. Anthropic kullanılan için hesabınızdan ücret alır; orada ve Ayarlar → Yapay zekâ asistanı altında aylık bir sınır belirleyin. Metinler yalnızca bir yönetici bir yapay zekâ düğmesine bastığında gönderilir ve varsayılan olarak Anthropic API verilerini modellerini eğitmek için kullanmaz.",
+    "Fill in the API key first.": "Önce API anahtarını doldurun.",
+    "Fill in the Claude API key under Settings → Claude.": "Ayarlar → Claude altında Claude API anahtarını doldurun.",
+    "Model": "Model",
+    "Opus writes best; Sonnet is half the price; Haiku is the cheapest and fastest, good enough for spelling and translations.": "Opus en iyi yazar; Sonnet yarı fiyatınadır; Haiku en ucuz ve en hızlısıdır, yazım ve çeviriler için yeterlidir.",
+    "What the assistant may do, and a monthly limit: <a href=\":url\" class=\"underline\">Settings → AI assistant</a>.": "Asistanın neler yapabileceği ve aylık sınır: <a href=\":url\" class=\"underline\">Ayarlar → Yapay zekâ asistanı</a>."
+}

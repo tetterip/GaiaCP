@@ -1,0 +1,6 @@
+{
+    "Discord": "Discord",
+    "In Discord, open the channel's settings → Integrations → Webhooks → New Webhook, then Copy Webhook URL (https://discord.com/api/webhooks/…) and paste it here.": "W Discordzie otwórz ustawienia kanału → Integracje → Webhooki → Nowy webhook, potem Kopiuj URL webhooka (https://discord.com/api/webhooks/…) i wklej go tutaj.",
+    "Post new orders, payments, tickets and server problems to a Discord channel.": "Publikuj nowe zamówienia, płatności, zgłoszenia i problemy z serwerami na kanale Discord.",
+    "Posts GaiaCP's events (new orders, payments, tickets, servers down) to a Discord channel.": "Publikuje zdarzenia GaiaCP (nowe zamówienia, płatności, zgłoszenia, awarie serwerów) na kanale Discord."
+}

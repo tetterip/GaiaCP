@@ -1,0 +1,88 @@
+name: Release
+
+# A version tag (v0.2.0 or 0.2.0, matching the VERSION file), pushed or published as a release on GitHub, runs the
+# tests, builds gaiacp-0.2.0.zip with bin/build-release.sh and attaches it (with its SHA-256, signed with the
+# RELEASE_SIGNING_KEY secret) to that tag's release,
+# creating the release with its CHANGELOG.md section as notes when there is none. "Run workflow" with a tag rebuilds
+# an existing tag's zip.
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*', '[0-9]+.[0-9]+.[0-9]+*']
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build, e.g. v0.2.0'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  release:
+    needs: tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ inputs.tag || github.event.release.tag_name || github.ref_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.event.release.tag_name || github.ref }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite, intl
+          coverage: none
+
+      - name: Check the tag matches VERSION
+        run: |
+          VERSION="$(tr -d '[:space:]' < VERSION)"
+          if [ "$TAG" != "v$VERSION" ] && [ "$TAG" != "$VERSION" ]; then
+            echo "::error::Tag $TAG does not match VERSION ($VERSION): tag v$VERSION instead"
+            exit 1
+          fi
+
+      - name: Build the release zip
+        run: bin/build-release.sh
+
+      # Installs with a trusted key (gaiacp.updates.keys) install only a release whose .sha256 is signed by it.
+      # Signed here, not by bin/release-key, so an old tag rebuilt with "Run workflow" is signed too.
+      - name: Sign the checksum
+        env:
+          RELEASE_SIGNING_KEY: ${{ secrets.RELEASE_SIGNING_KEY }}
+        run: |
+          if [ -z "$RELEASE_SIGNING_KEY" ]; then
+            echo "::error::The RELEASE_SIGNING_KEY secret is not set: make a key with php bin/release-key keygen (docs/releases.md)"
+            exit 1
+          fi
+          VERSION="$(tr -d '[:space:]' < VERSION)"
+          php -r '$k = base64_decode(getenv("RELEASE_SIGNING_KEY"), true); $f = $argv[1];
+            if (! is_string($k) || strlen($k) !== SODIUM_CRYPTO_SIGN_SECRETKEYBYTES) { fwrite(STDERR, "RELEASE_SIGNING_KEY is not a secret key\n"); exit(1); }
+            file_put_contents("$f.sig", base64_encode(sodium_crypto_sign_detached(file_get_contents($f), $k))."\n");
+            echo "Signed with ", base64_encode(sodium_crypto_sign_publickey_from_secretkey($k)), "\n";' "build/gaiacp-$VERSION.zip.sha256"
+
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(tr -d '[:space:]' < VERSION)"
+          FILES="build/gaiacp-$VERSION.zip build/gaiacp-$VERSION.zip.sha256 build/gaiacp-$VERSION.zip.sha256.sig"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            # Created on GitHub: add the zip, and the changelog notes if it has none
+            gh release upload "$TAG" $FILES --clobber
+            if [ -z "$(gh release view "$TAG" --json body --jq .body)" ]; then
+              gh release edit "$TAG" --notes-file build/RELEASE_NOTES.md
+            fi
+          else
+            PRERELEASE=""
+            case "$VERSION" in *-*) PRERELEASE="--prerelease" ;; esac
+            gh release create "$TAG" $FILES --title "GaiaCP $VERSION" --notes-file build/RELEASE_NOTES.md --verify-tag $PRERELEASE
+          fi

@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting subscriptions on Enhance control panels.": "Crée, suspend et supprime les abonnements d'hébergement sur les panneaux de contrôle Enhance.",
+    "Enhance: an access token allowed to manage customers and their subscriptions (Settings → Access tokens). Stored encrypted.": "Enhance : un jeton d'accès autorisé à gérer les clients et leurs abonnements (Settings → Access tokens). Stocké chiffré.",
+    "Enhance: the ID of your own organisation, shown with the access tokens. Customers are created under it, on its plans; the hostname is the control panel's address.": "Enhance : l'ID de votre propre organisation, affiché avec les jetons d'accès. Les clients sont créés sous celle-ci, avec ses offres ; le nom d'hôte est l'adresse du panneau de contrôle."
+}

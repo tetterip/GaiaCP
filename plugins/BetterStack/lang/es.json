@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up activos, :down caídos",
+    "API token": "Token de API",
+    "Better Stack": "Better Stack",
+    "Better Stack answered with HTTP :status.": "Better Stack respondió con HTTP :status.",
+    "Better Stack answered: :error": "Better Stack respondió: :error",
+    "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack pidió ir más despacio (demasiadas peticiones). Se vuelve a leer en la siguiente comprobación.",
+    "Better Stack refused the API token.": "Better Stack rechazó el token de API.",
+    "Connected: :count monitor(s)": "Conectado: :count monitor(es)",
+    "Connection": "Conexión",
+    "Could not reach Better Stack: :error": "No se pudo conectar con Better Stack: :error",
+    "Fill in the Better Stack API token under Settings → Better Stack.": "Escriba el token de API de Better Stack en Ajustes → Better Stack.",
+    "GaiaCP reads the status of every monitor from Better Stack Uptime's API (v2) every 5 minutes; the Free plan has the API too. In Better Stack open <strong>Settings → API tokens</strong>, copy your team's Uptime API token and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP lee el estado de cada monitor de la API (v2) de Better Stack Uptime cada 5 minutos; el plan Free también tiene la API. En Better Stack abra <strong>Settings → API tokens</strong>, copie el token de API de Uptime de su equipo y péguelo aquí. Luego vincule cada servidor a su monitor en el formulario del servidor (Ajustes → Servidores).",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Los monitores en pausa muestran Desconocido, y los monitores en mantenimiento muestran Mantenimiento.",
+    "Shows whether each server is up from its Better Stack Uptime monitor, and tells you in the bell when one goes down.": "Muestra si cada servidor está activo según su monitor de Better Stack Uptime, y le avisa en la campana cuando uno cae.",
+    "Stored encrypted. Leave blank to keep the saved one. GaiaCP only reads with it.": "Se guarda cifrado. Déjelo en blanco para mantener el guardado. GaiaCP solo lee con él."
+}

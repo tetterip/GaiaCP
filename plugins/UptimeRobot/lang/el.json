@@ -1,0 +1,18 @@
+{
+    ":up up, :down down": ":up σε λειτουργία, :down εκτός λειτουργίας",
+    "Api key": "API key",
+    "Connected: :count monitor(s)": "Συνδέθηκε: :count monitor",
+    "Connection": "Σύνδεση",
+    "Could not reach UptimeRobot: :error": "Δεν ήταν δυνατή η σύνδεση με το UptimeRobot: :error",
+    "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Συμπλήρωσε το API key του UptimeRobot στις Ρυθμίσεις → UptimeRobot.",
+    "GaiaCP reads the status and uptime of every monitor from UptimeRobot's API every 5 minutes; the Free plan has the API too. In UptimeRobot open <strong>Integrations & API</strong> (<strong>My Settings</strong> on older accounts), create a <strong>Read-Only API Key</strong> and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "Το GaiaCP διαβάζει την κατάσταση και το uptime κάθε monitor από το API του UptimeRobot κάθε 5 λεπτά· το API υπάρχει και στο δωρεάν πλάνο. Στο UptimeRobot άνοιξε <strong>Integrations & API</strong> (<strong>My Settings</strong> σε παλαιότερους λογαριασμούς), δημιούργησε ένα <strong>Read-Only API Key</strong> και επικόλλησέ το εδώ. Μετά σύνδεσε κάθε server με τον monitor του στη φόρμα του server (Ρυθμίσεις → Servers).",
+    "Paused monitors show Unknown, and a monitor UptimeRobot has not confirmed down yet shows Pending.": "Οι monitors σε παύση δείχνουν Άγνωστη και ένας monitor που το UptimeRobot δεν έχει επιβεβαιώσει ακόμα ότι έπεσε δείχνει Σε αναμονή.",
+    "Read-Only API key": "Read-Only API key",
+    "Shows whether each server is up from its UptimeRobot monitor, and tells you in the bell when one goes down.": "Δείχνει αν κάθε server λειτουργεί από τον monitor του στο UptimeRobot και σε ειδοποιεί στο καμπανάκι όταν κάποιος πέσει.",
+    "Stored encrypted. Leave blank to keep the saved one. The main API key works too, but the read-only one can change nothing.": "Αποθηκεύεται κρυπτογραφημένο. Άφησέ το κενό για να κρατηθεί το αποθηκευμένο. Δουλεύει και το κύριο API key, αλλά το read-only δεν μπορεί να αλλάξει τίποτα.",
+    "UptimeRobot": "UptimeRobot",
+    "UptimeRobot answered with HTTP :status.": "Το UptimeRobot απάντησε με HTTP :status.",
+    "UptimeRobot answered: :error": "Το UptimeRobot απάντησε: :error",
+    "UptimeRobot asked to slow down (too many requests). It is read again at the next check.": "Το UptimeRobot ζήτησε λιγότερες κλήσεις (πάρα πολλά αιτήματα). Θα διαβαστεί ξανά στον επόμενο έλεγχο.",
+    "UptimeRobot refused the API key.": "Το UptimeRobot απέρριψε το API key."
+}

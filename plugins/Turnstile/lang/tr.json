@@ -1,0 +1,8 @@
+{
+    "Cloudflare Turnstile": "Cloudflare Turnstile",
+    "Cloudflare's privacy-friendly check that a visitor is not a robot, on the login and sign up forms.": "Giriş ve kayıt formlarında Cloudflare'in gizliliğe saygılı, ziyaretçinin robot olmadığını kontrol eden doğrulaması.",
+    "In the <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Cloudflare dashboard → Turnstile</a> press <strong>Add widget</strong>, add your domains (e.g. :host) and choose the <strong>Managed</strong> mode. Paste the site key and secret key it gives you here, then pick Cloudflare Turnstile under Settings → General.": "<a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Cloudflare panosu → Turnstile</a> içinde <strong>Add widget</strong>'a basın, alan adlarınızı ekleyin (ör. :host) ve <strong>Managed</strong> modunu seçin. Verdiği site anahtarını ve gizli anahtarı buraya yapıştırın, sonra Ayarlar → Genel altında Cloudflare Turnstile'ı seçin.",
+    "Keys": "Anahtarlar",
+    "Secret key": "Gizli anahtar",
+    "Site key": "Site anahtarı"
+}

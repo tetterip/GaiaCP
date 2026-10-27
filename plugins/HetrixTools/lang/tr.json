@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up çalışıyor, :down kapalı",
+    "API token": "API token",
+    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connection": "Bağlantı",
+    "Could not reach HetrixTools: :error": "HetrixTools'a ulaşılamadı: :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Ayarlar → HetrixTools altında HetrixTools API token'ını doldurun.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP her çalışma süresi monitörünün durumunu ve çalışma süresini her 5 dakikada bir HetrixTools API'sinden (v3) okur; Ücretsiz planda da API vardır. HetrixTools'ta <strong>Account → API Keys</strong>'i açın, çalışma süresi monitörlerine okuma erişimi olan bir anahtar oluşturun ve buraya yapıştırın. Sonra her sunucuyu sunucunun formunda monitörüne bağlayın (Ayarlar → Sunucular).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "HetrixTools HTTP :status ile yanıt verdi.",
+    "HetrixTools answered: :error": "HetrixTools yanıtı: :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "HetrixTools yavaşlamayı istedi (çok fazla istek). Sonraki kontrolde yeniden okunur.",
+    "HetrixTools refused the API token.": "HetrixTools API token'ını reddetti.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Duraklatılmış monitörler Bilinmiyor, bakımdaki monitörler Bakım gösterir.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Her sunucunun çalışıp çalışmadığını HetrixTools çalışma süresi monitöründen gösterir ve biri kapandığında zilde size bildirir.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Şifreli saklanır. Kayıtlı olanı korumak için boş bırakın. Yalnızca okuyabilen bir anahtar yeterlidir."
+}

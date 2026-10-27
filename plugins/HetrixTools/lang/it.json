@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up online, :down non raggiungibili",
+    "API token": "Token API",
+    "Connected: :count monitor(s)": "Connesso: :count monitor",
+    "Connection": "Connessione",
+    "Could not reach HetrixTools: :error": "Impossibile raggiungere HetrixTools: :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Inserisci il token API di HetrixTools in Impostazioni → HetrixTools.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP legge lo stato e l'uptime di ogni monitor di uptime dall'API di HetrixTools (v3) ogni 5 minuti; anche il piano Free ha l'API. In HetrixTools apri <strong>Account → API Keys</strong>, crea una chiave con accesso in lettura ai monitor di uptime e incollala qui. Poi collega ogni server al suo monitor nel modulo del server (Impostazioni → Server).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "HetrixTools ha risposto con HTTP :status.",
+    "HetrixTools answered: :error": "HetrixTools ha risposto: :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "HetrixTools ha chiesto di rallentare (troppe richieste). Verrà letto di nuovo al prossimo controllo.",
+    "HetrixTools refused the API token.": "HetrixTools ha rifiutato il token API.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "I monitor in pausa mostrano Sconosciuto, e i monitor in manutenzione mostrano Manutenzione.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Mostra se ogni server è online dal suo monitor di uptime HetrixTools, e ti avvisa nella campanella quando uno va offline.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Salvato cifrato. Lascia vuoto per mantenere quello salvato. Basta una chiave in sola lettura."
+}

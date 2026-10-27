@@ -1,0 +1,8 @@
+{
+    "Cloudflare Turnstile": "Cloudflare Turnstile",
+    "Cloudflare's privacy-friendly check that a visitor is not a robot, on the login and sign up forms.": "Ο έλεγχος της Cloudflare, φιλικός προς την ιδιωτικότητα, ότι ο επισκέπτης δεν είναι ρομπότ, στις φόρμες σύνδεσης και εγγραφής.",
+    "In the <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Cloudflare dashboard → Turnstile</a> press <strong>Add widget</strong>, add your domains (e.g. :host) and choose the <strong>Managed</strong> mode. Paste the site key and secret key it gives you here, then pick Cloudflare Turnstile under Settings → General.": "Στο <a href=\":url\" target=\"_blank\" rel=\"noopener\" class=\"underline\">Cloudflare dashboard → Turnstile</a> πάτησε <strong>Add widget</strong>, πρόσθεσε τα domains σου (π.χ. :host) και επίλεξε τη λειτουργία <strong>Managed</strong>. Επικόλλησε εδώ το site key και το secret key που σου δίνει και μετά επίλεξε Cloudflare Turnstile στις Ρυθμίσεις → Γενικά.",
+    "Keys": "Κλειδιά",
+    "Secret key": "Secret key",
+    "Site key": "Site key"
+}

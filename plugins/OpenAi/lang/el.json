@@ -1,0 +1,5 @@
+{
+    "ChatGPT": "ChatGPT",
+    "ChatGPT, OpenAI's models, for the AI assistant: it improves and translates texts you write, with your own API key.": "Το ChatGPT, τα μοντέλα της OpenAI, για τον βοηθό AI: βελτιώνει και μεταφράζει τα κείμενα που γράφεις, με δικό σου API key.",
+    "Create an API key on OpenAI's platform (<strong>platform.openai.com</strong>, API keys), add some credit under Billing and paste the key here. A ChatGPT Plus subscription does not include API use.": "Φτιάξε ένα API key στην πλατφόρμα της OpenAI (<strong>platform.openai.com</strong>, API keys), βάλε υπόλοιπο στο Billing και επικόλλησε το κλειδί εδώ. Η συνδρομή ChatGPT Plus δεν περιλαμβάνει χρήση του API."
+}

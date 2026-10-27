@@ -1,0 +1,12 @@
+{
+    "Add each CyberPanel server under Settings → Servers, with its admin user and password. A hosting account there is a website with an owner user of the same username.": "Aggiungi ogni server CyberPanel in Impostazioni → Server, con il suo utente admin e la password. Un account hosting lì è un sito web con un utente proprietario con lo stesso nome utente.",
+    "Creates, suspends and removes hosting accounts on CyberPanel servers.": "Crea, sospende e rimuove account hosting sui server CyberPanel.",
+    "CyberPanel": "CyberPanel",
+    "CyberPanel's admin user (admin), with API access turned on under Users → API Access. New websites and their owners are created under it.": "L'utente admin di CyberPanel (admin), con l'accesso API attivato in Users → API Access. I nuovi siti web e i loro proprietari vengono creati sotto di esso.",
+    "CyberPanel: the admin user's password (CyberPanel's API takes no other key). Two-factor authentication must be off for it. Stored encrypted.": "CyberPanel: la password dell'utente admin (l'API di CyberPanel non accetta altre chiavi). L'autenticazione a due fattori deve essere disattivata per esso. Salvata cifrata.",
+    "It must be installed on the server. The client can change it later in CyberPanel.": "Deve essere installata sul server. Il cliente può cambiarla più tardi in CyberPanel.",
+    "New websites": "Nuovi siti web",
+    "PHP version": "Versione PHP",
+    "Php version": "Versione PHP",
+    "The PHP version new websites start on, on CyberPanel servers.": "La versione PHP con cui partono i nuovi siti web, sui server CyberPanel."
+}

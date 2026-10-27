@@ -1,0 +1,18 @@
+{
+    ":up up, :down down": ":up çalışıyor, :down kapalı",
+    "Api key": "API anahtarı",
+    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connection": "Bağlantı",
+    "Could not reach UptimeRobot: :error": "UptimeRobot'a ulaşılamadı: :error",
+    "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Ayarlar → UptimeRobot altında UptimeRobot API anahtarını doldurun.",
+    "GaiaCP reads the status and uptime of every monitor from UptimeRobot's API every 5 minutes; the Free plan has the API too. In UptimeRobot open <strong>Integrations & API</strong> (<strong>My Settings</strong> on older accounts), create a <strong>Read-Only API Key</strong> and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP her monitörün durumunu ve çalışma süresini her 5 dakikada bir UptimeRobot API'sinden okur; Ücretsiz planda da API vardır. UptimeRobot'ta <strong>Integrations & API</strong>'yi (eski hesaplarda <strong>My Settings</strong>) açın, bir <strong>Read-Only API Key</strong> oluşturun ve buraya yapıştırın. Sonra her sunucuyu sunucunun formunda monitörüne bağlayın (Ayarlar → Sunucular).",
+    "Paused monitors show Unknown, and a monitor UptimeRobot has not confirmed down yet shows Pending.": "Duraklatılmış monitörler Bilinmiyor gösterir; UptimeRobot'un henüz kapalı olduğunu doğrulamadığı bir monitör Beklemede gösterir.",
+    "Read-Only API key": "Salt okunur API anahtarı",
+    "Shows whether each server is up from its UptimeRobot monitor, and tells you in the bell when one goes down.": "Her sunucunun çalışıp çalışmadığını UptimeRobot monitöründen gösterir ve biri kapandığında zilde size bildirir.",
+    "Stored encrypted. Leave blank to keep the saved one. The main API key works too, but the read-only one can change nothing.": "Şifreli saklanır. Kayıtlı olanı korumak için boş bırakın. Ana API anahtarı da çalışır, ancak salt okunur olan hiçbir şeyi değiştiremez.",
+    "UptimeRobot": "UptimeRobot",
+    "UptimeRobot answered with HTTP :status.": "UptimeRobot HTTP :status ile yanıt verdi.",
+    "UptimeRobot answered: :error": "UptimeRobot yanıtı: :error",
+    "UptimeRobot asked to slow down (too many requests). It is read again at the next check.": "UptimeRobot yavaşlamayı istedi (çok fazla istek). Sonraki kontrolde yeniden okunur.",
+    "UptimeRobot refused the API key.": "UptimeRobot API anahtarını reddetti."
+}

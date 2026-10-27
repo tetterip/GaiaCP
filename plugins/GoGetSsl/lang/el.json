@@ -1,0 +1,13 @@
+{
+    "API password": "Κωδικός API",
+    "API username": "Όνομα χρήστη API",
+    "Account balance: :balance": "Υπόλοιπο λογαριασμού: :balance",
+    "Connected: :count certificate(s) for sale": "Συνδέθηκε: :count πιστοποιητικά προς πώληση",
+    "Connection": "Σύνδεση",
+    "Dcv method": "Τρόπος επιβεβαίωσης",
+    "GoGetSSL": "GoGetSSL",
+    "How the client proves the domain is theirs, unless they pick another way in the client area.": "Πώς αποδεικνύει ο πελάτης ότι το domain είναι δικό του, εκτός αν διαλέξει άλλο τρόπο στην περιοχή πελατών.",
+    "In GoGetSSL open <strong>Reseller modules</strong> (or API settings) and create the API password; the username is your GoGetSSL login. Orders are paid from your GoGetSSL balance, so keep it topped up. Then make a product of type SSL certificate and pick its certificate.": "Στο GoGetSSL άνοιξε τα <strong>Reseller modules</strong> (ή τις ρυθμίσεις API) και φτιάξε τον κωδικό API· το όνομα χρήστη είναι το login σου στο GoGetSSL. Οι παραγγελίες πληρώνονται από το υπόλοιπό σου στο GoGetSSL, οπότε κράτα το γεμάτο. Μετά φτιάξε προϊόν τύπου Πιστοποιητικό SSL και διάλεξε το πιστοποιητικό του.",
+    "Sells SSL certificates (Sectigo, DigiCert, GeoTrust, RapidSSL) through a GoGetSSL reseller account.": "Πουλά πιστοποιητικά SSL (Sectigo, DigiCert, GeoTrust, RapidSSL) μέσω λογαριασμού μεταπωλητή GoGetSSL.",
+    "Validation of a new certificate": "Επιβεβαίωση νέου πιστοποιητικού"
+}

@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest something GaiaCP could do
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would it help you do
+      description: The task or problem, as you'd explain it to a colleague who sells hosting.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How you picture it
+      description: Where it would be in the admin or the client area, and how it would work. How WHMCS or another panel does it helps too.
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Could it be a plugin?
+      description: Integrations with other services (a server panel, a registrar, a payment method…) are plugins.
+      options:
+        - Not sure
+        - Yes, it's an integration
+        - No, it changes GaiaCP itself

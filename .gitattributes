@@ -1,0 +1,24 @@
+* text=auto eol=lf
+
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Left out of the release zip (bin/build-release.sh uses git archive)
+/.github export-ignore
+/tests export-ignore
+/phpunit.xml export-ignore
+/.editorconfig export-ignore
+/.npmrc export-ignore
+/package.json export-ignore
+/vite.config.js export-ignore
+/CLAUDE.md export-ignore
+/.claude export-ignore
+/docs/architecture export-ignore
+/bin/build-release.sh export-ignore
+/bin/deploy.sh export-ignore
+.styleci.yml export-ignore
+/docs/screenshots export-ignore
+/bin/release-key export-ignore

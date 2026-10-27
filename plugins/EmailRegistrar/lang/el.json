@@ -1,0 +1,12 @@
+{
+    "A registrar for TLDs with no integrated registrar: registrations, transfers, renewals, nameserver changes and EPP code requests are emailed to the admins, who do them by hand.": "Registrar για TLD χωρίς ενσωματωμένο registrar: καταχωρίσεις, μεταφορές, ανανεώσεις, αλλαγές nameservers και αιτήματα κωδικού EPP στέλνονται με email στους διαχειριστές, που τα κάνουν με το χέρι.",
+    "Change the nameservers of :domain": "Αλλαγή nameservers του :domain",
+    "Open the domain": "Άνοιγμα του domain",
+    "Register :domain for :years year(s)": "Καταχώριση του :domain για :years έτος/έτη",
+    "Registrant": "Κάτοχος",
+    "Renew :domain for :years year(s)": "Ανανέωση του :domain για :years έτος/έτη",
+    "Send the EPP code of :domain to the client": "Στείλε στον πελάτη τον κωδικό EPP του :domain",
+    "The EPP code is on the domain's page.": "Ο κωδικός EPP είναι στη σελίδα του domain.",
+    "This domain uses the Email Notifications registrar, so nothing was booked at any registrar. Please do it by hand, then update the domain here (expiry date, nameservers) if anything changed.": "Αυτό το domain χρησιμοποιεί τον registrar Email Notifications, οπότε δεν έγινε τίποτα σε κανέναν registrar. Κάν' το με το χέρι και μετά ενημέρωσε το domain εδώ (ημερομηνία λήξης, nameservers) αν άλλαξε κάτι.",
+    "Transfer :domain in": "Μεταφορά του :domain σε εμάς"
+}

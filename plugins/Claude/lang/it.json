@@ -1,0 +1,20 @@
+{
+    "API key": "Chiave API",
+    "Api key": "Chiave API",
+    "Claude": "Claude",
+    "Claude answered: :error": "Claude ha risposto: :error",
+    "Claude declined to answer this text.": "Claude si è rifiutato di rispondere a questo testo.",
+    "Claude did not accept the API key. Check it under Settings → Claude.": "Claude non ha accettato la chiave API. Verificala in Impostazioni → Claude.",
+    "Claude is busy right now. Try again in a minute.": "Claude è occupato al momento. Riprova tra un minuto.",
+    "Claude's answer was too long and was cut off. Try a shorter text.": "La risposta di Claude era troppo lunga ed è stata troncata. Prova con un testo più breve.",
+    "Claude, Anthropic's AI, for the AI assistant: it improves and translates texts you write, with your own API key.": "Claude, l'IA di Anthropic, per l'assistente IA: migliora e traduce i testi che scrivi, con la tua chiave API.",
+    "Connected: :model": "Connesso: :model",
+    "Connection": "Connessione",
+    "Could not reach Claude: :error": "Impossibile raggiungere Claude: :error",
+    "Create an API key at <strong>console.anthropic.com</strong> (Settings → API keys) and paste it here. Anthropic bills your account for what is used; set a monthly limit there and under Settings → AI assistant. Texts are sent only when an admin presses an AI button, and by default Anthropic does not use API data to train its models.": "Crea una chiave API su <strong>console.anthropic.com</strong> (Settings → API keys) e incollala qui. Anthropic addebita sul tuo account ciò che viene usato; imposta un limite mensile lì e in Impostazioni → Assistente IA. I testi vengono inviati solo quando un admin preme un pulsante IA, e per impostazione predefinita Anthropic non usa i dati dell'API per addestrare i suoi modelli.",
+    "Fill in the API key first.": "Inserisci prima la chiave API.",
+    "Fill in the Claude API key under Settings → Claude.": "Inserisci la chiave API di Claude in Impostazioni → Claude.",
+    "Model": "Modello",
+    "Opus writes best; Sonnet is half the price; Haiku is the cheapest and fastest, good enough for spelling and translations.": "Opus scrive meglio; Sonnet costa la metà; Haiku è il più economico e veloce, sufficiente per ortografia e traduzioni.",
+    "What the assistant may do, and a monthly limit: <a href=\":url\" class=\"underline\">Settings → AI assistant</a>.": "Cosa può fare l'assistente, e un limite mensile: <a href=\":url\" class=\"underline\">Impostazioni → Assistente IA</a>."
+}

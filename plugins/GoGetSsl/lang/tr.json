@@ -1,0 +1,13 @@
+{
+    "API password": "API parolası",
+    "API username": "API kullanıcı adı",
+    "Account balance: :balance": "Hesap bakiyesi: :balance",
+    "Connected: :count certificate(s) for sale": "Bağlandı: satışta :count sertifika",
+    "Connection": "Bağlantı",
+    "Dcv method": "DCV yöntemi",
+    "GoGetSSL": "GoGetSSL",
+    "How the client proves the domain is theirs, unless they pick another way in the client area.": "Müşteri müşteri panelinde başka bir yol seçmedikçe alan adının kendisine ait olduğunu nasıl kanıtlar.",
+    "In GoGetSSL open <strong>Reseller modules</strong> (or API settings) and create the API password; the username is your GoGetSSL login. Orders are paid from your GoGetSSL balance, so keep it topped up. Then make a product of type SSL certificate and pick its certificate.": "GoGetSSL'de <strong>Reseller modules</strong>'ü (veya API ayarlarını) açın ve API parolasını oluşturun; kullanıcı adı GoGetSSL girişinizdir. Siparişler GoGetSSL bakiyenizden ödenir, bu yüzden bakiyeyi dolu tutun. Sonra SSL sertifikası türünde bir ürün oluşturun ve sertifikasını seçin.",
+    "Sells SSL certificates (Sectigo, DigiCert, GeoTrust, RapidSSL) through a GoGetSSL reseller account.": "Bir GoGetSSL bayi hesabı üzerinden SSL sertifikaları (Sectigo, DigiCert, GeoTrust, RapidSSL) satar.",
+    "Validation of a new certificate": "Yeni bir sertifikanın doğrulaması"
+}

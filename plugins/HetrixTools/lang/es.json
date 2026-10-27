@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up activos, :down caídos",
+    "API token": "Token de API",
+    "Connected: :count monitor(s)": "Conectado: :count monitor(es)",
+    "Connection": "Conexión",
+    "Could not reach HetrixTools: :error": "No se pudo conectar con HetrixTools: :error",
+    "Fill in the HetrixTools API token under Settings → HetrixTools.": "Escriba el token de API de HetrixTools en Ajustes → HetrixTools.",
+    "GaiaCP reads the status and uptime of every uptime monitor from HetrixTools' API (v3) every 5 minutes; the Free plan has the API too. In HetrixTools open <strong>Account → API Keys</strong>, create a key with read access to uptime monitors and paste it here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP lee el estado y la disponibilidad de cada monitor de disponibilidad de la API (v3) de HetrixTools cada 5 minutos; el plan Free también tiene la API. En HetrixTools abra <strong>Account → API Keys</strong>, cree una clave con acceso de lectura a los monitores de disponibilidad y péguela aquí. Luego vincule cada servidor a su monitor en el formulario del servidor (Ajustes → Servidores).",
+    "HetrixTools": "HetrixTools",
+    "HetrixTools answered with HTTP :status.": "HetrixTools respondió con HTTP :status.",
+    "HetrixTools answered: :error": "HetrixTools respondió: :error",
+    "HetrixTools asked to slow down (too many requests). It is read again at the next check.": "HetrixTools pidió ir más despacio (demasiadas peticiones). Se vuelve a leer en la siguiente comprobación.",
+    "HetrixTools refused the API token.": "HetrixTools rechazó el token de API.",
+    "Paused monitors show Unknown, and monitors in maintenance show Maintenance.": "Los monitores en pausa muestran Desconocido, y los monitores en mantenimiento muestran Mantenimiento.",
+    "Shows whether each server is up from its HetrixTools uptime monitor, and tells you in the bell when one goes down.": "Muestra si cada servidor está activo según su monitor de disponibilidad de HetrixTools, y le avisa en la campana cuando uno cae.",
+    "Stored encrypted. Leave blank to keep the saved one. A key that can only read is enough.": "Se guarda cifrado. Déjelo en blanco para mantener el guardado. Basta una clave que solo pueda leer."
+}

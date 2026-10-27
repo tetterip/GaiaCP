@@ -1,0 +1,11 @@
+{
+    "Backups": "Yedekler",
+    "Creates, suspends and removes hosting accounts on cPanel servers through WHM.": "cPanel sunucularında WHM üzerinden hosting hesapları oluşturur, askıya alır ve kaldırır.",
+    "Email accounts": "E-posta hesapları",
+    "File Manager": "Dosya Yöneticisi",
+    "MySQL databases": "MySQL veritabanları",
+    "Statistics": "İstatistikler",
+    "WHM user: root or a reseller.": "WHM kullanıcısı: root veya bir bayi.",
+    "WHM: Development → Manage API Tokens. Stored encrypted.": "WHM: Development → Manage API Tokens. Şifreli saklanır.",
+    "phpMyAdmin": "phpMyAdmin"
+}

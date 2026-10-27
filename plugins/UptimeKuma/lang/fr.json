@@ -1,0 +1,17 @@
+{
+    ":up up, :down down": ":up en ligne, :down hors ligne",
+    "API key / password": "Clé API / mot de passe",
+    "Connected: :count monitor(s)": "Connecté : :count sonde(s)",
+    "Connection": "Connexion",
+    "Could not reach Uptime Kuma: :error": "Impossible de joindre Uptime Kuma : :error",
+    "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Renseignez l'adresse d'Uptime Kuma dans Paramètres → Uptime Kuma.",
+    "GaiaCP reads the status of every monitor from Uptime Kuma's <code>/metrics</code> page every 5 minutes. In Uptime Kuma open <strong>Settings → API Keys</strong>, press <strong>Generate</strong> and paste the key here. Then link each server to its monitor on the server's form (Settings → Servers).": "GaiaCP lit l'état de chaque sonde sur la page <code>/metrics</code> d'Uptime Kuma toutes les 5 minutes. Dans Uptime Kuma, ouvrez <strong>Settings → API Keys</strong>, cliquez sur <strong>Generate</strong> et collez la clé ici. Liez ensuite chaque serveur à sa sonde sur le formulaire du serveur (Paramètres → Serveurs).",
+    "Leave empty with an API key. Only for an older Uptime Kuma without API keys: its login, with the password in the field next to it.": "Laissez vide avec une clé API. Uniquement pour un ancien Uptime Kuma sans clés API : son identifiant, avec le mot de passe dans le champ voisin.",
+    "No monitors found at :url. Check the address, and that Uptime Kuma has at least one active monitor.": "Aucune sonde trouvée sur :url. Vérifiez l'adresse, et qu'Uptime Kuma a au moins une sonde active.",
+    "Paused monitors are not on the metrics page, so their servers show Unknown.": "Les sondes en pause ne figurent pas sur la page metrics, leurs serveurs affichent donc Inconnu.",
+    "Shows whether each server is up from its Uptime Kuma monitor, and tells you in the bell when one goes down.": "Indique si chaque serveur est en ligne d'après sa sonde Uptime Kuma, et vous avertit dans la cloche quand l'un tombe.",
+    "Uptime Kuma": "Uptime Kuma",
+    "Uptime Kuma address": "Adresse d'Uptime Kuma",
+    "Uptime Kuma answered with HTTP :status.": "Uptime Kuma a répondu avec HTTP :status.",
+    "Uptime Kuma refused the API key.": "Uptime Kuma a refusé la clé API."
+}

@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting subscriptions on Enhance control panels.": "Enhance kontrol panellerinde hosting abonelikleri oluşturur, askıya alır ve kaldırır.",
+    "Enhance: an access token allowed to manage customers and their subscriptions (Settings → Access tokens). Stored encrypted.": "Enhance: müşterileri ve aboneliklerini yönetmeye yetkili bir erişim token'ı (Settings → Access tokens). Şifreli saklanır.",
+    "Enhance: the ID of your own organisation, shown with the access tokens. Customers are created under it, on its plans; the hostname is the control panel's address.": "Enhance: kendi kuruluşunuzun kimliği, erişim token'larıyla birlikte gösterilir. Müşteriler onun altında, onun planlarıyla oluşturulur; ana bilgisayar adı kontrol panelinin adresidir."
+}
