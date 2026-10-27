@@ -154,6 +154,13 @@ and model; DeepSeek and Kimi are often cheaper. ChatGPT needs an API key with cr
 ChatGPT Plus subscription does not include the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can
 use and offers them in the field. With more than one AI plugin on, Settings → AI assistant picks which one answers.
 
+**Ollama** runs an open model (Llama, Qwen, Gemma, Mistral…) on your own server or computer, so texts never leave your
+machines and nothing is billed. Install Ollama (ollama.com), download a model (`ollama pull llama3.3`) and fill in its
+**Address** under Settings → Ollama (`http://localhost:11434/v1` when it runs on the same server). On another machine,
+start Ollama with `OLLAMA_HOST=0.0.0.0` and let only the GaiaCP server reach port 11434; the API key is only for a
+proxy in front of it that asks for one. Small models need about 8 GB of memory and write less well than the paid
+services; a slow machine may take a minute or more per answer.
+
 ## The REST API
 
 Settings → Integrations → **API keys** (super admins) makes keys for your own scripts and website: one per use, each

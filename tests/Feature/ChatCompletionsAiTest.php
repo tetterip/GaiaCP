@@ -18,11 +18,13 @@ use Plugins\DeepSeek\DeepSeekPlugin;
 use Plugins\DeepSeek\DeepSeekSettings;
 use Plugins\Kimi\KimiPlugin;
 use Plugins\Kimi\KimiSettings;
+use Plugins\Ollama\OllamaPlugin;
+use Plugins\Ollama\OllamaSettings;
 use Plugins\OpenAi\OpenAiPlugin;
 use Plugins\OpenAi\OpenAiSettings;
 use Tests\TestCase;
 
-/** DeepSeek, Kimi and ChatGPT (OpenAI) as the AI assistant's service: OpenAI-style Chat Completions with the admin's key. */
+/** DeepSeek, Kimi, ChatGPT (OpenAI) and Ollama as the AI assistant's service: OpenAI-style Chat Completions with the admin's key (Ollama: none). */
 class ChatCompletionsAiTest extends TestCase
 {
     use RefreshDatabase;
@@ -186,5 +188,32 @@ class ChatCompletionsAiTest extends TestCase
         $this->assertSame('deepseek-chat', (new DeepSeekPlugin)->model());
         $this->assertFalse((new KimiPlugin)->enabledByDefault());
         $this->assertFalse((new DeepSeekPlugin)->enabledByDefault());
+    }
+
+    public function test_ollama_runs_on_its_own_address_without_a_key(): void
+    {
+        $plugins = app(PluginManager::class);
+        $plugins->enable($plugins->find('ollama'));
+        config(['gaiacp.ai.provider' => 'ollama']);
+        Http::fake([
+            'gpu.example.lan:11434/v1/models' => Http::response(['object' => 'list', 'data' => [['id' => 'qwen3:8b', 'object' => 'model']]]),
+            'gpu.example.lan:11434/v1/chat/completions' => Http::response($this->answer('Please try port 587.')),
+        ]);
+
+        $this->assertTrue((new OllamaPlugin)->aiConfigured(), 'the default address is enough');
+        $this->assertFalse((new OllamaPlugin)->enabledByDefault());
+
+        Livewire::test(OllamaSettings::class)
+            ->assertSchemaStateSet(['ollama' => ['base_url' => 'http://localhost:11434/v1', 'api_key' => null, 'model' => null]])
+            ->fillForm(['ollama' => ['base_url' => 'http://gpu.example.lan:11434/v1', 'model' => 'qwen3:8b']])
+            ->call('save')
+            ->assertHasNoFormErrors()
+            ->callAction('testConnection')
+            ->assertNotified('Connected: qwen3:8b');
+
+        $this->assertSame('Please try port 587.', app(Assistant::class)->improve('pls try port 587', 'fix'));
+        Http::assertSent(fn (Request $request) => $request->url() === 'http://gpu.example.lan:11434/v1/chat/completions'
+            && ! $request->hasHeader('Authorization') && $request['model'] === 'qwen3:8b');
+        $this->assertSame('ollama', AiUsage::query()->sole()->provider);
     }
 }

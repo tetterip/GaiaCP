@@ -156,7 +156,8 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   they might buy, signs they may leave and what to look after (facts only: services, prices, payment history, ticket
   subjects; never who they are). Settings → Languages → Translate with AI fills a language's missing texts in batches
   (only the texts sent; a translation that loses a placeholder is left out). ChatGPT (OpenAI), DeepSeek and Kimi
-  (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models); Settings → AI
+  (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models), and so
+  is Ollama (an open model on the admin's own server or computer, no key, nothing billed); Settings → AI
   assistant picks one when several are on
 - The admin panel as an app (PWA): add it to a phone's home screen or install it from the browser, and turn on push
   notifications per device under Profile → Push notifications: the bell's notifications arrive on the phone or computer

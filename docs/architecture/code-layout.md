@@ -310,7 +310,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   typed, empty = the first of `suggestedModels()`): `plugins/DeepSeek` (api.deepseek.com) and `plugins/Kimi`
   (api.moonshot.ai/v1; `GAIACP_KIMI_BASE_URL` for Moonshot's China platform) and `plugins/OpenAi` (ChatGPT,
   api.openai.com/v1, `max_completion_tokens` up to 16000 since reasoning counts, `writesText()` keeps only chat models
-  in the list)
+  in the list) and `plugins/Ollama` (`ollama.base_url` on its page via `connectionFields()`, default
+  http://localhost:11434/v1; configured without a key, and no Authorization header is sent without one; `timeout()` 600 s)
 - Failed jobs: `App\Models\FailedJob` over Laravel's `failed_jobs`, Settings → Failed jobs (`Pages\FailedJobs`, super
   admins: View, Retry = `queue:retry`, Delete = `queue:forget`, Retry all, Delete all = `queue:flush`). The scheduler
   runs `queue:work --stop-when-empty --max-time=50` every minute unless the queue is `sync`, so jobs need no worker

@@ -20,6 +20,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   to look after). Only facts are sent (services, prices, payment history, ticket subjects), never who the client is.
 - Settings → Languages → Translate with AI (super admins): the AI assistant fills a language's missing texts, 40 at a
   time while the page is open, saved as uploaded translations; ones that lose a placeholder stay in English.
+- Ollama plugin (off until switched on): the AI assistant with an open model (Llama, Qwen, Gemma…) on your own server
+  or computer, so texts never leave your machines; Settings → Ollama takes its address and model, no key needed.
 - The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
   side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime. Every
   square is the same whole number of pixels wide.
