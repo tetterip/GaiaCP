@@ -370,7 +370,7 @@ return [
         // code; GAIACP_UPDATE_KEYS adds others for releases of your own (comma-separated). With no key at all, the SHA-256
         // alone is checked.
         'keys' => array_values(array_filter(array_merge([
-            'hQFC6OUs81ijS/OKKE9MN7aNA11S4uQtTZG9l/9Jc9U=', // official, made 2026-10-26 (php bin/release-key keygen)
+            'uWY+PDTVEoOmd9Nw3O5FnC7+9iryo5k3JpgtwZT6poA=', // official, made 2026-10-27 (php bin/release-key keygen)
         ], array_map('trim', explode(',', (string) env('GAIACP_UPDATE_KEYS', '')))))),
     ],
 
