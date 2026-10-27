@@ -3,10 +3,14 @@
 namespace Tests\Feature;
 
 use App\Filament\Pages\Updates;
+use App\Mail\DailySummaryMail;
+use App\Models\ActivityLog;
 use App\Models\User;
+use App\Reports\DailySummary;
 use App\Support\Version;
 use App\Updates\GitHubReleases;
 use App\Updates\Updater;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Facades\File;
@@ -358,6 +362,64 @@ class UpdatesTest extends TestCase
         $this->actingAs(User::factory()->create());
 
         Livewire::test(Updates::class)->assertSee('GitHub answered 403');
+    }
+
+    public function test_the_daily_check_rings_the_bell_once_per_new_release(): void
+    {
+        $super = User::factory()->create(['super_admin' => true]);
+        $limited = User::factory()->create(['super_admin' => false]);
+        $this->fakeGitHub();
+
+        $this->artisan('gaiacp:check-for-update')->expectsOutputToContain('→ '.self::NEXT)->assertSuccessful();
+        $this->artisan('gaiacp:check-for-update')->expectsOutputToContain('told before')->assertSuccessful();
+
+        $this->assertSame(1, ActivityLog::query()->where('event', 'gaiacp.update_available')->count());
+        $this->assertSame(['GaiaCP '.self::NEXT.' is out'], $super->notifications()->pluck('data')->pluck('title')->all());
+        $this->assertStringContainsString('Settings → Updates', $super->notifications()->first()->data['body']);
+        $this->assertSame(0, $limited->notifications()->count());
+    }
+
+    public function test_a_git_checkout_is_told_to_deploy(): void
+    {
+        $super = User::factory()->create(['super_admin' => true]);
+        File::ensureDirectoryExists($this->root.'/.git');
+        $this->fakeGitHub();
+
+        $this->artisan('gaiacp:check-for-update')->assertSuccessful();
+
+        $this->assertStringContainsString('deploy to update it', $super->notifications()->first()->data['body']);
+    }
+
+    public function test_the_daily_check_is_quiet_when_up_to_date(): void
+    {
+        $this->fakeGitHub(version: Version::current());
+
+        $this->artisan('gaiacp:check-for-update')->expectsOutputToContain('is the latest')->assertSuccessful();
+
+        $this->assertSame(0, ActivityLog::query()->where('event', 'gaiacp.update_available')->count());
+    }
+
+    public function test_the_daily_check_is_quiet_when_off_or_github_fails(): void
+    {
+        Http::fake(['api.github.com/*' => Http::response(['message' => 'Server Error'], 500)]);
+        $this->artisan('gaiacp:check-for-update')->expectsOutputToContain('GitHub answered 500')->assertSuccessful();
+
+        config(['gaiacp.updates.check' => false]);
+        $this->artisan('gaiacp:check-for-update')->expectsOutputToContain('is off')->assertSuccessful();
+
+        Http::assertSentCount(1);
+        $this->assertSame(0, ActivityLog::query()->where('event', 'gaiacp.update_available')->count());
+    }
+
+    public function test_the_daily_summary_mentions_a_new_release(): void
+    {
+        $this->fakeGitHub();
+        $this->artisan('gaiacp:check-for-update')->assertSuccessful();
+
+        $summary = DailySummary::between(CarbonImmutable::now()->subDay(), CarbonImmutable::now()->addMinute());
+
+        $this->assertFalse($summary->isEmpty());
+        $this->assertStringContainsString('GaiaCP '.self::NEXT.' is out', (new DailySummaryMail($summary))->render());
     }
 
     public function test_the_command_checks_and_updates(): void

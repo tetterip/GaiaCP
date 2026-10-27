@@ -3163,5 +3163,8 @@
     "Written by the AI assistant from the guide: check it against the sections it links to.": "Γράφτηκε από τον βοηθό AI με βάση τον οδηγό: έλεγξέ το στις ενότητες που δείχνει.",
     "You can't see that part of the panel, so the assistant can't answer it.": "Δεν έχεις πρόσβαση σε εκείνο το μέρος του panel, οπότε ο βοηθός δεν μπορεί να το απαντήσει.",
     "e.g. Who owes more than €100?": "π.χ. Ποιος χρωστά πάνω από 100 €;",
-    "machine translated": "μηχανική μετάφραση"
+    "machine translated": "μηχανική μετάφραση",
+    "GaiaCP :version is out": "Το GaiaCP :version κυκλοφόρησε",
+    "Installed here: :version. This copy is deployed from Git: deploy to update it.": "Εγκατεστημένη εδώ: :version. Αυτό το αντίγραφο ενημερώνεται από το Git: κάνε deploy για να το ενημερώσεις.",
+    "Installed here: :version. Update it under Settings → Updates.": "Εγκατεστημένη εδώ: :version. Ενημέρωσέ το από Ρυθμίσεις → Ενημερώσεις."
 }

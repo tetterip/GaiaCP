@@ -76,6 +76,7 @@ class AdminAlerts
         'backup.failed' => null,
         'update.failed' => null,
         'plugin.update_available' => null,
+        'gaiacp.update_available' => null,
         'webhook.failing' => null,
         'webhook.disabled' => null,
         'scheduler.stopped' => null,
@@ -284,6 +285,14 @@ class AdminAlerts
                 __('Installed here: :version. Update it from the plugin catalogue.', ['version' => $log->properties['installed'] ?? '']),
                 'heroicon-o-puzzle-piece', 'info',
                 PluginCatalogue::getUrl(panel: 'admin'),
+            ],
+            'gaiacp.update_available' => [
+                __('GaiaCP :version is out', ['version' => $log->properties['version'] ?? '']),
+                ($log->properties['git'] ?? false)
+                    ? __('Installed here: :version. This copy is deployed from Git: deploy to update it.', ['version' => $log->properties['installed'] ?? ''])
+                    : __('Installed here: :version. Update it under Settings → Updates.', ['version' => $log->properties['installed'] ?? '']),
+                'heroicon-o-arrow-up-circle', 'info',
+                Updates::getUrl(panel: 'admin'),
             ],
             'scheduler.stopped' => [
                 isset($log->properties['last_run'])

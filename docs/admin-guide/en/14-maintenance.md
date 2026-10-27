@@ -24,6 +24,10 @@ step fails after the swap, the old code is put back; the backup is there for the
 `php artisan gaiacp:update` (`--check` only looks). Read each release's notes before you update: GaiaCP is still in
 alpha, and things can change between versions.
 
+GaiaCP looks for a new release once a day. When one is out, super admins get a bell notification (once per version)
+and the daily summary email mentions it; a copy deployed from Git is told to deploy instead. `GAIACP_UPDATE_CHECK=false`
+in `.env` turns the daily look off.
+
 An install deployed from Git has no Update button: it is updated by deploying.
 
 ## System health

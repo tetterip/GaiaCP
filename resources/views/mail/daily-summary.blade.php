@@ -7,6 +7,12 @@
 
 {{ __('Since :time', ['time' => $summary->since->format(\App\Providers\AppServiceProvider::dateFormat().' H:i')]) }}
 
+@foreach ($summary->updates as $log)
+**{{ __('GaiaCP :version is out', ['version' => $log->properties['version'] ?? '']) }}** {{ ($log->properties['git'] ?? false)
+    ? __('Installed here: :version. This copy is deployed from Git: deploy to update it.', ['version' => $log->properties['installed'] ?? ''])
+    : __('Installed here: :version. Update it under Settings → Updates.', ['version' => $log->properties['installed'] ?? '']) }}
+
+@endforeach
 @if ($summary->unmatchedPayments->isNotEmpty())
 ## {{ __('Online payments to record by hand') }} ({{ $summary->unmatchedPayments->count() }})
 

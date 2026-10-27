@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- New GaiaCP releases are announced: a daily check rings the bell for super admins once per version (linking to
+  Settings → Updates, or saying to deploy on a copy from Git) and the daily summary email mentions it.
+  `GAIACP_UPDATE_CHECK=false` turns it off.
 - Settings → Updates says when GitHub's rate limit stopped the check (60 requests an hour per server address without
   a token, shared with other sites on it), when to try again, and that `GAIACP_UPDATE_TOKEN` raises it, instead of
   "GitHub answered 403".

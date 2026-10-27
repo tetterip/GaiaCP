@@ -97,6 +97,12 @@ Schedule::command('gaiacp:prune-logs')
     ->withoutOverlapping()
     ->onOneServer();
 
+// Settings → Updates: the bell (and the daily summary) once for each new GaiaCP release
+Schedule::command('gaiacp:check-for-update')
+    ->dailyAt('05:50')
+    ->withoutOverlapping()
+    ->onOneServer();
+
 // Settings → Plugins → Plugin catalogue: a fresh copy, and the bell once for each new version of an installed plugin
 Schedule::command('gaiacp:check-plugin-catalogue')
     ->dailyAt('05:40')

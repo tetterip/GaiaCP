@@ -103,6 +103,7 @@ Read the file for the area you are changing before you change it; don't read the
   import from a WHMCS database (only read); the dry run lists counts and problems and saves nothing
 - `php artisan gaiacp:install [--no-interaction --db-connection= ... --admin-email=]`: set up a new install (same as `/install`)
 - `php artisan gaiacp:update [--check]`: update to the latest release (backup first); `--check` only looks
+- `php artisan gaiacp:check-for-update`: ring the bell once per new GaiaCP release (daily at 05:50; also in the daily summary)
 - `php artisan migrate:fresh --seed`: reset the dev database with demo data (admin@example.com / password)
 - `php artisan gaiacp:demo-reset [--rebuild]`: the public demo only (`GAIACP_DEMO=true`, `docs/demo-site.md`): put its
   made-up data (`DemoSeeder`) back; every `GAIACP_DEMO_RESET_MINUTES` from the scheduler
