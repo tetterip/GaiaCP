@@ -3192,5 +3192,19 @@
     "Ticket reply": "Ticketantwoord",
     "Ticket summary": "Ticketsamenvatting",
     "Write a knowledge base article": "Kennisbankartikel schrijven",
-    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Geschreven door :service uit dit ticket, zonder de gegevens van de klant. Controleer elke stap: het wordt ongepubliceerd opgeslagen, zodat u het afmaakt en publiceert."
+    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Geschreven door :service uit dit ticket, zonder de gegevens van de klant. Controleer elke stap: het wordt ongepubliceerd opgeslagen, zodat u het afmaakt en publiceert.",
+    "From :service, which saw this client's services, prices, payment history and ticket subjects, never who they are. Check them before you act.": "Van :service, die de diensten, prijzen, betaalgeschiedenis en ticketonderwerpen van deze klant zag, nooit wie het is. Controleer ze voordat u iets doet.",
+    "Look after": "Aandacht",
+    "Nothing to suggest about this client now.": "Nu niets voor te stellen over deze klant.",
+    "Offer": "Aanbod",
+    "On a client's page: Suggestions lists what they might buy, signs they may leave and what to look after. Sends their services, prices, payment history and ticket subjects, and the products on offer; not who they are. Only for admins who also see billing.": "Op de pagina van een klant: Suggesties noemt wat hij zou kunnen kopen, tekenen dat hij kan vertrekken en waar u op moet letten. Verstuurt zijn diensten, prijzen, betaalgeschiedenis en ticketonderwerpen, en de aangeboden producten; niet wie het is. Alleen voor beheerders die ook de facturatie zien.",
+    "On an unpaid payment notice: Personal reminder rewrites the reminder email for how the client pays, friendlier for one who is rarely late, firmer for one who often is; you read it and send it. Sends the email template's text, the amount, the days and how the client paid before; not who they are.": "Bij een onbetaalde betalingsmelding: Persoonlijke herinnering herschrijft de herinneringsmail naar hoe de klant betaalt, vriendelijker voor wie zelden te laat is, steviger voor wie dat vaak is; u leest en verstuurt hem. Verstuurt de tekst van de e-mailsjabloon, het bedrag, de dagen en hoe de klant eerder betaalde; niet wie het is.",
+    "Personal payment reminders": "Persoonlijke betalingsherinneringen",
+    "Personal reminder": "Persoonlijke herinnering",
+    "Placeholders such as {$invoice_total} are filled in when it is sent.": "Plaatshouders zoals {$invoice_total} worden bij verzending ingevuld.",
+    "Risk": "Risico",
+    "Suggestions": "Suggesties",
+    "Suggestions about clients": "Suggesties over klanten",
+    "Suggestions by the AI assistant": "Suggesties van de AI-assistent",
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Geschreven door :service naar hoe deze klant betaalt, uit de e-mailsjabloon. Pas hem aan als u wilt; Versturen mailt hem nu naar :email."
 }

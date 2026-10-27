@@ -3192,5 +3192,19 @@
     "Ticket reply": "Risposta al ticket",
     "Ticket summary": "Riassunto del ticket",
     "Write a knowledge base article": "Scrivi un articolo della knowledge base",
-    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Scritto da :service da questo ticket, senza i dati del cliente. Controllate ogni passaggio: viene salvato non pubblicato, perché lo completiate e lo pubblichiate voi."
+    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Scritto da :service da questo ticket, senza i dati del cliente. Controllate ogni passaggio: viene salvato non pubblicato, perché lo completiate e lo pubblichiate voi.",
+    "From :service, which saw this client's services, prices, payment history and ticket subjects, never who they are. Check them before you act.": "Da :service, che ha visto i servizi, i prezzi, lo storico dei pagamenti e gli oggetti dei ticket di questo cliente, mai chi è. Controllateli prima di agire.",
+    "Look after": "Da seguire",
+    "Nothing to suggest about this client now.": "Niente da suggerire su questo cliente per ora.",
+    "Offer": "Offerta",
+    "On a client's page: Suggestions lists what they might buy, signs they may leave and what to look after. Sends their services, prices, payment history and ticket subjects, and the products on offer; not who they are. Only for admins who also see billing.": "Nella pagina di un cliente: Suggerimenti elenca cosa potrebbe acquistare, segnali che potrebbe andarsene e cosa seguire. Invia i suoi servizi, prezzi, storico dei pagamenti e oggetti dei ticket, e i prodotti in offerta; non chi è. Solo per gli amministratori che vedono anche la fatturazione.",
+    "On an unpaid payment notice: Personal reminder rewrites the reminder email for how the client pays, friendlier for one who is rarely late, firmer for one who often is; you read it and send it. Sends the email template's text, the amount, the days and how the client paid before; not who they are.": "In un avviso di pagamento non pagato: Promemoria personale riscrive l’email di promemoria in base a come paga il cliente, più cordiale per chi è raramente in ritardo, più deciso per chi lo è spesso; voi la leggete e la inviate. Invia il testo del modello email, l’importo, i giorni e come ha pagato il cliente in passato; non chi è.",
+    "Personal payment reminders": "Promemoria di pagamento personali",
+    "Personal reminder": "Promemoria personale",
+    "Placeholders such as {$invoice_total} are filled in when it is sent.": "I segnaposto come {$invoice_total} vengono compilati all’invio.",
+    "Risk": "Rischio",
+    "Suggestions": "Suggerimenti",
+    "Suggestions about clients": "Suggerimenti sui clienti",
+    "Suggestions by the AI assistant": "Suggerimenti dell’assistente IA",
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Scritto da :service in base a come paga questo cliente, dal modello email. Modificatelo se volete; Invia lo spedisce ora a :email."
 }

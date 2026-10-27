@@ -210,6 +210,8 @@ return [
             'ticket_reply' => true, // Draft a ticket reply from the conversation, the client's services and the knowledge base
             'ticket_summary' => true, // Summarise a ticket and suggest its priority and department
             'kb_article' => true, // Write a knowledge base article from a solved ticket
+            'reminders' => true, // Personal reminder: a payment notice email rewritten for how the client pays
+            'clients' => true, // Suggestions on a client's page: what they might buy, signs they may leave
         ],
         'monthly_tokens' => null, // tokens (sent + received) all admins may use a calendar month; null = no limit
     ],

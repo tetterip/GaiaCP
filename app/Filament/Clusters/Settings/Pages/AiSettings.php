@@ -95,6 +95,12 @@ class AiSettings extends SettingsFormPage
                         Toggle::make('ai.features.kb_article')
                             ->label('Knowledge base articles from tickets')
                             ->helperText(__('On an answered ticket: Write a knowledge base article for anyone with the same question, saved as a draft once you agree. Sends the conversation without the client\'s details or domain names.')),
+                        Toggle::make('ai.features.reminders')
+                            ->label('Personal payment reminders')
+                            ->helperText(__('On an unpaid payment notice: Personal reminder rewrites the reminder email for how the client pays, friendlier for one who is rarely late, firmer for one who often is; you read it and send it. Sends the email template\'s text, the amount, the days and how the client paid before; not who they are.')),
+                        Toggle::make('ai.features.clients')
+                            ->label('Suggestions about clients')
+                            ->helperText(__('On a client\'s page: Suggestions lists what they might buy, signs they may leave and what to look after. Sends their services, prices, payment history and ticket subjects, and the products on offer; not who they are. Only for admins who also see billing.')),
                         Toggle::make('ai.features.domains')
                             ->label('Suggest domain names')
                             ->helperText(__('In the client area\'s domain search, a Suggest other names button that clients and visitors press: names close to the one searched, each checked like a search. Sends only the name searched. Each press uses tokens, so a client or an address gets at most :count presses an hour.', ['count' => SearchDomains::AI_PER_HOUR])),

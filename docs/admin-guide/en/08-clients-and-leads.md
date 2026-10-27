@@ -28,6 +28,8 @@ The buttons at the top:
   client area as they see it, with a bar to go back (it works before they are invited, and leaves no trace in their
   sign-ins). The same menu turns their login off and on.
 - **Credit** → add or take off credit, when client credit is on.
+- **Suggestions** (with the AI assistant on, for admins who also see billing): what the client might buy, signs they
+  may leave and what to look after, from their services, prices, payment history and ticket subjects. Nothing is saved.
 
 When a client changes their name, company, tax details or address in the client area, the change waits for you: the
 client page shows **Review requested changes** to approve or decline it, and the Clients menu shows a count. Email and

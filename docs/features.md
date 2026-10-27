@@ -151,7 +151,10 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   the admin guide's closest sections. On a ticket it drafts a reply (from the conversation, the client's services and
   the closest knowledge base articles), summarises it with a suggested priority, department and mood (kept under the
   subject in the list until the client writes again), and turns an answered one into a draft knowledge base article;
-  the conversation goes without notes, files or the client's name, company, emails and phone numbers. ChatGPT (OpenAI), DeepSeek and Kimi
+  the conversation goes without notes, files or the client's name, company, emails and phone numbers. A payment
+  notice's Personal reminder rewrites its reminder email for how the client pays, and a client's Suggestions list what
+  they might buy, signs they may leave and what to look after (facts only: services, prices, payment history, ticket
+  subjects; never who they are). ChatGPT (OpenAI), DeepSeek and Kimi
   (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models); Settings → AI
   assistant picks one when several are on
 - The admin panel as an app (PWA): add it to a phone's home screen or install it from the browser, and turn on push

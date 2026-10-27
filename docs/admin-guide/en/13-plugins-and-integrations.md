@@ -134,6 +134,16 @@ What they send is the ticket's conversation, never its notes or files, with the 
 addresses and phone numbers replaced by placeholders (the reply draft gets the first name back); the article also
 hides the client's domain names.
 
+Two more look at one client, without sending who they are:
+
+- **Personal payment reminders**: on an unpaid payment notice, **Personal reminder** rewrites the reminder email (its
+  Email templates text, placeholders kept) for how the client pays. It sends that text, the amount and days, and the
+  client's record of the last 24 months (how many notices were paid late and by how much, what else is overdue);
+- **Suggestions about clients**: on a client's page, **Suggestions** lists what they might buy, signs they may leave
+  and what to look after. It sends their services (product, cycle, price, since when, each domain only as "site 1",
+  "site 2"…), warnings that their hosting was nearly full, open cancellation requests, the last year's ticket subjects
+  and your products on offer.
+
 **ChatGPT** (OpenAI), **DeepSeek** and **Kimi** (Moonshot AI) work the same way, each with its own plugin, API key
 and model; DeepSeek and Kimi are often cheaper. ChatGPT needs an API key with credit from platform.openai.com: a
 ChatGPT Plus subscription does not include the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can
