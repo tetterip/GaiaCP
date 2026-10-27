@@ -5,10 +5,12 @@ namespace App\Filament\Resources\Orders\Pages;
 use App\Actions\PlaceOrder;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Models\Client;
+use App\Models\Coupon;
 use App\Models\Service;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\ValidationException;
 
 class CreateOrder extends CreateRecord
 {
@@ -19,7 +21,12 @@ class CreateOrder extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $placer = app(PlaceOrder::class);
-        $order = $placer->handle(Client::findOrFail($data['client_id']), array_values($data['items']), $data['notes'] ?? null);
+        try {
+            $order = $placer->handle(Client::findOrFail($data['client_id']), array_values($data['items']), $data['notes'] ?? null,
+                coupon: filled($data['coupon_id'] ?? null) ? Coupon::find($data['coupon_id']) : null);
+        } catch (ValidationException $e) {
+            throw isset($e->errors()['coupon']) ? ValidationException::withMessages(['data.coupon_id' => $e->errors()['coupon']]) : $e;
+        }
 
         foreach ($placer->setupErrors as $id => $error) {
             Notification::make()

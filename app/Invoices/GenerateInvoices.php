@@ -157,7 +157,12 @@ class GenerateInvoices
         // The product options picked, but not those hidden from clients.
         $options = ProductOptions::describe($service->options);
 
-        return mb_substr($label.' · '.$service->billing_cycle->getLabel().($options !== '' ? ' · '.$options : ''), 0, 255);
+        // The coupon that lowered it: on its first payment, and on every one when it is recurring.
+        $coupon = $service->coupon_id !== null && $service->coupon !== null
+            && ($service->coupon->recurring || ($service->relationLoaded('payments') ? $service->payments->isEmpty() : $service->payments()->doesntExist()))
+            ? ' · '.__('Coupon :code', ['code' => $service->coupon->code]) : '';
+
+        return mb_substr($label.' · '.$service->billing_cycle->getLabel().($options !== '' ? ' · '.$options : '').$coupon, 0, 255);
     }
 
     public static function period(InvoiceItem $item): string

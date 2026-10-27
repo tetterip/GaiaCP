@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\Service;
 use App\Models\Tld;
 use App\Models\User;
+use App\Support\Coupons;
 use App\Support\Currencies;
 use App\Support\Demo;
 use App\Support\DemoSnapshot;
@@ -500,7 +501,7 @@ class ClientOrder
     /**
      * Places the cart's items (`lines`), or one choice of the order form, as one order with one payment notice.
      *
-     * @param  array<string, mixed>  $data  `lines` (or the order form's fields), `notes`, `accept_terms`
+     * @param  array<string, mixed>  $data  `lines` (or the order form's fields), `notes`, `accept_terms`, `coupon` (a code)
      */
     public function place(Client $client, array $data): Order
     {
@@ -515,7 +516,14 @@ class ClientOrder
             $terms = TermsOfService::acceptance();
         }
 
-        $order = $this->placeOrder->handle($client, $items, filled($data['notes'] ?? null) ? trim($data['notes']) : null, $terms);
+        $coupon = null;
+
+        if (filled($data['coupon'] ?? null)) {
+            $coupon = Coupons::find($data['coupon']);
+            Coupons::check($coupon, $client, $items);
+        }
+
+        $order = $this->placeOrder->handle($client, $items, filled($data['notes'] ?? null) ? trim($data['notes']) : null, $terms, $coupon);
 
         ActivityLog::record('order.client_placed', "Order #{$order->id} placed in the client area", client: $client, properties: array_filter(['order_id' => $order->id, 'terms_version' => $order->terms_version]));
         $this->notifyAdmins($order);

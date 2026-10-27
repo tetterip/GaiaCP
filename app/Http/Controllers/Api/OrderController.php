@@ -11,6 +11,7 @@ use App\Http\Resources\Api\OrderResource;
 use App\Models\Client;
 use App\Models\Order;
 use App\Provisioning\ProvisioningException;
+use App\Support\Coupons;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -55,7 +56,13 @@ class OrderController extends ApiController
             throw ValidationException::withMessages(['items' => collect($e->errors())->flatten()->all()]);
         }
 
-        $order = $placer->handle($client, $items, $request->validated('notes'));
+        $coupon = null;
+
+        if (filled($request->validated('coupon'))) {
+            Coupons::check($coupon = Coupons::find($request->validated('coupon')), $client, $items);
+        }
+
+        $order = $placer->handle($client, $items, $request->validated('notes'), coupon: $coupon);
 
         return (new OrderResource($order->load(['services.domainDetails', 'invoices'])))
             ->additional(['setup_errors' => (object) $placer->setupErrors])
