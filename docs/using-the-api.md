@@ -104,6 +104,9 @@ The answer is the order with its items (pending services) and `invoice_ids`: the
 to the client, as for an order in the panel. Items whose product says "set up on order" are set up at once;
 `setup_errors` lists any that could not be. Products list their ids and prices at `/products`.
 
+Add `"coupon": "SPRING"` for a coupon (Billing → Coupons): the order is refused with a 422 under `coupon` when the
+client can't use it, and the answer shows the `coupon` and the `discount_cents` it took off.
+
 ### Record a payment
 
 When the money arrives (a bank transfer, cash), record it for the whole payment notice:

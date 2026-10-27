@@ -6,6 +6,7 @@ use App\Actions\ClientOrder;
 use App\Filament\Client\Concerns\OrderForm;
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Models\Client;
+use App\Support\Coupons;
 use App\Support\OrderCatalogue;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -71,6 +72,7 @@ class Order extends Page
 
     public function mount(?string $group = null): void
     {
+        Coupons::rememberFromLink(); // a `?coupon=CODE` link: entered in the cart
         $option = in_array(request()->query('domain_option'), [ClientOrder::REGISTER, ClientOrder::TRANSFER], true) ? request()->query('domain_option') : ClientOrder::OWN;
         $domain = is_string(request()->query('domain')) ? request()->query('domain') : null;
         $product = request()->query('product');

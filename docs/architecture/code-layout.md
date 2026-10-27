@@ -394,6 +394,16 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   lead that became them) accepts or declines in the table; `quote.sent` rings the client's bell (`ClientAlerts`).
   REST API: `leads` and `quotes` areas (`Api\LeadController`, `Api\QuoteController`); a `lead.created` with no admin
   behind it (the API) rings Sales
+- Coupons (Billing → Coupons, `AdminArea::Sales`, `CouponResource`): `coupons` (`Coupon`, code stored upper case,
+  `CouponType` percent / fixed in base-currency cents, `recurring`, `product_ids` / `tlds` (both empty = everything),
+  `starts_on` / `ends_on`, `max_uses`, `once_per_client`, `new_clients_only`, `active`). `App\Support\Coupons`:
+  `problem()` / `check()` (a use = an order with `orders.coupon_id` not cancelled), `apply()` lowers each covered
+  item's `first_payment_cents` by the discount on its price (a domain's: its registration price; never the setup fee)
+  and with `recurring` its `price_cents` too, setting `coupon_id` on it. `PlaceOrder::handle(coupon:)` locks the coupon,
+  checks it again, stores `orders.coupon_id` / `discount_cents` and `services.coupon_id`, and records a notice left at
+  0 as paid. The client Cart takes the code (session `client_order.coupon`, also from `?coupon=` on Order, the public
+  order page and Cart), New order has a Coupon select, `POST /api/v1/orders` a `coupon`. `GenerateInvoices::describe()`
+  adds "Coupon CODE" to the line (first payment, or every one when recurring)
 - `app/Support/Settings.php` + `app/Filament/Clusters/Settings/Pages/`: admin-editable settings, stored
   in `settings` and loaded over `config('gaiacp.*')` at boot, so code keeps reading `config()`. Keys in
   `Settings::ENCRYPTED` (FTP and zip passwords) are stored encrypted and never sent back to the form (blank keeps them). New editable setting:

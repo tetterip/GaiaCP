@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property CarbonImmutable|null $completed_at
  * @property CarbonImmutable|null $terms_accepted_at placed in the client area accepting the terms of service (TermsOfService), with terms_version
+ * @property int|null $discount_cents what its coupon took off the first payment (set by PlaceOrder, with coupon_id)
  */
 #[Fillable(['client_id', 'status', 'notes', 'completed_at'])]
 class Order extends Model
@@ -30,6 +31,7 @@ class Order extends Model
             'status' => OrderStatus::class,
             'completed_at' => 'immutable_datetime',
             'terms_accepted_at' => 'immutable_datetime',
+            'discount_cents' => 'integer',
         ];
     }
 
@@ -37,6 +39,12 @@ class Order extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    /** @return BelongsTo<Coupon, $this> */
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     /** @return HasMany<Service, $this> */

@@ -202,6 +202,11 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   client area invitation and places the order with its payment notice; the bell tells Sales. Sent quotes expire after
   their date; Duplicate starts a new one from an old one. Clients also find them under Billing → Quotes in the client
   area, and the REST API adds leads (a contact form on your website) and writes, sends and accepts quotes
+- Coupons (Billing → Coupons): a code for a percentage or a fixed amount off each item it covers (chosen products and
+  domain endings, or everything), on the first payment only or on renewals too, never on a setup fee; valid between
+  two dates, with a usage limit, once per client or for new clients only. Clients enter it in the cart (or follow a
+  `?coupon=CODE` link), admins pick it on New order, the REST API takes it with an order. The notice line names it;
+  when nothing is left to pay, the order's notice is paid at once
 - Knowledge base (Support → Knowledge base): help articles in categories, a text per language (Markdown), shown in
   the client area once published, with a search that ignores accents and case, views and "Was this helpful?" counts.
   While a client writes a new ticket, the articles matching its subject show under it. Settings → Support →
@@ -232,7 +237,7 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
 
 - Payment gateways other than Stripe, saved cards and automatic charges, refunds from GaiaCP (refund in Stripe)
 - Legal invoices (myDATA): those are issued in the accounting tool; GaiaCP's payment notices only say what is owed
-- Proration other than an upgrade's "charge the difference now", coupons; credit paying part of a line
+- Proration other than an upgrade's "charge the difference now"; credit paying part of a line
 - Matching bank statements to payment notices (bank CSV import, RF payment codes): payments are recorded by hand or by a payment plugin
 
 ## Build order

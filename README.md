@@ -102,7 +102,7 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
   there. No saved cards, no automatic charges.
 - **It doesn't issue legal invoices.** Its payment notices track what is owed and what was paid; the invoices
   themselves come from your accounting tool.
-- No payment gateways other than Stripe yet, no coupons, and no bank statement matching.
+- No payment gateways other than Stripe yet, and no bank statement matching.
 
 ## Installation
 

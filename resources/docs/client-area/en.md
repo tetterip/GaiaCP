@@ -139,6 +139,8 @@ To use it, open an unpaid payment notice and press **Pay with credit**.
 
 Press **Add to cart** and the **Cart** opens (the cart icon at the top of every page opens it too, with how many items are in it). Press **Order something else** to add more, such as two domains and three hosting plans, or the bin next to an item to take it out. Everything in the cart becomes one order with one payment notice.
 
+If you have a **coupon code**, type it in the cart: you see what it takes off before you place the order (a link with a code fills it in for you). A coupon may lower only the first payment or every renewal too, and it never lowers a setup fee.
+
 <!-- if:terms -->
 Before you place it, read our Terms of Service (the link next to the box) and tick **I accept the Terms of Service**.
 <!-- endif -->

@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property CarbonImmutable $next_due_date
  */
 #[Fillable([
-    'client_id', 'order_id', 'parent_service_id', 'type', 'product_id', 'server_id', 'label', 'domain', 'username', 'password', 'package', 'options',
+    'client_id', 'order_id', 'coupon_id', 'parent_service_id', 'type', 'product_id', 'server_id', 'label', 'domain', 'username', 'password', 'package', 'options',
     'price_cents', 'first_payment_cents', 'new_price_cents', 'new_price_from', 'currency', 'billing_cycle', 'start_date', 'next_due_date',
     'status', 'suspension_reason', 'notes', 'auto_setup', 'override_suspend_until', 'auto_terminate', 'auto_terminate_reason',
     'auto_renew', 'client_visible',
@@ -138,6 +138,12 @@ class Service extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    /** @return BelongsTo<Coupon, $this> the coupon that lowered its first payment, or its price too when recurring */
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     /** @return HasOne<Domain, $this> Registrar details of a domain service. */

@@ -5,33 +5,40 @@ namespace App\Actions;
 use App\Enums\AutoSetup;
 use App\Enums\BillingCycle;
 use App\Enums\DomainRegistrationType;
+use App\Enums\InvoiceStatus;
 use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Invoices\InvoiceOrder;
 use App\Mail\ClientMailer;
 use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
+use App\Support\Coupons;
 use App\Support\DomainName;
 use App\Support\ProductOptions;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 /**
  * Creates an order and its items as pending services. Each item takes its product's
  * auto-setup choice: items set up "as soon as an order is placed" are set up right after
- * (CompleteOrder::setUp), the rest on their first payment or when the order is completed.
+ * (CompleteOrder::setUp), the rest on their first payment or when the order is completed. A coupon lowers the items it
+ * covers (App\Support\Coupons); when it leaves nothing to pay, the order's notice is recorded as paid.
  */
 class PlaceOrder
 {
     /** @var array<int, string> service id => why an item to set up on order is still pending */
     public array $setupErrors = [];
 
-    public function __construct(private ClientMailer $mailer, private CompleteOrder $complete, private InvoiceOrder $invoices) {}
+    public function __construct(private ClientMailer $mailer, private CompleteOrder $complete, private InvoiceOrder $invoices, private RecordInvoicePayment $payments) {}
 
     /**
      * @param  list<array<string, mixed>>  $items  service fields (prices in cents, options included) plus the
@@ -39,8 +46,11 @@ class PlaceOrder
      *                                             item's index in parent (an earlier item), and for a domain
      *                                             registration_type, registrar_id, epp_code, nameservers, auto_renew
      * @param  array{terms_accepted_at?: mixed, terms_version?: string|null}  $terms  the client accepted the terms of service (TermsOfService::acceptance())
+     * @param  Coupon|null  $coupon  lowers the items it covers (Coupons::apply()), checked again here so its limits hold
+     *
+     * @throws ValidationException under `coupon` when the coupon can't be used
      */
-    public function handle(Client $client, array $items, ?string $notes = null, array $terms = []): Order
+    public function handle(Client $client, array $items, ?string $notes = null, array $terms = [], ?Coupon $coupon = null): Order
     {
         // A hosting item without a domain is for the order's domain, when there is exactly one.
         $domains = collect($items)->filter(fn (array $item) => self::type($item) === ServiceType::Domain)->map(fn (array $item) => DomainName::normalize($item['domain'] ?? null))->filter();
@@ -52,8 +62,18 @@ class PlaceOrder
             }
         }
 
-        $order = DB::transaction(function () use ($client, $items, $notes, $domains, $terms) {
+        $order = DB::transaction(function () use ($client, $items, $notes, $domains, $terms, $coupon) {
+            $discount = null;
+
+            if ($coupon !== null) {
+                // Locked, so two orders at once can't both take a coupon's last use.
+                $coupon = Coupon::query()->lockForUpdate()->find($coupon->id);
+                Coupons::check($coupon, $client, $items);
+                ['items' => $items, 'discount_cents' => $discount] = Coupons::apply($coupon, $items, $client->currencyCode());
+            }
+
             $order = (new Order(['client_id' => $client->id, 'status' => OrderStatus::Pending, 'notes' => $notes]))->forceFill($terms);
+            $order->forceFill(['coupon_id' => $coupon?->id, 'discount_cents' => $discount]);
             $order->save();
             $today = today();
 
@@ -68,7 +88,7 @@ class PlaceOrder
                 $cycle = $item['billing_cycle'] ?? BillingCycle::Annually;
 
                 $service = $order->services()->create([
-                    ...Arr::only($item, ['product_id', 'label', 'price_cents', 'first_payment_cents', 'billing_cycle', 'package']),
+                    ...Arr::only($item, ['product_id', 'label', 'price_cents', 'first_payment_cents', 'billing_cycle', 'package', 'coupon_id']),
                     'client_id' => $client->id,
                     'parent_service_id' => $parent?->id,
                     'type' => $type,
@@ -100,13 +120,22 @@ class PlaceOrder
                 }
             }
 
-            ActivityLog::record('order.placed', "Order #{$order->id} placed with {$order->services()->count()} item(s)", client: $client, properties: ['order_id' => $order->id]);
+            ActivityLog::record('order.placed', "Order #{$order->id} placed with {$order->services()->count()} item(s)".($coupon ? " and coupon {$coupon->code}" : ''), client: $client, properties: array_filter(['order_id' => $order->id, 'coupon_id' => $coupon?->id]));
 
             return $order;
         });
 
         $this->mailer->orderConfirmation($order);
-        $this->invoices->handle($order); // its payment notice, so the order shows as owed until paid
+        $notice = $this->invoices->handle($order); // its payment notice, so the order shows as owed until paid
+
+        // A coupon may leave nothing to pay: the notice is paid at once, so the order goes ahead as if paid.
+        if ($notice !== null && $order->coupon_id !== null && $notice->status === InvoiceStatus::Unpaid && $notice->total_cents === 0) {
+            try {
+                $this->payments->handle($notice, CarbonImmutable::today(), PaymentMethod::Other->value, 'Coupon');
+            } catch (Throwable $e) {
+                report($e);
+            }
+        }
 
         // Outside the transaction: the order stands even if a panel or registrar fails.
         $onOrder = $order->services()->where('auto_setup', AutoSetup::OnOrder)->pluck('id')->flip();

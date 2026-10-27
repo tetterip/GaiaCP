@@ -271,6 +271,8 @@ class OpenApi
             'Order' => ['type' => 'object', 'properties' => [
                 'id' => $int, 'client_id' => $int, 'status' => self::enum(OrderStatus::class), 'notes' => $nullableString,
                 'total_cents' => ['type' => 'integer', 'description' => 'What the first payment of every item comes to'],
+                'coupon' => ['type' => ['string', 'null'], 'description' => 'The coupon code used'],
+                'discount_cents' => ['type' => ['integer', 'null'], 'description' => 'What the coupon took off the first payment'],
                 'invoice_ids' => ['type' => 'array', 'items' => $int],
                 'items' => ['type' => 'array', 'items' => self::ref('Service')],
                 'completed_at' => $time, 'created_at' => $time,
@@ -288,6 +290,7 @@ class OpenApi
                     'epp_code' => ['type' => ['string', 'null'], 'description' => 'For a transfer'],
                 ]]],
                 'notes' => $nullableString,
+                'coupon' => ['type' => ['string', 'null'], 'description' => 'A coupon code (Billing → Coupons); refused with 422 when it can\'t be used for this client and these items'],
             ]],
             'Invoice' => ['type' => 'object', 'properties' => [
                 'id' => $int, 'number' => $string, 'client_id' => $int, 'order_id' => $nullableInt, 'status' => self::enum(InvoiceStatus::class),

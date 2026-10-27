@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Coupons (Billing → Coupons): a code for a percentage or a fixed amount off, on the first payment only or on every
+  renewal too, for chosen products and domain endings or for everything, with dates, a usage limit, once per client
+  and new clients only. Clients enter it in the cart (or follow a `?coupon=CODE` link), admins pick it on New order,
+  and `POST /api/v1/orders` takes a `coupon`. Setup fees are never lowered.
 - SSL certificates on your own hosting: when a certificate's domain is the client's hosting account on a cPanel or
   Plesk server here, GaiaCP validates it there (a file in the website on cPanel, a DNS record in the subscription's
   zone on Plesk) instead of emailing the client, and installs the issued certificate on the account. SSL → Install on

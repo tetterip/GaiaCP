@@ -18,6 +18,8 @@ class OrderResource extends JsonResource
             'status' => $this->status?->value,
             'notes' => $this->notes,
             'total_cents' => $this->totalCents(),
+            'coupon' => $this->coupon?->code,
+            'discount_cents' => $this->discount_cents,
             'invoice_ids' => $this->invoices->pluck('id')->all(),
             'items' => ServiceResource::collection($this->services),
             'completed_at' => $this->completed_at?->toIso8601String(),
