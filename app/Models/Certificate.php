@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Provider details of an SSL certificate service (App\Actions\CertificateLifecycle). The domain is the service's
  * `domain` (a wildcard certificate covers *.domain too); price, cycle, due date and payments stay on the service.
+ * `hosting_service_id`, `validation_placed_at` and `installed_at` say what GaiaCP did on the client's own hosting account.
  * `expires_at` is the certificate's end, `ends_at` the end of what was bought at the provider: a certificate lasts at
  * most 200 days, so a longer order is a subscription that is reissued before each certificate ends.
  *
@@ -21,8 +22,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonImmutable|null $ends_at
  */
 #[Fillable([
-    'service_id', 'provider', 'product_code', 'remote_id', 'status', 'wildcard', 'dcv_method', 'approver_email', 'validation',
-    'csr', 'private_key', 'certificate', 'ca_bundle', 'issued_at', 'expires_at', 'ends_at', 'previous_orders', 'error', 'last_checked_at',
+    'service_id', 'hosting_service_id', 'provider', 'product_code', 'remote_id', 'status', 'wildcard', 'dcv_method', 'approver_email', 'validation',
+    'validation_placed_at', 'csr', 'private_key', 'certificate', 'ca_bundle', 'issued_at', 'installed_at', 'expires_at', 'ends_at', 'previous_orders', 'error', 'last_checked_at',
 ])]
 #[Hidden(['private_key'])]
 class Certificate extends Model
@@ -39,7 +40,9 @@ class Certificate extends Model
             'validation' => 'array',
             'private_key' => 'encrypted',
             'previous_orders' => 'array',
+            'validation_placed_at' => 'immutable_datetime',
             'issued_at' => 'immutable_datetime',
+            'installed_at' => 'immutable_datetime',
             'expires_at' => 'immutable_date',
             'ends_at' => 'immutable_date',
             'last_checked_at' => 'immutable_datetime',
@@ -50,6 +53,12 @@ class Certificate extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+    /** The client's hosting account it was validated or installed on (App\Certificates\CertificateHosting). @return BelongsTo<Service, $this> */
+    public function hostingService(): BelongsTo
+    {
+        return $this->belongsTo(Service::class, 'hosting_service_id');
     }
 
     /** The name it is issued for: the service's domain, with "*." in front for a wildcard. */

@@ -43,7 +43,7 @@ class DomainSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['domains.nameservers', 'domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.ssl_product', 'domains.ssl_discount'];
+        return ['domains.nameservers', 'domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.ssl_product', 'domains.ssl_discount', 'domains.ssl_own_hosting'];
     }
 
     public function form(Schema $schema): Schema
@@ -92,6 +92,10 @@ class DomainSettings extends SettingsFormPage
                             ->suffix('%')
                             ->helperText(__('Off the certificate\'s first period when it is ordered with the domain; renewals are at its usual price.'))
                             ->visible(fn (Get $get) => filled($get('domains.ssl_product'))),
+                        Toggle::make('domains.ssl_own_hosting')
+                            ->label('Set up certificates on our own hosting')
+                            ->helperText(__('When a certificate\'s domain is the client\'s hosting account on a cPanel or Plesk server here, GaiaCP validates it (a file on cPanel, a DNS record on Plesk) and installs the certificate once it is issued.'))
+                            ->columnSpanFull(),
                     ]),
                 Section::make(__('Domain names'))
                     ->schema([

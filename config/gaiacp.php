@@ -168,6 +168,10 @@ return [
         // first period (App\Support\DomainSsl); null = none.
         'ssl_product' => null,
         'ssl_discount' => 0,
+
+        // When an SSL certificate's domain is the client's hosting account on a cPanel or Plesk server, GaiaCP puts the
+        // validation file (or DNS record) in place and installs the issued certificate there (App\Certificates\CertificateHosting).
+        'ssl_own_hosting' => true,
     ],
 
     // The captcha on the login, sign up and forgot password forms (Settings → General): a captcha plugin's key

@@ -67,6 +67,7 @@ class Settings
         'domains.late_fees',
         'domains.ssl_product',
         'domains.ssl_discount',
+        'domains.ssl_own_hosting',
         'client_area.domain_nameservers',
         'client_area.domain_epp',
         'client_area.domain_auto_renew',

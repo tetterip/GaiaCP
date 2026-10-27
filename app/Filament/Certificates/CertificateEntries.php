@@ -42,10 +42,18 @@ class CertificateEntries
                 ->state(fn (?Service $record) => ($certificate = self::certificate($record)) && filled($certificate->remote_id) ? "{$certificate->provider} #{$certificate->remote_id}" : null)
                 ->placeholder('—')
                 ->visible(! $client),
+            TextEntry::make('certificate_hosting')
+                ->label('Hosting account')
+                ->state(fn (?Service $record) => ($certificate = self::certificate($record))?->installed_at && $certificate->hostingService
+                    ? __(':domain: installed on :date', ['domain' => $certificate->hostingService->domain, 'date' => $certificate->installed_at->format(AppServiceProvider::dateFormat())])
+                    : null)
+                ->visible(fn (?Service $record) => self::certificate($record)?->installed_at !== null && self::certificate($record)?->hostingService !== null),
             TextEntry::make('certificate_method')
                 ->label('Validation')
                 ->state(fn (?Service $record) => CertificateLifecycle::methodLabel(self::certificate($record)?->dcv_method))
-                ->helperText(fn (?Service $record) => CertificateLifecycle::methodHelp(self::certificate($record)?->dcv_method))
+                ->helperText(fn (?Service $record) => self::placed($record)
+                    ? __('Already in place on the hosting account :domain: nothing to do, it is checked automatically.', ['domain' => self::certificate($record)->hostingService->domain])
+                    : CertificateLifecycle::methodHelp(self::certificate($record)?->dcv_method))
                 ->visible(fn (?Service $record) => self::waiting($record))
                 ->columnSpanFull(),
             KeyValueEntry::make('certificate_validation')
@@ -61,6 +69,12 @@ class CertificateEntries
     private static function certificate(?Service $record): ?Certificate
     {
         return $record?->certificateDetails;
+    }
+
+    /** Whether GaiaCP put the validation in place on the client's hosting account. */
+    private static function placed(?Service $record): bool
+    {
+        return self::certificate($record)?->validation_placed_at !== null && self::certificate($record)->hostingService !== null;
     }
 
     private static function waiting(?Service $record): bool

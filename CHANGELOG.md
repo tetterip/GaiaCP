@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- SSL certificates on your own hosting: when a certificate's domain is the client's hosting account on a cPanel or
+  Plesk server here, GaiaCP validates it there (a file in the website on cPanel, a DNS record in the subscription's
+  zone on Plesk) instead of emailing the client, and installs the issued certificate on the account. SSL → Install on
+  hosting does it by hand; Settings → Domains → Set up certificates on our own hosting turns it off. Not yet tried on
+  a real cPanel or Plesk server.
+
 ## [0.3.1] - 2026-10-27
 
 - New GaiaCP releases are announced: a daily check rings the bell for super admins once per version (linking to

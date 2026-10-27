@@ -60,7 +60,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 **Hosting, domains and SSL**
 - Accounts created, suspended and ended on **cPanel / WHM**, **Plesk**, **DirectAdmin**, **HestiaCP**, **CyberPanel** and **Enhance**, and VPS on **Proxmox VE**
 - Domains registered, transferred, renewed and synced at **easy.gr** and **Enom**, or by email for any other registrar
-- SSL certificates sold and reissued through **GoGetSSL**
+- SSL certificates sold and reissued through **GoGetSSL**, validated and installed on your own cPanel / Plesk hosting
 - A comparison of each server's accounts with what you bill, and uptime from Uptime Kuma, UptimeRobot, HetrixTools
   or Better Stack
 

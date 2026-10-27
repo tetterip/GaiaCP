@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\HostingProvisioner;
+use App\Provisioning\InstallsCertificates;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PanelAccount;
@@ -21,7 +22,7 @@ use SimpleXMLElement;
  * login and password come from the client's first hosting service on that
  * server; each subscription's system (FTP) user is the service's username.
  */
-class PleskProvisioner implements HostingProvisioner, ListsAccounts, OffersShortcuts
+class PleskProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts
 {
     /** webspace gen_setup status values */
     private const ACTIVE = 0;
@@ -286,6 +287,76 @@ class PleskProvisioner implements HostingProvisioner, ListsAccounts, OffersShort
             bandwidthLimit: $limit('max_traffic', bytes: true),
             counts: $counts,
         );
+    }
+
+    /**
+     * A DNS record in the subscription's zone: Plesk's XML API can't write files. It only proves the domain when the
+     * domain uses this server's nameservers.
+     */
+    public function certificateValidationMethods(): array
+    {
+        return ['dns'];
+    }
+
+    /** As api-php-lib's Dns::create(): the record's host is relative to the zone; one already there is left alone. */
+    public function placeCertificateValidation(Service $hosting, string $method, array $details): void
+    {
+        $zone = strtolower($this->domain($hosting));
+        $name = strtolower(rtrim((string) ($details['name'] ?? ''), '.'));
+        $type = strtoupper((string) ($details['type'] ?? 'CNAME'));
+        $value = rtrim((string) ($details['value'] ?? ''), '.');
+
+        if ($method !== 'dns' || ! str_ends_with($name, ".{$zone}") || $value === '') {
+            throw new ProvisioningException("Plesk: the DNS record {$name} is not in the zone {$zone}.");
+        }
+
+        $webspace = $this->findWebspace($hosting) ?? throw new ProvisioningException("Plesk has no subscription {$zone}.");
+        $siteId = (int) $webspace->id;
+
+        foreach ($this->plesk->call('dns', 'get_rec', ['filter' => ['site-id' => $siteId]], allowNotFound: true) as $record) {
+            if (strtoupper((string) $record->data->type) === $type && strtolower(rtrim((string) $record->data->host, '.')) === $name
+                && strtolower(rtrim((string) $record->data->value, '.')) === strtolower($value)) {
+                return;
+            }
+        }
+
+        $this->plesk->call('dns', 'add_rec', [
+            'site-id' => $siteId,
+            'type' => $type,
+            'host' => substr($name, 0, -strlen(".{$zone}")),
+            'value' => $value,
+        ]);
+    }
+
+    /**
+     * As api-php-lib's Certificate::install() into the subscription's certificate pool, then the subscription's
+     * hosting uses it (vrt_hst ssl + certificate_name). The name has part of the certificate's hash, so installing it
+     * again finds the same one.
+     */
+    public function installCertificate(Service $hosting, string $domain, string $certificate, string $privateKey, ?string $caBundle): void
+    {
+        $zone = $this->domain($hosting);
+        $name = 'GaiaCP '.$domain.' '.substr(hash('sha256', $certificate), 0, 8);
+
+        try {
+            $this->plesk->call('certificate', 'install', [
+                'name' => $name,
+                'webspace' => $zone,
+                'content' => ['pvt' => $privateKey, 'cert' => $certificate, 'ca' => $caBundle ?: null],
+            ]);
+        } catch (ProvisioningException $e) {
+            if (! str_contains(strtolower($e->getMessage()), 'exist')) {
+                throw $e;
+            }
+        }
+
+        $this->plesk->call('webspace', 'set', [
+            'filter' => ['name' => $zone],
+            'values' => ['hosting' => ['vrt_hst' => ['property' => [
+                ['name' => 'ssl', 'value' => 'true'],
+                ['name' => 'certificate_name', 'value' => $name],
+            ]]]],
+        ]);
     }
 
     private function findWebspace(Service $service): ?SimpleXMLElement

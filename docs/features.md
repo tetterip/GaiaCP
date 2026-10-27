@@ -214,7 +214,9 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
 - SSL certificates (a service type, sold through the GoGetSSL plugin): GaiaCP makes the key and CSR, orders the
   certificate once the service is set up, shows and emails the client how to validate the domain, finds it issued
   every hour and emails it, issues the next one inside the order before each certificate ends (200 days at most) and
-  orders the next period when the service is paid beyond it (see [SSL certificates](reference.md#ssl-certificates))
+  orders the next period when the service is paid beyond it (see [SSL certificates](reference.md#ssl-certificates)).
+  When the domain is the client's hosting account on a cPanel or Plesk server, GaiaCP validates it there (a file on
+  cPanel, a DNS record on Plesk) and installs the issued certificate on the account
 - English and Greek: each admin picks a panel language and each client an email language, and email templates can be
   written per language (see [Languages](reference.md#languages))
 

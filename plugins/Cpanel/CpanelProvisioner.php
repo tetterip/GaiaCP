@@ -6,13 +6,14 @@ use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\HostingProvisioner;
+use App\Provisioning\InstallsCertificates;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Support\DomainName;
 
-class CpanelProvisioner implements HostingProvisioner, ListsAccounts, OffersShortcuts
+class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts
 {
     public function __construct(private WhmClient $whm) {}
 
@@ -220,6 +221,85 @@ class CpanelProvisioner implements HostingProvisioner, ListsAccounts, OffersShor
         $power = ['K' => 1, 'M' => 2, 'G' => 3, 'T' => 4][strtoupper(($m[2] ?? '') ?: 'M')];
 
         return (int) round((float) $m[1] * 1024 ** $power);
+    }
+
+    /** A file in the website's folder: Sectigo and the other authorities read it over HTTP (or HTTPS). */
+    public function certificateValidationMethods(): array
+    {
+        return ['http', 'https'];
+    }
+
+    /**
+     * Saves the validation file under the domain's document root (UAPI DomainInfo::single_domain_data), making the
+     * /.well-known/pki-validation folders first (cPanel API 2 Fileman::mkdir; "already exists" is fine), then
+     * UAPI Fileman::save_file_content as the account's user.
+     */
+    public function placeCertificateValidation(Service $hosting, string $method, array $details): void
+    {
+        $username = $this->username($hosting);
+        $path = (string) ($details['path'] ?? '');
+
+        if (! preg_match('#^/\.well-known/pki-validation/[A-Za-z0-9._-]+$#', $path) || str_contains($path, '..')) {
+            throw new ProvisioningException('cPanel: the validation file must go under /.well-known/pki-validation/.');
+        }
+
+        $root = rtrim($this->documentRoot($hosting), '/');
+        $parent = $root;
+
+        foreach (array_filter(explode('/', dirname($path))) as $folder) {
+            rescue(fn () => $this->whm->call('cpanel', [
+                'cpanel_jsonapi_user' => $username,
+                'cpanel_jsonapi_apiversion' => 2,
+                'cpanel_jsonapi_module' => 'Fileman',
+                'cpanel_jsonapi_func' => 'mkdir',
+                'path' => $parent,
+                'name' => $folder,
+            ]), report: false);
+            $parent .= '/'.$folder;
+        }
+
+        $this->uapi($username, 'Fileman', 'save_file_content', [
+            'dir' => $parent,
+            'file' => basename($path),
+            'content' => (string) ($details['content'] ?? ''),
+        ]);
+    }
+
+    /** UAPI SSL::install_ssl as the account's user: installs the certificate and uses it for the domain's website. */
+    public function installCertificate(Service $hosting, string $domain, string $certificate, string $privateKey, ?string $caBundle): void
+    {
+        $this->uapi($this->username($hosting), 'SSL', 'install_ssl', array_filter([
+            'domain' => DomainName::toAscii($domain),
+            'cert' => $certificate,
+            'key' => $privateKey,
+            'cabundle' => $caBundle,
+        ], fn ($value) => filled($value)));
+    }
+
+    /** The folder the domain's website is served from. */
+    private function documentRoot(Service $hosting): string
+    {
+        $data = $this->uapi($this->username($hosting), 'DomainInfo', 'single_domain_data', ['domain' => DomainName::toAscii((string) $hosting->domain)]);
+
+        return (string) ($data['documentroot'] ?? '') ?: throw new ProvisioningException("cPanel did not say where the website of {$hosting->domain} is.");
+    }
+
+    /**
+     * A UAPI function of the account's user, through WHM's uapi_cpanel; throws with cPanel's errors when it fails.
+     *
+     * @param  array<string, scalar>  $params
+     */
+    private function uapi(string $username, string $module, string $function, array $params = []): mixed
+    {
+        $result = $this->whm->call('uapi_cpanel', ['cpanel.user' => $username, 'cpanel.module' => $module, 'cpanel.function' => $function, ...$params], timeout: 60)['uapi'] ?? [];
+
+        if ((int) ($result['status'] ?? 0) !== 1) {
+            $errors = trim(implode(' ', array_map('strval', (array) ($result['errors'] ?? [])))) ?: 'unknown error';
+
+            throw new ProvisioningException("cPanel {$module}::{$function}: {$errors}");
+        }
+
+        return $result['data'] ?? null;
     }
 
     public function suspendAccount(Service $service, string $reason): void

@@ -72,6 +72,8 @@ An **SSL certificate** is ordered for the domain you give when you order it, onc
 - **File on the website:** create the file shown, with exactly its contents, so that it opens at the address shown.
 - **Email to the domain's administrator:** open the link in the email sent to admin@ (or the address chosen) and approve.
 
+When the domain is a hosting account you have with us, we do this for you: its page says it is already in place, and once the certificate is issued we install it on that account too, so there is nothing to download or install.
+
 **Change validation** picks another way (or another approval address) and **Check again** asks the certificate authority to look now (**Send the approval email again** when it is by email). Once the certificate is issued we email you, and **Download certificate** gives a zip with the certificate, the CA bundle and, when we made it, the private key, ready to install on the server. A certificate lasts at most 200 days, so while your service runs we issue the next one before each ends: you validate the domain again each time and download the new certificate.
 
 <!-- endif -->

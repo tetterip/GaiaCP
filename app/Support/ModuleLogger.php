@@ -23,7 +23,7 @@ class ModuleLogger
     public const MASK = '********';
 
     /** Field / element / JSON key names whose values are always masked. */
-    private const SECRET_NAMES = 'password|passwd|pass|pw|api_token|token|secret|epp|epp_code|auth_code';
+    private const SECRET_NAMES = 'password|passwd|pass|pw|api_token|token|secret|epp|epp_code|auth_code|key|pvt|private_key';
 
     /** Headers whose values are always masked. */
     private const SECRET_HEADERS = ['authorization', 'http_auth_passwd', 'key', 'cookie', 'set-cookie'];
