@@ -3163,5 +3163,8 @@
     "Written by the AI assistant from the guide: check it against the sections it links to.": "Geschreven door de AI-assistent op basis van de handleiding: controleer het aan de hand van de secties waarnaar wordt gelinkt.",
     "You can't see that part of the panel, so the assistant can't answer it.": "U kunt dat deel van het paneel niet zien, dus de assistent kan het niet beantwoorden.",
     "e.g. Who owes more than €100?": "bijv. Wie is meer dan €100 verschuldigd?",
-    "machine translated": "machinevertaling"
+    "machine translated": "machinevertaling",
+    "GaiaCP :version is out": "GaiaCP :version is uit",
+    "Installed here: :version. This copy is deployed from Git: deploy to update it.": "Hier geïnstalleerd: :version. Deze kopie wordt vanuit Git uitgerold: rol opnieuw uit om bij te werken.",
+    "Installed here: :version. Update it under Settings → Updates.": "Hier geïnstalleerd: :version. Werk bij via Instellingen → Updates."
 }

@@ -420,7 +420,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   thing in `public/index.php`) then sets `SCRIPT_NAME` to the folder above `public/`, so the base path and every URL
   lack `/public`. `SystemHealth::privateFiles()` fetches `/.env` and `/composer.json` through the site (Error when
   either is served, Info when the site can't reach itself); the installer's requirements include it, so it stops
-- Updates: `app/Updates/` `GitHubReleases` (latest release of `gaiacp.updates.repository`, token for a private repo) and
+- Updates: `gaiacp:check-for-update` (daily 05:50, off with `GAIACP_UPDATE_CHECK=false`) logs `gaiacp.update_available` once per
+  newer release (bell for super admins, a line in the daily summary). `app/Updates/` `GitHubReleases` (latest release of `gaiacp.updates.repository`, token for a private repo) and
   `Updater` (RunBackup, download + SHA-256, `down`, swap the release's top-level entries into place with the old ones in
   `storage/app/private/updates/<version>/previous`, moving back into `database/`, `plugins/` and `public/` what the release
   lacks, then migrate; any failure after the swap puts the old code back). Never for a Git checkout. Used by

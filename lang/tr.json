@@ -3163,5 +3163,8 @@
     "Written by the AI assistant from the guide: check it against the sections it links to.": "Yapay zekâ asistanı tarafından kılavuzdan yazıldı: bağlantı verdiği bölümlerle karşılaştırın.",
     "You can't see that part of the panel, so the assistant can't answer it.": "Panelin o bölümünü göremiyorsunuz, bu yüzden asistan onu yanıtlayamaz.",
     "e.g. Who owes more than €100?": "ör. Kimin 100 €'dan fazla borcu var?",
-    "machine translated": "makine çevirisi"
+    "machine translated": "makine çevirisi",
+    "GaiaCP :version is out": "GaiaCP :version yayımlandı",
+    "Installed here: :version. This copy is deployed from Git: deploy to update it.": "Burada kurulu: :version. Bu kopya Git'ten dağıtılıyor: güncellemek için yeniden dağıtın.",
+    "Installed here: :version. Update it under Settings → Updates.": "Burada kurulu: :version. Ayarlar → Güncellemeler bölümünden güncelleyin."
 }

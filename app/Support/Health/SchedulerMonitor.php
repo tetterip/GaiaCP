@@ -42,6 +42,7 @@ class SchedulerMonitor
         'gaiacp:daily-summary',
         'gaiacp:prune-logs',
         'gaiacp:check-plugin-catalogue',
+        'gaiacp:check-for-update',
     ];
 
     public function heartbeat(): void

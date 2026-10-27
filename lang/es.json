@@ -3163,5 +3163,8 @@
     "Written by the AI assistant from the guide: check it against the sections it links to.": "Escrito por el asistente de IA a partir de la guía: compruébelo con las secciones que enlaza.",
     "You can't see that part of the panel, so the assistant can't answer it.": "No puede ver esa parte del panel, así que el asistente no puede responderla.",
     "e.g. Who owes more than €100?": "p. ej. ¿Quién debe más de 100 €?",
-    "machine translated": "traducción automática"
+    "machine translated": "traducción automática",
+    "GaiaCP :version is out": "GaiaCP :version ya está disponible",
+    "Installed here: :version. This copy is deployed from Git: deploy to update it.": "Instalada aquí: :version. Esta copia se despliega desde Git: despliega para actualizarla.",
+    "Installed here: :version. Update it under Settings → Updates.": "Instalada aquí: :version. Actualízala en Ajustes → Actualizaciones."
 }

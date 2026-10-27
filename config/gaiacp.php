@@ -364,6 +364,8 @@ return [
     'updates' => [
         'repository' => env('GAIACP_UPDATE_REPOSITORY', 'tetterip/GaiaCP'),
         'token' => env('GAIACP_UPDATE_TOKEN'),
+        // gaiacp:check-for-update asks GitHub once a day and rings the bell for a new release; false turns it off
+        'check' => (bool) env('GAIACP_UPDATE_CHECK', true),
         'api' => env('GAIACP_UPDATE_API', 'https://api.github.com'), // GitHub Enterprise has its own
         // A release is installed only when its gaiacp-<version>.zip.sha256 carries a .sig, an Ed25519 signature by one of
         // `keys` (base64 public keys; php bin/release-key keygen, docs/releases.md). The official key is set here in the
