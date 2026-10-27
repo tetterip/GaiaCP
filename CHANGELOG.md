@@ -14,7 +14,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   client pays, to read and send) and Suggestions on a client's page (what they might buy, signs they may leave, what
   to look after). Only facts are sent (services, prices, payment history, ticket subjects), never who the client is.
 - The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
-  side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime.
+  side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime. Every
+  square is the same whole number of pixels wide.
 
 ## [0.3.1] - 2026-10-27
 
