@@ -278,6 +278,8 @@ class Tickets
                 'status' => $status,
                 'closed_at' => $status === TicketStatus::Closed ? ($ticket->closed_at ?? now()) : null,
                 'last_reply_at' => $internal ? $ticket->last_reply_at : now(),
+                // A summary kept from the AI assistant is about what the client asked before
+                ...($fromClient ? ['summary' => null] : []),
             ]);
 
             return $message;
