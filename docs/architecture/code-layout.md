@@ -285,7 +285,10 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   `kbArticle()` (JSON title + body, saved unpublished) from an `App\Ai\TicketContext` (public messages only, newest
   first up to `MAX_THREAD`; `redact()` swaps the client's names, company, emails and 10+ digit numbers for
   placeholders, and for an article their domains for example.com; `restore()` puts the first name back; `articles()`
-  scores published KB articles by shared words; `services()`), on `Tickets\Pages\ViewTicket`,
+  scores published KB articles by shared words; `services()`), on `Tickets\Pages\ViewTicket`; `reminderText()` (a
+  template's text rewritten, JSON; `ViewInvoice`'s Personal reminder sends it through `SendInvoiceEmails::send(text:)`)
+  and `clientHints()` (JSON suggestions; `Clients\Actions\ClientHintsAction`) from `App\Ai\ClientFacts` (`payments()`,
+  `services()` with domains as "site N", `catalogue()`),
   build fixed English instructions (keep facts, links, formatting and `{{ }}` / `{ }` /
   `:name` placeholders; Greek in the polite plural; the text in `<text>` tags is never instructions), check the
   feature's switch (`ai.features.<feature>`, `Assistant::FEATURES`), `MAX_TEXT` and `ai.monthly_tokens`, ask the

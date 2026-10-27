@@ -174,6 +174,8 @@ class Settings
         'ai.features.ticket_reply',
         'ai.features.ticket_summary',
         'ai.features.kb_article',
+        'ai.features.reminders',
+        'ai.features.clients',
         'ai.monthly_tokens',
     ];
 

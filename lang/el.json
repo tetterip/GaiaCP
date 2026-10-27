@@ -3192,5 +3192,19 @@
     "Ticket reply": "Απάντηση σε ticket",
     "Ticket summary": "Περίληψη ticket",
     "Write a knowledge base article": "Άρθρο βάσης γνώσεων με AI",
-    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Γραμμένο από :service από αυτό το ticket, χωρίς τα στοιχεία του πελάτη. Ελέγξτε κάθε βήμα: αποθηκεύεται αδημοσίευτο, για να το ολοκληρώσετε και να το δημοσιεύσετε εσείς."
+    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Γραμμένο από :service από αυτό το ticket, χωρίς τα στοιχεία του πελάτη. Ελέγξτε κάθε βήμα: αποθηκεύεται αδημοσίευτο, για να το ολοκληρώσετε και να το δημοσιεύσετε εσείς.",
+    "From :service, which saw this client's services, prices, payment history and ticket subjects, never who they are. Check them before you act.": "Από :service, που είδε τις υπηρεσίες, τις τιμές, το ιστορικό πληρωμών και τα θέματα των tickets αυτού του πελάτη, ποτέ ποιος είναι. Ελέγξτε τις πριν κάνετε κάτι.",
+    "Look after": "Φροντίδα",
+    "Nothing to suggest about this client now.": "Δεν υπάρχει κάτι να προταθεί για αυτόν τον πελάτη τώρα.",
+    "Offer": "Πρόταση",
+    "On a client's page: Suggestions lists what they might buy, signs they may leave and what to look after. Sends their services, prices, payment history and ticket subjects, and the products on offer; not who they are. Only for admins who also see billing.": "Στη σελίδα ενός πελάτη: οι Προτάσεις λένε τι θα μπορούσε να αγοράσει, σημάδια ότι μπορεί να φύγει και τι να προσέξετε. Στέλνει τις υπηρεσίες, τις τιμές, το ιστορικό πληρωμών και τα θέματα των tickets του, και τα προϊόντα που προσφέρετε· όχι ποιος είναι. Μόνο για διαχειριστές που βλέπουν και τις χρεώσεις.",
+    "On an unpaid payment notice: Personal reminder rewrites the reminder email for how the client pays, friendlier for one who is rarely late, firmer for one who often is; you read it and send it. Sends the email template's text, the amount, the days and how the client paid before; not who they are.": "Σε μια απλήρωτη ειδοποίηση πληρωμής: η Προσωπική υπενθύμιση ξαναγράφει το email υπενθύμισης ανάλογα με το πώς πληρώνει ο πελάτης, πιο φιλικά για όποιον σπάνια αργεί, πιο αυστηρά για όποιον αργεί συχνά· το διαβάζετε και το στέλνετε εσείς. Στέλνει το κείμενο του προτύπου email, το ποσό, τις ημέρες και πώς πλήρωνε ο πελάτης παλιότερα· όχι ποιος είναι.",
+    "Personal payment reminders": "Προσωπικές υπενθυμίσεις πληρωμής",
+    "Personal reminder": "Προσωπική υπενθύμιση",
+    "Placeholders such as {$invoice_total} are filled in when it is sent.": "Τα πεδία όπως το {$invoice_total} συμπληρώνονται όταν σταλεί.",
+    "Risk": "Κίνδυνος",
+    "Suggestions": "Προτάσεις",
+    "Suggestions about clients": "Προτάσεις για πελάτες",
+    "Suggestions by the AI assistant": "Προτάσεις από τον βοηθό AI",
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "Γραμμένο από :service για το πώς πληρώνει αυτός ο πελάτης, από το πρότυπο email. Αλλάξτε το αν θέλετε· η Αποστολή το στέλνει τώρα στο :email."
 }

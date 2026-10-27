@@ -28,6 +28,9 @@ On a notice you can:
 - **Record payment**: records every unpaid line at once.
 - **Pay with credit**, when the client has credit that covers lines.
 - **Send email**: sends it again (the Payment Notice Modified email).
+- **Personal reminder** (with the AI assistant on): the reminder email, or the first overdue one once it is late,
+  rewritten for how this client pays: lighter for one who is rarely late, firmer for one who often is. Read it, change
+  it if you like and **Send** it.
 - **Update client details**: a notice keeps the client's name, address and VAT details from the day it was issued;
   this takes the current ones, while it is unpaid.
 - **Cancel** it.

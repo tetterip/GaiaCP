@@ -3,6 +3,9 @@
 namespace App\Filament\Resources\Invoices\Pages;
 
 use App\Actions\RecordInvoicePayment;
+use App\Ai\AiException;
+use App\Ai\Assistant;
+use App\Ai\ClientFacts;
 use App\Credit\ApplyCredit;
 use App\Enums\InvoiceStatus;
 use App\Enums\MailTemplate;
@@ -11,11 +14,13 @@ use App\Invoices\SendInvoiceEmails;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Payments\PaymentMethods;
+use App\Support\MailTemplates;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
@@ -37,6 +42,7 @@ class ViewInvoice extends ViewRecord
             $this->payWithCredit(),
             $this->recordPayment(),
             $this->sendEmail(),
+            $this->aiReminder(),
             $this->updateBillTo(),
             $this->cancel(),
         ];
@@ -177,6 +183,71 @@ class ViewInvoice extends ViewRecord
                 Notification::make()->title(__('Email sent'))->success()->send();
                 $this->refreshFormData(['emailed_at']);
             });
+    }
+
+    /**
+     * Personal reminder: the reminder (or, once overdue, the first overdue) email rewritten by the AI assistant for how
+     * this client pays, in their language, to read, change and send.
+     */
+    private function aiReminder(): Action
+    {
+        return Action::make('aiReminder')
+            ->label('Personal reminder')
+            ->icon(Heroicon::OutlinedSparkles)
+            ->color('gray')
+            ->visible(fn (Invoice $record) => $record->status === InvoiceStatus::Unpaid && Assistant::enabled('reminders'))
+            ->modalHeading(__('Personal reminder'))
+            ->modalDescription(fn (Invoice $record) => __('Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.', ['service' => Assistant::provider()?->aiLabel(), 'email' => $record->client->email]))
+            ->modalWidth('3xl')
+            ->fillForm(function (Invoice $record, Action $action) {
+                $template = self::reminderTemplate($record);
+                $locale = $record->client->preferredLocale();
+                $facts = (new ClientFacts($record->client))->notice($record);
+
+                try {
+                    $text = app(Assistant::class)->reminderText(MailTemplates::get($template, $locale), $facts, $locale);
+                } catch (AiException $e) {
+                    Notification::make()->danger()->title(__('The AI assistant gave no answer'))->body($e->getMessage())->send();
+                    $action->cancel();
+
+                    return [];
+                }
+
+                return $text;
+            })
+            ->schema([
+                TextInput::make('subject')
+                    ->label('Subject')
+                    ->required()
+                    ->maxLength(200),
+                Textarea::make('body')
+                    ->label('Message')
+                    ->required()
+                    ->rows(14)
+                    ->helperText(__('Placeholders such as {$invoice_total} are filled in when it is sent.')),
+            ])
+            ->modalSubmitActionLabel(__('Send'))
+            ->action(function (Invoice $record, array $data) {
+                $text = ['subject' => $data['subject'], 'body' => $data['body']];
+
+                if (! app(SendInvoiceEmails::class)->send($record->load('items', 'client'), self::reminderTemplate($record), evenIfOff: true, text: $text)) {
+                    Notification::make()->title(__('Not sent'))->body(__('See the activity log for the error.'))->danger()->send();
+
+                    return;
+                }
+
+                if ($record->emailed_at === null) {
+                    $record->update(['emailed_at' => now()]);
+                }
+
+                Notification::make()->title(__('Email sent'))->success()->send();
+                $this->refreshFormData(['emailed_at']);
+            });
+    }
+
+    private static function reminderTemplate(Invoice $invoice): MailTemplate
+    {
+        return $invoice->due_date->lt(today()) ? MailTemplate::InvoiceFirstOverdue : MailTemplate::InvoicePaymentReminder;
     }
 
     /** An open notice keeps the client's details from the day it was issued until this takes the current ones. */

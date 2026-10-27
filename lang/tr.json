@@ -3192,5 +3192,19 @@
     "Ticket reply": "Talep yanıtı",
     "Ticket summary": "Talep özeti",
     "Write a knowledge base article": "Bilgi bankası makalesi yaz",
-    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Bu talepten :service tarafından, müşterinin bilgileri olmadan yazıldı. Her adımı kontrol edin: yayımlanmamış olarak kaydedilir, siz tamamlayıp yayımlarsınız."
+    "Written by :service from this ticket, without the client's details. Check every step: it is saved unpublished, for you to finish and publish.": "Bu talepten :service tarafından, müşterinin bilgileri olmadan yazıldı. Her adımı kontrol edin: yayımlanmamış olarak kaydedilir, siz tamamlayıp yayımlarsınız.",
+    "From :service, which saw this client's services, prices, payment history and ticket subjects, never who they are. Check them before you act.": "Bu müşterinin hizmetlerini, fiyatlarını, ödeme geçmişini ve talep konularını gören, ama kim olduğunu asla görmeyen :service'ten. Harekete geçmeden önce kontrol edin.",
+    "Look after": "İlgilen",
+    "Nothing to suggest about this client now.": "Şu an bu müşteri için önerilecek bir şey yok.",
+    "Offer": "Teklif",
+    "On a client's page: Suggestions lists what they might buy, signs they may leave and what to look after. Sends their services, prices, payment history and ticket subjects, and the products on offer; not who they are. Only for admins who also see billing.": "Bir müşterinin sayfasında: Öneriler, neler satın alabileceğini, ayrılabileceğine dair işaretleri ve nelere dikkat edileceğini listeler. Hizmetlerini, fiyatlarını, ödeme geçmişini, talep konularını ve sunulan ürünleri gönderir; kim olduğunu değil. Yalnızca faturalandırmayı da gören yöneticiler için.",
+    "On an unpaid payment notice: Personal reminder rewrites the reminder email for how the client pays, friendlier for one who is rarely late, firmer for one who often is; you read it and send it. Sends the email template's text, the amount, the days and how the client paid before; not who they are.": "Ödenmemiş bir ödeme bildiriminde: Kişisel hatırlatma, hatırlatma e-postasını müşterinin ödeme alışkanlığına göre yeniden yazar; nadiren gecikene daha samimi, sık gecikene daha kararlı; siz okuyup gönderirsiniz. E-posta şablonunun metnini, tutarı, günleri ve müşterinin daha önce nasıl ödediğini gönderir; kim olduğunu değil.",
+    "Personal payment reminders": "Kişisel ödeme hatırlatmaları",
+    "Personal reminder": "Kişisel hatırlatma",
+    "Placeholders such as {$invoice_total} are filled in when it is sent.": "{$invoice_total} gibi yer tutucular gönderilirken doldurulur.",
+    "Risk": "Risk",
+    "Suggestions": "Öneriler",
+    "Suggestions about clients": "Müşteriler hakkında öneriler",
+    "Suggestions by the AI assistant": "Yapay zeka asistanının önerileri",
+    "Written by :service for how this client pays, from the email template. Change it if you like; Send emails it to :email now.": "E-posta şablonundan, bu müşterinin ödeme alışkanlığına göre :service tarafından yazıldı. İsterseniz değiştirin; Gönder şimdi :email adresine gönderir."
 }

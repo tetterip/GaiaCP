@@ -116,10 +116,14 @@ class SendInvoiceEmails
         return $template !== null && MailTemplates::enabled($template) ? [$template, $kind] : [null, null];
     }
 
-    /** Send one email now; false when it failed (already logged) or the template is switched off. */
-    public function send(Invoice $invoice, MailTemplate $template, bool $evenIfOff = false, ?CarbonInterface $today = null): bool
+    /**
+     * Send one email now; false when it failed (already logged) or the template is switched off.
+     *
+     * @param  array{subject: string, body: string}|null  $text  the admin's text for this one email instead of the template's
+     */
+    public function send(Invoice $invoice, MailTemplate $template, bool $evenIfOff = false, ?CarbonInterface $today = null, ?array $text = null): bool
     {
-        return $this->mailer->send($template, $invoice->client, fn () => self::values($invoice, $today), evenIfOff: $evenIfOff, invoice: $invoice);
+        return $this->mailer->send($template, $invoice->client, fn () => self::values($invoice, $today), evenIfOff: $evenIfOff, invoice: $invoice, text: $text);
     }
 
     /** @return array<string, string|HtmlString|null> the invoice_* placeholders */
