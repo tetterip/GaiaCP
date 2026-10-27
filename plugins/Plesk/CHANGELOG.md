@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.6.0] - 2026-10-27
+
+- SSL certificates on the client's own hosting: the validation CNAME goes into the subscription's DNS zone (`dns add_rec`; Plesk's XML API can't write files) and the issued certificate is installed in the subscription and used for its hosting (`certificate install`, then `certificate_name`) (`InstallsCertificates`; not yet tried on a real server)
+
 ## [1.5.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

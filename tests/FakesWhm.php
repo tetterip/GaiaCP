@@ -23,6 +23,12 @@ trait FakesWhm
     /** @var array<string, string> username => package (plan), listed by listaccts without a search; 'basic' when unset */
     protected array $whmPlans = [];
 
+    /** @var array<string, string> path => contents of the files saved with UAPI Fileman::save_file_content */
+    protected array $whmFiles = [];
+
+    /** @var array<string, array{user: string, cert: string, key: string, cabundle: ?string}> domain => certificate installed with UAPI SSL::install_ssl */
+    protected array $whmCertificates = [];
+
     /** @var list<array{0: string, 1: array<string, mixed>}> */
     protected array $whmCalls = [];
 
@@ -83,9 +89,24 @@ trait FakesWhm
 
                     return $ok(['acct' => $acct, 'month' => 10, 'year' => 2026]);
                 case 'uapi_cpanel':
+                    // parse_str() turns the dots of "cpanel.user" into underscores
                     $user = $params['cpanel_user'] ?? $params['cpanel.user'] ?? '';
+                    $uapi = ($params['cpanel_module'] ?? '').'::'.($params['cpanel_function'] ?? '');
 
-                    return $ok(['uapi' => ['status' => 1, 'errors' => null, 'data' => $this->whmUsage[$user]['stats'] ?? []]]);
+                    if (isset($this->whmFailures[$uapi])) {
+                        return $ok(['uapi' => ['status' => 0, 'errors' => [$this->whmFailures[$uapi]], 'data' => null]]);
+                    }
+
+                    $data = match ($uapi) {
+                        'DomainInfo::single_domain_data' => ['domain' => $params['domain'], 'documentroot' => "/home/{$user}/public_html", 'homedir' => "/home/{$user}"],
+                        'Fileman::save_file_content' => tap(['path' => "{$params['dir']}/{$params['file']}"], fn () => $this->whmFiles["{$params['dir']}/{$params['file']}"] = $params['content']),
+                        'SSL::install_ssl' => tap(['domain' => $params['domain']], fn () => $this->whmCertificates[$params['domain']] = ['user' => $user, 'cert' => $params['cert'], 'key' => $params['key'], 'cabundle' => $params['cabundle'] ?? null]),
+                        default => $this->whmUsage[$user]['stats'] ?? [],
+                    };
+
+                    return $ok(['uapi' => ['status' => 1, 'errors' => null, 'data' => $data]]);
+                case 'cpanel':
+                    return $ok(['cpanelresult' => ['event' => ['result' => 1], 'data' => []]]);
                 case 'createacct':
                     $this->whmAccounts[$params['username']] = false;
                     $this->whmDomains[$params['username']] = $params['domain'];

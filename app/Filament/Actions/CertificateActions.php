@@ -4,6 +4,7 @@ namespace App\Filament\Actions;
 
 use App\Actions\CertificateLifecycle;
 use App\Actions\SetUpService;
+use App\Certificates\CertificateHosting;
 use App\Enums\CertificateStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
@@ -33,6 +34,7 @@ class CertificateActions
             self::order(),
             self::check(),
             self::download(),
+            self::install(),
             self::changeValidation(),
             self::recheck(),
             self::reissue(),
@@ -84,6 +86,19 @@ class CertificateActions
             ->icon(Heroicon::OutlinedArrowDownTray)
             ->visible(fn (Service $record) => self::isSsl($record) && CertificateDownload::available($record))
             ->action(fn (Service $record) => CertificateDownload::response($record));
+    }
+
+    private static function install(): Action
+    {
+        return Action::make('installCertificate')
+            ->label('Install on hosting')
+            ->icon(Heroicon::OutlinedServerStack)
+            ->visible(fn (Service $record) => self::isSsl($record) && app(CertificateHosting::class)->canInstall($record))
+            ->requiresConfirmation()
+            ->modalDescription(fn (Service $record) => __('Installs the certificate on the client\'s hosting account :domain and uses it for the website. It is done on its own when the certificate is issued.', [
+                'domain' => app(CertificateHosting::class)->find($record)[0]->domain ?? $record->domain,
+            ]))
+            ->action(self::run(fn (Service $record, CertificateLifecycle $certificates) => $certificates->install($record), __('Installed')));
     }
 
     private static function changeValidation(): Action
@@ -165,7 +180,10 @@ class CertificateActions
         return Select::make('method')
             ->label('Validation')
             ->options(collect(CertificateLifecycle::METHODS)->mapWithKeys(fn (string $method) => [$method => CertificateLifecycle::methodLabel($method)])->all())
-            ->default(fn (Service $record) => $record->certificateDetails?->dcv_method ?? 'dns')
+            ->default(fn (Service $record) => $record->certificateDetails?->dcv_method ?? app(CertificateHosting::class)->method($record, CertificateLifecycle::METHODS) ?? 'dns')
+            ->helperText(fn (Service $record) => ($hosting = app(CertificateHosting::class)->find($record))
+                ? __('The domain is the client\'s hosting account :domain: GaiaCP validates with a file (cPanel) or a DNS record (Plesk) there and installs the certificate once it is issued.', ['domain' => $hosting[0]->domain])
+                : null)
             ->selectablePlaceholder(false)
             ->required()
             ->live();

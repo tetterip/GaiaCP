@@ -93,5 +93,12 @@ SSL certificates are sold through the **GoGetSSL** plugin (off by default):
 4. Every hour GaiaCP looks for issued certificates and emails them to the client. Certificates now last at most 200
    days, so inside a longer order the next one is issued 30 days before the current one ends, and the next period is
    ordered 30 days before the order ends when the service is paid beyond it.
+5. When the certificate's domain is the client's own hosting account on one of your cPanel or Plesk servers, GaiaCP
+   does the validation itself: on cPanel it puts the file in the website's `.well-known/pki-validation` folder, on
+   Plesk it adds the DNS record to the subscription's zone (that only helps when the domain uses the server's
+   nameservers). The client gets no validation email then. Once the certificate is issued, GaiaCP installs it on that
+   account and the website uses it; **SSL → Install on hosting** does it again by hand. This needs the private key
+   that GaiaCP made (not the client's own CSR) and can be switched off under Settings → Domains → **Set up
+   certificates on our own hosting**.
 
 Next: [Billing](06-billing.md).

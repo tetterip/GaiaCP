@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.6.0] - 2026-10-27
+
+- SSL certificates on the client's own hosting: the validation file goes into the website's `/.well-known/pki-validation/` (UAPI `Fileman::save_file_content`) and the issued certificate is installed with UAPI `SSL::install_ssl` (`InstallsCertificates`; not yet tried on a real server)
+
 ## [1.5.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)
