@@ -170,7 +170,10 @@ class DashboardTest extends TestCase
         // On the card the squares grow with its width (side by side once wide enough); no fixed width
         $html = Livewire::test(ServerCapacity::class)->html();
         $this->assertStringContainsString('gx-server-bars', $html);
-        $this->assertStringContainsString('<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; ">', $html);
+        $this->assertStringContainsString('<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; column-gap: 2px;', $html);
+        // Whole pixels, so every square is the same width, and the caption row is as wide as the squares
+        $this->assertStringContainsString('round(down, calc((100% - 46px) / 24), 1px)', $html);
+        $this->assertStringContainsString('grid-template-columns: subgrid;', $html);
 
         // The servers list keeps its 12px squares
         $column = view('filament.servers.meter', ['caption' => null, 'value' => '1/10', 'label' => 'Accounts', 'cells' => array_fill(0, 10, ['color' => null])])->render();
