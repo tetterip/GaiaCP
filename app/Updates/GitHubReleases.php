@@ -6,6 +6,7 @@ use App\Support\ModuleLogger;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -44,7 +45,7 @@ class GitHubReleases
         try {
             $response->throw();
         } catch (RequestException $e) {
-            throw new RuntimeException("GitHub answered {$response->status()} for {$repository}'s releases.", previous: $e);
+            throw new RuntimeException($this->rateLimited($response) ?? "GitHub answered {$response->status()} for {$repository}'s releases.", previous: $e);
         }
 
         $version = ltrim((string) $response->json('tag_name'), 'v');
@@ -72,7 +73,7 @@ class GitHubReleases
         try {
             $this->http(null)->accept('application/octet-stream')->timeout(300)->sink($to)->get($url)->throw();
         } catch (RequestException $e) {
-            throw new RuntimeException("Download failed ({$e->response->status()}).", previous: $e);
+            throw new RuntimeException($this->rateLimited($e->response) ?? "Download failed ({$e->response->status()}).", previous: $e);
         }
     }
 
@@ -81,7 +82,26 @@ class GitHubReleases
         try {
             return $this->http($action)->accept('application/octet-stream')->get($url)->throw()->body();
         } catch (RequestException $e) {
-            throw new RuntimeException("Download failed ({$e->response->status()}).", previous: $e);
+            throw new RuntimeException($this->rateLimited($e->response) ?? "Download failed ({$e->response->status()}).", previous: $e);
         }
+    }
+
+    /**
+     * What to say when GitHub refused because of its rate limit (403 or 429 with no requests left): 60 an hour per IP
+     * address without a token, shared with every site on that address; null for any other answer.
+     */
+    private function rateLimited(Response $response): ?string
+    {
+        if (! in_array($response->status(), [403, 429], true)
+            || ($response->header('X-RateLimit-Remaining') !== '0' && ! str_contains(strtolower((string) $response->json('message')), 'rate limit'))) {
+            return null;
+        }
+
+        $reset = (int) $response->header('X-RateLimit-Reset');
+        $when = $reset > 0 ? ' after '.CarbonImmutable::createFromTimestamp($reset)->setTimezone(config('app.timezone'))->format('H:i') : ' later';
+
+        return blank(config('gaiacp.updates.token'))
+            ? "GitHub's limit for requests without a token (60 an hour per server address, shared with other sites on it) was reached. Try again{$when}, or set GAIACP_UPDATE_TOKEN in .env to a GitHub token (fine-grained, public repositories read-only) for 5000 an hour."
+            : "GitHub's rate limit for the token in GAIACP_UPDATE_TOKEN was reached. Try again{$when}.";
     }
 }

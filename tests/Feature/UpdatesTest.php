@@ -339,6 +339,27 @@ class UpdatesTest extends TestCase
             ->assertActionHidden('update');
     }
 
+    public function test_the_page_explains_githubs_rate_limit(): void
+    {
+        Http::fake(['api.github.com/*' => Http::response(['message' => 'API rate limit exceeded for 203.0.113.7.'], 403, ['X-RateLimit-Remaining' => '0', 'X-RateLimit-Reset' => (string) now()->addMinutes(20)->timestamp])]);
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(Updates::class)
+            ->assertSee('Could not check for updates')
+            ->assertSee('limit for requests without a token', false)
+            ->assertSee('GAIACP_UPDATE_TOKEN')
+            ->assertDontSee('GitHub answered 403');
+    }
+
+    public function test_another_403_still_says_what_github_answered(): void
+    {
+        Http::fake(['api.github.com/*' => Http::response(['message' => 'Resource not accessible by personal access token'], 403, ['X-RateLimit-Remaining' => '4999'])]);
+        config(['gaiacp.updates.token' => 'github_pat_x']);
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(Updates::class)->assertSee('GitHub answered 403');
+    }
+
     public function test_the_command_checks_and_updates(): void
     {
         $this->fakeGitHub();
