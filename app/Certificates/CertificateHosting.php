@@ -153,7 +153,7 @@ class CertificateHosting
 
     /**
      * The provider's validation details in the shape InstallsCertificates takes: the file's path under
-     * /.well-known/pki-validation/ and contents, or the DNS record's name, type and value. Null when they are missing
+     * /.well-known/pki-validation/ (a plain .txt name only, so nothing a web server would run) and contents, or the DNS record's name, type and value. Null when they are missing
      * or don't look right.
      *
      * @return array{path?: string, content?: string, name?: string, type?: string, value?: string}|null
@@ -170,7 +170,7 @@ class CertificateHosting
             $host = strtolower((string) parse_url($link, PHP_URL_HOST));
             $content = (string) data_get($validation, "{$method}.content", '');
 
-            return preg_match('#^/\.well-known/pki-validation/[A-Za-z0-9._-]+$#', $path) && ! str_contains($path, '..') && $content !== ''
+            return preg_match('#^/\.well-known/pki-validation/[A-Za-z0-9_-]+\.txt$#', $path) && ! str_contains($path, '..') && $content !== ''
                 && in_array($host, [$domain, "www.{$domain}"], true)
                 ? ['path' => $path, 'content' => $content]
                 : null;

@@ -287,6 +287,8 @@ class SslOwnHostingTest extends TestCase
 
         $this->assertSame(['path' => '/.well-known/pki-validation/A.txt', 'content' => 'x'], $details('http', ['http' => ['link' => 'http://www.maria.gr/.well-known/pki-validation/A.txt', 'content' => 'x']]));
         $this->assertNull($details('http', ['http' => ['link' => 'http://maria.gr/.htaccess', 'content' => 'x']]));
+        $this->assertNull($details('http', ['http' => ['link' => 'http://maria.gr/.well-known/pki-validation/shell.php', 'content' => '<?php']]));
+        $this->assertNull($details('http', ['http' => ['link' => 'http://maria.gr/.well-known/pki-validation/a.php.txt', 'content' => 'x']]));
         $this->assertNull($details('http', ['http' => ['link' => 'http://other.gr/.well-known/pki-validation/A.txt', 'content' => 'x']]));
         $this->assertNull($details('http', ['http' => ['link' => 'http://maria.gr/.well-known/pki-validation/A.txt', 'content' => '']]));
         $this->assertSame(['name' => '_abc.maria.gr', 'type' => 'CNAME', 'value' => 'xyz.sectigo.com'], $details('dns', ['dns' => ['record' => '_abc.maria.gr. CNAME xyz.sectigo.com.']]));

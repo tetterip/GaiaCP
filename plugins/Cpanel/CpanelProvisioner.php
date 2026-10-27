@@ -239,8 +239,8 @@ class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, Lis
         $username = $this->username($hosting);
         $path = (string) ($details['path'] ?? '');
 
-        if (! preg_match('#^/\.well-known/pki-validation/[A-Za-z0-9._-]+$#', $path) || str_contains($path, '..')) {
-            throw new ProvisioningException('cPanel: the validation file must go under /.well-known/pki-validation/.');
+        if (! preg_match('#^/\.well-known/pki-validation/[A-Za-z0-9_-]+\.txt$#', $path) || str_contains($path, '..')) {
+            throw new ProvisioningException('cPanel: the validation file must be a .txt file under /.well-known/pki-validation/.');
         }
 
         $root = rtrim($this->documentRoot($hosting), '/');
