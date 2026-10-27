@@ -7,7 +7,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [0.3.0] - 2026-10-26
 
-- First release from the public repository.
+- First release from the public repository. Releases are signed with a new key (made 2026-10-27): an install that
+  trusted the 0.2.0 key refuses this release, so update it once by hand (download the zip, or deploy from Git).
 - Settings → AI assistant is its own group: the assistant's page with Claude, ChatGPT, DeepSeek and Kimi beside it
   (no longer under Integrations); Settings → Plugins lists them under AI assistant.
 - Eight more languages, machine translated: German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and
