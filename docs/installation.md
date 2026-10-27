@@ -70,7 +70,9 @@ stay), runs the migrations and comes back up. If a step after the swap fails, th
 there for the database. From SSH: `php artisan gaiacp:update` (`--check` only looks).
 
 Updates come from the GitHub releases of `GAIACP_UPDATE_REPOSITORY` (default `tetterip/GaiaCP`, public). A private
-repository of your own needs `GAIACP_UPDATE_TOKEN` in `.env`, a token that can read it (fine-grained, Contents: read). A Git
+repository of your own needs `GAIACP_UPDATE_TOKEN` in `.env`, a token that can read it (fine-grained, Contents: read). Without a token GitHub allows
+60 requests an hour per server address, shared with every site on it; on a shared server set `GAIACP_UPDATE_TOKEN` to
+a fine-grained token with public repositories read-only (5000 an hour). A Git
 checkout (deployed from Git) has no Update button: it is updated by deploying.
 
 An install made before the installer existed (its own `.env`) counts as installed: the installer stays closed and
