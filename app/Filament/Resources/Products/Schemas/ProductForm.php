@@ -17,6 +17,7 @@ use App\Support\Currencies;
 use App\Support\Locales;
 use App\Support\Money;
 use App\Support\ProductIcons;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -191,6 +192,38 @@ class ProductForm
                             self::money("prices.{$cycle->value}.setup_cents", __('Setup fee'))
                                 ->placeholder('0.00'),
                         ]))->all()),
+
+                Section::make(__('Sale'))
+                    ->description(__('A lower price for orders placed between these days, for their first period; renewals are at the price above. Clients see the price above struck through and a Sale badge. Leave a price empty when that cycle is not on sale.'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->collapsed(fn (?Product $record) => ! collect($record?->prices ?? [])->contains(fn (array $price) => filled($price['sale_cents'] ?? null)))
+                    ->columns(['default' => 1, 'sm' => 2])
+                    ->schema([
+                        DatePicker::make('sale_starts_on')
+                            ->label('Sale from')
+                            ->placeholder(__('Now')),
+                        DatePicker::make('sale_ends_on')
+                            ->label('Sale until')
+                            ->afterOrEqual('sale_starts_on')
+                            ->placeholder(__('Until removed'))
+                            ->helperText(__('The last day of the sale; the day after, the normal prices apply again by themselves.')),
+                        Grid::make(['default' => 1, 'sm' => 3])
+                            ->columnSpanFull()
+                            ->schema(collect(BillingCycle::cases())->map(fn (BillingCycle $cycle) => self::money("prices.{$cycle->value}.sale_cents", $cycle->getLabel())
+                                ->visible(fn (Get $get) => (bool) $get("prices.{$cycle->value}.enabled"))
+                                ->rule(fn (Get $get) => function (string $attribute, mixed $value, \Closure $fail) use ($get, $cycle) {
+                                    $price = $get("prices.{$cycle->value}.price_cents");
+
+                                    try {
+                                        if (filled($value) && filled($price) && Money::toCents($value) >= Money::toCents($price)) {
+                                            $fail(__('A sale price must be lower than the price.'));
+                                        }
+                                    } catch (\InvalidArgumentException) {
+                                        // a malformed amount: its own rule says so
+                                    }
+                                }))->all()),
+                    ]),
 
                 Section::make(__('Prices in other currencies'))
                     ->description(__('For clients billed in another currency. Empty = the price above at that currency\'s rate; Update product prices on Settings → Currencies sets them all at today\'s rates.'))

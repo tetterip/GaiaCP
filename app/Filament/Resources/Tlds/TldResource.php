@@ -12,6 +12,7 @@ use App\Filament\Resources\Tlds\Pages\ManageTlds;
 use App\Models\ActivityLog;
 use App\Models\Registrar;
 use App\Models\Tld;
+use App\Providers\AppServiceProvider;
 use App\Support\Currencies;
 use App\Support\Money;
 use BackedEnum;
@@ -21,6 +22,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -120,6 +122,33 @@ class TldResource extends Resource implements SettingsCard
                         self::priceTable(Currencies::base(), fn (string $column) => self::price($column)),
                     ]),
 
+                Section::make(__('Sale'))
+                    ->description(__('Lower registration and transfer prices for domains ordered between these days, for their first term; renewals are at the renew price. Clients see the normal price struck through. Leave a price empty when it is not on sale.'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->collapsed(fn (?Tld $record) => collect($record?->sale_prices)->filter(fn ($sale) => $sale !== null)->isEmpty())
+                    ->columns(['default' => 1, 'sm' => 2])
+                    ->schema([
+                        DatePicker::make('sale_starts_on')
+                            ->label('Sale from')
+                            ->placeholder(__('Now')),
+                        DatePicker::make('sale_ends_on')
+                            ->label('Sale until')
+                            ->afterOrEqual('sale_starts_on')
+                            ->placeholder(__('Until removed'))
+                            ->helperText(__('The last day of the sale; the day after, the normal prices apply again by themselves.')),
+                        self::priceTable(Currencies::base(), fn (string $column) => self::price("sale_prices.{$column}")
+                            ->rule(fn (Get $get) => function (string $attribute, mixed $value, Closure $fail) use ($get, $column) {
+                                try {
+                                    if (filled($value) && (blank($price = $get($column)) || Money::toCents($value) >= Money::toCents($price))) {
+                                        $fail(__('A sale price must be lower than the price.'));
+                                    }
+                                } catch (\InvalidArgumentException) {
+                                    // a malformed amount: its own rule says so
+                                }
+                            }), Tld::SALE_KINDS)->columnSpanFull(),
+                    ]),
+
                 Section::make(__('Registrar cost'))
                     ->description(__('What the registrar charges you for each term, in :currency. Optional: with it, the list shows your margin, terms sold at a loss are marked red and the reports count domains\' costs as expenses.', ['currency' => Currencies::base()]))
                     ->columnSpanFull()
@@ -164,17 +193,19 @@ class TldResource extends Resource implements SettingsCard
      * their own above the three prices, and the inputs drop the currency prefix so the amounts stay readable.
      *
      * @param  callable(string): TextInput  $input
+     * @param  list<string>  $kinds  the columns, Tld::KINDS or some of them
      */
-    private static function priceTable(string $currency, callable $input): Grid
+    private static function priceTable(string $currency, callable $input, array $kinds = Tld::KINDS): Grid
     {
-        $label = ['default' => 3, 'sm' => 1];
+        $count = count($kinds);
+        $label = ['default' => $count, 'sm' => 1];
 
-        return Grid::make(['default' => 3, 'sm' => 4])->schema([
+        return Grid::make(['default' => $count, 'sm' => $count + 1])->schema([
             Text::make($currency)->weight('bold')->columnSpan($label),
-            ...array_map(fn (string $kind) => Text::make(self::kindLabel($kind))->weight('medium'), Tld::KINDS),
+            ...array_map(fn (string $kind) => Text::make(self::kindLabel($kind))->weight('medium'), $kinds),
             ...collect(Tld::YEARS)->flatMap(fn (int $years) => [
                 Text::make(Tld::termLabel($years))->columnSpan($label),
-                ...array_map(fn (string $kind) => $input("{$kind}_{$years}y_cents")->prefix(null), Tld::KINDS),
+                ...array_map(fn (string $kind) => $input("{$kind}_{$years}y_cents")->prefix(null), $kinds),
             ])->all(),
         ]);
     }
@@ -218,6 +249,12 @@ class TldResource extends Resource implements SettingsCard
                     ->icon(fn (Tld $record) => $record->sellsAtALoss() ? Heroicon::OutlinedExclamationTriangle : null)
                     ->tooltip(fn (Tld $record) => $record->sellsAtALoss() ? __('A term sells for less than the registrar charges.') : null)
                     ->listWithLineBreaks(),
+                TextColumn::make('sale_ends_on')
+                    ->label('Sale')
+                    ->state(fn (Tld $record) => $record->onSale() ? ($record->sale_ends_on ? __('Until :date', ['date' => $record->sale_ends_on->format(AppServiceProvider::dateFormat())]) : __('On sale')) : null)
+                    ->badge()
+                    ->color('danger')
+                    ->toggleable(),
                 IconColumn::make('active')
                     ->label('Offered')
                     ->boolean(),

@@ -6,6 +6,7 @@ use App\Enums\AutoSetup;
 use App\Enums\BillingCycle;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Models\Concerns\HasSale;
 use App\Support\Currencies;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -33,14 +34,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Prices are in the base currency; currency_prices ({USD: {cycle: {price_cents, setup_cents}}}) holds them in the
  * other currencies of Settings → Currencies, and a missing one is the base price at that currency's rate.
  *
- * @property array<string, array{enabled?: bool, price_cents?: int|null, setup_cents?: int|null}>|null $prices
+ * A cycle's sale_cents is its sale price (HasSale: from sale_starts_on to sale_ends_on), the first period's price on
+ * orders placed while the sale runs (orderPriceFor()); other currencies get it at their rate.
+ *
+ * @property array<string, array{enabled?: bool, price_cents?: int|null, setup_cents?: int|null, sale_cents?: int|null}>|null $prices
  * @property array<string, array<string, array{price_cents?: int|null, setup_cents?: int|null}>>|null $currency_prices
  */
-#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup'])]
+#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup', 'sale_starts_on', 'sale_ends_on'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
     use HasFactory;
+
+    use HasSale;
 
     protected static function booted(): void
     {
@@ -65,6 +71,8 @@ class Product extends Model
             'retired' => 'boolean',
             'client_visible' => 'boolean',
             'auto_setup' => AutoSetup::class,
+            'sale_starts_on' => 'immutable_date',
+            'sale_ends_on' => 'immutable_date',
         ];
     }
 
@@ -214,6 +222,33 @@ class Product extends Model
     public function setupFeeFor(BillingCycle $cycle, ?string $currency = null): int
     {
         return $this->priceFor($cycle) === null ? 0 : $this->inCurrency($cycle, 'setup_cents', (int) ($this->prices[$cycle->value]['setup_cents'] ?? 0), $currency);
+    }
+
+    /** The cycle's sale price in $currency while the sale runs; null when that cycle is not on sale (or not for less). */
+    public function salePriceFor(BillingCycle $cycle, ?string $currency = null): ?int
+    {
+        $price = $this->priceFor($cycle, $currency);
+        $sale = $this->prices[$cycle->value]['sale_cents'] ?? null;
+
+        if ($price === null || $sale === null || $sale === '' || ! $this->onSale()) {
+            return null;
+        }
+
+        $sale = $this->inCurrency($cycle, 'sale_cents', (int) $sale, $currency);
+
+        return $sale < $price ? $sale : null;
+    }
+
+    /** What an order placed today pays for the cycle's first period: the sale price while it runs, else the price. */
+    public function orderPriceFor(BillingCycle $cycle, ?string $currency = null): ?int
+    {
+        return $this->salePriceFor($cycle, $currency) ?? $this->priceFor($cycle, $currency);
+    }
+
+    protected function hasSalePrices(): bool
+    {
+        return collect($this->prices ?? [])->contains(fn (array $price) => ($price['enabled'] ?? false)
+            && isset($price['price_cents'], $price['sale_cents']) && $price['sale_cents'] !== '' && (int) $price['sale_cents'] < (int) $price['price_cents']);
     }
 
     /** The price set in $currency, else the base one at its rate. */

@@ -208,6 +208,10 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   two dates, with a usage limit, once per client or for new clients only. Clients enter it in the cart (or follow a
   `?coupon=CODE` link), admins pick it on New order, the REST API takes it with an order. The notice line names it;
   when nothing is left to pay, the order's notice is paid at once
+- Sale prices: a product's per cycle and a TLD's for registering and transferring, between two days, for the first
+  period of what is ordered then (renewals at the normal price). The order pages, the public home page, domain search
+  and Domain prices show the normal price struck through and a Sale badge; it ends by itself. A coupon lowers a sale
+  price only with its Also on sale prices switch
 - Knowledge base (Support → Knowledge base): help articles in categories, a text per language (Markdown), shown in
   the client area once published, with a search that ignores accents and case, views and "Was this helpful?" counts.
   While a client writes a new ticket, the articles matching its subject show under it. Settings → Support →

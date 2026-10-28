@@ -19,14 +19,15 @@ use Illuminate\Support\Str;
  * price of what it covers by a percentage or by a fixed amount (in the base currency, converted for the client's)
  * off each item. Without `recurring` it lowers only the first payment; with it the service keeps the lower price.
  * A setup fee is never lowered. It covers the products in `product_ids` and the domains ending in `tlds`, or
- * everything when both are empty. Used = placed on an order that was not cancelled (App\Support\Coupons).
+ * everything when both are empty. An item on sale (its product's or TLD's sale price) only with `on_sale`, so two
+ * discounts are never given by accident. Used = placed on an order that was not cancelled (App\Support\Coupons).
  *
  * @property list<int>|null $product_ids
  * @property list<string>|null $tlds
  * @property CarbonImmutable|null $starts_on
  * @property CarbonImmutable|null $ends_on
  */
-#[Fillable(['code', 'description', 'type', 'value', 'recurring', 'product_ids', 'tlds', 'starts_on', 'ends_on', 'max_uses', 'once_per_client', 'new_clients_only', 'active'])]
+#[Fillable(['code', 'description', 'type', 'value', 'recurring', 'product_ids', 'tlds', 'starts_on', 'ends_on', 'max_uses', 'once_per_client', 'new_clients_only', 'active', 'on_sale'])]
 class Coupon extends Model
 {
     protected $attributes = [
@@ -48,6 +49,7 @@ class Coupon extends Model
             'once_per_client' => 'boolean',
             'new_clients_only' => 'boolean',
             'active' => 'boolean',
+            'on_sale' => 'boolean',
         ];
     }
 
@@ -101,6 +103,10 @@ class Coupon extends Model
      */
     public function covers(array $item): bool
     {
+        if (isset($item['sale_cents']) && ! $this->on_sale) {
+            return false;
+        }
+
         if ($this->coversAll()) {
             return true;
         }

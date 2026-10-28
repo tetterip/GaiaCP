@@ -404,6 +404,14 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   0 as paid. The client Cart takes the code (session `client_order.coupon`, also from `?coupon=` on Order, the public
   order page and Cart), New order has a Coupon select, `POST /api/v1/orders` a `coupon`. `GenerateInvoices::describe()`
   adds "Coupon CODE" to the line (first payment, or every one when recurring)
+- Sale prices (`App\Models\Concerns\HasSale`: `sale_starts_on` / `sale_ends_on`, both days included, `onSale()`): a
+  product's `prices.{cycle}.sale_cents` (`Product::salePriceFor()` / `orderPriceFor()`), a TLD's `sale_prices`
+  (`{register_1y_cents: cents}`, `Tld::SALE_KINDS` only; `salePriceCents()` / `orderPriceCents()`); other currencies
+  at their rate, never at or above the price. `ClientOrder::items()` puts the sale price in `first_payment_cents` (setup
+  fee added) and marks the item `sale_cents`; `price_cents` stays the normal one, so renewals are at it. `Coupon::covers()`
+  skips an item with `sale_cents` unless `coupons.on_sale`, and then `Coupons::apply()` lowers the sale price. Admin
+  New order pre-fills the sale price; the Sale badge is `filament.client.product-badges` (`sale`), the struck price
+  `.gcp-was` in `filament.themes.client`
 - `app/Support/Settings.php` + `app/Filament/Clusters/Settings/Pages/`: admin-editable settings, stored
   in `settings` and loaded over `config('gaiacp.*')` at boot, so code keeps reading `config()`. Keys in
   `Settings::ENCRYPTED` (FTP and zip passwords) are stored encrypted and never sent back to the form (blank keeps them). New editable setting:
