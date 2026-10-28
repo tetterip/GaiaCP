@@ -82,7 +82,10 @@ How the admin and client panels, users, access, security, branding, themes and l
   route (`/order/{group?}`, `/cart/{group?}`) or the product (`OrderCatalogue::keyFor()`). A group with `features`
   shows `filament.client.compare-products` under its products: the feature rows, a price row per billing cycle any of
   them has, and Choose buttons that `$set` the product field (so its `afterStateUpdated` runs as for a card). A product's
-  `popular` adds a Popular badge to its card, the table and the public home page. Icons: `App\Support\ProductIcons`.
+  `popular` adds a Popular badge to its card, the table and the public home page, followed by its visible tags
+  (`ProductTag`, Settings → Product tags `ProductTagResource`, `product_product_tag`; `Product::badges()`, at most
+  `Product::BADGES`, partial `filament.client.product-badges`, colour from `ProductTag::COLORS` as `--gcp-tag`); every tag
+  also filters Products, Services (`product_tags`) and Messages to clients (`filters.tags`). Icons: `App\Support\ProductIcons`.
   Orders (`Client/Pages/Order`, `gaiacp.client_area.orders`): one product from `App\Actions\ClientOrder::products()`
   (`Product::clientOrderable()`, not domain type, a priced cycle) with its domain kept / registered / transferred, or a
   domain on its own, plus the product's options not hidden from clients (`ProductOptionFields`, `options.{id}`);

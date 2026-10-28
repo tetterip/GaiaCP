@@ -12,6 +12,7 @@ use App\Filament\Forms\PackageSelect;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use App\Models\ProductOptionGroup;
+use App\Models\ProductTag;
 use App\Support\Currencies;
 use App\Support\Locales;
 use App\Support\Money;
@@ -144,6 +145,13 @@ class ProductForm
                         Toggle::make('popular')
                             ->label('Popular')
                             ->helperText(__('A "Popular" badge on its card and in the compare table.'))
+                            ->columnSpanFull(),
+                        Select::make('tags')
+                            ->relationship('tags', 'id')
+                            ->getOptionLabelFromRecordUsing(fn (ProductTag $tag) => $tag->name())
+                            ->multiple()
+                            ->preload()
+                            ->helperText(__('Settings → Product tags. The ones shown to clients are badges after Popular; all of them filter your lists.'))
                             ->columnSpanFull(),
                         Grid::make(['default' => 1, 'sm' => 2])
                             ->key('features')

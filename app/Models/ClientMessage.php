@@ -18,11 +18,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Clients → Messages to clients: a text per language for the active clients its filters match, emailed a few a
  * minute (App\Actions\SendClientMessages, one recipient row each) and/or shown on client area Home between its dates.
  *
- * Filters (all optional, combined): servers, products, tlds and types narrow to clients with an active or suspended
- * service matching every one given; locales to clients with that email language.
+ * Filters (all optional, combined): servers, products, tags (of the service's product, Settings → Product tags), tlds
+ * and types narrow to clients with an active or suspended service matching every one given; locales to clients with
+ * that email language.
  *
  * @property array<string, array{subject: ?string, body: ?string}> $texts
- * @property array{servers?: list<int>, products?: list<int>, tlds?: list<string>, types?: list<string>, locales?: list<string>}|null $filters
+ * @property array{servers?: list<int>, products?: list<int>, tags?: list<int>, tlds?: list<string>, types?: list<string>, locales?: list<string>}|null $filters
  * @property CarbonImmutable|null $queued_at
  * @property CarbonImmutable|null $finished_at
  */
@@ -89,6 +90,7 @@ class ClientMessage extends Model
         $filters = $this->filters ?? [];
         $servers = array_filter((array) ($filters['servers'] ?? []));
         $products = array_filter((array) ($filters['products'] ?? []));
+        $tags = array_filter((array) ($filters['tags'] ?? []));
         $tlds = array_values(array_filter(array_map(fn ($tld) => '.'.ltrim(mb_strtolower(trim((string) $tld)), '.'), (array) ($filters['tlds'] ?? [])), fn ($tld) => $tld !== '.'));
         $types = array_filter((array) ($filters['types'] ?? []));
         $locales = array_filter((array) ($filters['locales'] ?? []));
@@ -102,10 +104,11 @@ class ClientMessage extends Model
                     $q->orWhereNull('locale')->orWhereNotIn('locale', array_keys(Locales::available()));
                 }
             }))
-            ->when($servers !== [] || $products !== [] || $tlds !== [] || $types !== [], fn (Builder $q) => $q->whereHas('services', fn (Builder $s) => $s
+            ->when($servers !== [] || $products !== [] || $tags !== [] || $tlds !== [] || $types !== [], fn (Builder $q) => $q->whereHas('services', fn (Builder $s) => $s
                 ->whereIn('status', [ServiceStatus::Active, ServiceStatus::Suspended])
                 ->when($servers !== [], fn (Builder $s) => $s->whereIn('server_id', $servers))
                 ->when($products !== [], fn (Builder $s) => $s->whereIn('product_id', $products))
+                ->when($tags !== [], fn (Builder $s) => $s->whereHas('product.tags', fn (Builder $t) => $t->whereKey($tags)))
                 ->when($types !== [], fn (Builder $s) => $s->whereIn('type', $types))
                 ->when($tlds !== [], fn (Builder $s) => $s->where(function (Builder $s) use ($tlds) {
                     foreach ($tlds as $tld) {

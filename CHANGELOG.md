@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Product tags (Settings → Product tags): your own labels such as New or SSD, named per language with a colour. One
+  shown to clients is a badge after Popular on the order cards, in the compare table and on the public home page (the
+  first three of a product); every tag filters the Products and Services lists and Messages to clients.
 - Coupons (Billing → Coupons): a code for a percentage or a fixed amount off, on the first payment only or on every
   renewal too, for chosen products and domain endings or for everything, with dates, a usage limit, once per client
   and new clients only. Clients enter it in the cart (or follow a `?coupon=CODE` link), admins pick it on New order,

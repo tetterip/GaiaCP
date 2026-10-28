@@ -19,8 +19,9 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Product groups (Settings → Product groups, as WHMCS's product groups): Shared hosting, VPS and so on, named per
   language with an icon and a link of their own (`/order/<group>`, `/cart/<group>`; a hidden group only by its
   link). The Order page, the public order page, the public home page and its side menu show products by group; each
-  product can have an icon, a Popular badge and its values for the group's compare table (Disk space, Websites…,
-  Yes / No as marks), which also lists each billing cycle's price and has a Choose button per package.
+  product can have an icon, a Popular badge, tags (Settings → Product tags: New, SSD…, named per language with a colour;
+  shown to clients as badges or kept for the admin's filters on products, services and messages) and its values for
+  the group's compare table (Disk space, Websites…, Yes / No as marks), which also lists each billing cycle's price and has a Choose button per package.
   Existing installs got one group per type; the WHMCS import brings WHMCS's groups
 - Product options (Settings → Product options, as WHMCS's configurable options): groups of options attached to
   products (a list, buttons, yes / no or a quantity, e.g. location or extra IPs), each choice with a price per cycle

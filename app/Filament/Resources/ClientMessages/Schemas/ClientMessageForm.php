@@ -7,6 +7,7 @@ use App\Enums\ServiceType;
 use App\Filament\Actions\AiTextActions;
 use App\Models\ClientMessage;
 use App\Models\Product;
+use App\Models\ProductTag;
 use App\Models\Server;
 use App\Models\Tld;
 use App\Support\Locales;
@@ -56,6 +57,12 @@ class ClientMessageForm
                         ->label('With the products')
                         ->multiple()
                         ->options(fn () => Product::query()->orderBy('name')->pluck('name', 'id'))
+                        ->live(),
+                    Select::make('filters.tags')
+                        ->label('With products tagged')
+                        ->multiple()
+                        ->options(fn () => ProductTag::options())
+                        ->visible(fn () => ProductTag::query()->exists())
                         ->live(),
                     TagsInput::make('filters.tlds')
                         ->label('With a domain ending in')

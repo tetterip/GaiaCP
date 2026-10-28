@@ -22,8 +22,8 @@
                     <th></th>
                     @foreach ($compare['products'] as $product)
                         <th @class(['gcp-compare-chosen' => $product['id'] === $chosen])>
-                            @if ($product['popular'])
-                                <span class="gcp-popular">{{ __('Popular') }}</span>
+                            @if ($product['popular'] || $product['badges'] !== [])
+                                <span class="gcp-compare-badges">@include('filament.client.product-badges', ['popular' => $product['popular'], 'badges' => $product['badges']])</span>
                             @endif
                             <span class="gcp-compare-name">{{ $product['name'] }}</span>
                             <span class="gcp-compare-price">{{ $product['price'] }}</span>

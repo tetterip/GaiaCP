@@ -64,7 +64,7 @@ class PublicHome extends Page
      * What clients can order, by product group (OrderCatalogue), each product with its icon, lowest price and where to
      * order it.
      *
-     * @return list<array{name: string, description: ?string, icon: ?string, url: string, products: list<array{name: string, icon: ?string, popular: bool, price: list<string>, url: string}>}>
+     * @return list<array{name: string, description: ?string, icon: ?string, url: string, products: list<array{name: string, icon: ?string, popular: bool, badges: list<array{name: string, color: string}>, price: list<string>, url: string}>}>
      */
     public function sections(): array
     {
@@ -83,6 +83,7 @@ class PublicHome extends Page
                     'name' => $product->name,
                     'icon' => $product->icon ?? $group['icon'],
                     'popular' => $product->popular,
+                    'badges' => $product->badges(),
                     'price' => $this->fromPrice($product),
                     'url' => $this->orderUrl($group['group'] ? $group['key'] : null, $product),
                 ])->values()->all(),
