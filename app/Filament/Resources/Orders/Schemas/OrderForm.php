@@ -343,13 +343,15 @@ class OrderForm
         }
 
         $picks = ProductOptions::select($product, (array) ($get('options') ?? []), $cycle, $currency);
+        // While the product's sale runs its sale price is the first payment; renewals are at the price.
+        $first = ($product->salePriceFor($cycle, $currency) ?? $price) + ProductOptions::total($picks)
+            + $product->setupFeeFor($cycle, $currency) + ProductOptions::setupTotal($picks);
         $price += ProductOptions::total($picks);
-        $setup = $product->setupFeeFor($cycle, $currency) + ProductOptions::setupTotal($picks);
         $set('price_cents', Money::toDecimal($price));
-        $set('first_payment_cents', $setup > 0 ? Money::toDecimal($price + $setup) : null);
+        $set('first_payment_cents', $first !== $price ? Money::toDecimal($first) : null);
     }
 
-    /** Domain prices and term from the TLD's prices (Settings → Domain pricing), when it is priced. */
+    /** Domain prices and term from the TLD's prices (Settings → Domain pricing, its sale price while it runs), when it is priced. */
     private static function fillDomain(callable $get, callable $set): void
     {
         if (self::type($get) !== ServiceType::Domain) {
@@ -375,8 +377,8 @@ class OrderForm
         $currency = self::currency($get);
         $renew = $tld->priceCents('renew', $years, $currency);
         $first = match (self::registration($get)) {
-            DomainRegistrationType::Register => $tld->priceCents('register', $years, $currency),
-            DomainRegistrationType::Transfer => $tld->priceCents('transfer', $years, $currency),
+            DomainRegistrationType::Register => $tld->orderPriceCents('register', $years, $currency),
+            DomainRegistrationType::Transfer => $tld->orderPriceCents('transfer', $years, $currency),
             default => null,
         };
 

@@ -116,6 +116,9 @@ class CouponResource extends Resource
                         ->multiple()
                         ->options(fn () => Tld::query()->orderBy('tld')->pluck('tld', 'tld'))
                         ->helperText(__('Lowers the registration or transfer price (and the renewal price with Renewals too).')),
+                    Toggle::make('on_sale')
+                        ->label('Also on sale prices')
+                        ->helperText(__('Off: products and domains on sale keep their sale price and the coupon skips them. On: it lowers the sale price too.')),
                 ]),
             Section::make(__('Limits'))
                 ->compact()

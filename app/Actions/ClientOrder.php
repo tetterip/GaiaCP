@@ -347,9 +347,11 @@ class ClientOrder
             $product ??= throw ValidationException::withMessages(['product' => __('Choose something to order.')]);
             $cycle = BillingCycle::tryFrom((string) ($data['billing_cycle'] ?? '')) ?? $product->defaultCycle();
             $price = $product->priceFor($cycle, $currency) ?? throw ValidationException::withMessages(['billing_cycle' => __('Choose a billing cycle.')]);
+            $sale = $product->salePriceFor($cycle, $currency);
             $values = self::optionValues($product, (array) ($data['options'] ?? []));
             $picks = ProductOptions::select($product, $values, $cycle, $currency);
             $price += ProductOptions::total($picks);
+            $sale = $sale === null ? null : $sale + ProductOptions::total($picks);
             $setup = $product->setupFeeFor($cycle, $currency) + ProductOptions::setupTotal($picks);
 
             $items[] = [
@@ -362,7 +364,7 @@ class ClientOrder
                 'billing_cycle' => $cycle,
                 'options' => $values,
                 'price_cents' => $price,
-                'first_payment_cents' => $setup > 0 ? $price + $setup : null,
+                ...self::firstPayment($price, $sale, $setup),
             ];
 
             array_push($items, ...self::addonItems($product, $cycle, $currency, (array) ($data['addons'] ?? [])));
@@ -378,7 +380,7 @@ class ClientOrder
 
         $years = (int) ($data['years'] ?? 1);
         $tld = self::tld($domain);
-        $first = $tld?->priceCents($option, $years, $currency);
+        $first = $tld?->orderPriceCents($option, $years, $currency);
 
         if ($first === null) {
             throw ValidationException::withMessages(['domain' => $tld
@@ -401,6 +403,7 @@ class ClientOrder
             'billing_cycle' => BillingCycle::forYears($years),
             'price_cents' => $tld->priceCents('renew', $years, $currency) ?? $first,
             'first_payment_cents' => $first,
+            'sale_cents' => $tld->salePriceCents($option, $years, $currency),
         ];
 
         // A domain on its own may bring the SSL certificate Settings → Domains offers with it (DomainSsl).
@@ -447,9 +450,23 @@ class ClientOrder
                 'label' => $addon->name,
                 'billing_cycle' => $cycle,
                 'price_cents' => $price,
-                'first_payment_cents' => $setup > 0 ? $price + $setup : null,
+                ...self::firstPayment($price, $addon->salePriceFor($cycle, $currency), $setup),
             ];
         })->values()->all();
+    }
+
+    /**
+     * An item's first payment: the sale price while the product's sale runs (the price after it, PlaceOrder's
+     * price_cents, stays the normal one) plus the setup fee; null when it is just the price. `sale_cents` marks an item
+     * on sale, which a coupon lowers only when it says so (Coupon::covers()).
+     *
+     * @return array{first_payment_cents: ?int, sale_cents: ?int}
+     */
+    private static function firstPayment(int $price, ?int $sale, int $setup): array
+    {
+        $first = ($sale ?? $price) + $setup;
+
+        return ['first_payment_cents' => $first === $price ? null : $first, 'sale_cents' => $sale];
     }
 
     /**

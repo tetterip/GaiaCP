@@ -783,6 +783,23 @@
         color: color-mix(in srgb, var(--gcp-tag) 55%, white);
     }
 
+    /* A product on sale (Product::onSale()): the Sale badge, and the normal price struck through beside the sale one */
+    .gcp-sale {
+        --gcp-tag: #dc2626;
+        background: color-mix(in srgb, var(--gcp-tag) 14%, transparent);
+        color: var(--gcp-tag);
+    }
+
+    .dark .gcp-sale {
+        background: color-mix(in srgb, var(--gcp-tag) 25%, transparent);
+        color: color-mix(in srgb, var(--gcp-tag) 55%, white);
+    }
+
+    .gcp-was {
+        opacity: .65;
+        font-weight: 400;
+    }
+
     .gcp-compare-badges {
         display: flex;
         flex-wrap: wrap;

@@ -28,7 +28,10 @@ Each TLD can also keep:
 - the **registrar cost** per term: the list then shows your renewal margin (red when a term sells at a loss), and
   Reports → Domain profit shows revenue, cost and profit per TLD;
 - **grace days**, a **grace fee** and a **redemption fee** for late renewals (see below);
-- prices in other currencies, or follow the exchange rate.
+- prices in other currencies, or follow the exchange rate;
+- a **sale**: lower register and transfer prices between two days (Sale from / Sale until) for domains ordered then,
+  for their first term; renewals stay at the renew price. Clients see the normal price struck through on the order
+  page, the domain search and Domain prices; the day after the sale the normal prices are back by themselves.
 
 ## Domain settings
 

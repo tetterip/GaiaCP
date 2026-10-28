@@ -184,19 +184,22 @@ class SearchDomains extends Page
         }
     }
 
-    /** @return array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string} */
+    /** @return array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string} */
     private function row(string $domain): array
     {
         $currency = Currencies::forClient(filament()->auth()->user()?->client);
         $ssl = DomainSsl::firstPayment($currency);
         $tld = Tld::match($domain);
         $years = $tld?->terms('register')[0] ?? null;
-        $price = $years !== null ? $tld->priceCents('register', $years, $currency) : null;
+        $price = $years !== null ? $tld->orderPriceCents('register', $years, $currency) : null;
+        $sale = $years !== null ? $tld->salePriceCents('register', $years, $currency) : null;
 
         return [
             'domain' => $domain,
             'status' => app(DomainSearch::class)->check($domain)->value,
             'price' => $price !== null ? Money::format($price, $currency) : null,
+            // On sale: the normal price, struck through before the sale one
+            'was' => $sale !== null ? Money::format((int) $tld->priceCents('register', $years, $currency), $currency) : null,
             'term' => $years !== null ? Tld::termLabel($years) : null,
             'transfer' => ($tld?->terms('transfer') ?? []) !== [],
             // Settings → Domains → SSL with domains: the domain and its certificate, first payment together

@@ -57,7 +57,10 @@ class Coupons
         }
 
         if ($items !== null && ! collect($items)->contains(fn (array $item) => $coupon->covers($item))) {
-            return __('This coupon does not cover anything in this order.');
+            // It would cover something, but only what is on sale already
+            return collect($items)->contains(fn (array $item) => isset($item['sale_cents']) && $coupon->covers(['sale_cents' => null] + $item))
+                ? __('This coupon can\'t be used on items on sale.')
+                : __('This coupon does not cover anything in this order.');
         }
 
         return null;
@@ -95,7 +98,8 @@ class Coupons
             $first = isset($item['first_payment_cents']) ? (int) $item['first_payment_cents'] : $price;
             // A domain's first payment is its registration or transfer price; anything else's is its price plus its setup fee.
             $isDomain = ($item['type'] instanceof ServiceType ? $item['type'] : ServiceType::tryFrom((string) $item['type'])) === ServiceType::Domain;
-            $off = $coupon->discountOn($isDomain ? $first : min($price, $first), $currency);
+            // On sale, the sale price (the first period's, before the setup fee) is what it lowers.
+            $off = $coupon->discountOn($isDomain ? $first : (isset($item['sale_cents']) ? (int) $item['sale_cents'] : min($price, $first)), $currency);
 
             if ($off === 0) {
                 continue;

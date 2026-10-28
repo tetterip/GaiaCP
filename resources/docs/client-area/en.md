@@ -141,6 +141,8 @@ Press **Add to cart** and the **Cart** opens (the cart icon at the top of every 
 
 If you have a **coupon code**, type it in the cart: you see what it takes off before you place the order (a link with a code fills it in for you). A coupon may lower only the first payment or every renewal too, and it never lowers a setup fee.
 
+What is **on sale** shows a Sale badge and its normal price struck through. The sale price is for the first period of what you order while the sale runs; renewals are at the normal price. A coupon may not lower a sale price further.
+
 <!-- if:terms -->
 Before you place it, read our Terms of Service (the link next to the box) and tick **I accept the Terms of Service**.
 <!-- endif -->

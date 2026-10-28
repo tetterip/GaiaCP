@@ -38,7 +38,7 @@
             <div class="gcp-public-cards">
                 @foreach ($group['products'] as $product)
                     <div class="gcp-card gcp-public-product">
-                        <div class="gcp-public-product-name">{!! ProductIcons::svg($product['icon']) !!}<span>{{ $product['name'] }}</span>@include('filament.client.product-badges', ['popular' => $product['popular'], 'badges' => $product['badges']])</div>
+                        <div class="gcp-public-product-name">{!! ProductIcons::svg($product['icon']) !!}<span>{{ $product['name'] }}</span>@include('filament.client.product-badges', ['sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</div>
                         <div class="gcp-public-product-price">
                             @foreach ($product['price'] as $line)
                                 <div @class(['gcp-public-price-main' => $loop->first, 'gcp-home-note' => ! $loop->first])>{{ $line }}</div>

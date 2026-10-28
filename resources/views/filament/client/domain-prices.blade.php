@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach ($rows as $row)
                             <tr x-show="filter === '' || @js($row['tld']).includes(filter.trim().toLowerCase().replace(/^\.?/, '.'))">
-                                <td class="gcp-price-tld">{{ $row['tld'] }}</td>
+                                <td class="gcp-price-tld">{{ $row['tld'] }}@if ($row['sale']) <span class="gcp-popular gcp-sale">{{ $row['sale'] }}</span>@endif</td>
                                 <td class="gcp-end">{{ $row['register'] ?? '—' }}</td>
                                 <td class="gcp-end">{{ $row['transfer'] ?? '—' }}</td>
                                 <td class="gcp-end">{{ $row['renew'] ?? '—' }}</td>

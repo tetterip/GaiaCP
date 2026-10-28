@@ -49,7 +49,9 @@ amount** off each item (in your base currency, converted for clients who pay in 
 domain endings it covers, or leave both empty for everything; a setup fee is never lowered, and for a domain it lowers
 the registration or transfer price. With **Renewals too** off, only the first payment is lower; with it on, the service
 keeps the lower price at every renewal. **Valid from** / **Valid until**, a **Usage limit** (a cancelled order gives
-its use back), **Once per client** and **New clients only** limit who can use it; switch it off to stop it.
+its use back), **Once per client** and **New clients only** limit who can use it; switch it off to stop it. A product
+or domain on sale (see Products → Sale prices) keeps its sale price and the coupon skips it, unless **Also on sale
+prices** is on: then the coupon lowers the sale price.
 
 Clients type the code in the cart, where they see what it saves before they place the order. You can also send a link
 such as `https://your-site/checkout?coupon=SPRING` (or add `?coupon=SPRING` to the order page): the code is filled in

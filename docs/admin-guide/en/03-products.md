@@ -49,6 +49,16 @@ Settings → **Product tags** holds your own labels: New, SSD, Legacy plan. Each
 a badge after Popular in the same places (the first three of a product); every tag, shown or not, filters the Products
 and Services lists and Messages to clients (With products tagged), so a hidden one is handy for your own grouping.
 
+## Sale prices
+
+A product's **Sale** section lowers its price for a while: a **Sale from** and a **Sale until** day (leave the first
+empty to start now, the second to keep it until you remove it) and a sale price for each cycle you want on sale. Orders
+placed during those days pay the sale price for their first period; renewals are at the normal price. While the sale
+runs, clients see the normal price struck through and a red **Sale** badge before Popular and the tags, on the order
+cards, the compare table and the public home page, with the day it ends. The day after its last day the normal price
+is back by itself; nothing needs to run. New order fills in the sale price too (you can still change it), and the
+Products list shows the products on sale. A coupon skips an item on sale unless it has **Also on sale prices** on.
+
 ## Product options
 
 Settings → **Product options** holds choices offered with a product, like WHMCS's configurable options: a server

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSale;
 use App\Support\Currencies;
 use App\Support\DomainName;
 use Carbon\CarbonInterface;
@@ -18,6 +19,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * names its own. Prices are in the base currency; currency_prices ({USD: {column: cents}}) holds them in other
  * currencies, and a missing one is the base price at that currency's rate. costs ({register_1y_cents: cents}) is what
  * the registrar charges for each of those, in the base currency (missing = not known), for margins and the reports.
+ *
+ * sale_prices ({register_1y_cents: cents}, register and transfer only) are its sale prices (HasSale: from
+ * sale_starts_on to sale_ends_on), the first payment of domains ordered while the sale runs (orderPriceCents());
+ * renewals keep the renew price. Other currencies get them at their rate.
+ *
+ * @property array<string, int|null>|null $sale_prices
  */
 #[Fillable([
     'tld', 'registrar_id', 'active', 'epp_required',
@@ -25,13 +32,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'transfer_1y_cents', 'transfer_2y_cents', 'transfer_3y_cents',
     'renew_1y_cents', 'renew_2y_cents', 'renew_3y_cents',
     'grace_days', 'grace_fee_cents', 'redemption_fee_cents', 'currency_prices', 'costs',
+    'sale_prices', 'sale_starts_on', 'sale_ends_on',
 ])]
 class Tld extends Model
 {
+    use HasSale;
+
     /** The terms a domain can be priced for: one per billing cycle of whole years (BillingCycle::forYears()). */
     public const YEARS = [1, 2, 3];
 
     public const KINDS = ['register', 'transfer', 'renew'];
+
+    /** The prices a sale can lower: a new domain's first payment, never its renewals. */
+    public const SALE_KINDS = ['register', 'transfer'];
 
     protected function casts(): array
     {
@@ -44,6 +57,9 @@ class Tld extends Model
             'redemption_fee_cents' => 'integer',
             'currency_prices' => 'array',
             'costs' => 'array',
+            'sale_prices' => 'array',
+            'sale_starts_on' => 'immutable_date',
+            'sale_ends_on' => 'immutable_date',
         ];
     }
 
@@ -101,6 +117,37 @@ class Tld extends Model
     public function priceCents(string $kind, int $years, ?string $currency = null): ?int
     {
         return in_array($years, self::YEARS, true) ? $this->inCurrency("{$kind}_{$years}y_cents", $currency) : null;
+    }
+
+    /** The sale price for "register" or "transfer" over $years in $currency while the sale runs; null when not on sale (or not for less). */
+    public function salePriceCents(string $kind, int $years, ?string $currency = null): ?int
+    {
+        $price = $this->priceCents($kind, $years, $currency);
+        $sale = $this->sale_prices["{$kind}_{$years}y_cents"] ?? null;
+
+        if ($price === null || $sale === null || $sale === '' || ! in_array($kind, self::SALE_KINDS, true) || ! $this->onSale()) {
+            return null;
+        }
+
+        $currency = strtoupper((string) $currency);
+        $sale = $currency === '' || $currency === Currencies::base() ? (int) $sale : Currencies::fromBase((int) $sale, $currency);
+
+        return $sale < $price ? $sale : null;
+    }
+
+    /** What a domain ordered today pays first for "register" or "transfer" over $years: the sale price while it runs, else the price. */
+    public function orderPriceCents(string $kind, int $years, ?string $currency = null): ?int
+    {
+        return $this->salePriceCents($kind, $years, $currency) ?? $this->priceCents($kind, $years, $currency);
+    }
+
+    protected function hasSalePrices(): bool
+    {
+        return collect($this->sale_prices ?? [])->contains(function ($sale, string $column) {
+            $price = $this->{$column} ?? null;
+
+            return $sale !== null && $sale !== '' && $price !== null && (int) $sale < (int) $price;
+        });
     }
 
     /** A price column in $currency: the one set for it, else the base one at its rate; null when the base has none. */
