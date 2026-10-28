@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Sale prices: a Sale section on each product (a price per cycle) and on each TLD (register and transfer per term),
+  from a Sale from to a Sale until day. Orders placed then pay the sale price for their first period; renewals are at
+  the normal price. Clients see the normal price struck through and a Sale badge on the order pages, the public home
+  page, domain search and Domain prices, and it ends by itself. A coupon skips items on sale unless its new Also on
+  sale prices switch is on.
 - Product tags (Settings → Product tags): your own labels such as New or SSD, named per language with a colour. One
   shown to clients is a badge after Popular on the order cards, in the compare table and on the public home page (the
   first three of a product); every tag filters the Products and Services lists and Messages to clients.
