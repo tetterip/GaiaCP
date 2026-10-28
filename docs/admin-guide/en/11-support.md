@@ -56,8 +56,8 @@ products, holiday hours. Each has a text per language and a publish date; leave 
 ## Messages to clients
 
 Main → **Messages to clients** emails many clients at once, or shows a message at the top of their client area Home
-between two dates (or both). Write one text per language and pick who gets it by servers, products, domain endings,
-service types and language; the count shows how many will. **Send test to me** first. The text is Markdown; HTML in it
+between two dates (or both). Write one text per language and pick who gets it by servers, products, product tags, domain
+endings, service types and language; the count shows how many will. **Send test to me** first. The text is Markdown; HTML in it
 goes into the email, but the client area shows none.
 
 The emails go out a few a minute (Settings → Automation → Messages per minute) and each recipient gets it once; the

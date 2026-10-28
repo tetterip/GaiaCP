@@ -297,7 +297,7 @@ class ClientOrder
     /** @return Collection<int, Product> what a client can order: shown in the client area, with a priced cycle; domains are ordered by name */
     public static function products(): Collection
     {
-        return Product::query()->clientOrderable()->where('type', '!=', ServiceType::Domain)->orderBy('type')->orderBy('name')->get()
+        return Product::query()->clientOrderable()->with('tags')->where('type', '!=', ServiceType::Domain)->orderBy('type')->orderBy('name')->get()
             ->filter(fn (Product $product) => $product->cycles() !== [])
             ->values();
     }

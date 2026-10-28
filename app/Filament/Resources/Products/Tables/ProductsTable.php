@@ -4,20 +4,23 @@ namespace App\Filament\Resources\Products\Tables;
 
 use App\Filament\Actions\ChangePriceAction;
 use App\Models\Product;
+use App\Models\ProductTag;
 use App\Support\Money;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn ($query) => $query->with('group'))
+            ->modifyQueryUsing(fn ($query) => $query->with(['group', 'tags']))
             ->columns([
                 TextColumn::make('name')
                     ->description(fn (Product $record) => $record->package)
@@ -28,6 +31,11 @@ class ProductsTable
                 TextColumn::make('group')
                     ->state(fn (Product $record) => $record->group?->name())
                     ->placeholder(__('Other'))
+                    ->toggleable(),
+                TextColumn::make('tags')
+                    ->state(fn (Product $record) => $record->tags->map(fn (ProductTag $tag) => $tag->name())->all())
+                    ->badge()
+                    ->color(fn (Product $record, string $state) => $record->tags->first(fn (ProductTag $tag) => $tag->name() === $state)?->filamentColor() ?? 'gray')
                     ->toggleable(),
                 TextColumn::make('prices')
                     ->label('Prices')
@@ -52,6 +60,11 @@ class ProductsTable
             ->filters([
                 TernaryFilter::make('retired')
                     ->default(false),
+                SelectFilter::make('tags')
+                    ->options(fn () => ProductTag::options())
+                    ->multiple()
+                    ->query(fn (Builder $query, array $data) => $query->when($data['values'] ?? [], fn (Builder $query, array $tags) => $query
+                        ->whereHas('tags', fn (Builder $q) => $q->whereKey($tags)))),
             ])
             ->recordActions([
                 ActionGroup::make([

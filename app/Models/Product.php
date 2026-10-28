@@ -27,7 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * in New order or the client area: App\Actions\AddAddon.
  *
  * The order page lists it in its group (product_group_id, Settings → Product groups) with its icon (App\Support\ProductIcons)
- * and its `features` ({feature key: value}), the values of its group's compare table; `popular` adds a badge there.
+ * and its `features` ({feature key: value}), the values of its group's compare table; `popular` adds a badge there, and
+ * so do its visible tags (Settings → Product tags, badges()).
  *
  * Prices are in the base currency; currency_prices ({USD: {cycle: {price_cents, setup_cents}}}) holds them in the
  * other currencies of Settings → Currencies, and a missing one is the base price at that currency's rate.
@@ -71,6 +72,25 @@ class Product extends Model
     public function group(): BelongsTo
     {
         return $this->belongsTo(ProductGroup::class, 'product_group_id');
+    }
+
+    /** At most this many tags show as badges on a card, so it stays readable on a phone. */
+    public const BADGES = 3;
+
+    /** @return BelongsToMany<ProductTag, $this> Settings → Product tags */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductTag::class)->orderBy('product_tags.sort')->orderBy('product_tags.id');
+    }
+
+    /** @return list<array{name: string, color: string}> its visible tags, the badges clients see after Popular */
+    public function badges(): array
+    {
+        return $this->tags
+            ->where('visible', true)
+            ->take(self::BADGES)
+            ->map(fn (ProductTag $tag) => ['name' => $tag->name(), 'color' => $tag->hex()])
+            ->values()->all();
     }
 
     /** Its value for one of its group's features (a row of the compare table), or null. */

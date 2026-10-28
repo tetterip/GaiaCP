@@ -42,6 +42,13 @@ reached only through its link, handy for an offer you send to a few people.
 Tick **Popular** on a product (its Order page section) to give it a badge on its order card, in the compare table and
 on the public home page.
 
+## Product tags
+
+Settings → **Product tags** holds your own labels: New, SSD, Legacy plan. Each has a name per language, a colour and a
+**Shown to clients** switch, and you pick them on the product form (its Order page section). A tag shown to clients is
+a badge after Popular in the same places (the first three of a product); every tag, shown or not, filters the Products
+and Services lists and Messages to clients (With products tagged), so a hidden one is handy for your own grouping.
+
 ## Product options
 
 Settings → **Product options** holds choices offered with a product, like WHMCS's configurable options: a server

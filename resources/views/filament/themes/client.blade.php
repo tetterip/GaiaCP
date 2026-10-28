@@ -653,8 +653,9 @@
     /* A card's name with its icon (OrderForm::cardLabel(), the public home page) */
     .gcp-card-name {
         display: inline-flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: .5rem;
+        gap: .25rem .5rem;
     }
 
     .gcp-product-icon {
@@ -771,10 +772,32 @@
         margin-bottom: .3rem;
     }
 
+    /* A product's tags (Settings → Product tags): the Popular badge in the tag's own colour */
+    .gcp-tag {
+        background: color-mix(in srgb, var(--gcp-tag) 14%, transparent);
+        color: var(--gcp-tag);
+    }
+
+    .dark .gcp-tag {
+        background: color-mix(in srgb, var(--gcp-tag) 25%, transparent);
+        color: color-mix(in srgb, var(--gcp-tag) 55%, white);
+    }
+
+    .gcp-compare-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem;
+    }
+
+    .gcp-compare-badges .gcp-popular {
+        margin-bottom: .3rem;
+    }
+
     .gcp-public-product-name {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: .5rem;
+        gap: .25rem .5rem;
     }
 
     .gcp-public-group-title {
