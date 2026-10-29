@@ -42,6 +42,11 @@ reached only through its link, handy for an offer you send to a few people.
 Tick **Popular** on a product (its Order page section) to give it a badge on its order card, in the compare table and
 on the public home page.
 
+Pick a **Color** for a product (the circles under Popular) to give it its own colour there: its name, icon, price,
+check marks, Popular badge and buttons take it, and its card gets a line in it along the top. **None** (the dashed
+circle) keeps the client area's colour. A different colour per package helps clients tell them apart; tags and the
+Sale badge keep their own colours.
+
 ## Product tags
 
 Settings → **Product tags** holds your own labels: New, SSD, Legacy plan. Each has a name per language, a colour and a

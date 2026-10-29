@@ -7,6 +7,7 @@ use App\Filament\Clusters\Settings\SettingsCard;
 use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesResourceLabels;
+use App\Filament\Forms\ColorCircles;
 use App\Filament\Resources\ProductTags\Pages\ManageProductTags;
 use App\Models\Product;
 use App\Models\ProductTag;
@@ -14,7 +15,6 @@ use App\Support\Locales;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
@@ -77,11 +77,9 @@ class ProductTagResource extends Resource implements SettingsCard
                 ->maxLength(30)
                 ->required(Locales::isDefault($locale)))->values()->all()),
             Grid::make(['default' => 1, 'sm' => 2])->schema([
-                Select::make('color')
-                    ->options(ProductTag::colorOptions())
+                ColorCircles::make()
                     ->default('gray')
-                    ->selectablePlaceholder(false)
-                    ->required(),
+                    ->columnSpanFull(),
                 TextInput::make('sort')
                     ->label('Position')
                     ->numeric()

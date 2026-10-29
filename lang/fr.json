@@ -3324,5 +3324,6 @@
     "The last day of the sale; the day after, the normal prices apply again by themselves.": "Le dernier jour de la promotion ; le lendemain, les prix normaux s'appliquent de nouveau d'eux-mêmes.",
     "This coupon can't be used on items on sale.": "Ce coupon ne peut pas être utilisé sur les articles en promotion.",
     "Until removed": "Jusqu'à suppression",
-    "sale :price": "promotion :price"
+    "sale :price": "promotion :price",
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Son nom, son icône, ses boutons et ses coches sur les pages de commande, le tableau comparatif et la page d'accueil publique. Aucune : la couleur de l'espace client."
 }

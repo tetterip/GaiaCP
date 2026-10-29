@@ -3324,5 +3324,6 @@
     "The last day of the sale; the day after, the normal prices apply again by themselves.": "De laatste dag van de aanbieding; de dag erna gelden de normale prijzen vanzelf weer.",
     "This coupon can't be used on items on sale.": "Deze coupon geldt niet voor artikelen in de aanbieding.",
     "Until removed": "Tot verwijderd",
-    "sale :price": "aanbieding :price"
+    "sale :price": "aanbieding :price",
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Naam, pictogram, knoppen en vinkjes op de bestelpagina's, in de vergelijkingstabel en op de openbare startpagina. Geen: de kleur van het klantgedeelte."
 }

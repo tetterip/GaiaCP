@@ -29,7 +29,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * The order page lists it in its group (product_group_id, Settings → Product groups) with its icon (App\Support\ProductIcons)
  * and its `features` ({feature key: value}), the values of its group's compare table; `popular` adds a badge there, and
- * so do its visible tags (Settings → Product tags, badges()).
+ * so do its visible tags (Settings → Product tags, badges()). Its `color` (one of ProductTag::COLORS, optional) colours its
+ * name, icon, buttons and check marks there (orderColor()).
  *
  * Prices are in the base currency; currency_prices ({USD: {cycle: {price_cents, setup_cents}}}) holds them in the
  * other currencies of Settings → Currencies, and a missing one is the base price at that currency's rate.
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property array<string, array{enabled?: bool, price_cents?: int|null, setup_cents?: int|null, sale_cents?: int|null}>|null $prices
  * @property array<string, array<string, array{price_cents?: int|null, setup_cents?: int|null}>>|null $currency_prices
  */
-#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup', 'sale_starts_on', 'sale_ends_on'])]
+#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'color', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup', 'sale_starts_on', 'sale_ends_on'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
@@ -99,6 +100,12 @@ class Product extends Model
             ->take(self::BADGES)
             ->map(fn (ProductTag $tag) => ['name' => $tag->name(), 'color' => $tag->hex()])
             ->values()->all();
+    }
+
+    /** Its colour's key on the order pages (data-gcp-color, filament.themes.client), or null for the accent colour. */
+    public function orderColor(): ?string
+    {
+        return array_key_exists((string) $this->color, ProductTag::COLORS) ? (string) $this->color : null;
     }
 
     /** Its value for one of its group's features (a row of the compare table), or null. */

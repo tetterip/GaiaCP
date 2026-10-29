@@ -86,6 +86,7 @@ class PublicHome extends Page
                     'sale' => $product->onSale(),
                     'popular' => $product->popular,
                     'badges' => $product->badges(),
+                    'color' => $product->orderColor(),
                     'price' => $this->fromPrice($product),
                     'url' => $this->orderUrl($group['group'] ? $group['key'] : null, $product),
                 ])->values()->all(),

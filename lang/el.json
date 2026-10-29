@@ -3324,5 +3324,6 @@
     "The last day of the sale; the day after, the normal prices apply again by themselves.": "Η τελευταία ημέρα της προσφοράς· την επόμενη ημέρα ισχύουν ξανά μόνες τους οι κανονικές τιμές.",
     "This coupon can't be used on items on sale.": "Αυτό το κουπόνι δεν ισχύει για ό,τι είναι σε προσφορά.",
     "Until removed": "Μέχρι να αφαιρεθεί",
-    "sale :price": "προσφορά :price"
+    "sale :price": "προσφορά :price",
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Το όνομα, το εικονίδιο, τα κουμπιά και τα σημάδια ελέγχου του στις σελίδες παραγγελίας, στον πίνακα σύγκρισης και στη δημόσια αρχική σελίδα. Κανένα: το χρώμα της περιοχής πελατών."
 }

@@ -8,6 +8,7 @@ use App\Enums\AutoSetup;
 use App\Enums\BillingCycle;
 use App\Enums\ServiceType;
 use App\Filament\Actions\AiTextActions;
+use App\Filament\Forms\ColorCircles;
 use App\Filament\Forms\PackageSelect;
 use App\Models\Product;
 use App\Models\ProductGroup;
@@ -146,6 +147,9 @@ class ProductForm
                         Toggle::make('popular')
                             ->label('Popular')
                             ->helperText(__('A "Popular" badge on its card and in the compare table.'))
+                            ->columnSpanFull(),
+                        ColorCircles::make(optional: true)
+                            ->helperText(__('Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area\'s colour.'))
                             ->columnSpanFull(),
                         Select::make('tags')
                             ->relationship('tags', 'id')
