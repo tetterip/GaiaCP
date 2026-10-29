@@ -12,6 +12,7 @@ use App\Filament\Clusters\Settings\Pages\MailSettings;
 use App\Filament\Pages\Updates;
 use App\Models\Client;
 use App\Models\Invoice;
+use App\Models\Product;
 use App\Models\Server;
 use App\Models\Service;
 use App\Models\User;
@@ -152,6 +153,9 @@ class DemoTest extends TestCase
         $this->seed(DemoSeeder::class);
 
         $this->assertSame(23, Client::query()->count());
+        $pro = Product::query()->where('name', 'Hosting Pro')->first();
+        $this->assertSame('indigo', $pro->orderColor());
+        $this->assertSame(['NVMe SSD', 'Best value'], array_column($pro->badges(), 'name'));
         $this->assertTrue(Invoice::query()->where('status', 'unpaid')->exists());
         $this->assertTrue(User::query()->where('email', Demo::CLIENT_EMAIL)->whereNotNull('client_id')->exists());
 
