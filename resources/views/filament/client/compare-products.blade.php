@@ -1,6 +1,7 @@
 {{-- The order form's compare table (OrderForm::compare()): the group's features in rows, a column for each product;
      "Yes" / "No" (or ✓ / ✗) show as marks, other values as typed. Then the price of each billing cycle and a Choose
-     button per column, which sets $field (the form's product field) as the product cards do. Styled by
+     button per column, which sets $field (the form's product field) as the product cards do, or, on a group's public
+     page (ProductGroupPage, no $field), an Order link to each product's url. Styled by
      filament.themes.client; a product's colour (data-gcp-color) colours its column's name, marks and button. --}}
 @php
     $mark = function (?string $value): ?string {
@@ -79,7 +80,9 @@
                     <th></th>
                     @foreach ($compare['products'] as $product)
                         <td @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
-                            @if ($product['id'] === $chosen)
+                            @if (! isset($field))
+                                <x-filament::button tag="a" size="sm" :href="$product['url']">{{ __('Order') }}</x-filament::button>
+                            @elseif ($product['id'] === $chosen)
                                 <x-filament::button size="sm" color="gray" icon="heroicon-m-check" disabled>{{ __('Chosen') }}</x-filament::button>
                             @else
                                 <x-filament::button size="sm" wire:click="$set('{{ $field }}', '{{ $product['id'] }}')">{{ __('Choose') }}</x-filament::button>

@@ -1172,6 +1172,34 @@
         text-decoration: underline;
     }
 
+    /* A product group's public page (ProductGroupPage): its questions, each opening its answer */
+    .gcp-faq {
+        display: grid;
+        padding: .25rem 1.25rem;
+    }
+
+    .gcp-faq details + details {
+        border-top: 1px solid var(--gcp-line);
+    }
+
+    .gcp-faq summary {
+        cursor: pointer;
+        padding: .85rem 0;
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-faq details .gcp-public-text {
+        padding-bottom: .85rem;
+    }
+
+    .gcp-public-title svg {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        vertical-align: -.15rem;
+    }
+
     /* Contact us: the company's details beside the form (above it on a phone) */
     .gcp-contact {
         display: flex;

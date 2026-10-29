@@ -28,4 +28,7 @@
     @if ($logo)
         <meta property="og:image" content="{{ $logo }}">
     @endif
+    @foreach (\App\Support\Seo::structuredData() as $data)
+        <script type="application/ld+json">{!! json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+    @endforeach
 @endif
