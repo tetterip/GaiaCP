@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Product colours: pick a colour for a product (its Order page section) and its name, icon, price, check marks and
+  buttons take it on the order cards, in the compare table and on the public home page, with a line along the card's
+  top. Product tags and products now pick their colour from ten circles instead of a list.
 - Sale prices: a Sale section on each product (a price per cycle) and on each TLD (register and transfer per term),
   from a Sale from to a Sale until day. Orders placed then pay the sale price for their first period; renewals are at
   the normal price. Clients see the normal price struck through and a Sale badge on the order pages, the public home

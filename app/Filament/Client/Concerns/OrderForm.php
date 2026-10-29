@@ -262,12 +262,17 @@ trait OrderForm
         return $groups->count() > 1 && $groups->contains(fn (array $group) => $group['group'] !== null);
     }
 
-    /** A card's name with its icon before it, and a product's badges after it (Sale, Popular, its visible tags). */
+    /**
+     * A card's name with its icon before it, and a product's badges after it (Sale, Popular, its visible tags); a product's
+     * colour (data-gcp-color) colours the name, the icon and the card's border.
+     */
     private static function cardLabel(?string $icon, string $name, ?Product $product = null): HtmlString
     {
         $badge = $product === null ? '' : view('filament.client.product-badges', ['sale' => $product->onSale(), 'popular' => $product->popular, 'badges' => $product->badges()])->render();
 
-        return new HtmlString('<span class="gcp-card-name">'.ProductIcons::svg($icon).'<span>'.e($name).'</span>'.$badge.'</span>');
+        $color = $product?->orderColor();
+
+        return new HtmlString('<span class="gcp-card-name"'.($color ? ' data-gcp-color="'.$color.'"' : '').'>'.ProductIcons::svg($icon).'<span>'.e($name).'</span>'.$badge.'</span>');
     }
 
     /** @param  array{key: string, description: ?string, products: Collection<int, Product>}  $group */
@@ -300,7 +305,7 @@ trait OrderForm
      * The compare table of the chosen group, when it has features: a row for each feature with each product's value,
      * then a row for each billing cycle any of them has with its price for it (null = not offered on that cycle).
      *
-     * @return array{features: array<string, string>, cycles: array<string, string>, products: list<array{id: string, name: string, price: string, sale: bool, popular: bool, badges: list<array{name: string, color: string}>, values: array<string, ?string>, prices: array<string, ?array{price: string, was: ?string, note: ?string}>}>}|null
+     * @return array{features: array<string, string>, cycles: array<string, string>, products: list<array{id: string, name: string, price: string, sale: bool, popular: bool, badges: list<array{name: string, color: string}>, color: ?string, values: array<string, ?string>, prices: array<string, ?array{price: string, was: ?string, note: ?string}>}>}|null
      */
     private function compare(Get $get): ?array
     {
@@ -323,6 +328,7 @@ trait OrderForm
                 'price' => $this->fromPrice($product)[0] ?? '',
                 'popular' => $product->popular,
                 'badges' => $product->badges(),
+                'color' => $product->orderColor(),
                 'sale' => $product->onSale(),
                 'values' => collect($features)->map(fn ($name, string $key) => $product->feature($key))->all(),
                 'prices' => $cycles->mapWithKeys(fn (BillingCycle $cycle) => [$cycle->value => in_array($cycle, $product->cycles(), true) ? $this->comparePrice($product, $cycle) : null])->all(),

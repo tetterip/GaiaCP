@@ -3324,5 +3324,6 @@
     "The last day of the sale; the day after, the normal prices apply again by themselves.": "İndirimin son günü; ertesi gün normal fiyatlar kendiliğinden yeniden geçerli olur.",
     "This coupon can't be used on items on sale.": "Bu kupon indirimdeki ürünlerde kullanılamaz.",
     "Until removed": "Kaldırılana kadar",
-    "sale :price": "indirim :price"
+    "sale :price": "indirim :price",
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Sipariş sayfalarında, karşılaştırma tablosunda ve herkese açık ana sayfada adı, simgesi, düğmeleri ve onay işaretleri. Hiçbiri: müşteri alanının rengi."
 }

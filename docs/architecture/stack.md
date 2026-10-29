@@ -86,6 +86,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   (`ProductTag`, Settings → Product tags `ProductTagResource`, `product_product_tag`; `Product::badges()`, at most
   `Product::BADGES`, partial `filament.client.product-badges`, colour from `ProductTag::COLORS` as `--gcp-tag`); every tag
   also filters Products, Services (`product_tags`) and Messages to clients (`filters.tags`). Icons: `App\Support\ProductIcons`.
+  A product's `color` (a `ProductTag::COLORS` key, `Product::orderColor()`) is `data-gcp-color` on its card, compare
+  column and public home card; filament.themes.client turns it into `--gcp-product` and the local `--gcp-accent`.
+  Both colour pickers are `App\Filament\Forms\ColorCircles`.
   Orders (`Client/Pages/Order`, `gaiacp.client_area.orders`): one product from `App\Actions\ClientOrder::products()`
   (`Product::clientOrderable()`, not domain type, a priced cycle) with its domain kept / registered / transferred, or a
   domain on its own, plus the product's options not hidden from clients (`ProductOptionFields`, `options.{id}`);

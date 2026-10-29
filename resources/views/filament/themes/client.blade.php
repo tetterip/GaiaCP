@@ -795,6 +795,60 @@
         color: color-mix(in srgb, var(--gcp-tag) 55%, white);
     }
 
+    /*
+     * A product's own colour (Product::orderColor(), data-gcp-color on its card, compare column and public home card):
+     * the accent there follows it (name, icon, price, check marks, Popular badge, buttons), lighter in dark mode, and
+     * the card gets a top border in it. Tags and Sale keep their own colours.
+     */
+@foreach (\App\Models\ProductTag::COLORS as $key => $hex)
+    [data-gcp-color="{{ $key }}"],
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color="{{ $key }}"]) {
+        --gcp-product: {{ $hex }};
+    }
+@endforeach
+
+    [data-gcp-color],
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]) {
+        --gcp-accent: var(--gcp-product);
+    }
+
+    .dark [data-gcp-color],
+    .dark .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]) {
+        --gcp-accent: color-mix(in srgb, var(--gcp-product) 60%, white);
+    }
+
+    .gcp-card-name[data-gcp-color] > span:not(.gcp-popular),
+    [data-gcp-color] .gcp-public-product-name,
+    [data-gcp-color] .gcp-compare-name {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]) {
+        box-shadow: inset 0 3px 0 var(--gcp-accent), 0 0 0 1px var(--gcp-line);
+    }
+
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]):has(.fi-radio-input:checked) {
+        box-shadow: inset 0 3px 0 var(--gcp-accent), 0 0 0 2px var(--gcp-accent);
+    }
+
+    .gcp-public-product[data-gcp-color] {
+        box-shadow: var(--gcp-shadow), inset 0 3px 0 var(--gcp-accent), 0 0 0 1px var(--gcp-line);
+    }
+
+    [data-gcp-color] .fi-btn.fi-color:not([disabled]) {
+        --bg: var(--gcp-product);
+        --hover-bg: color-mix(in srgb, var(--gcp-product) 85%, black);
+        --dark-bg: var(--gcp-product);
+        --dark-hover-bg: color-mix(in srgb, var(--gcp-product) 85%, white);
+        --text: #fff;
+        --hover-text: #fff;
+        --dark-text: #fff;
+        --dark-hover-text: #fff;
+        /* themes that paint buttons themselves (Gaia) */
+        --gaia-button: var(--gcp-product);
+        --gaia-button-ink: #fff;
+    }
+
     .gcp-was {
         opacity: .65;
         font-weight: 400;

@@ -1,7 +1,7 @@
 {{-- The order form's compare table (OrderForm::compare()): the group's features in rows, a column for each product;
      "Yes" / "No" (or ✓ / ✗) show as marks, other values as typed. Then the price of each billing cycle and a Choose
      button per column, which sets $field (the form's product field) as the product cards do. Styled by
-     filament.themes.client. --}}
+     filament.themes.client; a product's colour (data-gcp-color) colours its column's name, marks and button. --}}
 @php
     $mark = function (?string $value): ?string {
         $plain = mb_strtolower(trim((string) $value));
@@ -21,7 +21,7 @@
                 <tr>
                     <th></th>
                     @foreach ($compare['products'] as $product)
-                        <th @class(['gcp-compare-chosen' => $product['id'] === $chosen])>
+                        <th @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
                             @if ($product['sale'] || $product['popular'] || $product['badges'] !== [])
                                 <span class="gcp-compare-badges">@include('filament.client.product-badges', ['sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</span>
                             @endif
@@ -37,7 +37,7 @@
                         <th scope="row">{{ $feature }}</th>
                         @foreach ($compare['products'] as $product)
                             @php($value = $product['values'][$key] ?? null)
-                            <td @class(['gcp-compare-chosen' => $product['id'] === $chosen])>
+                            <td @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
                                 @switch($mark($value))
                                     @case('yes')
                                         <x-filament::icon icon="heroicon-m-check" class="gcp-compare-yes" :label="__('Yes')" />
@@ -57,7 +57,7 @@
                         <th scope="row">{{ $label }}</th>
                         @foreach ($compare['products'] as $product)
                             @php($price = $product['prices'][$cycle] ?? null)
-                            <td @class(['gcp-compare-chosen' => $product['id'] === $chosen])>
+                            <td @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
                                 @if ($price)
                                     @if ($price['was'])
                                         <s class="gcp-was">{{ $price['was'] }}</s>
@@ -78,7 +78,7 @@
                 <tr>
                     <th></th>
                     @foreach ($compare['products'] as $product)
-                        <td @class(['gcp-compare-chosen' => $product['id'] === $chosen])>
+                        <td @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
                             @if ($product['id'] === $chosen)
                                 <x-filament::button size="sm" color="gray" icon="heroicon-m-check" disabled>{{ __('Chosen') }}</x-filament::button>
                             @else
