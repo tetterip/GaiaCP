@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Search engines: each language of a public page has its own address (`?lang=el`), and every public page names its
+  canonical address and the other languages (hreflang). New `/sitemap.xml` lists the public pages that are switched
+  on (knowledge base articles and announcements included) in every language, and `/robots.txt` points to it and keeps
+  /admin out, or keeps everything out while Settings → Client area → Search engines is off. Link previews show the
+  page's title.
 - Product colours: pick a colour for a product (its Order page section) and its name, icon, price, check marks and
   buttons take it on the order cards, in the compare table and on the public home page, with a line along the card's
   top. Product tags and products now pick their colour from ten circles instead of a list.

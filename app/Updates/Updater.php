@@ -31,6 +31,12 @@ class Updater
      */
     private const MERGED = ['database', 'plugins', 'public'];
 
+    /**
+     * Files older releases had in a merged folder that the app now answers itself: left behind when unchanged, else
+     * they would keep hiding the new route (robots.txt is made from Settings → Client area → Search engines).
+     */
+    private const DROPPED = ['public/robots.txt' => "User-agent: *\nDisallow:"];
+
     /** Never touched. */
     private const KEPT = ['.env', 'storage', '.git'];
 
@@ -242,7 +248,7 @@ class Updater
             // Moved, not copied: an open SQLite file keeps working, as rename() keeps it the same file
             if (in_array($entry, self::MERGED, true) && is_dir("{$previous}/{$entry}") && ! is_link("{$previous}/{$entry}")) {
                 foreach (array_diff(scandir("{$previous}/{$entry}"), ['.', '..']) as $child) {
-                    if (! $this->exists("{$old}/{$child}")) {
+                    if (! $this->exists("{$old}/{$child}") && ! $this->dropped("{$entry}/{$child}", "{$previous}/{$entry}/{$child}")) {
                         $this->move("{$previous}/{$entry}/{$child}", "{$old}/{$child}");
                         $this->carried[] = "{$entry}/{$child}";
                     }
@@ -272,6 +278,13 @@ class Updater
                 $this->move("{$previous}/{$entry}", "{$root}/{$entry}");
             }
         }
+    }
+
+    /** A file of DROPPED that is still as the old release shipped it. */
+    private function dropped(string $relative, string $path): bool
+    {
+        return isset(self::DROPPED[$relative]) && is_file($path)
+            && str_replace("\r\n", "\n", trim((string) file_get_contents($path))) === self::DROPPED[$relative];
     }
 
     private function exists(string $path): bool

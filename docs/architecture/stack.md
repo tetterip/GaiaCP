@@ -154,6 +154,12 @@ How the admin and client panels, users, access, security, branding, themes and l
   Search engines (Settings → Client area, `gaiacp.seo.*`, `App\Support\Seo`): `filament.seo` on `HEAD_END` of both
   panels; /admin and signed-in pages are always `noindex`, the public pages (login, sign up, order page) are indexed
   unless `seo.index` is off, with `seo.description` as meta and Open Graph description (company name and logo too).
+  A visitor's language is in the address too (`?lang=`, read by `SetLocale` and kept in the session; the top bar's
+  language route drops it on the way back): indexable pages get a canonical link (path, `page` and `lang` only) and
+  hreflang alternates per language plus `x-default`, og:title is the page title. `SitemapController` serves
+  `/sitemap.xml` (the public pages switched on, KB articles and announcements not kept for clients, each language) and
+  `/robots.txt` (Disallow /admin/ and /install/ + Sitemap, or Disallow / while not indexable); `public/robots.txt` is
+  gone and the updater leaves an unchanged old copy behind (`Updater::DROPPED`).
   Terms of service (Settings → Client area, `gaiacp.client_area.terms*`, `App\Support\TermsOfService`): link and / or
   Markdown text, `checkbox()` on Order and Register; `ClientOrder` / `ClientSignup` refuse without it and keep
   `terms_accepted_at` / `terms_version` on the order / client (version = the date and time the terms changed unless typed)

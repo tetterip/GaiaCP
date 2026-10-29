@@ -3325,5 +3325,6 @@
     "This coupon can't be used on items on sale.": "Tego kuponu nie można użyć na produkty w promocji.",
     "Until removed": "Do usunięcia",
     "sale :price": "promocja :price",
-    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Nazwa, ikona, przyciski i znaczniki wyboru na stronach zamówień, w tabeli porównawczej i na publicznej stronie głównej. Brak: kolor strefy klienta."
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Nazwa, ikona, przyciski i znaczniki wyboru na stronach zamówień, w tabeli porównawczej i na publicznej stronie głównej. Brak: kolor strefy klienta.",
+    "Also the public area's pages, each in every language. Search engines find them in :url.": "Także strony części publicznej, każda w każdym języku. Wyszukiwarki znajdują je pod adresem :url."
 }

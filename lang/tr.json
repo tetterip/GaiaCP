@@ -3325,5 +3325,6 @@
     "This coupon can't be used on items on sale.": "Bu kupon indirimdeki ürünlerde kullanılamaz.",
     "Until removed": "Kaldırılana kadar",
     "sale :price": "indirim :price",
-    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Sipariş sayfalarında, karşılaştırma tablosunda ve herkese açık ana sayfada adı, simgesi, düğmeleri ve onay işaretleri. Hiçbiri: müşteri alanının rengi."
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Sipariş sayfalarında, karşılaştırma tablosunda ve herkese açık ana sayfada adı, simgesi, düğmeleri ve onay işaretleri. Hiçbiri: müşteri alanının rengi.",
+    "Also the public area's pages, each in every language. Search engines find them in :url.": "Herkese açık alanın sayfaları da, her biri her dilde. Arama motorları onları :url adresinde bulur."
 }

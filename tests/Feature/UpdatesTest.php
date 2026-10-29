@@ -47,6 +47,7 @@ class UpdatesTest extends TestCase
         $this->file('plugins/Cpanel/Old.php', '<?php');
         $this->file('plugins/Mine/Plugin.php', '<?php // installed by the admin');
         $this->file('public/index.php', '<?php // old');
+        $this->file('public/robots.txt', "User-agent: *\r\nDisallow:\r\n"); // as releases had it, now a route
         $this->file('storage/app/public/logo.png', 'logo');
         $this->file('.env', 'APP_KEY=base64:abc');
         symlink($this->root.'/storage/app/public', $this->root.'/public/storage');
@@ -155,6 +156,7 @@ class UpdatesTest extends TestCase
         $this->assertSame('<?php // new', file_get_contents("{$this->root}/public/index.php"));
         $this->assertFileExists("{$this->root}/plugins/Cpanel/New.php");
         $this->assertFileDoesNotExist("{$this->root}/plugins/Cpanel/Old.php");
+        $this->assertFileDoesNotExist("{$this->root}/public/robots.txt");
 
         // The install's own: data, settings, uploads, its own plugin, the storage link
         $this->assertSame('the data', file_get_contents("{$this->root}/database/database.sqlite"));

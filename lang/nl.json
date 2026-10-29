@@ -3325,5 +3325,6 @@
     "This coupon can't be used on items on sale.": "Deze coupon geldt niet voor artikelen in de aanbieding.",
     "Until removed": "Tot verwijderd",
     "sale :price": "aanbieding :price",
-    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Naam, pictogram, knoppen en vinkjes op de bestelpagina's, in de vergelijkingstabel en op de openbare startpagina. Geen: de kleur van het klantgedeelte."
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Naam, pictogram, knoppen en vinkjes op de bestelpagina's, in de vergelijkingstabel en op de openbare startpagina. Geen: de kleur van het klantgedeelte.",
+    "Also the public area's pages, each in every language. Search engines find them in :url.": "Ook de pagina's van het openbare gedeelte, elk in alle talen. Zoekmachines vinden ze op :url."
 }
