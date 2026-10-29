@@ -209,7 +209,8 @@ class ClientAreaSettings extends SettingsFormPage
                     ->description(__('Pages a client sees once signed in, and /admin, are never shown in search results.'))
                     ->schema([
                         Toggle::make('seo.index')
-                            ->label('Let search engines show the login, sign up and order pages'),
+                            ->label('Let search engines show the login, sign up and order pages')
+                            ->helperText(fn (): string => __('Also the public area\'s pages, each in every language. Search engines find them in :url.', ['url' => route('sitemap')])),
                         Textarea::make('seo.description')
                             ->label('Description')
                             ->rows(2)

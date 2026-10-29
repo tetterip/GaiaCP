@@ -3325,5 +3325,6 @@
     "This coupon can't be used on items on sale.": "Αυτό το κουπόνι δεν ισχύει για ό,τι είναι σε προσφορά.",
     "Until removed": "Μέχρι να αφαιρεθεί",
     "sale :price": "προσφορά :price",
-    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Το όνομα, το εικονίδιο, τα κουμπιά και τα σημάδια ελέγχου του στις σελίδες παραγγελίας, στον πίνακα σύγκρισης και στη δημόσια αρχική σελίδα. Κανένα: το χρώμα της περιοχής πελατών."
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Το όνομα, το εικονίδιο, τα κουμπιά και τα σημάδια ελέγχου του στις σελίδες παραγγελίας, στον πίνακα σύγκρισης και στη δημόσια αρχική σελίδα. Κανένα: το χρώμα της περιοχής πελατών.",
+    "Also the public area's pages, each in every language. Search engines find them in :url.": "Και τις σελίδες της δημόσιας περιοχής, σε κάθε γλώσσα. Οι μηχανές αναζήτησης τις βρίσκουν στο :url."
 }

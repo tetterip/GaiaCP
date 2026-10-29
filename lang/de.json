@@ -3325,5 +3325,6 @@
     "This coupon can't be used on items on sale.": "Dieser Gutschein gilt nicht für Angebote.",
     "Until removed": "Bis zur Entfernung",
     "sale :price": "Angebot :price",
-    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Name, Symbol, Schaltflächen und Häkchen auf den Bestellseiten, in der Vergleichstabelle und auf der öffentlichen Startseite. Keine: die Farbe des Kundenbereichs."
+    "Its name, icon, buttons and check marks on the order pages, the compare table and the public home page. None: the client area's colour.": "Name, Symbol, Schaltflächen und Häkchen auf den Bestellseiten, in der Vergleichstabelle und auf der öffentlichen Startseite. Keine: die Farbe des Kundenbereichs.",
+    "Also the public area's pages, each in every language. Search engines find them in :url.": "Auch die Seiten des öffentlichen Bereichs, jeweils in jeder Sprache. Suchmaschinen finden sie unter :url."
 }

@@ -77,7 +77,10 @@ until you switch it on:
 - a **server status** page: each server's state and uptime by a public name, never its hostname or IP.
 
 **Cookies** (Settings → Client area → Cookies, off by default) shows a cookie banner, links your cookie policy and runs
-scripts such as analytics only after the visitor accepts. Search engines index the public pages unless you turn it off;
-the admin panel and signed-in pages are never indexed.
+scripts such as analytics only after the visitor accepts. Search engines index the public pages unless you turn it off
+(Settings → Client area → Search engines); the admin panel and signed-in pages are never indexed. Each language of a
+page has its own address (`?lang=el`; none for the default language), and search engines find them all in
+`/sitemap.xml`, which `/robots.txt` points to. Give that sitemap address to Google Search Console. In a subfolder install,
+search engines only read the `robots.txt` at the domain's root, so submit the sitemap by hand there.
 
 Next: [Support](11-support.md).

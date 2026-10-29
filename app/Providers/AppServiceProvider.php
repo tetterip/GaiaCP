@@ -10,6 +10,7 @@ use App\Support\Currencies;
 use App\Support\Demo;
 use App\Support\Locales;
 use App\Support\Region;
+use App\Support\Seo;
 use App\Support\Settings;
 use App\Support\Translations;
 use App\Support\Version;
@@ -24,12 +25,14 @@ use Filament\Tables\Columns\Column;
 use Filament\Tables\Filters\BaseFilter;
 use Filament\Tables\Table;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\NoPendingMigrations;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -75,6 +78,9 @@ class AppServiceProvider extends ServiceProvider
         // with Save rightmost, like the Settings pages' Save bar
         BasePage::stickyFormActions();
         BasePage::alignFormActionsEnd();
+
+        // The page being shown, for its title in link previews (App\Support\Seo::title(), read in the head)
+        View::composer('filament-panels::components.layout.base', fn (ViewContract $view) => Seo::showing($view->getData()['livewire'] ?? null));
 
         // REST API: calls per minute for each key (by IP before a key is known)
         RateLimiter::for('gaiacp-api', fn (Request $request) => Limit::perMinute(max(1, (int) config('gaiacp.api.per_minute', 120)))
