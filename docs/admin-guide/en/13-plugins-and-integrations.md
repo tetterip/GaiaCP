@@ -43,7 +43,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 
 | Kind | Plugins | Where you set them up |
 |---|---|---|
-| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance (off until switched on) | Settings → Servers |
+| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
 | Registrars | easy.gr, Enom, Email Notifications | Settings → Registrars |
 | Payment methods | Bank transfer, Stripe | Settings → Payment methods |
 | SSL certificates | GoGetSSL | Settings → GoGetSSL |

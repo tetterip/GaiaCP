@@ -1,9 +1,9 @@
 # Servers
 
 Hosting accounts are created on your servers through their panel's API. GaiaCP works with **cPanel / WHM**, **Plesk**,
-**HestiaCP** and **DirectAdmin**; each is a plugin, so switch off the ones you don't use under Settings → Plugins.
-**CyberPanel** and **Proxmox VE** (for VPS) are there too, off until you switch them on under Settings → Plugins. Servers are under Settings →
-Products & domains → **Servers** (super admins only).
+**HestiaCP**, **DirectAdmin**, **CyberPanel** and **Enhance**, and with **Proxmox VE** for VPS. Each panel is a plugin
+under Settings → Plugins: the first four are on from the start, the others are off until you switch them on, and you
+can switch off the ones you don't use. Servers are under Settings → Products & domains → **Servers** (super admins only).
 
 ## Adding a server
 

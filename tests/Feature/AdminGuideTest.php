@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Pages\Help;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -44,6 +46,15 @@ class AdminGuideTest extends TestCase
 
         // An unknown chapter shows the first one
         $this->get(Help::getUrl(['chapter' => 'nope']))->assertOk()->assertSee('The setup guide');
+    }
+
+    public function test_getting_started_names_every_settings_group(): void
+    {
+        $text = preg_replace('/\s+/', ' ', File::get(base_path('docs/admin-guide/en/01-getting-started.md')));
+
+        foreach (SettingsCluster::GROUPS as $group) {
+            $this->assertStringContainsString($group, $text, "Getting started does not name the {$group} settings group");
+        }
     }
 
     public function test_every_link_between_chapters_points_at_a_chapter_that_exists(): void

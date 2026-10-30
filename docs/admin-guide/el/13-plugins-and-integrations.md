@@ -47,7 +47,7 @@ plugins.gaiacp.digital δεν θα μπορούσε να σου δώσει άλ�
 
 | Είδος | Πρόσθετα | Πού τα ρυθμίζεις |
 |---|---|---|
-| Panels servers | cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance (κλειστά μέχρι να τα ανοίξεις) | Ρυθμίσεις → Servers |
+| Panels servers | cPanel / WHM, Plesk, HestiaCP, DirectAdmin· CyberPanel, Enhance, Proxmox VE (κλειστά μέχρι να τα ανοίξεις) | Ρυθμίσεις → Servers |
 | Registrars | easy.gr, Enom, Email Notifications | Ρυθμίσεις → Registrars |
 | Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe | Ρυθμίσεις → Τρόποι πληρωμής |
 | Πιστοποιητικά SSL | GoGetSSL | Ρυθμίσεις → GoGetSSL |
