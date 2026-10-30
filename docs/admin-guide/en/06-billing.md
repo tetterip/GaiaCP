@@ -40,7 +40,7 @@ Ending a service (Terminate or Cancel) takes it off its open notices; a notice l
 ## Invoices
 
 Settings → Billing → **Invoices** (off by default) makes GaiaCP issue an **invoice** for each payment notice paid from
-then on, the way WHMCS does with proformas: the notice stays the "what you owe" document, and once every line of it is
+then on: the notice stays the "what you owe" document, and once every line of it is
 paid an invoice is issued with its own number, dated that day. Notices paid before invoices were on, and "Add funds"
 notices, get none (the notices that credit pays do).
 
