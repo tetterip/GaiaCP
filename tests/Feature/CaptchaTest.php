@@ -63,7 +63,7 @@ class CaptchaTest extends TestCase
 
     public function test_the_login_shows_the_widget_and_needs_a_solved_check(): void
     {
-        $this->get('/login')->assertOk()->assertSee('challenges.cloudflare.com', false)->assertSee('ts-site')
+        $this->get('/login')->assertOk()->assertSee('challenges.cloudflare.com', false)->assertSee('ts-site')->assertSee('size\u0022:\u0022flexible', false)
             ->assertDontSee('api.ready(', false); // Turnstile throws on ready() when its script loads async
 
         $this->answers(true);

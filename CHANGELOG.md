@@ -53,6 +53,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
   side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime. Every
   square is the same whole number of pixels wide.
+- The Cloudflare Turnstile check is as wide as the form it is on (login, sign up, forgot password, domain search).
 
 ## [0.3.1] - 2026-10-27
 

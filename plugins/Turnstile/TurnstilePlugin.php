@@ -78,7 +78,8 @@ class TurnstilePlugin extends Plugin implements CaptchaModule
         return [
             'script' => 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
             'global' => 'turnstile',
-            'options' => ['sitekey' => config('gaiacp.turnstile.site_key'), 'language' => app()->getLocale()],
+            // flexible: as wide as the form (300 px at least) instead of a fixed 300 px
+            'options' => ['sitekey' => config('gaiacp.turnstile.site_key'), 'language' => app()->getLocale(), 'size' => 'flexible'],
         ];
     }
 
