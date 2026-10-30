@@ -10,6 +10,8 @@ use App\Enums\UserRole;
 use App\Filament\Client\Resources\Invoices\Pages\ListInvoices as ClientListInvoices;
 use App\Filament\Client\Resources\PaymentNotices\Pages\ViewPaymentNotice;
 use App\Filament\Clusters\Settings\Pages\InvoiceSettings;
+use App\Filament\Resources\Clients\Pages\EditClient;
+use App\Filament\Resources\Clients\RelationManagers\TaxInvoicesRelationManager;
 use App\Filament\Resources\Invoices\Pages\ViewInvoice;
 use App\Filament\Resources\TaxInvoices\Pages\ListTaxInvoices;
 use App\Filament\Resources\TaxInvoices\Pages\ViewTaxInvoice;
@@ -166,6 +168,17 @@ class TaxInvoicesTest extends TestCase
             ->callAction('sendTaxInvoice');
         Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::InvoiceIssued, 2);
         Livewire::test(ViewInvoice::class, ['record' => $notice->id])->assertActionHidden('issueInvoice')->assertSee('INV-2026-0001');
+
+        // The client page's Invoices tab, with the PDF on each row
+        $this->assertTrue(TaxInvoicesRelationManager::canViewForRecord($notice->client, EditClient::class));
+        Livewire::test(TaxInvoicesRelationManager::class, ['ownerRecord' => $notice->client, 'pageClass' => EditClient::class])
+            ->assertCanSeeTableRecords([$invoice])
+            ->callTableAction('downloadPdf', $invoice)
+            ->assertFileDownloaded('INV-2026-0001.pdf');
+
+        config(['gaiacp.invoicing.enabled' => false]);
+        $this->assertTrue(TaxInvoicesRelationManager::canViewForRecord($notice->client, EditClient::class)); // it has one
+        $this->assertFalse(TaxInvoicesRelationManager::canViewForRecord(Client::factory()->create(), EditClient::class));
     }
 
     public function test_the_client_gets_the_invoice_issued_email_with_its_pdf(): void

@@ -45,7 +45,8 @@ paid an invoice is issued with its own number, dated that day. Notices paid befo
 notices, get none (the notices that credit pays do).
 
 An invoice is a copy taken when it is issued: your company details from Settings → Company, the client's details from
-the notice, its lines, tax and total. It is never changed or deleted. Find them under Billing → **Invoices**; a paid
+the notice, its lines, tax and total. It is never changed or deleted. Find them under Billing → **Invoices** and on the
+client's Invoices tab, each with its PDF; a paid
 notice links to its invoice, and one without (paid before you turned invoices on) has **Issue invoice**.
 
 The client gets the **Invoice Issued** email with the invoice as a PDF (switch it off under Email templates), finds it
