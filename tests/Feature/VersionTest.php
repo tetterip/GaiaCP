@@ -37,6 +37,18 @@ class VersionTest extends TestCase
             ->assertSee('<span class="gcp-stage"', false);
     }
 
+    public function test_the_admin_footer_links_to_github_to_star_gaiacp(): void
+    {
+        $star = 'class="gcp-star" href="'.Version::REPOSITORY_URL.'"';
+
+        $this->get('/admin/login')->assertOk()->assertDontSee($star, false);
+        $this->get('/login')->assertOk()->assertDontSee($star, false); // never in the client area
+
+        $this->actingAs(User::factory()->create());
+        $this->get('/admin')->assertOk()->assertSee($star, false)->assertSee(__('Star on GitHub'))
+            ->assertSee('target="_blank" rel="noopener"', false);
+    }
+
     public function test_it_says_how_far_along_gaiacp_is(): void
     {
         $this->assertSame('alpha', Version::STAGE);

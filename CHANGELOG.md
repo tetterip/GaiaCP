@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- A small Star on GitHub button in the admin footer opens GaiaCP on GitHub, where you can give it a star.
 - The client guide in German, Spanish, French, Italian, Dutch, Polish, Portuguese and Turkish now explains coupons,
   sale prices, the package badges and SSL certificates installed for you on your hosting, like the English and Greek
   ones, and credit notes under Invoices. A test checks that every translation of the client guide has every paragraph

@@ -15,6 +15,9 @@ class Version
      */
     public const STAGE = 'alpha';
 
+    /** GaiaCP's home on GitHub, linked from the admin footer's Star button (people star it there, signed in). */
+    public const REPOSITORY_URL = 'https://github.com/tetterip/GaiaCP';
+
     private static ?string $current = null;
 
     public static function current(): string
