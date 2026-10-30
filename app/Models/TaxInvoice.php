@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Payments\PaymentMethods;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -49,6 +50,14 @@ class TaxInvoice extends Model
     {
         static::updating(fn () => throw new LogicException('An issued invoice can\'t be changed.'));
         static::deleting(fn () => throw new LogicException('An issued invoice can\'t be deleted.'));
+    }
+
+    /** "Bank transfer, Account credit": how it was paid, in the current language; null when unknown. */
+    public function paymentMethods(): ?string
+    {
+        return filled($this->payment_methods)
+            ? collect(explode(',', $this->payment_methods))->map(fn (string $key) => PaymentMethods::label($key) ?? $key)->join(', ')
+            : null;
     }
 
     /** "VAT 24%", or null without tax. */

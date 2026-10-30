@@ -3,18 +3,25 @@
 namespace App\Invoicing;
 
 use App\Enums\InvoiceStatus;
+use App\Enums\MailTemplate;
+use App\Mail\ClientMailer;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Payment;
 use App\Models\TaxInvoice;
-use App\Payments\PaymentMethods;
+use App\Models\TaxInvoiceItem;
+use App\Providers\AppServiceProvider;
+use App\Support\MailTemplates;
+use App\Support\Money;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 
 /**
  * Issues the invoice of a paid payment notice (Settings → Invoices): called by Invoice::settle() as the notice is paid,
  * or by hand from the notice. One invoice per notice, so it is safe to call again. An "Add funds" notice gets none (the
- * notices that credit pays later do), nor does a notice of nothing to pay.
+ * notices that credit pays later do), nor does a notice of nothing to pay. The client gets the Invoice Issued email with
+ * its PDF once the payment is saved.
  */
 class IssueInvoice
 {
@@ -45,8 +52,8 @@ class IssueInvoice
 
             $date = today();
             $items = $notice->items()->where('credit', false)->orderBy('id')->get();
-            $methods = Payment::query()->whereIn('id', $items->pluck('payment_id')->filter())->pluck('method')->unique()
-                ->map(fn (string $method) => PaymentMethods::label($method) ?? $method)->join(', ');
+            // The keys, named in each reader's language (TaxInvoice::paymentMethods())
+            $methods = Payment::query()->whereIn('id', $items->pluck('payment_id')->filter())->pluck('method')->unique()->join(',');
 
             $invoice = TaxInvoice::create([
                 'number' => InvoiceNumbers::take($date),
@@ -82,8 +89,43 @@ class IssueInvoice
                 'tax_invoice_id' => $invoice->id, 'invoice_id' => $notice->id,
             ]);
 
+            // Once the payment that issued it is saved: a payment rolled back sends nothing.
+            DB::afterCommit(fn () => rescue(fn () => $this->email($invoice), report: true));
+
             return $invoice;
         });
+    }
+
+    /** The Invoice Issued email with the invoice's PDF; false when it is switched off or failed (logged). */
+    public function email(TaxInvoice $invoice, bool $evenIfOff = false): bool
+    {
+        $invoice->loadMissing('items', 'notice', 'client');
+
+        return app(ClientMailer::class)->send(MailTemplate::InvoiceIssued, $invoice->client, fn () => self::values($invoice), evenIfOff: $evenIfOff, invoice: $invoice->notice, files: [
+            ['name' => InvoicePdf::filename($invoice), 'data' => InvoicePdf::content($invoice), 'mime' => 'application/pdf'],
+        ]);
+    }
+
+    /** @return array<string, string|HtmlString|null> the Invoice Issued email's own placeholders */
+    public static function values(TaxInvoice $invoice): array
+    {
+        $money = fn (int $cents) => Money::format($cents, $invoice->currency);
+        $date = fn ($value) => $value?->format(AppServiceProvider::dateFormat());
+
+        return [
+            'tax_invoice_number' => $invoice->number,
+            'tax_invoice_date' => $date($invoice->date),
+            'invoice_number' => $invoice->notice?->number,
+            'invoice_items' => MailTemplates::table([__('Description'), __('Period'), __('Amount')], $invoice->items->map(fn (TaxInvoiceItem $item) => [
+                $item->description,
+                $item->period_start && $item->period_end ? $date($item->period_start).' - '.$date($item->period_end) : '',
+                $money($item->amount_cents),
+            ])),
+            'invoice_tax' => $invoice->tax_cents > 0
+                ? $invoice->taxLabel().($invoice->tax_inclusive ? ' ('.__('included').')' : '').': '.$money($invoice->tax_cents)
+                : (string) $invoice->tax_note,
+            'invoice_total' => $money($invoice->total_cents),
+        ];
     }
 
     /** @return array<string, string|null> the seller printed on the invoice: Settings → Company as it is today */

@@ -31,6 +31,7 @@ use App\Filament\Client\Pages\SignIns;
 use App\Filament\Client\Pages\VisitorTicket;
 use App\Filament\Client\Resources\Domains\DomainResource;
 use App\Filament\Client\Resources\Emails\EmailResource;
+use App\Filament\Client\Resources\Invoices\InvoiceResource;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Filament\Client\Resources\Payments\PaymentResource;
 use App\Filament\Client\Resources\Quotes\QuoteResource;
@@ -178,6 +179,7 @@ class ClientPanelProvider extends PanelProvider
                 ServiceResource::class,
                 DomainResource::class,
                 PaymentNoticeResource::class,
+                InvoiceResource::class,
                 PaymentResource::class,
                 QuoteResource::class,
                 TicketResource::class,

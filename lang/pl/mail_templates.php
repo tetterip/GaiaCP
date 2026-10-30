@@ -65,6 +65,10 @@ return [
         'subject' => 'Aktualizacja wezwania do zapłaty {$invoice_number}',
         'body' => "Wezwanie do zapłaty {\$invoice_number} zostało zaktualizowane.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Faktura {$tax_invoice_number}',
+        'body' => "Dziękujemy za płatność. W załączniku przesyłamy fakturę **{\$tax_invoice_number}** z dnia {\$tax_invoice_date} do wezwania do zapłaty {\$invoice_number}.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nZapłacono łącznie: **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Zmiana ceny Państwa usług od {$effective_date}',
         'body' => "Informujemy, że cena poniższych usług zmienia się dla odnowień z terminem od **{\$effective_date}**.\n\n"

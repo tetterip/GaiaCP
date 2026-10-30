@@ -48,6 +48,10 @@ An invoice is a copy taken when it is issued: your company details from Settings
 the notice, its lines, tax and total. It is never changed or deleted. Find them under Billing → **Invoices**; a paid
 notice links to its invoice, and one without (paid before you turned invoices on) has **Issue invoice**.
 
+The client gets the **Invoice Issued** email with the invoice as a PDF (switch it off under Email templates), finds it
+in the client area under Billing → **Invoices** and on the paid notice. On an invoice's page, **Download PDF** and
+**Send email** (sends it again).
+
 - **Number format**: `{YEAR}`, `{MONTH}`, `{DAY}` and `{NUMBER}` (at least four digits), `INV-{YEAR}-{NUMBER}` by
   default. With `{YEAR}` in it, numbering starts again at 1 each year. Numbers have no gaps and are never given twice.
 - **Next number**: where to continue from, for example after your previous system. It can only go up.

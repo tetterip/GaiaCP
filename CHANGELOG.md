@@ -10,7 +10,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   `{MONTH}`, `{DAY}` and `{NUMBER}` (`INV-{YEAR}-{NUMBER}` by default; with `{YEAR}` each year starts at 1), have no
   gaps, and the next number can only go up. An invoice is a copy of the seller, client, lines and tax when it was
   issued and is never changed or deleted. Billing → Invoices lists them; a paid notice links to its invoice, or has
-  Issue invoice when it was paid before. PDF, client area, emails and credit notes come next.
+  Issue invoice when it was paid before.
+- Invoices as PDF: the client gets the new Invoice Issued email with the invoice attached, in their language, and
+  finds their invoices under Billing → Invoices in the client area and on each paid payment notice. Admins download
+  the PDF or send the email again from an invoice's page. Credit notes come next.
 - Welcome tour: on the first login, admins and clients get a few cards, each lighting up the menu or part of the top bar it is about (on a phone the side menu opens for them), (clients and orders,
   services, payment notices, support, search and bell, help for admins; services, payment notices, ordering, support,
   profile and help for clients), only for the pages each one can open. The admin's last card opens the setup guide.

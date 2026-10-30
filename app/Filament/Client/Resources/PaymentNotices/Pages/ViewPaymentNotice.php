@@ -4,6 +4,7 @@ namespace App\Filament\Client\Resources\PaymentNotices\Pages;
 
 use App\Credit\ApplyCredit;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
+use App\Invoicing\InvoicePdf;
 use App\Models\Invoice;
 use App\Plugins\PluginManager;
 use App\Support\Money;
@@ -28,6 +29,16 @@ class ViewPaymentNotice extends ViewRecord
             $this->payWithCredit(),
             // Pay online, from payment plugins (e.g. Stripe's "Pay by card")
             ...app(PluginManager::class)->clientPaymentNoticeActions(),
+            // A paid notice's invoice (Settings → Invoices), as a PDF
+            Action::make('downloadInvoice')
+                ->label(fn (Invoice $record) => __('Invoice :number', ['number' => $record->taxInvoice?->number]))
+                ->icon(Heroicon::OutlinedArrowDownTray)
+                ->visible(fn (Invoice $record) => $record->taxInvoice !== null)
+                ->action(fn (Invoice $record) => response()->streamDownload(
+                    fn () => print (InvoicePdf::content($record->taxInvoice)),
+                    InvoicePdf::filename($record->taxInvoice),
+                    ['Content-Type' => 'application/pdf'],
+                )),
             // The browser's print dialog, which also saves a PDF; the panel's print styles leave only the notice
             Action::make('print')
                 ->label('Print or save as PDF')

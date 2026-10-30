@@ -9,6 +9,7 @@ use App\Support\Locales;
 use App\Support\MailTemplates;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Headers;
@@ -31,6 +32,9 @@ class ClientMail extends Mailable
 
     /** The ticket it is about: its replies come back to the ticket (thread headers, Reply-To). */
     public ?Ticket $ticket = null;
+
+    /** @var list<array{name: string, data: string, mime: string}> files sent with it, e.g. an invoice's PDF */
+    public array $files = [];
 
     /** @param  array<string, string|HtmlString|null>  $values  the template's own placeholders */
     public function __construct(
@@ -96,6 +100,12 @@ class ClientMail extends Mailable
     public function content(): Content
     {
         return new Content(markdown: 'mail.template', with: MailLayout::data($this->rendered()['body'], $this->placeholders()) + ['clientAreaUrl' => $this->clientAreaUrl, 'linkLabel' => $this->linkLabel]);
+    }
+
+    /** @return list<Attachment> */
+    public function attachments(): array
+    {
+        return array_map(fn (array $file) => Attachment::fromData(fn () => $file['data'], $file['name'])->withMime($file['mime']), $this->files);
     }
 
     /** @return array<string, string|HtmlString|null> */

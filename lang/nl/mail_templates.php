@@ -65,6 +65,10 @@ return [
         'subject' => 'Betalingsverzoek {$invoice_number} bijgewerkt',
         'body' => "Betalingsverzoek {\$invoice_number} is bijgewerkt.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Factuur {$tax_invoice_number}',
+        'body' => "Bedankt voor uw betaling. In de bijlage vindt u factuur **{\$tax_invoice_number}** van {\$tax_invoice_date}, voor betalingsverzoek {\$invoice_number}.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nTotaal betaald: **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Prijswijziging van uw diensten vanaf {$effective_date}',
         'body' => "Wij laten u weten dat de prijs van de onderstaande diensten verandert voor verlengingen die vervallen vanaf **{\$effective_date}**.\n\n"

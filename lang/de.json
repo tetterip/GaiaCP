@@ -3397,5 +3397,13 @@
     "The next number stays :number": "Die nächste Nummer bleibt :number",
     "Whether a paid payment notice gets an invoice with its own number, and how invoices are numbered.": "Ob eine bezahlte Zahlungsaufforderung eine Rechnung mit eigener Nummer erhält und wie Rechnungen nummeriert werden.",
     "invoice": "Rechnung",
-    "invoices": "Rechnungen"
+    "invoices": "Rechnungen",
+    "Download PDF": "PDF herunterladen",
+    "Invoice Issued": "Rechnung ausgestellt",
+    "Invoice date": "Rechnungsdatum",
+    "Invoice number, e.g. INV-2026-0001": "Rechnungsnummer, z. B. INV-2026-0001",
+    "No invoices yet": "Noch keine Rechnungen",
+    "Number of the payment notice it was issued for": "Nummer der Zahlungsaufforderung, für die sie ausgestellt wurde",
+    "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Sendet die E-Mail „Rechnung ausgestellt“ mit dem PDF jetzt an :email, auch wenn diese E-Mail auf der Seite E-Mail-Vorlagen ausgeschaltet ist.",
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Wenn eine bezahlte Zahlungsaufforderung ihre Rechnung erhält (Einstellungen → Rechnungen), mit der Rechnung als PDF; auch über E-Mail senden auf der Seite einer Rechnung."
 }

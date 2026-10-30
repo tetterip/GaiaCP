@@ -5,19 +5,27 @@ namespace Tests\Feature;
 use App\Actions\RecordInvoicePayment;
 use App\Actions\RecordPayment;
 use App\Enums\InvoiceStatus;
+use App\Enums\MailTemplate;
+use App\Enums\UserRole;
+use App\Filament\Client\Resources\Invoices\Pages\ListInvoices as ClientListInvoices;
+use App\Filament\Client\Resources\PaymentNotices\Pages\ViewPaymentNotice;
 use App\Filament\Clusters\Settings\Pages\InvoiceSettings;
 use App\Filament\Resources\Invoices\Pages\ViewInvoice;
 use App\Filament\Resources\TaxInvoices\Pages\ListTaxInvoices;
 use App\Filament\Resources\TaxInvoices\Pages\ViewTaxInvoice;
 use App\Invoices\GenerateInvoices;
 use App\Invoicing\InvoiceNumbers;
+use App\Invoicing\InvoicePdf;
 use App\Invoicing\IssueInvoice;
+use App\Mail\ClientMail;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Service;
 use App\Models\TaxInvoice;
 use App\Models\User;
+use App\Support\Locales;
 use Carbon\CarbonImmutable;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
@@ -153,8 +161,60 @@ class TaxInvoicesTest extends TestCase
 
         $invoice = TaxInvoice::sole();
         Livewire::test(ListTaxInvoices::class)->assertCanSeeTableRecords([$invoice]);
-        Livewire::test(ViewTaxInvoice::class, ['record' => $invoice->id])->assertSee('INV-2026-0001')->assertSee('Acme Hosting');
+        Livewire::test(ViewTaxInvoice::class, ['record' => $invoice->id])->assertSee('INV-2026-0001')->assertSee('Acme Hosting')
+            ->callAction('downloadPdf')->assertFileDownloaded('INV-2026-0001.pdf')
+            ->callAction('sendTaxInvoice');
+        Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::InvoiceIssued, 2);
         Livewire::test(ViewInvoice::class, ['record' => $notice->id])->assertActionHidden('issueInvoice')->assertSee('INV-2026-0001');
+    }
+
+    public function test_the_client_gets_the_invoice_issued_email_with_its_pdf(): void
+    {
+        app(RecordInvoicePayment::class)->handle($this->notice(), CarbonImmutable::parse('2026-10-09'), 'cash');
+
+        Mail::assertSent(ClientMail::class, function (ClientMail $mail) {
+            return $mail->template() === MailTemplate::InvoiceIssued
+                && $mail->files[0]['name'] === 'INV-2026-0001.pdf'
+                && str_starts_with($mail->files[0]['data'], '%PDF')
+                && str_contains($mail->envelope()->subject, 'INV-2026-0001');
+        });
+
+        config(['gaiacp.invoicing.enabled' => false]);
+        app(RecordInvoicePayment::class)->handle($this->notice(), CarbonImmutable::parse('2026-10-09'), 'cash');
+        Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::InvoiceIssued, 1);
+    }
+
+    public function test_the_pdf_is_in_the_clients_language(): void
+    {
+        $client = Client::factory()->create(['locale' => 'el']);
+        app(RecordInvoicePayment::class)->handle($this->notice($client), CarbonImmutable::parse('2026-10-09'), 'cash');
+
+        $html = Locales::using('el', fn () => view('invoices.pdf', ['invoice' => TaxInvoice::sole()->load('items', 'notice'), 'logo' => null])->render());
+        $this->assertStringContainsString('Τιμολόγιο', $html);
+        $this->assertStringContainsString('EL123456789', $html);
+        $this->assertStringStartsWith('%PDF', InvoicePdf::content(TaxInvoice::sole()));
+    }
+
+    public function test_clients_see_and_download_only_their_own_invoices(): void
+    {
+        $client = Client::factory()->create();
+        app(RecordInvoicePayment::class)->handle($mine = $this->notice($client), CarbonImmutable::parse('2026-10-09'), 'cash');
+        app(RecordInvoicePayment::class)->handle($this->notice(), CarbonImmutable::parse('2026-10-09'), 'cash');
+        [$own, $other] = TaxInvoice::query()->orderBy('id')->get()->all();
+
+        $this->actingAs(User::factory()->create(['role' => UserRole::Client, 'client_id' => $client->id, 'email' => $client->email]), 'client');
+        Filament::setCurrentPanel('client');
+
+        Livewire::test(ClientListInvoices::class)
+            ->assertCanSeeTableRecords([$own])
+            ->assertCanNotSeeTableRecords([$other])
+            ->callTableAction('downloadPdf', $own)
+            ->assertFileDownloaded('INV-2026-0001.pdf');
+
+        Livewire::test(ViewPaymentNotice::class, ['record' => $mine->id])
+            ->assertActionVisible('downloadInvoice')
+            ->callAction('downloadInvoice')
+            ->assertFileDownloaded('INV-2026-0001.pdf');
     }
 
     public function test_settings_page_saves_the_format_and_the_next_number(): void
