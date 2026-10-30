@@ -147,6 +147,12 @@ class Client extends Model implements HasLocalePreference
         return $this->hasMany(Invoice::class);
     }
 
+    /** @return HasMany<TaxInvoice, $this> the invoices issued from paid payment notices (Settings → Invoices) */
+    public function taxInvoices(): HasMany
+    {
+        return $this->hasMany(TaxInvoice::class);
+    }
+
     /** @return HasMany<ClientChangeRequest, $this> details the client asked to change from the client area */
     public function changeRequests(): HasMany
     {

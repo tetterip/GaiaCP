@@ -17,6 +17,7 @@ use App\Filament\Resources\Clients\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\OtherServicesRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\PaymentsRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\SignInsRelationManager;
+use App\Filament\Resources\Clients\RelationManagers\TaxInvoicesRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\TicketsRelationManager;
 use App\Filament\Resources\Clients\Schemas\ClientForm;
 use App\Filament\Resources\Clients\Tables\ClientsTable;
@@ -108,6 +109,7 @@ class ClientResource extends Resource
             'other' => OtherServicesRelationManager::class,
             'orders' => OrdersRelationManager::class,
             'notices' => InvoicesRelationManager::class,
+            'invoices' => TaxInvoicesRelationManager::class,
             'payments' => PaymentsRelationManager::class,
             'credit' => CreditRelationManager::class,
             'tickets' => TicketsRelationManager::class,

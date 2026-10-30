@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TaxInvoices\Tables;
 
+use App\Filament\Resources\TaxInvoices\Pages\ViewTaxInvoice;
 use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Models\TaxInvoice;
 use App\Support\Currencies;
@@ -55,6 +56,7 @@ class TaxInvoicesTable
                     ->label('This year')
                     ->query(fn (Builder $query) => $query->whereYear('date', today()->year)),
             ])
+            ->recordActions([ViewTaxInvoice::downloadAction()->iconButton()->tooltip(__('Download PDF'))])
             ->recordUrl(fn (TaxInvoice $record) => TaxInvoiceResource::getUrl('view', ['record' => $record]));
     }
 }

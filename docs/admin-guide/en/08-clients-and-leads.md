@@ -19,7 +19,8 @@ printed on payment notices.
 
 The top of a client's page sums them up: what they owe, their services, and a **Payment record** that rates how they
 pay (on time, watch, late) from the last 12 months. Below it are tabs for Details, Hosting, Domains, Other services,
-Orders, Payment notices, Payments, Tickets and Activity, plus Sign-ins once they have a login.
+Orders, Payment notices, Payments, Tickets and Activity, plus Invoices while invoices are on (or once they have one)
+and Sign-ins once they have a login.
 
 The buttons at the top:
 
