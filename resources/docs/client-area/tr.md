@@ -23,7 +23,7 @@ Her sayfanın altındaki "Çerez ayarları" çerez seçimini yeniden gösterir, 
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-İlk girişinizde kısa bir tur burada neler yapabileceğinizi gösterir. Sağ üstteki menünüz → **Tur** onu yeniden gösterir.
+İlk girişinizde kısa bir tur burada neler yapabileceğinizi gösterir. Adınızın olduğu menü → **Tur** onu yeniden gösterir.
 <!-- endif -->
 
 ## Ana sayfa

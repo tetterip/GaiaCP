@@ -87,7 +87,8 @@
                 return
             }
 
-            if (this.openedSidebar && narrow && ! (el && el.closest('.fi-sidebar'))) {
+            // Whoever opened the side menu (the tour, or the admin to reach Tour in it), it hides the top bar on a phone
+            if (narrow && sidebar.isOpen && ! (el && el.closest('.fi-sidebar'))) {
                 sidebar.close()
                 this.openedSidebar = false
                 setTimeout(() => this.place(true), 350)

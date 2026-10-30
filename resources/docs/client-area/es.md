@@ -23,7 +23,7 @@ La **campana** de la parte superior de la página le indica lo que ha pasado des
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-La primera vez que inicia sesión, un breve recorrido muestra lo que puede hacer aquí. Su menú arriba a la derecha → **Recorrido** lo muestra de nuevo.
+La primera vez que inicia sesión, un breve recorrido muestra lo que puede hacer aquí. El menú con su nombre → **Recorrido** lo muestra de nuevo.
 <!-- endif -->
 
 ## Inicio

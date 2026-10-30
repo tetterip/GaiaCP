@@ -23,7 +23,7 @@ De **bel** bovenaan de pagina laat zien wat er is gebeurd sinds u voor het laats
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-De eerste keer dat u inlogt, laat een korte rondleiding zien wat u hier kunt doen. Uw menu rechtsboven → **Rondleiding** toont hem opnieuw.
+De eerste keer dat u inlogt, laat een korte rondleiding zien wat u hier kunt doen. Het menu onder uw naam → **Rondleiding** toont hem opnieuw.
 <!-- endif -->
 
 ## Home

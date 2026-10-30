@@ -23,7 +23,7 @@ O **sino** no topo da página mostra o que aconteceu desde a última vez que voc
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-No primeiro acesso, um breve tour mostra o que você pode fazer aqui. Seu menu no canto superior direito → **Tour** o mostra de novo.
+No primeiro acesso, um breve tour mostra o que você pode fazer aqui. O menu com o seu nome → **Tour** o mostra de novo.
 <!-- endif -->
 
 ## Início

@@ -76,7 +76,7 @@ class WelcomeTour
     private static function adminSteps(): array
     {
         return [
-            self::step(Heroicon::OutlinedSparkles, __('Welcome to GaiaCP'), __('A one-minute look at where things are. You can open this tour again from your menu at the top right → Tour.')),
+            self::step(Heroicon::OutlinedSparkles, __('Welcome to GaiaCP'), __('A one-minute look at where things are. You can open this tour again from the menu under your name → Tour.')),
             ClientResource::canAccess() ? self::step(Heroicon::OutlinedUsers, __('Clients and orders'), __('Each client\'s page holds their details, services, payment notices, payments and tickets. Orders placed in the client area wait under Orders until you complete them.'), ClientResource::getUrl(), self::nav(ClientResource::getUrl())) : null,
             ServiceResource::canAccess() ? self::step(Heroicon::OutlinedServerStack, __('Services'), __('Hosting accounts, domains and everything else you bill for, each with its own price, billing cycle and next due date. A hosting account\'s Account menu creates, suspends or ends it on its server.'), ServiceResource::getUrl(), self::nav(ServiceResource::getUrl(), group: true)) : null,
             InvoiceResource::canAccess() ? self::step(Heroicon::OutlinedBanknotes, __('Payment notices and payments'), __('GaiaCP sends a payment notice before each due date and reminders after it. Record a payment and the service moves on to its next due date, and is unsuspended if it was suspended for not paying.'), InvoiceResource::getUrl(), self::nav(InvoiceResource::getUrl())) : null,
@@ -92,7 +92,7 @@ class WelcomeTour
         $company = (string) config('gaiacp.company.name');
 
         return [
-            self::step(Heroicon::OutlinedSparkles, filled($company) ? __('Welcome to :company', ['company' => $company]) : __('Welcome'), __('A quick look at what you can do here. You can see it again from your menu at the top right → Tour.')),
+            self::step(Heroicon::OutlinedSparkles, filled($company) ? __('Welcome to :company', ['company' => $company]) : __('Welcome'), __('A quick look at what you can do here. You can see it again from the menu under your name → Tour.')),
             ClientServiceResource::canAccess() ? self::step(Heroicon::OutlinedServerStack, __('Your services'), __('Your hosting, domains and other services, each with its next due date. Open one for its details and what you can change yourself.'), ClientServiceResource::getUrl(), self::nav(ClientServiceResource::getUrl(), group: true)) : null,
             PaymentNoticeResource::canAccess() ? self::step(Heroicon::OutlinedBanknotes, __('Payment notices'), __('Before each due date you get a payment notice by email. It is here too, with how to pay it; your payments are listed under Payments.'), PaymentNoticeResource::getUrl(), self::nav(PaymentNoticeResource::getUrl(), group: true)) : null,
             Order::canAccess() ? self::step(Heroicon::OutlinedShoppingCart, __('Order'), __('Order hosting, a domain or another service whenever you need one.'), Order::getUrl(), self::nav(Order::getUrl())) : null,
