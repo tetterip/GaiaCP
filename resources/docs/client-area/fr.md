@@ -23,7 +23,7 @@ La **cloche** en haut de la page vous indique ce qui s'est passé depuis votre d
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-Lors de votre première connexion, une courte visite montre ce que vous pouvez faire ici. Votre menu en haut à droite → **Visite** la montre à nouveau.
+Lors de votre première connexion, une courte visite montre ce que vous pouvez faire ici. Le menu à votre nom → **Visite** la montre à nouveau.
 <!-- endif -->
 
 ## Accueil

@@ -38,7 +38,7 @@ off the dashboard. It stays under Settings → General → Setup guide.
 
 Before that, on the first login, a short **tour** lights up the menus one by one: clients and orders, services, payment notices,
 support, the search and the bell, and this guide. Each admin gets it once, with only the parts their access level
-opens; the menu at the top right → **Tour** shows it again. Admins who were there before the tour came don't get it by
+opens; the menu under your name → **Tour** shows it again. Admins who were there before the tour came don't get it by
 themselves.
 
 The chapters of this guide follow roughly the same order, so you can read them alongside it.

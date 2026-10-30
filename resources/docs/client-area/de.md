@@ -23,7 +23,7 @@ Die **Glocke** oben auf der Seite zeigt, was seit Ihrem letzten Besuch passiert 
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-Beim ersten Login zeigt eine kurze Tour, was Sie hier tun können. Ihr Menü oben rechts → **Tour** zeigt sie erneut.
+Beim ersten Login zeigt eine kurze Tour, was Sie hier tun können. Das Menü unter Ihrem Namen → **Tour** zeigt sie erneut.
 <!-- endif -->
 
 ## Startseite

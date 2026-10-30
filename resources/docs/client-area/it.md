@@ -23,7 +23,7 @@ La **campanella** in cima alla pagina Le indica cosa è successo dall'ultima vol
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-Al primo accesso, un breve tour mostra cosa può fare qui. Il suo menu in alto a destra → **Tour** lo mostra di nuovo.
+Al primo accesso, un breve tour mostra cosa può fare qui. Il menu con il suo nome → **Tour** lo mostra di nuovo.
 <!-- endif -->
 
 ## Home

@@ -23,7 +23,7 @@ The **bell** at the top of the page tells you what happened since you last looke
 <!-- endif -->
 
 <!-- if:welcome_tour -->
-The first time you log in, a short tour shows what you can do here. Your menu at the top right → **Tour** shows it again.
+The first time you log in, a short tour shows what you can do here. The menu under your name → **Tour** shows it again.
 <!-- endif -->
 
 ## Home
