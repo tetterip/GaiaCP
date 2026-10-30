@@ -3344,5 +3344,12 @@
     "Search result description": "Descrizione nei risultati di ricerca",
     "The heading and the title in search results. Empty: the name.": "L'intestazione e il titolo nei risultati di ricerca. Vuoto: il nome.",
     "This link is taken by another page of the client area.": "Questo indirizzo è già usato da un'altra pagina dell'area clienti.",
-    "e.g. Fast web hosting with daily backups": "es. Hosting web veloce con backup giornalieri"
+    "e.g. Fast web hosting with daily backups": "es. Hosting web veloce con backup giornalieri",
+    "A page of its own for visitors and search engines, inside its group's address: its name, prices, Order button, what it includes and your text. Without a text it stays out of search results.": "Una pagina propria per visitatori e motori di ricerca, nell'indirizzo del suo gruppo: nome, prezzi, pulsante Ordina, cosa include e il tuo testo. Senza testo resta fuori dai risultati di ricerca.",
+    "Breadcrumb": "Percorso",
+    "Empty: made from the name.": "Vuoto: ricavato dal nome.",
+    "Other languages": "Altre lingue",
+    "Put it in a group first (Order page above): its page sits inside the group's address.": "Mettilo prima in un gruppo (Pagina d'ordine sopra): la sua pagina sta nell'indirizzo del gruppo.",
+    "What clients see on the order pages when they use another language. Empty: the name and description above.": "Cosa vedono i clienti nelle pagine d'ordine quando usano un'altra lingua. Vuoto: il nome e la descrizione sopra.",
+    "What is included": "Cosa include"
 }

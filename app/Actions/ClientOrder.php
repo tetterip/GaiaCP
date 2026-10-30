@@ -193,7 +193,7 @@ class ClientOrder
             $product = (string) ($line['product'] ?? '') === self::DOMAIN_ONLY ? null : self::products()->firstWhere('id', (int) ($line['product'] ?? 0));
             $domain = DomainName::normalize($line['domain'] ?? null);
 
-            return array_filter([$product?->name, $domain !== '' ? $domain : null]);
+            return array_filter([$product?->localName(), $domain !== '' ? $domain : null]);
         })->values()->all();
     }
 
@@ -209,7 +209,7 @@ class ClientOrder
         $domainOnly = (string) ($line['product'] ?? '') === self::DOMAIN_ONLY;
         $product = $domainOnly ? null : self::products()->firstWhere('id', (int) ($line['product'] ?? 0));
         $domain = DomainName::normalize($line['domain'] ?? null);
-        $title = $product?->name ?? ($domain !== '' ? $domain : __('A domain name only'));
+        $title = $product?->localName() ?? ($domain !== '' ? $domain : __('A domain name only'));
 
         try {
             $items = $this->items($line, $client);

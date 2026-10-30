@@ -8,6 +8,7 @@ use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Models\Concerns\HasSale;
 use App\Support\Currencies;
+use App\Support\Locales;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 /**
  * A catalog entry that pre-fills new services. Each billing cycle has its own price
@@ -38,10 +41,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * A cycle's sale_cents is its sale price (HasSale: from sale_starts_on to sale_ends_on), the first period's price on
  * orders placed while the sale runs (orderPriceFor()); other currencies get it at their rate.
  *
+ * `name` and `description` are in the default language; `names` / `descriptions` hold them in the others, which clients
+ * see on the order pages (localName(), localDescription()). Services keep the name they were ordered with.
+ * With `page` on it has a public page at /<group>/<slug> (ProductPage): a title, a search result description and a
+ * text per language; without a text it is kept out of search engines.
+ *
  * @property array<string, array{enabled?: bool, price_cents?: int|null, setup_cents?: int|null, sale_cents?: int|null}>|null $prices
+ * @property array<string, ?string>|null $names
+ * @property array<string, ?string>|null $descriptions
+ * @property array<string, ?string>|null $page_titles
+ * @property array<string, ?string>|null $page_descriptions
+ * @property array<string, ?string>|null $page_texts
  * @property array<string, array<string, array{price_cents?: int|null, setup_cents?: int|null}>>|null $currency_prices
  */
-#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'color', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup', 'sale_starts_on', 'sale_ends_on'])]
+#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'color', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup', 'sale_starts_on', 'sale_ends_on', 'names', 'descriptions', 'slug', 'page', 'page_titles', 'page_descriptions', 'page_texts'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
@@ -55,6 +68,21 @@ class Product extends Model
             if (! array_key_exists('client_visible', $product->getAttributes())) {
                 $product->client_visible = true;
             }
+        });
+
+        // A public page needs a link: made from the name when left empty, kept unique
+        static::saving(function (Product $product) {
+            $slug = Str::slug((string) $product->slug);
+
+            if ($slug === '' && $product->page) {
+                $base = Str::slug((string) $product->name) ?: 'product';
+                $slug = $base;
+                for ($i = 2; self::query()->where('slug', $slug)->whereKeyNot($product->id)->exists(); $i++) {
+                    $slug = "{$base}-{$i}";
+                }
+            }
+
+            $product->slug = $slug === '' ? null : $slug;
         });
     }
 
@@ -74,6 +102,12 @@ class Product extends Model
             'auto_setup' => AutoSetup::class,
             'sale_starts_on' => 'immutable_date',
             'sale_ends_on' => 'immutable_date',
+            'names' => 'array',
+            'descriptions' => 'array',
+            'page' => 'boolean',
+            'page_titles' => 'array',
+            'page_descriptions' => 'array',
+            'page_texts' => 'array',
         ];
     }
 
@@ -81,6 +115,52 @@ class Product extends Model
     public function group(): BelongsTo
     {
         return $this->belongsTo(ProductGroup::class, 'product_group_id');
+    }
+
+    /** Its name in a language (the current one by default), else the default language's `name`. */
+    public function localName(?string $locale = null): string
+    {
+        return self::inLanguage($this->names ?? [], $locale) ?? (string) $this->name;
+    }
+
+    /** Its description in a language, else the default language's. */
+    public function localDescription(?string $locale = null): ?string
+    {
+        return self::inLanguage($this->descriptions ?? [], $locale) ?? (filled($this->description) ? (string) $this->description : null);
+    }
+
+    /** The title of its public page, else its name. */
+    public function pageTitle(): string
+    {
+        return self::inLanguage($this->page_titles ?? [], null) ?? self::inLanguage($this->page_titles ?? [], Locales::default()) ?? $this->localName();
+    }
+
+    /** What search results and link previews say about its page, else its description. */
+    public function pageDescription(): ?string
+    {
+        return self::inLanguage($this->page_descriptions ?? [], null) ?? self::inLanguage($this->page_descriptions ?? [], Locales::default()) ?? $this->localDescription();
+    }
+
+    /** The text of its public page (Markdown) in the current language, else the default one. */
+    public function pageText(): ?HtmlString
+    {
+        $text = self::inLanguage($this->page_texts ?? [], null) ?? self::inLanguage($this->page_texts ?? [], Locales::default());
+
+        return $text === null ? null : new HtmlString(Str::markdown($text, ['html_input' => 'escape', 'allow_unsafe_links' => false]));
+    }
+
+    /** Whether its page has a text in some language: without one it is a price card, kept out of search engines. */
+    public function hasPageText(): bool
+    {
+        return collect($this->page_texts ?? [])->contains(fn ($text) => filled($text));
+    }
+
+    /** @param  array<string, ?string>  $texts */
+    private static function inLanguage(array $texts, ?string $locale): ?string
+    {
+        $text = $texts[Locales::normalize($locale ?? app()->getLocale())] ?? null;
+
+        return filled($text) ? trim((string) $text) : null;
     }
 
     /** At most this many tags show as badges on a card, so it stays readable on a phone. */

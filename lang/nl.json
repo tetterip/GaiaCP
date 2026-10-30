@@ -3344,5 +3344,12 @@
     "Search result description": "Omschrijving in zoekresultaten",
     "The heading and the title in search results. Empty: the name.": "De kop en de titel in zoekresultaten. Leeg: de naam.",
     "This link is taken by another page of the client area.": "Dit adres is al van een andere pagina van het klantengedeelte.",
-    "e.g. Fast web hosting with daily backups": "bijv. Snelle webhosting met dagelijkse back-ups"
+    "e.g. Fast web hosting with daily backups": "bijv. Snelle webhosting met dagelijkse back-ups",
+    "A page of its own for visitors and search engines, inside its group's address: its name, prices, Order button, what it includes and your text. Without a text it stays out of search results.": "Een eigen pagina voor bezoekers en zoekmachines, binnen het adres van de groep: naam, prijzen, Bestel-knop, wat erbij hoort en je tekst. Zonder tekst blijft hij uit de zoekresultaten.",
+    "Breadcrumb": "Kruimelpad",
+    "Empty: made from the name.": "Leeg: gemaakt van de naam.",
+    "Other languages": "Andere talen",
+    "Put it in a group first (Order page above): its page sits inside the group's address.": "Zet het eerst in een groep (Bestelpagina hierboven): de pagina valt onder het adres van de groep.",
+    "What clients see on the order pages when they use another language. Empty: the name and description above.": "Wat klanten op de bestelpagina's zien in een andere taal. Leeg: de naam en omschrijving hierboven.",
+    "What is included": "Wat erbij hoort"
 }

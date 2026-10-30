@@ -3344,5 +3344,12 @@
     "Search result description": "Περιγραφή στα αποτελέσματα αναζήτησης",
     "The heading and the title in search results. Empty: the name.": "Η επικεφαλίδα και ο τίτλος στα αποτελέσματα αναζήτησης. Κενό: το όνομα.",
     "This link is taken by another page of the client area.": "Αυτόν τον σύνδεσμο τον έχει ήδη άλλη σελίδα της περιοχής πελατών.",
-    "e.g. Fast web hosting with daily backups": "π.χ. Γρήγορο web hosting με καθημερινά αντίγραφα ασφαλείας"
+    "e.g. Fast web hosting with daily backups": "π.χ. Γρήγορο web hosting με καθημερινά αντίγραφα ασφαλείας",
+    "A page of its own for visitors and search engines, inside its group's address: its name, prices, Order button, what it includes and your text. Without a text it stays out of search results.": "Μια δική του σελίδα για επισκέπτες και μηχανές αναζήτησης, μέσα στη διεύθυνση της ομάδας του: όνομα, τιμές, κουμπί Παραγγελία, τι περιλαμβάνει και το κείμενό σας. Χωρίς κείμενο μένει εκτός αποτελεσμάτων αναζήτησης.",
+    "Breadcrumb": "Διαδρομή",
+    "Empty: made from the name.": "Κενό: φτιάχνεται από το όνομα.",
+    "Other languages": "Άλλες γλώσσες",
+    "Put it in a group first (Order page above): its page sits inside the group's address.": "Βάλτε το πρώτα σε μια ομάδα (Σελίδα παραγγελίας παραπάνω): η σελίδα του βρίσκεται μέσα στη διεύθυνση της ομάδας.",
+    "What clients see on the order pages when they use another language. Empty: the name and description above.": "Τι βλέπουν οι πελάτες στις σελίδες παραγγελίας όταν χρησιμοποιούν άλλη γλώσσα. Κενό: το όνομα και η περιγραφή παραπάνω.",
+    "What is included": "Τι περιλαμβάνει"
 }

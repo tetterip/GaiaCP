@@ -1172,6 +1172,11 @@
         text-decoration: underline;
     }
 
+    /* A product's public page (ProductPage): the way back to its group's page */
+    .gcp-crumbs a {
+        color: var(--gcp-accent);
+    }
+
     /* A product group's public page (ProductGroupPage): its questions, each opening its answer */
     .gcp-faq {
         display: grid;

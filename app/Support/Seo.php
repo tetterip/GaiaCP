@@ -43,6 +43,14 @@ class Seo
     }
 
     /** The open page's own description (a product group's page), else the site's. */
+    /** Whether the open page asks to stay out of search results (a product page without a text of its own). */
+    public static function kept(): bool
+    {
+        $page = self::$page;
+
+        return $page && method_exists($page, 'noindex') && $page->noindex();
+    }
+
     public static function description(): ?string
     {
         $page = self::$page;
@@ -60,7 +68,7 @@ class Seo
     {
         $page = self::$page;
 
-        return self::indexable() && $page && method_exists($page, 'structuredData') ? $page->structuredData() : [];
+        return self::indexable() && ! self::kept() && $page && method_exists($page, 'structuredData') ? $page->structuredData() : [];
     }
 
     /** A text as one plain line (tags and line breaks gone), at most 300 characters; null when empty. */

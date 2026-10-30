@@ -80,6 +80,12 @@ How the admin and client panels, users, access, security, branding, themes and l
   links (`compare-products` without `$field`), questions; `metaDescription()` and `structuredData()` (ItemList of
   Product + Offer, FAQPage) are read by `Seo` through the page captured from the layout. Linked from PublicHome, the
   visitor's menu and the sitemap.
+  A product's page (`products.page`, `slug` unique, `page_titles` / `page_descriptions` / `page_texts`): `ProductPage` at
+  `/{group}/{slug}`, also a fallback route, only for `clientOrderable()` products with cycles; `noindex()` (read by
+  `Seo::kept()`) while no language has a text, which also keeps it out of the sitemap and drops its JSON-LD (Product +
+  Offer, BreadcrumbList). `Concerns\PublicProducts` holds `orderUrl()` / `offer()` for both pages. Products keep
+  `name` / `description` in the default language and `names` / `descriptions` for the others: client-facing order
+  pages read `localName()` / `localDescription()`; admin pages, services and emails keep `name`.
   Product groups (`ProductGroup`, Settings → Product groups `ProductGroupResource`; `products.product_group_id`, `icon`,
   `features`): `App\Support\OrderCatalogue::groups()` lists them in order with their products (cheapest a month
   first), the ungrouped ones under `OTHER` and domain names as `DOMAINS`; hidden groups only when asked for by slug.
