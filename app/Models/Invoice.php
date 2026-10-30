@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\InvoiceStatus;
+use App\Invoicing\IssueInvoice;
 use App\Support\ClientFields;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Throwable;
 
 /**
  * A payment notice (proforma): what a client owes on one due date, grouped from the services due
@@ -119,6 +122,12 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
+    /** @return HasOne<TaxInvoice, $this> the invoice issued once it was paid (Settings → Invoices) */
+    public function taxInvoice(): HasOne
+    {
+        return $this->hasOne(TaxInvoice::class)->where('type', TaxInvoice::INVOICE);
+    }
+
     /** @return HasMany<InvoiceReminder, $this> */
     public function reminders(): HasMany
     {
@@ -220,6 +229,16 @@ class Invoice extends Model
             $this->update(['status' => InvoiceStatus::Paid, 'paid_on' => $paidOn]);
 
             ActivityLog::record('invoice.paid', "Payment notice {$this->number} paid", client: $this->client, properties: ['invoice_id' => $this->id]);
+
+            if (IssueInvoice::enabled()) {
+                try {
+                    app(IssueInvoice::class)->handle($this);
+                } catch (Throwable $e) {
+                    // The payment stands; Issue invoice on the notice tries again.
+                    report($e);
+                    ActivityLog::record('tax_invoice.failed', "No invoice issued for payment notice {$this->number}: {$e->getMessage()}", client: $this->client, properties: ['invoice_id' => $this->id]);
+                }
+            }
         }
     }
 }

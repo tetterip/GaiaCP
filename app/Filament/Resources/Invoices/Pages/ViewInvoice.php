@@ -10,7 +10,9 @@ use App\Credit\ApplyCredit;
 use App\Enums\InvoiceStatus;
 use App\Enums\MailTemplate;
 use App\Filament\Resources\Invoices\InvoiceResource;
+use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Invoices\SendInvoiceEmails;
+use App\Invoicing\IssueInvoice;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Payments\PaymentMethods;
@@ -44,8 +46,27 @@ class ViewInvoice extends ViewRecord
             $this->sendEmail(),
             $this->aiReminder(),
             $this->updateBillTo(),
+            $this->issueInvoice(),
             $this->cancel(),
         ];
+    }
+
+    /** A paid notice without its invoice (paid before invoices were on, or issuing failed): issue it now. */
+    private function issueInvoice(): Action
+    {
+        return Action::make('issueInvoice')
+            ->label('Issue invoice')
+            ->icon(Heroicon::OutlinedDocumentCheck)
+            ->color('gray')
+            ->visible(fn (Invoice $record) => IssueInvoice::enabled() && IssueInvoice::invoiceable($record) && $record->taxInvoice === null)
+            ->requiresConfirmation()
+            ->modalDescription(__('Issues the invoice of this payment notice with the next number, dated today. An invoice can\'t be changed or deleted afterwards.'))
+            ->action(function (Invoice $record) {
+                $invoice = app(IssueInvoice::class)->handle($record);
+
+                Notification::make()->title(__('Invoice :number issued', ['number' => $invoice?->number]))->success()->send();
+                $this->redirect(TaxInvoiceResource::getUrl('view', ['record' => $invoice]));
+            });
     }
 
     private function recordPayment(): Action

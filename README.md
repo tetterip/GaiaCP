@@ -100,8 +100,8 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
 
 - **It never charges cards by itself.** Payments are recorded by you, or by Stripe Checkout when the client pays
   there. No saved cards, no automatic charges.
-- **It doesn't issue legal invoices.** Its payment notices track what is owed and what was paid; the invoices
-  themselves come from your accounting tool.
+- **Invoices are optional.** Payment notices track what is owed and what was paid; Settings → Invoices can also issue
+  a numbered invoice for each paid notice. Sending invoices to a tax authority (myDATA, Peppol…) is not built in.
 - No payment gateways other than Stripe yet, and no bank statement matching.
 
 ## Installation

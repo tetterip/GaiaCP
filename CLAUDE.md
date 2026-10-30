@@ -113,9 +113,11 @@ Read the file for the area you are changing before you change it; don't read the
 - **Payments are recorded, never charged by GaiaCP.** An admin records them by hand, or a payment plugin records what
   the gateway confirmed (Stripe Checkout only: no card data, saved cards or automatic charges here); recording one
   advances the service's `next_due_date` by one billing cycle and unsuspends it if it was suspended for non-payment.
-- **No legal invoices.** Invoices with myDATA transmission are issued in the accounting tool.
-  GaiaCP only tracks amounts owed, due dates and payments. Its "invoices" are payment notices (proformas, numbered
-  `PF-2026-0001`); call them that in the UI and emails, never τιμολόγιο.
+- **Payment notices are not invoices.** The `invoices` table holds payment notices (proformas, numbered
+  `PF-2026-0001`); call them that in the UI and emails, never τιμολόγιο. Real invoices are optional (Settings → Invoices,
+  `App\Invoicing`): `IssueInvoice` makes a `TaxInvoice` from a notice as `Invoice::settle()` marks it paid (one per
+  notice, not for "Add funds"), numbered by `InvoiceNumbers` under a row lock (`invoice_series`, no gaps, next number
+  only forward); a `TaxInvoice` and its items throw on update and delete. Transmission (myDATA, Peppol) is for plugins.
 - Money is stored as **integer cents** with an explicit currency (EUR is the base; others under Settings → Currencies);
   never floats. A service, its notices and payments stay in the currency it was created in.
 - Every automated action (reminder sent, suspension, API call) is logged via `ActivityLog::record()`
