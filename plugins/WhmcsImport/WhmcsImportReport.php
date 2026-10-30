@@ -23,7 +23,7 @@ class WhmcsImportReport
     /** Problem groups, in the order the page shows them. */
     public const GROUPS = [
         'passwords' => 'Passwords',
-        'registrars' => 'Domains at a registrar GaiaCP has no module for',
+        'registrars' => 'Domains at a registrar with no account in GaiaCP',
         'invoices' => 'WHMCS invoices',
         'other' => 'Other',
     ];

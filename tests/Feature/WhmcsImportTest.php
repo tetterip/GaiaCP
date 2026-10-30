@@ -592,6 +592,20 @@ class WhmcsImportTest extends TestCase
         $this->assertContains('Registrar "enom" (2): imported as tracked only, so GaiaCP does not renew or sync them: other.com, third.gr.', $report->grouped['registrars']);
     }
 
+    public function test_domains_land_on_the_registrar_account_of_their_whmcs_module(): void
+    {
+        $this->seedWhmcs();
+        $enom = Registrar::factory()->create(['module' => 'enom']);
+
+        $report = $this->import();
+
+        $domain = Service::where('domain', 'other.com')->sole();
+        $this->assertSame($enom->id, $domain->domainDetails->registrar_id);
+        $this->assertSame(DomainRegistrationType::Transfer, $domain->domainDetails->registration_type);
+        // easy.gr has no account here, so its domain is tracked only
+        $this->assertSame(['Registrar "easy" (1): imported as tracked only, so GaiaCP does not renew or sync them: papadopoulos.gr.'], $report->grouped['registrars']);
+    }
+
     public function test_without_the_encryption_hash_passwords_are_left_empty(): void
     {
         $this->seedWhmcs();
@@ -728,7 +742,7 @@ class WhmcsImportTest extends TestCase
             ->fillForm(['host' => 'localhost', 'database' => $this->whmcsFile, 'username' => 'reader', 'hash' => self::HASH])
             ->call('runImport', true)
             ->assertSee('Dry run: nothing was saved')
-            ->assertSee('Domains at a registrar GaiaCP has no module for (2)')
+            ->assertSee('Domains at a registrar with no account in GaiaCP (2)')
             ->assertSee('WHMCS invoices (1)')
             ->assertSee('Hosting and other services')
             // inline problem text keeps each bullet beside the item's first line

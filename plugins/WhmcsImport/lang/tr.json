@@ -14,7 +14,7 @@
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Bir WHMCS veritabanından müşterileri, ürünleri, hizmetleri, alan adlarını ve ödenmemiş WHMCS faturalarını kopyalayın.",
     "Created": "Oluşturuldu",
     "Database": "Veritabanı",
-    "Domains at a registrar GaiaCP has no module for": "GaiaCP'nin modülü olmayan bir kayıt kuruluşundaki alan adları",
+    "Domains at a registrar with no account in GaiaCP": "GaiaCP'de hesabı olmayan bir kayıt kuruluşundaki alan adları",
     "Dry run": "Deneme çalışması",
     "Dry run failed": "Deneme çalışması başarısız",
     "Dry run finished": "Deneme çalışması bitti",

@@ -14,7 +14,7 @@
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Kopiuj klientów, produkty, usługi, domeny i nieopłacone faktury WHMCS z bazy danych WHMCS.",
     "Created": "Utworzono",
     "Database": "Baza danych",
-    "Domains at a registrar GaiaCP has no module for": "Domeny u rejestratora, dla którego GaiaCP nie ma modułu",
+    "Domains at a registrar with no account in GaiaCP": "Domeny u rejestratora bez konta w GaiaCP",
     "Dry run": "Próbny przebieg",
     "Dry run failed": "Próbny przebieg nie powiódł się",
     "Dry run finished": "Próbny przebieg zakończony",

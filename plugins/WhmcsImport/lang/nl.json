@@ -14,7 +14,7 @@
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Klanten, producten, diensten, domeinen en onbetaalde facturen kopiëren uit een WHMCS-database.",
     "Created": "Aangemaakt",
     "Database": "Database",
-    "Domains at a registrar GaiaCP has no module for": "Domeinen bij een registrar waarvoor GaiaCP geen module heeft",
+    "Domains at a registrar with no account in GaiaCP": "Domeinen bij een registrar zonder account in GaiaCP",
     "Dry run": "Proefrun",
     "Dry run failed": "Proefrun mislukt",
     "Dry run finished": "Proefrun voltooid",

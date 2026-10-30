@@ -14,7 +14,7 @@
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Αντιγραφή πελατών, προϊόντων, υπηρεσιών, domains και απλήρωτων τιμολογίων από βάση WHMCS.",
     "Created": "Δημιουργήθηκε",
     "Database": "Βάση δεδομένων",
-    "Domains at a registrar GaiaCP has no module for": "Domains σε registrar για τον οποίο το GaiaCP δεν έχει module",
+    "Domains at a registrar with no account in GaiaCP": "Domains σε registrar χωρίς λογαριασμό στο GaiaCP",
     "Dry run": "Δοκιμαστική εκτέλεση",
     "Dry run failed": "Η δοκιμαστική εκτέλεση απέτυχε",
     "Dry run finished": "Η δοκιμαστική εκτέλεση ολοκληρώθηκε",
