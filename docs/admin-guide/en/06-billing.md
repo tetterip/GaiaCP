@@ -6,7 +6,7 @@ tell the client what is owed; recording a payment moves the due date forward one
 ## Payment notices
 
 A **payment notice** (a proforma, numbered `PF-2026-0001`) lists what a client owes on one due date. It is not a legal
-invoice: issue those in your accounting software. You find them under Billing → **Payment notices**, and on each
+invoice: issue those in your accounting software, or turn on [Invoices](#invoices). You find them under Billing → **Payment notices**, and on each
 client's Payment notices tab, newest first, with buttons to show only the unpaid, paid, cancelled or overdue ones.
 
 The daily run makes them for you:
@@ -36,6 +36,24 @@ On a notice you can:
 - **Cancel** it.
 
 Ending a service (Terminate or Cancel) takes it off its open notices; a notice left empty is cancelled.
+
+## Invoices
+
+Settings → Billing → **Invoices** (off by default) makes GaiaCP issue an **invoice** for each payment notice paid from
+then on, the way WHMCS does with proformas: the notice stays the "what you owe" document, and once every line of it is
+paid an invoice is issued with its own number, dated that day. Notices paid before invoices were on, and "Add funds"
+notices, get none (the notices that credit pays do).
+
+An invoice is a copy taken when it is issued: your company details from Settings → Company, the client's details from
+the notice, its lines, tax and total. It is never changed or deleted. Find them under Billing → **Invoices**; a paid
+notice links to its invoice, and one without (paid before you turned invoices on) has **Issue invoice**.
+
+- **Number format**: `{YEAR}`, `{MONTH}`, `{DAY}` and `{NUMBER}` (at least four digits), `INV-{YEAR}-{NUMBER}` by
+  default. With `{YEAR}` in it, numbering starts again at 1 each year. Numbers have no gaps and are never given twice.
+- **Next number**: where to continue from, for example after your previous system. It can only go up.
+
+Check with your accountant what an invoice must show in your country. Reversing a payment doesn't change its invoice
+yet: credit notes are planned.
 
 ## Recording payments
 

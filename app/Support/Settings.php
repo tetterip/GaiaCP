@@ -34,6 +34,8 @@ class Settings
         'region.date_format',
         'region.country',
         'invoices.days_before',
+        'invoicing.enabled',
+        'invoicing.number_format',
         'credit.enabled',
         'credit.min_deposit',
         'credit.max_deposit',

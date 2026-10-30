@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Invoices (Settings → Billing → Invoices, off by default): each payment notice paid from then on also gets an invoice
+  with its own number, the way WHMCS turns a paid proforma into an invoice. Numbers follow a format with `{YEAR}`,
+  `{MONTH}`, `{DAY}` and `{NUMBER}` (`INV-{YEAR}-{NUMBER}` by default; with `{YEAR}` each year starts at 1), have no
+  gaps, and the next number can only go up. An invoice is a copy of the seller, client, lines and tax when it was
+  issued and is never changed or deleted. Billing → Invoices lists them; a paid notice links to its invoice, or has
+  Issue invoice when it was paid before. PDF, client area, emails and credit notes come next.
 - Welcome tour: on the first login, admins and clients get a few cards, each lighting up the menu or part of the top bar it is about (on a phone the side menu opens for them), (clients and orders,
   services, payment notices, support, search and bell, help for admins; services, payment notices, ordering, support,
   profile and help for clients), only for the pages each one can open. The admin's last card opens the setup guide.

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Invoices\Schemas;
 
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Orders\OrderResource;
+use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Models\Invoice;
 use App\Providers\AppServiceProvider;
 use App\Support\ClientFields;
@@ -57,9 +58,13 @@ class InvoiceInfolist
                             ->formatStateUsing(fn ($state) => "#{$state}")
                             ->url(fn (Invoice $record) => $record->order_id ? OrderResource::getUrl('view', ['record' => $record->order_id]) : null)
                             ->placeholder(__('Renewal')),
+                        TextEntry::make('taxInvoice.number')
+                            ->label('Invoice')
+                            ->url(fn (Invoice $record) => $record->taxInvoice ? TaxInvoiceResource::getUrl('view', ['record' => $record->taxInvoice]) : null)
+                            ->visible(fn (Invoice $record) => $record->taxInvoice !== null),
                         TextEntry::make('bill_to')
                             ->label('For')
-                            ->state(fn (Invoice $record) => self::billToLines($record))
+                            ->state(fn (Invoice $record) => self::billToLines($record->billTo()))
                             ->listWithLineBreaks()
                             ->hint(fn (Invoice $record) => $record->billToChanged() ? __('The client\'s details have changed since') : null)
                             ->hintColor('warning')
@@ -71,10 +76,9 @@ class InvoiceInfolist
             ]);
     }
 
-    /** @return list<string> the "For" block of the notice, as the client sees it */
-    private static function billToLines(Invoice $record): array
+    /** @return list<string> the "For" block of a notice or an invoice, as the client sees it (Invoice::billTo()) */
+    public static function billToLines(object $to): array
     {
-        $to = $record->billTo();
         $name = trim($to->first_name.' '.$to->last_name);
 
         return array_values(array_filter([

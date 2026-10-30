@@ -52,6 +52,9 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Billing cycles and due dates per service, with editable email templates
 - Payment notices (proformas, WHMCS-style "invoices" that are not legal invoices): one per client and due date,
   created and emailed ahead of it, with reminders and overdue notices; paid when its payments are recorded
+- Invoices (Settings → Invoices, off by default): a paid payment notice gets an invoice with its own number (format
+  with `{YEAR}` `{MONTH}` `{DAY}` `{NUMBER}`, no gaps, next number only forward), a copy never changed or deleted;
+  PDF, client area, credit notes and national e-invoicing (myDATA, Peppol…) as plugins are planned
 - Price changes with notice (Change price: on a service, the Services list, a product or a TLD): the current price
   plus a percentage, a set amount, or the product's / TLD's current price, for renewals due from a date at least
   Settings → Automation → Price change notice ahead (30 days by default). Each client gets one Price Change Notice
@@ -241,7 +244,7 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
 **Out of scope (on purpose)**
 
 - Payment gateways other than Stripe, saved cards and automatic charges, refunds from GaiaCP (refund in Stripe)
-- Legal invoices (myDATA): those are issued in the accounting tool; GaiaCP's payment notices only say what is owed
+- Transmitting invoices to a tax authority (myDATA, Peppol…) in the core: that belongs in a plugin per country
 - Proration other than an upgrade's "charge the difference now"; credit paying part of a line
 - Matching bank statements to payment notices (bank CSV import, RF payment codes): payments are recorded by hand or by a payment plugin
 

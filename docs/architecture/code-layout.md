@@ -33,6 +33,14 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   A notice keeps the client's name, address and VAT details from the day it is issued (`invoices.bill_to`,
   `Invoice::BILL_TO`, filled on create, plus `custom`: the client fields marked Show on payment notices, as shown
   that day); an unpaid one takes the current ones by the admin's Update client details
+- `app/Invoicing/`: invoices, optional (Settings → Invoices, `invoicing.enabled`, `invoicing.number_format`).
+  `IssueInvoice` is called by `Invoice::settle()` when a notice becomes paid (a failure is logged `tax_invoice.failed`
+  and never undoes the payment; Issue invoice on the notice retries) and copies it into `tax_invoices` /
+  `tax_invoice_items` (seller from Settings → Company, `bill_to`, lines, tax, payment methods), one per notice (notice
+  row locked), none for "Add funds" or zero notices. `InvoiceNumbers::take()` gives the next number of the series
+  (`invoice_series`: `invoice:<year>` when the format has `{YEAR}`, else `invoice`) under a row lock in the same
+  transaction; `continueFrom()` moves it forward only. `TaxInvoice` / `TaxInvoiceItem` throw on update and delete; admin
+  pages `TaxInvoiceResource` (`/admin/tax-invoices`, read only, in the menu once on or while any exist)
 - Client fields (Settings → Client fields, `ClientFieldResource`): `client_fields` rows (`key` fixed once created,
   `labels` per locale, `ClientFieldType`, `options` for a list, `required`, `ClientFieldAccess` hidden / shown /
   editable, `on_notice`, `sort`); values in `clients.custom_fields` {key: value}. `App\Support\ClientFields` (scoped,

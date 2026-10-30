@@ -49,6 +49,13 @@ return [
         'days_before' => 14,
     ],
 
+    // Invoices (Settings → Invoices): off, GaiaCP only makes payment notices; on, each notice paid from then on gets an
+    // invoice with its own number (App\Invoicing). The next number is kept per series in `invoice_series`, not here.
+    'invoicing' => [
+        'enabled' => false,
+        'number_format' => 'INV-{YEAR}-{NUMBER}',
+    ],
+
     // Client credit (Settings → Client credit): a balance clients top up with an "Add funds" payment notice and that
     // pays their payment notices. Amounts are in the base currency (converted for clients billed in another one).
     'credit' => [
