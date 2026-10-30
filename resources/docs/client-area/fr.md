@@ -109,7 +109,7 @@ Sur un domaine actif enregistré chez nous, vous pouvez :
 Quand un service arrive à échéance, nous vous envoyons par email un **avis de paiement**, avec les instructions de paiement. Il s'agit d'un avis de paiement, sans valeur fiscale. **Avis de paiement** les liste tous : ouvrez-en un pour voir ses lignes, l'imprimer ou l'enregistrer en PDF. Les boutons au-dessus de la liste n'affichent que les impayés, les payés ou ceux en retard. **Paiements** liste les paiements que nous avons enregistrés. Après votre paiement, l'avis apparaît comme payé dès que nous enregistrons votre paiement.
 
 <!-- if:invoices -->
-Quand nous émettons des factures, un avis de paiement payé reçoit aussi une **facture** : nous vous l'envoyons par email en PDF, l'avis payé a un bouton pour la télécharger, et **Factures** (dans Facturation) les liste toutes.
+Quand nous émettons des factures, un avis de paiement payé reçoit aussi une **facture** : nous vous l'envoyons par email en PDF, l'avis payé a un bouton pour la télécharger, et **Factures** (dans Facturation) les liste toutes. Un **avoir** à cet endroit, avec un total négatif, annule une facture, par exemple quand un paiement est remboursé.
 <!-- endif -->
 
 <!-- if:pay_online -->

@@ -109,7 +109,7 @@ Bizim üzerimizden kayıtlı etkin bir alan adında şunları yapabilirsiniz:
 Bir hizmetin vadesi geldiğinde size nasıl ödeyeceğinizi içeren bir **ödeme bildirimi** e-postayla göndeririz. Bu bir ödeme bildirimidir, vergi belgesi değildir. **Ödeme bildirimleri** hepsini listeler: satırlarını görmek, yazdırmak veya PDF olarak kaydetmek için birini açın. Listenin üstündeki düğmeler yalnızca ödenmemiş, ödenmiş veya vadesi geçmiş olanları gösterir. **Ödemeler** kaydettiğimiz ödemeleri listeler. Ödeme yaptıktan sonra, ödemenizi kaydettiğimizde bildirim ödendi olarak görünür.
 
 <!-- if:invoices -->
-Fatura kestiğimizde, ödenmiş bir ödeme bildirimi bir **fatura** da alır: faturayı size PDF olarak e-postayla göndeririz, ödenmiş bildirimde onu indirmek için bir düğme bulunur ve **Faturalar** (Ödeme işlemleri altında) hepsini listeler.
+Fatura kestiğimizde, ödenmiş bir ödeme bildirimi bir **fatura** da alır: faturayı size PDF olarak e-postayla göndeririz, ödenmiş bildirimde onu indirmek için bir düğme bulunur ve **Faturalar** (Ödeme işlemleri altında) hepsini listeler. Orada negatif toplamlı bir **alacak dekontu**, örneğin bir ödeme iade edildiğinde bir faturayı geri alır.
 <!-- endif -->
 
 <!-- if:pay_online -->

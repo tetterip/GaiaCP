@@ -109,7 +109,7 @@ Bei einer aktiven, über uns registrierten Domain können Sie:
 Wenn ein Dienst fällig ist, senden wir Ihnen per E-Mail eine **Zahlungsaufforderung** mit der Zahlungsweise. Sie ist eine Zahlungsaufforderung, keine Rechnung im steuerlichen Sinn. **Zahlungsaufforderungen** listet sie alle: Öffnen Sie eine, um ihre Positionen zu sehen, sie zu drucken oder als PDF zu speichern. Die Schaltflächen über der Liste zeigen nur die unbezahlten, bezahlten oder überfälligen. **Zahlungen** listet die Zahlungen, die wir erfasst haben. Nach Ihrer Zahlung wird die Aufforderung als bezahlt angezeigt, sobald wir Ihre Zahlung erfassen.
 
 <!-- if:invoices -->
-Wenn wir Rechnungen ausstellen, erhält eine bezahlte Zahlungsaufforderung auch eine **Rechnung**: Wir senden sie Ihnen als PDF per E-Mail, die bezahlte Aufforderung hat eine Schaltfläche zum Herunterladen, und **Rechnungen** (unter Abrechnung) listet sie alle auf.
+Wenn wir Rechnungen ausstellen, erhält eine bezahlte Zahlungsaufforderung auch eine **Rechnung**: Wir senden sie Ihnen als PDF per E-Mail, die bezahlte Aufforderung hat eine Schaltfläche zum Herunterladen, und **Rechnungen** (unter Abrechnung) listet sie alle auf. Eine **Gutschrift** dort, mit negativem Betrag, macht eine Rechnung rückgängig, etwa wenn eine Zahlung zurückerstattet wird.
 <!-- endif -->
 
 <!-- if:pay_online -->
