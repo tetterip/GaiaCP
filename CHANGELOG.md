@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The client guide in German, Spanish, French, Italian, Dutch, Polish, Portuguese and Turkish now explains coupons,
+  sale prices, the package badges and SSL certificates installed for you on your hosting, like the English and Greek
+  ones. A test checks that every translation of the client guide has every paragraph of the English one.
 - Invoices (Settings → Billing → Invoices, off by default): each payment notice paid from then on also gets an invoice
   with its own number, the way WHMCS turns a paid proforma into an invoice. Numbers follow a format with `{YEAR}`,
   `{MONTH}`, `{DAY}` and `{NUMBER}` (`INV-{YEAR}-{NUMBER}` by default; with `{YEAR}` each year starts at 1), have no
