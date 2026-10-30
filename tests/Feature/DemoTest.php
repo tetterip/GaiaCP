@@ -25,6 +25,7 @@ use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\DemoSnapshot;
 use App\Support\Settings;
+use App\Support\Version;
 use Carbon\CarbonImmutable;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -145,6 +146,17 @@ class DemoTest extends TestCase
 
         $this->get('/admin/login')->assertOk()->assertSee(Demo::ADMIN_EMAIL)->assertSee('put back every 10 minutes');
         $this->get('/login')->assertOk()->assertSee(Demo::CLIENT_EMAIL);
+    }
+
+    public function test_the_demo_bar_asks_for_a_star_on_github(): void
+    {
+        $star = 'class="gcp-demo-star" href="'.Version::REPOSITORY_URL.'"';
+
+        $this->get('/admin/login')->assertOk()->assertDontSee($star, false); // only in the demo
+
+        $this->demo();
+        $this->get('/admin/login')->assertOk()->assertSee($star, false)->assertSee(__('Like it? Star GaiaCP on GitHub'));
+        $this->get('/login')->assertOk()->assertSee($star, false);
     }
 
     public function test_the_demo_data_works_with_the_demo_panel_and_registrar(): void
