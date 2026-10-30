@@ -82,6 +82,25 @@ class AdminGuideTest extends TestCase
         }
     }
 
+    public function test_every_link_to_a_section_points_at_a_heading_that_exists(): void
+    {
+        $anchors = [];
+
+        foreach (glob(base_path(Help::FOLDER.'/*/*.md')) as $path) {
+            preg_match_all('/^#{2,3} (.+)$/m', file_get_contents($path), $headings);
+            $anchors[$path] = array_map(fn ($heading) => Str::slug(html_entity_decode(strip_tags(Str::inlineMarkdown($heading)))), $headings[1]);
+        }
+
+        foreach ($anchors as $path => $ids) {
+            preg_match_all('/\]\(((?:\.\/)?\d+-[\w-]+\.md)?#([^)]+)\)/u', file_get_contents($path), $links, PREG_SET_ORDER);
+
+            foreach ($links as $link) {
+                $target = $link[1] === '' ? $path : dirname($path).'/'.ltrim($link[1], './');
+                $this->assertContains($link[2], $anchors[$target] ?? [], basename(dirname($path)).'/'.basename($path)." links to {$link[0]}");
+            }
+        }
+    }
+
     public function test_the_greek_guide_has_every_chapter(): void
     {
         $greek = Help::chapters('el');
