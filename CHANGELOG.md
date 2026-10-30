@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The Cloudflare Turnstile check is as wide as the form it is on (login, sign up, forgot password, domain search).
+
 ## [0.3.1] - 2026-10-27
 
 - New GaiaCP releases are announced: a daily check rings the bell for super admins once per version (linking to
