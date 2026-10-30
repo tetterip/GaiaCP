@@ -82,6 +82,7 @@ class Settings
         'client_area.monthly_prices',
         'client_area.notifications',
         'client_area.email_history',
+        'client_area.welcome_tour',
         'client_area.public_orders',
         'client_area.theme',
         'client_area.brand_color',

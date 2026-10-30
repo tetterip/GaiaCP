@@ -22,6 +22,10 @@ The **bell** at the top of the page tells you what happened since you last looke
 "Cookie settings" at the foot of every page shows the cookie choice again, so you can change it.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+The first time you log in, a short tour shows what you can do here. Your menu at the top right → **Tour** shows it again.
+<!-- endif -->
+
 ## Home
 
 Home shows what you have to pay, how many services are active and what renews next, with a link to each. Our announcements, such as planned work on your server, appear at the top of Home while they apply.

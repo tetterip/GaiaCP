@@ -444,6 +444,12 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   (`check`), or when the admin marks it done; any can be skipped. Marks and "hidden from the dashboard" live in the
   `setup_guide` row of `settings` (not an editable setting); `SetupGuideCard` sits at the top of the dashboard until
   every step is done or skipped or it is hidden. Installs that already had clients start hidden (migration)
+- Welcome tour (both panels): `App\Support\WelcomeTour` gives the cards (only those whose page the user can open; the
+  admin's last one opens the setup guide while a super admin has steps left), `filament.welcome-tour` (`BODY_END` hook)
+  shows them in an Alpine window. It opens by itself once per user and panel (`users.admin_tour_seen_at` /
+  `client_tour_seen_at`, set when it opens; never while an admin looks as the client) and from the user menu → Tour.
+  Settings → Client area → Welcome tour (`client_area.welcome_tour`) turns off the client one. Users from before it
+  count as having seen it (migration)
 - Document root on GaiaCP's own folder (shared hosting, subfolders): the root `.htaccess` answers 404 for anything that
   exists outside `public/` (and any dotfile) and rewrites the rest into `public/`; `bootstrap/base-path.php` (first
   thing in `public/index.php`) then sets `SCRIPT_NAME` to the folder above `public/`, so the base path and every URL

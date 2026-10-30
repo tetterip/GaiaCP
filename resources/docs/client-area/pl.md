@@ -22,6 +22,10 @@ W profilu (menu z Państwa imieniem, na dole menu lub w prawym górnym rogu) mo�
 „Ustawienia cookies” u dołu każdej strony ponownie pokazuje wybór dotyczący cookies, aby można go było zmienić.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+Przy pierwszym logowaniu krótki przewodnik pokazuje, co możesz tu zrobić. Menu w prawym górnym rogu → **Przewodnik** pokazuje go ponownie.
+<!-- endif -->
+
 ## Strona główna
 
 Strona główna pokazuje, ile jest do zapłaty, ile usług jest aktywnych i co odnawia się najbliżej, z linkiem do każdej pozycji. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują.

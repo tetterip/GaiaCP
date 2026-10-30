@@ -22,6 +22,10 @@ Aynı menüdeki **Cihazlar ve oturum açmalar**, hesabınızda oturumu açık ol
 Her sayfanın altındaki "Çerez ayarları" çerez seçimini yeniden gösterir, böylece değiştirebilirsiniz.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+İlk girişinizde kısa bir tur burada neler yapabileceğinizi gösterir. Sağ üstteki menünüz → **Tur** onu yeniden gösterir.
+<!-- endif -->
+
 ## Ana sayfa
 
 Ana sayfa ne ödemeniz gerektiğini, kaç hizmetin etkin olduğunu ve sırada neyin yenileneceğini, her birine bir bağlantıyla gösterir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür.

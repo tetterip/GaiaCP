@@ -153,6 +153,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'dashboard_layout' => 'array',
             'last_login_at' => 'datetime',
             'two_factor_reminder_dismissed_at' => 'datetime',
+            'admin_tour_seen_at' => 'datetime',
+            'client_tour_seen_at' => 'datetime',
         ];
     }
 }

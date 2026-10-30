@@ -59,7 +59,7 @@ class ClientAreaSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'seo.index', 'seo.description', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
+        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.description', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
     }
 
     public function form(Schema $schema): Schema
@@ -204,6 +204,9 @@ class ClientAreaSettings extends SettingsFormPage
                         Toggle::make('client_area.email_history')
                             ->label('Email history')
                             ->helperText(__('In the client\'s menu: the emails sent to them, for as long as Settings → Logging keeps the email log. Emails with a password or a sign-in link are listed without their text.')),
+                        Toggle::make('client_area.welcome_tour')
+                            ->label('Welcome tour')
+                            ->helperText(__('A short tour of the client area the first time a client logs in: their services, payment notices, ordering, support and profile. They can open it again from their menu → Tour.')),
                     ]),
                 Section::make(__('Search engines'))
                     ->description(__('Pages a client sees once signed in, and /admin, are never shown in search results.'))

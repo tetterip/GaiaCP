@@ -22,6 +22,10 @@ La **campanella** in cima alla pagina Le indica cosa è successo dall'ultima vol
 "Impostazioni cookie" in fondo a ogni pagina mostra di nuovo la scelta sui cookie, così può cambiarla.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+Al primo accesso, un breve tour mostra cosa può fare qui. Il suo menu in alto a destra → **Tour** lo mostra di nuovo.
+<!-- endif -->
+
 ## Home
 
 La Home mostra quanto deve pagare, quanti servizi sono attivi e cosa si rinnova per primo, con un link a ciascuno. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi.

@@ -19,6 +19,7 @@ use App\Livewire\PanelNotifications;
 use App\Livewire\TwoFactorReminder;
 use App\Plugins\PluginManager;
 use App\Support\Demo;
+use App\Support\WelcomeTour;
 use App\Themes\Themes;
 use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
@@ -113,6 +114,11 @@ class AdminPanelProvider extends PanelProvider
                     ->label(fn (): string => __('Keyboard shortcuts'))
                     ->icon(Heroicon::OutlinedCommandLine)
                     ->alpineClickHandler("\$dispatch('open-keyboard-shortcuts')"),
+                Action::make('welcomeTour')
+                    ->label(fn (): string => __('Tour'))
+                    ->icon(Heroicon::OutlinedMap)
+                    ->alpineClickHandler("\$dispatch('open-welcome-tour')")
+                    ->visible(fn (): bool => WelcomeTour::enabled()),
             ])
             // Installable as an app, with push notifications (App\Http\Controllers\PwaController, App\Push\WebPush)
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.pwa')->render())
@@ -128,6 +134,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.keyboard-shortcuts')->render() : '')
             // "Powered by GaiaCP" on the login page, the copyright line on the others
             ->renderHook(PanelsRenderHook::CONTENT_START, fn (): string => TwoFactorReminder::shows() ? Blade::render('@livewire(\'two-factor-reminder\')') : '')
+            // The welcome tour: by itself on the first visit, then from the user menu → Tour (App\Support\WelcomeTour)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WelcomeTour::enabled() ? view('filament.welcome-tour', ['opensNow' => WelcomeTour::opensNow()])->render() : '')
             ->renderHook(PanelsRenderHook::FOOTER, fn (): string => view('filament.footer')->render())
             // The public demo: what it is and when it is put back, and the demo login on the login page (App\Support\Demo)
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => Demo::enabled() ? view('filament.demo.bar')->render() : '')

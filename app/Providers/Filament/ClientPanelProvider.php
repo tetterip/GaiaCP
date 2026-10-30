@@ -57,6 +57,7 @@ use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\PublicArea;
 use App\Support\ServerIncidents;
+use App\Support\WelcomeTour;
 use App\Themes\Themes;
 use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
@@ -167,6 +168,11 @@ class ClientPanelProvider extends PanelProvider
                     ->icon(Heroicon::OutlinedEnvelope)
                     ->url(fn (): string => EmailResource::getUrl())
                     ->visible(fn (): bool => EmailResource::canAccess()),
+                Action::make('welcomeTour')
+                    ->label(fn (): string => __('Tour'))
+                    ->icon(Heroicon::OutlinedMap)
+                    ->alpineClickHandler("\$dispatch('open-welcome-tour')")
+                    ->visible(fn (): bool => WelcomeTour::enabled()),
             ])
             ->resources([
                 ServiceResource::class,
@@ -236,6 +242,8 @@ class ClientPanelProvider extends PanelProvider
             // Sign-in plugins' buttons (e.g. Continue with Google); not while finishing a sign up that came from one
             ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn (): string => self::signInButtons())
             ->renderHook(PanelsRenderHook::AUTH_REGISTER_FORM_AFTER, fn (): string => ClientSignup::pending() === null ? self::signInButtons() : '')
+            // The welcome tour: by itself on the first visit, then from the user menu → Tour (App\Support\WelcomeTour)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WelcomeTour::enabled() ? view('filament.welcome-tour', ['opensNow' => WelcomeTour::opensNow()])->render() : '')
             ->renderHook(PanelsRenderHook::FOOTER, fn (): string => view('filament.footer')->render())
             // The public demo: what it is and when it is put back, and the demo login on the login page (App\Support\Demo)
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => Demo::enabled() ? view('filament.demo.bar')->render() : '')

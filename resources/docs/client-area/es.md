@@ -22,6 +22,10 @@ La **campana** de la parte superior de la página le indica lo que ha pasado des
 "Ajustes de cookies", al pie de cada página, vuelve a mostrar la elección de cookies, para que pueda cambiarla.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+La primera vez que inicia sesión, un breve recorrido muestra lo que puede hacer aquí. Su menú arriba a la derecha → **Recorrido** lo muestra de nuevo.
+<!-- endif -->
+
 ## Inicio
 
 Inicio muestra lo que tiene que pagar, cuántos servicios están activos y qué se renueva a continuación, con un enlace a cada cosa. Nuestros anuncios, como trabajos programados en su servidor, aparecen en la parte superior de Inicio mientras estén vigentes.

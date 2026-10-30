@@ -22,6 +22,10 @@ De **bel** bovenaan de pagina laat zien wat er is gebeurd sinds u voor het laats
 "Cookie-instellingen" onderaan elke pagina toont de cookiekeuze opnieuw, zodat u die kunt wijzigen.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+De eerste keer dat u inlogt, laat een korte rondleiding zien wat u hier kunt doen. Uw menu rechtsboven → **Rondleiding** toont hem opnieuw.
+<!-- endif -->
+
 ## Home
 
 Home toont wat u moet betalen, hoeveel diensten actief zijn en wat als eerste wordt verlengd, met een link naar elk. Onze mededelingen, zoals gepland werk aan uw server, verschijnen bovenaan Home zolang ze van toepassing zijn.

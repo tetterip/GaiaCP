@@ -22,6 +22,10 @@ La **cloche** en haut de la page vous indique ce qui s'est passé depuis votre d
 « Paramètres des cookies », en bas de chaque page, réaffiche le choix des cookies pour que vous puissiez le modifier.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+Lors de votre première connexion, une courte visite montre ce que vous pouvez faire ici. Votre menu en haut à droite → **Visite** la montre à nouveau.
+<!-- endif -->
+
 ## Accueil
 
 L'Accueil montre ce que vous avez à payer, combien de services sont actifs et ce qui se renouvelle prochainement, avec un lien vers chacun. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité.

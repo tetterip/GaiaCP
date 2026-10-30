@@ -22,6 +22,10 @@ O **sino** no topo da página mostra o que aconteceu desde a última vez que voc
 "Configurações de cookies", no rodapé de todas as páginas, mostra de novo a escolha de cookies, para que você possa alterá-la.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+No primeiro acesso, um breve tour mostra o que você pode fazer aqui. Seu menu no canto superior direito → **Tour** o mostra de novo.
+<!-- endif -->
+
 ## Início
 
 O Início mostra o que você tem a pagar, quantos serviços estão ativos e o que renova em seguida, com um link para cada item. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem.
