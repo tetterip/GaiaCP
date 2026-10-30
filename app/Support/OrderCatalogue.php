@@ -59,7 +59,7 @@ final class OrderCatalogue
     /** Its lowest price a month in the base currency, to put a group's products in order. */
     private static function monthly(Product $product): float
     {
-        return collect($product->cycles())->map(fn ($cycle) => ($product->priceFor($cycle) ?? 0) / max(1, $cycle->months()))->min() ?? 0;
+        return collect($product->cycles())->map(fn ($cycle) => ($product->orderPriceFor($cycle) ?? 0) / max(1, $cycle->months()))->min() ?? 0;
     }
 
     /**

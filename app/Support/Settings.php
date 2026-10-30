@@ -67,6 +67,7 @@ class Settings
         'domains.late_fees',
         'domains.ssl_product',
         'domains.ssl_discount',
+        'domains.ssl_own_hosting',
         'client_area.domain_nameservers',
         'client_area.domain_epp',
         'client_area.domain_auto_renew',
@@ -171,6 +172,12 @@ class Settings
         'ai.features.outage',
         'ai.features.questions',
         'ai.features.help',
+        'ai.features.ticket_reply',
+        'ai.features.ticket_summary',
+        'ai.features.kb_article',
+        'ai.features.reminders',
+        'ai.features.clients',
+        'ai.features.language_files',
         'ai.monthly_tokens',
     ];
 

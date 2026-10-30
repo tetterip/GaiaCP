@@ -150,6 +150,22 @@ never calls a panel API directly.
   reissue inside it; `gaiacp:check-certificates` (hourly) refreshes pending ones, reissues 30 days before
   `expires_at` when `ends_at` is later, renews (a new order, old id in `previous_orders`) 30 days before `ends_at`
   when `next_due_date` is beyond it. A wildcard is never validated by file. Emails `ssl_validation` / `ssl_issued`.
+  On the client's own hosting (`App\Certificates\CertificateHosting`, Settings → Domains → `domains.ssl_own_hosting`,
+  on by default): when the certificate's domain (or it without `www.`) is an active hosting service of the same client
+  on a server whose provisioner implements `App\Provisioning\InstallsCertificates`, a new order picks a method that
+  server can do (unless one is given), and after an order, reissue, renewal or method change the provisioner puts the
+  validation in place (`details()`: only a file under `/.well-known/pki-validation/` on the domain, or a record in its
+  zone), logs `ssl.validation_placed`, asks the provider to look again and skips the validation email. Once issued, it
+  is installed there (`ssl.installed`; `certificates.hosting_service_id`, `validation_placed_at`, `installed_at`);
+  a failure logs `provisioning.failed`, keeps the error on the certificate and leaves it to the client (validation)
+  or SSL → Install on hosting. Only with GaiaCP's own private key. cPanel: `certificateValidationMethods()` http /
+  https, the file under UAPI `DomainInfo::single_domain_data`'s `documentroot` (folders by API 2 `Fileman::mkdir`
+  through WHM `cpanel`, errors ignored, then UAPI `Fileman::save_file_content`), install by UAPI `SSL::install_ssl`
+  (`domain`, `cert`, `key`, `cabundle`), all through WHM `uapi_cpanel`. Plesk: dns only (the XML API has no file
+  calls), `dns get_rec` / `add_rec` (`site-id` of the subscription, host relative to the zone), install by
+  `certificate install` into the subscription (`webspace`, name `GaiaCP <domain> <8 of its sha256>`, "already exists"
+  is fine) then `webspace set` vrt_hst `ssl` + `certificate_name`. Untested on real servers. `key` / `pvt` /
+  `private_key` are masked in the module log.
 - **GoGetSSL** (`plugins/GoGetSsl`, key `gogetssl`, off by default; settings `gogetssl.username` / encrypted
   `password` / `dcv_method`): `POST /auth/` (`user`, `pass`) gives an `auth_key` sent as a query parameter on
   every call to `https://my.gogetssl.com/api` (no test system: the old sandbox host is gone); errors are `{error, message,

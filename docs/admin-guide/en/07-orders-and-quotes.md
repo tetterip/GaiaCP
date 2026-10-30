@@ -42,6 +42,23 @@ it. That makes one order with one payment notice, exactly as New order would, an
 clients (Settings → Automation → New order email). The **public order page** (`/cart`, off by default) lets visitors
 fill the cart before they sign up or log in.
 
+## Coupons
+
+A **coupon** (Billing → **Coupons**) is a code that lowers the price of what it covers: a **percentage**, or a **fixed
+amount** off each item (in your base currency, converted for clients who pay in another). Choose the products and the
+domain endings it covers, or leave both empty for everything; a setup fee is never lowered, and for a domain it lowers
+the registration or transfer price. With **Renewals too** off, only the first payment is lower; with it on, the service
+keeps the lower price at every renewal. **Valid from** / **Valid until**, a **Usage limit** (a cancelled order gives
+its use back), **Once per client** and **New clients only** limit who can use it; switch it off to stop it. A product
+or domain on sale (see Products → Sale prices) keeps its sale price and the coupon skips it, unless **Also on sale
+prices** is on: then the coupon lowers the sale price.
+
+Clients type the code in the cart, where they see what it saves before they place the order. You can also send a link
+such as `https://your-site/checkout?coupon=SPRING` (or add `?coupon=SPRING` to the order page): the code is filled in
+for them. On **New order** pick it in **Coupon**; the REST API takes a `coupon` with an order. The order shows the
+coupon and what it took off, and the notice line names it. When a coupon leaves nothing to pay, the order's notice is
+recorded as paid at once. The list shows how many times each coupon was used; a used coupon can't be deleted.
+
 Orders are listed under Main → **Orders**, with buttons for the pending, completed and cancelled ones. The dashboard's
 Needs attention lists pending orders.
 

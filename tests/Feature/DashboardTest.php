@@ -162,6 +162,24 @@ class DashboardTest extends TestCase
         $this->assertStringContainsString('prefers-reduced-motion: reduce', view('filament.dashboard.styles')->render());
     }
 
+    public function test_the_servers_squares_fill_the_card_but_stay_small_in_a_table_column(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $server = Server::factory()->create(['max_accounts' => 10]);
+
+        // On the card the squares grow with its width (side by side once wide enough); no fixed width
+        $html = Livewire::test(ServerCapacity::class)->html();
+        $this->assertStringContainsString('gx-server-bars', $html);
+        $this->assertStringContainsString('<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; column-gap: 2px;', $html);
+        // Whole pixels, so every square is the same width, and the caption row is as wide as the squares
+        $this->assertStringContainsString('round(down, calc((100% - 46px) / 24), 1px)', $html);
+        $this->assertStringContainsString('grid-template-columns: subgrid;', $html);
+
+        // The servers list keeps its 12px squares
+        $column = view('filament.servers.meter', ['caption' => null, 'value' => '1/10', 'label' => 'Accounts', 'cells' => array_fill(0, 10, ['color' => null])])->render();
+        $this->assertStringContainsString('max-width: 140px', $column);
+    }
+
     public function test_needs_attention_lists_what_waits_and_only_what_the_admin_may_open(): void
     {
         $client = Client::factory()->create();

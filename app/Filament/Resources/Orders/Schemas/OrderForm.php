@@ -10,11 +10,13 @@ use App\Filament\Forms\NameserversInput;
 use App\Filament\Forms\PackageSelect;
 use App\Filament\Forms\ProductOptionFields;
 use App\Models\Client;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Registrar;
 use App\Models\Server;
 use App\Models\Tld;
 use App\Rules\ValidDomain;
+use App\Support\Coupons;
 use App\Support\Currencies;
 use App\Support\DomainName;
 use App\Support\Money;
@@ -58,8 +60,21 @@ class OrderForm
 
                 self::itemsRepeater(),
 
+                // Billing → Coupons: the current ones; PlaceOrder checks its limits for this client.
+                Select::make('coupon_id')
+                    ->label('Coupon')
+                    ->options(fn () => Coupon::query()->current()->orderBy('code')->get()
+                        ->mapWithKeys(fn (Coupon $coupon) => [$coupon->id => "{$coupon->code} ({$coupon->describeValue()})"]))
+                    ->placeholder(__('None'))
+                    ->searchable()
+                    ->live()
+                    ->helperText(fn (Get $get) => $get('coupon_id') && $get('client_id')
+                        ? Coupons::problem(Coupon::find($get('coupon_id')), Client::find($get('client_id')), self::couponItems($get('items') ?? []))
+                        : null)
+                    ->visible(fn () => Coupon::query()->current()->exists()),
+
                 Text::make(fn (Get $get) => __('First payment total: :amount', ['amount' => Tax::describe(
-                    Tax::totals($get('client_id') ? Client::find($get('client_id')) : null, self::amounts($get('items') ?? [])),
+                    Tax::totals($get('client_id') ? Client::find($get('client_id')) : null, self::amounts($get('items') ?? [], $get('coupon_id') ? Coupon::find($get('coupon_id')) : null, Currencies::forClient($get('client_id') ? Client::find($get('client_id')) : null))),
                     Currencies::forClient($get('client_id') ? Client::find($get('client_id')) : null),
                 )])),
 
@@ -214,20 +229,39 @@ class OrderForm
     }
 
     /**
-     * Each item's first payment in cents, as entered so far.
+     * Each item's first payment in cents, as entered so far, less what a coupon takes off.
      *
      * @param  array<int|string, array<string, mixed>>  $items
      * @return list<int>
      */
-    public static function amounts(array $items): array
+    public static function amounts(array $items, ?Coupon $coupon = null, ?string $currency = null): array
     {
-        return collect($items)->values()->map(function (array $item) {
-            $first = $item['first_payment_cents'] ?? null;
-            $price = $item['price_cents'] ?? null;
-            $amount = filled($first) ? $first : $price;
+        $items = self::couponItems($items);
 
-            return filled($amount) && preg_match('/^\d+([.,]\d{1,2})?$/', (string) $amount) ? Money::toCents($amount) : 0;
-        })->all();
+        if ($coupon !== null && Coupons::problem($coupon, null, $items) === null) {
+            $items = Coupons::apply($coupon, $items, $currency ?? Currencies::base())['items'];
+        }
+
+        return collect($items)->map(fn (array $item) => $item['first_payment_cents'] ?? $item['price_cents'])->all();
+    }
+
+    /**
+     * The items as entered so far, prices in cents, as PlaceOrder gets them.
+     *
+     * @param  array<int|string, array<string, mixed>>  $items
+     * @return list<array<string, mixed>>
+     */
+    private static function couponItems(array $items): array
+    {
+        $cents = fn ($amount) => filled($amount) && preg_match('/^\d+([.,]\d{1,2})?$/', (string) $amount) ? Money::toCents($amount) : null;
+
+        return collect($items)->values()->map(fn (array $item) => [
+            'type' => $item['type'] ?? null,
+            'product_id' => $item['product_id'] ?? null,
+            'domain' => $item['domain'] ?? null,
+            'price_cents' => $cents($item['price_cents'] ?? null) ?? 0,
+            'first_payment_cents' => $cents($item['first_payment_cents'] ?? null),
+        ])->all();
     }
 
     /**
@@ -309,13 +343,15 @@ class OrderForm
         }
 
         $picks = ProductOptions::select($product, (array) ($get('options') ?? []), $cycle, $currency);
+        // While the product's sale runs its sale price is the first payment; renewals are at the price.
+        $first = ($product->salePriceFor($cycle, $currency) ?? $price) + ProductOptions::total($picks)
+            + $product->setupFeeFor($cycle, $currency) + ProductOptions::setupTotal($picks);
         $price += ProductOptions::total($picks);
-        $setup = $product->setupFeeFor($cycle, $currency) + ProductOptions::setupTotal($picks);
         $set('price_cents', Money::toDecimal($price));
-        $set('first_payment_cents', $setup > 0 ? Money::toDecimal($price + $setup) : null);
+        $set('first_payment_cents', $first !== $price ? Money::toDecimal($first) : null);
     }
 
-    /** Domain prices and term from the TLD's prices (Settings → Domain pricing), when it is priced. */
+    /** Domain prices and term from the TLD's prices (Settings → Domain pricing, its sale price while it runs), when it is priced. */
     private static function fillDomain(callable $get, callable $set): void
     {
         if (self::type($get) !== ServiceType::Domain) {
@@ -341,8 +377,8 @@ class OrderForm
         $currency = self::currency($get);
         $renew = $tld->priceCents('renew', $years, $currency);
         $first = match (self::registration($get)) {
-            DomainRegistrationType::Register => $tld->priceCents('register', $years, $currency),
-            DomainRegistrationType::Transfer => $tld->priceCents('transfer', $years, $currency),
+            DomainRegistrationType::Register => $tld->orderPriceCents('register', $years, $currency),
+            DomainRegistrationType::Transfer => $tld->orderPriceCents('transfer', $years, $currency),
             default => null,
         };
 

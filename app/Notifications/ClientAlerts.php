@@ -52,6 +52,7 @@ class ClientAlerts
         'ssl.reissued',
         'ssl.renewed',
         'ssl.issued',
+        'ssl.installed',
         'ticket.replied',
         'ticket.closed',
         'client.change_approved',
@@ -161,14 +162,20 @@ class ClientAlerts
                 isset($log->properties['years']) ? __('For :years year(s)', ['years' => (int) $log->properties['years']]) : null,
                 'heroicon-o-globe-alt', 'success', self::serviceUrl($service),
             ],
-            'ssl.ordered', 'ssl.reissued', 'ssl.renewed' => [
+            // Nothing for the client to do when GaiaCP validated it on their hosting.
+            'ssl.ordered', 'ssl.reissued', 'ssl.renewed' => $service?->certificateDetails?->validation_placed_at === null ? [
                 __('Validate :name for its SSL certificate', ['name' => $name]),
                 __('See what to do on the service\'s page.'),
                 'heroicon-o-lock-closed', 'warning', self::serviceUrl($service),
-            ],
+            ] : [null, null, null, null, null],
             'ssl.issued' => [
                 __('SSL certificate ready: :name', ['name' => $name]),
                 __('Download it from the service\'s page.'),
+                'heroicon-o-lock-closed', 'success', self::serviceUrl($service),
+            ],
+            'ssl.installed' => [
+                __('SSL certificate installed: :name', ['name' => $name]),
+                __('Your website uses it now.'),
                 'heroicon-o-lock-closed', 'success', self::serviceUrl($service),
             ],
             'ticket.replied', 'ticket.closed' => self::ticket($log),

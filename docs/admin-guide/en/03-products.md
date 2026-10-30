@@ -39,8 +39,45 @@ has a name per language, an icon and its own link (`/order/<group>`), and can sh
 features (Disk space, Websites, Free SSL…) and fill in each product's values on the product form. A hidden group is
 reached only through its link, handy for an offer you send to a few people.
 
+Switch on **Public page** on a group to give it a page of its own at your site's address plus its link (for example
+`https://example.com/web-hosting`), for visitors and search engines. It shows a page title, your text (Markdown), the
+group's products with their prices and Order buttons, the compare table and your **questions** with their answers, all
+per language. Write a text of your own there (what the service is for, what it includes, who it suits): search engines
+skip pages that only repeat a price list. The search result description is what Google shows under the title. Once on,
+the home page and the side menu link to the page, and it is in `/sitemap.xml`. A group's link can't be one the client
+area already uses (login, cart, status…).
+
+A product can have its own page too, inside its group's address (`https://example.com/web-hosting/business`): open its
+**Public page** section, switch it on and write its text per language (an empty link is made from the name). It shows the
+name, prices and Order button, its column of the compare table ("What is included") and your text, and the group's page
+links to it. A product page without a text stays out of search results and the sitemap, so it never counts as a copy
+of the order card. With more than one language, **Other languages** on the product holds its name and description as
+clients see them in each language; your services keep the name they were ordered with.
+
 Tick **Popular** on a product (its Order page section) to give it a badge on its order card, in the compare table and
 on the public home page.
+
+Pick a **Color** for a product (the circles under Popular) to give it its own colour there: its name, icon, price,
+check marks, Popular badge and buttons take it, and its card gets a line in it along the top. **None** (the dashed
+circle) keeps the client area's colour. A different colour per package helps clients tell them apart; tags and the
+Sale badge keep their own colours.
+
+## Product tags
+
+Settings → **Product tags** holds your own labels: New, SSD, Legacy plan. Each has a name per language, a colour and a
+**Shown to clients** switch, and you pick them on the product form (its Order page section). A tag shown to clients is
+a badge after Popular in the same places (the first three of a product); every tag, shown or not, filters the Products
+and Services lists and Messages to clients (With products tagged), so a hidden one is handy for your own grouping.
+
+## Sale prices
+
+A product's **Sale** section lowers its price for a while: a **Sale from** and a **Sale until** day (leave the first
+empty to start now, the second to keep it until you remove it) and a sale price for each cycle you want on sale. Orders
+placed during those days pay the sale price for their first period; renewals are at the normal price. While the sale
+runs, clients see the normal price struck through and a red **Sale** badge before Popular and the tags, on the order
+cards, the compare table and the public home page, with the day it ends. The day after its last day the normal price
+is back by itself; nothing needs to run. New order fills in the sale price too (you can still change it), and the
+Products list shows the products on sale. A coupon skips an item on sale unless it has **Also on sale prices** on.
 
 ## Product options
 

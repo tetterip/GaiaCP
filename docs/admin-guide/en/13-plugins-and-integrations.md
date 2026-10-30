@@ -117,10 +117,49 @@ Two more switches answer questions:
   answers from the closest sections of this guide (only the question and those sections are sent), with links to
   them.
 
+Three more help with tickets (Support → Tickets, for admins with the Support area):
+
+- **Draft ticket replies**: in a ticket's **Reply**, the AI menu's **Draft a reply** writes an answer to the client's
+  last message from the conversation, the client's services (type, name, status, paid until) and the three published
+  knowledge base articles closest to it, in the client's language. Where it would need to look something up it writes
+  `[check: …]` for you to fill in; read it, change it and send it yourself;
+- **Summarise tickets**: **Summarise** on a ticket reads in one line what the client needs, and suggests a priority, a
+  department and the client's mood. **Keep** saves the line (shown under the subject in the list until the client
+  writes again) with the priority and department you left chosen;
+- **Knowledge base articles from tickets**: on a ticket you answered, More → **Write a knowledge base article** turns
+  the answer into an article for anyone with the same question, in the default language. **Save as draft** keeps it
+  unpublished under Support → Knowledge base, for you to check, finish and publish.
+
+What they send is the ticket's conversation, never its notes or files, with the client's name, company, email
+addresses and phone numbers replaced by placeholders (the reply draft gets the first name back); the article also
+hides the client's domain names.
+
+Two more look at one client, without sending who they are:
+
+- **Personal payment reminders**: on an unpaid payment notice, **Personal reminder** rewrites the reminder email (its
+  Email templates text, placeholders kept) for how the client pays. It sends that text, the amount and days, and the
+  client's record of the last 24 months (how many notices were paid late and by how much, what else is overdue);
+- **Suggestions about clients**: on a client's page, **Suggestions** lists what they might buy, signs they may leave
+  and what to look after. It sends their services (product, cycle, price, since when, each domain only as "site 1",
+  "site 2"…), warnings that their hosting was nearly full, open cancellation requests, the last year's ticket subjects
+  and your products on offer.
+
+**Translate the panel** adds **Translate with AI** to Settings → Languages (super admins): the panel's texts that a
+language misses go to the AI service in batches of 40 and come back as uploaded translations. Only those texts are
+sent; a translation that loses a placeholder or an HTML tag is left out and stays in English. A whole new language is
+up to about 300,000 tokens.
+
 **ChatGPT** (OpenAI), **DeepSeek** and **Kimi** (Moonshot AI) work the same way, each with its own plugin, API key
 and model; DeepSeek and Kimi are often cheaper. ChatGPT needs an API key with credit from platform.openai.com: a
 ChatGPT Plus subscription does not include the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can
 use and offers them in the field. With more than one AI plugin on, Settings → AI assistant picks which one answers.
+
+**Ollama** runs an open model (Llama, Qwen, Gemma, Mistral…) on your own server or computer, so texts never leave your
+machines and nothing is billed. Install Ollama (ollama.com), download a model (`ollama pull llama3.3`) and fill in its
+**Address** under Settings → Ollama (`http://localhost:11434/v1` when it runs on the same server). On another machine,
+start Ollama with `OLLAMA_HOST=0.0.0.0` and let only the GaiaCP server reach port 11434; the API key is only for a
+proxy in front of it that asks for one. Small models need about 8 GB of memory and write less well than the paid
+services; a slow machine may take a minute or more per answer.
 
 ## The REST API
 

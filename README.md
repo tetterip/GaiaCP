@@ -60,7 +60,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 **Hosting, domains and SSL**
 - Accounts created, suspended and ended on **cPanel / WHM**, **Plesk**, **DirectAdmin**, **HestiaCP**, **CyberPanel** and **Enhance**, and VPS on **Proxmox VE**
 - Domains registered, transferred, renewed and synced at **easy.gr** and **Enom**, or by email for any other registrar
-- SSL certificates sold and reissued through **GoGetSSL**
+- SSL certificates sold and reissued through **GoGetSSL**, validated and installed on your own cPanel / Plesk hosting
 - A comparison of each server's accounts with what you bill, and uptime from Uptime Kuma, UptimeRobot, HetrixTools
   or Better Stack
 
@@ -74,7 +74,8 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 **For you**
 - A dashboard you arrange yourself, a notifications bell, push notifications on your phone, a setup guide
 - Admin users with access levels, two-factor sign-in, login protection, backups, system health, logs
-- An AI assistant (Claude, ChatGPT, DeepSeek or Kimi, with your own key) that improves and translates the texts you write
+- An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama) that improves and translates the texts you write, drafts and
+  summarises ticket replies and answers questions about your data
 - Webhooks, Slack, Discord and Telegram, a REST API, and an import from WHMCS
 - English and Greek built in, plus machine translations into German, Spanish, French, Italian, Dutch, Polish,
   Brazilian Portuguese and Turkish; other languages are uploaded from the panel
@@ -101,7 +102,7 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
   there. No saved cards, no automatic charges.
 - **It doesn't issue legal invoices.** Its payment notices track what is owed and what was paid; the invoices
   themselves come from your accounting tool.
-- No payment gateways other than Stripe yet, no coupons, and no bank statement matching.
+- No payment gateways other than Stripe yet, and no bank statement matching.
 
 ## Installation
 

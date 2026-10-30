@@ -281,6 +281,16 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   `readQuestion($question, $allowed, $currency)` (JSON `{question, params}` picking one of `App\Ai\DataQuestions`'s
   `catalogue()`, which `run()` answers read-only with checked params and the area each needs; `Reports\Pages\AskData`)
   and `help($question, Help::sectionsFor($question))` (the guide's sections weighted by rare words, `AI_CONTEXT` chars),
+  and for tickets `ticketReply()`, `ticketSummary()` (JSON; `tickets.summary`, cleared by the client's next message) and
+  `kbArticle()` (JSON title + body, saved unpublished) from an `App\Ai\TicketContext` (public messages only, newest
+  first up to `MAX_THREAD`; `redact()` swaps the client's names, company, emails and 10+ digit numbers for
+  placeholders, and for an article their domains for example.com; `restore()` puts the first name back; `articles()`
+  scores published KB articles by shared words; `services()`), on `Tickets\Pages\ViewTicket`; `reminderText()` (a
+  template's text rewritten, JSON; `ViewInvoice`'s Personal reminder sends it through `SendInvoiceEmails::send(text:)`)
+  and `clientHints()` (JSON suggestions; `Clients\Actions\ClientHintsAction`) from `App\Ai\ClientFacts` (`payments()`,
+  `services()` with domains as "site N", `catalogue()`), and `translateTexts()` (JSON; a translation whose
+  :placeholders, `{$placeholders}` or HTML tags differ is dropped) for `LanguageSettings::translateBatch()` (`AI_BATCH`
+  texts of `Translations::export()` per request, saved with `Translations::import()`, the next asked by `$wire`),
   build fixed English instructions (keep facts, links, formatting and `{{ }}` / `{ }` /
   `:name` placeholders; Greek in the polite plural; the text in `<text>` tags is never instructions), check the
   feature's switch (`ai.features.<feature>`, `Assistant::FEATURES`), `MAX_TEXT` and `ai.monthly_tokens`, ask the
@@ -300,7 +310,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   typed, empty = the first of `suggestedModels()`): `plugins/DeepSeek` (api.deepseek.com) and `plugins/Kimi`
   (api.moonshot.ai/v1; `GAIACP_KIMI_BASE_URL` for Moonshot's China platform) and `plugins/OpenAi` (ChatGPT,
   api.openai.com/v1, `max_completion_tokens` up to 16000 since reasoning counts, `writesText()` keeps only chat models
-  in the list)
+  in the list) and `plugins/Ollama` (`ollama.base_url` on its page via `connectionFields()`, default
+  http://localhost:11434/v1; configured without a key, and no Authorization header is sent without one; `timeout()` 600 s)
 - Failed jobs: `App\Models\FailedJob` over Laravel's `failed_jobs`, Settings → Failed jobs (`Pages\FailedJobs`, super
   admins: View, Retry = `queue:retry`, Delete = `queue:forget`, Retry all, Delete all = `queue:flush`). The scheduler
   runs `queue:work --stop-when-empty --max-time=50` every minute unless the queue is `sync`, so jobs need no worker
@@ -383,6 +394,24 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   lead that became them) accepts or declines in the table; `quote.sent` rings the client's bell (`ClientAlerts`).
   REST API: `leads` and `quotes` areas (`Api\LeadController`, `Api\QuoteController`); a `lead.created` with no admin
   behind it (the API) rings Sales
+- Coupons (Billing → Coupons, `AdminArea::Sales`, `CouponResource`): `coupons` (`Coupon`, code stored upper case,
+  `CouponType` percent / fixed in base-currency cents, `recurring`, `product_ids` / `tlds` (both empty = everything),
+  `starts_on` / `ends_on`, `max_uses`, `once_per_client`, `new_clients_only`, `active`). `App\Support\Coupons`:
+  `problem()` / `check()` (a use = an order with `orders.coupon_id` not cancelled), `apply()` lowers each covered
+  item's `first_payment_cents` by the discount on its price (a domain's: its registration price; never the setup fee)
+  and with `recurring` its `price_cents` too, setting `coupon_id` on it. `PlaceOrder::handle(coupon:)` locks the coupon,
+  checks it again, stores `orders.coupon_id` / `discount_cents` and `services.coupon_id`, and records a notice left at
+  0 as paid. The client Cart takes the code (session `client_order.coupon`, also from `?coupon=` on Order, the public
+  order page and Cart), New order has a Coupon select, `POST /api/v1/orders` a `coupon`. `GenerateInvoices::describe()`
+  adds "Coupon CODE" to the line (first payment, or every one when recurring)
+- Sale prices (`App\Models\Concerns\HasSale`: `sale_starts_on` / `sale_ends_on`, both days included, `onSale()`): a
+  product's `prices.{cycle}.sale_cents` (`Product::salePriceFor()` / `orderPriceFor()`), a TLD's `sale_prices`
+  (`{register_1y_cents: cents}`, `Tld::SALE_KINDS` only; `salePriceCents()` / `orderPriceCents()`); other currencies
+  at their rate, never at or above the price. `ClientOrder::items()` puts the sale price in `first_payment_cents` (setup
+  fee added) and marks the item `sale_cents`; `price_cents` stays the normal one, so renewals are at it. `Coupon::covers()`
+  skips an item with `sale_cents` unless `coupons.on_sale`, and then `Coupons::apply()` lowers the sale price. Admin
+  New order pre-fills the sale price; the Sale badge is `filament.client.product-badges` (`sale`), the struck price
+  `.gcp-was` in `filament.themes.client`
 - `app/Support/Settings.php` + `app/Filament/Clusters/Settings/Pages/`: admin-editable settings, stored
   in `settings` and loaded over `config('gaiacp.*')` at boot, so code keeps reading `config()`. Keys in
   `Settings::ENCRYPTED` (FTP and zip passwords) are stored encrypted and never sent back to the form (blank keeps them). New editable setting:

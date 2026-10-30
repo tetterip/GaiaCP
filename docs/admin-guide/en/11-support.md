@@ -9,10 +9,14 @@ the Email to ticket plugin, emails become tickets too. You can open one for a cl
 The tabs show **Waiting for us**, **Assigned to me**, **Waiting for the client**, **On hold** and **Closed**. A ticket's
 page shows the conversation beside the client's services and what they owe. There you can:
 
-- **Reply**, starting from a canned reply if you like, and choose the status after it;
+- **Reply**, starting from a canned reply (or the AI assistant's draft) if you like, and choose the status after it;
 - **Add note**: an internal note the client never sees;
 - **Change** the department, priority, who it is assigned to, or the client;
 - **Close** it.
+
+With the AI assistant on (Settings → AI assistant), **Summarise** gives the ticket a one-line summary with a suggested
+priority and department, and More → **Write a knowledge base article** turns an answered ticket into a draft article
+(Plugins and integrations → AI assistant says what they send).
 
 Whoever wrote last sets the status: a client's message makes it "Awaiting reply", yours makes it "Answered", and a
 reply opens a closed ticket again. The client is emailed each answer; the assigned admin, or every admin with the
@@ -52,8 +56,8 @@ products, holiday hours. Each has a text per language and a publish date; leave 
 ## Messages to clients
 
 Main → **Messages to clients** emails many clients at once, or shows a message at the top of their client area Home
-between two dates (or both). Write one text per language and pick who gets it by servers, products, domain endings,
-service types and language; the count shows how many will. **Send test to me** first. The text is Markdown; HTML in it
+between two dates (or both). Write one text per language and pick who gets it by servers, products, product tags, domain
+endings, service types and language; the count shows how many will. **Send test to me** first. The text is Markdown; HTML in it
 goes into the email, but the client area shows none.
 
 The emails go out a few a minute (Settings → Automation → Messages per minute) and each recipient gets it once; the

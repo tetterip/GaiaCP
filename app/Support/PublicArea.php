@@ -10,6 +10,7 @@ use App\Filament\Client\Pages\ContactSupport;
 use App\Filament\Client\Pages\DomainPrices;
 use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\KnowledgeBaseArticle;
+use App\Filament\Client\Pages\ProductGroupPage;
 use App\Filament\Client\Pages\PublicHome;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
@@ -170,7 +171,7 @@ final class PublicArea
 
     /**
      * The side menu a visitor sees (ClientPanelProvider): the public pages that are on (the order page as a line for each
-     * product group, when there are several), then Log in and Sign up.
+     * product group, when there are several, to its public page when it has one), then Log in and Sign up.
      * Signed-in clients keep the client area's own menu.
      */
     public static function navigation(NavigationBuilder $builder): NavigationBuilder
@@ -179,6 +180,10 @@ final class PublicArea
         // The product groups (not domain names: they have their search), while there are several to pick from
         $groups = ClientOrder::publicEnabled() ? OrderCatalogue::groups()->except(OrderCatalogue::DOMAINS) : collect();
         $groups = $groups->count() > 1 && $groups->contains(fn (array $group) => $group['group'] !== null) ? $groups : collect();
+        // Without the public order page, the groups that have a public page of their own (ProductGroupPage)
+        if (! ClientOrder::publicEnabled()) {
+            $groups = OrderCatalogue::groups()->except(OrderCatalogue::DOMAINS)->filter(fn (array $group) => $group['group']?->page);
+        }
 
         return $builder
             ->items(array_values(array_filter([
@@ -230,8 +235,8 @@ final class PublicArea
                     ->items($groups->map(fn (array $group) => NavigationItem::make('order-'.$group['key'])
                         ->label($group['name'])
                         ->icon(ProductIcons::ICONS[$group['icon'] ?? ''][0] ?? Heroicon::OutlinedShoppingCart)
-                        ->isActiveWhen(fn () => $request->routeIs('filament.client.cart') && $request->route('group') === $group['key'])
-                        ->url(route('filament.client.cart', ['group' => $group['key']])))->values()->all())]),
+                        ->isActiveWhen(fn () => $request->routeIs('filament.client.cart', ProductGroupPage::getRouteName()) && $request->route('group') === $group['key'])
+                        ->url(ProductGroupPage::urlFor($group['group']) ?? route('filament.client.cart', ['group' => $group['key']])))->values()->all())]),
                 NavigationGroup::make(__('Your account'))
                     ->collapsible(false)
                     ->items(array_values(array_filter([

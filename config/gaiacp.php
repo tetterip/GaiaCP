@@ -168,6 +168,10 @@ return [
         // first period (App\Support\DomainSsl); null = none.
         'ssl_product' => null,
         'ssl_discount' => 0,
+
+        // When an SSL certificate's domain is the client's hosting account on a cPanel or Plesk server, GaiaCP puts the
+        // validation file (or DNS record) in place and installs the issued certificate there (App\Certificates\CertificateHosting).
+        'ssl_own_hosting' => true,
     ],
 
     // The captcha on the login, sign up and forgot password forms (Settings → General): a captcha plugin's key
@@ -207,6 +211,12 @@ return [
             'outage' => true, // Write the server problem notice from what the monitors say
             'questions' => true, // Reports → Ask in plain words: read which ready-made question a question is
             'help' => true, // System → Help: answer a "how do I…" question from the admin guide
+            'ticket_reply' => true, // Draft a ticket reply from the conversation, the client's services and the knowledge base
+            'ticket_summary' => true, // Summarise a ticket and suggest its priority and department
+            'kb_article' => true, // Write a knowledge base article from a solved ticket
+            'reminders' => true, // Personal reminder: a payment notice email rewritten for how the client pays
+            'clients' => true, // Suggestions on a client's page: what they might buy, signs they may leave
+            'language_files' => true, // Settings → Languages → Translate with AI: the panel's missing texts in a language
         ],
         'monthly_tokens' => null, // tokens (sent + received) all admins may use a calendar month; null = no limit
     ],

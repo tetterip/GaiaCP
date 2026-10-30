@@ -19,10 +19,12 @@
                         @endif
                         <span class="gx-muted gx-grow">{{ $server['panel'] }}</span>
                     </div>
-                    @if ($server['uptime'])
-                        @include('filament.servers.uptime-bar', ['history' => $server['uptime'], 'caption' => __('Uptime, 24 hours')])
-                    @endif
-                    @include('filament.servers.accounts-bar', ['server' => $server['server'], 'squares' => \App\Filament\Widgets\ServerCapacity::SQUARES, 'caption' => __('Accounts')])
+                    <div class="gx-server-bars">
+                        @if ($server['uptime'])
+                            @include('filament.servers.uptime-bar', ['history' => $server['uptime'], 'caption' => __('Uptime, 24 hours'), 'fill' => true])
+                        @endif
+                        @include('filament.servers.accounts-bar', ['server' => $server['server'], 'squares' => \App\Filament\Widgets\ServerCapacity::SQUARES, 'caption' => __('Accounts'), 'fill' => true])
+                    </div>
                 </div>
             @endforeach
         </div>

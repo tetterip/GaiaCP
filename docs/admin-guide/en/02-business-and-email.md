@@ -30,7 +30,9 @@ with GaiaCP, and so do German, Spanish, French, Italian, Dutch, Polish, Brazilia
 send them to the project). An install that existed before they shipped keeps offering only the languages it had: tick
 the new ones here to offer them. Each admin picks a panel language in their profile; each client has an email language on the client form,
 and every email to them goes out in it. To add another language, download its missing texts here, translate the
-values in the file and upload it. Uploaded translations survive updates.
+values in the file and upload it. Uploaded translations survive updates. With the AI assistant on, **Translate with
+AI** (super admins) fills a language's missing texts for you, a batch every few seconds while the page stays open,
+and saves them as uploaded translations; **Stop** ends it, and pressing it again later carries on.
 
 ## Mail
 

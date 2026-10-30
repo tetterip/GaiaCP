@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use App\Models\Tld;
+use App\Providers\AppServiceProvider;
 use App\Rules\ValidDomain;
 use App\Support\Currencies;
 use App\Support\DomainSsl;
@@ -36,6 +37,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\View;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -144,7 +146,7 @@ trait OrderForm
                     // Add-ons offered with the product, on its cycle (they renew with it).
                     CheckboxList::make('addons')
                         ->label('Add-ons')
-                        ->options(fn (Get $get) => $this->addons($get)->mapWithKeys(fn (Product $addon) => [$addon->id => $addon->name])->all())
+                        ->options(fn (Get $get) => $this->addons($get)->mapWithKeys(fn (Product $addon) => [$addon->id => $addon->localName()])->all())
                         ->descriptions(fn (Get $get) => $this->addons($get)->mapWithKeys(fn (Product $addon) => [$addon->id => self::productDescription($addon, [$this->addonPrice($addon, $get)], first: true)])->all())
                         ->helperText(__('They renew together with it.'))
                         ->visible(fn (Get $get) => $this->addons($get)->isNotEmpty())
@@ -188,7 +190,7 @@ trait OrderForm
                         ->required(fn (Get $get) => $this->option($get) === ClientOrder::TRANSFER)
                         ->visible(fn (Get $get) => $this->option($get) === ClientOrder::TRANSFER),
                     Checkbox::make('ssl')
-                        ->label(fn () => __('Add :name for this domain', ['name' => DomainSsl::product()?->name]))
+                        ->label(fn () => __('Add :name for this domain', ['name' => DomainSsl::product()?->localName()]))
                         ->helperText(fn () => $this->sslPrice())
                         ->visible(fn (Get $get) => $this->isDomainOnly($get) && DomainSsl::product() !== null)
                         ->live(),
@@ -226,7 +228,7 @@ trait OrderForm
             : $groups->flatMap(fn (array $group) => $group['products']);
 
         $entries = $products->mapWithKeys(fn (Product $product) => [(string) $product->id => [
-            'name' => self::cardLabel($product->icon ?? $product->group?->icon, $product->name, $product->popular),
+            'name' => self::cardLabel($product->icon ?? $product->group?->icon, $product->localName(), $product),
             'description' => self::productDescription($product, $this->fromPrice($product)),
         ]]);
 
@@ -260,12 +262,17 @@ trait OrderForm
         return $groups->count() > 1 && $groups->contains(fn (array $group) => $group['group'] !== null);
     }
 
-    /** A card's name with its icon before it, and the "Popular" badge after it on a product marked so. */
-    private static function cardLabel(?string $icon, string $name, bool $popular = false): HtmlString
+    /**
+     * A card's name with its icon before it, and a product's badges after it (Sale, Popular, its visible tags); a product's
+     * colour (data-gcp-color) colours the name, the icon and the card's border.
+     */
+    private static function cardLabel(?string $icon, string $name, ?Product $product = null): HtmlString
     {
-        $badge = $popular ? '<span class="gcp-popular">'.e(__('Popular')).'</span>' : '';
+        $badge = $product === null ? '' : view('filament.client.product-badges', ['sale' => $product->onSale(), 'popular' => $product->popular, 'badges' => $product->badges()])->render();
 
-        return new HtmlString('<span class="gcp-card-name">'.ProductIcons::svg($icon).'<span>'.e($name).'</span>'.$badge.'</span>');
+        $color = $product?->orderColor();
+
+        return new HtmlString('<span class="gcp-card-name"'.($color ? ' data-gcp-color="'.$color.'"' : '').'>'.ProductIcons::svg($icon).'<span>'.e($name).'</span>'.$badge.'</span>');
     }
 
     /** @param  array{key: string, description: ?string, products: Collection<int, Product>}  $group */
@@ -283,13 +290,13 @@ trait OrderForm
     /** @return array{cents: float, label: string}|null the product's cheapest cycle, for "From €5.00 / month" on its group's card */
     private function lowestMonthly(Product $product): ?array
     {
-        $cycle = collect($product->cycles())->sortBy(fn (BillingCycle $c) => $product->priceFor($c, $this->currency()) / max(1, $c->months()))->first();
+        $cycle = $this->cheapestCycle($product);
 
         if ($cycle === null) {
             return null;
         }
 
-        $cents = $product->priceFor($cycle, $this->currency()) / max(1, $cycle->months());
+        $cents = $product->orderPriceFor($cycle, $this->currency()) / max(1, $cycle->months());
 
         return ['cents' => $cents, 'label' => $cycle->months() >= 1 ? $this->monthlyPrice($product, $cycle) : $this->cycleLabel($product, $cycle)];
     }
@@ -298,12 +305,24 @@ trait OrderForm
      * The compare table of the chosen group, when it has features: a row for each feature with each product's value,
      * then a row for each billing cycle any of them has with its price for it (null = not offered on that cycle).
      *
-     * @return array{features: array<string, string>, cycles: array<string, string>, products: list<array{id: string, name: string, price: string, popular: bool, values: array<string, ?string>, prices: array<string, ?array{price: string, note: ?string}>}>}|null
+     * @return array{features: array<string, string>, cycles: array<string, string>, products: list<array{id: string, name: string, price: string, sale: bool, popular: bool, badges: list<array{name: string, color: string}>, color: ?string, values: array<string, ?string>, prices: array<string, ?array{price: string, was: ?string, note: ?string}>}>}|null
      */
     private function compare(Get $get): ?array
     {
         $group = $this->groups($get)[(string) $this->groupKey($get)] ?? ($this->hasGroupStep($get) ? null : $this->groups($get)->first());
-        $features = $group === null ? [] : ($group['group']?->featureNames() ?? []);
+
+        return $group === null ? null : $this->compareTable($group);
+    }
+
+    /**
+     * A group's compare table (OrderCatalogue::groups() entry): its features in rows, a column for each product with its
+     * prices per cycle; null without features. Also on the group's public page (ProductGroupPage).
+     *
+     * @param  array<string, mixed>  $group
+     */
+    protected function compareTable(array $group): ?array
+    {
+        $features = $group['group']?->featureNames() ?? [];
 
         if ($features === [] || $group['products']->isEmpty()) {
             return null;
@@ -317,9 +336,12 @@ trait OrderForm
             'cycles' => $cycles->mapWithKeys(fn (BillingCycle $cycle) => [$cycle->value => $cycle->getLabel()])->all(),
             'products' => $group['products']->map(fn (Product $product) => [
                 'id' => (string) $product->id,
-                'name' => $product->name,
+                'name' => $product->localName(),
                 'price' => $this->fromPrice($product)[0] ?? '',
                 'popular' => $product->popular,
+                'badges' => $product->badges(),
+                'color' => $product->orderColor(),
+                'sale' => $product->onSale(),
                 'values' => collect($features)->map(fn ($name, string $key) => $product->feature($key))->all(),
                 'prices' => $cycles->mapWithKeys(fn (BillingCycle $cycle) => [$cycle->value => in_array($cycle, $product->cycles(), true) ? $this->comparePrice($product, $cycle) : null])->all(),
             ])->values()->all(),
@@ -330,34 +352,66 @@ trait OrderForm
      * A product's price for one cycle in the compare table, with a month's share under it (Settings → Client area → Show
      * prices per month) and its setup fee, when it has one.
      *
-     * @return array{price: string, note: ?string}
+     * @return array{price: string, was: ?string, note: ?string}
      */
     private function comparePrice(Product $product, BillingCycle $cycle): array
     {
         $setup = $product->setupFeeFor($cycle, $this->currency());
+        $onSale = $product->salePriceFor($cycle, $this->currency()) !== null;
         $notes = array_filter([
             config('gaiacp.client_area.monthly_prices') && $cycle->months() > 1 ? $this->monthlyPrice($product, $cycle) : null,
             $setup > 0 ? __('+ :setup setup', ['setup' => Money::format($setup, $this->currency())]) : null,
+            $onSale ? $this->saleNote($product) : null,
         ]);
 
         return [
-            'price' => Money::format($product->priceFor($cycle, $this->currency()), $this->currency()),
+            'price' => Money::format($product->orderPriceFor($cycle, $this->currency()), $this->currency()),
+            'was' => $onSale ? Money::format($product->priceFor($cycle, $this->currency()), $this->currency()) : null,
             'note' => $notes === [] ? null : implode(' · ', $notes),
         ];
+    }
+
+    /** "First period only" under a sale price, with the day the sale ends when it has one. */
+    private function saleNote(Product $product): string
+    {
+        return $product->sale_ends_on
+            ? __('First period only, until :date', ['date' => $product->sale_ends_on->format(AppServiceProvider::dateFormat())])
+            : __('First period only');
+    }
+
+    /** The cycle that costs least a month for a new order (sale prices included). */
+    private function cheapestCycle(Product $product): ?BillingCycle
+    {
+        return collect($product->cycles())->sortBy(fn (BillingCycle $c) => $product->orderPriceFor($c, $this->currency()) / max(1, $c->months()))->first();
+    }
+
+    /**
+     * Under a card's price while its cycle is on sale: the normal price struck through and how long the sale price
+     * lasts.
+     */
+    private function saleLine(Product $product, BillingCycle $cycle, bool $monthly): ?HtmlString
+    {
+        if ($product->salePriceFor($cycle, $this->currency()) === null) {
+            return null;
+        }
+
+        $was = $monthly ? $this->monthlyPrice($product, $cycle, normal: true) : $this->cycleLabel($product, $cycle, normal: true);
+
+        return new HtmlString('<s class="gcp-was">'.e($was).'</s> '.e($this->saleNote($product)));
     }
 
     /**
      * A product's description on its card, one line for each of its lines (typed in the textarea, or <br> and paragraphs
      * in one imported from WHMCS, whose entities such as &amp; are decoded), with the price on a line of its own.
      */
-    /** @param  list<string>  $price  the price's lines */
+    /** @param  list<string|Htmlable>  $price  the price's lines (a sale's struck-through price is HTML) */
     private static function productDescription(Product $product, array $price, bool $first = false): HtmlString
     {
-        $text = html_entity_decode(strip_tags((string) preg_replace('~<br\s*/?>|</(p|div|li|h[1-6])>~i', "\n", (string) $product->description)), ENT_QUOTES | ENT_HTML5);
+        $text = html_entity_decode(strip_tags((string) preg_replace('~<br\s*/?>|</(p|div|li|h[1-6])>~i', "\n", (string) $product->localDescription())), ENT_QUOTES | ENT_HTML5);
         $lines = collect(preg_split('/\R/u', $text) ?: [])->map(fn (string $line) => trim($line))->filter()->take(10)
             ->map(fn (string $line) => e(Str::limit($line, 80)));
         // The price's first line in bold, so it stands out from the features
-        $price = array_values(array_map(fn (string $line) => e($line), array_filter($price, 'filled')));
+        $price = array_values(array_map(fn (string|Htmlable $line) => $line instanceof Htmlable ? $line->toHtml() : e($line), array_filter($price, 'filled')));
         $price = $price === [] ? [] : ['<strong>'.$price[0].'</strong>', ...array_slice($price, 1)];
         $lines = $first ? collect($price)->concat($lines) : $lines->concat($price);
 
@@ -368,32 +422,40 @@ trait OrderForm
      * The card's price: the cycle that costs least a month, as its whole price or (Settings → Client area → Show prices
      * per month) as a month's share with what is billed each cycle under it.
      *
-     * @return list<string>
+     * @return list<string|HtmlString>
      */
     private function fromPrice(Product $product): array
     {
-        $cycle = collect($product->cycles())->sortBy(fn (BillingCycle $c) => $product->priceFor($c, $this->currency()) / max(1, $c->months()))->first();
+        $cycle = $this->cheapestCycle($product);
 
         if (! config('gaiacp.client_area.monthly_prices') || $cycle->months() <= 1) {
-            return [__('From :price', ['price' => $this->cycleLabel($product, $cycle)])];
+            return array_values(array_filter([__('From :price', ['price' => $this->cycleLabel($product, $cycle)]), $this->saleLine($product, $cycle, monthly: false)]));
         }
 
-        return [__('From :price', ['price' => $this->monthlyPrice($product, $cycle)]), $this->billedLine($product, $cycle)];
+        return array_values(array_filter([__('From :price', ['price' => $this->monthlyPrice($product, $cycle)]), $this->saleLine($product, $cycle, monthly: true), $this->billedLine($product, $cycle)]));
     }
 
-    /** A billing cycle in the Order form's list: its whole price, or a month's share with what is billed (see fromPrice()). */
+    /**
+     * A billing cycle in the Order form's list: its whole price, or a month's share with what is billed (see
+     * fromPrice()); on sale, with the normal price after it.
+     */
     private function cycleOptionLabel(Product $product, BillingCycle $cycle): string
     {
-        if (! config('gaiacp.client_area.monthly_prices') || $cycle->months() <= 1) {
-            return $this->cycleLabel($product, $cycle);
-        }
+        $label = ! config('gaiacp.client_area.monthly_prices') || $cycle->months() <= 1
+            ? $this->cycleLabel($product, $cycle)
+            : __(':price (:billed)', ['price' => $this->monthlyPrice($product, $cycle), 'billed' => Str::lcfirst($this->billedLine($product, $cycle))]);
 
-        return __(':price (:billed)', ['price' => $this->monthlyPrice($product, $cycle), 'billed' => Str::lcfirst($this->billedLine($product, $cycle))]);
+        return $product->salePriceFor($cycle, $this->currency()) === null
+            ? $label
+            : __(':price, sale (normally :was)', ['price' => $label, 'was' => Money::format($product->priceFor($cycle, $this->currency()), $this->currency())]);
     }
 
-    private function monthlyPrice(Product $product, BillingCycle $cycle): string
+    /** A month's share of what a new order pays for the cycle (the sale price while it runs), or of the normal price. */
+    private function monthlyPrice(Product $product, BillingCycle $cycle, bool $normal = false): string
     {
-        return __(':price / month', ['price' => Money::format((int) round($product->priceFor($cycle, $this->currency()) / $cycle->months()), $this->currency())]);
+        $price = $normal ? $product->priceFor($cycle, $this->currency()) : $product->orderPriceFor($cycle, $this->currency());
+
+        return __(':price / month', ['price' => Money::format((int) round($price / $cycle->months()), $this->currency())]);
     }
 
     /** "Billed €400.00 every 2 years", with the setup fee when there is one. */
@@ -411,10 +473,12 @@ trait OrderForm
         return $setup > 0 ? __(':price + :setup setup', ['price' => $line, 'setup' => Money::format($setup, $this->currency())]) : $line;
     }
 
-    private function cycleLabel(Product $product, BillingCycle $cycle): string
+    /** "€10.00 / Annually" (+ its setup fee): what a new order pays (the sale price while it runs), or the normal price. */
+    private function cycleLabel(Product $product, BillingCycle $cycle, bool $normal = false): string
     {
         $setup = $product->setupFeeFor($cycle, $this->currency());
-        $label = Money::format($product->priceFor($cycle, $this->currency()), $this->currency()).' / '.$cycle->getLabel();
+        $price = $normal ? $product->priceFor($cycle, $this->currency()) : $product->orderPriceFor($cycle, $this->currency());
+        $label = Money::format($price, $this->currency()).' / '.$cycle->getLabel();
 
         return $setup > 0 ? __(':price + :setup setup', ['price' => $label, 'setup' => Money::format($setup, $this->currency())]) : $label;
     }
@@ -511,12 +575,20 @@ trait OrderForm
         return ClientOrder::terms($get('domain'), (string) $this->option($get));
     }
 
+    /** "1 year: €10.00", on sale "1 year: €5.00, sale (normally €10.00)". */
     private function termLabel(Get $get, int $years): string
     {
-        $price = ClientOrder::tld($get('domain'))?->priceCents((string) $this->option($get), $years, $this->currency());
+        $tld = ClientOrder::tld($get('domain'));
+        $kind = (string) $this->option($get);
+        $price = $tld?->priceCents($kind, $years, $this->currency());
+        $sale = $tld?->salePriceCents($kind, $years, $this->currency());
         $term = Tld::termLabel($years);
 
-        return $price === null ? $term : "{$term}: ".Money::format($price, $this->currency());
+        return match (true) {
+            $price === null => $term,
+            $sale !== null => "{$term}: ".__(':price, sale (normally :was)', ['price' => Money::format($sale, $this->currency()), 'was' => Money::format($price, $this->currency())]),
+            default => "{$term}: ".Money::format($price, $this->currency()),
+        };
     }
 
     /**

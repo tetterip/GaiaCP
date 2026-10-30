@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 
 /**
  * POST /orders: like the client area's cart, one entry per product (with its domain and add-ons) or per domain on
- * its own. Prices always come from the catalogue.
+ * its own. Prices always come from the catalogue; `coupon` is a code (Billing → Coupons).
  */
 class StoreOrderRequest extends ApiRequest
 {
@@ -28,6 +28,7 @@ class StoreOrderRequest extends ApiRequest
             'items.*.years' => ['nullable', 'integer', 'min:1', 'max:10'],
             'items.*.epp_code' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string', 'max:5000'],
+            'coupon' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

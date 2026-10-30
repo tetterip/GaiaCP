@@ -16,6 +16,7 @@ use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\HtmlString;
 
 /**
  * The site root (its route is in ClientPanelProvider, as Filament's home): the public area's home page while Settings →
@@ -64,7 +65,7 @@ class PublicHome extends Page
      * What clients can order, by product group (OrderCatalogue), each product with its icon, lowest price and where to
      * order it.
      *
-     * @return list<array{name: string, description: ?string, icon: ?string, url: string, products: list<array{name: string, icon: ?string, popular: bool, price: list<string>, url: string}>}>
+     * @return list<array{name: string, description: ?string, icon: ?string, url: string, products: list<array{name: string, icon: ?string, sale: bool, popular: bool, badges: list<array{name: string, color: string}>, price: list<string|HtmlString>, url: string}>}>
      */
     public function sections(): array
     {
@@ -78,11 +79,14 @@ class PublicHome extends Page
                 'name' => $group['name'],
                 'description' => $group['description'],
                 'icon' => $group['icon'],
-                'url' => $this->orderUrl($group['group'] ? $group['key'] : null),
+                'url' => ProductGroupPage::urlFor($group['group']) ?? $this->orderUrl($group['group'] ? $group['key'] : null),
                 'products' => $group['products']->map(fn (Product $product) => [
-                    'name' => $product->name,
+                    'name' => $product->localName(),
                     'icon' => $product->icon ?? $group['icon'],
+                    'sale' => $product->onSale(),
                     'popular' => $product->popular,
+                    'badges' => $product->badges(),
+                    'color' => $product->orderColor(),
                     'price' => $this->fromPrice($product),
                     'url' => $this->orderUrl($group['group'] ? $group['key'] : null, $product),
                 ])->values()->all(),

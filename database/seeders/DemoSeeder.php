@@ -27,6 +27,7 @@ use App\Models\Lead;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ProductGroup;
+use App\Models\ProductTag;
 use App\Models\Registrar;
 use App\Models\Server;
 use App\Models\Service;
@@ -213,16 +214,18 @@ class DemoSeeder extends Seeder
         ]);
 
         foreach ([
-            'basic' => ['Hosting Basic', 500, 5000, null, ['disk' => '10 GB', 'sites' => '1', 'email' => '10', 'backup' => 'Weekly']],
-            'pro' => ['Hosting Pro', 1000, 10000, 18000, ['disk' => '50 GB', 'sites' => '10', 'email' => '50', 'backup' => 'Daily']],
-            'business' => ['Hosting Business', null, 20000, 36000, ['disk' => '100 GB', 'sites' => 'Unlimited', 'email' => 'Unlimited', 'backup' => 'Daily']],
-        ] as $package => [$name, $monthly, $annually, $biennially, $features]) {
+            'basic' => ['Hosting Basic', 500, 5000, null, ['disk' => '10 GB', 'sites' => '1', 'email' => '10', 'backup' => 'Weekly'], 'teal'],
+            'pro' => ['Hosting Pro', 1000, 10000, 18000, ['disk' => '50 GB', 'sites' => '10', 'email' => '50', 'backup' => 'Daily'], 'indigo'],
+            'business' => ['Hosting Business', null, 20000, 36000, ['disk' => '100 GB', 'sites' => 'Unlimited', 'email' => 'Unlimited', 'backup' => 'Daily'], 'purple'],
+        ] as $package => [$name, $monthly, $annually, $biennially, $features, $color]) {
             $product = Product::query()->create([
                 'name' => $name,
                 'type' => ServiceType::Hosting,
                 'product_group_id' => $shared->id,
                 'package' => $package,
                 'features' => $features,
+                'color' => $color,
+                'popular' => $package === 'pro',
                 'currency' => 'EUR',
                 'billing_cycle' => BillingCycle::Annually,
                 'prices' => array_filter([
@@ -239,6 +242,7 @@ class DemoSeeder extends Seeder
             'name' => 'Website care',
             'type' => ServiceType::Maintenance,
             'product_group_id' => $care->id,
+            'color' => 'amber',
             'currency' => 'EUR',
             'billing_cycle' => BillingCycle::Annually,
             'prices' => [
@@ -246,6 +250,21 @@ class DemoSeeder extends Seeder
                 'annually' => ['enabled' => true, 'price_cents' => 15000, 'setup_cents' => 0],
             ],
         ]);
+
+        // Product tags: badges on the order pages, and a hidden one that only filters the admin lists
+        $tag = fn (int $sort, string $en, string $el, string $color, bool $visible = true) => ProductTag::query()->create([
+            'names' => ['en' => $en, 'el' => $el], 'color' => $color, 'visible' => $visible, 'sort' => $sort,
+        ]);
+        $ssd = $tag(1, 'NVMe SSD', 'NVMe SSD', 'blue');
+        $new = $tag(2, 'New', 'Νέο', 'green');
+        $value = $tag(3, 'Best value', 'Καλύτερη τιμή', 'red');
+        $wordpress = $tag(4, 'WordPress', 'WordPress', 'gray', false);
+        foreach (['basic', 'pro', 'business'] as $package) {
+            $this->products[$package]->tags()->attach($ssd);
+        }
+        $this->products['pro']->tags()->attach([$value->id, $wordpress->id]);
+        $this->products['business']->tags()->attach([$new->id]);
+        $this->products['care']->tags()->attach($wordpress);
     }
 
     /** @param  array{0: string, 1: string, 2: ?string, 3: string, 4: string, 5: string, 6: array{0: string, 1: string, 2: ?int, 3: string}, 7: bool}  $row */

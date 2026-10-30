@@ -281,6 +281,8 @@ Adding another language, e.g. German, from the admin (super admins):
 
 1. Settings → Languages → Download missing texts, language Deutsch: a `.json` of every text with the English as its
    value. Translate the values (a value left in English stays English).
+   Or, with the AI assistant on, **Translate with AI** with language Deutsch fills the missing texts itself, a batch
+   of 40 per request while the page stays open, and saves them as step 2 does.
 2. Upload translations with that file: German appears in the list; switch it on. The texts go to
    `storage/app/private/lang/de.json` (a plugin's to `storage/app/private/lang/plugins/<Plugin>/de.json`), so updates
    of GaiaCP or of a plugin never replace them, and they win over the shipped files.

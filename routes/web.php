@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\QuoteController;
 use App\Http\Controllers\Client\UnsubscribeController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\PwaController;
+use App\Http\Controllers\SitemapController;
 use App\Support\Branding;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,10 @@ Route::controller(InstallController::class)->prefix('install')->group(function (
     Route::get('admin', 'admin')->name('install.admin');
     Route::post('admin', 'finish')->name('install.finish');
 });
+
+// For search engines (Settings → Client area → Search engines): the public pages and what may be crawled
+Route::get('sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
+Route::get('robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
 // The admin panel as an installable app: its manifest and service worker (push notifications), no login needed
 Route::get('admin/manifest.webmanifest', [PwaController::class, 'manifest'])->name('pwa.manifest');

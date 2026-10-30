@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Clients\Pages;
 
 use App\Filament\Resources\Clients\Actions\ClientAreaActions;
 use App\Filament\Resources\Clients\Actions\ClientCreditActions;
+use App\Filament\Resources\Clients\Actions\ClientHintsAction;
 use App\Filament\Resources\Clients\Actions\ReviewChangeRequestAction;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Clients\Widgets\ClientSummary;
@@ -36,6 +37,7 @@ class EditClient extends EditRecord
             ReviewChangeRequestAction::make(),
             ClientAreaActions::make(),
             ClientCreditActions::make(),
+            ClientHintsAction::make(),
             Action::make('newOrder')
                 ->label('New order')
                 ->icon(Heroicon::OutlinedShoppingCart)

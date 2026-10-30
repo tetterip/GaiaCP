@@ -72,6 +72,8 @@ An **SSL certificate** is ordered for the domain you give when you order it, onc
 - **File on the website:** create the file shown, with exactly its contents, so that it opens at the address shown.
 - **Email to the domain's administrator:** open the link in the email sent to admin@ (or the address chosen) and approve.
 
+When the domain is a hosting account you have with us, we do this for you: its page says it is already in place, and once the certificate is issued we install it on that account too, so there is nothing to download or install.
+
 **Change validation** picks another way (or another approval address) and **Check again** asks the certificate authority to look now (**Send the approval email again** when it is by email). Once the certificate is issued we email you, and **Download certificate** gives a zip with the certificate, the CA bundle and, when we made it, the private key, ready to install on the server. A certificate lasts at most 200 days, so while your service runs we issue the next one before each ends: you validate the domain again each time and download the new certificate.
 
 <!-- endif -->
@@ -133,9 +135,13 @@ To use it, open an unpaid payment notice and press **Pay with credit**.
 **See the prices of every domain ending** under the search box lists each ending we sell with its price to register, transfer and renew.
 <!-- endif -->
 
-**Order** shows what you can order; **Order a new service** above your Services, open it too (**Order a domain** above your Domains opens the domain search). When we sell several kinds of service, first choose the kind (such as shared hosting or a VPS, or domain names), then a package: **Compare packages** below them shows what each one includes side by side, with its price for each billing period, and its **Choose** buttons pick a package too. Choose a service and its billing period, and any options it offers (such as a location or extra IP addresses); each option shows what it adds to the price. Add-ons for it (such as daily backups) can be ticked below; they are on the same payment notice and renew together with it. For hosting, say whether you already have the domain, want to register a new one or move one you have elsewhere (you need its EPP code). You can also order a domain on its own, with an SSL certificate for it when we offer one (tick it below the domain). Once you type a domain to register or transfer, you see by it whether it is free; a taken domain can only be transferred, and one not registered yet only registered.
+**Order** shows what you can order; **Order a new service** above your Services, open it too (**Order a domain** above your Domains opens the domain search). When we sell several kinds of service, first choose the kind (such as shared hosting or a VPS, or domain names), then a package: **Compare packages** below them shows what each one includes side by side, with its price for each billing period, and its **Choose** buttons pick a package too. Badges by a package's name (such as Popular or New) point out what we recommend or what is new. Choose a service and its billing period, and any options it offers (such as a location or extra IP addresses); each option shows what it adds to the price. Add-ons for it (such as daily backups) can be ticked below; they are on the same payment notice and renew together with it. For hosting, say whether you already have the domain, want to register a new one or move one you have elsewhere (you need its EPP code). You can also order a domain on its own, with an SSL certificate for it when we offer one (tick it below the domain). Once you type a domain to register or transfer, you see by it whether it is free; a taken domain can only be transferred, and one not registered yet only registered.
 
 Press **Add to cart** and the **Cart** opens (the cart icon at the top of every page opens it too, with how many items are in it). Press **Order something else** to add more, such as two domains and three hosting plans, or the bin next to an item to take it out. Everything in the cart becomes one order with one payment notice.
+
+If you have a **coupon code**, type it in the cart: you see what it takes off before you place the order (a link with a code fills it in for you). A coupon may lower only the first payment or every renewal too, and it never lowers a setup fee.
+
+What is **on sale** shows a Sale badge and its normal price struck through. The sale price is for the first period of what you order while the sale runs; renewals are at the normal price. A coupon may not lower a sale price further.
 
 <!-- if:terms -->
 Before you place it, read our Terms of Service (the link next to the box) and tick **I accept the Terms of Service**.

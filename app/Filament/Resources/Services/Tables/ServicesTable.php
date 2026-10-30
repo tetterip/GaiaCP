@@ -8,6 +8,7 @@ use App\Filament\Actions\ChangePriceAction;
 use App\Filament\Actions\RecordPaymentAction;
 use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\ServiceResource;
+use App\Models\ProductTag;
 use App\Models\Service;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
@@ -96,6 +97,12 @@ class ServicesTable
                     ->options(ServiceType::class),
                 SelectFilter::make('server')
                     ->relationship('server', 'name'),
+                SelectFilter::make('product_tags')
+                    ->label('Product tags')
+                    ->options(fn () => ProductTag::options())
+                    ->multiple()
+                    ->query(fn (Builder $query, array $data) => $query->when($data['values'] ?? [], fn (Builder $query, array $tags) => $query
+                        ->whereHas('product.tags', fn (Builder $q) => $q->whereKey($tags)))),
                 Filter::make('price_change')
                     ->label('Price change scheduled')
                     ->query(fn (Builder $query) => $query->whereNotNull('new_price_from')),

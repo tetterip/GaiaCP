@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use App\Filament\Clusters\Settings\Pages\ClientAreaSettings;
 use App\Filament\Clusters\Settings\Pages\CookieSettings;
+use App\Models\Announcement;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,7 +47,7 @@ class SeoTest extends TestCase
 
         $this->get('/login')->assertOk()
             ->assertSee('<meta name="description" content="Web hosting and domains in Greece.">', false)
-            ->assertSee('<meta property="og:title" content="Acme Hosting">', false)
+            ->assertSee('<meta property="og:title" content="Login - Acme Hosting">', false)
             ->assertDontSee('noindex', false);
 
         config(['gaiacp.seo.index' => false]);
@@ -71,5 +72,69 @@ class SeoTest extends TestCase
 
         $this->assertFalse(config('gaiacp.seo.index'));
         $this->assertSame('Hosting in Athens.', config('gaiacp.seo.description'));
+    }
+
+    public function test_each_language_of_a_public_page_has_its_own_address(): void
+    {
+        config(['gaiacp.languages.enabled' => ['en', 'el'], 'gaiacp.public_area.home' => true]);
+
+        $this->get('/?page=2&utm_source=x')->assertOk()
+            ->assertSee('<link rel="canonical" href="'.url('/').'?page=2">', false)
+            ->assertSee('<link rel="alternate" hreflang="el" href="'.url('/').'?page=2&amp;lang=el">', false)
+            ->assertSee('<link rel="alternate" hreflang="x-default" href="'.url('/').'?page=2">', false);
+
+        // ?lang= shows the page in that language and keeps it for the visit
+        $this->get('/?lang=el')->assertOk()->assertSee('Σύνδεση')
+            ->assertSee('<link rel="canonical" href="'.url('/').'?lang=el">', false)
+            ->assertSee('<meta property="og:locale" content="el">', false);
+        $this->get('/login')->assertOk()->assertSee('Σύνδεση');
+        $this->get('/?lang=xx')->assertOk()->assertSee('Σύνδεση');
+
+        // Picking a language in the top bar goes back without the old ?lang=
+        $this->from(url('/').'?lang=el&page=2')->get('/language/en')->assertRedirect(url('/').'?page=2');
+
+        config(['gaiacp.languages.enabled' => ['en']]);
+        $this->get('/login')->assertOk()->assertDontSee('hreflang', false);
+    }
+
+    public function test_the_sitemap_lists_the_public_pages_in_every_language(): void
+    {
+        config([
+            'gaiacp.languages.enabled' => ['en', 'el'],
+            'gaiacp.public_area.home' => true,
+            'gaiacp.public_area.announcements' => true,
+            'gaiacp.public_area.status' => true,
+        ]);
+        Announcement::query()->create(['slug' => 'new-servers', 'texts' => ['en' => ['title' => 'New servers', 'body' => 'Hi']], 'published_at' => now()->subDay()]);
+        Announcement::query()->create(['slug' => 'for-clients', 'texts' => ['en' => ['title' => 'Clients', 'body' => 'Hi']], 'published_at' => now()->subDay(), 'clients_only' => true]);
+        Announcement::query()->create(['slug' => 'tomorrow', 'texts' => ['en' => ['title' => 'Later', 'body' => 'Hi']], 'published_at' => now()->addDay()]);
+
+        $xml = $this->get('/sitemap.xml')->assertOk()->assertHeader('Content-Type', 'application/xml; charset=UTF-8')->getContent();
+
+        $this->assertStringContainsString('<loc>'.url('/').'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.url('/').'?lang=el</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.url('announcements/new-servers').'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.url('status').'</loc>', $xml);
+        $this->assertStringContainsString('hreflang="x-default"', $xml);
+        $this->assertStringNotContainsString('for-clients', $xml);
+        $this->assertStringNotContainsString('tomorrow', $xml);
+        $this->assertStringNotContainsString('knowledgebase', $xml);
+        $this->assertNotFalse(simplexml_load_string($xml));
+
+        config(['gaiacp.seo.index' => false]);
+        $this->get('/sitemap.xml')->assertNotFound();
+    }
+
+    public function test_robots_txt_points_to_the_sitemap_or_keeps_everyone_out(): void
+    {
+        $robots = $this->get('/robots.txt')->assertOk()->getContent();
+        $this->assertStringContainsString("Disallow: /admin/\n", $robots);
+        $this->assertStringContainsString('Sitemap: '.url('sitemap.xml'), $robots);
+        $this->assertStringNotContainsString("Disallow: /\n", $robots);
+
+        config(['gaiacp.seo.index' => false]);
+        $robots = $this->get('/robots.txt')->assertOk()->getContent();
+        $this->assertStringContainsString("Disallow: /\n", $robots);
+        $this->assertStringNotContainsString('Sitemap', $robots);
     }
 }

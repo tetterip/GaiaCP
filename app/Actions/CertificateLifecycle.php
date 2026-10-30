@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Certificates\CertificateHosting;
 use App\Certificates\CertificateModule;
 use App\Certificates\CertificateOrder;
 use App\Certificates\CertificateProduct;
@@ -24,8 +25,9 @@ use Illuminate\Support\Facades\Cache;
 /**
  * SSL certificate services (type ssl): the only code that calls a certificate provider (App\Certificates\
  * CertificateModule). The service's `package` names the provider and its product ("gogetssl:45"). GaiaCP makes the
- * private key and CSR unless the client sends their own. Every outcome, failures included, lands in the activity log;
- * a failed call leaves things as they were and throws ProvisioningException.
+ * private key and CSR unless the client sends their own. When the domain is the client's hosting account on a server
+ * GaiaCP manages, App\Certificates\CertificateHosting validates and installs it there. Every outcome, failures
+ * included, lands in the activity log; a failed call leaves things as they were and throws ProvisioningException.
  */
 class CertificateLifecycle
 {
@@ -37,7 +39,7 @@ class CertificateLifecycle
 
     private const PRODUCTS_MINUTES = 60;
 
-    public function __construct(private PluginManager $plugins, private ClientMailer $mailer) {}
+    public function __construct(private PluginManager $plugins, private ClientMailer $mailer, private CertificateHosting $hosting) {}
 
     /** @return array{0: string, 1: string}|null [provider key, product code] of a package like "gogetssl:45" */
     public static function package(?string $package): ?array
@@ -109,7 +111,7 @@ class CertificateLifecycle
 
         [$module, $code] = $this->moduleFor($service, 'ssl.ordered');
         $product = $this->products($module)[$code] ?? $this->fail($service, 'ssl.ordered', "{$module->certificateLabel()} does not sell product {$code} any more: pick another on the service.");
-        $method = $this->method($product, $method ?? $certificate->dcv_method ?? $this->defaultMethod($module));
+        $method = $this->method($product, $method ?? $certificate->dcv_method ?? $this->hosting->method($service, $this->methods($product)) ?? $this->defaultMethod($module));
         $certificate->fill(['provider' => $module->certificateKey(), 'product_code' => $code, 'wildcard' => $product->wildcard, 'dcv_method' => $method]);
         $this->newKey($service, $certificate, $csr);
 
@@ -118,8 +120,8 @@ class CertificateLifecycle
         $this->store($certificate, $state, ['remote_id' => $state->orderId, 'error' => null]);
         $service->update(['status' => ServiceStatus::Active]);
 
+        $this->validate($service, $module); // first, so the client's bell knows whether they have anything to do
         ActivityLog::record('ssl.ordered', "SSL certificate for {$certificate->commonName()} ordered from {$module->certificateLabel()} (order {$state->orderId})", $service, properties: ['order_id' => $state->orderId, 'method' => $method]);
-        $this->emailValidation($service);
     }
 
     /** Reads the order from the provider; the first time it is issued, the client gets it by email and in the bell. */
@@ -141,6 +143,7 @@ class CertificateLifecycle
             $certificate->update(['issued_at' => now()]);
             ActivityLog::record('ssl.issued', "SSL certificate for {$certificate->commonName()} issued, valid until {$certificate->expires_at?->format('Y-m-d')}", $service, properties: ['order_id' => $certificate->remote_id]);
             $this->mailer->service(MailTemplate::SslIssued, $service, ['expiry_date' => $certificate->expires_at?->format(AppServiceProvider::dateFormat())]);
+            $this->hosting->install($service);
         }
     }
 
@@ -155,8 +158,8 @@ class CertificateLifecycle
         $validation = $this->call($service, 'ssl.validation_changed', fn () => $module->changeValidation($certificate->remote_id, $certificate->commonName(), $method, $approverEmail));
         $certificate->update(['dcv_method' => $method, 'approver_email' => $approverEmail, 'validation' => $validation ?: $certificate->validation]);
 
+        $this->validate($service, $module);
         ActivityLog::record('ssl.validation_changed', "SSL certificate for {$certificate->commonName()}: validation by {$method}", $service, properties: ['method' => $method]);
-        $this->emailValidation($service);
     }
 
     /** Asks the certificate authority to look again (DNS record or file), or to resend the approval email. */
@@ -197,8 +200,8 @@ class CertificateLifecycle
         }
 
         $this->store($certificate, $state, ['status' => CertificateStatus::Pending, 'error' => null]);
+        $this->validate($service, $module);
         ActivityLog::record('ssl.reissued', "SSL certificate for {$certificate->commonName()} reissue requested", $service, properties: ['order_id' => $certificate->remote_id]);
-        $this->emailValidation($service);
     }
 
     /** A new order for the next period (charged to the reseller account): only when the service is paid beyond the order's end. */
@@ -225,8 +228,20 @@ class CertificateLifecycle
             'ends_at' => $state->endsAt, // read again once the new order is under way
             'error' => null,
         ]);
+        $this->validate($service, $module);
         ActivityLog::record('ssl.renewed', "SSL certificate for {$certificate->commonName()} renewed (order {$state->orderId})", $service, properties: ['order_id' => $state->orderId, 'previous_order_id' => $previous]);
-        $this->emailValidation($service);
+    }
+
+    /**
+     * Installs the issued certificate on the client's hosting account for its domain (done on its own when it is
+     * issued; this is SSL → Install on hosting).
+     *
+     * @throws ProvisioningException
+     */
+    public function install(Service $service): void
+    {
+        $this->assertSsl($service);
+        $this->hosting->install($service, throw: true);
     }
 
     /** Cancels the order at the provider (a refund only within its refund days). The service itself is left alone. */
@@ -308,6 +323,23 @@ class CertificateLifecycle
         return count($parts) === 2
             ? [['label' => __('Name'), 'value' => rtrim($parts[0], '.')], ['label' => __('Type'), 'value' => 'CNAME'], ['label' => __('Value'), 'value' => rtrim($parts[1], '.')]]
             : [['label' => __('Record'), 'value' => $record]];
+    }
+
+    /**
+     * Puts the validation on the client's own hosting account when it can, and asks the certificate authority to look
+     * at once; else emails the client what to do.
+     */
+    private function validate(Service $service, CertificateModule $module): void
+    {
+        $certificate = $service->certificate();
+
+        if (! $this->hosting->placeValidation($service)) {
+            $this->emailValidation($service);
+
+            return;
+        }
+
+        rescue(fn () => $module->recheckValidation((string) $certificate->remote_id, $certificate->commonName(), (string) $certificate->dcv_method), report: false);
     }
 
     /** Emails the client what to do, while the certificate waits for validation. */
@@ -419,6 +451,14 @@ class CertificateLifecycle
     /** The method if the product takes it, else the first it takes. */
     private function method(?CertificateProduct $product, string $method): string
     {
+        $methods = $this->methods($product);
+
+        return in_array($method, $methods, true) ? $method : $methods[0];
+    }
+
+    /** @return list<string> the validation methods the product takes */
+    private function methods(?CertificateProduct $product): array
+    {
         $methods = $product?->methods ?: self::METHODS;
 
         // A wildcard can't be validated with a file.
@@ -426,7 +466,7 @@ class CertificateLifecycle
             $methods = array_values(array_diff($methods, ['http', 'https'])) ?: ['dns'];
         }
 
-        return in_array($method, $methods, true) ? $method : $methods[0];
+        return array_values($methods);
     }
 
     private function pendingCertificate(Service $service): Certificate

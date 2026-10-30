@@ -8,7 +8,7 @@
     <div class="gcp-cart-line-end">
         @if ($status->orderable())
             @if ($result['price'])
-                <span class="gcp-cart-line-amount">{{ __(':price for :term', ['price' => $result['price'], 'term' => $result['term']]) }}</span>
+                <span class="gcp-cart-line-amount">@if ($result['was'] ?? null)<s class="gcp-was">{{ $result['was'] }}</s> @endif{{ __(':price for :term', ['price' => $result['price'], 'term' => $result['term']]) }}</span>
             @endif
             @if (! $this->canOrder())
                 {{-- A visitor while the public order page is off: the price only --}}

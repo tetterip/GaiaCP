@@ -19,8 +19,9 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Product groups (Settings → Product groups, as WHMCS's product groups): Shared hosting, VPS and so on, named per
   language with an icon and a link of their own (`/order/<group>`, `/cart/<group>`; a hidden group only by its
   link). The Order page, the public order page, the public home page and its side menu show products by group; each
-  product can have an icon, a Popular badge and its values for the group's compare table (Disk space, Websites…,
-  Yes / No as marks), which also lists each billing cycle's price and has a Choose button per package.
+  product can have an icon, a colour of its own (name, buttons, marks), a Popular badge, tags (Settings → Product tags: New, SSD…, named per language with a colour;
+  shown to clients as badges or kept for the admin's filters on products, services and messages) and its values for
+  the group's compare table (Disk space, Websites…, Yes / No as marks), which also lists each billing cycle's price and has a Choose button per package.
   Existing installs got one group per type; the WHMCS import brings WHMCS's groups
 - Product options (Settings → Product options, as WHMCS's configurable options): groups of options attached to
   products (a list, buttons, yes / no or a quantity, e.g. location or extra IPs), each choice with a price per cycle
@@ -148,8 +149,16 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   domain search (only the name sent, 5 presses an hour per client or address). Reports → Ask in plain words answers
   questions such as "who owes more than €100?" from the data, read-only: the AI service only picks one of GaiaCP's
   ready-made questions and its dates or amounts, and never sees the answer; System → Help answers "how do I…" from
-  the admin guide's closest sections. ChatGPT (OpenAI), DeepSeek and Kimi
-  (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models); Settings → AI
+  the admin guide's closest sections. On a ticket it drafts a reply (from the conversation, the client's services and
+  the closest knowledge base articles), summarises it with a suggested priority, department and mood (kept under the
+  subject in the list until the client writes again), and turns an answered one into a draft knowledge base article;
+  the conversation goes without notes, files or the client's name, company, emails and phone numbers. A payment
+  notice's Personal reminder rewrites its reminder email for how the client pays, and a client's Suggestions list what
+  they might buy, signs they may leave and what to look after (facts only: services, prices, payment history, ticket
+  subjects; never who they are). Settings → Languages → Translate with AI fills a language's missing texts in batches
+  (only the texts sent; a translation that loses a placeholder is left out). ChatGPT (OpenAI), DeepSeek and Kimi
+  (Moonshot AI) are plugins too (off until switched on, own key and model, Test connection lists the key's models), and so
+  is Ollama (an open model on the admin's own server or computer, no key, nothing billed); Settings → AI
   assistant picks one when several are on
 - The admin panel as an app (PWA): add it to a phone's home screen or install it from the browser, and turn on push
   notifications per device under Profile → Push notifications: the bell's notifications arrive on the phone or computer
@@ -194,6 +203,15 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
   client area invitation and places the order with its payment notice; the bell tells Sales. Sent quotes expire after
   their date; Duplicate starts a new one from an old one. Clients also find them under Billing → Quotes in the client
   area, and the REST API adds leads (a contact form on your website) and writes, sends and accepts quotes
+- Coupons (Billing → Coupons): a code for a percentage or a fixed amount off each item it covers (chosen products and
+  domain endings, or everything), on the first payment only or on renewals too, never on a setup fee; valid between
+  two dates, with a usage limit, once per client or for new clients only. Clients enter it in the cart (or follow a
+  `?coupon=CODE` link), admins pick it on New order, the REST API takes it with an order. The notice line names it;
+  when nothing is left to pay, the order's notice is paid at once
+- Sale prices: a product's per cycle and a TLD's for registering and transferring, between two days, for the first
+  period of what is ordered then (renewals at the normal price). The order pages, the public home page, domain search
+  and Domain prices show the normal price struck through and a Sale badge; it ends by itself. A coupon lowers a sale
+  price only with its Also on sale prices switch
 - Knowledge base (Support → Knowledge base): help articles in categories, a text per language (Markdown), shown in
   the client area once published, with a search that ignores accents and case, views and "Was this helpful?" counts.
   While a client writes a new ticket, the articles matching its subject show under it. Settings → Support →
@@ -214,7 +232,9 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
 - SSL certificates (a service type, sold through the GoGetSSL plugin): GaiaCP makes the key and CSR, orders the
   certificate once the service is set up, shows and emails the client how to validate the domain, finds it issued
   every hour and emails it, issues the next one inside the order before each certificate ends (200 days at most) and
-  orders the next period when the service is paid beyond it (see [SSL certificates](reference.md#ssl-certificates))
+  orders the next period when the service is paid beyond it (see [SSL certificates](reference.md#ssl-certificates)).
+  When the domain is the client's hosting account on a cPanel or Plesk server, GaiaCP validates it there (a file on
+  cPanel, a DNS record on Plesk) and installs the issued certificate on the account
 - English and Greek: each admin picks a panel language and each client an email language, and email templates can be
   written per language (see [Languages](reference.md#languages))
 
@@ -222,7 +242,7 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
 
 - Payment gateways other than Stripe, saved cards and automatic charges, refunds from GaiaCP (refund in Stripe)
 - Legal invoices (myDATA): those are issued in the accounting tool; GaiaCP's payment notices only say what is owed
-- Proration other than an upgrade's "charge the difference now", coupons; credit paying part of a line
+- Proration other than an upgrade's "charge the difference now"; credit paying part of a line
 - Matching bank statements to payment notices (bank CSV import, RF payment codes): payments are recorded by hand or by a payment plugin
 
 ## Build order
@@ -261,6 +281,9 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
     domain search and what is sold, domain search for visitors, a domain prices page, the knowledge base (articles can
     stay for clients only), a contact form whose ticket the visitor follows at a secret link, announcements with an RSS
     feed (each public or for clients only) and a server status page (state and uptime by name, never the hostname or IP);
-    side menu and language picker for visitors); ✅ cookie banner
+    side menu and language picker for visitors); ✅ search engines (Settings → Client area: each language of a public
+    page at its own address with canonical and hreflang links, `/sitemap.xml` and `/robots.txt`; a public page per
+    product group with its own text, compare table, questions and structured data, and per product inside it; product
+    names and descriptions per language); ✅ cookie banner
     (Settings → Cookies, super admins, off until switched on: a text, a link to the cookie policy and scripts such as
     analytics that run only after "Accept all"; "Cookie settings" at the foot of the page asks again)

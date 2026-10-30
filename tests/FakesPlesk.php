@@ -22,6 +22,12 @@ trait FakesPlesk
     /** @var array<string, string> plan name => guid */
     protected array $pleskPlans = ['Starter' => 'guid-starter', 'Business' => 'guid-business'];
 
+    /** @var list<array{site_id: int, type: string, host: string, value: string}> DNS records (host as the full name with a dot at the end, like Plesk) */
+    protected array $pleskDnsRecords = [];
+
+    /** @var array<string, array{webspace: string, pvt: string, cert: string, ca: string}> name => certificate installed in a subscription's pool */
+    protected array $pleskCertificates = [];
+
     /** @var list<array{0: string, 1: SimpleXMLElement}> */
     protected array $pleskCalls = [];
 
@@ -33,6 +39,11 @@ trait FakesPlesk
     protected function fakePlesk(): void
     {
         Http::fake(function (Request $request) {
+            // Not a Plesk call (e.g. an SSL provider's): leave it to another fake.
+            if (! str_contains($request->url(), '/enterprise/control/agent.php')) {
+                return null;
+            }
+
             if ($this->pleskRejectAuth) {
                 return $this->pleskXml('<system><status>error</status><errcode>1001</errcode><errtext>Authentication failed</errtext></system>');
             }
@@ -157,6 +168,27 @@ trait FakesPlesk
 
             case 'webspace.del':
                 unset($this->pleskWebspaces[(string) $op->filter->name]);
+
+                return [$ok];
+
+            case 'dns.get_rec':
+                $records = array_filter($this->pleskDnsRecords, fn (array $record) => $record['site_id'] === (int) $op->filter->{'site-id'});
+
+                return array_map(fn (int $id, array $record) => "{$ok}<id>{$id}</id><data><site-id>{$record['site_id']}</site-id><type>{$record['type']}</type><host>{$record['host']}</host><value>{$record['value']}</value><opt></opt></data>",
+                    array_keys($records), $records) ?: $notFound;
+
+            case 'dns.add_rec':
+                $zone = array_keys($this->pleskWebspaces)[0] ?? 'example.com';
+                $this->pleskDnsRecords[] = ['site_id' => (int) $op->{'site-id'}, 'type' => (string) $op->type, 'host' => "{$op->host}.{$zone}.", 'value' => "{$op->value}."];
+
+                return [$ok.'<id>'.count($this->pleskDnsRecords).'</id>'];
+
+            case 'certificate.install':
+                $name = (string) $op->name;
+                if (isset($this->pleskCertificates[$name])) {
+                    return ['<status>error</status><errcode>1007</errcode><errtext>Certificate with such name already exists.</errtext>'];
+                }
+                $this->pleskCertificates[$name] = ['webspace' => (string) $op->webspace, 'pvt' => (string) $op->content->pvt, 'cert' => (string) $op->content->cert, 'ca' => (string) $op->content->ca];
 
                 return [$ok];
 

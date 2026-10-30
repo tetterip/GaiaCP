@@ -172,7 +172,9 @@
     /* Server uptime on a hosting account's page: the dashboard's squares light up one after the other */
     .gcp-server-uptime {
         display: grid;
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+        gap: 1rem 1.5rem;
+        align-items: start;
     }
 
     .gcp-server-uptime .gx-meter [role="img"] > span[data-on] {
@@ -651,8 +653,9 @@
     /* A card's name with its icon (OrderForm::cardLabel(), the public home page) */
     .gcp-card-name {
         display: inline-flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: .5rem;
+        gap: .25rem .5rem;
     }
 
     .gcp-product-icon {
@@ -769,10 +772,103 @@
         margin-bottom: .3rem;
     }
 
+    /* A product's tags (Settings → Product tags): the Popular badge in the tag's own colour */
+    .gcp-tag {
+        background: color-mix(in srgb, var(--gcp-tag) 14%, transparent);
+        color: var(--gcp-tag);
+    }
+
+    .dark .gcp-tag {
+        background: color-mix(in srgb, var(--gcp-tag) 25%, transparent);
+        color: color-mix(in srgb, var(--gcp-tag) 55%, white);
+    }
+
+    /* A product on sale (Product::onSale()): the Sale badge, and the normal price struck through beside the sale one */
+    .gcp-sale {
+        --gcp-tag: #dc2626;
+        background: color-mix(in srgb, var(--gcp-tag) 14%, transparent);
+        color: var(--gcp-tag);
+    }
+
+    .dark .gcp-sale {
+        background: color-mix(in srgb, var(--gcp-tag) 25%, transparent);
+        color: color-mix(in srgb, var(--gcp-tag) 55%, white);
+    }
+
+    /*
+     * A product's own colour (Product::orderColor(), data-gcp-color on its card, compare column and public home card):
+     * the accent there follows it (name, icon, price, check marks, Popular badge, buttons), lighter in dark mode, and
+     * the card gets a top border in it. Tags and Sale keep their own colours.
+     */
+@foreach (\App\Models\ProductTag::COLORS as $key => $hex)
+    [data-gcp-color="{{ $key }}"],
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color="{{ $key }}"]) {
+        --gcp-product: {{ $hex }};
+    }
+@endforeach
+
+    [data-gcp-color],
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]) {
+        --gcp-accent: var(--gcp-product);
+    }
+
+    .dark [data-gcp-color],
+    .dark .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]) {
+        --gcp-accent: color-mix(in srgb, var(--gcp-product) 60%, white);
+    }
+
+    .gcp-card-name[data-gcp-color] > span:not(.gcp-popular),
+    [data-gcp-color] .gcp-public-product-name,
+    [data-gcp-color] .gcp-compare-name {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]) {
+        box-shadow: inset 0 3px 0 var(--gcp-accent), 0 0 0 1px var(--gcp-line);
+    }
+
+    .gcp-product-cards.fi-fo-radio > .fi-fo-radio-label:has([data-gcp-color]):has(.fi-radio-input:checked) {
+        box-shadow: inset 0 3px 0 var(--gcp-accent), 0 0 0 2px var(--gcp-accent);
+    }
+
+    .gcp-public-product[data-gcp-color] {
+        box-shadow: var(--gcp-shadow), inset 0 3px 0 var(--gcp-accent), 0 0 0 1px var(--gcp-line);
+    }
+
+    [data-gcp-color] .fi-btn.fi-color:not([disabled]) {
+        --bg: var(--gcp-product);
+        --hover-bg: color-mix(in srgb, var(--gcp-product) 85%, black);
+        --dark-bg: var(--gcp-product);
+        --dark-hover-bg: color-mix(in srgb, var(--gcp-product) 85%, white);
+        --text: #fff;
+        --hover-text: #fff;
+        --dark-text: #fff;
+        --dark-hover-text: #fff;
+        /* themes that paint buttons themselves (Gaia) */
+        --gaia-button: var(--gcp-product);
+        --gaia-button-ink: #fff;
+    }
+
+    .gcp-was {
+        opacity: .65;
+        font-weight: 400;
+    }
+
+    .gcp-compare-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem;
+    }
+
+    .gcp-compare-badges .gcp-popular {
+        margin-bottom: .3rem;
+    }
+
     .gcp-public-product-name {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: .5rem;
+        gap: .25rem .5rem;
     }
 
     .gcp-public-group-title {
@@ -1074,6 +1170,39 @@
     .gcp-public-text a {
         color: var(--gcp-accent);
         text-decoration: underline;
+    }
+
+    /* A product's public page (ProductPage): the way back to its group's page */
+    .gcp-crumbs a {
+        color: var(--gcp-accent);
+    }
+
+    /* A product group's public page (ProductGroupPage): its questions, each opening its answer */
+    .gcp-faq {
+        display: grid;
+        padding: .25rem 1.25rem;
+    }
+
+    .gcp-faq details + details {
+        border-top: 1px solid var(--gcp-line);
+    }
+
+    .gcp-faq summary {
+        cursor: pointer;
+        padding: .85rem 0;
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-faq details .gcp-public-text {
+        padding-bottom: .85rem;
+    }
+
+    .gcp-public-title svg {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        vertical-align: -.15rem;
     }
 
     /* Contact us: the company's details beside the form (above it on a phone) */

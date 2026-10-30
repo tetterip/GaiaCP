@@ -33,6 +33,18 @@ abstract class ChatCompletionsSettings extends SettingsFormPage
     /** Where to get an API key, one sentence (may hold <strong>). */
     abstract protected static function howTo(): string;
 
+    /** Fields shown before the API key, such as the address of a service the admin runs themselves. @return list<TextInput> */
+    protected static function connectionFields(string $id): array
+    {
+        return [];
+    }
+
+    /** Ends the connection section's description: who pays for what is used. */
+    protected static function billing(): string
+    {
+        return __(':service bills your account for what is used. Texts are sent only when an admin presses an AI button.', ['service' => static::plugin()->name()]);
+    }
+
     public static function keys(): array
     {
         return [static::pluginId().'.api_key', static::pluginId().'.model'];
@@ -88,8 +100,9 @@ abstract class ChatCompletionsSettings extends SettingsFormPage
             ->statePath('data')
             ->components([
                 Section::make(__('Connection'))
-                    ->description(new HtmlString(static::howTo().' '.e(__(':service bills your account for what is used. Texts are sent only when an admin presses an AI button.', ['service' => static::plugin()->name()]))))
+                    ->description(new HtmlString(static::howTo().' '.e(static::billing())))
                     ->schema([
+                        ...static::connectionFields($id),
                         TextInput::make("{$id}.api_key")
                             ->label('API key')
                             ->password()

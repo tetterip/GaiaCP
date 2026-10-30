@@ -6,10 +6,13 @@ use App\Actions\ClientOrder;
 use App\Actions\ClientSignup;
 use App\Filament\Client\Concerns\OrderForm;
 use App\Models\Client;
+use App\Models\Coupon;
+use App\Support\Coupons;
 use App\Support\Currencies;
 use App\Support\Money;
 use App\Support\OrderCatalogue;
 use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedSchema;
@@ -45,6 +48,8 @@ class PublicOrder extends Page
     {
         abort_unless(ClientOrder::publicEnabled(), 404);
 
+        Coupons::rememberFromLink(); // a `?coupon=CODE` link: entered in the cart
+
         if (filament()->auth()->check()) {
             $this->redirect(Order::getUrl(array_filter(['group' => $group, ...request()->only('product', 'domain_option', 'domain')], 'is_string')));
 
@@ -66,6 +71,7 @@ class PublicOrder extends Page
             'domain_option' => $option,
             'domain' => $domain,
             'years' => $domain !== null && $option !== ClientOrder::OWN ? (ClientOrder::terms($domain, $option)[0] ?? 1) : 1,
+            'coupon' => Coupons::remembered(),
         ]);
     }
 
@@ -103,6 +109,16 @@ class PublicOrder extends Page
                         ->visible(fn () => ClientOrder::cartCount() > 0),
                     View::make('filament.client.cart-lines')
                         ->visible(fn () => ClientOrder::cartCount() > 0),
+                    // Kept for the cart, where it is checked against the client's account.
+                    TextInput::make('coupon')
+                        ->label('Coupon code')
+                        ->maxLength(50)
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn (?string $state) => Coupons::remember($state))
+                        ->helperText(fn (?string $state) => blank($state) ? null
+                            : (Coupons::problem(Coupons::find($state), null) ?? __('Applied when you place the order.')))
+                        ->dehydrated(false)
+                        ->visible(fn () => ClientOrder::cartCount() > 0 && Coupon::query()->current()->exists()),
                     Text::make(ClientSignup::enabled()
                         ? __('Add what you need to the cart. Next you create your account (or log in if you are already a client). Then you place the order and get a payment notice by email with how to pay.')
                         : __('Add what you need to the cart. Next you log in to your client account. Then you place the order and get a payment notice by email with how to pay.')),

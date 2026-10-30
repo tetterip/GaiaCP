@@ -22,5 +22,6 @@
         'label' => __('Accounts: :count', ['count' => $server->accountsText()]),
         'cells' => $cells,
         'rows' => $rows ?? 1,
+        'fill' => $fill ?? false,
     ])
 @endif

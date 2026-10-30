@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\Service;
 use App\Models\Tld;
 use App\Models\User;
+use App\Support\Coupons;
 use App\Support\Currencies;
 use App\Support\Demo;
 use App\Support\DemoSnapshot;
@@ -192,7 +193,7 @@ class ClientOrder
             $product = (string) ($line['product'] ?? '') === self::DOMAIN_ONLY ? null : self::products()->firstWhere('id', (int) ($line['product'] ?? 0));
             $domain = DomainName::normalize($line['domain'] ?? null);
 
-            return array_filter([$product?->name, $domain !== '' ? $domain : null]);
+            return array_filter([$product?->localName(), $domain !== '' ? $domain : null]);
         })->values()->all();
     }
 
@@ -208,7 +209,7 @@ class ClientOrder
         $domainOnly = (string) ($line['product'] ?? '') === self::DOMAIN_ONLY;
         $product = $domainOnly ? null : self::products()->firstWhere('id', (int) ($line['product'] ?? 0));
         $domain = DomainName::normalize($line['domain'] ?? null);
-        $title = $product?->name ?? ($domain !== '' ? $domain : __('A domain name only'));
+        $title = $product?->localName() ?? ($domain !== '' ? $domain : __('A domain name only'));
 
         try {
             $items = $this->items($line, $client);
@@ -296,7 +297,7 @@ class ClientOrder
     /** @return Collection<int, Product> what a client can order: shown in the client area, with a priced cycle; domains are ordered by name */
     public static function products(): Collection
     {
-        return Product::query()->clientOrderable()->where('type', '!=', ServiceType::Domain)->orderBy('type')->orderBy('name')->get()
+        return Product::query()->clientOrderable()->with('tags')->where('type', '!=', ServiceType::Domain)->orderBy('type')->orderBy('name')->get()
             ->filter(fn (Product $product) => $product->cycles() !== [])
             ->values();
     }
@@ -346,9 +347,11 @@ class ClientOrder
             $product ??= throw ValidationException::withMessages(['product' => __('Choose something to order.')]);
             $cycle = BillingCycle::tryFrom((string) ($data['billing_cycle'] ?? '')) ?? $product->defaultCycle();
             $price = $product->priceFor($cycle, $currency) ?? throw ValidationException::withMessages(['billing_cycle' => __('Choose a billing cycle.')]);
+            $sale = $product->salePriceFor($cycle, $currency);
             $values = self::optionValues($product, (array) ($data['options'] ?? []));
             $picks = ProductOptions::select($product, $values, $cycle, $currency);
             $price += ProductOptions::total($picks);
+            $sale = $sale === null ? null : $sale + ProductOptions::total($picks);
             $setup = $product->setupFeeFor($cycle, $currency) + ProductOptions::setupTotal($picks);
 
             $items[] = [
@@ -361,7 +364,7 @@ class ClientOrder
                 'billing_cycle' => $cycle,
                 'options' => $values,
                 'price_cents' => $price,
-                'first_payment_cents' => $setup > 0 ? $price + $setup : null,
+                ...self::firstPayment($price, $sale, $setup),
             ];
 
             array_push($items, ...self::addonItems($product, $cycle, $currency, (array) ($data['addons'] ?? [])));
@@ -377,7 +380,7 @@ class ClientOrder
 
         $years = (int) ($data['years'] ?? 1);
         $tld = self::tld($domain);
-        $first = $tld?->priceCents($option, $years, $currency);
+        $first = $tld?->orderPriceCents($option, $years, $currency);
 
         if ($first === null) {
             throw ValidationException::withMessages(['domain' => $tld
@@ -400,6 +403,7 @@ class ClientOrder
             'billing_cycle' => BillingCycle::forYears($years),
             'price_cents' => $tld->priceCents('renew', $years, $currency) ?? $first,
             'first_payment_cents' => $first,
+            'sale_cents' => $tld->salePriceCents($option, $years, $currency),
         ];
 
         // A domain on its own may bring the SSL certificate Settings → Domains offers with it (DomainSsl).
@@ -446,9 +450,23 @@ class ClientOrder
                 'label' => $addon->name,
                 'billing_cycle' => $cycle,
                 'price_cents' => $price,
-                'first_payment_cents' => $setup > 0 ? $price + $setup : null,
+                ...self::firstPayment($price, $addon->salePriceFor($cycle, $currency), $setup),
             ];
         })->values()->all();
+    }
+
+    /**
+     * An item's first payment: the sale price while the product's sale runs (the price after it, PlaceOrder's
+     * price_cents, stays the normal one) plus the setup fee; null when it is just the price. `sale_cents` marks an item
+     * on sale, which a coupon lowers only when it says so (Coupon::covers()).
+     *
+     * @return array{first_payment_cents: ?int, sale_cents: ?int}
+     */
+    private static function firstPayment(int $price, ?int $sale, int $setup): array
+    {
+        $first = ($sale ?? $price) + $setup;
+
+        return ['first_payment_cents' => $first === $price ? null : $first, 'sale_cents' => $sale];
     }
 
     /**
@@ -500,7 +518,7 @@ class ClientOrder
     /**
      * Places the cart's items (`lines`), or one choice of the order form, as one order with one payment notice.
      *
-     * @param  array<string, mixed>  $data  `lines` (or the order form's fields), `notes`, `accept_terms`
+     * @param  array<string, mixed>  $data  `lines` (or the order form's fields), `notes`, `accept_terms`, `coupon` (a code)
      */
     public function place(Client $client, array $data): Order
     {
@@ -515,7 +533,14 @@ class ClientOrder
             $terms = TermsOfService::acceptance();
         }
 
-        $order = $this->placeOrder->handle($client, $items, filled($data['notes'] ?? null) ? trim($data['notes']) : null, $terms);
+        $coupon = null;
+
+        if (filled($data['coupon'] ?? null)) {
+            $coupon = Coupons::find($data['coupon']);
+            Coupons::check($coupon, $client, $items);
+        }
+
+        $order = $this->placeOrder->handle($client, $items, filled($data['notes'] ?? null) ? trim($data['notes']) : null, $terms, $coupon);
 
         ActivityLog::record('order.client_placed', "Order #{$order->id} placed in the client area", client: $client, properties: array_filter(['order_id' => $order->id, 'terms_version' => $order->terms_version]));
         $this->notifyAdmins($order);

@@ -7,7 +7,7 @@ few minutes. It is a normal Git checkout of GaiaCP with `GAIACP_DEMO=true` (`App
 
 - **Data**: `Database\Seeders\DemoSeeder` (a small hosting company, about 25 clients with hosting, domains and care
   plans, a year of payments, payment notices, an order, tickets, leads, quotes, knowledge base, announcements and 30
-  days of uptime). Dates are relative to today.
+  days of uptime; product colours and tags, one tag hidden). Dates are relative to today.
 - **Reset**: `php artisan gaiacp:demo-reset`, from the scheduler every `GAIACP_DEMO_RESET_MINUTES` (default 10,
   counted from the hour). The data is built once a day (and after a deploy that adds migrations) into
   `storage/app/private/demo/demo.sqlite` in a process of its own; each reset copies its tables into the live database

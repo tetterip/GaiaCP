@@ -74,6 +74,18 @@ How the admin and client panels, users, access, security, branding, themes and l
   `gaiacp.automation.usage_warning_percent` is empty) reads every active hosting account fresh; disk or bandwidth at or
   above that share not yet in `usage_warnings` (service, kind, `Y-m`) sends the Usage Warning email and logs
   `service.usage_high` (bell, Services area)
+  A group's public page (`product_groups.page`, `page_titles` / `page_descriptions` / `page_texts` per locale, `faq`):
+  `ProductGroupPage` at `/{group}`, registered last in the client panel's routes as a `->fallback()` so it never hides
+  another route (`ProductGroup::reservedSlugs()` refuses those links); cards, `OrderForm::compareTable()` with Order
+  links (`compare-products` without `$field`), questions; `metaDescription()` and `structuredData()` (ItemList of
+  Product + Offer, FAQPage) are read by `Seo` through the page captured from the layout. Linked from PublicHome, the
+  visitor's menu and the sitemap.
+  A product's page (`products.page`, `slug` unique, `page_titles` / `page_descriptions` / `page_texts`): `ProductPage` at
+  `/{group}/{slug}`, also a fallback route, only for `clientOrderable()` products with cycles; `noindex()` (read by
+  `Seo::kept()`) while no language has a text, which also keeps it out of the sitemap and drops its JSON-LD (Product +
+  Offer, BreadcrumbList). `Concerns\PublicProducts` holds `orderUrl()` / `offer()` for both pages. Products keep
+  `name` / `description` in the default language and `names` / `descriptions` for the others: client-facing order
+  pages read `localName()` / `localDescription()`; admin pages, services and emails keep `name`.
   Product groups (`ProductGroup`, Settings → Product groups `ProductGroupResource`; `products.product_group_id`, `icon`,
   `features`): `App\Support\OrderCatalogue::groups()` lists them in order with their products (cheapest a month
   first), the ungrouped ones under `OTHER` and domain names as `DOMAINS`; hidden groups only when asked for by slug.
@@ -82,7 +94,13 @@ How the admin and client panels, users, access, security, branding, themes and l
   route (`/order/{group?}`, `/cart/{group?}`) or the product (`OrderCatalogue::keyFor()`). A group with `features`
   shows `filament.client.compare-products` under its products: the feature rows, a price row per billing cycle any of
   them has, and Choose buttons that `$set` the product field (so its `afterStateUpdated` runs as for a card). A product's
-  `popular` adds a Popular badge to its card, the table and the public home page. Icons: `App\Support\ProductIcons`.
+  `popular` adds a Popular badge to its card, the table and the public home page, followed by its visible tags
+  (`ProductTag`, Settings → Product tags `ProductTagResource`, `product_product_tag`; `Product::badges()`, at most
+  `Product::BADGES`, partial `filament.client.product-badges`, colour from `ProductTag::COLORS` as `--gcp-tag`); every tag
+  also filters Products, Services (`product_tags`) and Messages to clients (`filters.tags`). Icons: `App\Support\ProductIcons`.
+  A product's `color` (a `ProductTag::COLORS` key, `Product::orderColor()`) is `data-gcp-color` on its card, compare
+  column and public home card; filament.themes.client turns it into `--gcp-product` and the local `--gcp-accent`.
+  Both colour pickers are `App\Filament\Forms\ColorCircles`.
   Orders (`Client/Pages/Order`, `gaiacp.client_area.orders`): one product from `App\Actions\ClientOrder::products()`
   (`Product::clientOrderable()`, not domain type, a priced cycle) with its domain kept / registered / transferred, or a
   domain on its own, plus the product's options not hidden from clients (`ProductOptionFields`, `options.{id}`);
@@ -148,6 +166,12 @@ How the admin and client panels, users, access, security, branding, themes and l
   Search engines (Settings → Client area, `gaiacp.seo.*`, `App\Support\Seo`): `filament.seo` on `HEAD_END` of both
   panels; /admin and signed-in pages are always `noindex`, the public pages (login, sign up, order page) are indexed
   unless `seo.index` is off, with `seo.description` as meta and Open Graph description (company name and logo too).
+  A visitor's language is in the address too (`?lang=`, read by `SetLocale` and kept in the session; the top bar's
+  language route drops it on the way back): indexable pages get a canonical link (path, `page` and `lang` only) and
+  hreflang alternates per language plus `x-default`, og:title is the page title. `SitemapController` serves
+  `/sitemap.xml` (the public pages switched on, KB articles and announcements not kept for clients, each language) and
+  `/robots.txt` (Disallow /admin/ and /install/ + Sitemap, or Disallow / while not indexable); `public/robots.txt` is
+  gone and the updater leaves an unchanged old copy behind (`Updater::DROPPED`).
   Terms of service (Settings → Client area, `gaiacp.client_area.terms*`, `App\Support\TermsOfService`): link and / or
   Markdown text, `checkbox()` on Order and Register; `ClientOrder` / `ClientSignup` refuse without it and keep
   `terms_accepted_at` / `terms_version` on the order / client (version = the date and time the terms changed unless typed)

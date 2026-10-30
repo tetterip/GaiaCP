@@ -5,6 +5,54 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Product pages: a product's new Public page section gives it a page inside its group's address
+  (`/web-hosting/business`) with a title, a search result description and a text per language, its prices, Order
+  button and what it includes, plus Product data for search engines. Without a text it stays out of search results.
+  Products also get their name and description in each language (Other languages), shown on the order pages.
+- Product group pages: switch on Public page on a product group (Settings → Product groups) and it gets a page of its
+  own at the site root (`/web-hosting`) with a title, a text and questions per language, its products with prices and
+  Order buttons and the compare table, plus a search result description and structured data (products with their
+  prices, FAQ) for search engines. The home page, the visitors' menu and the sitemap link to it.
+- Search engines: each language of a public page has its own address (`?lang=el`), and every public page names its
+  canonical address and the other languages (hreflang). New `/sitemap.xml` lists the public pages that are switched
+  on (knowledge base articles and announcements included) in every language, and `/robots.txt` points to it and keeps
+  /admin out, or keeps everything out while Settings → Client area → Search engines is off. Link previews show the
+  page's title.
+- Product colours: pick a colour for a product (its Order page section) and its name, icon, price, check marks and
+  buttons take it on the order cards, in the compare table and on the public home page, with a line along the card's
+  top. Product tags and products now pick their colour from ten circles instead of a list.
+- Sale prices: a Sale section on each product (a price per cycle) and on each TLD (register and transfer per term),
+  from a Sale from to a Sale until day. Orders placed then pay the sale price for their first period; renewals are at
+  the normal price. Clients see the normal price struck through and a Sale badge on the order pages, the public home
+  page, domain search and Domain prices, and it ends by itself. A coupon skips items on sale unless its new Also on
+  sale prices switch is on.
+- Product tags (Settings → Product tags): your own labels such as New or SSD, named per language with a colour. One
+  shown to clients is a badge after Popular on the order cards, in the compare table and on the public home page (the
+  first three of a product); every tag filters the Products and Services lists and Messages to clients.
+- Coupons (Billing → Coupons): a code for a percentage or a fixed amount off, on the first payment only or on every
+  renewal too, for chosen products and domain endings or for everything, with dates, a usage limit, once per client
+  and new clients only. Clients enter it in the cart (or follow a `?coupon=CODE` link), admins pick it on New order,
+  and `POST /api/v1/orders` takes a `coupon`. Setup fees are never lowered.
+- SSL certificates on your own hosting: when a certificate's domain is the client's hosting account on a cPanel or
+  Plesk server here, GaiaCP validates it there (a file in the website on cPanel, a DNS record in the subscription's
+  zone on Plesk) instead of emailing the client, and installs the issued certificate on the account. SSL → Install on
+  hosting does it by hand; Settings → Domains → Set up certificates on our own hosting turns it off. Not yet tried on
+  a real cPanel or Plesk server.
+- AI assistant on tickets, each with its own switch under Settings → AI assistant: Draft a reply in a ticket's Reply
+  (from the conversation, the client's services and the closest knowledge base articles), Summarise (one line with a
+  suggested priority, department and mood; Keep shows it under the subject in the list) and More → Write a knowledge
+  base article from an answered ticket (saved unpublished). The client's name, company, emails and phone numbers are
+  replaced before anything is sent; notes and files are never sent.
+- AI assistant about a client: Personal reminder on an unpaid payment notice (the reminder email rewritten for how the
+  client pays, to read and send) and Suggestions on a client's page (what they might buy, signs they may leave, what
+  to look after). Only facts are sent (services, prices, payment history, ticket subjects), never who the client is.
+- Settings → Languages → Translate with AI (super admins): the AI assistant fills a language's missing texts, 40 at a
+  time while the page is open, saved as uploaded translations; ones that lose a placeholder stay in English.
+- Ollama plugin (off until switched on): the AI assistant with an open model (Llama, Qwen, Gemma…) on your own server
+  or computer, so texts never leave your machines; Settings → Ollama takes its address and model, no key needed.
+- The dashboard's Servers card fills its width: the uptime and accounts squares grow with the card (and sit side by
+  side on a wide one) instead of stopping at about 60% of it; the same on the client hosting page's uptime. Every
+  square is the same whole number of pixels wide.
 - The Cloudflare Turnstile check is as wide as the form it is on (login, sign up, forgot password, domain search).
 
 ## [0.3.1] - 2026-10-27
