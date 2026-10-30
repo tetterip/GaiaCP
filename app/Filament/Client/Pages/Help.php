@@ -93,6 +93,7 @@ class Help extends Page
             'terms' => TermsOfService::required(),
             'tickets' => (bool) config('gaiacp.support.client_tickets'),
             'notifications' => $on('notifications'),
+            'welcome_tour' => $on('welcome_tour'),
             'email_history' => EmailResource::canAccess(),
             'knowledge_base' => KnowledgeBase::canAccess(),
             'announcements' => Announcements::canAccess(),

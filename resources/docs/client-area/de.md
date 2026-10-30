@@ -22,6 +22,10 @@ Die **Glocke** oben auf der Seite zeigt, was seit Ihrem letzten Besuch passiert 
 „Cookie-Einstellungen“ am Fuß jeder Seite zeigt die Cookie-Auswahl erneut, damit Sie sie ändern können.
 <!-- endif -->
 
+<!-- if:welcome_tour -->
+Beim ersten Login zeigt eine kurze Tour, was Sie hier tun können. Ihr Menü oben rechts → **Tour** zeigt sie erneut.
+<!-- endif -->
+
 ## Startseite
 
 Die Startseite zeigt, was Sie zu zahlen haben, wie viele Dienste aktiv sind und was als Nächstes verlängert wird, jeweils mit einem Link. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten.

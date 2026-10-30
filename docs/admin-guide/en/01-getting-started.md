@@ -36,6 +36,11 @@ server, domain prices, your first product, the client area and terms, the public
 opens the page where you do it and ticks itself once it is done. Skip the steps you don't need; **Hide** takes the card
 off the dashboard. It stays under Settings → General → Setup guide.
 
+Before that, on the first login, a short **tour** shows where things are: clients and orders, services, payment notices,
+support, the search and the bell, and this guide. Each admin gets it once, with only the parts their access level
+opens; the menu at the top right → **Tour** shows it again. Admins who were there before the tour came don't get it by
+themselves.
+
 The chapters of this guide follow roughly the same order, so you can read them alongside it.
 
 ## Finding your way around

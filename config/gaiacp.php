@@ -276,6 +276,7 @@ return [
         'email_links' => true,
         'notifications' => true, // the bell in the client area's top bar (App\Notifications\ClientAlerts)
         'email_history' => true, // the client's menu → Email history: the emails sent to them, from the email log
+        'welcome_tour' => true, // a short tour of the client area on a client's first login, again from their menu → Tour (App\Support\WelcomeTour)
         'public_orders' => false, // /cart: visitors choose an order before they sign up or log in (needs orders on)
         'signup' => false, // a Sign up page on the client login (new clients confirm their email address first)
 

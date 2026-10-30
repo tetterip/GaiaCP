@@ -30,6 +30,8 @@ Settings → Client area switches each self-service action on or off:
 - **Orders**: order products and domains through a cart, add add-ons, ask for an upgrade or a cancellation.
 - **Links in emails**: a "View in the client area" button at the end of client emails.
 - The **Notifications bell** and **Email history**.
+- The **Welcome tour**: on a client's first login, a few cards on their services, payment notices, ordering, support
+  and profile; their menu → Tour shows it again. It doesn't open by itself when you look as the client.
 
 Every change a client makes goes through the same actions you use, is in the Activity log, and the requests (profile
 changes, cancellations, upgrades) wait for your answer.
