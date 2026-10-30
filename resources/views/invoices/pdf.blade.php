@@ -1,10 +1,13 @@
-{{-- An invoice as a PDF (App\Invoicing\InvoicePdf, dompdf): tables only, DejaVu Sans for Greek and other scripts. --}}
+{{-- An invoice or credit note as a PDF (App\Invoicing\InvoicePdf, dompdf): tables only, DejaVu Sans for Greek and other
+     scripts. A credit note prints its amounts negative. --}}
 @php
     /** @var \App\Models\TaxInvoice $invoice */
     $seller = $invoice->seller;
     $to = (object) array_merge(array_fill_keys([...\App\Models\Invoice::BILL_TO, 'custom'], null), $invoice->bill_to);
     $clientName = trim($to->first_name.' '.$to->last_name);
-    $money = fn (int $cents) => \App\Support\Money::format($cents, $invoice->currency);
+    $creditNote = $invoice->isCreditNote();
+    $money = fn (int $cents) => \App\Support\Money::format($creditNote && $cents !== 0 ? -$cents : $cents, $invoice->currency);
+    $heading = $creditNote ? __('Credit note') : __('Invoice');
     $date = fn ($value) => $value?->format(\App\Providers\AppServiceProvider::dateFormat());
     $hasTax = $invoice->tax_cents > 0 || $invoice->items->contains(fn ($item) => $item->tax_cents > 0);
 @endphp
@@ -12,7 +15,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <title>{{ __('Invoice :number', ['number' => $invoice->number]) }}</title>
+    <title>{{ $creditNote ? __('Credit note :number', ['number' => $invoice->number]) : __('Invoice :number', ['number' => $invoice->number]) }}</title>
     <style>
         @page { margin: 18mm 16mm; }
         body { font-family: "DejaVu Sans", sans-serif; font-size: 9.5pt; color: #1f2937; line-height: 1.45; }
@@ -56,7 +59,7 @@
                 @endforeach
             </td>
             <td class="end" style="width: 42%">
-                <h1>{{ __('Invoice') }}</h1>
+                <h1>{{ $heading }}</h1>
                 <table class="meta">
                     <tr><td class="label end">{{ __('Number') }}</td><td class="end"><strong>{{ $invoice->number }}</strong></td></tr>
                     <tr><td class="label end">{{ __('Date') }}</td><td class="end">{{ $date($invoice->date) }}</td></tr>
@@ -65,6 +68,9 @@
                     @endif
                     @if ($invoice->paymentMethods())
                         <tr><td class="label end">{{ __('Paid by') }}</td><td class="end">{{ $invoice->paymentMethods() }}</td></tr>
+                    @endif
+                    @if ($invoice->creditedInvoice)
+                        <tr><td class="label end">{{ __('Credits invoice') }}</td><td class="end">{{ $invoice->creditedInvoice->number }}</td></tr>
                     @endif
                     @if ($invoice->notice)
                         <tr><td class="label end">{{ __('Payment notice') }}</td><td class="end">{{ $invoice->notice->number }}</td></tr>
@@ -142,6 +148,10 @@
             <td class="end">{{ $money($invoice->total_cents) }}</td>
         </tr>
     </table>
+
+    @if (filled($invoice->reason))
+        <p class="note">{{ __('Reason') }}: {{ __($invoice->reason) }}</p>
+    @endif
 
     @if (filled($invoice->tax_note))
         <p class="note">{{ $invoice->tax_note }}</p>

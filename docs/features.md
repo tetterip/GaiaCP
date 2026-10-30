@@ -54,8 +54,9 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   created and emailed ahead of it, with reminders and overdue notices; paid when its payments are recorded
 - Invoices (Settings → Invoices, off by default): a paid payment notice gets an invoice with its own number (format
   with `{YEAR}` `{MONTH}` `{DAY}` `{NUMBER}`, no gaps, next number only forward), a copy never changed or deleted;
-  emailed to the client as a PDF (Invoice Issued) and listed in the client area; credit notes and national
-  e-invoicing (myDATA, Peppol…) as plugins are planned
+  emailed to the client as a PDF (Invoice Issued) and listed in the client area; credit notes (by hand for chosen
+  lines, or on its own when a payment is reversed) in a series of their own; CSV export for the accountant; national
+  e-invoicing (myDATA, Peppol…) as plugins is planned
 - Price changes with notice (Change price: on a service, the Services list, a product or a TLD): the current price
   plus a percentage, a set amount, or the product's / TLD's current price, for renewals due from a date at least
   Settings → Automation → Price change notice ahead (30 days by default). Each client gets one Price Change Notice
