@@ -109,7 +109,7 @@ On an active domain registered through us you can:
 When a service is due we send you a **payment notice** by email, with how to pay. It is a payment notice, not a tax invoice. **Payment notices** lists them all: open one to see its lines, print it or save it as a PDF. The buttons above the list show only the unpaid, paid or overdue ones. **Payments** lists the payments we have recorded. After you pay, the notice shows as paid once we record your payment.
 
 <!-- if:invoices -->
-When we issue invoices, a paid payment notice also gets an **invoice**: we email it to you as a PDF, the paid notice has a button to download it, and **Invoices** (under Billing) lists them all.
+When we issue invoices, a paid payment notice also gets an **invoice**: we email it to you as a PDF, the paid notice has a button to download it, and **Invoices** (under Billing) lists them all. A **credit note** there, with a negative total, undoes an invoice, for example when a payment is returned.
 <!-- endif -->
 
 <!-- if:pay_online -->

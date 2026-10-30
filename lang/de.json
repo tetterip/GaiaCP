@@ -3405,5 +3405,22 @@
     "No invoices yet": "Noch keine Rechnungen",
     "Number of the payment notice it was issued for": "Nummer der Zahlungsaufforderung, für die sie ausgestellt wurde",
     "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Sendet die E-Mail „Rechnung ausgestellt“ mit dem PDF jetzt an :email, auch wenn diese E-Mail auf der Seite E-Mail-Vorlagen ausgeschaltet ist.",
-    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Wenn eine bezahlte Zahlungsaufforderung ihre Rechnung erhält (Einstellungen → Rechnungen), mit der Rechnung als PDF; auch über E-Mail senden auf der Seite einer Rechnung."
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Wenn eine bezahlte Zahlungsaufforderung ihre Rechnung erhält (Einstellungen → Rechnungen), mit der Rechnung als PDF; auch über E-Mail senden auf der Seite einer Rechnung.",
+    "A credit note undoes the chosen lines of this invoice, dated today with the next credit note number. It can't be changed or deleted afterwards. It records no refund: record one as you would any money paid back.": "Eine Gutschrift storniert die gewählten Positionen dieser Rechnung, mit heutigem Datum und der nächsten Gutschriftnummer. Sie kann danach weder geändert noch gelöscht werden. Sie erfasst keine Erstattung: Erfasse diese wie jedes zurückgezahlte Geld.",
+    "Credit note": "Gutschrift",
+    "Credit note :number": "Gutschrift :number",
+    "Credit note :number issued": "Gutschrift :number ausgestellt",
+    "Credit note format": "Gutschrift-Nummernformat",
+    "Credit note issued": "Gutschrift ausgestellt",
+    "Credit note number format": "Gutschrift-Nummernformat",
+    "Credit notes": "Gutschriften",
+    "Credit notes undo an invoice (from the invoice, or when its payment is reversed) and are numbered in a series of their own, the same tags.": "Gutschriften stornieren eine Rechnung (über die Rechnung oder wenn ihre Zahlung storniert wird) und werden in einer eigenen Serie nummeriert, mit denselben Tags.",
+    "Credits invoice": "Storniert Rechnung",
+    "Every chosen line of this invoice has been credited already.": "Alle gewählten Positionen dieser Rechnung sind bereits gutgeschrieben.",
+    "Invoice issued": "Rechnung ausgestellt",
+    "Issue credit note": "Gutschrift ausstellen",
+    "Lines": "Positionen",
+    "No credit note issued": "Keine Gutschrift ausgestellt",
+    "Tax note": "Steuerhinweis",
+    "Tax rate": "Steuersatz"
 }

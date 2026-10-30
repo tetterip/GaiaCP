@@ -3405,5 +3405,22 @@
     "No invoices yet": "Nenhuma fatura ainda",
     "Number of the payment notice it was issued for": "Número do aviso de pagamento para o qual foi emitida",
     "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Envia agora o e-mail Fatura emitida com o PDF para :email, mesmo que esse e-mail esteja desativado na página Modelos de e-mail.",
-    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Quando um aviso de pagamento pago recebe sua fatura (Configurações → Faturas), com a fatura em PDF; também com Enviar e-mail na página de uma fatura."
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Quando um aviso de pagamento pago recebe sua fatura (Configurações → Faturas), com a fatura em PDF; também com Enviar e-mail na página de uma fatura.",
+    "A credit note undoes the chosen lines of this invoice, dated today with the next credit note number. It can't be changed or deleted afterwards. It records no refund: record one as you would any money paid back.": "Uma nota de crédito anula as linhas escolhidas desta fatura, com a data de hoje e o próximo número de nota de crédito. Depois não pode ser alterada nem excluída. Ela não registra reembolso: registre-o como qualquer valor devolvido.",
+    "Credit note": "Nota de crédito",
+    "Credit note :number": "Nota de crédito :number",
+    "Credit note :number issued": "Nota de crédito :number emitida",
+    "Credit note format": "Formato do número da nota de crédito",
+    "Credit note issued": "Nota de crédito emitida",
+    "Credit note number format": "Formato do número da nota de crédito",
+    "Credit notes": "Notas de crédito",
+    "Credit notes undo an invoice (from the invoice, or when its payment is reversed) and are numbered in a series of their own, the same tags.": "As notas de crédito anulam uma fatura (pela fatura, ou quando o pagamento dela é estornado) e são numeradas em uma série própria, com as mesmas tags.",
+    "Credits invoice": "Credita a fatura",
+    "Every chosen line of this invoice has been credited already.": "Todas as linhas escolhidas desta fatura já foram creditadas.",
+    "Invoice issued": "Fatura emitida",
+    "Issue credit note": "Emitir nota de crédito",
+    "Lines": "Linhas",
+    "No credit note issued": "Nenhuma nota de crédito emitida",
+    "Tax note": "Observação fiscal",
+    "Tax rate": "Alíquota"
 }

@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use LogicException;
 
 /**
- * One line of an invoice, copied from its payment notice line when the invoice was issued; never changed after.
+ * One line of an invoice, copied from its payment notice line when the invoice was issued, or of a credit note, copied
+ * from the invoice line it credits (credited_item_id); never changed after.
  *
  * @property CarbonImmutable|null $period_start
  * @property CarbonImmutable|null $period_end
  */
-#[Fillable(['tax_invoice_id', 'service_id', 'description', 'period_start', 'period_end', 'amount_cents', 'tax_cents', 'total_cents'])]
+#[Fillable(['tax_invoice_id', 'credited_item_id', 'service_id', 'description', 'period_start', 'period_end', 'amount_cents', 'tax_cents', 'total_cents'])]
 class TaxInvoiceItem extends Model
 {
     public $timestamps = false;

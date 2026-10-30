@@ -3405,5 +3405,22 @@
     "No invoices yet": "Henüz fatura yok",
     "Number of the payment notice it was issued for": "Kesildiği ödeme bildiriminin numarası",
     "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Fatura kesildi e-postasını PDF ile birlikte şimdi :email adresine gönderir; bu e-posta E-posta şablonları sayfasında kapalı olsa bile.",
-    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Ödenmiş bir ödeme bildirimi faturasını aldığında (Ayarlar → Faturalar), fatura PDF olarak eklenir; ayrıca bir faturanın sayfasındaki E-posta gönder ile."
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Ödenmiş bir ödeme bildirimi faturasını aldığında (Ayarlar → Faturalar), fatura PDF olarak eklenir; ayrıca bir faturanın sayfasındaki E-posta gönder ile.",
+    "A credit note undoes the chosen lines of this invoice, dated today with the next credit note number. It can't be changed or deleted afterwards. It records no refund: record one as you would any money paid back.": "Alacak dekontu bu faturanın seçilen satırlarını bugünün tarihi ve sonraki dekont numarasıyla iptal eder. Sonradan değiştirilemez veya silinemez. İade kaydetmez: iadeyi geri ödenen her tutar gibi kaydedin.",
+    "Credit note": "Alacak dekontu",
+    "Credit note :number": "Alacak dekontu :number",
+    "Credit note :number issued": "Alacak dekontu :number düzenlendi",
+    "Credit note format": "Alacak dekontu numara biçimi",
+    "Credit note issued": "Alacak dekontu düzenlendi",
+    "Credit note number format": "Alacak dekontu numara biçimi",
+    "Credit notes": "Alacak dekontları",
+    "Credit notes undo an invoice (from the invoice, or when its payment is reversed) and are numbered in a series of their own, the same tags.": "Alacak dekontları bir faturayı iptal eder (faturadan veya ödemesi geri alındığında) ve aynı etiketlerle kendi serilerinde numaralanır.",
+    "Credits invoice": "Alacaklandırılan fatura",
+    "Every chosen line of this invoice has been credited already.": "Bu faturanın seçilen tüm satırları zaten alacaklandırıldı.",
+    "Invoice issued": "Fatura düzenlendi",
+    "Issue credit note": "Alacak dekontu düzenle",
+    "Lines": "Satırlar",
+    "No credit note issued": "Alacak dekontu düzenlenmedi",
+    "Tax note": "Vergi notu",
+    "Tax rate": "Vergi oranı"
 }

@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Quote;
 use App\Models\Server;
+use App\Models\TaxInvoice;
 use App\Models\Ticket;
 use App\Plugins\PluginManager;
 use BackedEnum;
@@ -34,6 +35,8 @@ class GaiaEvent
         'invoice.cancelled',
         'payment.recorded',
         'payment.reversed',
+        'tax_invoice.issued',
+        'credit_note.issued',
         'service.activated',
         'service.suspended',
         'service.unsuspended',
@@ -93,6 +96,8 @@ class GaiaEvent
             'invoice.cancelled' => __('Payment notice cancelled'),
             'payment.recorded' => __('Payment recorded'),
             'payment.reversed' => __('Payment reversed'),
+            'tax_invoice.issued' => __('Invoice issued'),
+            'credit_note.issued' => __('Credit note issued'),
             'service.activated' => __('Service activated'),
             'service.suspended' => __('Service suspended'),
             'service.unsuspended' => __('Service unsuspended'),
@@ -136,7 +141,7 @@ class GaiaEvent
 
     /**
      * What happened, as plain data to pass on (e.g. as webhook JSON): the client, the service and the record the
-     * event is about (payment notice, payment, order, ticket, lead or server), plus its log properties. No passwords,
+     * event is about (payment notice, invoice or credit note, payment, order, ticket, lead or server), plus its log properties. No passwords,
      * EPP codes or card data. Money in integer cents with its currency, dates as Y-m-d, times as ISO 8601.
      *
      * @return array<string, mixed>
@@ -199,6 +204,20 @@ class GaiaEvent
                 'paid_on' => self::plain($payment->paid_on),
                 'method' => self::plain($payment->method),
                 'reference' => $payment->reference,
+            ];
+        }
+
+        if (isset($properties['tax_invoice_id']) && $taxInvoice = TaxInvoice::query()->with('creditedInvoice')->find($properties['tax_invoice_id'])) {
+            $data['tax_invoice'] = [
+                'id' => $taxInvoice->id,
+                'type' => $taxInvoice->type,
+                'number' => $taxInvoice->number,
+                'date' => self::plain($taxInvoice->date),
+                'subtotal_cents' => $taxInvoice->subtotal_cents,
+                'tax_cents' => $taxInvoice->tax_cents,
+                'total_cents' => $taxInvoice->total_cents,
+                'currency' => $taxInvoice->currency,
+                'credits' => $taxInvoice->creditedInvoice?->number,
             ];
         }
 

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TaxInvoices\Schemas;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Filament\Resources\Invoices\Schemas\InvoiceInfolist;
+use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Models\Invoice;
 use App\Models\TaxInvoice;
 use App\Providers\AppServiceProvider;
@@ -33,7 +34,12 @@ class TaxInvoiceInfolist
                             ->date(AppServiceProvider::dateFormat()),
                         TextEntry::make('paid_on')
                             ->date(AppServiceProvider::dateFormat())
-                            ->placeholder('—'),
+                            ->placeholder('—')
+                            ->hidden(fn (TaxInvoice $record) => $record->isCreditNote()),
+                        TextEntry::make('creditedInvoice.number')
+                            ->label('Credits invoice')
+                            ->url(fn (TaxInvoice $record) => $record->credited_invoice_id ? TaxInvoiceResource::getUrl('view', ['record' => $record->credited_invoice_id]) : null)
+                            ->visible(fn (TaxInvoice $record) => $record->isCreditNote()),
                         TextEntry::make('notice.number')
                             ->label('Payment notice')
                             ->url(fn (TaxInvoice $record) => $record->invoice_id ? InvoiceResource::getUrl('view', ['record' => $record->invoice_id]) : null),
@@ -51,7 +57,19 @@ class TaxInvoiceInfolist
                         TextEntry::make('payment_methods')
                             ->label('Paid by')
                             ->state(fn (TaxInvoice $record) => $record->paymentMethods())
-                            ->placeholder('—'),
+                            ->placeholder('—')
+                            ->hidden(fn (TaxInvoice $record) => $record->isCreditNote()),
+                        TextEntry::make('reason')
+                            ->label('Reason')
+                            ->formatStateUsing(fn (?string $state) => $state === null ? null : __($state))
+                            ->placeholder('—')
+                            ->visible(fn (TaxInvoice $record) => $record->isCreditNote()),
+                        TextEntry::make('creditNotes')
+                            ->label('Credit notes')
+                            ->state(fn (TaxInvoice $record) => $record->creditNotes()->orderBy('id')->pluck('number')->all())
+                            ->badge()
+                            ->color('danger')
+                            ->visible(fn (TaxInvoice $record) => ! $record->isCreditNote() && $record->creditNotes()->exists()),
                         TextEntry::make('seller')
                             ->label('From')
                             ->state(fn (TaxInvoice $record) => self::sellerLines($record->seller))

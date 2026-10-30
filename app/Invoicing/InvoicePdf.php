@@ -8,7 +8,7 @@ use App\Support\Locales;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 /**
- * An invoice as a PDF (resources/views/invoices/pdf.blade.php), in its client's language: what the client downloads
+ * An invoice or credit note as a PDF (resources/views/invoices/pdf.blade.php), in its client's language: what the client downloads
  * and gets with the Invoice Issued email, and what the admin downloads. Made from the invoice's own copies, so the
  * same invoice always gives the same document (only the logo is today's).
  */
@@ -16,7 +16,7 @@ class InvoicePdf
 {
     public static function content(TaxInvoice $invoice): string
     {
-        $invoice->loadMissing('items', 'notice', 'client');
+        $invoice->loadMissing('items', 'notice', 'client', 'creditedInvoice');
 
         return Locales::using($invoice->client?->preferredLocale(), fn () => Pdf::loadView('invoices.pdf', [
             'invoice' => $invoice,

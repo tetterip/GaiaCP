@@ -58,7 +58,8 @@ class InvoiceResource extends Resource
             ->columns([
                 TextColumn::make('number')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn (TaxInvoice $record) => $record->isCreditNote() ? __('Credit note') : null),
                 TextColumn::make('date')
                     ->date(AppServiceProvider::dateFormat())
                     ->sortable(),
@@ -66,7 +67,7 @@ class InvoiceResource extends Resource
                     ->label('Payment notice'),
                 TextColumn::make('total_cents')
                     ->label('Total')
-                    ->state(fn (TaxInvoice $record) => Money::format($record->total_cents, $record->currency)),
+                    ->state(fn (TaxInvoice $record) => Money::format($record->signedTotalCents(), $record->currency)),
             ])
             ->defaultSort(fn (Builder $query) => $query->orderByDesc('date')->orderByDesc('id'))
             ->recordActions([ViewTaxInvoice::downloadAction()->iconButton()->tooltip(__('Download PDF'))])

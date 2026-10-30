@@ -36,6 +36,7 @@ class Settings
         'invoices.days_before',
         'invoicing.enabled',
         'invoicing.number_format',
+        'invoicing.credit_note_format',
         'credit.enabled',
         'credit.min_deposit',
         'credit.max_deposit',
