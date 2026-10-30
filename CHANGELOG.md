@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Welcome tour: on the first login, admins and clients get a few cards saying where things are (clients and orders,
+  services, payment notices, support, search and bell, help for admins; services, payment notices, ordering, support,
+  profile and help for clients), only for the pages each one can open. The admin's last card opens the setup guide.
+  The user menu → Tour shows it again; Settings → Client area → Welcome tour turns off the clients' one. Existing
+  users don't get it by themselves.
 - Product pages: a product's new Public page section gives it a page inside its group's address
   (`/web-hosting/business`) with a title, a search result description and a text per language, its prices, Order
   button and what it includes, plus Product data for search engines. Without a text it stays out of search results.
