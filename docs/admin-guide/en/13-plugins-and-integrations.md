@@ -52,9 +52,9 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 | Tax details | VIES VAT check, ΑΑΔΕ registry lookup | their own settings pages |
 | Notifications | Slack, Discord, Telegram, Webhooks | Settings → Email & notifications |
 | Support | Email to ticket | Settings → Support |
-| AI | Claude, ChatGPT, DeepSeek, Kimi | Settings → AI assistant (its own group: the assistant's page and each service's) |
+| AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Settings → AI assistant (its own group: the assistant's page and each service's) |
 | Look | Gaia and Flat themes | Profile, Settings → General, Settings → Client area |
-| Moving in | Import from WHMCS | Settings → System |
+| Moving in | WHMCS import | Settings → System |
 
 ## Webhooks
 

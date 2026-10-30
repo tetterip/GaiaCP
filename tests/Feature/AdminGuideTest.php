@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Pages\Help;
 use App\Models\User;
+use App\Plugins\PluginManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -54,6 +56,16 @@ class AdminGuideTest extends TestCase
 
         foreach (SettingsCluster::GROUPS as $group) {
             $this->assertStringContainsString($group, $text, "Getting started does not name the {$group} settings group");
+        }
+    }
+
+    public function test_the_plugins_chapter_lists_every_bundled_plugin(): void
+    {
+        $text = Str::lower(File::get(base_path('docs/admin-guide/en/13-plugins-and-integrations.md')));
+        $table = Str::between($text, '## what ships with gaiacp', "\n## ");
+
+        foreach (app(PluginManager::class)->all() as $plugin) {
+            $this->assertStringContainsString(Str::lower($plugin->name()), $table, "What ships with GaiaCP does not list {$plugin->name()}");
         }
     }
 
