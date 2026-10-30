@@ -28,6 +28,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
@@ -167,6 +169,70 @@ class ProductForm
                                     ->maxLength(100)
                                     ->placeholder(__('Yes, No, 10 GB, Unlimited…')))
                                 ->values()->all()),
+                    ]),
+
+                // The name and description clients see in the other languages (Product::localName())
+                Section::make(__('Other languages'))
+                    ->description(__('What clients see on the order pages when they use another language. Empty: the name and description above.'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->visible(fn () => Locales::multiple())
+                    ->schema([
+                        Tabs::make('languages')
+                            ->contained(false)
+                            ->tabs(fn () => collect(Locales::available())->except(Locales::default())->map(fn (string $name, string $locale) => Tab::make($name)
+                                ->key("language-{$locale}")
+                                ->schema([
+                                    TextInput::make("names.{$locale}")
+                                        ->label('Name')
+                                        ->maxLength(255),
+                                    AiTextActions::forLocale(Textarea::make("descriptions.{$locale}")
+                                        ->label('Description')
+                                        ->rows(3), $locale, fn (string $other) => Locales::isDefault($other) ? 'description' : "descriptions.{$other}"),
+                                ]))->values()->all()),
+                    ]),
+
+                // A page of its own for visitors and search engines (ProductPage)
+                Section::make(__('Public page'))
+                    ->description(__('A page of its own for visitors and search engines, inside its group\'s address: its name, prices, Order button, what it includes and your text. Without a text it stays out of search results.'))
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->hidden(fn (Get $get) => (bool) $get('addon'))
+                    ->schema([
+                        Grid::make(['default' => 1, 'sm' => 2])->schema([
+                            Toggle::make('page')
+                                ->label('Public page')
+                                ->live()
+                                ->helperText(fn (Get $get) => filled($get('product_group_id')) ? null : __('Put it in a group first (Order page above): its page sits inside the group\'s address.')),
+                            TextInput::make('slug')
+                                ->label('Link')
+                                ->prefix(fn (Get $get) => rtrim(url('/'), '/').'/'.(ProductGroup::query()->find($get('product_group_id'))?->slug ?? '…').'/')
+                                ->maxLength(100)
+                                ->unique(ignoreRecord: true)
+                                ->helperText(__('Empty: made from the name.'))
+                                ->visible(fn (Get $get) => (bool) $get('page')),
+                        ]),
+                        Tabs::make('page-texts')
+                            ->contained(false)
+                            ->visible(fn (Get $get) => (bool) $get('page'))
+                            ->tabs(fn () => collect(Locales::available())->map(fn (string $name, string $locale) => Tab::make($name)
+                                ->key("page-texts-{$locale}")
+                                ->schema([
+                                    TextInput::make("page_titles.{$locale}")
+                                        ->label('Page title')
+                                        ->maxLength(100)
+                                        ->helperText(__('The heading and the title in search results. Empty: the name.')),
+                                    Textarea::make("page_descriptions.{$locale}")
+                                        ->label('Search result description')
+                                        ->rows(2)
+                                        ->maxLength(300)
+                                        ->helperText(__('One or two sentences shown under the title in search results and link previews. Empty: the description.')),
+                                    AiTextActions::forLocale(Textarea::make("page_texts.{$locale}")
+                                        ->label('Page text')
+                                        ->rows(8)
+                                        ->maxLength(10000)
+                                        ->helperText(__('Markdown. What this kind of service is for, what it includes and who it suits, in your own words: search engines prefer pages with text of their own.')), $locale, fn (string $other) => "page_texts.{$other}"),
+                                ]))->values()->all()),
                     ]),
 
                 Section::make(__('Setup'))

@@ -47,6 +47,13 @@ skip pages that only repeat a price list. The search result description is what 
 the home page and the side menu link to the page, and it is in `/sitemap.xml`. A group's link can't be one the client
 area already uses (login, cart, status…).
 
+A product can have its own page too, inside its group's address (`https://example.com/web-hosting/business`): open its
+**Public page** section, switch it on and write its text per language (an empty link is made from the name). It shows the
+name, prices and Order button, its column of the compare table ("What is included") and your text, and the group's page
+links to it. A product page without a text stays out of search results and the sitemap, so it never counts as a copy
+of the order card. With more than one language, **Other languages** on the product holds its name and description as
+clients see them in each language; your services keep the name they were ordered with.
+
 Tick **Popular** on a product (its Order page section) to give it a badge on its order card, in the compare table and
 on the public home page.
 

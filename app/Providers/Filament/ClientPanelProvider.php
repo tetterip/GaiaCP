@@ -22,6 +22,7 @@ use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\KnowledgeBaseArticle;
 use App\Filament\Client\Pages\Order;
 use App\Filament\Client\Pages\ProductGroupPage;
+use App\Filament\Client\Pages\ProductPage;
 use App\Filament\Client\Pages\PublicHome;
 use App\Filament\Client\Pages\PublicOrder;
 use App\Filament\Client\Pages\SearchDomains;
@@ -195,6 +196,11 @@ class ClientPanelProvider extends PanelProvider
                 Route::get('{group}', ProductGroupPage::class)
                     ->where('group', '[a-z0-9]+(?:-[a-z0-9]+)*')
                     ->name('product-group')
+                    ->fallback();
+                // A product's public page (/<group>/<slug>), also last
+                Route::get('{group}/{slug}', ProductPage::class)
+                    ->where(['group' => '[a-z0-9]+(?:-[a-z0-9]+)*', 'slug' => '[a-z0-9]+(?:-[a-z0-9]+)*'])
+                    ->name('product')
                     ->fallback();
             })
             ->authenticatedRoutes(function () {

@@ -15,7 +15,7 @@
     };
 @endphp
 <details class="gcp-compare" open>
-    <summary>{{ __('Compare packages') }}</summary>
+    <summary>{{ $title ?? __('Compare packages') }}</summary>
     <div class="gcp-compare-wrap">
         <table class="gcp-compare-table">
             <thead>

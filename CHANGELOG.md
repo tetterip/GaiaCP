@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Product pages: a product's new Public page section gives it a page inside its group's address
+  (`/web-hosting/business`) with a title, a search result description and a text per language, its prices, Order
+  button and what it includes, plus Product data for search engines. Without a text it stays out of search results.
+  Products also get their name and description in each language (Other languages), shown on the order pages.
 - Product group pages: switch on Public page on a product group (Settings → Product groups) and it gets a page of its
   own at the site root (`/web-hosting`) with a title, a text and questions per language, its products with prices and
   Order buttons and the compare table, plus a search result description and structured data (products with their

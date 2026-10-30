@@ -24,7 +24,7 @@
             <div class="gcp-public-cards">
                 @foreach ($products as $product)
                     <div class="gcp-card gcp-public-product" @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
-                        <h2 class="gcp-public-product-name">{!! ProductIcons::svg($product['icon']) !!}<span>{{ $product['name'] }}</span>@include('filament.client.product-badges', ['sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</h2>
+                        <h2 class="gcp-public-product-name">{!! ProductIcons::svg($product['icon']) !!}@if ($product['page'])<a href="{{ $product['page'] }}">{{ $product['name'] }}</a>@else<span>{{ $product['name'] }}</span>@endif@include('filament.client.product-badges', ['sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</h2>
                         <div class="gcp-public-product-price">
                             @foreach ($product['price'] as $line)
                                 <div @class(['gcp-public-price-main' => $loop->first, 'gcp-home-note' => ! $loop->first])>{{ $line }}</div>

@@ -81,7 +81,7 @@ class PublicHome extends Page
                 'icon' => $group['icon'],
                 'url' => ProductGroupPage::urlFor($group['group']) ?? $this->orderUrl($group['group'] ? $group['key'] : null),
                 'products' => $group['products']->map(fn (Product $product) => [
-                    'name' => $product->name,
+                    'name' => $product->localName(),
                     'icon' => $product->icon ?? $group['icon'],
                     'sale' => $product->onSale(),
                     'popular' => $product->popular,

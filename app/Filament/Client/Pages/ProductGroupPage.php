@@ -2,10 +2,8 @@
 
 namespace App\Filament\Client\Pages;
 
-use App\Actions\ClientOrder;
-use App\Actions\ClientSignup;
 use App\Filament\Client\Concerns\OrderForm;
-use App\Models\Client;
+use App\Filament\Client\Concerns\PublicProducts;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use App\Support\OrderCatalogue;
@@ -27,6 +25,7 @@ use Illuminate\Support\HtmlString;
 class ProductGroupPage extends Page
 {
     use OrderForm;
+    use PublicProducts;
 
     protected string $view = 'filament.client.product-group';
 
@@ -90,7 +89,7 @@ class ProductGroupPage extends Page
         }
 
         return $this->entry()['products']->map(fn (Product $product) => [
-            'name' => $product->name,
+            'name' => $product->localName(),
             'icon' => $product->icon ?? $this->productGroup->icon,
             'sale' => $product->onSale(),
             'popular' => $product->popular,
@@ -98,6 +97,7 @@ class ProductGroupPage extends Page
             'color' => $product->orderColor(),
             'price' => $this->fromPrice($product),
             'url' => $this->orderUrl($product),
+            'page' => ProductPage::urlFor($product),
         ])->values()->all();
     }
 
@@ -130,8 +130,9 @@ class ProductGroupPage extends Page
                     'position' => $index + 1,
                     'item' => array_filter([
                         '@type' => 'Product',
-                        'name' => $product->name,
-                        'description' => Seo::plain($product->description),
+                        'name' => $product->localName(),
+                        'url' => ProductPage::urlFor($product),
+                        'description' => Seo::plain($product->localDescription()),
                         'offers' => $this->offer($product),
                     ]),
                 ]))->all(),
@@ -151,42 +152,5 @@ class ProductGroupPage extends Page
         }
 
         return $data;
-    }
-
-    /** @return array<string, mixed>|null its lowest price for a new order, in the visitor's currency */
-    private function offer(Product $product): ?array
-    {
-        $cycle = $this->cheapestCycle($product);
-        $cents = $cycle === null ? null : $product->orderPriceFor($cycle, $this->currency());
-
-        return $cents === null ? null : array_filter([
-            '@type' => 'Offer',
-            'price' => number_format($cents / 100, 2, '.', ''),
-            'priceCurrency' => $this->currency(),
-            'availability' => 'https://schema.org/InStock',
-            'url' => $this->orderUrl($product),
-            'priceValidUntil' => $product->salePriceFor($cycle, $this->currency()) !== null ? $product->sale_ends_on?->toDateString() : null,
-        ]);
-    }
-
-    /** Where Order goes: a client's Order page, the public order page, else sign up (or the login). */
-    private function orderUrl(Product $product): string
-    {
-        $parameters = ['group' => $this->productGroup->slug, 'product' => $product->id];
-
-        if (filament()->auth()->check()) {
-            return Order::getUrl($parameters);
-        }
-
-        if (ClientOrder::publicEnabled()) {
-            return route('filament.client.cart', $parameters);
-        }
-
-        return ClientSignup::enabled() ? filament()->getRegistrationUrl() : filament()->getLoginUrl();
-    }
-
-    protected function orderClient(): ?Client
-    {
-        return filament()->auth()->user()?->client;
     }
 }

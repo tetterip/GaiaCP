@@ -6,7 +6,7 @@
         $description = \App\Support\Seo::description();
         $logo = \App\Support\Branding::url('logo');
         $name = config('gaiacp.company.name') ?: 'GaiaCP';
-        $indexable = \App\Support\Seo::indexable();
+        $indexable = \App\Support\Seo::indexable() && ! \App\Support\Seo::kept();
     @endphp
     @if ($indexable)
         <link rel="canonical" href="{{ \App\Support\Seo::canonical() }}">

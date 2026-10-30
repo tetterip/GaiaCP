@@ -3344,5 +3344,12 @@
     "Search result description": "Arama sonucu açıklaması",
     "The heading and the title in search results. Empty: the name.": "Başlık ve arama sonuçlarındaki başlık. Boş: ad.",
     "This link is taken by another page of the client area.": "Bu adres müşteri alanının başka bir sayfasına ait.",
-    "e.g. Fast web hosting with daily backups": "örn. Günlük yedekli hızlı web hosting"
+    "e.g. Fast web hosting with daily backups": "örn. Günlük yedekli hızlı web hosting",
+    "A page of its own for visitors and search engines, inside its group's address: its name, prices, Order button, what it includes and your text. Without a text it stays out of search results.": "Ziyaretçiler ve arama motorları için grubunun adresi içinde kendi sayfası: adı, fiyatları, Sipariş düğmesi, neleri içerdiği ve metniniz. Metin yoksa arama sonuçlarının dışında kalır.",
+    "Breadcrumb": "Gezinme yolu",
+    "Empty: made from the name.": "Boş: addan oluşturulur.",
+    "Other languages": "Diğer diller",
+    "Put it in a group first (Order page above): its page sits inside the group's address.": "Önce bir gruba koyun (yukarıdaki Sipariş sayfası): sayfası grubun adresi içindedir.",
+    "What clients see on the order pages when they use another language. Empty: the name and description above.": "Müşterilerin başka bir dil kullandığında sipariş sayfalarında gördükleri. Boş: yukarıdaki ad ve açıklama.",
+    "What is included": "Neler dahil"
 }

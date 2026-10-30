@@ -146,7 +146,7 @@ trait OrderForm
                     // Add-ons offered with the product, on its cycle (they renew with it).
                     CheckboxList::make('addons')
                         ->label('Add-ons')
-                        ->options(fn (Get $get) => $this->addons($get)->mapWithKeys(fn (Product $addon) => [$addon->id => $addon->name])->all())
+                        ->options(fn (Get $get) => $this->addons($get)->mapWithKeys(fn (Product $addon) => [$addon->id => $addon->localName()])->all())
                         ->descriptions(fn (Get $get) => $this->addons($get)->mapWithKeys(fn (Product $addon) => [$addon->id => self::productDescription($addon, [$this->addonPrice($addon, $get)], first: true)])->all())
                         ->helperText(__('They renew together with it.'))
                         ->visible(fn (Get $get) => $this->addons($get)->isNotEmpty())
@@ -190,7 +190,7 @@ trait OrderForm
                         ->required(fn (Get $get) => $this->option($get) === ClientOrder::TRANSFER)
                         ->visible(fn (Get $get) => $this->option($get) === ClientOrder::TRANSFER),
                     Checkbox::make('ssl')
-                        ->label(fn () => __('Add :name for this domain', ['name' => DomainSsl::product()?->name]))
+                        ->label(fn () => __('Add :name for this domain', ['name' => DomainSsl::product()?->localName()]))
                         ->helperText(fn () => $this->sslPrice())
                         ->visible(fn (Get $get) => $this->isDomainOnly($get) && DomainSsl::product() !== null)
                         ->live(),
@@ -228,7 +228,7 @@ trait OrderForm
             : $groups->flatMap(fn (array $group) => $group['products']);
 
         $entries = $products->mapWithKeys(fn (Product $product) => [(string) $product->id => [
-            'name' => self::cardLabel($product->icon ?? $product->group?->icon, $product->name, $product),
+            'name' => self::cardLabel($product->icon ?? $product->group?->icon, $product->localName(), $product),
             'description' => self::productDescription($product, $this->fromPrice($product)),
         ]]);
 
@@ -336,7 +336,7 @@ trait OrderForm
             'cycles' => $cycles->mapWithKeys(fn (BillingCycle $cycle) => [$cycle->value => $cycle->getLabel()])->all(),
             'products' => $group['products']->map(fn (Product $product) => [
                 'id' => (string) $product->id,
-                'name' => $product->name,
+                'name' => $product->localName(),
                 'price' => $this->fromPrice($product)[0] ?? '',
                 'popular' => $product->popular,
                 'badges' => $product->badges(),
@@ -407,7 +407,7 @@ trait OrderForm
     /** @param  list<string|Htmlable>  $price  the price's lines (a sale's struck-through price is HTML) */
     private static function productDescription(Product $product, array $price, bool $first = false): HtmlString
     {
-        $text = html_entity_decode(strip_tags((string) preg_replace('~<br\s*/?>|</(p|div|li|h[1-6])>~i', "\n", (string) $product->description)), ENT_QUOTES | ENT_HTML5);
+        $text = html_entity_decode(strip_tags((string) preg_replace('~<br\s*/?>|</(p|div|li|h[1-6])>~i', "\n", (string) $product->localDescription())), ENT_QUOTES | ENT_HTML5);
         $lines = collect(preg_split('/\R/u', $text) ?: [])->map(fn (string $line) => trim($line))->filter()->take(10)
             ->map(fn (string $line) => e(Str::limit($line, 80)));
         // The price's first line in bold, so it stands out from the features
