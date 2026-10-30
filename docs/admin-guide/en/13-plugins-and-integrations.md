@@ -59,7 +59,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 ## Webhooks
 
 The **Webhooks** plugin (off until switched on, super admins) sends GaiaCP's events (orders, sign ups, payment
-notices, payments, service changes, domains, tickets, servers) as a JSON POST to the addresses you add, each with the
+notices, payments, invoices and credit notes, service changes, domains, tickets, servers) as a JSON POST to the addresses you add, each with the
 events it wants. Use it to feed your own scripts, Zapier, Make or n8n.
 
 Each request is signed with the endpoint's secret (shown once) in the `X-GaiaCP-Signature` header, so the receiver can
