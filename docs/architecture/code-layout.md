@@ -446,7 +446,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   every step is done or skipped or it is hidden. Installs that already had clients start hidden (migration)
 - Welcome tour (both panels): `App\Support\WelcomeTour` gives the cards (only those whose page the user can open; the
   admin's last one opens the setup guide while a super admin has steps left), `filament.welcome-tour` (`BODY_END` hook)
-  shows them in an Alpine window. It opens by itself once per user and panel (`users.admin_tour_seen_at` /
+  shows them beside what each points at (`target`: a selector or `nav:` / `navgroup:` + a menu item's URL), dimming the
+  rest; on a phone it opens the side menu for menu targets, and an absent target puts the card in the middle. It opens by itself once per user and panel (`users.admin_tour_seen_at` /
   `client_tour_seen_at`, set when it opens; never while an admin looks as the client) and from the user menu → Tour.
   Settings → Client area → Welcome tour (`client_area.welcome_tour`) turns off the client one. Users from before it
   count as having seen it (migration)
