@@ -34,7 +34,8 @@ honest when features are added or dropped.
   plugin's `settingKeys()`), and in `keys()` of exactly one `SettingsFormPage`
 - Admin-bound emails respect each admin's Receive system emails switch; a new daily command goes in
   `SchedulerMonitor::DAILY_COMMANDS`; a new API client adds `ModuleLogger::middleware()`
-- A client-area feature updates the client guide in both languages (`resources/docs/client-area/<locale>.md`)
+- A client-area feature updates the client guide in every language (`resources/docs/client-area/<locale>.md`, the machine
+  translated ones too: one paragraph per line, and `LocalesTest` checks each file has every paragraph of `en.md`)
 - An admin-facing feature updates its chapter of the admin guide (`docs/admin-guide/en/`, shown in System → Help;
   translated chapters under `docs/admin-guide/<locale>/` too)
 

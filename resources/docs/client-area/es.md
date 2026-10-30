@@ -76,6 +76,8 @@ Un **certificado SSL** se pide para el dominio que indique al pedirlo, una vez p
 - **Archivo en el sitio web:** cree el archivo mostrado, con exactamente su contenido, para que se abra en la dirección mostrada.
 - **Email al administrador del dominio:** abra el enlace del email enviado a admin@ (o a la dirección elegida) y apruebe.
 
+Cuando el dominio es una cuenta de hosting que tiene con nosotros, lo hacemos por usted: su página indica que ya está hecho y, una vez emitido el certificado, también lo instalamos en esa cuenta, así que no tiene que descargar ni instalar nada.
+
 **Cambiar validación** elige otra forma (u otra dirección de aprobación) y **Comprobar de nuevo** pide a la autoridad de certificación que lo revise ahora (**Enviar de nuevo el email de aprobación** cuando es por email). Cuando se emite el certificado se lo comunicamos por email, y **Descargar certificado** le da un zip con el certificado, el CA bundle y, cuando la creamos nosotros, la clave privada, listo para instalar en el servidor. Un certificado dura como máximo 200 días, así que mientras su servicio esté en marcha emitimos el siguiente antes de que termine cada uno: usted valida el dominio de nuevo cada vez y descarga el certificado nuevo.
 
 <!-- endif -->
@@ -107,7 +109,7 @@ En un dominio activo registrado a través de nosotros puede:
 Cuando vence un servicio le enviamos un **aviso de pago** por email, con cómo pagar. Es un aviso de pago, no una factura fiscal. **Avisos de pago** los lista todos: abra uno para ver sus líneas, imprimirlo o guardarlo como PDF. Los botones sobre la lista muestran solo los sin pagar, los pagados o los vencidos. **Pagos** lista los pagos que hemos registrado. Después de pagar, el aviso aparece como pagado en cuanto registramos su pago.
 
 <!-- if:invoices -->
-Cuando emitimos facturas, un aviso de pago pagado también recibe una **factura**: se la enviamos por email en PDF, el aviso pagado tiene un botón para descargarla y **Facturas** (en Facturación) las muestra todas.
+Cuando emitimos facturas, un aviso de pago pagado también recibe una **factura**: se la enviamos por email en PDF, el aviso pagado tiene un botón para descargarla y **Facturas** (en Facturación) las muestra todas. Una **nota de crédito** allí, con un total negativo, anula una factura, por ejemplo cuando se devuelve un pago.
 <!-- endif -->
 
 <!-- if:pay_online -->
@@ -141,9 +143,13 @@ Para usarlo, abra un aviso de pago sin pagar y pulse **Pagar con saldo**.
 **Ver los precios de cada terminación de dominio**, bajo el cuadro de búsqueda, lista cada terminación que vendemos con su precio de registro, transferencia y renovación.
 <!-- endif -->
 
-**Pedido** muestra lo que puede pedir; **Pedir un servicio nuevo**, sobre sus Servicios, también lo abre (**Pedir un dominio**, sobre sus Dominios, abre la búsqueda de dominios). Cuando vendemos varios tipos de servicio, elija primero el tipo (como hosting compartido o un VPS, o nombres de dominio) y luego un paquete: **Comparar paquetes**, debajo, muestra lo que incluye cada uno lado a lado, con su precio para cada periodo de facturación, y sus botones **Elegir** también eligen un paquete. Elija un servicio y su periodo de facturación, y las opciones que ofrezca (como una ubicación o direcciones IP adicionales); cada opción muestra lo que añade al precio. Los complementos para él (como copias de seguridad diarias) se pueden marcar debajo; van en el mismo aviso de pago y se renuevan junto con él. Para un hosting, indique si ya tiene el dominio, si quiere registrar uno nuevo o trasladar uno que tiene en otro sitio (necesita su código EPP). También puede pedir un dominio solo, con un certificado SSL para él cuando lo ofrecemos (márquelo bajo el dominio). Cuando escribe un dominio para registrar o transferir, ve a su lado si está libre; un dominio ocupado solo se puede transferir, y uno aún no registrado solo se puede registrar.
+**Pedido** muestra lo que puede pedir; **Pedir un servicio nuevo**, sobre sus Servicios, también lo abre (**Pedir un dominio**, sobre sus Dominios, abre la búsqueda de dominios). Cuando vendemos varios tipos de servicio, elija primero el tipo (como hosting compartido o un VPS, o nombres de dominio) y luego un paquete: **Comparar paquetes**, debajo, muestra lo que incluye cada uno lado a lado, con su precio para cada periodo de facturación, y sus botones **Elegir** también eligen un paquete. Las insignias junto al nombre de un paquete (como Popular o Nuevo) señalan lo que recomendamos o lo que es nuevo. Elija un servicio y su periodo de facturación, y las opciones que ofrezca (como una ubicación o direcciones IP adicionales); cada opción muestra lo que añade al precio. Los complementos para él (como copias de seguridad diarias) se pueden marcar debajo; van en el mismo aviso de pago y se renuevan junto con él. Para un hosting, indique si ya tiene el dominio, si quiere registrar uno nuevo o trasladar uno que tiene en otro sitio (necesita su código EPP). También puede pedir un dominio solo, con un certificado SSL para él cuando lo ofrecemos (márquelo bajo el dominio). Cuando escribe un dominio para registrar o transferir, ve a su lado si está libre; un dominio ocupado solo se puede transferir, y uno aún no registrado solo se puede registrar.
 
 Pulse **Añadir al carrito** y se abre el **Carrito** (el icono del carrito en la parte superior de cada página también lo abre, con cuántos elementos tiene). Pulse **Pedir otra cosa** para añadir más, como dos dominios y tres planes de hosting, o la papelera junto a un elemento para quitarlo. Todo lo del carrito se convierte en un solo pedido con un solo aviso de pago.
+
+Si tiene un **código de cupón**, escríbalo en el carrito: verá lo que descuenta antes de realizar el pedido (un enlace con un código lo rellena por usted). Un cupón puede rebajar solo el primer pago o también cada renovación, y nunca rebaja una cuota de alta.
+
+Lo que está **en oferta** muestra la insignia Oferta y su precio normal tachado. El precio de oferta es para el primer periodo de lo que pida mientras dure la oferta; las renovaciones son al precio normal. Es posible que un cupón no rebaje más un precio de oferta.
 
 <!-- if:terms -->
 Antes de hacer el pedido, lea nuestras Condiciones del Servicio (el enlace junto a la casilla) y marque **Acepto las Condiciones del Servicio**.

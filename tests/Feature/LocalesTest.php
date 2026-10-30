@@ -401,6 +401,33 @@ class LocalesTest extends TestCase
         return null;
     }
 
+    public function test_guide_translations_have_every_paragraph_of_the_english_one(): void
+    {
+        // Client guide: one paragraph per line, so a translation has the same lines as en.md.
+        $shape = fn (string $path) => array_map(fn ($line) => match (true) {
+            $line === '' => '',
+            str_starts_with($line, '<!--') => $line,
+            str_starts_with($line, '#') => strtok($line, ' '),
+            str_starts_with($line, '- ') => '-',
+            default => 'text',
+        }, file($path, FILE_IGNORE_NEW_LINES));
+
+        $english = $shape(resource_path('docs/client-area/en.md'));
+
+        foreach (File::glob(resource_path('docs/client-area/*.md')) as $path) {
+            $this->assertSame($english, $shape($path), basename($path).' is missing a paragraph of en.md');
+        }
+
+        // Admin guide: wrapped lines differ, so compare each chapter's headings.
+        $headings = fn (string $path) => preg_match_all('/^#+ /m', File::get($path));
+
+        foreach (File::glob(base_path('docs/admin-guide/*/*.md')) as $path) {
+            $english = base_path('docs/admin-guide/en/'.basename($path));
+            $this->assertFileExists($english);
+            $this->assertSame($headings($english), $headings($path), $path.' does not have the sections of the English chapter');
+        }
+    }
+
     public function test_validation_messages_are_greek_in_greek(): void
     {
         app()->setLocale('el');

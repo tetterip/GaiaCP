@@ -76,6 +76,8 @@ Jeśli serwer, na którym jest Państwa hosting, ma problem lub jest w trakcie p
 - **Plik w witrynie:** prosimy utworzyć pokazany plik, z dokładnie taką zawartością, aby otwierał się pod pokazanym adresem.
 - **E-mail do administratora domeny:** prosimy otworzyć link w e-mailu wysłanym na admin@ (lub wybrany adres) i zatwierdzić.
 
+Gdy domena jest kontem hostingowym, które mają Państwo u nas, robimy to za Państwa: jej strona informuje, że wszystko jest już na miejscu, a po wydaniu certyfikatu instalujemy go także na tym koncie, więc nie trzeba niczego pobierać ani instalować.
+
 **Zmień weryfikację** wybiera inny sposób (lub inny adres zatwierdzający), a **Sprawdź ponownie** prosi urząd certyfikacji o sprawdzenie teraz (**Wyślij ponownie e-mail zatwierdzający**, gdy weryfikacja jest e-mailowa). Po wystawieniu certyfikatu wysyłamy e-mail, a **Pobierz certyfikat** daje plik zip z certyfikatem, CA bundle i, jeśli to my go utworzyliśmy, kluczem prywatnym, gotowy do instalacji na serwerze. Certyfikat jest ważny najwyżej 200 dni, więc dopóki usługa działa, wystawiamy kolejny przed wygaśnięciem poprzedniego: za każdym razem należy ponownie zweryfikować domenę i pobrać nowy certyfikat.
 
 <!-- endif -->
@@ -107,7 +109,7 @@ Przy aktywnej domenie zarejestrowanej przez nas można:
 Gdy zbliża się termin płatności usługi, wysyłamy e-mailem **wezwanie do zapłaty** z informacją, jak zapłacić. Jest to wezwanie do zapłaty, a nie faktura. **Wezwania do zapłaty** wymieniają je wszystkie: po otwarciu widać pozycje, można je wydrukować lub zapisać jako PDF. Przyciski nad listą pokazują tylko nieopłacone, opłacone lub zaległe. **Płatności** wymieniają zaksięgowane przez nas płatności. Po zapłacie wezwanie jest widoczne jako opłacone, gdy zaksięgujemy płatność.
 
 <!-- if:invoices -->
-Gdy wystawiamy faktury, opłacone wezwanie do zapłaty dostaje też **fakturę**: wysyłamy ją e-mailem jako PDF, opłacone wezwanie ma przycisk do jej pobrania, a **Faktury** (w Rozliczeniach) pokazują je wszystkie.
+Gdy wystawiamy faktury, opłacone wezwanie do zapłaty dostaje też **fakturę**: wysyłamy ją e-mailem jako PDF, opłacone wezwanie ma przycisk do jej pobrania, a **Faktury** (w Rozliczeniach) pokazują je wszystkie. **Faktura korygująca** z ujemną kwotą anuluje tam fakturę, na przykład gdy płatność zostaje zwrócona.
 <!-- endif -->
 
 <!-- if:pay_online -->
@@ -141,9 +143,13 @@ Aby go użyć, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć *
 **Zobacz ceny wszystkich końcówek domen** pod polem wyszukiwania wymienia każdą sprzedawaną końcówkę z ceną rejestracji, transferu i odnowienia.
 <!-- endif -->
 
-**Zamówienie** pokazuje, co można zamówić; otwiera je też **Zamów nową usługę** nad Usługami (**Zamów domenę** nad Domenami otwiera wyszukiwarkę domen). Gdy sprzedajemy kilka rodzajów usług, najpierw prosimy wybrać rodzaj (np. hosting współdzielony, VPS lub nazwy domen), a potem pakiet: **Porównaj pakiety** pod nimi pokazuje obok siebie, co obejmuje każdy, z ceną dla każdego okresu rozliczeniowego, a jego przyciski **Wybierz** również wybierają pakiet. Prosimy wybrać usługę i jej okres rozliczeniowy oraz oferowane opcje (np. lokalizację lub dodatkowe adresy IP); każda opcja pokazuje, ile dodaje do ceny. Dodatki do niej (np. codzienne kopie zapasowe) można zaznaczyć poniżej; są na tym samym wezwaniu do zapłaty i odnawiają się razem z usługą. Przy hostingu prosimy wskazać, czy mają już Państwo domenę, chcą zarejestrować nową, czy przenieść posiadaną gdzie indziej (potrzebny jest jej kod EPP). Można też zamówić samą domenę, wraz z certyfikatem SSL, gdy go oferujemy (zaznaczenie pod domeną). Po wpisaniu domeny do rejestracji lub transferu widać obok, czy jest wolna; zajętą domenę można tylko przenieść, a niezarejestrowaną tylko zarejestrować.
+**Zamówienie** pokazuje, co można zamówić; otwiera je też **Zamów nową usługę** nad Usługami (**Zamów domenę** nad Domenami otwiera wyszukiwarkę domen). Gdy sprzedajemy kilka rodzajów usług, najpierw prosimy wybrać rodzaj (np. hosting współdzielony, VPS lub nazwy domen), a potem pakiet: **Porównaj pakiety** pod nimi pokazuje obok siebie, co obejmuje każdy, z ceną dla każdego okresu rozliczeniowego, a jego przyciski **Wybierz** również wybierają pakiet. Odznaki przy nazwie pakietu (np. Popularny lub Nowy) wskazują, co polecamy lub co jest nowe. Prosimy wybrać usługę i jej okres rozliczeniowy oraz oferowane opcje (np. lokalizację lub dodatkowe adresy IP); każda opcja pokazuje, ile dodaje do ceny. Dodatki do niej (np. codzienne kopie zapasowe) można zaznaczyć poniżej; są na tym samym wezwaniu do zapłaty i odnawiają się razem z usługą. Przy hostingu prosimy wskazać, czy mają już Państwo domenę, chcą zarejestrować nową, czy przenieść posiadaną gdzie indziej (potrzebny jest jej kod EPP). Można też zamówić samą domenę, wraz z certyfikatem SSL, gdy go oferujemy (zaznaczenie pod domeną). Po wpisaniu domeny do rejestracji lub transferu widać obok, czy jest wolna; zajętą domenę można tylko przenieść, a niezarejestrowaną tylko zarejestrować.
 
 Po kliknięciu **Dodaj do koszyka** otwiera się **Koszyk** (otwiera go też ikona koszyka u góry każdej strony, z liczbą pozycji). **Zamów coś jeszcze** pozwala dodać więcej, np. dwie domeny i trzy plany hostingowe, a kosz obok pozycji ją usuwa. Wszystko w koszyku staje się jednym zamówieniem z jednym wezwaniem do zapłaty.
+
+Jeśli mają Państwo **kod kuponu**, prosimy wpisać go w koszyku: przed złożeniem zamówienia widać, ile odejmuje (link z kodem wpisuje go automatycznie). Kupon może obniżać tylko pierwszą płatność albo także każde odnowienie i nigdy nie obniża opłaty instalacyjnej.
+
+To, co jest **w promocji**, ma odznakę Promocja i przekreśloną zwykłą cenę. Cena promocyjna dotyczy pierwszego okresu tego, co zamówią Państwo w czasie promocji; odnowienia są w zwykłej cenie. Kupon może nie obniżać dalej ceny promocyjnej.
 
 <!-- if:terms -->
 Przed złożeniem zamówienia prosimy przeczytać nasz Regulamin (link obok pola) i zaznaczyć **Akceptuję Regulamin**.

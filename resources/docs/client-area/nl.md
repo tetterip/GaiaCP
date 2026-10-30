@@ -76,6 +76,8 @@ Een **SSL-certificaat** wordt besteld voor het domein dat u opgeeft bij het best
 - **Bestand op de website:** maak het getoonde bestand aan, met precies deze inhoud, zodat het op het getoonde adres opent.
 - **E-mail aan de beheerder van het domein:** open de link in de e-mail die naar admin@ (of het gekozen adres) is gestuurd en keur goed.
 
+Is het domein een hostingaccount dat u bij ons heeft, dan doen wij dit voor u: de pagina ervan zegt dat het al geregeld is, en zodra het certificaat is uitgegeven installeren we het ook op dat account, zodat u niets hoeft te downloaden of te installeren.
+
 **Validatie wijzigen** kiest een andere manier (of een ander goedkeuringsadres) en **Opnieuw controleren** vraagt de certificaatautoriteit nu te kijken (**De goedkeuringsmail opnieuw verzenden** als het per e-mail gaat). Zodra het certificaat is uitgegeven, e-mailen we u, en **Certificaat downloaden** geeft een zip met het certificaat, de CA-bundel en, als wij die hebben gemaakt, de privésleutel, klaar om op de server te installeren. Een certificaat is maximaal 200 dagen geldig, dus zolang uw dienst loopt, geven we vóór het einde van elk certificaat het volgende uit: u valideert het domein dan telkens opnieuw en downloadt het nieuwe certificaat.
 
 <!-- endif -->
@@ -107,7 +109,7 @@ Bij een actief domein dat via ons is geregistreerd, kunt u:
 Wanneer een dienst vervalt, sturen we u per e-mail een **betalingsverzoek**, met de betaalinstructies. Het is een betalingsverzoek, geen factuur. **Betalingsverzoeken** toont ze allemaal: open er een om de regels te zien, het af te drukken of als PDF op te slaan. De knoppen boven de lijst tonen alleen de onbetaalde, betaalde of achterstallige. **Betalingen** toont de betalingen die we hebben geregistreerd. Nadat u hebt betaald, wordt het verzoek als betaald getoond zodra we uw betaling registreren.
 
 <!-- if:invoices -->
-Als wij facturen uitgeven, krijgt een betaald betalingsverzoek ook een **factuur**: we e-mailen die als pdf, het betaalde verzoek heeft een knop om hem te downloaden, en **Facturen** (onder Financiën) toont ze allemaal.
+Als wij facturen uitgeven, krijgt een betaald betalingsverzoek ook een **factuur**: we e-mailen die als pdf, het betaalde verzoek heeft een knop om hem te downloaden, en **Facturen** (onder Financiën) toont ze allemaal. Een **creditnota** daar, met een negatief totaal, maakt een factuur ongedaan, bijvoorbeeld wanneer een betaling wordt terugbetaald.
 <!-- endif -->
 
 <!-- if:pay_online -->
@@ -141,9 +143,13 @@ Om het te gebruiken, opent u een onbetaald betalingsverzoek en drukt u op **Beta
 **Bekijk de prijzen van elke domeinextensie** onder het zoekvak toont elke extensie die we verkopen met de prijs voor registreren, verhuizen en verlengen.
 <!-- endif -->
 
-**Bestelling** toont wat u kunt bestellen; **Een nieuwe dienst bestellen** boven uw Diensten opent het ook (**Een domein bestellen** boven uw Domeinen opent domein zoeken). Verkopen we meerdere soorten diensten, kies dan eerst de soort (zoals gedeelde hosting of een VPS, of domeinnamen), daarna een pakket: **Pakketten vergelijken** eronder toont naast elkaar wat elk pakket omvat, met de prijs per betaalperiode, en de knoppen **Kiezen** kiezen ook een pakket. Kies een dienst en de betaalperiode, en eventuele opties die hij biedt (zoals een locatie of extra IP-adressen); elke optie toont wat ze aan de prijs toevoegt. Add-ons ervoor (zoals dagelijkse back-ups) kunt u hieronder aanvinken; ze staan op hetzelfde betalingsverzoek en worden er samen mee verlengd. Geef bij hosting aan of u het domein al hebt, een nieuw wilt registreren of er een wilt verhuizen dat u elders hebt (daarvoor hebt u de EPP-code nodig). U kunt ook los een domein bestellen, met een SSL-certificaat ervoor als we dat aanbieden (vink het aan onder het domein). Zodra u een domein typt om te registreren of te verhuizen, ziet u ernaast of het vrij is; een bezet domein kan alleen worden verhuisd, en een nog niet geregistreerd domein alleen geregistreerd.
+**Bestelling** toont wat u kunt bestellen; **Een nieuwe dienst bestellen** boven uw Diensten opent het ook (**Een domein bestellen** boven uw Domeinen opent domein zoeken). Verkopen we meerdere soorten diensten, kies dan eerst de soort (zoals gedeelde hosting of een VPS, of domeinnamen), daarna een pakket: **Pakketten vergelijken** eronder toont naast elkaar wat elk pakket omvat, met de prijs per betaalperiode, en de knoppen **Kiezen** kiezen ook een pakket. Badges naast de naam van een pakket (zoals Populair of Nieuw) wijzen op wat we aanraden of wat nieuw is. Kies een dienst en de betaalperiode, en eventuele opties die hij biedt (zoals een locatie of extra IP-adressen); elke optie toont wat ze aan de prijs toevoegt. Add-ons ervoor (zoals dagelijkse back-ups) kunt u hieronder aanvinken; ze staan op hetzelfde betalingsverzoek en worden er samen mee verlengd. Geef bij hosting aan of u het domein al hebt, een nieuw wilt registreren of er een wilt verhuizen dat u elders hebt (daarvoor hebt u de EPP-code nodig). U kunt ook los een domein bestellen, met een SSL-certificaat ervoor als we dat aanbieden (vink het aan onder het domein). Zodra u een domein typt om te registreren of te verhuizen, ziet u ernaast of het vrij is; een bezet domein kan alleen worden verhuisd, en een nog niet geregistreerd domein alleen geregistreerd.
 
 Druk op **In winkelwagen** en de **Winkelwagen** opent (het winkelwagenpictogram bovenaan elke pagina opent hem ook, met het aantal items erin). Druk op **Iets anders bestellen** om meer toe te voegen, zoals twee domeinen en drie hostingpakketten, of op de prullenbak naast een item om het eruit te halen. Alles in de winkelwagen wordt één bestelling met één betalingsverzoek.
+
+Heeft u een **kortingscode**, typ die dan in de winkelwagen: u ziet wat er afgaat voordat u de bestelling plaatst (een link met een code vult hem voor u in). Een kortingscode kan alleen de eerste betaling verlagen of ook elke verlenging, en verlaagt nooit installatiekosten.
+
+Wat in de **aanbieding** is, toont de badge Aanbieding en de normale prijs doorgestreept. De aanbiedingsprijs geldt voor de eerste periode van wat u bestelt zolang de aanbieding loopt; verlengingen zijn tegen de normale prijs. Een kortingscode verlaagt een aanbiedingsprijs mogelijk niet verder.
 
 <!-- if:terms -->
 Lees voordat u de bestelling plaatst onze servicevoorwaarden (de link naast het vakje) en vink **Ik accepteer de servicevoorwaarden** aan.

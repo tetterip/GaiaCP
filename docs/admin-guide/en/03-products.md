@@ -81,7 +81,7 @@ Products list shows the products on sale. A coupon skips an item on sale unless 
 
 ## Product options
 
-Settings → **Product options** holds choices offered with a product, like WHMCS's configurable options: a server
+Settings → **Product options** holds choices offered with a product, such as a server
 location, extra IP addresses, more disk. Make a group of options, attach it to products, and give each option a type
 (a list, buttons, yes / no, or a quantity) and each choice a price per cycle (or a monthly price that is multiplied by
 the months) and a setup fee.

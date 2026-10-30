@@ -76,6 +76,8 @@ Bir **SSL sertifikası**, sipariş verirken belirttiğiniz alan adı için öden
 - **Web sitesinde dosya:** gösterilen dosyayı tam olarak içeriğiyle oluşturun, böylece gösterilen adreste açılsın.
 - **Alan adının yöneticisine e-posta:** admin@ (veya seçilen) adrese gönderilen e-postadaki bağlantıyı açın ve onaylayın.
 
+Alan adı bizdeki bir hosting hesabınız olduğunda bunu sizin için biz yaparız: sayfası bunun zaten hazır olduğunu söyler ve sertifika verildiğinde onu o hesaba da kurarız, böylece indirmeniz ya da kurmanız gereken bir şey kalmaz.
+
 **Doğrulamayı değiştir** başka bir yol (veya başka bir onay adresi) seçer ve **Yeniden kontrol et** sertifika otoritesinden şimdi bakmasını ister (e-postayla doğrulamada **Onay e-postasını yeniden gönder**). Sertifika düzenlendiğinde size e-posta göndeririz ve **Sertifikayı indir**, sunucuya kurulmaya hazır sertifikayı, CA bundle'ı ve onu biz oluşturduysak özel anahtarı içeren bir zip verir. Bir sertifika en fazla 200 gün geçerlidir, bu yüzden hizmetiniz sürdükçe her biri bitmeden sonrakini düzenleriz: her seferinde alan adını yeniden doğrular ve yeni sertifikayı indirirsiniz.
 
 <!-- endif -->
@@ -107,7 +109,7 @@ Bizim üzerimizden kayıtlı etkin bir alan adında şunları yapabilirsiniz:
 Bir hizmetin vadesi geldiğinde size nasıl ödeyeceğinizi içeren bir **ödeme bildirimi** e-postayla göndeririz. Bu bir ödeme bildirimidir, vergi belgesi değildir. **Ödeme bildirimleri** hepsini listeler: satırlarını görmek, yazdırmak veya PDF olarak kaydetmek için birini açın. Listenin üstündeki düğmeler yalnızca ödenmemiş, ödenmiş veya vadesi geçmiş olanları gösterir. **Ödemeler** kaydettiğimiz ödemeleri listeler. Ödeme yaptıktan sonra, ödemenizi kaydettiğimizde bildirim ödendi olarak görünür.
 
 <!-- if:invoices -->
-Fatura kestiğimizde, ödenmiş bir ödeme bildirimi bir **fatura** da alır: faturayı size PDF olarak e-postayla göndeririz, ödenmiş bildirimde onu indirmek için bir düğme bulunur ve **Faturalar** (Ödeme işlemleri altında) hepsini listeler.
+Fatura kestiğimizde, ödenmiş bir ödeme bildirimi bir **fatura** da alır: faturayı size PDF olarak e-postayla göndeririz, ödenmiş bildirimde onu indirmek için bir düğme bulunur ve **Faturalar** (Ödeme işlemleri altında) hepsini listeler. Orada negatif toplamlı bir **alacak dekontu**, örneğin bir ödeme iade edildiğinde bir faturayı geri alır.
 <!-- endif -->
 
 <!-- if:pay_online -->
@@ -141,9 +143,13 @@ Kullanmak için ödenmemiş bir ödeme bildirimini açın ve **Bakiyeyle öde**'
 Arama kutusunun altındaki **Her alan adı uzantısının fiyatlarını görün**, sattığımız her uzantıyı kayıt, transfer ve yenileme fiyatıyla listeler.
 <!-- endif -->
 
-**Sipariş** neler sipariş edebileceğinizi gösterir; Hizmetlerinizin üstündeki **Yeni bir hizmet sipariş et** de onu açar (Alan adlarınızın üstündeki **Alan adı sipariş et** alan adı aramayı açar). Birkaç tür hizmet sattığımızda önce türü (paylaşımlı hosting veya VPS ya da alan adları gibi), sonra bir paketi seçin: altlarındaki **Paketleri karşılaştır** her birinin neleri içerdiğini yan yana, her ödeme dönemi için fiyatıyla gösterir ve **Seç** düğmeleri de bir paket seçer. Bir hizmeti ve ödeme dönemini ve sunduğu seçenekleri (konum veya ek IP adresleri gibi) seçin; her seçenek fiyata ne eklediğini gösterir. Onun için ek hizmetler (günlük yedekler gibi) aşağıda işaretlenebilir; aynı ödeme bildirimindedirler ve onunla birlikte yenilenirler. Hosting için alan adına zaten sahip olup olmadığınızı, yeni bir tane kaydetmek mi yoksa başka yerdeki bir alan adınızı taşımak mı istediğinizi belirtin (EPP kodu gerekir). Ayrıca tek başına bir alan adı da sipariş edebilirsiniz; sunduğumuzda onun için bir SSL sertifikasıyla birlikte (alan adının altında işaretleyin). Kaydedilecek veya transfer edilecek bir alan adını yazdığınızda yanında müsait olup olmadığını görürsünüz; alınmış bir alan adı yalnızca transfer edilebilir, henüz kayıtlı olmayan ise yalnızca kaydedilebilir.
+**Sipariş** neler sipariş edebileceğinizi gösterir; Hizmetlerinizin üstündeki **Yeni bir hizmet sipariş et** de onu açar (Alan adlarınızın üstündeki **Alan adı sipariş et** alan adı aramayı açar). Birkaç tür hizmet sattığımızda önce türü (paylaşımlı hosting veya VPS ya da alan adları gibi), sonra bir paketi seçin: altlarındaki **Paketleri karşılaştır** her birinin neleri içerdiğini yan yana, her ödeme dönemi için fiyatıyla gösterir ve **Seç** düğmeleri de bir paket seçer. Bir paketin adının yanındaki rozetler (Popüler veya Yeni gibi) önerdiğimizi ya da yeni olanı gösterir. Bir hizmeti ve ödeme dönemini ve sunduğu seçenekleri (konum veya ek IP adresleri gibi) seçin; her seçenek fiyata ne eklediğini gösterir. Onun için ek hizmetler (günlük yedekler gibi) aşağıda işaretlenebilir; aynı ödeme bildirimindedirler ve onunla birlikte yenilenirler. Hosting için alan adına zaten sahip olup olmadığınızı, yeni bir tane kaydetmek mi yoksa başka yerdeki bir alan adınızı taşımak mı istediğinizi belirtin (EPP kodu gerekir). Ayrıca tek başına bir alan adı da sipariş edebilirsiniz; sunduğumuzda onun için bir SSL sertifikasıyla birlikte (alan adının altında işaretleyin). Kaydedilecek veya transfer edilecek bir alan adını yazdığınızda yanında müsait olup olmadığını görürsünüz; alınmış bir alan adı yalnızca transfer edilebilir, henüz kayıtlı olmayan ise yalnızca kaydedilebilir.
 
 **Sepete ekle**'ye basın ve **Sepet** açılır (her sayfanın üstündeki sepet simgesi de içindeki ürün sayısıyla birlikte onu açar). İki alan adı ve üç hosting planı gibi daha fazlasını eklemek için **Başka bir şey sipariş et**'e, bir kalemi çıkarmak için yanındaki çöp kutusuna basın. Sepetteki her şey tek bir ödeme bildirimiyle tek bir sipariş olur.
+
+Bir **kupon kodunuz** varsa sepette yazın: siparişi vermeden önce ne kadar düşürdüğünü görürsünüz (kod içeren bir bağlantı onu sizin için doldurur). Bir kupon yalnızca ilk ödemeyi ya da her yenilemeyi de düşürebilir ve kurulum ücretini asla düşürmez.
+
+**İndirimde** olan ürünlerde İndirim rozeti ve üstü çizili normal fiyatı görünür. İndirimli fiyat, indirim sürerken sipariş ettiğiniz şeyin ilk dönemi için geçerlidir; yenilemeler normal fiyattandır. Bir kupon indirimli fiyatı daha fazla düşürmeyebilir.
 
 <!-- if:terms -->
 Siparişi vermeden önce Hizmet Koşullarımızı okuyun (kutunun yanındaki bağlantı) ve **Hizmet Koşullarını kabul ediyorum** kutusunu işaretleyin.
