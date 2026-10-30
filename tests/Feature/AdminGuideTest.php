@@ -26,7 +26,10 @@ class AdminGuideTest extends TestCase
             ->assertOk()
             ->assertSee('Getting started')
             ->assertSee('The setup guide')
-            ->assertSee('Moving from WHMCS');
+            ->assertSee('Moving from WHMCS')
+            // the cron line in Getting started scrolls inside its box on a phone
+            ->assertSee('* * * * * cd', false)
+            ->assertSee('.gcp-guide-body pre { max-width: 100%; overflow-x: auto; }', false);
     }
 
     public function test_a_chapter_opens_by_its_name_and_its_links_stay_in_the_panel(): void
