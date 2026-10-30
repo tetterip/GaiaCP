@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 /**
@@ -41,11 +42,33 @@ class Seo
         return self::open() && ! filament()->auth()->check();
     }
 
+    /** The open page's own description (a product group's page), else the site's. */
     public static function description(): ?string
     {
-        $description = trim((string) config('gaiacp.seo.description'));
+        $page = self::$page;
+        $description = $page && method_exists($page, 'metaDescription') ? self::plain($page->metaDescription()) : null;
 
-        return $description === '' ? null : $description;
+        return $description ?? self::plain(config('gaiacp.seo.description'));
+    }
+
+    /**
+     * The open page's schema.org data (a product group's page), for search engines.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public static function structuredData(): array
+    {
+        $page = self::$page;
+
+        return self::indexable() && $page && method_exists($page, 'structuredData') ? $page->structuredData() : [];
+    }
+
+    /** A text as one plain line (tags and line breaks gone), at most 300 characters; null when empty. */
+    public static function plain(mixed $text): ?string
+    {
+        $text = trim((string) preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $text), ENT_QUOTES | ENT_HTML5)));
+
+        return $text === '' ? null : Str::limit($text, 300);
     }
 
     /** The open page's title with the company's name (as in the browser tab), for link previews. */

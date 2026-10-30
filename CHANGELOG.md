@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Product group pages: switch on Public page on a product group (Settings → Product groups) and it gets a page of its
+  own at the site root (`/web-hosting`) with a title, a text and questions per language, its products with prices and
+  Order buttons and the compare table, plus a search result description and structured data (products with their
+  prices, FAQ) for search engines. The home page, the visitors' menu and the sitemap link to it.
 - Search engines: each language of a public page has its own address (`?lang=el`), and every public page names its
   canonical address and the other languages (hreflang). New `/sitemap.xml` lists the public pages that are switched
   on (knowledge base articles and announcements included) in every language, and `/robots.txt` points to it and keeps

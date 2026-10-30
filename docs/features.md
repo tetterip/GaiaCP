@@ -282,6 +282,7 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
     stay for clients only), a contact form whose ticket the visitor follows at a secret link, announcements with an RSS
     feed (each public or for clients only) and a server status page (state and uptime by name, never the hostname or IP);
     side menu and language picker for visitors); ✅ search engines (Settings → Client area: each language of a public
-    page at its own address with canonical and hreflang links, `/sitemap.xml` and `/robots.txt`); ✅ cookie banner
+    page at its own address with canonical and hreflang links, `/sitemap.xml` and `/robots.txt`; a public page per
+    product group with its own text, compare table, questions and structured data); ✅ cookie banner
     (Settings → Cookies, super admins, off until switched on: a text, a link to the cookie policy and scripts such as
     analytics that run only after "Accept all"; "Cookie settings" at the foot of the page asks again)

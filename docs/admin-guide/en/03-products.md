@@ -39,6 +39,14 @@ has a name per language, an icon and its own link (`/order/<group>`), and can sh
 features (Disk space, Websites, Free SSL…) and fill in each product's values on the product form. A hidden group is
 reached only through its link, handy for an offer you send to a few people.
 
+Switch on **Public page** on a group to give it a page of its own at your site's address plus its link (for example
+`https://example.com/web-hosting`), for visitors and search engines. It shows a page title, your text (Markdown), the
+group's products with their prices and Order buttons, the compare table and your **questions** with their answers, all
+per language. Write a text of your own there (what the service is for, what it includes, who it suits): search engines
+skip pages that only repeat a price list. The search result description is what Google shows under the title. Once on,
+the home page and the side menu link to the page, and it is in `/sitemap.xml`. A group's link can't be one the client
+area already uses (login, cart, status…).
+
 Tick **Popular** on a product (its Order page section) to give it a badge on its order card, in the compare table and
 on the public home page.
 

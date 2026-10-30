@@ -74,6 +74,12 @@ How the admin and client panels, users, access, security, branding, themes and l
   `gaiacp.automation.usage_warning_percent` is empty) reads every active hosting account fresh; disk or bandwidth at or
   above that share not yet in `usage_warnings` (service, kind, `Y-m`) sends the Usage Warning email and logs
   `service.usage_high` (bell, Services area)
+  A group's public page (`product_groups.page`, `page_titles` / `page_descriptions` / `page_texts` per locale, `faq`):
+  `ProductGroupPage` at `/{group}`, registered last in the client panel's routes as a `->fallback()` so it never hides
+  another route (`ProductGroup::reservedSlugs()` refuses those links); cards, `OrderForm::compareTable()` with Order
+  links (`compare-products` without `$field`), questions; `metaDescription()` and `structuredData()` (ItemList of
+  Product + Offer, FAQPage) are read by `Seo` through the page captured from the layout. Linked from PublicHome, the
+  visitor's menu and the sitemap.
   Product groups (`ProductGroup`, Settings → Product groups `ProductGroupResource`; `products.product_group_id`, `icon`,
   `features`): `App\Support\OrderCatalogue::groups()` lists them in order with their products (cheapest a month
   first), the ungrouped ones under `OTHER` and domain names as `DOMAINS`; hidden groups only when asked for by slug.

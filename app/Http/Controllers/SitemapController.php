@@ -9,10 +9,12 @@ use App\Filament\Client\Pages\ContactSupport;
 use App\Filament\Client\Pages\DomainPrices;
 use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\KnowledgeBaseArticle;
+use App\Filament\Client\Pages\ProductGroupPage;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
 use App\Models\Announcement;
 use App\Models\KbArticle;
+use App\Models\ProductGroup;
 use App\Support\PublicArea;
 use App\Support\Seo;
 use App\Support\StatusPage;
@@ -69,6 +71,10 @@ class SitemapController extends Controller
 
         if (ClientOrder::publicEnabled()) {
             $pages[] = ['url' => route('filament.client.cart')];
+        }
+
+        foreach (ProductGroup::query()->where('page', true)->ordered()->get() as $group) {
+            $pages[] = ['url' => ProductGroupPage::urlFor($group), 'modified' => $group->updated_at?->toAtomString()];
         }
 
         if (config('gaiacp.support.knowledge_base') && PublicArea::knowledgeBase()) {

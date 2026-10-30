@@ -310,7 +310,19 @@ trait OrderForm
     private function compare(Get $get): ?array
     {
         $group = $this->groups($get)[(string) $this->groupKey($get)] ?? ($this->hasGroupStep($get) ? null : $this->groups($get)->first());
-        $features = $group === null ? [] : ($group['group']?->featureNames() ?? []);
+
+        return $group === null ? null : $this->compareTable($group);
+    }
+
+    /**
+     * A group's compare table (OrderCatalogue::groups() entry): its features in rows, a column for each product with its
+     * prices per cycle; null without features. Also on the group's public page (ProductGroupPage).
+     *
+     * @param  array<string, mixed>  $group
+     */
+    protected function compareTable(array $group): ?array
+    {
+        $features = $group['group']?->featureNames() ?? [];
 
         if ($features === [] || $group['products']->isEmpty()) {
             return null;
