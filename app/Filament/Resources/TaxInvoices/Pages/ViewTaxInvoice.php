@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\HtmlString;
 use RuntimeException;
 
 /** One invoice or credit note, read only: it is never changed after it was issued. A credit note is what undoes one. */
@@ -40,7 +41,7 @@ class ViewTaxInvoice extends ViewRecord
                 ->icon(Heroicon::OutlinedEnvelope)
                 ->color('gray')
                 ->requiresConfirmation()
-                ->modalDescription(fn (TaxInvoice $record) => __('Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.', ['email' => $record->client->email]))
+                ->modalDescription(fn (TaxInvoice $record) => new HtmlString(__('Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.', ['email' => '<strong>'.e($record->client->email).'</strong>'])))
                 ->action(function (TaxInvoice $record) {
                     if (! app(IssueInvoice::class)->email($record, evenIfOff: true)) {
                         Notification::make()->title(__('Not sent'))->body(__('See the activity log for the error.'))->danger()->send();

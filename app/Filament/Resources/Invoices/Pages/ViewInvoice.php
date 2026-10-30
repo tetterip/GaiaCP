@@ -27,6 +27,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\HtmlString;
 use RuntimeException;
 
 class ViewInvoice extends ViewRecord
@@ -187,7 +188,7 @@ class ViewInvoice extends ViewRecord
                     ->default(fn (Invoice $record) => ($record->emailed_at ? MailTemplate::InvoiceModified : MailTemplate::InvoiceCreated)->value)
                     ->required(),
             ])
-            ->modalDescription(fn (Invoice $record) => __('Sends it to :email now, even if that email is switched off on the Email templates page.', ['email' => $record->client->email]))
+            ->modalDescription(fn (Invoice $record) => new HtmlString(__('Sends it to :email now, even if that email is switched off on the Email templates page.', ['email' => '<strong>'.e($record->client->email).'</strong>'])))
             ->action(function (Invoice $record, array $data) {
                 $template = MailTemplate::from($data['template']);
 
