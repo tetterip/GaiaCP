@@ -2444,6 +2444,8 @@
     "Search settings": "Ayarlarda ara",
     "No settings match your search.": "Aramanızla eşleşen ayar yok.",
     "Alpha": "Alfa",
+    "Star on GitHub": "GitHub'da yıldız ver",
+    "Like GaiaCP? Open it on GitHub and press Star there.": "GaiaCP'yi beğendiniz mi? GitHub'da açın ve orada Star'a basın.",
     "Beta": "Beta",
     "Still in development: things may change between versions, so keep backups.": "Hâlâ geliştiriliyor: sürümler arasında bir şeyler değişebilir, bu yüzden yedek alın.",
     ":done of :total done": ":done / :total tamamlandı",

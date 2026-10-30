@@ -2444,6 +2444,8 @@
     "Search settings": "Einstellungen durchsuchen",
     "No settings match your search.": "Keine Einstellungen passen zu Ihrer Suche.",
     "Alpha": "Alpha",
+    "Star on GitHub": "Auf GitHub mit Stern markieren",
+    "Like GaiaCP? Open it on GitHub and press Star there.": "Gefällt Ihnen GaiaCP? Öffnen Sie es auf GitHub und klicken Sie dort auf Star.",
     "Beta": "Beta",
     "Still in development: things may change between versions, so keep backups.": "Noch in Entwicklung: Zwischen Versionen kann sich etwas ändern, halten Sie also Backups bereit.",
     ":done of :total done": ":done von :total erledigt",
