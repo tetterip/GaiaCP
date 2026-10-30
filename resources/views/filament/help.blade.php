@@ -15,6 +15,8 @@
         .dark .gcp-guide-nav a[aria-current] { background: rgb(255 255 255 / .06); color: var(--primary-400); }
         .gcp-guide-body { max-width: 52rem; }
         .gcp-guide-body h2, .gcp-guide-body h3 { scroll-margin-top: 5rem; }
+        /* A long command (the cron line) scrolls inside its box instead of running past it on a phone */
+        .gcp-guide-body pre { max-width: 100%; overflow-x: auto; }
         .gcp-guide-body :not(pre) > code { padding: .1rem .3rem; border-radius: .25rem; background: var(--gray-100); font-size: .85em; font-weight: 500; }
         .dark .gcp-guide-body :not(pre) > code { background: rgb(255 255 255 / .08); }
         .gcp-guide-body :not(pre) > code::before, .gcp-guide-body :not(pre) > code::after { content: none; }

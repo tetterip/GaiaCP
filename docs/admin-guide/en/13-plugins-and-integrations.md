@@ -43,7 +43,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 
 | Kind | Plugins | Where you set them up |
 |---|---|---|
-| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance (off until switched on) | Settings → Servers |
+| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
 | Registrars | easy.gr, Enom, Email Notifications | Settings → Registrars |
 | Payment methods | Bank transfer, Stripe | Settings → Payment methods |
 | SSL certificates | GoGetSSL | Settings → GoGetSSL |
@@ -52,14 +52,14 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 | Tax details | VIES VAT check, ΑΑΔΕ registry lookup | their own settings pages |
 | Notifications | Slack, Discord, Telegram, Webhooks | Settings → Email & notifications |
 | Support | Email to ticket | Settings → Support |
-| AI | Claude, ChatGPT, DeepSeek, Kimi | Settings → AI assistant (its own group: the assistant's page and each service's) |
+| AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Settings → AI assistant (its own group: the assistant's page and each service's) |
 | Look | Gaia and Flat themes | Profile, Settings → General, Settings → Client area |
-| Moving in | Import from WHMCS | Settings → System |
+| Moving in | WHMCS import | Settings → System |
 
 ## Webhooks
 
 The **Webhooks** plugin (off until switched on, super admins) sends GaiaCP's events (orders, sign ups, payment
-notices, payments, service changes, domains, tickets, servers) as a JSON POST to the addresses you add, each with the
+notices, payments, invoices and credit notes, service changes, domains, tickets, servers) as a JSON POST to the addresses you add, each with the
 events it wants. Use it to feed your own scripts, Zapier, Make or n8n.
 
 Each request is signed with the endpoint's secret (shown once) in the `X-GaiaCP-Signature` header, so the receiver can
@@ -77,8 +77,9 @@ panel calls) to a channel, one short message each with a link to its page here. 
 
 ## AI assistant
 
-With the **Claude** plugin on (off until you switch it on, super admins) and an API key from console.anthropic.com
-under Settings → **Claude**, an **AI** menu appears after the label of the texts you write: ticket replies and new
+The AI assistant works with any of the AI service plugins: **Claude**, **ChatGPT**, **DeepSeek**, **Kimi** or
+**Ollama** (all off until you switch them on, super admins; see [Choosing an AI service](#choosing-an-ai-service)).
+With one on and set up under Settings → AI assistant, an **AI** menu appears after the label of the texts you write: ticket replies and new
 tickets, canned replies, email templates, messages to clients, knowledge base articles, announcements, product and
 product group descriptions, quote texts and sales emails. It offers:
 
@@ -90,9 +91,7 @@ product group descriptions, quote texts and sales emails. It offers:
 The answer opens in a window: change it if you like, then **Use this text** puts it in the field (nothing is sent or
 saved until you do). Only that field's text is sent, with fixed instructions that keep placeholders, links and
 formatting; never client details or passwords. Settings → **AI assistant** (its own group, with each AI service's page) turns each feature on or
-off, sets a monthly limit in tokens for all admins together and shows how many were used this month. **Test
-connection** on the Claude page checks the key and the model without using tokens. Opus writes best, Sonnet costs half,
-Haiku is the cheapest and good enough for spelling and translations; Anthropic bills your account directly.
+off, sets a monthly limit in tokens for all admins together and shows how many were used this month.
 
 It also writes texts from GaiaCP's own details, each with its own switch there:
 
@@ -149,10 +148,19 @@ language misses go to the AI service in batches of 40 and come back as uploaded 
 sent; a translation that loses a placeholder or an HTML tag is left out and stays in English. A whole new language is
 up to about 300,000 tokens.
 
-**ChatGPT** (OpenAI), **DeepSeek** and **Kimi** (Moonshot AI) work the same way, each with its own plugin, API key
-and model; DeepSeek and Kimi are often cheaper. ChatGPT needs an API key with credit from platform.openai.com: a
-ChatGPT Plus subscription does not include the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can
-use and offers them in the field. With more than one AI plugin on, Settings → AI assistant picks which one answers.
+### Choosing an AI service
+
+Every feature above works the same with each service; each has its own plugin and page under Settings → AI assistant,
+where **Test connection** checks the key and the model. With more than one on, Settings → AI assistant picks which one
+answers. The service bills your account directly.
+
+**Claude** (Anthropic) needs an API key from console.anthropic.com. Opus writes best, Sonnet costs half, Haiku is the
+cheapest and good enough for spelling and translations.
+
+**ChatGPT** (OpenAI), **DeepSeek** and **Kimi** (Moonshot AI) each need their own API key; DeepSeek and Kimi are often
+cheaper. ChatGPT needs an API key with credit from platform.openai.com: a ChatGPT Plus subscription does not include
+the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can use and
+offers them in the field.
 
 **Ollama** runs an open model (Llama, Qwen, Gemma, Mistral…) on your own server or computer, so texts never leave your
 machines and nothing is billed. Install Ollama (ollama.com), download a model (`ollama pull llama3.3`) and fill in its

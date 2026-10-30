@@ -2,6 +2,12 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.10] - 2026-10-30
+
+- Domains land on the registrar account of their WHMCS registrar module (easy.gr, Enom or any registrar plugin of the
+  same module), not only easy.gr; a domain whose registrar has no account under Settings → Registrars is imported as
+  tracked only
+
 ## [1.0.9] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

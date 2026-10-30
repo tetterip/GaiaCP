@@ -26,7 +26,9 @@ alpha, and things can change between versions.
 
 GaiaCP looks for a new release once a day. When one is out, super admins get a bell notification (once per version)
 and the daily summary email mentions it; a copy deployed from Git is told to deploy instead. `GAIACP_UPDATE_CHECK=false`
-in `.env` turns the daily look off.
+in `.env` turns the daily look off. GitHub answers 60 checks an hour per server address (shared with other sites on
+the same address); when that runs out, Updates says when to try again, and `GAIACP_UPDATE_TOKEN` (a GitHub token)
+raises the limit.
 
 An install deployed from Git has no Update button: it is updated by deploying.
 

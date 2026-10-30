@@ -717,6 +717,9 @@ class WhmcsImport
         }
     }
 
+    /** WHMCS registrar modules named differently from the GaiaCP registrar module that takes their domains */
+    private const REGISTRAR_MODULES = ['easy' => 'easygr', 'easygr' => 'easygr'];
+
     /** @var array<string, list<string>> WHMCS registrar module → domains imported as tracked only */
     private array $otherRegistrars = [];
 
@@ -725,14 +728,11 @@ class WhmcsImport
     {
         $registrationType = strtolower($type) === 'transfer' ? DomainRegistrationType::Transfer : DomainRegistrationType::Register;
 
-        // easy.gr's WHMCS module is "easy".
-        if (str_contains(strtolower($module), 'easy')) {
-            $registrar = Registrar::query()->where('module', 'easygr')->orderByDesc('is_default')->orderBy('id')->first();
+        // A WHMCS registrar module lands on the GaiaCP registrar account of the same module (easy.gr's is "easy").
+        $key = self::REGISTRAR_MODULES[strtolower($module)] ?? strtolower($module);
+        $registrar = $key === '' ? null : Registrar::query()->where('module', $key)->orderByDesc('is_default')->orderBy('id')->first();
 
-            if ($registrar === null) {
-                $this->report->problem("Domain {$domain}: at easy.gr, but no easy.gr account is set up under Settings → Registrars.", 'registrars');
-            }
-
+        if ($registrar !== null) {
             return [$registrar, $registrationType];
         }
 

@@ -35,7 +35,7 @@ leave a kind out.
 | Products, their prices per cycle and setup fees, product groups | Products and product groups (one-time products are skipped) |
 | Clients, with tax ID and custom fields | Clients; other custom fields become client fields |
 | Hosting and other services, with username, password, due date, status and end-of-period cancellations | Services |
-| Domains: easy.gr ones on your easy.gr account, others as tracked only | Domains |
+| Domains: each on your registrar account for its WHMCS registrar (added under Settings → Registrars); domains at a registrar with no account here as tracked only | Domains |
 | Billable items | Maintenance services |
 | Unpaid invoices (optional) | Payment notices, marked as already emailed |
 
