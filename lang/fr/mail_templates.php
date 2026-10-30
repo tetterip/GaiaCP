@@ -65,6 +65,10 @@ return [
         'subject' => 'Mise à jour de l\'avis de paiement {$invoice_number}',
         'body' => "L'avis de paiement {\$invoice_number} a été mis à jour.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Facture {$tax_invoice_number}',
+        'body' => "Merci pour votre paiement. Vous trouverez ci-joint la facture **{\$tax_invoice_number}** du {\$tax_invoice_date}, pour l'avis de paiement {\$invoice_number}.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nTotal payé : **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Changement de prix de vos services à partir du {$effective_date}',
         'body' => "Nous vous informons que le prix des services suivants change pour les renouvellements à échéance à partir du **{\$effective_date}**.\n\n"

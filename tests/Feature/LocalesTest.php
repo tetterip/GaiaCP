@@ -137,8 +137,10 @@ class LocalesTest extends TestCase
             $this->assertSame($placeholders($t->defaultSubject()), $placeholders($subject), $t->value);
             $this->assertSame($placeholders($t->defaultBody()), $placeholders($body), $t->value);
             $this->assertStringStartsWith('Αγαπητέ/ή {$client_first_name},', $body);
-            // Payment notices are proformas, never invoices.
-            $this->assertDoesNotMatchRegularExpression('/τιμολ[οό]γ/iu', $subject.$body, $t->value);
+            // Payment notices are proformas, never invoices; only the email of a real invoice says so.
+            if ($t !== MailTemplate::InvoiceIssued) {
+                $this->assertDoesNotMatchRegularExpression('/τιμολ[οό]γ/iu', $subject.$body, $t->value);
+            }
         }
 
         // The machine translated languages have every email too, with the same placeholders

@@ -3397,5 +3397,13 @@
     "The next number stays :number": "El siguiente número sigue siendo :number",
     "Whether a paid payment notice gets an invoice with its own number, and how invoices are numbered.": "Si un aviso de pago pagado recibe una factura con su propio número, y cómo se numeran las facturas.",
     "invoice": "factura",
-    "invoices": "facturas"
+    "invoices": "facturas",
+    "Download PDF": "Descargar PDF",
+    "Invoice Issued": "Factura emitida",
+    "Invoice date": "Fecha de la factura",
+    "Invoice number, e.g. INV-2026-0001": "Número de factura, p. ej. INV-2026-0001",
+    "No invoices yet": "Aún no hay facturas",
+    "Number of the payment notice it was issued for": "Número del aviso de pago para el que se emitió",
+    "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Envía ahora el email Factura emitida con el PDF a :email, aunque ese email esté desactivado en la página Plantillas de email.",
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Cuando un aviso de pago pagado recibe su factura (Ajustes → Facturas), con la factura en PDF; también con Enviar email en la página de una factura."
 }

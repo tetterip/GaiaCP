@@ -50,6 +50,7 @@ class TaxInvoiceInfolist
                             ->state($money('total_cents')),
                         TextEntry::make('payment_methods')
                             ->label('Paid by')
+                            ->state(fn (TaxInvoice $record) => $record->paymentMethods())
                             ->placeholder('—'),
                         TextEntry::make('seller')
                             ->label('From')

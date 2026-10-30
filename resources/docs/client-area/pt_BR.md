@@ -106,6 +106,10 @@ Em um domínio ativo registrado conosco, você pode:
 
 Quando um serviço vence, enviamos a você por e-mail um **aviso de pagamento**, com as instruções para pagar. Ele é um aviso de pagamento, não um documento fiscal. **Avisos de pagamento** lista todos eles: abra um para ver as linhas, imprimi-lo ou salvá-lo como PDF. Os botões acima da lista mostram só os não pagos, pagos ou em atraso. **Pagamentos** lista os pagamentos que registramos. Depois que você paga, o aviso aparece como pago assim que registramos o seu pagamento.
 
+<!-- if:invoices -->
+Quando emitimos faturas, um aviso de pagamento pago também recebe uma **fatura**: enviamos por email em PDF, o aviso pago tem um botão para baixá-la, e **Faturas** (em Cobrança) lista todas.
+<!-- endif -->
+
 <!-- if:pay_online -->
 Para pagar com cartão, abra um aviso de pagamento não pago e clique em **Pagar com cartão**. Você paga na página de pagamento segura do Stripe (nunca vemos os dados do seu cartão), e o aviso aparece como pago assim que o pagamento é aprovado.
 <!-- endif -->

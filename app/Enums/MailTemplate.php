@@ -25,6 +25,8 @@ enum MailTemplate: string
     case InvoiceFirstOverdue = 'invoice_overdue_first';
     case InvoiceSecondOverdue = 'invoice_overdue_second';
     case InvoiceModified = 'invoice_modified';
+    // An invoice (Settings → Invoices), issued once a payment notice is paid.
+    case InvoiceIssued = 'tax_invoice_issued';
     case PriceChange = 'price_change';
     case Quote = 'quote';
 
@@ -71,6 +73,7 @@ enum MailTemplate: string
             self::InvoiceFirstOverdue => 'First Payment Notice Overdue',
             self::InvoiceSecondOverdue => 'Second Payment Notice Overdue',
             self::InvoiceModified => 'Payment Notice Modified',
+            self::InvoiceIssued => 'Invoice Issued',
             self::PriceChange => 'Price Change Notice',
             self::Quote => 'Quote',
             self::HostingWelcome => 'Hosting Account Welcome Email',
@@ -102,7 +105,7 @@ enum MailTemplate: string
         return __(match ($this) {
             self::ClientSignup, self::OrderConfirmation, self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification => 'General',
             self::RenewalReminder, self::OverdueNotice, self::InvoiceCreated, self::InvoicePaymentReminder,
-            self::InvoiceFirstOverdue, self::InvoiceSecondOverdue, self::InvoiceModified, self::PriceChange, self::Quote => 'Billing',
+            self::InvoiceFirstOverdue, self::InvoiceSecondOverdue, self::InvoiceModified, self::InvoiceIssued, self::PriceChange, self::Quote => 'Billing',
             self::HostingWelcome, self::ServiceSuspension, self::ServiceUnsuspension,
             self::CancellationApproved, self::CancellationRejected, self::UpgradeApproved, self::UpgradeRejected, self::HostingOffer, self::UsageWarning => 'Hosting',
             self::SslValidation, self::SslIssued => 'SSL certificates',
@@ -126,6 +129,7 @@ enum MailTemplate: string
             self::InvoiceFirstOverdue => 'On the first of the "days after the due date" (Settings → Automation) while the notice is unpaid.',
             self::InvoiceSecondOverdue => 'On each later "days after the due date" while the notice is still unpaid.',
             self::InvoiceModified => 'When you send it from a payment notice\'s page (Send email).',
+            self::InvoiceIssued => 'When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice\'s page.',
             self::PriceChange => 'When you schedule a price change with "Email the clients" ticked (Change price on a service, the Services list, a product or a TLD). One email per client lists their services.',
             self::Quote => 'When you press Send on a quote (Billing → Quotes), to the lead or client it is for.',
             self::HostingWelcome => 'When a hosting account is created on its server (Account → Create, or completing an order).',
@@ -171,6 +175,7 @@ enum MailTemplate: string
         return in_array($this, [
             self::RenewalReminder, self::OverdueNotice, self::DomainRenewalNotice, self::ClientAreaLogin, self::EmailVerification,
             self::InvoiceCreated, self::InvoicePaymentReminder, self::InvoiceFirstOverdue, self::InvoiceSecondOverdue,
+            self::InvoiceIssued, // only sent while invoices are on
             self::CancellationApproved, self::CancellationRejected, self::UpgradeApproved, self::UpgradeRejected, // the client asked and waits for the answer
             self::PriceChange, self::UsageWarning,
             self::SslValidation, self::SslIssued, // the client has to act, or gets what they paid for
@@ -259,6 +264,14 @@ enum MailTemplate: string
             ],
             self::RenewalReminder, self::OverdueNotice, self::DomainRenewalNotice => $reminder,
             self::InvoiceCreated, self::InvoicePaymentReminder, self::InvoiceFirstOverdue, self::InvoiceSecondOverdue, self::InvoiceModified => $notice,
+            self::InvoiceIssued => [
+                'tax_invoice_number' => 'Invoice number, e.g. INV-2026-0001',
+                'tax_invoice_date' => 'Invoice date',
+                'invoice_number' => 'Number of the payment notice it was issued for',
+                'invoice_items' => 'Table of the items: description, period, amount',
+                'invoice_tax' => 'Tax line, e.g. VAT 24%: €19.20 (empty when no tax, or why none is charged, e.g. a reverse charge)',
+                'invoice_total' => 'Total',
+            ],
             self::Quote => [
                 'quote_number' => 'Quote number, e.g. QT-2026-0001',
                 'quote_valid_until' => 'The last day it can be accepted',
@@ -335,6 +348,7 @@ enum MailTemplate: string
             'ticket_message' => 'Hello, I cannot send email from my phone since this morning.', 'admin_name' => 'Maria',
             'validation_method' => 'DNS record (CNAME)', 'validation' => "Name: `_3f1c2a.example.gr`<br>\nType: `CNAME`<br>\nValue: `9a8b7c.6d5e4f.sectigo.com`",
             'quote_number' => 'QT-2026-0042', 'quote_valid_until' => now()->addDays(30)->format(AppServiceProvider::dateFormat()), 'quote_intro' => 'As we discussed, hosting for your shop with its domain.', 'quote_total' => '€95.00', 'quote_url' => 'https://clients.example.gr/quote/…',
+            'tax_invoice_number' => 'INV-2026-0042', 'tax_invoice_date' => now()->format(AppServiceProvider::dateFormat()),
             'invoice_subtotal' => '€95.00', 'invoice_tax' => '', 'invoice_total' => '€95.00', 'days_overdue' => '7',
         ];
     }
@@ -380,6 +394,7 @@ enum MailTemplate: string
             self::InvoiceFirstOverdue => 'Payment notice {$invoice_number} is overdue',
             self::InvoiceSecondOverdue => 'Second reminder: payment notice {$invoice_number} is overdue',
             self::InvoiceModified => 'Payment notice {$invoice_number} updated',
+            self::InvoiceIssued => 'Invoice {$tax_invoice_number}',
             self::PriceChange => 'Price change for your services from {$effective_date}',
             self::Quote => 'Quote {$quote_number} from {$company_name}',
             self::HostingWelcome => 'Your hosting account for {$domain} is ready',
@@ -436,6 +451,8 @@ enum MailTemplate: string
             self::InvoiceFirstOverdue => "Payment notice {\$invoice_number} was due on {\$invoice_due_date} and is {\$days_overdue} day(s) overdue.\n\n{$notice}",
             self::InvoiceSecondOverdue => "This is a second reminder that payment notice {\$invoice_number}, due on {\$invoice_due_date}, is still unpaid. Please pay it to avoid suspension of your services.\n\n{$notice}",
             self::InvoiceModified => "Payment notice {\$invoice_number} has been updated.\n\n{$notice}",
+            self::InvoiceIssued => "Thank you for your payment. Attached is invoice **{\$tax_invoice_number}** of {\$tax_invoice_date}, for payment notice {\$invoice_number}.\n\n"
+                ."{\$invoice_items}\n\n{\$invoice_tax}\n\nTotal paid: **{\$invoice_total}**",
             self::PriceChange => "We are writing to let you know that the price of the following services changes for renewals due from **{\$effective_date}**.\n\n"
                 ."{\$price_changes}\n\nUntil then nothing changes, and payment notices already issued stay as they are.\n\n"
                 .'If you have any questions, or would like to talk about your plan, please reply to this email.',

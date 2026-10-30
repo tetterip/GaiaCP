@@ -106,6 +106,10 @@ En un dominio activo registrado a través de nosotros puede:
 
 Cuando vence un servicio le enviamos un **aviso de pago** por email, con cómo pagar. Es un aviso de pago, no una factura fiscal. **Avisos de pago** los lista todos: abra uno para ver sus líneas, imprimirlo o guardarlo como PDF. Los botones sobre la lista muestran solo los sin pagar, los pagados o los vencidos. **Pagos** lista los pagos que hemos registrado. Después de pagar, el aviso aparece como pagado en cuanto registramos su pago.
 
+<!-- if:invoices -->
+Cuando emitimos facturas, un aviso de pago pagado también recibe una **factura**: se la enviamos por email en PDF, el aviso pagado tiene un botón para descargarla y **Facturas** (en Facturación) las muestra todas.
+<!-- endif -->
+
 <!-- if:pay_online -->
 Para pagar con tarjeta, abra un aviso de pago sin pagar y pulse **Pagar con tarjeta**. Paga en la página de pago segura de Stripe (nunca vemos los datos de su tarjeta), y el aviso aparece como pagado en cuanto se realiza el pago.
 <!-- endif -->

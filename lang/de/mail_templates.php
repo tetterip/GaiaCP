@@ -65,6 +65,10 @@ return [
         'subject' => 'Zahlungsaufforderung {$invoice_number} aktualisiert',
         'body' => "Die Zahlungsaufforderung {\$invoice_number} wurde aktualisiert.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Rechnung {$tax_invoice_number}',
+        'body' => "Vielen Dank für Ihre Zahlung. Anbei erhalten Sie die Rechnung **{\$tax_invoice_number}** vom {\$tax_invoice_date} zur Zahlungsaufforderung {\$invoice_number}.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nBezahlter Betrag: **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Preisänderung Ihrer Dienste ab {$effective_date}',
         'body' => "Wir möchten Sie informieren, dass sich der Preis der folgenden Dienste für Verlängerungen ab **{\$effective_date}** ändert.\n\n"

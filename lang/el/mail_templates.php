@@ -65,6 +65,10 @@ return [
         'subject' => 'Ενημέρωση της ειδοποίησης πληρωμής {$invoice_number}',
         'body' => "Η ειδοποίηση πληρωμής {\$invoice_number} ενημερώθηκε.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Τιμολόγιο {$tax_invoice_number}',
+        'body' => "Σας ευχαριστούμε για την πληρωμή σας. Σας επισυνάπτουμε το τιμολόγιο **{\$tax_invoice_number}** της {\$tax_invoice_date}, για την ειδοποίηση πληρωμής {\$invoice_number}.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nΣύνολο που πληρώθηκε: **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Αλλαγή τιμής των υπηρεσιών σας από {$effective_date}',
         'body' => "Σας ενημερώνουμε ότι η τιμή των παρακάτω υπηρεσιών αλλάζει για τις ανανεώσεις με λήξη από **{\$effective_date}**.\n\n"

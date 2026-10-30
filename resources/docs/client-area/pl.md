@@ -106,6 +106,10 @@ Przy aktywnej domenie zarejestrowanej przez nas można:
 
 Gdy zbliża się termin płatności usługi, wysyłamy e-mailem **wezwanie do zapłaty** z informacją, jak zapłacić. Jest to wezwanie do zapłaty, a nie faktura. **Wezwania do zapłaty** wymieniają je wszystkie: po otwarciu widać pozycje, można je wydrukować lub zapisać jako PDF. Przyciski nad listą pokazują tylko nieopłacone, opłacone lub zaległe. **Płatności** wymieniają zaksięgowane przez nas płatności. Po zapłacie wezwanie jest widoczne jako opłacone, gdy zaksięgujemy płatność.
 
+<!-- if:invoices -->
+Gdy wystawiamy faktury, opłacone wezwanie do zapłaty dostaje też **fakturę**: wysyłamy ją e-mailem jako PDF, opłacone wezwanie ma przycisk do jej pobrania, a **Faktury** (w Rozliczeniach) pokazują je wszystkie.
+<!-- endif -->
+
 <!-- if:pay_online -->
 Aby zapłacić kartą, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć **Zapłać kartą**. Płatność odbywa się na bezpiecznej stronie płatności Stripe (nigdy nie widzimy danych karty), a wezwanie jest widoczne jako opłacone, gdy tylko płatność zostanie zrealizowana.
 <!-- endif -->

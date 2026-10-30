@@ -106,6 +106,10 @@ Bij een actief domein dat via ons is geregistreerd, kunt u:
 
 Wanneer een dienst vervalt, sturen we u per e-mail een **betalingsverzoek**, met de betaalinstructies. Het is een betalingsverzoek, geen factuur. **Betalingsverzoeken** toont ze allemaal: open er een om de regels te zien, het af te drukken of als PDF op te slaan. De knoppen boven de lijst tonen alleen de onbetaalde, betaalde of achterstallige. **Betalingen** toont de betalingen die we hebben geregistreerd. Nadat u hebt betaald, wordt het verzoek als betaald getoond zodra we uw betaling registreren.
 
+<!-- if:invoices -->
+Als wij facturen uitgeven, krijgt een betaald betalingsverzoek ook een **factuur**: we e-mailen die als pdf, het betaalde verzoek heeft een knop om hem te downloaden, en **Facturen** (onder Financiën) toont ze allemaal.
+<!-- endif -->
+
 <!-- if:pay_online -->
 Om met een kaart te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met kaart**. U betaalt op de beveiligde betaalpagina van Stripe (wij zien uw kaartgegevens nooit), en het verzoek wordt als betaald getoond zodra de betaling is gelukt.
 <!-- endif -->

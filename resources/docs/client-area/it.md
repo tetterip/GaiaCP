@@ -106,6 +106,10 @@ Su un dominio attivo registrato tramite noi può:
 
 Quando un servizio è in scadenza Le inviamo via email un **avviso di pagamento**, con le istruzioni per pagare. È un avviso di pagamento, non una fattura fiscale. **Avvisi di pagamento** li elenca tutti: ne apra uno per vederne le righe, stamparlo o salvarlo come PDF. I pulsanti sopra l'elenco mostrano solo quelli non pagati, pagati o scaduti. **Pagamenti** elenca i pagamenti che abbiamo registrato. Dopo che ha pagato, l'avviso risulta pagato una volta registrato il Suo pagamento.
 
+<!-- if:invoices -->
+Quando emettiamo fatture, un avviso di pagamento pagato riceve anche una **fattura**: te la inviamo via email in PDF, l'avviso pagato ha un pulsante per scaricarla e **Fatture** (in Fatturazione) le elenca tutte.
+<!-- endif -->
+
 <!-- if:pay_online -->
 Per pagare con carta, apra un avviso di pagamento non pagato e prema **Paga con carta**. Paga sulla pagina di pagamento sicura di Stripe (non vediamo mai i dati della Sua carta), e l'avviso risulta pagato appena il pagamento va a buon fine.
 <!-- endif -->

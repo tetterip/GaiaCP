@@ -45,6 +45,7 @@ class TaxInvoicesTable
                     ->summarize(Summarizer::make()->label('Total')->using(fn (QueryBuilder $query) => Currencies::sumToBase($query, 'total_cents'))->formatStateUsing(fn ($state) => Money::format((int) $state))),
                 TextColumn::make('payment_methods')
                     ->label('Paid by')
+                    ->state(fn (TaxInvoice $record) => $record->paymentMethods())
                     ->placeholder('—')
                     ->toggleable(),
             ])))

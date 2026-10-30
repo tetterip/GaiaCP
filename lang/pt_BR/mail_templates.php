@@ -65,6 +65,10 @@ return [
         'subject' => 'Atualização do aviso de pagamento {$invoice_number}',
         'body' => "O aviso de pagamento {\$invoice_number} foi atualizado.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Fatura {$tax_invoice_number}',
+        'body' => "Obrigado pelo seu pagamento. Segue em anexo a fatura **{\$tax_invoice_number}** de {\$tax_invoice_date}, referente ao aviso de pagamento {\$invoice_number}.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nTotal pago: **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Mudança de preço dos seus serviços a partir de {$effective_date}',
         'body' => "Informamos que o preço dos serviços abaixo muda para as renovações com vencimento a partir de **{\$effective_date}**.\n\n"

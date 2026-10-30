@@ -36,11 +36,16 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
 - `app/Invoicing/`: invoices, optional (Settings → Invoices, `invoicing.enabled`, `invoicing.number_format`).
   `IssueInvoice` is called by `Invoice::settle()` when a notice becomes paid (a failure is logged `tax_invoice.failed`
   and never undoes the payment; Issue invoice on the notice retries) and copies it into `tax_invoices` /
-  `tax_invoice_items` (seller from Settings → Company, `bill_to`, lines, tax, payment methods), one per notice (notice
+  `tax_invoice_items` (seller from Settings → Company, `bill_to`, lines, tax, payment method keys), one per notice (notice
   row locked), none for "Add funds" or zero notices. `InvoiceNumbers::take()` gives the next number of the series
   (`invoice_series`: `invoice:<year>` when the format has `{YEAR}`, else `invoice`) under a row lock in the same
   transaction; `continueFrom()` moves it forward only. `TaxInvoice` / `TaxInvoiceItem` throw on update and delete; admin
-  pages `TaxInvoiceResource` (`/admin/tax-invoices`, read only, in the menu once on or while any exist)
+  pages `TaxInvoiceResource` (`/admin/tax-invoices`, read only, in the menu once on or while any exist; Download PDF,
+  Send email). `InvoicePdf` renders `resources/views/invoices/pdf.blade.php` with dompdf (`barryvdh/laravel-dompdf`,
+  DejaVu Sans, logo as a data URI from `Branding::emailLogoPath()`) in the client's language. After the issuing
+  transaction commits, `IssueInvoice::email()` sends Invoice Issued (`MailTemplate::InvoiceIssued`) with the PDF
+  (`ClientMailer::send(files:)`). Client area: Billing → Invoices (`Client\Resources\Invoices`, download only) and an
+  "Invoice …" download on a paid notice
 - Client fields (Settings → Client fields, `ClientFieldResource`): `client_fields` rows (`key` fixed once created,
   `labels` per locale, `ClientFieldType`, `options` for a list, `required`, `ClientFieldAccess` hidden / shown /
   editable, `on_notice`, `sort`); values in `clients.custom_fields` {key: value}. `App\Support\ClientFields` (scoped,

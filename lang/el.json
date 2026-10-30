@@ -3397,5 +3397,13 @@
     "The next number stays :number": "Ο επόμενος αριθμός μένει :number",
     "Whether a paid payment notice gets an invoice with its own number, and how invoices are numbered.": "Αν μια εξοφλημένη ειδοποίηση πληρωμής παίρνει τιμολόγιο με δικό του αριθμό, και πώς αριθμούνται τα τιμολόγια.",
     "invoice": "τιμολόγιο",
-    "invoices": "τιμολόγια"
+    "invoices": "τιμολόγια",
+    "Download PDF": "Λήψη PDF",
+    "Invoice Issued": "Εκδόθηκε τιμολόγιο",
+    "Invoice date": "Ημερομηνία τιμολογίου",
+    "Invoice number, e.g. INV-2026-0001": "Αριθμός τιμολογίου, π.χ. INV-2026-0001",
+    "No invoices yet": "Δεν υπάρχουν ακόμη τιμολόγια",
+    "Number of the payment notice it was issued for": "Αριθμός της ειδοποίησης πληρωμής για την οποία εκδόθηκε",
+    "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Στέλνει τώρα το email Εκδόθηκε τιμολόγιο με το PDF στο :email, ακόμη κι αν αυτό το email είναι κλειστό στη σελίδα Πρότυπα email.",
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Όταν μια εξοφλημένη ειδοποίηση πληρωμής παίρνει το τιμολόγιό της (Ρυθμίσεις → Τιμολόγια), με το τιμολόγιο σε PDF· και με την Αποστολή email στη σελίδα ενός τιμολογίου."
 }

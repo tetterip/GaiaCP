@@ -5,6 +5,7 @@ namespace App\Filament\Client\Pages;
 use App\Credit\ClientCredit;
 use App\Filament\Client\Resources\Emails\EmailResource;
 use App\Filament\Concerns\TranslatesPageLabels;
+use App\Invoicing\IssueInvoice;
 use App\Plugins\PluginManager;
 use App\Support\CookieConsent;
 use App\Support\Locales;
@@ -87,6 +88,7 @@ class Help extends Page
             'orders' => Order::canAccess(),
             'domain_prices' => DomainPrices::canAccess(),
             'pay_online' => $plugins->clientPaymentNoticeActions() !== [],
+            'invoices' => IssueInvoice::enabled(),
             'credit' => ClientCredit::enabled(),
             'credit_auto' => ClientCredit::autoApply(),
             'credit_manual' => ClientCredit::enabled() && ! ClientCredit::autoApply(),

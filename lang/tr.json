@@ -3397,5 +3397,13 @@
     "The next number stays :number": "Sıradaki numara :number olarak kalıyor",
     "Whether a paid payment notice gets an invoice with its own number, and how invoices are numbered.": "Ödenmiş bir ödeme bildiriminin kendi numarasıyla bir fatura alıp almadığı ve faturaların nasıl numaralandığı.",
     "invoice": "fatura",
-    "invoices": "faturalar"
+    "invoices": "faturalar",
+    "Download PDF": "PDF indir",
+    "Invoice Issued": "Fatura kesildi",
+    "Invoice date": "Fatura tarihi",
+    "Invoice number, e.g. INV-2026-0001": "Fatura numarası, ör. INV-2026-0001",
+    "No invoices yet": "Henüz fatura yok",
+    "Number of the payment notice it was issued for": "Kesildiği ödeme bildiriminin numarası",
+    "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Fatura kesildi e-postasını PDF ile birlikte şimdi :email adresine gönderir; bu e-posta E-posta şablonları sayfasında kapalı olsa bile.",
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Ödenmiş bir ödeme bildirimi faturasını aldığında (Ayarlar → Faturalar), fatura PDF olarak eklenir; ayrıca bir faturanın sayfasındaki E-posta gönder ile."
 }

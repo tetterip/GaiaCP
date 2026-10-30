@@ -35,8 +35,9 @@ class ClientMailer
      * @param  bool  $evenIfOff  the admin asked for this one email (e.g. the signup email box)
      * @param  Invoice|Ticket|null  $invoice  the payment notice or ticket it is about, for its client area link (else the service, else Home)
      * @param  array{subject: string, body: string}|null  $text  the admin's text for this one email instead of the template's
+     * @param  list<array{name: string, data: string, mime: string}>  $files  attached files
      */
-    public function send(MailTemplate $template, Client $client, array|Closure $values = [], ?Service $service = null, bool $evenIfOff = false, Invoice|Ticket|null $invoice = null, ?array $text = null): bool
+    public function send(MailTemplate $template, Client $client, array|Closure $values = [], ?Service $service = null, bool $evenIfOff = false, Invoice|Ticket|null $invoice = null, ?array $text = null, array $files = []): bool
     {
         if ((! $evenIfOff && ! MailTemplates::enabled($template)) || blank($client->email)) {
             return false;
@@ -52,6 +53,7 @@ class ClientMailer
         }
         $mail->ticket = $invoice instanceof Ticket ? $invoice : null;
         $mail->previewText = $text;
+        $mail->files = $files;
 
         try {
             $pending = Mail::to($client->email);

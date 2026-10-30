@@ -65,6 +65,10 @@ return [
         'subject' => '{$invoice_number} numaralı ödeme bildirimi güncellendi',
         'body' => "{\$invoice_number} numaralı ödeme bildirimi güncellendi.\n\n{$notice}",
     ],
+    'tax_invoice_issued' => [
+        'subject' => 'Fatura {$tax_invoice_number}',
+        'body' => "Ödemeniz için teşekkür ederiz. {\$invoice_number} numaralı ödeme bildirimi için {\$tax_invoice_date} tarihli **{\$tax_invoice_number}** numaralı fatura ektedir.\n\n{\$invoice_items}\n\n{\$invoice_tax}\n\nÖdenen toplam: **{\$invoice_total}**",
+    ],
     'price_change' => [
         'subject' => 'Hizmetlerinizin fiyatı {$effective_date} tarihinden itibaren değişiyor',
         'body' => "Aşağıdaki hizmetlerin fiyatının, vadesi **{\$effective_date}** tarihinden itibaren gelen yenilemeler için değiştiğini bildirmek isteriz.\n\n"
