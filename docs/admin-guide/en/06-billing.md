@@ -56,9 +56,20 @@ in the client area under Billing → **Invoices** and on the paid notice. On an 
 - **Number format**: `{YEAR}`, `{MONTH}`, `{DAY}` and `{NUMBER}` (at least four digits), `INV-{YEAR}-{NUMBER}` by
   default. With `{YEAR}` in it, numbering starts again at 1 each year. Numbers have no gaps and are never given twice.
 - **Next number**: where to continue from, for example after your previous system. It can only go up.
+- **Credit note number format**: the same tags, `CN-{YEAR}-{NUMBER}` by default, in a series of its own.
 
-Check with your accountant what an invoice must show in your country. Reversing a payment doesn't change its invoice
-yet: credit notes are planned.
+### Credit notes
+
+An invoice can only be undone by a **credit note**. On an invoice's page, **Issue credit note** credits the lines you
+tick (all of them at first) with an optional reason; each line can be credited once. Reversing the payment of an
+invoiced notice issues a credit note for the whole invoice by itself, and once the notice is paid again it gets a new
+invoice. A credit note records no refund: give the money back and record it as usual.
+
+Credit notes are listed with the invoices (filter **Type**), their totals negative, and have a PDF like an invoice; the
+client sees them under Billing → **Invoices**. **Export CSV** on the Invoices list gives your accountant one row per
+invoice or credit note in the current filters, with the client details printed on it.
+
+Check with your accountant what an invoice and a credit note must show in your country.
 
 ## Recording payments
 

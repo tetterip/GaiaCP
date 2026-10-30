@@ -19,7 +19,8 @@ use Illuminate\Support\HtmlString;
 
 /**
  * Issues the invoice of a paid payment notice (Settings → Invoices): called by Invoice::settle() as the notice is paid,
- * or by hand from the notice. One invoice per notice, so it is safe to call again. An "Add funds" notice gets none (the
+ * or by hand from the notice. One invoice per notice (another only once a credit note undid it), so it is safe to call
+ * again. An "Add funds" notice gets none (the
  * notices that credit pays later do), nor does a notice of nothing to pay. The client gets the Invoice Issued email with
  * its PDF once the payment is saved.
  */
@@ -46,7 +47,10 @@ class IssueInvoice
             // The notice row is the lock: two payments settling it at once issue one invoice.
             Invoice::query()->lockForUpdate()->whereKey($notice->id)->first();
 
-            if ($existing = TaxInvoice::query()->where('invoice_id', $notice->id)->where('type', TaxInvoice::INVOICE)->first()) {
+            // Paid again after a credit note undid its invoice (the payment was reversed): a new invoice.
+            $existing = TaxInvoice::query()->where('invoice_id', $notice->id)->where('type', TaxInvoice::INVOICE)->latest('id')->first();
+
+            if ($existing && ! $existing->fullyCredited()) {
                 return $existing;
             }
 

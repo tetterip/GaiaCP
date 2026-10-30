@@ -45,7 +45,13 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   DejaVu Sans, logo as a data URI from `Branding::emailLogoPath()`) in the client's language. After the issuing
   transaction commits, `IssueInvoice::email()` sends Invoice Issued (`MailTemplate::InvoiceIssued`) with the PDF
   (`ClientMailer::send(files:)`). Client area: Billing → Invoices (`Client\Resources\Invoices`, download only) and an
-  "Invoice …" download on a paid notice
+  "Invoice …" download on a paid notice. `IssueCreditNote` makes a credit note (`tax_invoices.type = credit_note`,
+  `credited_invoice_id`, lines with `credited_item_id` so each is credited once; amounts kept positive,
+  `signedTotalCents()` / `signedTotalSql()` for sums) under a lock on the invoice row, numbered by
+  `InvoiceNumbers::take($date, TaxInvoice::CREDIT_NOTE)` (series `credit_note[:<year>]`, `invoicing.credit_note_format`).
+  `ReversePayment` credits the whole invoice of a notice it reopens; `IssueInvoice` then issues a new one once the
+  notice is paid again (`Invoice::taxInvoice()` is the latest). Events `tax_invoice.issued` / `credit_note.issued`
+  carry a `tax_invoice` payload. Billing → Invoices has Export CSV. One tax rate per notice, so no per-rate breakdown
 - Client fields (Settings → Client fields, `ClientFieldResource`): `client_fields` rows (`key` fixed once created,
   `labels` per locale, `ClientFieldType`, `options` for a list, `required`, `ClientFieldAccess` hidden / shown /
   editable, `on_notice`, `sort`); values in `clients.custom_fields` {key: value}. `App\Support\ClientFields` (scoped,

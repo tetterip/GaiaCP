@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Credit\ClientCredit;
 use App\Enums\CreditType;
 use App\Enums\InvoiceStatus;
+use App\Invoicing\IssueCreditNote;
 use App\Models\ActivityLog;
 use App\Models\InvoiceItem;
 use App\Models\Payment;
@@ -37,6 +38,11 @@ class ReversePayment
 
                 if ($item->invoice->status === InvoiceStatus::Paid) {
                     $item->invoice->update(['status' => InvoiceStatus::Unpaid, 'paid_on' => null]);
+
+                    // An invoice can't be changed: a credit note undoes it, and paying the notice again issues a new one.
+                    if (($invoice = $item->invoice->taxInvoice) && ! $invoice->fullyCredited()) {
+                        app(IssueCreditNote::class)->handle($invoice, reason: IssueCreditNote::PAYMENT_REVERSED);
+                    }
                 }
             }
 

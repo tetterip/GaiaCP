@@ -122,10 +122,10 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
-    /** @return HasOne<TaxInvoice, $this> the invoice issued once it was paid (Settings → Invoices) */
+    /** @return HasOne<TaxInvoice, $this> the invoice issued once it was paid (Settings → Invoices); the latest, when a credit note undid an earlier one */
     public function taxInvoice(): HasOne
     {
-        return $this->hasOne(TaxInvoice::class)->where('type', TaxInvoice::INVOICE);
+        return $this->hasOne(TaxInvoice::class)->where('type', TaxInvoice::INVOICE)->latest('id');
     }
 
     /** @return HasMany<InvoiceReminder, $this> */

@@ -10,25 +10,29 @@ use Illuminate\Support\Facades\DB;
  * Invoice numbers from Settings → Invoices → Number format: {YEAR} {MONTH} {DAY} and {NUMBER} (at least four digits).
  * Each series keeps the last number given (`invoice_series`), taken under a row lock inside the issuing transaction,
  * so numbers have no gaps and are never given twice. With {YEAR} in the format each year is a series of its own and
- * starts again at 1.
+ * starts again at 1. Credit notes are numbered the same way in series of their own (Credit note number format).
  */
 class InvoiceNumbers
 {
     public const DEFAULT_FORMAT = 'INV-{YEAR}-{NUMBER}';
 
+    public const DEFAULT_CREDIT_NOTE_FORMAT = 'CN-{YEAR}-{NUMBER}';
+
     public const TAGS = ['{YEAR}', '{MONTH}', '{DAY}', '{NUMBER}'];
 
-    public static function format(): string
+    /** The number format of invoices, or of credit notes with $type TaxInvoice::CREDIT_NOTE. */
+    public static function format(string $type = TaxInvoice::INVOICE): string
     {
-        $format = trim((string) config('gaiacp.invoicing.number_format'));
+        $creditNote = $type === TaxInvoice::CREDIT_NOTE;
+        $format = trim((string) config($creditNote ? 'gaiacp.invoicing.credit_note_format' : 'gaiacp.invoicing.number_format'));
 
-        return str_contains($format, '{NUMBER}') ? $format : self::DEFAULT_FORMAT;
+        return str_contains($format, '{NUMBER}') ? $format : ($creditNote ? self::DEFAULT_CREDIT_NOTE_FORMAT : self::DEFAULT_FORMAT);
     }
 
-    /** The series an invoice dated $date is numbered in. */
-    public static function series(CarbonInterface $date, ?string $format = null): string
+    /** The series an invoice (or credit note) dated $date is numbered in. */
+    public static function series(CarbonInterface $date, ?string $format = null, string $type = TaxInvoice::INVOICE): string
     {
-        return str_contains($format ?? self::format(), '{YEAR}') ? 'invoice:'.$date->year : 'invoice';
+        return str_contains($format ?? self::format($type), '{YEAR}') ? $type.':'.$date->year : $type;
     }
 
     public static function build(int $number, CarbonInterface $date, ?string $format = null): string
@@ -51,15 +55,16 @@ class InvoiceNumbers
      * Takes the next number: call inside the transaction that creates the invoice, so the lock is held until it is
      * saved. A number already used (the format was changed back to an older one) is skipped.
      */
-    public static function take(CarbonInterface $date): string
+    public static function take(CarbonInterface $date, string $type = TaxInvoice::INVOICE): string
     {
-        $key = self::series($date);
+        $key = self::series($date, type: $type);
+        $format = self::format($type);
 
         DB::table('invoice_series')->insertOrIgnore(['key' => $key, 'last_number' => 0, 'created_at' => now(), 'updated_at' => now()]);
         $last = (int) DB::table('invoice_series')->where('key', $key)->lockForUpdate()->value('last_number');
 
         do {
-            $number = self::build(++$last, $date);
+            $number = self::build(++$last, $date, $format);
         } while (TaxInvoice::query()->where('number', $number)->exists());
 
         DB::table('invoice_series')->where('key', $key)->update(['last_number' => $last, 'updated_at' => now()]);

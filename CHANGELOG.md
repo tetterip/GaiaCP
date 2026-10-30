@@ -11,6 +11,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   gaps, and the next number can only go up. An invoice is a copy of the seller, client, lines and tax when it was
   issued and is never changed or deleted. Billing → Invoices lists them; a paid notice links to its invoice, or has
   Issue invoice when it was paid before.
+- Credit notes: Issue credit note on an invoice credits the chosen lines (each once) in a series of its own
+  (`CN-{YEAR}-{NUMBER}` by default); reversing the payment of an invoiced notice credits its invoice by itself, and the
+  notice gets a new invoice when paid again. Credit notes have a PDF, show with the invoices (negative totals, Type
+  filter) and in the client area. Export CSV on Billing → Invoices for the accountant. Plugins and webhooks hear
+  `tax_invoice.issued` and `credit_note.issued`.
 - Invoices as PDF: the client gets the new Invoice Issued email with the invoice attached, in their language, and
   finds their invoices under Billing → Invoices in the client area and on each paid payment notice. Admins download
   the PDF or send the email again from an invoice's page, and see a client's invoices on the Invoices tab of the

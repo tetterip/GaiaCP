@@ -3405,5 +3405,22 @@
     "No invoices yet": "Nog geen facturen",
     "Number of the payment notice it was issued for": "Nummer van het betalingsverzoek waarvoor hij is uitgegeven",
     "Sends the Invoice Issued email with the PDF to :email now, even if that email is switched off on the Email templates page.": "Stuurt de e-mail Factuur uitgegeven met de pdf nu naar :email, ook als die e-mail is uitgeschakeld op de pagina E-mailsjablonen.",
-    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Wanneer een betaald betalingsverzoek zijn factuur krijgt (Instellingen → Facturen), met de factuur als pdf; ook via E-mail versturen op de pagina van een factuur."
+    "When a paid payment notice gets its invoice (Settings → Invoices), with the invoice as a PDF; also Send email on an invoice's page.": "Wanneer een betaald betalingsverzoek zijn factuur krijgt (Instellingen → Facturen), met de factuur als pdf; ook via E-mail versturen op de pagina van een factuur.",
+    "A credit note undoes the chosen lines of this invoice, dated today with the next credit note number. It can't be changed or deleted afterwards. It records no refund: record one as you would any money paid back.": "Een creditnota maakt de gekozen regels van deze factuur ongedaan, met de datum van vandaag en het volgende creditnotanummer. Daarna kan hij niet worden gewijzigd of verwijderd. Hij registreert geen terugbetaling: registreer die zoals elk terugbetaald bedrag.",
+    "Credit note": "Creditnota",
+    "Credit note :number": "Creditnota :number",
+    "Credit note :number issued": "Creditnota :number uitgegeven",
+    "Credit note format": "Nummerformaat creditnota",
+    "Credit note issued": "Creditnota uitgegeven",
+    "Credit note number format": "Nummerformaat creditnota",
+    "Credit notes": "Creditnota's",
+    "Credit notes undo an invoice (from the invoice, or when its payment is reversed) and are numbered in a series of their own, the same tags.": "Creditnota's maken een factuur ongedaan (vanuit de factuur, of wanneer de betaling ervan wordt teruggedraaid) en krijgen een eigen nummerreeks, met dezelfde tags.",
+    "Credits invoice": "Crediteert factuur",
+    "Every chosen line of this invoice has been credited already.": "Alle gekozen regels van deze factuur zijn al gecrediteerd.",
+    "Invoice issued": "Factuur uitgegeven",
+    "Issue credit note": "Creditnota uitgeven",
+    "Lines": "Regels",
+    "No credit note issued": "Geen creditnota uitgegeven",
+    "Tax note": "Belastingopmerking",
+    "Tax rate": "Belastingtarief"
 }

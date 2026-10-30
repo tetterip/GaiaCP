@@ -54,6 +54,7 @@ return [
     'invoicing' => [
         'enabled' => false,
         'number_format' => 'INV-{YEAR}-{NUMBER}',
+        'credit_note_format' => 'CN-{YEAR}-{NUMBER}',
     ],
 
     // Client credit (Settings → Client credit): a balance clients top up with an "Add funds" payment notice and that

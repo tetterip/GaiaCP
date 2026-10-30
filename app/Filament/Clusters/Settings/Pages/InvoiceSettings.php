@@ -43,7 +43,7 @@ class InvoiceSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['invoicing.enabled', 'invoicing.number_format'];
+        return ['invoicing.enabled', 'invoicing.number_format', 'invoicing.credit_note_format'];
     }
 
     public function form(Schema $schema): Schema
@@ -82,6 +82,14 @@ class InvoiceSettings extends SettingsFormPage
                             ]))
                             ->live(onBlur: true)
                             ->visible($on),
+                        TextInput::make('invoicing.credit_note_format')
+                            ->label('Credit note number format')
+                            ->required()
+                            ->maxLength(40)
+                            ->regex('/\{NUMBER\}/')
+                            ->validationMessages(['regex' => __('The format needs {NUMBER}.')])
+                            ->helperText(__('Credit notes undo an invoice (from the invoice, or when its payment is reversed) and are numbered in a series of their own, the same tags.'))
+                            ->visible($on),
                     ]),
             ]);
     }
@@ -90,6 +98,7 @@ class InvoiceSettings extends SettingsFormPage
     {
         $values['invoicing.enabled'] = (bool) ($values['invoicing.enabled'] ?? false);
         $values['invoicing.number_format'] ??= InvoiceNumbers::DEFAULT_FORMAT;
+        $values['invoicing.credit_note_format'] ??= InvoiceNumbers::DEFAULT_CREDIT_NOTE_FORMAT;
         $values['invoicing.next_number'] = InvoiceNumbers::upcoming(today());
 
         return $values;
@@ -99,6 +108,7 @@ class InvoiceSettings extends SettingsFormPage
     {
         $values['invoicing.enabled'] = (bool) ($values['invoicing.enabled'] ?? false);
         $values['invoicing.number_format'] ??= InvoiceNumbers::DEFAULT_FORMAT;
+        $values['invoicing.credit_note_format'] ??= InvoiceNumbers::DEFAULT_CREDIT_NOTE_FORMAT;
 
         return $values;
     }
