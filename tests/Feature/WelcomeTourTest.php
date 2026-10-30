@@ -21,14 +21,15 @@ class WelcomeTourTest extends TestCase
 
         $this->actingAs($admin)->get('/admin')->assertOk()
             ->assertSee('Welcome to GaiaCP')
-            ->assertSee('open: true', false)
-            ->assertSee('Open the setup guide');
+            ->assertSee('data-opens-now="yes"', false)
+            ->assertSee('Open the setup guide')
+            ->assertSee('navgroup:', false);
 
         $this->assertNotNull($admin->refresh()->admin_tour_seen_at);
         $this->assertNull($admin->client_tour_seen_at);
 
         $this->actingAs($admin)->get('/admin')->assertOk()
-            ->assertSee('open: false', false)
+            ->assertSee('data-opens-now="no"', false)
             ->assertSee('Welcome to GaiaCP')
             ->assertSee('open-welcome-tour', false);
     }
@@ -53,10 +54,10 @@ class WelcomeTourTest extends TestCase
         $this->actingAs($user, 'client')->get('/dashboard')->assertOk()
             ->assertSee('Welcome to Acme Hosting')
             ->assertSee('Your services')
-            ->assertSee('open: true', false);
+            ->assertSee('data-opens-now="yes"', false);
 
         $this->assertNotNull($user->refresh()->client_tour_seen_at);
-        $this->actingAs($user, 'client')->get('/dashboard')->assertOk()->assertSee('open: false', false);
+        $this->actingAs($user, 'client')->get('/dashboard')->assertOk()->assertSee('data-opens-now="no"', false);
     }
 
     public function test_an_admin_looking_as_the_client_does_not_use_it_up(): void
@@ -67,7 +68,7 @@ class WelcomeTourTest extends TestCase
         $this->actingAs($admin)->actingAs($user, 'client')
             ->withSession([ClientAreaAccess::VIEWING_AS => $user->id])
             ->get('/dashboard')->assertOk()
-            ->assertSee('open: false', false);
+            ->assertSee('data-opens-now="no"', false);
 
         $this->assertNull($user->refresh()->client_tour_seen_at);
     }

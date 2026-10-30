@@ -5,7 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
-- Welcome tour: on the first login, admins and clients get a few cards saying where things are (clients and orders,
+- Welcome tour: on the first login, admins and clients get a few cards, each lighting up the menu or part of the top bar it is about (on a phone the side menu opens for them), (clients and orders,
   services, payment notices, support, search and bell, help for admins; services, payment notices, ordering, support,
   profile and help for clients), only for the pages each one can open. The admin's last card opens the setup guide.
   The user menu → Tour shows it again; Settings → Client area → Welcome tour turns off the clients' one. Existing
