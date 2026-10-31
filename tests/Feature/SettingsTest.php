@@ -16,6 +16,7 @@ use App\Filament\Clusters\Settings\Pages\LanguageSettings;
 use App\Filament\Clusters\Settings\Pages\LoggingSettings;
 use App\Filament\Clusters\Settings\Pages\LoginSecuritySettings;
 use App\Filament\Clusters\Settings\Pages\MailSettings;
+use App\Filament\Clusters\Settings\Pages\MenuSettings;
 use App\Filament\Clusters\Settings\Pages\PaymentMethodsSettings;
 use App\Filament\Clusters\Settings\Pages\PublicAreaSettings;
 use App\Filament\Clusters\Settings\Pages\SalesSettings;
@@ -81,7 +82,7 @@ class SettingsTest extends TestCase
     /** Every card on the Settings page, in order. */
     private const PAGES = [
         GeneralSettings::class, LanguageSettings::class, CompanySettings::class, PaymentMethodsSettings::class, InvoiceSettings::class, TaxSettings::class, CreditSettings::class, SalesSettings::class, AadeSettings::class, ViesSettings::class, ClientFieldResource::class, GoogleLoginSettings::class, RecaptchaSettings::class, TurnstileSettings::class, UptimeKumaSettings::class, UptimeRobotSettings::class, HetrixToolsSettings::class, BetterStackSettings::class, GoGetSslSettings::class, BlacklistsSettings::class, SiteChecksSettings::class, ProxmoxSettings::class, AiSettings::class, ClaudeSettings::class, DeepSeekSettings::class, KimiSettings::class, OpenAiSettings::class, OllamaSettings::class,
-        ProductResource::class, ProductOptionGroupResource::class, ServerResource::class, RegistrarResource::class, DomainSettings::class, ClientAreaSettings::class, PublicAreaSettings::class, CookieSettings::class,
+        ProductResource::class, ProductOptionGroupResource::class, ServerResource::class, RegistrarResource::class, DomainSettings::class, ClientAreaSettings::class, PublicAreaSettings::class, MenuSettings::class, CookieSettings::class,
         SupportSettings::class, TicketDepartmentResource::class, CannedReplyResource::class, TicketMailSettings::class,
         MailSettings::class, EmailTemplates::class,
         AutomationSettings::class, BackupSettings::class, SystemHealth::class,
@@ -112,7 +113,7 @@ class SettingsTest extends TestCase
         $this->get(TaxSettings::getUrl())->assertOk()
             ->assertSee(MailSettings::getUrl())
             ->assertSee(ServerResource::getUrl())
-            ->assertSeeInOrder(['General', 'General', 'Languages', 'Company', 'Client fields', 'Billing', 'Payment methods', 'Currencies', 'Invoices', 'Tax', 'Client credit', 'Automation', 'Sales', 'Products &amp; domains', 'Products', 'Product options', 'Domain pricing', 'Domains', 'Registrars', 'Servers', 'Client area', 'Client area', 'Public area', 'Cookies', 'Support', 'Ticket departments', 'Canned replies', 'Email to ticket', 'Email &amp; notifications', 'Mail', 'Email templates', 'Integrations', 'ΑΑΔΕ', 'AI assistant', 'AI assistant', 'Security', 'Admin users', 'Login security', 'System', 'Plugins', 'Updates', 'Backups', 'System health', 'Logs', 'Logging', 'Module log', 'Email log', 'Error log'], false);
+            ->assertSeeInOrder(['General', 'General', 'Languages', 'Company', 'Client fields', 'Billing', 'Payment methods', 'Currencies', 'Invoices', 'Tax', 'Client credit', 'Automation', 'Sales', 'Products &amp; domains', 'Products', 'Product options', 'Domain pricing', 'Domains', 'Registrars', 'Servers', 'Client area', 'Client area', 'Public area', 'Menus', 'Cookies', 'Support', 'Ticket departments', 'Canned replies', 'Email to ticket', 'Email &amp; notifications', 'Mail', 'Email templates', 'Integrations', 'ΑΑΔΕ', 'AI assistant', 'AI assistant', 'Security', 'Admin users', 'Login security', 'System', 'Plugins', 'Updates', 'Backups', 'System health', 'Logs', 'Logging', 'Module log', 'Email log', 'Error log'], false);
     }
 
     public function test_every_stored_setting_is_on_exactly_one_page(): void

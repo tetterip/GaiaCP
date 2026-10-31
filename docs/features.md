@@ -287,7 +287,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
     domain search and what is sold, domain search for visitors, a domain prices page, the knowledge base (articles can
     stay for clients only), a contact form whose ticket the visitor follows at a secret link, announcements with an RSS
     feed (each public or for clients only) and a server status page (state and uptime by name, never the hostname or IP);
-    side menu and language picker for visitors); ✅ search engines (Settings → Client area: each language of a public
+    side menu and language picker for visitors); ✅ menus (Settings → Client area → Menus: both side menus, for clients and
+    visitors, dragged into order, with pages renamed or taken out and products, product groups, links and headings
+    added); ✅ search engines (Settings → Client area: each language of a public
     page at its own address with canonical and hreflang links, `/sitemap.xml` and `/robots.txt`; a public page per
     product group with its own text, compare table, questions and structured data, and per product inside it; product
     names and descriptions per language); ✅ cookie banner
