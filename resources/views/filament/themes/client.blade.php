@@ -460,7 +460,7 @@
     .gcp-incident li {
         font-weight: 500;
         color: var(--gcp-ink);
-        overflow-wrap: anywhere;
+        overflow-wrap: break-word;
     }
 
     /* Messages to clients shown on Home (ClientMessage) */
@@ -521,7 +521,7 @@
     .gcp-status-head strong {
         color: var(--gcp-ink);
         font-weight: 600;
-        overflow-wrap: anywhere;
+        overflow-wrap: break-word;
     }
 
     /* Announcements */
@@ -703,12 +703,34 @@
         vertical-align: bottom;
     }
 
-    /* The feature names stay in view while a narrow screen scrolls the packages sideways */
+    /* The feature names wrap in a narrow first column, which scrolls away with the packages (not sticky), so a phone
+       has room for the packages; long names (Greek, German) take two or three lines instead of widening it */
+    .gcp-compare-table tbody th,
     .gcp-compare-table tr > :first-child {
-        position: sticky;
-        inset-inline-start: 0;
-        z-index: 1;
-        background: var(--gcp-card);
+        white-space: normal;
+        overflow-wrap: break-word;
+        min-width: 6rem;
+        max-width: 9rem;
+    }
+
+    @media (max-width: 640px) {
+        .gcp-compare-table {
+            font-size: .8125rem;
+        }
+
+        .gcp-compare-table th,
+        .gcp-compare-table td {
+            padding: .5rem .5rem;
+        }
+
+        .gcp-compare-table tbody th,
+        .gcp-compare-table tr > :first-child {
+            min-width: 5rem;
+            max-width: 7.5rem;
+            padding-inline-start: 0;
+            font-size: .75rem;
+            line-height: 1.25;
+        }
     }
 
     .gcp-compare-name {
@@ -917,7 +939,7 @@
         font-size: .875rem;
         font-weight: 500;
         text-align: center;
-        overflow-wrap: anywhere;
+        overflow-wrap: break-word;
         transition: background-color .15s ease, box-shadow .15s ease;
     }
 
@@ -1221,7 +1243,7 @@
         display: flex;
         gap: .65rem;
         align-items: flex-start;
-        overflow-wrap: anywhere;
+        overflow-wrap: break-word;
     }
 
     .gcp-contact-line > div {
@@ -1417,7 +1439,7 @@
 
     .gcp-visitor-ticket-details dd {
         color: var(--gcp-ink);
-        overflow-wrap: anywhere;
+        overflow-wrap: break-word;
     }
 
     @if (\App\Themes\Themes::brandColor())

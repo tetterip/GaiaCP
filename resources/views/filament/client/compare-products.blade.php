@@ -2,7 +2,9 @@
      "Yes" / "No" (or ✓ / ✗) show as marks, other values as typed. Then the price of each billing cycle and a Choose
      button per column, which sets $field (the form's product field) as the product cards do, or, on a group's public
      page (ProductGroupPage, no $field), an Order link to each product's url. Styled by
-     filament.themes.client; a product's colour (data-gcp-color) colours its column's name, marks and button. --}}
+     filament.themes.client; a product's colour (data-gcp-color) colours its column's name, marks and button.
+     On a narrow screen the whole table scrolls sideways; it gives a small sideways nudge when it first comes into view
+     and each time the chosen package changes (data-chosen, changed by Livewire), as a hint that it scrolls. --}}
 @php
     $mark = function (?string $value): ?string {
         $plain = mb_strtolower(trim((string) $value));
@@ -16,7 +18,29 @@
 @endphp
 <details class="gcp-compare" open>
     <summary>{{ $title ?? __('Compare packages') }}</summary>
-    <div class="gcp-compare-wrap">
+    <div
+        class="gcp-compare-wrap"
+        data-chosen="{{ $chosen }}"
+        x-data="{
+            nudge() {
+                const el = this.$el;
+                const room = el.scrollWidth - el.clientWidth;
+                if (room < 8 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                const rtl = getComputedStyle(el).direction === 'rtl';
+                const start = el.scrollLeft;
+                const towardEnd = Math.abs(start) < room - 4;
+                const step = Math.min(56, room) * (towardEnd ? 1 : -1) * (rtl ? -1 : 1);
+                el.scrollTo({ left: start + step, behavior: 'smooth' });
+                setTimeout(() => el.scrollTo({ left: start, behavior: 'smooth' }), 380);
+            },
+        }"
+        x-init="
+            new IntersectionObserver((entries, seen) => {
+                if (entries.some((entry) => entry.isIntersecting)) { seen.disconnect(); setTimeout(() => nudge(), 300); }
+            }, { threshold: 0.5 }).observe($el);
+            new MutationObserver(() => nudge()).observe($el, { attributes: true, attributeFilter: ['data-chosen'] });
+        "
+    >
         <table class="gcp-compare-table">
             <thead>
                 <tr>
