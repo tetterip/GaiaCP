@@ -57,8 +57,19 @@
     }
 
     /* Top bar: a wide search with its shortcut, then Client area and New order */
+    /* One gap between the search and every button after it (phone: .5rem, wider: .75rem) */
+    .fi-topbar {
+        --gcp-topbar-gap: .5rem;
+    }
+
+    @media (min-width: 768px) {
+        .fi-topbar {
+            --gcp-topbar-gap: .75rem;
+        }
+    }
+
     .fi-topbar-end {
-        column-gap: .75rem;
+        column-gap: var(--gcp-topbar-gap);
     }
 
     .fi-topbar .fi-global-search-ctn {
@@ -86,7 +97,7 @@
     .fi-topbar-actions {
         display: flex;
         align-items: center;
-        gap: .5rem;
+        gap: var(--gcp-topbar-gap);
         margin-inline-start: auto;
     }
 
@@ -108,10 +119,7 @@
         background: var(--theme-card);
         box-shadow: 0 0 0 1px var(--theme-line);
         border-radius: var(--theme-radius-control);
-    }
-
-    .fi-topbar .gcp-cart-icon {
-        margin-inline-end: .5rem;
+        margin: 0; /* Filament pulls icon buttons out by a negative margin, which made the gaps around them uneven */
     }
 
     /* Inside the button, in its top end corner */
