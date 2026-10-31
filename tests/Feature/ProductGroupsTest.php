@@ -125,10 +125,13 @@ class ProductGroupsTest extends TestCase
             ->assertSeeInOrder(['Daily backup', BillingCycle::Monthly->getLabel(), '11.00', '5.00 setup', BillingCycle::Annually->getLabel(), '60.00', '120.00'])
             ->assertSee(__('Choose'));
 
-        // Choose picks the product as its card does: its default cycle follows
-        $page->set('data.product', (string) $this->pro->id)
+        // Choose picks the product as its card does: its default cycle follows. The table carries the chosen product,
+        // whose change gives it a sideways nudge on a phone (a hint that it scrolls)
+        $page->assertSeeHtml('data-chosen=""')
+            ->set('data.product', (string) $this->pro->id)
             ->assertSet('data.billing_cycle', BillingCycle::Annually->value)
-            ->assertSee(__('Chosen'));
+            ->assertSee(__('Chosen'))
+            ->assertSeeHtml('data-chosen="'.$this->pro->id.'"');
 
         // Products not marked Popular carry no badge
         $this->pro->update(['popular' => false]);
