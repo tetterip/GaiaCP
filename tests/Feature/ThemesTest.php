@@ -61,6 +61,19 @@ class ThemesTest extends TestCase
         }
     }
 
+    public function test_the_top_bar_buttons_share_one_gap(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        // Filament pulls icon buttons (the bell, the cart) out by a negative margin; ours take it back to 0 so every
+        // gap after the search is the same --gcp-topbar-gap
+        $html = $this->get(Dashboard::getUrl())->assertOk()->getContent();
+
+        $this->assertStringContainsString('column-gap: var(--gcp-topbar-gap)', $html);
+        $this->assertStringContainsString('gap: var(--gcp-topbar-gap)', $html);
+        $this->assertMatchesRegularExpression('/\.gcp-cart-icon \{[^}]*margin: 0;/', $html);
+    }
+
     public function test_an_admin_who_picked_flat_gets_the_layout_in_emerald_without_shadows(): void
     {
         $this->actingAs(User::factory()->create(['theme' => 'flat']));
