@@ -112,8 +112,12 @@ Wanneer een dienst vervalt, sturen we u per e-mail een **betalingsverzoek**, met
 Als wij facturen uitgeven, krijgt een betaald betalingsverzoek ook een **factuur**: we e-mailen die als pdf, het betaalde verzoek heeft een knop om hem te downloaden, en **Facturen** (onder Financiën) toont ze allemaal. Een **creditnota** daar, met een negatief totaal, maakt een factuur ongedaan, bijvoorbeeld wanneer een betaling wordt terugbetaald.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Om met een kaart te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met kaart**. U betaalt op de beveiligde betaalpagina van Stripe (wij zien uw kaartgegevens nooit), en het verzoek wordt als betaald getoond zodra de betaling is gelukt.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+Om met PayPal te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met PayPal**. U keurt de betaling goed op de pagina van PayPal, met uw PayPal-saldo of een kaart, en het verzoek wordt als betaald getoond zodra PayPal het bevestigt.
 <!-- endif -->
 
 <!-- if:credit -->

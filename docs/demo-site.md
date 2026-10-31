@@ -22,7 +22,7 @@ few minutes. It is a normal Git checkout of GaiaCP with `GAIACP_DEMO=true` (`App
   uploads, uninstalls and updates are off, and the pages below are closed.
 - **Closed pages** (`Demo::CLOSED`): Updates, Error log, System health, Backups, API keys, Mail, Cookies (its
   scripts would run for every visitor, so none are added), Login security, Languages, IP bans. **Plugins kept off**
-  (`Demo::PLUGINS_OFF`, their pages closed): Email to ticket, WHMCS import, Stripe, Site checks, IP blacklist check.
+  (`Demo::PLUGINS_OFF`, their pages closed): Email to ticket, WHMCS import, Stripe, PayPal, Site checks, IP blacklist check.
   Logo uploads and ticket attachments are off.
 - **Servers, registrar, monitoring**: the Demo plugin (`plugins/Demo`, loaded only in the demo): the panel answers
   from the services GaiaCP stores (create, suspend, terminate, change password always work), the registrar from the

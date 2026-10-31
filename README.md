@@ -53,7 +53,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 **Billing**
 - Payment notices (proformas) made and emailed before each due date, with reminders and overdue notices
 - Automatic suspension of unpaid hosting, and unsuspension once it is paid
-- Card payments through Stripe Checkout, bank transfer, client credit, tax and EU reverse charge, several currencies
+- Card payments through Stripe Checkout, PayPal, bank transfer, client credit, tax and EU reverse charge, several currencies
 - Quotes, upgrades and downgrades, price changes with notice, add-ons and product options
 - Reports: income, forecast, profit per server and per domain ending
 
@@ -98,11 +98,11 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
 
 ## What it doesn't do
 
-- **It never charges cards by itself.** Payments are recorded by you, or by Stripe Checkout when the client pays
-  there. No saved cards, no automatic charges.
+- **It never charges cards by itself.** Payments are recorded by you, or by Stripe Checkout or PayPal when the client
+  pays there. No saved cards, no automatic charges.
 - **Invoices are optional.** Payment notices track what is owed and what was paid; Settings → Invoices can also issue
   a numbered invoice for each paid notice. Sending invoices to a tax authority (myDATA, Peppol…) is not built in.
-- No payment gateways other than Stripe yet, and no bank statement matching.
+- No payment gateways other than Stripe and PayPal yet, and no bank statement matching.
 
 ## Installation
 

@@ -95,7 +95,7 @@ Two things on purpose, so you know where they happen instead:
 
 - **It does not issue legal invoices.** Its "payment notices" are proformas: they say what is owed and by when.
   Invoices for your tax authority come from your accounting software.
-- **It never charges a card by itself.** You record payments, or a payment plugin (Stripe Checkout) records what the
-  client paid on Stripe's own page. There are no saved cards and no automatic charges.
+- **It never charges a card by itself.** You record payments, or a payment plugin (Stripe Checkout, PayPal) records what
+  the client paid on the provider's own page. There are no saved cards and no automatic charges.
 
 Next: [Your business and email](02-business-and-email.md).

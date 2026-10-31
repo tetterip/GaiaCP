@@ -70,6 +70,7 @@ class Help extends Page
         $plugins = app(PluginManager::class);
         $panels = $plugins->serverModules()->isNotEmpty();
         $registrars = $plugins->registrarModules()->isNotEmpty();
+        $payOnline = collect($plugins->clientPaymentNoticeActions())->map(fn ($action) => $action->getName());
 
         $features = [
             'hosting_login' => $panels && $on('hosting_login'),
@@ -87,7 +88,8 @@ class Help extends Page
             'ssl' => $plugins->certificateModules()->isNotEmpty(),
             'orders' => Order::canAccess(),
             'domain_prices' => DomainPrices::canAccess(),
-            'pay_online' => $plugins->clientPaymentNoticeActions() !== [],
+            'pay_card' => $payOnline->contains('payByCard'),
+            'pay_paypal' => $payOnline->contains('payWithPaypal'),
             'invoices' => IssueInvoice::enabled(),
             'credit' => ClientCredit::enabled(),
             'credit_auto' => ClientCredit::autoApply(),

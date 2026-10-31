@@ -112,8 +112,12 @@ Wenn ein Dienst fällig ist, senden wir Ihnen per E-Mail eine **Zahlungsaufforde
 Wenn wir Rechnungen ausstellen, erhält eine bezahlte Zahlungsaufforderung auch eine **Rechnung**: Wir senden sie Ihnen als PDF per E-Mail, die bezahlte Aufforderung hat eine Schaltfläche zum Herunterladen, und **Rechnungen** (unter Abrechnung) listet sie alle auf. Eine **Gutschrift** dort, mit negativem Betrag, macht eine Rechnung rückgängig, etwa wenn eine Zahlung zurückerstattet wird.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Um per Karte zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken Sie auf **Mit Karte bezahlen**. Sie zahlen auf der sicheren Zahlungsseite von Stripe (wir sehen Ihre Kartendaten nie), und die Aufforderung wird als bezahlt angezeigt, sobald die Zahlung durchgeführt ist.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+Um mit PayPal zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken Sie auf **Mit PayPal bezahlen**. Sie bestätigen die Zahlung auf der Seite von PayPal, mit Ihrem PayPal-Guthaben oder einer Karte, und die Aufforderung wird als bezahlt angezeigt, sobald PayPal die Zahlung bestätigt.
 <!-- endif -->
 
 <!-- if:credit -->

@@ -112,8 +112,12 @@ Bir hizmetin vadesi geldiğinde size nasıl ödeyeceğinizi içeren bir **ödeme
 Fatura kestiğimizde, ödenmiş bir ödeme bildirimi bir **fatura** da alır: faturayı size PDF olarak e-postayla göndeririz, ödenmiş bildirimde onu indirmek için bir düğme bulunur ve **Faturalar** (Ödeme işlemleri altında) hepsini listeler. Orada negatif toplamlı bir **alacak dekontu**, örneğin bir ödeme iade edildiğinde bir faturayı geri alır.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Kartla ödemek için ödenmemiş bir ödeme bildirimini açın ve **Kartla öde**'ye basın. Stripe'ın güvenli ödeme sayfasında ödersiniz (kart bilgilerinizi asla görmeyiz) ve ödeme gerçekleşir gerçekleşmez bildirim ödendi olarak görünür.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+PayPal ile ödemek için ödenmemiş bir ödeme bildirimini açın ve **PayPal ile öde**'ye basın. Ödemeyi PayPal'ın kendi sayfasında, PayPal bakiyenizle veya bir kartla onaylarsınız ve PayPal onaylar onaylamaz bildirim ödendi olarak görünür.
 <!-- endif -->
 
 <!-- if:credit -->

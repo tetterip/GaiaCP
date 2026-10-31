@@ -112,8 +112,12 @@ When a service is due we send you a **payment notice** by email, with how to pay
 When we issue invoices, a paid payment notice also gets an **invoice**: we email it to you as a PDF, the paid notice has a button to download it, and **Invoices** (under Billing) lists them all. A **credit note** there, with a negative total, undoes an invoice, for example when a payment is returned.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 To pay by card, open an unpaid payment notice and press **Pay by card**. You pay on Stripe's secure payment page (we never see your card details), and the notice shows as paid as soon as the payment goes through.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+To pay with PayPal, open an unpaid payment notice and press **Pay with PayPal**. You approve the payment on PayPal's own page, with your PayPal balance or a card, and the notice shows as paid as soon as PayPal confirms it.
 <!-- endif -->
 
 <!-- if:credit -->
