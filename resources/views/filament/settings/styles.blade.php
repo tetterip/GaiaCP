@@ -9,6 +9,12 @@
         z-index: 20;
     }
 
+    /* An open dropdown (a Builder's Add to the menu, say) stays above the Save bar: its part of the form rises over it */
+    .fi-sc-form > .fi-grid:not(:has(.gx-save-bar)):has(.fi-dropdown-panel:not([style*="display: none"])) {
+        position: relative;
+        z-index: 21;
+    }
+
     .gx-save-bar {
         align-items: center;
         padding: .7rem .8rem .7rem 1.25rem;
