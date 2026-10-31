@@ -9,9 +9,11 @@ use App\Filament\Client\Pages\DomainPrices;
 use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
+use App\Filament\Client\Pages\WhoisLookup;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Support\Locales;
 use App\Support\PublicArea;
+use App\Support\Whois;
 use BackedEnum;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Textarea;
@@ -56,7 +58,7 @@ class PublicAreaSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['public_area.home', ...self::TEXT_KEYS, 'public_area.domain_search', 'public_area.domain_prices', 'public_area.knowledge_base', 'public_area.announcements', 'public_area.contact', 'public_area.contact_details', 'public_area.contact_fields', 'public_area.contact_map', 'public_area.status'];
+        return ['public_area.home', ...self::TEXT_KEYS, 'public_area.domain_search', 'public_area.domain_prices', 'public_area.whois', 'public_area.knowledge_base', 'public_area.announcements', 'public_area.contact', 'public_area.contact_details', 'public_area.contact_fields', 'public_area.contact_map', 'public_area.status'];
     }
 
     public function form(Schema $schema): Schema
@@ -82,6 +84,9 @@ class PublicAreaSettings extends SettingsFormPage
                         Toggle::make('public_area.domain_prices')
                             ->label('Domain prices page')
                             ->helperText(fn () => __('A page at :url with every domain ending you sell and its price to register, transfer and renew, from Products & domains → Domain pricing. Clients who are logged in see it too, in their currency.', ['url' => DomainPrices::getUrl(panel: 'client')])),
+                        Toggle::make('public_area.whois')
+                            ->label('WHOIS lookup')
+                            ->helperText(fn () => __('Visitors and clients look up a domain name at :url: whether it is registered, its registrar, dates, statuses and nameservers, from the registry (never the owner\'s contact details). It uses the domain search\'s captcha, and one address gets :count lookups a minute.', ['url' => WhoisLookup::getUrl(panel: 'client'), 'count' => Whois::PER_MINUTE])),
                     ]),
                 Section::make(__('Support'))
                     ->schema([

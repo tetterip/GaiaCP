@@ -17,6 +17,7 @@ use App\Filament\Client\Pages\ContactSupport;
 use App\Filament\Client\Pages\Credit;
 use App\Filament\Client\Pages\Dashboard;
 use App\Filament\Client\Pages\DomainPrices;
+use App\Filament\Client\Pages\Downloads;
 use App\Filament\Client\Pages\Help;
 use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\KnowledgeBaseArticle;
@@ -29,6 +30,7 @@ use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
 use App\Filament\Client\Pages\SignIns;
 use App\Filament\Client\Pages\VisitorTicket;
+use App\Filament\Client\Pages\WhoisLookup;
 use App\Filament\Client\Resources\Domains\DomainResource;
 use App\Filament\Client\Resources\Emails\EmailResource;
 use App\Filament\Client\Resources\Invoices\InvoiceResource;
@@ -38,6 +40,7 @@ use App\Filament\Client\Resources\Quotes\QuoteResource;
 use App\Filament\Client\Resources\Services\ServiceResource;
 use App\Filament\Client\Resources\Tickets\TicketResource;
 use App\Http\Controllers\Client\AnnouncementFeedController;
+use App\Http\Controllers\Client\DownloadController;
 use App\Http\Controllers\Client\LanguageController;
 use App\Http\Controllers\Client\PanelLoginController;
 use App\Http\Controllers\Client\StopViewingController;
@@ -154,6 +157,8 @@ class ClientPanelProvider extends PanelProvider
                 VisitorTicket::class,
                 Order::class,
                 SearchDomains::class,
+                WhoisLookup::class,
+                Downloads::class,
                 Cart::class,
                 Credit::class,
                 Help::class,
@@ -205,6 +210,10 @@ class ClientPanelProvider extends PanelProvider
                 Route::get('support/ticket/{token}/files/{attachment}', VisitorTicketFileController::class)
                     ->whereNumber('attachment')
                     ->name('support-ticket-file');
+                // A file of Support → Downloads, for whoever may have it (visitors too, for those for everyone)
+                Route::get('downloads/{download}/file', DownloadController::class)
+                    ->whereNumber('download')
+                    ->name('download-file');
                 app(PluginManager::class)->clientRoutes();
                 // A product group's public page (/<slug>), matched last so it never hides another page
                 Route::get('{group}', ProductGroupPage::class)

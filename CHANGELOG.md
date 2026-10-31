@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- WHOIS lookup (Settings → Public area → WHOIS lookup, off by default): visitors and clients look up a domain name at
+  `/whois` and see whether it is registered, its registrar, dates, statuses and nameservers, never the owner's contact
+  details. It asks the registry's RDAP server, else its WHOIS server, with the domain search's captcha and a limit.
+- Downloads (Support → Downloads): files for clients in categories, with a title and description per language, for
+  everyone, clients who are logged in, or only the clients of chosen products. They show under Support → Downloads in
+  the client area, are never at a public address, and are counted.
 - Menus (Settings → Client area → Menus): the client area's side menu, for logged-in clients and for visitors, as a
   list you drag into order. Rename a page in each language, give it another icon or take it out, and add products,
   product groups, links (opening in a new tab if you like) and headings of your own. Pages added by later updates

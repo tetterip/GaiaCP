@@ -82,6 +82,8 @@ until you switch it on:
 
 - a **home page** with your welcome text, the domain search and what you sell;
 - **domain search** and a **domain prices** page;
+- a **WHOIS lookup** (`/whois`), for clients too: whether a domain is registered, its registrar, dates, statuses and
+  nameservers, never the owner's contact details;
 - the **public order page** (`/cart`): visitors fill a cart, then sign up or log in to place it;
 - the **knowledge base** (articles can stay for clients only);
 - **announcements** with an RSS feed;

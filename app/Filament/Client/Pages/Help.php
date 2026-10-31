@@ -102,6 +102,8 @@ class Help extends Page
             'knowledge_base' => KnowledgeBase::canAccess(),
             'announcements' => Announcements::canAccess(),
             'server_status' => ServerStatus::canAccess(),
+            'whois' => WhoisLookup::canAccess(),
+            'downloads' => Downloads::canAccess(),
             'contact_page' => PublicArea::contactDetails(),
             'ticket_mail' => $plugins->enabled('ticket-mail') && (filled(config('gaiacp.ticket_mail.host')) || filled(config('gaiacp.ticket_mail.inbound_token'))),
             'cookies' => CookieConsent::enabled(),

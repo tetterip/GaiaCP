@@ -101,6 +101,7 @@ class Settings
         'public_area.welcome_text',
         'public_area.domain_search',
         'public_area.domain_prices',
+        'public_area.whois',
         'public_area.knowledge_base',
         'public_area.contact',
         'public_area.contact_details',

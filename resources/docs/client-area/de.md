@@ -168,6 +168,12 @@ Ihr Name, Ihre Firma, Ihre USt-Angaben und Ihre Adresse erscheinen auf Ihren Zah
 
 Unsere Neuigkeiten und Angebote enden mit einem Link zum Abbestellen; E-Mails zu Ihren Diensten, Zahlungsaufforderungen und Erinnerungen kommen weiterhin.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** im Menü sucht einen Domainnamen nach: ob er registriert ist, bei welchem Registrar, wann er registriert wurde und wann er abläuft, seinen Status und seine Nameserver. Die Kontaktdaten des Inhabers werden nicht angezeigt. Ist der Name frei, führt **Registrieren** Sie zur Domainsuche.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Wissensdatenbank
 
@@ -176,6 +182,11 @@ Unter Support → Wissensdatenbank finden Sie Antworten auf häufige Fragen, nac
 Während Sie den Betreff eines neuen Tickets schreiben, erscheinen darunter Artikel, die es vielleicht schon beantworten.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Downloads
+
+Unter Support → **Downloads** finden Sie Dateien, die wir mit Ihnen teilen, etwa Anleitungen und Software, nach Thema geordnet. Manche sind nur da, solange Sie einen bestimmten Dienst haben. Klicken Sie auf **Herunterladen**, um eine zu speichern.
 <!-- endif -->
 <!-- if:tickets -->
 ## Support-Tickets

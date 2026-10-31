@@ -8,12 +8,14 @@ use App\Filament\Client\Pages\AnnouncementPage;
 use App\Filament\Client\Pages\Announcements;
 use App\Filament\Client\Pages\ContactSupport;
 use App\Filament\Client\Pages\DomainPrices;
+use App\Filament\Client\Pages\Downloads;
 use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\KnowledgeBaseArticle;
 use App\Filament\Client\Pages\ProductGroupPage;
 use App\Filament\Client\Pages\PublicHome;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
+use App\Filament\Client\Pages\WhoisLookup;
 use App\Models\Tld;
 use Closure;
 use Filament\Navigation\NavigationBuilder;
@@ -129,6 +131,12 @@ final class PublicArea
         return 'https://www.google.com/maps/search/?api=1&query='.rawurlencode(preg_replace('/\s+/', ' ', $address['value']));
     }
 
+    /** Whether the WHOIS lookup (WhoisLookup) is on, for visitors and clients. */
+    public static function whois(): bool
+    {
+        return (bool) config('gaiacp.public_area.whois');
+    }
+
     /** Whether visitors read the announcements (those not kept for clients) and their feed. */
     public static function announcements(): bool
     {
@@ -197,7 +205,9 @@ final class PublicArea
                 ? [$item('order', __('Order'), 'heroicon-o-shopping-cart', route('filament.client.cart'), ['filament.client.cart'])] : []],
             'domainSearch' => [__('Domain search'), 'heroicon-o-magnifying-glass', null, fn () => self::domainSearch() ? [$item('domainSearch', __('Domain search'), 'heroicon-o-magnifying-glass', SearchDomains::getUrl(), [SearchDomains::getRouteName()])] : []],
             'domainPrices' => [__('Domain prices'), 'heroicon-o-tag', null, fn () => self::domainPrices() ? [$item('domainPrices', __('Domain prices'), 'heroicon-o-tag', DomainPrices::getUrl(), [DomainPrices::getRouteName()])] : []],
+            'whois' => [__('WHOIS'), 'heroicon-o-identification', null, fn () => WhoisLookup::canAccess() ? [$item('whois', __('WHOIS'), 'heroicon-o-identification', WhoisLookup::getUrl(), [WhoisLookup::getRouteName()])] : []],
             'knowledgeBase' => [__('Knowledge base'), 'heroicon-o-book-open', null, fn () => KnowledgeBase::canAccess() ? [$item('knowledgeBase', __('Knowledge base'), 'heroicon-o-book-open', KnowledgeBase::getUrl(), [KnowledgeBase::getRouteName(), KnowledgeBaseArticle::getRouteName()])] : []],
+            'downloads' => [__('Downloads'), 'heroicon-o-arrow-down-tray', null, fn () => Downloads::canAccess() ? [$item('downloads', __('Downloads'), 'heroicon-o-arrow-down-tray', Downloads::getUrl(), [Downloads::getRouteName()])] : []],
             'announcements' => [__('Announcements'), 'heroicon-o-megaphone', null, fn () => Announcements::canAccess() ? [$item('announcements', __('Announcements'), 'heroicon-o-megaphone', Announcements::getUrl(), [Announcements::getRouteName(), AnnouncementPage::getRouteName()])] : []],
             'status' => [__('Server status'), 'heroicon-o-signal', null, fn () => ServerStatus::canAccess() ? [$item('status', __('Server status'), 'heroicon-o-signal', ServerStatus::getUrl(), [ServerStatus::getRouteName()])] : []],
             'contact' => [__('Contact us'), 'heroicon-o-chat-bubble-left-right', null, fn () => ContactSupport::canAccess() ? [$item('contact', __('Contact us'), 'heroicon-o-chat-bubble-left-right', ContactSupport::getUrl(), [ContactSupport::getRouteName()])] : []],
