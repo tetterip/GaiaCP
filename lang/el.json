@@ -3495,5 +3495,7 @@
     "Who can download it": "Ποιος μπορεί να το κατεβάσει",
     "Whois": "Whois",
     "download": "λήψη",
-    "Times downloaded": "Λήψεις"
+    "Times downloaded": "Λήψεις",
+    "Last active :time": "Ενεργή :time",
+    "Signed in :date": "Συνδέθηκε :date"
 }

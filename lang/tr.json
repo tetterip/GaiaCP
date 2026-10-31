@@ -3495,5 +3495,7 @@
     "Who can download it": "Kimler indirebilir",
     "Whois": "Whois",
     "download": "indirme",
-    "Times downloaded": "İndirme sayısı"
+    "Times downloaded": "İndirme sayısı",
+    "Last active :time": "Son etkinlik :time",
+    "Signed in :date": "Giriş tarihi :date"
 }

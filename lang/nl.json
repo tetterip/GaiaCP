@@ -3495,5 +3495,7 @@
     "Who can download it": "Wie het mag downloaden",
     "Whois": "Whois",
     "download": "download",
-    "Times downloaded": "Keer gedownload"
+    "Times downloaded": "Keer gedownload",
+    "Last active :time": "Laatst actief :time",
+    "Signed in :date": "Ingelogd op :date"
 }

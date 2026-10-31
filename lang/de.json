@@ -3495,5 +3495,7 @@
     "Who can download it": "Wer sie herunterladen darf",
     "Whois": "Whois",
     "download": "Download",
-    "Times downloaded": "Heruntergeladen"
+    "Times downloaded": "Heruntergeladen",
+    "Last active :time": "Zuletzt aktiv :time",
+    "Signed in :date": "Angemeldet am :date"
 }
