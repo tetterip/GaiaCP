@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Notifications can be swiped away on a phone or tablet: a swipe left or right in the bell's list (admin and client
+  area) deletes one, the same as its X, and closes a pop-up one.
 - PayPal (Settings → Payment methods → PayPal, off by default): clients pay their payment notices with PayPal, with
   their PayPal balance or a card, on PayPal's own page. GaiaCP takes the money only if the notice still asks for that
   amount, and records the payment once PayPal confirms it, on the client's return or through the webhook (for a
