@@ -64,7 +64,7 @@ Needs attention lists pending orders.
 
 ## Quotes
 
-A **quote** is an offer, under Billing → **Quotes**, for a lead or a client. Write it like a new order: products,
+A **quote** is an offer, under **Quotes** in the main menu (after Orders), for a lead or a client. Write it like a new order: products,
 options and domains, with prices you can lower for a discount (kept on renewals), plus **one-off lines** such as moving
 a website, which are billed once. Set how long it is valid (Settings → Sales sets the default days and a footer).
 
