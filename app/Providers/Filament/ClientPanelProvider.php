@@ -64,6 +64,7 @@ use App\Themes\Themes;
 use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Enums\DatabaseNotificationsPosition;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -114,6 +115,8 @@ class ClientPanelProvider extends PanelProvider
             // The company's logo and tab icon (Settings → Company); without a logo the name above is shown
             ->brandLogo(fn () => Branding::url('logo'))
             ->darkModeBrandLogo(fn () => Branding::url('logo-dark'))
+            // Light until the client picks Dark or System in the user menu (kept in the browser)
+            ->defaultThemeMode(ThemeMode::Light)
             ->brandLogoHeight(fn () => filament()->auth()->check() ? '2rem' : '3rem')
             ->favicon(fn () => Branding::url('favicon'))
             // Colours, fonts and a stylesheet come from Settings → Client area's theme (App\Themes\Themes, ApplyTheme)
