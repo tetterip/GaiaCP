@@ -138,6 +138,8 @@ class ClientPanelProvider extends PanelProvider
             ->databaseNotifications(fn (): bool => config('gaiacp.client_area.notifications') && (bool) (filament()->auth()->user()?->panel_notifications ?? true) && ! ClientAreaAccess::viewing(), livewireComponent: PanelNotifications::class, position: DatabaseNotificationsPosition::Topbar)
             ->databaseNotificationsPolling('60s')
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.bell-ring')->render() : '')
+            // Swipe a notification away on a touch screen (the bell's list and pop-ups)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.notification-swipe')->render())
             // The theme says where the client's menu sits: a card at the foot of the sidebar (Gaia, Flat) or the top bar
             ->userMenu(position: fn () => Themes::userMenuPosition())
             ->defaultAvatarProvider(InitialsAvatar::class)

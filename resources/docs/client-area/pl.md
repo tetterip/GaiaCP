@@ -9,7 +9,7 @@ Jeśli Państwa adres e-mail jest kontem Google, można też kliknąć **Kontynu
 W profilu (menu z Państwa imieniem, na dole menu lub w prawym górnym rogu) można zmienić adres e-mail, numer telefonu, język i hasło oraz włączyć uwierzytelnianie dwuskładnikowe dla większego bezpieczeństwa.
 
 <!-- if:notifications -->
-**Dzwonek** u góry strony informuje, co się wydarzyło od ostatniego sprawdzenia: nowe wezwanie do zapłaty, przypomnienie o płatności lub powiadomienie o zaległości, otrzymana przez nas płatność, usługa gotowa, zawieszona lub zakończona, domena przed odnowieniem, nowa cena, nasza odpowiedź na zgłoszenie lub prośbę. Liczba na nim pokazuje, ile jest nieprzeczytanych; kliknięcie powiadomienia otwiera jego stronę. Aby je wyłączyć, prosimy wyłączyć **Powiadomienia** w profilu. E-maile nadal będą wysyłane jak dotychczas.
+**Dzwonek** u góry strony informuje, co się wydarzyło od ostatniego sprawdzenia: nowe wezwanie do zapłaty, przypomnienie o płatności lub powiadomienie o zaległości, otrzymana przez nas płatność, usługa gotowa, zawieszona lub zakończona, domena przed odnowieniem, nowa cena, nasza odpowiedź na zgłoszenie lub prośbę. Liczba na nim pokazuje, ile jest nieprzeczytanych; kliknięcie powiadomienia otwiera jego stronę. Na telefonie lub tablecie wystarczy przesunąć powiadomienie w lewo lub w prawo, aby je usunąć. Aby je wyłączyć, prosimy wyłączyć **Powiadomienia** w profilu. E-maile nadal będą wysyłane jak dotychczas.
 
 <!-- endif -->
 <!-- if:email_history -->

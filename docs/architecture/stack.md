@@ -314,7 +314,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   `users.panel_notifications`, client profile) or Settings → Client area → Notifications bell is off; no push. They are
   stored as `App\Notifications\ClientAlert`, and both panels use `App\Livewire\PanelNotifications`, which lists only
   those in the client area and all others in /admin, so an admin linked to a client keeps the two apart. Hidden while
-  an admin looks through the client's login.
+  an admin looks through the client's login. On a touch screen a notification is swiped away left or right
+  (`resources/views/filament/notification-swipe.blade.php`, both panels: calls the notification's own `close()`, which
+  deletes it from the bell's list and closes a pop-up).
   Each one also goes as a push to the admin's devices (`App\Push\WebPush::notify()`, after the commit and the
   response): Web Push with no library, VAPID ES256 and aes128gcm by hand with OpenSSL, the VAPID key pair made on
   first use in `settings` (`push.vapid`, encrypted; a new APP_KEY makes new keys and drops the devices). Devices are

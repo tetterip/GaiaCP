@@ -9,7 +9,7 @@ E-posta adresiniz bir Google hesabıysa, parolanızı yazmak yerine giriş sayfa
 Profiliniz (menünün altında veya sağ üstte adınızın bulunduğu menü) e-posta adresinizi, telefon numaranızı, dilinizi ve parolanızı değiştirir ve ek güvenlik için iki adımlı doğrulamayı açabilir.
 
 <!-- if:notifications -->
-Sayfanın üstündeki **zil**, son baktığınızdan beri neler olduğunu söyler: yeni bir ödeme bildirimi, bir ödeme hatırlatması veya gecikme bildirimi, aldığımız bir ödeme, hazır olan, askıya alınan veya sona eren bir hizmet, yenilenmek üzere olan bir alan adı, yeni bir fiyat, destek talebinize veya bir isteğinize verdiğimiz yanıt. Üzerindeki sayı kaç tanesini okumadığınızı gösterir; sayfasını açmak için birine basın. Durdurmak için profilinizde **Bildirimler**'i kapatın. Size yine eskisi gibi e-posta göndeririz.
+Sayfanın üstündeki **zil**, son baktığınızdan beri neler olduğunu söyler: yeni bir ödeme bildirimi, bir ödeme hatırlatması veya gecikme bildirimi, aldığımız bir ödeme, hazır olan, askıya alınan veya sona eren bir hizmet, yenilenmek üzere olan bir alan adı, yeni bir fiyat, destek talebinize veya bir isteğinize verdiğimiz yanıt. Üzerindeki sayı kaç tanesini okumadığınızı gösterir; sayfasını açmak için birine basın. Telefonda veya tablette, kaldırmak için birini sola ya da sağa kaydırın. Durdurmak için profilinizde **Bildirimler**'i kapatın. Size yine eskisi gibi e-posta göndeririz.
 
 <!-- endif -->
 <!-- if:email_history -->

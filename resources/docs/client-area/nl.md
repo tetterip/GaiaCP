@@ -9,7 +9,7 @@ Is uw e-mailadres een Google-account, dan kunt u op de inlogpagina ook op **Door
 In uw profiel (het menu met uw naam, onderaan het menu of rechtsboven) wijzigt u uw e-mailadres, telefoonnummer, taal en wachtwoord, en kunt u tweestapsverificatie aanzetten voor extra veiligheid.
 
 <!-- if:notifications -->
-De **bel** bovenaan de pagina laat zien wat er is gebeurd sinds u voor het laatst keek: een nieuw betalingsverzoek, een betalingsherinnering of achterstandsmelding, een betaling die we hebben ontvangen, een dienst die klaar, opgeschort of beëindigd is, een domein dat binnenkort wordt verlengd, een nieuwe prijs, ons antwoord op uw ticket of op een verzoek. Een getal erop toont hoeveel u nog niet hebt gelezen; druk op een melding om de pagina ervan te openen. Wilt u ze niet meer, zet dan **Meldingen** uit in uw profiel. We blijven u zoals voorheen e-mailen.
+De **bel** bovenaan de pagina laat zien wat er is gebeurd sinds u voor het laatst keek: een nieuw betalingsverzoek, een betalingsherinnering of achterstandsmelding, een betaling die we hebben ontvangen, een dienst die klaar, opgeschort of beëindigd is, een domein dat binnenkort wordt verlengd, een nieuwe prijs, ons antwoord op uw ticket of op een verzoek. Een getal erop toont hoeveel u nog niet hebt gelezen; druk op een melding om de pagina ervan te openen. Op een telefoon of tablet veegt u een melding naar links of rechts om die te verwijderen. Wilt u ze niet meer, zet dan **Meldingen** uit in uw profiel. We blijven u zoals voorheen e-mailen.
 
 <!-- endif -->
 <!-- if:email_history -->
