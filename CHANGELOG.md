@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The admin panel and the client area open in light mode instead of following the device's setting. Dark and
+  System are still in the user menu, and a choice already made in a browser is kept there.
+
 ## [0.4.0] - 2026-10-31
 
 - Notifications can be swiped away on a phone or tablet: a swipe left or right in the bell's list (admin and client

@@ -24,6 +24,7 @@ use App\Themes\Themes;
 use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Enums\DatabaseNotificationsPosition;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -64,6 +65,8 @@ class AdminPanelProvider extends PanelProvider
             // GaiaCP's own brand here (public/images/gaiacp); the company logo is for the client area only.
             ->brandLogo(fn (): string => asset('images/gaiacp/logo.svg'))
             ->darkModeBrandLogo(fn (): string => asset('images/gaiacp/logo-dark.svg'))
+            // Light until the admin picks Dark or System in the user menu (kept in the browser)
+            ->defaultThemeMode(ThemeMode::Light)
             ->brandLogoHeight('2rem')
             ->favicon(fn (): string => asset('images/gaiacp/mark.svg'))
             // Colours, fonts and a stylesheet come from the admin's theme (App\Themes\Themes, ApplyTheme)
