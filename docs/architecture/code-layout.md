@@ -407,7 +407,7 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   one `lead.follow_up` per contact day (`leads.follow_up_sent_on`), for the bell of the assigned admin, else everyone
   in Sales (`AdminAlerts`). `NeedsAttention` lists the leads to contact today; Reports → Lead sources counts them by
   source. `lead.created` / `lead.converted` / `lead.lost` are `GaiaEvent`s with a `lead` block
-- Quotes (Billing → Quotes, `AdminArea::Sales`): `quotes` (`Quote`, `QT-2026-0001`, `QuoteStatus` Draft / Sent /
+- Quotes (main menu after Orders, `AdminArea::Sales`): `quotes` (`Quote`, `QT-2026-0001`, `QuoteStatus` Draft / Sent /
   Accepted / Declined / Expired) for a lead or a client, `items` in the New order item format
   (`OrderForm::itemsRepeater(forQuote: true)`, prices in cents, so they go to `PlaceOrder` as they are) and `extras`
   (one-off lines). `App\Actions\Quotes`: `send()` (Quote email with the link, the lead becomes Quoted), `accept()`

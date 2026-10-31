@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Admin menu: Quotes moved to the main group, after Orders; Billing now reads Payment notices, Payments, Invoices,
+  Coupons, Reports.
 - The admin panel and the client area open in light mode instead of following the device's setting. Dark and
   System are still in the user menu, and a choice already made in a browser is kept there.
 - Menus (Settings → Client area → Menus): the client area's side menu, for logged-in clients and for visitors, as a

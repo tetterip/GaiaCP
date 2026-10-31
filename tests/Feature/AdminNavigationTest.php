@@ -17,6 +17,7 @@ class AdminNavigationTest extends TestCase
 
     public function test_the_sidebar_is_grouped_in_order(): void
     {
+        config(['gaiacp.invoicing.enabled' => true]);
         $this->actingAs(User::factory()->create());
         $this->get(Dashboard::getUrl())->assertOk();
 
@@ -25,8 +26,8 @@ class AdminNavigationTest extends TestCase
             ->all();
 
         $this->assertSame([
-            'Main' => ['Dashboard', 'Clients', 'Orders', 'Messages to clients', 'Leads'],
-            'Billing' => ['Payment notices', 'Quotes', 'Payments', 'Coupons', 'Reports'],
+            'Main' => ['Dashboard', 'Clients', 'Orders', 'Quotes', 'Messages to clients', 'Leads'],
+            'Billing' => ['Payment notices', 'Payments', 'Invoices', 'Coupons', 'Reports'],
             'Services' => ['Hosting', 'Domains', 'Other services', 'Site checks', 'Upgrade requests', 'Cancellation requests'],
             'Support' => ['Tickets', 'Knowledge base', 'Announcements'],
             'System' => ['Activity log', 'Settings', 'Help'],
