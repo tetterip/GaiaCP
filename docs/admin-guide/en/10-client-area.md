@@ -42,6 +42,21 @@ changes, cancellations, upgrades) wait for your answer.
 - Your **logo** from Settings → Company, with a dark mode version and a tab icon.
 - The **languages** offered (Settings → Languages): clients pick theirs.
 
+## Menus
+
+Settings → Client area → **Menus** arranges the side menu, with one tab for logged-in clients and one for visitors.
+Drag the lines into the order you want. Click a line to rename it (in each language) or give it another icon, and use
+the bin to take it out. **Add to the menu** adds:
+
+- a **page** you took out earlier, or a **heading** of your own; the lines after a heading are its section;
+- a **product**: its public page when it has one, else the order page with it picked;
+- a **product group**: its public page when it has one, else the order page on that group;
+- a **link** to another site or a page of yours, which can open in a new tab.
+
+A page that is switched off elsewhere (the knowledge base, say) stays hidden even when it is in the menu, and a
+heading with nothing visible under it is left out. Pages that a later update adds appear by themselves at the end of
+their section. **Reset to default** puts both menus back the way they come.
+
 ## Terms of Service
 
 Turn on **Clients must accept the terms of service** and give a link to your terms, their text, or both. Clients tick

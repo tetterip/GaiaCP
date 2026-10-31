@@ -54,6 +54,7 @@ use App\Livewire\TwoFactorReminder;
 use App\Plugins\PluginManager;
 use App\Support\Branding;
 use App\Support\ClientAreaMaintenance as Maintenance;
+use App\Support\ClientMenu;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\PublicArea;
@@ -130,8 +131,11 @@ class ClientPanelProvider extends PanelProvider
                 NavigationGroup::make()->label(fn (): string => __('Billing'))->collapsible(false),
                 NavigationGroup::make()->label(fn (): string => __('Support'))->collapsible(false),
             ])
-            // A visitor gets the public area's menu (Settings → Public area); a signed-in client the pages' own
-            ->navigation(fn (NavigationBuilder $builder): NavigationBuilder|bool => filament()->auth()->check() ? true : PublicArea::navigation($builder))
+            // A visitor gets the public area's menu (Settings → Public area); a signed-in client the pages' own, as
+            // Settings → Client area → Menus arranges them (App\Support\ClientMenu)
+            ->navigation(fn (NavigationBuilder $builder): NavigationBuilder|bool => filament()->auth()->check()
+                ? (ClientMenu::saved(ClientMenu::CLIENT) === null ? true : ClientMenu::build(ClientMenu::CLIENT, $builder))
+                : PublicArea::navigation($builder))
             // The cart, with how many items are in it, while clients can order (Cart)
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() && Cart::canAccess() ? view('filament.client.cart-icon')->render() : '')
             // A visitor's language, cart, Log in and Sign up

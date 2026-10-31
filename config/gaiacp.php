@@ -262,6 +262,8 @@ return [
         'contact_hours' => [],
         'contact_text' => [],
         'contact_map' => true,
+        // The visitors' side menu as arranged under Settings → Client area → Menus (App\Support\ClientMenu); null = as it comes
+        'menu' => null,
         'announcements' => false, // the announcements for visitors (not those kept for clients) and their RSS feed
         'status' => false, // the servers' status page, for visitors and clients
     ],
@@ -283,6 +285,8 @@ return [
         'monthly_prices' => true, // the Order pages show each cycle's price per month, with what is billed each cycle under it
         'email_links' => true,
         'notifications' => true, // the bell in the client area's top bar (App\Notifications\ClientAlerts)
+        // The signed-in clients' side menu as arranged under Settings → Client area → Menus (App\Support\ClientMenu); null = as it comes
+        'menu' => null,
         'email_history' => true, // the client's menu → Email history: the emails sent to them, from the email log
         'welcome_tour' => true, // a short tour of the client area on a client's first login, again from their menu → Tour (App\Support\WelcomeTour)
         'public_orders' => false, // /cart: visitors choose an order before they sign up or log in (needs orders on)
