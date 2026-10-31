@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Admin menu: Quotes moved to the main group, after Orders; Billing now reads Payment notices, Payments, Invoices,
+  Coupons, Reports.
+
 ## [0.4.0] - 2026-10-31
 
 - Notifications can be swiped away on a phone or tablet: a swipe left or right in the bell's list (admin and client
