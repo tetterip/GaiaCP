@@ -7,11 +7,13 @@ use App\Filament\Concerns\TranslatesPageLabels;
 use App\Models\ClientLogin;
 use App\Models\ClientSession;
 use App\Models\User;
+use App\Providers\AppServiceProvider;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -72,23 +74,25 @@ class SignIns extends Page implements HasTable
             ->defaultSort('last_active_at', 'desc')
             ->heading(__('Signed in now'))
             ->paginated(false)
+            // Side by side from sm; on a phone the device, its address and when it was last active stack, so the
+            // device keeps the full width and Log out stays in view
             ->columns([
-                TextColumn::make('user_agent')
-                    ->label('Device')
-                    ->formatStateUsing(fn (ClientSession $record) => $record->device())
-                    // The IP address goes under the device, as in Recent sign-ins below, so a long IPv6 address wraps
-                    // instead of pushing the table wider than a phone
-                    ->description(fn (ClientSession $record) => collect([$record->isCurrent() ? __('This device') : null, $record->ip_address])->filter()->implode(' · ') ?: null)
-                    ->wrap()
-                    ->extraAttributes(['style' => 'overflow-wrap: anywhere;']),
-                TextColumn::make('created_at')
-                    ->label('Signed in')
-                    ->dateTime()
-                    ->visibleFrom('sm'),
-                TextColumn::make('last_active_at')
-                    ->label('Last active')
-                    ->since()
-                    ->dateTimeTooltip(),
+                Split::make([
+                    TextColumn::make('user_agent')
+                        ->label('Device')
+                        ->weight('medium')
+                        ->formatStateUsing(fn (ClientSession $record) => $record->device())
+                        ->description(fn (ClientSession $record) => collect([$record->isCurrent() ? __('This device') : null, $record->ip_address])->filter()->implode(' · ') ?: null)
+                        ->wrap()
+                        ->extraAttributes(['style' => 'overflow-wrap: anywhere;']),
+                    TextColumn::make('last_active_at')
+                        ->label('Last active')
+                        ->formatStateUsing(fn (ClientSession $record) => __('Last active :time', ['time' => $record->last_active_at->diffForHumans()]))
+                        ->tooltip(fn (ClientSession $record) => __('Signed in :date', ['date' => $record->created_at->format(AppServiceProvider::dateFormat().' H:i')]))
+                        ->color('gray')
+                        ->size('sm')
+                        ->grow(false),
+                ])->from('sm'),
             ])
             ->recordActions([
                 Action::make('logOut')
