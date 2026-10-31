@@ -70,6 +70,20 @@ class ClientSignInsTest extends TestCase
         $this->assertDatabaseHas('activity_logs', ['event' => 'client_area.sessions_ended', 'client_id' => $user->client_id]);
     }
 
+    public function test_a_long_ipv6_address_sits_under_the_device_so_the_page_fits_a_phone(): void
+    {
+        $user = $this->clientUser();
+        $ipv6 = '2a02:587:5a11:7800:35f:c1a0:2be1:a144';
+        $this->actingAs($user, 'client')->withServerVariables(['REMOTE_ADDR' => $ipv6])->get('/dashboard')->assertOk();
+        Filament::setCurrentPanel('client');
+
+        // No IP address column: the address is the device's second line, in the table and in Recent sign-ins
+        Livewire::test(SignIns::class)
+            ->assertTableColumnDoesNotExist('ip_address')
+            ->assertSee(__('This device').' · '.$ipv6)
+            ->assertSeeHtml('overflow-wrap: anywhere;');
+    }
+
     public function test_a_browser_logged_out_elsewhere_has_to_sign_in_again(): void
     {
         $user = $this->clientUser();
