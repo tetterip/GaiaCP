@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Menus (Settings → Client area → Menus): the client area's side menu, for logged-in clients and for visitors, as a
+  list you drag into order. Rename a page in each language, give it another icon or take it out, and add products,
+  product groups, links (opening in a new tab if you like) and headings of your own. Pages added by later updates
+  appear in their section by themselves; Reset to default puts the menus back.
+
 ## [0.4.0] - 2026-10-31
 
 - Notifications can be swiped away on a phone or tablet: a swipe left or right in the bell's list (admin and client

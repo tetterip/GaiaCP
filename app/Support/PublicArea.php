@@ -15,10 +15,11 @@ use App\Filament\Client\Pages\PublicHome;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
 use App\Models\Tld;
+use Closure;
 use Filament\Navigation\NavigationBuilder;
-use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -169,15 +170,60 @@ final class PublicArea
         return null;
     }
 
-    /**
-     * The side menu a visitor sees (ClientPanelProvider): the public pages that are on (the order page as a line for each
-     * product group, when there are several, to its public page when it has one), then Log in and Sign up.
-     * Signed-in clients keep the client area's own menu.
-     */
+    /** The visitors' side menu, as Settings → Client area → Menus arranges it (ClientMenu). */
     public static function navigation(NavigationBuilder $builder): NavigationBuilder
     {
+        return ClientMenu::build(ClientMenu::PUBLIC, $builder);
+    }
+
+    /**
+     * The visitors' menu as it comes: each entry's key => [name, icon, heading (a key of MENU_HEADINGS or null), its
+     * items now (none while its part is off)]. ClientMenu arranges them as the admin saved.
+     *
+     * @return array<string, array{0: string, 1: string, 2: ?string, 3: Closure(): list<NavigationItem>}>
+     */
+    public static function menuEntries(): array
+    {
         $request = request();
-        // The product groups (not domain names: they have their search), while there are several to pick from
+        $item = fn (string $key, string $label, string $icon, string $url, array $routes) => NavigationItem::make($key)
+            ->label($label)
+            ->icon($icon)
+            ->isActiveWhen(fn () => $request->routeIs(...$routes))
+            ->url($url);
+
+        return [
+            'home' => [__('Home'), 'heroicon-o-home', null, fn () => self::home() ? [$item('home', __('Home'), 'heroicon-o-home', PublicHome::getUrl(), [PublicHome::getRouteName()])] : []],
+            'order' => [__('Order'), 'heroicon-o-shopping-cart', null, fn () => ClientOrder::publicEnabled() && self::menuGroups()->isEmpty()
+                ? [$item('order', __('Order'), 'heroicon-o-shopping-cart', route('filament.client.cart'), ['filament.client.cart'])] : []],
+            'domainSearch' => [__('Domain search'), 'heroicon-o-magnifying-glass', null, fn () => self::domainSearch() ? [$item('domainSearch', __('Domain search'), 'heroicon-o-magnifying-glass', SearchDomains::getUrl(), [SearchDomains::getRouteName()])] : []],
+            'domainPrices' => [__('Domain prices'), 'heroicon-o-tag', null, fn () => self::domainPrices() ? [$item('domainPrices', __('Domain prices'), 'heroicon-o-tag', DomainPrices::getUrl(), [DomainPrices::getRouteName()])] : []],
+            'knowledgeBase' => [__('Knowledge base'), 'heroicon-o-book-open', null, fn () => KnowledgeBase::canAccess() ? [$item('knowledgeBase', __('Knowledge base'), 'heroicon-o-book-open', KnowledgeBase::getUrl(), [KnowledgeBase::getRouteName(), KnowledgeBaseArticle::getRouteName()])] : []],
+            'announcements' => [__('Announcements'), 'heroicon-o-megaphone', null, fn () => Announcements::canAccess() ? [$item('announcements', __('Announcements'), 'heroicon-o-megaphone', Announcements::getUrl(), [Announcements::getRouteName(), AnnouncementPage::getRouteName()])] : []],
+            'status' => [__('Server status'), 'heroicon-o-signal', null, fn () => ServerStatus::canAccess() ? [$item('status', __('Server status'), 'heroicon-o-signal', ServerStatus::getUrl(), [ServerStatus::getRouteName()])] : []],
+            'contact' => [__('Contact us'), 'heroicon-o-chat-bubble-left-right', null, fn () => ContactSupport::canAccess() ? [$item('contact', __('Contact us'), 'heroicon-o-chat-bubble-left-right', ContactSupport::getUrl(), [ContactSupport::getRouteName()])] : []],
+            // With product groups, a line for each under Order (OrderCatalogue)
+            'productGroups' => [__('Product groups'), 'heroicon-o-squares-2x2', 'order', fn () => self::menuGroups()->map(fn (array $group) => NavigationItem::make('order-'.$group['key'])
+                ->label($group['name'])
+                ->icon(ProductIcons::ICONS[$group['icon'] ?? ''][0] ?? Heroicon::OutlinedShoppingCart)
+                ->isActiveWhen(fn () => $request->routeIs('filament.client.cart', ProductGroupPage::getRouteName()) && $request->route('group') === $group['key'])
+                ->url(ProductGroupPage::urlFor($group['group']) ?? route('filament.client.cart', ['group' => $group['key']])))->values()->all()],
+            'login' => [__('Log in'), 'heroicon-o-arrow-right-end-on-rectangle', 'account', fn () => [NavigationItem::make('login')
+                ->label(__('Log in'))
+                ->icon(Heroicon::OutlinedArrowRightEndOnRectangle)
+                ->url(filament()->getLoginUrl())]],
+            'signup' => [__('Sign up'), 'heroicon-o-user-plus', 'account', fn () => ClientSignup::enabled() ? [NavigationItem::make('signup')
+                ->label(__('Sign up'))
+                ->icon(Heroicon::OutlinedUserPlus)
+                ->url(filament()->getRegistrationUrl())] : []],
+        ];
+    }
+
+    /** @var array<string, string> the visitors' menu headings as they come: key => English name */
+    public const MENU_HEADINGS = ['order' => 'Order', 'account' => 'Your account'];
+
+    /** The product groups listed under Order: while there are several to pick from (not domain names: they have their search). */
+    private static function menuGroups(): Collection
+    {
         $groups = ClientOrder::publicEnabled() ? OrderCatalogue::groups()->except(OrderCatalogue::DOMAINS) : collect();
         $groups = $groups->count() > 1 && $groups->contains(fn (array $group) => $group['group'] !== null) ? $groups : collect();
         // Without the public order page, the groups that have a public page of their own (ProductGroupPage)
@@ -185,70 +231,6 @@ final class PublicArea
             $groups = OrderCatalogue::groups()->except(OrderCatalogue::DOMAINS)->filter(fn (array $group) => $group['group']?->page);
         }
 
-        return $builder
-            ->items(array_values(array_filter([
-                self::home() ? NavigationItem::make('home')
-                    ->label(__('Home'))
-                    ->icon(Heroicon::OutlinedHome)
-                    ->isActiveWhen(fn () => $request->routeIs(PublicHome::getRouteName()))
-                    ->url(PublicHome::getUrl()) : null,
-                ClientOrder::publicEnabled() && $groups->isEmpty() ? NavigationItem::make('order')
-                    ->label(__('Order'))
-                    ->icon(Heroicon::OutlinedShoppingCart)
-                    ->isActiveWhen(fn () => $request->routeIs('filament.client.cart'))
-                    ->url(route('filament.client.cart')) : null,
-                self::domainSearch() ? NavigationItem::make('domainSearch')
-                    ->label(__('Domain search'))
-                    ->icon(Heroicon::OutlinedMagnifyingGlass)
-                    ->isActiveWhen(fn () => $request->routeIs(SearchDomains::getRouteName()))
-                    ->url(SearchDomains::getUrl()) : null,
-                self::domainPrices() ? NavigationItem::make('domainPrices')
-                    ->label(__('Domain prices'))
-                    ->icon(Heroicon::OutlinedTag)
-                    ->isActiveWhen(fn () => $request->routeIs(DomainPrices::getRouteName()))
-                    ->url(DomainPrices::getUrl()) : null,
-                KnowledgeBase::canAccess() ? NavigationItem::make('knowledgeBase')
-                    ->label(__('Knowledge base'))
-                    ->icon(Heroicon::OutlinedBookOpen)
-                    ->isActiveWhen(fn () => $request->routeIs(KnowledgeBase::getRouteName(), KnowledgeBaseArticle::getRouteName()))
-                    ->url(KnowledgeBase::getUrl()) : null,
-                Announcements::canAccess() ? NavigationItem::make('announcements')
-                    ->label(__('Announcements'))
-                    ->icon(Heroicon::OutlinedMegaphone)
-                    ->isActiveWhen(fn () => $request->routeIs(Announcements::getRouteName(), AnnouncementPage::getRouteName()))
-                    ->url(Announcements::getUrl()) : null,
-                ServerStatus::canAccess() ? NavigationItem::make('status')
-                    ->label(__('Server status'))
-                    ->icon(Heroicon::OutlinedSignal)
-                    ->isActiveWhen(fn () => $request->routeIs(ServerStatus::getRouteName()))
-                    ->url(ServerStatus::getUrl()) : null,
-                ContactSupport::canAccess() ? NavigationItem::make('contact')
-                    ->label(__('Contact us'))
-                    ->icon(Heroicon::OutlinedChatBubbleLeftRight)
-                    ->isActiveWhen(fn () => $request->routeIs(ContactSupport::getRouteName()))
-                    ->url(ContactSupport::getUrl()) : null,
-            ])))
-            ->groups([
-                // With product groups, a line for each under Order (OrderCatalogue)
-                ...($groups->isEmpty() ? [] : [NavigationGroup::make(__('Order'))
-                    ->collapsible(false)
-                    ->items($groups->map(fn (array $group) => NavigationItem::make('order-'.$group['key'])
-                        ->label($group['name'])
-                        ->icon(ProductIcons::ICONS[$group['icon'] ?? ''][0] ?? Heroicon::OutlinedShoppingCart)
-                        ->isActiveWhen(fn () => $request->routeIs('filament.client.cart', ProductGroupPage::getRouteName()) && $request->route('group') === $group['key'])
-                        ->url(ProductGroupPage::urlFor($group['group']) ?? route('filament.client.cart', ['group' => $group['key']])))->values()->all())]),
-                NavigationGroup::make(__('Your account'))
-                    ->collapsible(false)
-                    ->items(array_values(array_filter([
-                        NavigationItem::make('login')
-                            ->label(__('Log in'))
-                            ->icon(Heroicon::OutlinedArrowRightEndOnRectangle)
-                            ->url(filament()->getLoginUrl()),
-                        ClientSignup::enabled() ? NavigationItem::make('signup')
-                            ->label(__('Sign up'))
-                            ->icon(Heroicon::OutlinedUserPlus)
-                            ->url(filament()->getRegistrationUrl()) : null,
-                    ]))),
-            ]);
+        return $groups;
     }
 }
