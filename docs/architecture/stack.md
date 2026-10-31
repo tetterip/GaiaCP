@@ -119,9 +119,18 @@ How the admin and client panels, users, access, security, branding, themes and l
   base currency, no terms) for visitors, filling the same session cart (listed in the summary card); Continue (which
   adds what is filled in when the cart is empty) sets `url.intended` to the cart and goes to sign up (login while
   sign up is off; both show `filament/client/cart-notice`), so a client still places it.
+  Menus (Settings → Client area → Menus, `MenuSettings`, `App\Support\ClientMenu`): `client_area.menu` and
+  `public_area.menu` hold `{items, seen}` (null = as it comes). Rows are `page` (a built-in entry by key: the class
+  basename of a client panel page / resource, or `ServiceResource.hosting` style when a class has several items; for
+  visitors a key of `PublicArea::menuEntries()`), `heading` (a built-in one by key or your own), `product`,
+  `category` (product group) and `link`, each with optional `label` per locale and `icon` (`ClientMenu::iconOptions()`).
+  `ClientMenu::build()` clones the built-in items (their own visibility checks still apply), sorts everything in the
+  saved order and drops empty headings; a page not in `seen` (added by an update) goes to the end of its section. The
+  settings page is a Builder with block previews (`App\Filament\Forms\MenuRowBlock`): fields render only in the edit
+  window, so a long menu stays light.
   Public area (Settings → Public area, `PublicAreaSettings`, `gaiacp.public_area.*`, `App\Support\PublicArea`): the
   client panel's pages for visitors, each off until switched on. A visitor gets the side menu `PublicArea::navigation()`
-  (the panel's `navigation()` closure; signed-in clients keep the pages' own) and `filament.client.public-topbar`
+  (the panel's `navigation()` closure; signed-in clients keep the pages' own until a menu is saved) and `filament.client.public-topbar`
   (language from `Locales::available()` via `/language/{locale}` into the session, read by `SetLocale`; the cart
   while the public order page has items; Log in). The site root is `PublicHome` (route `filament.client.home`, in
   place of Filament's redirect): the welcome title / Markdown text per language, the domain search box and
