@@ -142,10 +142,33 @@ class ClientNotificationsTest extends TestCase
         $this->assertSame(0, $this->user->notifications()->count());
     }
 
+    public function test_a_swiped_away_notification_is_deleted_and_only_the_clients_own(): void
+    {
+        config(['gaiacp.client_area.notifications' => true]);
+        ActivityLog::record('client.change_approved', 'Approved', client: $this->client);
+        $other = User::factory()->create();
+        ActivityLog::record('backup.failed', 'Backup failed');
+        $mine = $this->user->notifications()->sole();
+        $theirs = $other->notifications()->sole();
+
+        // A swipe calls the notification's close(), which tells the bell notificationClosed with its id
+        Filament::setCurrentPanel('client');
+        $this->actingAs($this->user, 'client');
+        Livewire::test(PanelNotifications::class)
+            ->dispatch('notificationClosed', id: $theirs->id)
+            ->dispatch('notificationClosed', id: $mine->id)
+            ->assertDontSee('Your changes were approved');
+
+        $this->assertSame(0, $this->user->notifications()->count());
+        $this->assertSame(1, $other->notifications()->count());
+    }
+
     public function test_the_bell_shows_in_the_client_area_with_only_client_notifications(): void
     {
         $bell = '/class="[^"]*fi-topbar-database-notifications-btn/';
-        $this->assertMatchesRegularExpression($bell, $this->actingAs($this->user, 'client')->get(ClientDashboard::getUrl(panel: 'client'))->assertOk()->getContent());
+        $this->assertMatchesRegularExpression($bell, $this->actingAs($this->user, 'client')->get(ClientDashboard::getUrl(panel: 'client'))->assertOk()
+            ->assertSee('gaiacp-notification-swipe', false) // swiped away on a touch screen (filament.notification-swipe)
+            ->getContent());
 
         // An admin linked to the client: client notifications in the client area, the admin's own in /admin
         $admin = User::factory()->create(['email' => 'linked@example.com']);

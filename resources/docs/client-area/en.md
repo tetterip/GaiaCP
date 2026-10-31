@@ -9,7 +9,7 @@ If your email address is a Google account, you can also press **Continue with Go
 Your profile (the menu with your name, at the bottom of the menu or at the top right) changes your email address, phone number, language and password, and can turn on two-factor authentication for extra safety.
 
 <!-- if:notifications -->
-The **bell** at the top of the page tells you what happened since you last looked: a new payment notice, a payment reminder or overdue notice, a payment we received, a service that is ready, suspended or ended, a domain about to renew, a new price, our answer to your ticket or to a request. A number on it shows how many you haven't read; press one to open its page. To stop them, turn off **Notifications** in your profile. We still email you as before.
+The **bell** at the top of the page tells you what happened since you last looked: a new payment notice, a payment reminder or overdue notice, a payment we received, a service that is ready, suspended or ended, a domain about to renew, a new price, our answer to your ticket or to a request. A number on it shows how many you haven't read; press one to open its page. On a phone or tablet, swipe one left or right to remove it. To stop them, turn off **Notifications** in your profile. We still email you as before.
 
 <!-- endif -->
 <!-- if:email_history -->

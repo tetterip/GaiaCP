@@ -58,7 +58,8 @@ Client area, Support, Email & notifications, Integrations, AI assistant, Securit
 name. Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
 
 The **top bar** has the search (press `/` or Ctrl/⌘ + K: clients, services and domains, leads, quotes and tickets), a link
-that opens the client area in a new tab, **New order**, and the **bell**.
+that opens the client area in a new tab, **New order**, and the **bell**. On a phone or
+tablet, swipe a notification left or right to remove it.
 
 Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a page (`g c` Clients, `g d` Dashboard),
 `n` then a letter starts a new record.

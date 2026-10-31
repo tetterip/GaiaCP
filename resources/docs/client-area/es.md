@@ -9,7 +9,7 @@ Si su dirección de email es una cuenta de Google, también puede pulsar **Conti
 Su perfil (el menú con su nombre, al final del menú o arriba a la derecha) cambia su dirección de email, teléfono, idioma y contraseña, y puede activar la verificación en dos pasos para mayor seguridad.
 
 <!-- if:notifications -->
-La **campana** de la parte superior de la página le indica lo que ha pasado desde la última vez que miró: un aviso de pago nuevo, un recordatorio de pago o aviso de retraso, un pago que recibimos, un servicio listo, suspendido o terminado, un dominio a punto de renovarse, un precio nuevo, nuestra respuesta a su ticket o a una solicitud. Un número sobre ella muestra cuántas no ha leído; pulse una para abrir su página. Para dejar de recibirlas, desactive **Notificaciones** en su perfil. Le seguiremos enviando emails como antes.
+La **campana** de la parte superior de la página le indica lo que ha pasado desde la última vez que miró: un aviso de pago nuevo, un recordatorio de pago o aviso de retraso, un pago que recibimos, un servicio listo, suspendido o terminado, un dominio a punto de renovarse, un precio nuevo, nuestra respuesta a su ticket o a una solicitud. Un número sobre ella muestra cuántas no ha leído; pulse una para abrir su página. En un móvil o tableta, deslice una a la izquierda o a la derecha para quitarla. Para dejar de recibirlas, desactive **Notificaciones** en su perfil. Le seguiremos enviando emails como antes.
 
 <!-- endif -->
 <!-- if:email_history -->

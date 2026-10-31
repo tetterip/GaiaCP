@@ -92,6 +92,8 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('60s')
             // The bell rings once when unread notifications appear: on the first page of the visit, and when more arrive
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.bell-ring')->render() : '')
+            // Swipe a notification away on a touch screen (the bell's list and pop-ups)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.notification-swipe')->render())
             // The theme says whether the admin's menu is in the top bar or at the foot of the sidebar
             ->userMenu(position: fn () => Themes::userMenuPosition())
             ->defaultAvatarProvider(InitialsAvatar::class)

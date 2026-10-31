@@ -9,7 +9,7 @@ Wenn Ihre E-Mail-Adresse ein Google-Konto ist, können Sie auf der Anmeldeseite 
 In Ihrem Profil (das Menü mit Ihrem Namen, unten im Menü oder oben rechts) ändern Sie Ihre E-Mail-Adresse, Telefonnummer, Sprache und Ihr Passwort und können für zusätzliche Sicherheit die Zwei-Faktor-Authentifizierung einschalten.
 
 <!-- if:notifications -->
-Die **Glocke** oben auf der Seite zeigt, was seit Ihrem letzten Besuch passiert ist: eine neue Zahlungsaufforderung, eine Zahlungserinnerung oder Mahnung, eine bei uns eingegangene Zahlung, ein Dienst, der bereit, gesperrt oder beendet ist, eine Domain, die bald verlängert wird, ein neuer Preis, unsere Antwort auf Ihr Ticket oder auf eine Anfrage. Eine Zahl darauf zeigt, wie viele Sie noch nicht gelesen haben; klicken Sie auf eine, um ihre Seite zu öffnen. Um sie abzustellen, schalten Sie **Benachrichtigungen** in Ihrem Profil aus. Wir senden Ihnen weiterhin wie bisher E-Mails.
+Die **Glocke** oben auf der Seite zeigt, was seit Ihrem letzten Besuch passiert ist: eine neue Zahlungsaufforderung, eine Zahlungserinnerung oder Mahnung, eine bei uns eingegangene Zahlung, ein Dienst, der bereit, gesperrt oder beendet ist, eine Domain, die bald verlängert wird, ein neuer Preis, unsere Antwort auf Ihr Ticket oder auf eine Anfrage. Eine Zahl darauf zeigt, wie viele Sie noch nicht gelesen haben; klicken Sie auf eine, um ihre Seite zu öffnen. Auf einem Handy oder Tablet wischen Sie eine nach links oder rechts, um sie zu entfernen. Um sie abzustellen, schalten Sie **Benachrichtigungen** in Ihrem Profil aus. Wir senden Ihnen weiterhin wie bisher E-Mails.
 
 <!-- endif -->
 <!-- if:email_history -->
