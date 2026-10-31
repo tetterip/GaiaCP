@@ -76,13 +76,15 @@ class SignIns extends Page implements HasTable
                 TextColumn::make('user_agent')
                     ->label('Device')
                     ->formatStateUsing(fn (ClientSession $record) => $record->device())
-                    ->description(fn (ClientSession $record) => $record->isCurrent() ? __('This device') : null),
-                TextColumn::make('ip_address')
-                    ->label('IP address')
-                    ->placeholder('—'),
+                    // The IP address goes under the device, as in Recent sign-ins below, so a long IPv6 address wraps
+                    // instead of pushing the table wider than a phone
+                    ->description(fn (ClientSession $record) => collect([$record->isCurrent() ? __('This device') : null, $record->ip_address])->filter()->implode(' · ') ?: null)
+                    ->wrap()
+                    ->extraAttributes(['style' => 'overflow-wrap: anywhere;']),
                 TextColumn::make('created_at')
                     ->label('Signed in')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->visibleFrom('sm'),
                 TextColumn::make('last_active_at')
                     ->label('Last active')
                     ->since()
