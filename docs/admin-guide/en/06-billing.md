@@ -86,8 +86,8 @@ Account → Unsuspend once the server answers.
 Entered one by mistake? The service's **Payments** tab has **Reverse** on the latest payment: it deletes it and sets
 the due date back. Reversing never undoes a domain renewal.
 
-Billing → **Payments** lists every payment, by hand or by card. Card payments with Stripe are recorded by themselves
-once Stripe confirms them. Refunds are made in Stripe, not in GaiaCP.
+Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe or PayPal are recorded by
+themselves once the provider confirms them. Refunds are made there, not in GaiaCP.
 
 ## Billing cycles and due dates
 

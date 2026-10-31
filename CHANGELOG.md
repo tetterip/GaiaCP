@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- PayPal (Settings → Payment methods → PayPal, off by default): clients pay their payment notices with PayPal, with
+  their PayPal balance or a card, on PayPal's own page. GaiaCP takes the money only if the notice still asks for that
+  amount, and records the payment once PayPal confirms it, on the client's return or through the webhook (for a
+  client who closes the page, or a payment that clears later), exactly once. Sandbox and live apps have their own
+  keys.
 - A small Star on GitHub button in the admin footer opens GaiaCP on GitHub, where you can give it a star; the public demo's top bar has a bigger one on every page.
 - The client guide in German, Spanish, French, Italian, Dutch, Polish, Portuguese and Turkish now explains coupons,
   sale prices, the package badges and SSL certificates installed for you on your hosting, like the English and Greek

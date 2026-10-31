@@ -70,7 +70,8 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   with a reason the client sees in their credit history
 - Payments recorded by hand: "mark as paid" moves the due date forward one cycle. Card payments through Stripe (a
   bundled plugin): "Pay by card" on the client's unpaid payment notices opens Stripe Checkout, and the payment is
-  recorded the same way once Stripe confirms it
+  recorded the same way once Stripe confirms it. PayPal the same way (a bundled plugin, off by default): "Pay with
+  PayPal" opens PayPal's page, and GaiaCP takes the money only if the notice still asks for that amount
 - Daily automation: payment notices and their reminders, domain renewal notices, optional auto-suspend after a grace period,
   and a daily summary email to the admins (new and overdue payment notices, domains whose sync changed or failed;
   on/off under Settings → Automation, and per admin with Receive system emails under Settings → Admin users)
@@ -104,7 +105,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance, Proxmox VE (all three off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
-Settings → Stripe for the keys and the webhook), Google sign-in ("Continue with Google"
+Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Google sign-in ("Continue with Google"
   in the client area, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
   Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot, HetrixTools and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
   the admin panel themes Gaia and Flat are bundled plugins,
@@ -245,7 +246,7 @@ Settings → Stripe for the keys and the webhook), Google sign-in ("Continue wit
 
 **Out of scope (on purpose)**
 
-- Payment gateways other than Stripe, saved cards and automatic charges, refunds from GaiaCP (refund in Stripe)
+- Saved cards and automatic charges, refunds from GaiaCP (refund in Stripe or PayPal)
 - Transmitting invoices to a tax authority (myDATA, Peppol…) in the core: that belongs in a plugin per country
 - Proration other than an upgrade's "charge the difference now"; credit paying part of a line
 - Matching bank statements to payment notices (bank CSV import, RF payment codes): payments are recorded by hand or by a payment plugin

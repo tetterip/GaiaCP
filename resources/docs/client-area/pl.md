@@ -112,8 +112,12 @@ Gdy zbliża się termin płatności usługi, wysyłamy e-mailem **wezwanie do za
 Gdy wystawiamy faktury, opłacone wezwanie do zapłaty dostaje też **fakturę**: wysyłamy ją e-mailem jako PDF, opłacone wezwanie ma przycisk do jej pobrania, a **Faktury** (w Rozliczeniach) pokazują je wszystkie. **Faktura korygująca** z ujemną kwotą anuluje tam fakturę, na przykład gdy płatność zostaje zwrócona.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Aby zapłacić kartą, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć **Zapłać kartą**. Płatność odbywa się na bezpiecznej stronie płatności Stripe (nigdy nie widzimy danych karty), a wezwanie jest widoczne jako opłacone, gdy tylko płatność zostanie zrealizowana.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+Aby zapłacić przez PayPal, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć **Zapłać przez PayPal**. Płatność zatwierdza się na stronie PayPal, środkami z konta PayPal lub kartą, a wezwanie jest widoczne jako opłacone, gdy tylko PayPal ją potwierdzi.
 <!-- endif -->
 
 <!-- if:credit -->

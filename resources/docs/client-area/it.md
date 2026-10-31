@@ -112,8 +112,12 @@ Quando un servizio è in scadenza Le inviamo via email un **avviso di pagamento*
 Quando emettiamo fatture, un avviso di pagamento pagato riceve anche una **fattura**: te la inviamo via email in PDF, l'avviso pagato ha un pulsante per scaricarla e **Fatture** (in Fatturazione) le elenca tutte. Una **nota di credito** lì, con un totale negativo, annulla una fattura, ad esempio quando un pagamento viene restituito.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Per pagare con carta, apra un avviso di pagamento non pagato e prema **Paga con carta**. Paga sulla pagina di pagamento sicura di Stripe (non vediamo mai i dati della Sua carta), e l'avviso risulta pagato appena il pagamento va a buon fine.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+Per pagare con PayPal, apra un avviso di pagamento non pagato e prema **Paga con PayPal**. Approva il pagamento sulla pagina di PayPal, con il Suo saldo PayPal o con una carta, e l'avviso risulta pagato appena PayPal lo conferma.
 <!-- endif -->
 
 <!-- if:credit -->

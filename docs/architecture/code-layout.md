@@ -109,7 +109,7 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   `backups.include_logs`). Scheduled in `routes/console.php` only when enabled. System health → Biggest tables is
   `App\Support\Health\TableSizes` (information_schema on MySQL, dbstat on SQLite)
 - Plugins: `app/Plugins/` has `Plugin` and `PluginManager` (singleton; `BUILT_IN` = cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel (off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check, WHMCS
-  import, Bank transfer, Stripe, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on
+  import, Bank transfer, Stripe, PayPal, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on
   for a bundled one unless `Plugin::enabledByDefault()` is false (easy.gr, ΑΑΔΕ, VIES; `GAIACP_PLUGINS_START_ENABLED` lists
   ones to start on anyway), off for others; `recordVersions()` writes the row after migrate, so this only decides a new
   install or a newly bundled plugin). Other plugins: `PluginManager::discover()` registers every `plugins/<Folder>/plugin.json`
@@ -146,6 +146,14 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   report records nothing; a payment that no longer fits its notice becomes `unmatched` (`payment.online_unmatched`,
   listed in the daily summary). Settings → Stripe (super admins): mode test / live, each with its secret key and
   webhook signing secret (encrypted). `Plugin::paysOnline()` keeps it from being the pre-selected method by hand
+- `plugins/PayPal/` (off by default): "Pay with PayPal" (`PayPalPayments::canPay()`, two-decimal currencies PayPal
+  takes) → `start()` creates an Orders v2 order (`PayPalApi`: OAuth token cached per app, `ModuleLogger`) and keeps a
+  `paypal_orders` row. `sync()` reads the order from PayPal's API (on the return `filament.client.paypal.return` or a
+  webhook at `/webhooks/paypal`, which is only a hint, so it needs no signature check): APPROVED → claim open →
+  processing, check `problem()` before taking anything (a changed notice → `cancelled`, nothing taken), capture with
+  `PayPal-Request-Id` `capture-<order>` (a retry never takes twice; a failed call goes back to open); a completed
+  capture is recorded through `RecordInvoicePayment` (method `paypal`, reference = capture id), a pending one waits as
+  `pending` for `PAYMENT.CAPTURE.COMPLETED`; taken but no longer fitting → `unmatched` (`payment.online_unmatched`)
 - `app/Support/Money.php`: cents ↔ display/form conversion; `format()` writes a currency as Settings → Currencies says
 - Currencies: `currencies` (`Currency`: code, prefix, suffix, `CurrencyFormat`, `rate` = units per 1 base) read once per
   request by `App\Support\Currencies` (base = `gaiacp.currency`, rate 1, never deleted; `fromBase()` / `toBase()` /

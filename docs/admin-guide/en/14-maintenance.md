@@ -63,8 +63,8 @@ night.
 - **Nothing was emailed or billed today**: check System health for cron, then the Email log.
 - **A server or registrar call failed**: the error is on the service's Activity tab and in Needs attention. Switch on
   the module log, try again, and read what the panel answered.
-- **A client says they paid**: look under Billing → Payments and on the payment notice. A Stripe payment that didn't
-  fit its notice any more is listed in the daily summary.
+- **A client says they paid**: look under Billing → Payments and on the payment notice. A Stripe or PayPal payment that
+  didn't fit its notice any more is listed in the daily summary.
 - **The client area must close for a while**: Settings → Client area → Maintenance mode.
 
 Next: [Moving from WHMCS](15-whmcs-import.md).

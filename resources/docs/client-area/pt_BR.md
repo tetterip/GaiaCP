@@ -112,8 +112,12 @@ Quando um serviço vence, enviamos a você por e-mail um **aviso de pagamento**,
 Quando emitimos faturas, um aviso de pagamento pago também recebe uma **fatura**: enviamos por email em PDF, o aviso pago tem um botão para baixá-la, e **Faturas** (em Cobrança) lista todas. Uma **nota de crédito** ali, com total negativo, desfaz uma fatura, por exemplo quando um pagamento é devolvido.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Para pagar com cartão, abra um aviso de pagamento não pago e clique em **Pagar com cartão**. Você paga na página de pagamento segura do Stripe (nunca vemos os dados do seu cartão), e o aviso aparece como pago assim que o pagamento é aprovado.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+Para pagar com PayPal, abra um aviso de pagamento não pago e clique em **Pagar com PayPal**. Você aprova o pagamento na página do PayPal, com seu saldo do PayPal ou um cartão, e o aviso aparece como pago assim que o PayPal o confirma.
 <!-- endif -->
 
 <!-- if:credit -->

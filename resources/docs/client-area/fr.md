@@ -112,8 +112,12 @@ Quand un service arrive à échéance, nous vous envoyons par email un **avis de
 Quand nous émettons des factures, un avis de paiement payé reçoit aussi une **facture** : nous vous l'envoyons par email en PDF, l'avis payé a un bouton pour la télécharger, et **Factures** (dans Facturation) les liste toutes. Un **avoir** à cet endroit, avec un total négatif, annule une facture, par exemple quand un paiement est remboursé.
 <!-- endif -->
 
-<!-- if:pay_online -->
+<!-- if:pay_card -->
 Pour payer par carte, ouvrez un avis de paiement impayé et cliquez sur **Payer par carte**. Vous payez sur la page de paiement sécurisée de Stripe (nous ne voyons jamais les données de votre carte), et l'avis apparaît comme payé dès que le paiement est passé.
+<!-- endif -->
+
+<!-- if:pay_paypal -->
+Pour payer avec PayPal, ouvrez un avis de paiement impayé et cliquez sur **Payer avec PayPal**. Vous approuvez le paiement sur la page de PayPal, avec votre solde PayPal ou une carte, et l'avis apparaît comme payé dès que PayPal le confirme.
 <!-- endif -->
 
 <!-- if:credit -->
