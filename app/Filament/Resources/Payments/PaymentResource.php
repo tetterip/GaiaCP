@@ -29,7 +29,7 @@ class PaymentResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Billing';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 4;
 
     public static function adminArea(): ?AdminArea
     {

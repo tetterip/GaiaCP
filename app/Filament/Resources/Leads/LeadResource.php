@@ -49,7 +49,7 @@ class LeadResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Main';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $recordTitleAttribute = 'first_name';
 

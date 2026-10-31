@@ -202,7 +202,7 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   dashboard lists the leads to contact today. Convert to client makes one a client (or links it to the client who
   already has its email), optionally with a client area invitation; Mark as lost keeps the reason. Reports → Lead
   sources shows how many leads each source brought and how many became clients
-- Quotes (Billing → Quotes): an offer to a lead or a client, written like a new order (products, options, domains,
+- Quotes (main menu, after Orders): an offer to a lead or a client, written like a new order (products, options, domains,
   prices changed for a discount and kept on renewals) plus one-off lines (moving a site), ordered as other services
   billed once (billing cycle One time: Completed once paid), valid until a date (Settings → Sales). Send emails a link to its page, where it is printed, accepted (with the
   terms of service when asked) or declined with a reason, no login needed. Accepting makes a lead a client with the
