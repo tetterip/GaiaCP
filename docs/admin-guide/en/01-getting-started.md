@@ -94,8 +94,10 @@ the areas they can open.
 
 Two things on purpose, so you know where they happen instead:
 
-- **It does not issue legal invoices.** Its "payment notices" are proformas: they say what is owed and by when.
-  Invoices for your tax authority come from your accounting software.
+- **It does not send invoices to a tax authority.** Its "payment notices" are proformas: they say what is owed and by
+  when. Invoices are your choice: issue them in your accounting software, or turn on Settings → Billing → **Invoices**
+  so that each paid notice also gets a numbered invoice, with credit notes to undo one (see
+  [Billing](06-billing.md)). Sending them to your tax authority (myDATA, Peppol…) is not built in.
 - **It never charges a card by itself.** You record payments, or a payment plugin (Stripe Checkout, PayPal) records what
   the client paid on the provider's own page. There are no saved cards and no automatic charges.
 
