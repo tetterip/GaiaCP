@@ -9,6 +9,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   list you drag into order. Rename a page in each language, give it another icon or take it out, and add products,
   product groups, links (opening in a new tab if you like) and headings of your own. Pages added by later updates
   appear in their section by themselves; Reset to default puts the menus back.
+
+## [0.4.0] - 2026-10-31
+
 - Notifications can be swiped away on a phone or tablet: a swipe left or right in the bell's list (admin and client
   area) deletes one, the same as its X, and closes a pop-up one.
 - PayPal (Settings → Payment methods → PayPal, off by default): clients pay their payment notices with PayPal, with
@@ -35,7 +38,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Invoices as PDF: the client gets the new Invoice Issued email with the invoice attached, in their language, and
   finds their invoices under Billing → Invoices in the client area and on each paid payment notice. Admins download
   the PDF or send the email again from an invoice's page, and see a client's invoices on the Invoices tab of the
-  client's page. Credit notes come next.
+  client's page.
 - Welcome tour: on the first login, admins and clients get a few cards, each lighting up the menu or part of the top bar it is about (on a phone the side menu opens for them), (clients and orders,
   services, payment notices, support, search and bell, help for admins; services, payment notices, ordering, support,
   profile and help for clients), only for the pages each one can open. The admin's last card opens the setup guide.
