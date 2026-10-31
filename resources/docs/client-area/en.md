@@ -168,6 +168,12 @@ Your name, company, VAT details and address appear on your payment notices and a
 
 Our news and offers end with a link to stop them; emails about your services, payment notices and reminders keep coming.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** in the menu looks up a domain name: whether it is registered, with which registrar, when it was registered and when it expires, its statuses and its nameservers. The owner's contact details are not shown. When the name is free, **Register it** takes you to the domain search.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Knowledge base
 
@@ -176,6 +182,11 @@ Under Support → Knowledge base you find answers to common questions, grouped b
 While you write the subject of a new ticket, articles that may already answer it show under it.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Downloads
+
+Under Support → **Downloads** you find files we share with you, such as guides and software, grouped by subject. Some are there only while you have a certain service. Press **Download** to save one.
 <!-- endif -->
 <!-- if:tickets -->
 ## Support tickets

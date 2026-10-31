@@ -168,6 +168,12 @@ Adınız, şirketiniz, vergi bilgileriniz ve adresiniz ödeme bildirimlerinizde 
 
 Haberlerimiz ve tekliflerimiz, onları durdurmak için bir bağlantıyla biter; hizmetleriniz, ödeme bildirimleri ve hatırlatmalarla ilgili e-postalar gelmeye devam eder.
 
+<!-- if:whois -->
+## WHOIS
+
+Menüdeki **WHOIS** bir alan adını sorgular: kayıtlı olup olmadığını, hangi kayıt kuruluşunda olduğunu, ne zaman kaydedildiğini ve ne zaman sona erdiğini, durumlarını ve ad sunucularını gösterir. Sahibinin iletişim bilgileri gösterilmez. Ad boştaysa **Kaydet** sizi alan adı aramasına götürür.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Bilgi bankası
 
@@ -176,6 +182,11 @@ Destek → Bilgi bankası altında sık sorulan soruların yanıtlarını konuya
 Yeni bir destek talebinin konusunu yazarken, ona zaten yanıt olabilecek makaleler altında görünür.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## İndirmeler
+
+Destek → **İndirmeler** altında sizinle paylaştığımız rehberler ve yazılımlar gibi dosyaları konularına göre bulursunuz. Bazıları yalnızca belirli bir hizmetiniz olduğu sürece oradadır. Birini kaydetmek için **İndir**'e basın.
 <!-- endif -->
 <!-- if:tickets -->
 ## Destek talepleri

@@ -167,6 +167,8 @@ class MenuSettings extends SettingsFormPage
             ->addActionLabel(__('Add to the menu'))
             ->blockPickerColumns(2)
             ->blockPreviews()
+            // Room under Add to the menu, so its list opens clear of the floating Save bar on a phone
+            ->extraAttributes(['style' => 'margin-bottom: 4rem'])
             // New lines go at the end and are dragged into place: a picker between every two lines would weigh the page down
             ->addBetweenAction(fn (Action $action) => $action->hidden())
             ->cloneable(false)

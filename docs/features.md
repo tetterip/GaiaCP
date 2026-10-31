@@ -222,6 +222,11 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   the client area once published, with a search that ignores accents and case, views and "Was this helpful?" counts.
   While a client writes a new ticket, the articles matching its subject show under it. Settings → Support →
   Knowledge base in the client area switches it off
+- Downloads (Support → Downloads): files in categories, a title and description per language, for everyone, clients
+  who are logged in, or the clients of chosen products; kept private and handed out by GaiaCP after checking who
+  asks, with a download count
+- WHOIS lookup (Settings → Public area → WHOIS lookup, for visitors and clients): registrar, dates, statuses,
+  nameservers and DNSSEC from the registry's RDAP server, else its WHOIS server's text; captcha and a limit per minute
 - Domain costs: each TLD can keep what the registrar charges per term (Settings → Domain pricing → Registrar cost).
   The list shows the renewal margin, red when a term sells at a loss; Income forecast takes the month's domain
   renewal costs off the profit, and Reports → Domain profit shows revenue, cost, profit and margin per TLD

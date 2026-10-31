@@ -168,6 +168,12 @@ Votre nom, votre société, vos informations de TVA et votre adresse figurent su
 
 Nos actualités et offres se terminent par un lien pour les arrêter ; les emails concernant vos services, avis de paiement et rappels continuent d'arriver.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** dans le menu consulte un nom de domaine : s'il est enregistré, chez quel registraire, quand il a été enregistré et quand il expire, ses statuts et ses serveurs de noms. Les coordonnées du titulaire ne sont pas affichées. Si le nom est libre, **L'enregistrer** vous mène à la recherche de domaine.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Base de connaissances
 
@@ -176,6 +182,11 @@ Dans Support → Base de connaissances, vous trouvez les réponses aux questions
 Pendant que vous saisissez l'objet d'un nouveau ticket, les articles qui y répondent peut-être déjà s'affichent en dessous.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Téléchargements
+
+Sous Support → **Téléchargements**, vous trouvez les fichiers que nous partageons avec vous, comme des guides et des logiciels, classés par sujet. Certains n'y sont que tant que vous avez un service donné. Cliquez sur **Télécharger** pour en enregistrer un.
 <!-- endif -->
 <!-- if:tickets -->
 ## Tickets de support

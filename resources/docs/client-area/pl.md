@@ -168,6 +168,12 @@ Imię i nazwisko, firma, dane VAT i adres pojawiają się na Państwa wezwaniach
 
 Nasze aktualności i oferty kończą się linkiem do ich wyłączenia; e-maile o usługach, wezwaniach do zapłaty i przypomnienia nadal przychodzą.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** w menu sprawdza nazwę domeny: czy jest zarejestrowana, u jakiego rejestratora, kiedy została zarejestrowana i kiedy wygasa, jej statusy i serwery nazw. Dane kontaktowe właściciela nie są pokazywane. Gdy nazwa jest wolna, **Zarejestruj ją** prowadzi do wyszukiwarki domen.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Baza wiedzy
 
@@ -176,6 +182,11 @@ W menu Wsparcie → Baza wiedzy znajdują się odpowiedzi na częste pytania, po
 Podczas wpisywania tematu nowego zgłoszenia pod nim pojawiają się artykuły, które mogą już odpowiadać na pytanie.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Pliki do pobrania
+
+W Pomoc → **Pliki do pobrania** znajdziesz pliki, które Ci udostępniamy, takie jak poradniki i oprogramowanie, pogrupowane tematycznie. Niektóre są dostępne tylko wtedy, gdy masz określoną usługę. Kliknij **Pobierz**, aby zapisać plik.
 <!-- endif -->
 <!-- if:tickets -->
 ## Zgłoszenia

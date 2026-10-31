@@ -59,7 +59,15 @@ How the admin and client panels, users, access, security, branding, themes and l
   `/knowledgebase/{slug}` (`KnowledgeBaseArticle`: Markdown with HTML stripped, views and "Was this helpful?" once a
   session, not while an admin views as the client, others in its category, Open a ticket), only while
   `support.knowledge_base` is on and an article is published (`App\Support\KnowledgeBase::enabled()`). Open a ticket
-  shows up to 3 articles matching the subject's words (`KnowledgeBase::suggestions()`). Domain self-service (`Client/Actions/DomainSelfService` on the domain page): nameservers and EPP code
+  shows up to 3 articles matching the subject's words (`KnowledgeBase::suggestions()`). Downloads: `download_categories`
+  (`names` per language, Settings → Download categories, `DownloadCategoryResource`) and `downloads` (`texts`
+  {locale: {title, description}}, `path` on the `local` disk under `downloads/`, `file_name`, `size`, `visibility`
+  `App\Enums\DownloadVisibility` everyone / clients / products with `product_ids`, `published`, `download_count`),
+  in Support → Downloads (`DownloadResource`, `checkFile()` keeps only a fresh upload's `downloads/<40 chars>` path or the
+  one already stored). `Download::visibleTo($client)`: everyone for visitors, plus clients' and those of a product the
+  client has an Active or Completed service of. Client area: Support → Downloads (`Client/Pages/Downloads`,
+  `OpenToVisitors`, shown while one is visible) and `/downloads/{id}/file` (`DownloadController`, 404 unless visible,
+  counts). Deleting a download, or replacing its file, deletes the old file. Domain self-service (`Client/Actions/DomainSelfService` on the domain page): nameservers and EPP code
   through `DomainLifecycle` (active domains at a registrar here, not `external`; a failure shows a plain message),
   auto renew through `SetDomainAutoRenew`; each behind a `gaiacp.client_area.*` switch (Settings → Client area,
   `ClientAreaSettings`). Hosting self-service (`Client/Actions/HostingSelfService` on the service page, active accounts on
@@ -128,6 +136,12 @@ How the admin and client panels, users, access, security, branding, themes and l
   saved order and drops empty headings; a page not in `seen` (added by an update) goes to the end of its section. The
   settings page is a Builder with block previews (`App\Filament\Forms\MenuRowBlock`): fields render only in the edit
   window, so a long menu stays light.
+  WHOIS (`Client/Pages/WhoisLookup`, `/whois`, `public_area.whois`, visitors and clients): `App\Support\Whois` asks
+  the TLD's RDAP server (`DomainSearch::rdapServers()`), reading only the registrar entity's name, the registration /
+  expiration / last changed events, statuses, nameservers and `secureDNS`; a TLD without RDAP gets its WHOIS server
+  from `whois.iana.org` (port 43, kept a day) and its text is shown as is (`Whois::queryUsing()` in tests). The domain
+  search's captcha session (`domain_search.verified_until`, partial `filament.client.captcha-box`) and
+  `Whois::PER_MINUTE` per client or address.
   Public area (Settings → Public area, `PublicAreaSettings`, `gaiacp.public_area.*`, `App\Support\PublicArea`): the
   client panel's pages for visitors, each off until switched on. A visitor gets the side menu `PublicArea::navigation()`
   (the panel's `navigation()` closure; signed-in clients keep the pages' own until a menu is saved) and `filament.client.public-topbar`

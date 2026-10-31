@@ -47,6 +47,16 @@ with a text per language in Markdown. Published articles show in the client area
 and case, and "Was this helpful?" counts. While a client writes a new ticket, the articles that match its subject show
 under it, which answers many questions before they are asked. Settings → Support switches the knowledge base off.
 
+## Downloads
+
+Support → **Downloads** holds files for your clients, such as guides, software or forms, in categories (Settings →
+Support → Download categories), with a title and description per language. **Who can download it** is everyone
+(visitors too, without logging in), clients who are logged in, or only clients with an active service of the products
+you pick. The client area shows a Downloads page under Support while there is a file for that visitor or client. Files
+are never at a public address: GaiaCP hands each one out after checking who asks, and counts the downloads. A file can
+be up to the server's upload limit (12 MB at most); for bigger ones, put a link in the menu (Settings → Client area →
+Menus).
+
 ## Announcements
 
 Support → **Announcements** are news for clients (and visitors, if the public area shows them): planned work, new

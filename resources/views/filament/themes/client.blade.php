@@ -287,6 +287,75 @@
         font-variant-numeric: tabular-nums;
     }
 
+    /* Downloads: each file's title, description and size, its button at the end (under them on phones) */
+    .gcp-downloads {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .gcp-download {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .gcp-download-text {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .gcp-download-title {
+        font-weight: 600;
+    }
+
+    @media (max-width: 40rem) {
+        .gcp-download {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    /* WHOIS lookup (WhoisLookup): label and value side by side, stacked on phones; nameservers and statuses one a line */
+    .gcp-whois {
+        display: grid;
+        grid-template-columns: minmax(8rem, max-content) 1fr;
+        gap: .5rem 1.5rem;
+        font-size: .875rem;
+    }
+
+    .gcp-whois dt {
+        opacity: .7;
+    }
+
+    .gcp-whois dd span {
+        display: block;
+        overflow-wrap: anywhere;
+    }
+
+    .gcp-whois-text {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: .8rem;
+        max-height: 30rem;
+        overflow-y: auto;
+    }
+
+    @media (max-width: 40rem) {
+        .gcp-whois {
+            grid-template-columns: 1fr;
+            gap: .1rem;
+        }
+
+        .gcp-whois dd {
+            margin-bottom: .5rem;
+        }
+    }
+
     /* Domain search (SearchDomains): the box and its button on one row, results as cart lines that wrap on phones */
     .gcp-domain-search {
         display: flex;

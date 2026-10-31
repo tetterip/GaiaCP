@@ -13,6 +13,7 @@ use App\Filament\Client\Pages\ProductGroupPage;
 use App\Filament\Client\Pages\ProductPage;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
+use App\Filament\Client\Pages\WhoisLookup;
 use App\Models\Announcement;
 use App\Models\KbArticle;
 use App\Models\Product;
@@ -69,6 +70,10 @@ class SitemapController extends Controller
 
         if (PublicArea::domainPrices()) {
             $pages[] = ['url' => DomainPrices::getUrl(panel: 'client')];
+        }
+
+        if (PublicArea::whois()) {
+            $pages[] = ['url' => WhoisLookup::getUrl(panel: 'client')];
         }
 
         if (ClientOrder::publicEnabled()) {

@@ -168,6 +168,12 @@ Su nombre, empresa, datos de IVA y dirección aparecen en sus avisos de pago y c
 
 Nuestras noticias y ofertas terminan con un enlace para dejar de recibirlas; los emails sobre sus servicios, avisos de pago y recordatorios siguen llegando.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** en el menú consulta un nombre de dominio: si está registrado, con qué registrador, cuándo se registró y cuándo vence, sus estados y sus servidores de nombres. No se muestran los datos de contacto del titular. Si el nombre está libre, **Registrarlo** le lleva a la búsqueda de dominios.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Base de conocimiento
 
@@ -176,6 +182,11 @@ En Soporte → Base de conocimiento encontrará respuestas a preguntas frecuente
 Mientras escribe el asunto de un ticket nuevo, debajo aparecen artículos que quizá ya lo respondan.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Descargas
+
+En Soporte → **Descargas** encontrará archivos que compartimos con usted, como guías y software, agrupados por tema. Algunos solo están mientras tenga un servicio concreto. Pulse **Descargar** para guardar uno.
 <!-- endif -->
 <!-- if:tickets -->
 ## Tickets de soporte

@@ -253,6 +253,7 @@ return [
         'welcome_text' => [], // per language code, Markdown; empty = none
         'domain_search' => false, // Search for a domain for visitors (needs a TLD with a registration price)
         'domain_prices' => false, // a page with every TLD's registration, transfer and renewal price
+        'whois' => false, // WHOIS lookup (registrar, dates, statuses, nameservers of a domain), for visitors and clients
         'knowledge_base' => false, // the knowledge base for visitors, without the articles kept for clients
         'contact' => false, // Contact us: visitors open a ticket, read and answer it at its secret link
         // The contact page's details (Contact us, for visitors and clients): the Settings → Company lines picked here, the

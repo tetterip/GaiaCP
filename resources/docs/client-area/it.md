@@ -168,6 +168,12 @@ Il Suo nome, azienda, dati IVA e indirizzo appaiono sui Suoi avvisi di pagamento
 
 Le nostre novità e offerte terminano con un link per interromperle; le email sui Suoi servizi, gli avvisi di pagamento e i promemoria continuano ad arrivare.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** nel menu cerca un nome di dominio: se è registrato, con quale registrar, quando è stato registrato e quando scade, i suoi stati e i suoi nameserver. I dati di contatto del titolare non sono mostrati. Se il nome è libero, **Registralo** ti porta alla ricerca di domini.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Knowledge base
 
@@ -176,6 +182,11 @@ In Supporto → Knowledge base trova le risposte alle domande frequenti, raggrup
 Mentre scrive l'oggetto di un nuovo ticket, sotto di esso appaiono gli articoli che potrebbero già rispondere.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Download
+
+In Supporto → **Download** trovi i file che condividiamo con te, come guide e software, raggruppati per argomento. Alcuni ci sono solo finché hai un certo servizio. Premi **Scarica** per salvarne uno.
 <!-- endif -->
 <!-- if:tickets -->
 ## Ticket di supporto

@@ -168,6 +168,12 @@ Uw naam, bedrijf, btw-gegevens en adres staan op uw betalingsverzoeken en als ei
 
 Ons nieuws en onze aanbiedingen eindigen met een link om ze te stoppen; e-mails over uw diensten, betalingsverzoeken en herinneringen blijven komen.
 
+<!-- if:whois -->
+## WHOIS
+
+**WHOIS** in het menu zoekt een domeinnaam op: of hij geregistreerd is, bij welke registrar, wanneer hij geregistreerd werd en wanneer hij verloopt, zijn statussen en zijn nameservers. De contactgegevens van de houder worden niet getoond. Is de naam vrij, dan brengt **Registreren** u naar de domeinzoeker.
+<!-- endif -->
+
 <!-- if:knowledge_base -->
 ## Kennisbank
 
@@ -176,6 +182,11 @@ Onder Support → Kennisbank vindt u antwoorden op veelgestelde vragen, gegroepe
 Terwijl u het onderwerp van een nieuw ticket schrijft, verschijnen eronder artikelen die uw vraag misschien al beantwoorden.
 <!-- endif -->
 
+<!-- endif -->
+<!-- if:downloads -->
+## Downloads
+
+Onder Ondersteuning → **Downloads** vindt u bestanden die we met u delen, zoals handleidingen en software, per onderwerp. Sommige staan er alleen zolang u een bepaalde dienst hebt. Klik op **Downloaden** om er een op te slaan.
 <!-- endif -->
 <!-- if:tickets -->
 ## Supporttickets

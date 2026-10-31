@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- WHOIS lookup (Settings → Public area → WHOIS lookup, off by default): visitors and clients look up a domain name at
+  `/whois` and see whether it is registered, its registrar, dates, statuses and nameservers, never the owner's contact
+  details. It asks the registry's RDAP server, else its WHOIS server, with the domain search's captcha and a limit.
+- Downloads (Support → Downloads): files for clients in categories, with a title and description per language, for
+  everyone, clients who are logged in, or only the clients of chosen products. They show under Support → Downloads in
+  the client area, are never at a public address, and are counted.
 - Admin menu: Quotes moved to the main group, after Orders; Billing now reads Payment notices, Payments, Invoices,
   Coupons, Reports.
 - The admin panel and the client area open in light mode instead of following the device's setting. Dark and
