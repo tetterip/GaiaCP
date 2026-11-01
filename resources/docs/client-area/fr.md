@@ -11,7 +11,7 @@ Au lieu du mot de passe, vous pouvez appuyer sur **M'envoyer un lien de connexio
 <!-- endif -->
 
 <!-- if:passkeys -->
-Les **clés d'accès** vous connectent avec votre empreinte, votre visage ou le verrouillage de l'écran au lieu de votre mot de passe. Ajoutez-en une sur chaque téléphone ou ordinateur depuis votre profil avec **Ajouter une clé d'accès sur cet appareil**, puis appuyez sur **Se connecter avec une clé d'accès** sur la page de connexion. La page de connexion indique « Dernière utilisation » sur le moyen utilisé la dernière fois sur cet appareil.
+Les **clés d'accès** vous connectent avec votre empreinte, votre visage ou le verrouillage de l'écran au lieu de votre mot de passe. Ajoutez-en une sur chaque téléphone ou ordinateur depuis votre profil avec **Ajouter une clé d'accès sur cet appareil**, puis appuyez sur **Se connecter avec une clé d'accès** sur la page de connexion. La page de connexion indique « Dernière utilisation » sur le moyen utilisé la dernière fois sur cet appareil. Si vous vous êtes connecté il y a plus de 10 minutes, votre mot de passe est d'abord demandé, et nous vous envoyons un e-mail à chaque passkey ajoutée. Réinitialiser votre mot de passe supprime toutes vos passkeys.
 <!-- endif -->
 
 Votre profil (le menu à votre nom, en bas du menu ou en haut à droite) permet de modifier votre adresse email, votre numéro de téléphone, votre langue et votre mot de passe, et d'activer l'authentification à deux facteurs pour plus de sécurité.

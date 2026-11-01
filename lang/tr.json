@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Bir sayfayı müşterilerin veya ziyaretçilerin yan menüsünde göstermek için :menus altında ekleyin.",
     "Select all": "Tümünü seç",
     "Read only": "Yalnızca okuma",
-    "Clear all": "Tümünü temizle"
+    "Clear all": "Tümünü temizle",
+    "The text of this email is not kept: its link logs in whoever opens it.": "Bu e-postanın metni saklanmaz: bağlantısı onu açan herkesin oturumunu açar.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Bir geçiş anahtarı (:device) :date tarihinde :email hesabına eklendi. Parola olmadan oturum açar.",
+    "A passkey was added to your :name login": ":name oturum açma hesabınıza bir geçiş anahtarı eklendi",
+    "Confirm it's you": "Siz olduğunuzu doğrulayın",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Siz değilseniz şimdi parolanızı sıfırlayın: bu, hesabınızın tüm geçiş anahtarlarını da kaldırır. Ardından bizimle iletişime geçin.",
+    "Passkeys removed for :email.": ":email için geçiş anahtarları kaldırıldı.",
+    "Remove passkeys (:count)": "Geçiş anahtarlarını kaldır (:count)",
+    "Reset my password": "Parolamı sıfırla",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Teşekkürler. Cihazınız şimdi geçiş anahtarını sormazsa \":button\" düğmesine yeniden basın.",
+    "That password is not right.": "Bu parola doğru değil.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Bunlar çalışmayı durdurur: :list. :email parola (ve iki adımlı kod) ile oturum açar ve yenilerini ekleyebilir.",
+    "Too many tries. Please wait a few minutes.": "Çok fazla deneme. Lütfen birkaç dakika bekleyin.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Geçiş anahtarı eklemek için parolanızı yazın. Parolanız yok mu? Çıkış yapıp yeniden giriş yapın, sonra 10 dakika içinde ekleyin."
 }

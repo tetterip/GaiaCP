@@ -17,6 +17,7 @@ class EditUser extends EditRecord
     {
         return [
             UserActions::disableTwoFactor(),
+            UserActions::removePasskeys(),
             UserActions::delete(),
         ];
     }

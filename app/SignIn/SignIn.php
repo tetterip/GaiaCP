@@ -84,6 +84,7 @@ class SignIn
         Filament::getPanel($panel)->auth()->login($user);
         session()->regenerate();
         self::remember($panel, $method);
+        Passkeys::confirm($user);
 
         $where = $panel === 'admin' ? 'the admin panel' : 'the client area';
         $how = match ($method) {

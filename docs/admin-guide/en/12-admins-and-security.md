@@ -46,6 +46,10 @@ Settings → Security → **Login security** → Other ways to log in:
   presses **Log in with a passkey** and unlocks the device with a fingerprint, face or screen lock. No password and no
   two-factor code: the passkey already needs the device and its unlock. Remove a lost device's passkey from the same
   list. Passkeys belong to the site's address, so they stop working if GaiaCP moves to another domain.
+  Adding one asks for the password, unless the login signed in within the last 10 minutes, and emails the login, so a
+  browser left signed in can't quietly get a way back in. A password reset (Forgot password?) removes every passkey of
+  that login. **Remove passkeys** on an admin user (Settings → Security → Admin users) or on a client's Sign-ins tab removes them
+  for a lost device or a login someone else may have used.
 - **Sign-in link by email**: "Email me a sign-in link" on the login page sends a link that works once, for 15 minutes.
   It is on for the client area and off for admins until you tick it. Opening the link logs nobody in by itself: the
   login page then asks to press **Log in** (and for the two-factor code when it is on), so mail scanners that open

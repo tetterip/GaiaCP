@@ -53,6 +53,7 @@ class UsersTable
             ->defaultSort('name')
             ->recordActions([
                 UserActions::disableTwoFactor(),
+                UserActions::removePasskeys(),
                 EditAction::make(),
             ]);
     }

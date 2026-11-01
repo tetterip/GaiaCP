@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Um eine Seite im Seitenmenü der Kunden oder Besucher anzuzeigen, fügen Sie sie unter :menus hinzu.",
     "Select all": "Alle auswählen",
     "Read only": "Nur lesen",
-    "Clear all": "Alle abwählen"
+    "Clear all": "Alle abwählen",
+    "The text of this email is not kept: its link logs in whoever opens it.": "Der Text dieser E-Mail wird nicht gespeichert: Ihr Link meldet jeden an, der ihn öffnet.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Ein Passkey (:device) wurde am :date zu :email hinzugefügt. Er meldet ohne Passwort an.",
+    "A passkey was added to your :name login": "Ein Passkey wurde zu Ihrem :name-Login hinzugefügt",
+    "Confirm it's you": "Bestätigen Sie, dass Sie es sind",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Falls Sie das nicht waren, setzen Sie jetzt Ihr Passwort zurück: Dadurch werden auch alle Passkeys Ihres Logins entfernt. Kontaktieren Sie uns dann.",
+    "Passkeys removed for :email.": "Passkeys für :email entfernt.",
+    "Remove passkeys (:count)": "Passkeys entfernen (:count)",
+    "Reset my password": "Passwort zurücksetzen",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Danke. Falls Ihr Gerät jetzt nicht nach dem Passkey fragt, drücken Sie erneut „:button“.",
+    "That password is not right.": "Dieses Passwort ist nicht richtig.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Diese funktionieren nicht mehr: :list. :email meldet sich mit dem Passwort (und dem Zwei-Faktor-Code) an und kann neue hinzufügen.",
+    "Too many tries. Please wait a few minutes.": "Zu viele Versuche. Bitte warten Sie einige Minuten.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Geben Sie Ihr Passwort ein, um einen Passkey hinzuzufügen. Kein Passwort? Melden Sie sich ab und wieder an und fügen Sie ihn innerhalb von 10 Minuten hinzu."
 }

@@ -11,7 +11,7 @@ In plaats van het wachtwoord kunt u op **Stuur mij een inloglink** drukken: we e
 <!-- endif -->
 
 <!-- if:passkeys -->
-Met **passkeys** logt u in met uw vingerafdruk, gezicht of schermvergrendeling in plaats van uw wachtwoord. Voeg er op elke telefoon of computer een toe in uw profiel met **Passkey op dit apparaat toevoegen** en druk daarna op de inlogpagina op **Inloggen met een passkey**. De inlogpagina markeert de manier waarop u het laatst op dit apparaat inlogde met "Laatst gebruikt".
+Met **passkeys** logt u in met uw vingerafdruk, gezicht of schermvergrendeling in plaats van uw wachtwoord. Voeg er op elke telefoon of computer een toe in uw profiel met **Passkey op dit apparaat toevoegen** en druk daarna op de inlogpagina op **Inloggen met een passkey**. De inlogpagina markeert de manier waarop u het laatst op dit apparaat inlogde met "Laatst gebruikt". Bent u meer dan 10 minuten geleden ingelogd, dan wordt eerst uw wachtwoord gevraagd, en we mailen u telkens als er een passkey wordt toegevoegd. Uw wachtwoord resetten verwijdert al uw passkeys.
 <!-- endif -->
 
 In uw profiel (het menu met uw naam, onderaan het menu of rechtsboven) wijzigt u uw e-mailadres, telefoonnummer, taal en wachtwoord, en kunt u tweestapsverificatie aanzetten voor extra veiligheid.

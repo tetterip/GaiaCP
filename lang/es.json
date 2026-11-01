@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Para mostrar una página en el menú lateral de clientes o visitantes, añádala en :menus.",
     "Select all": "Seleccionar todo",
     "Read only": "Solo lectura",
-    "Clear all": "Quitar todo"
+    "Clear all": "Quitar todo",
+    "The text of this email is not kept: its link logs in whoever opens it.": "El texto de este correo no se guarda: su enlace inicia sesión a quien lo abra.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Se añadió una passkey (:device) a :email el :date. Inicia sesión sin contraseña.",
+    "A passkey was added to your :name login": "Se añadió una passkey a su cuenta de :name",
+    "Confirm it's you": "Confirme que es usted",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Si no fue usted, restablezca ahora su contraseña: eso también elimina todas las passkeys de su cuenta. Luego contáctenos.",
+    "Passkeys removed for :email.": "Passkeys eliminadas para :email.",
+    "Remove passkeys (:count)": "Eliminar passkeys (:count)",
+    "Reset my password": "Restablecer mi contraseña",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Gracias. Si su dispositivo no pide la passkey ahora, pulse de nuevo «:button».",
+    "That password is not right.": "Esa contraseña no es correcta.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Estas dejan de funcionar: :list. :email inicia sesión con la contraseña (y el código de dos factores) y puede añadir nuevas.",
+    "Too many tries. Please wait a few minutes.": "Demasiados intentos. Espere unos minutos.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Escriba su contraseña para añadir una passkey. ¿Sin contraseña? Cierre sesión y vuelva a entrar, y añádala en 10 minutos."
 }

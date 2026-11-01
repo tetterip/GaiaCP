@@ -6,11 +6,13 @@ use App\Enums\UserRole;
 use App\Filament\Client\Pages\Auth\Login as ClientLogin;
 use App\Filament\Pages\Auth\Login;
 use App\Models\Client;
+use App\Models\EmailLog;
 use App\Models\User;
 use App\Notifications\SignInLink;
 use App\SignIn\EmailLinks;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use PragmaRX\Google2FA\Google2FA;
@@ -191,5 +193,18 @@ class SignInLinkTest extends TestCase
         $this->get('/admin'.$link)->assertRedirect('/admin/login');
         Filament::setCurrentPanel('admin');
         Livewire::test(Login::class)->assertSet('pendingEmail', null);
+    }
+
+    public function test_the_email_log_keeps_a_sign_in_link_email_without_its_link(): void
+    {
+        $user = $this->clientUser();
+        $url = app(EmailLinks::class)->url($user, 'client');
+
+        // Really sent (notifications are faked here), so the email log listener runs
+        Mail::send((new SignInLink($url, true))->toMail($user));
+
+        $entry = EmailLog::query()->where('to', 'like', '%maria@example.gr%')->sole();
+        $this->assertNull($entry->body);
+        $this->assertSame(0, EmailLog::query()->where('body', 'like', '%sign-in-link%')->count());
     }
 }

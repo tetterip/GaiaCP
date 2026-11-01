@@ -6,10 +6,12 @@ use App\Filament\Concerns\BlocksBannedIps;
 use App\Filament\Concerns\HasCaptcha;
 use App\Filament\Concerns\QuickSignIn;
 use App\Plugins\PluginManager;
+use App\SignIn\Passkeys\Passkeys;
 use App\SignIn\SignIn;
 use App\Support\Demo;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
+use Filament\Facades\Filament;
 use Filament\Schemas\Schema;
 
 /**
@@ -53,6 +55,7 @@ class Login extends BaseLogin
 
         if ($response !== null) {
             SignIn::remember('admin', SignIn::PASSWORD);
+            Passkeys::confirm(Filament::auth()->user());
         }
 
         return $response;

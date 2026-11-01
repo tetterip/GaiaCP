@@ -22,10 +22,31 @@ class Passkeys
 
     private const CHALLENGE_SECONDS = 300;
 
+    /** Adding a passkey asks the login to prove itself first: its password, or a sign-in this recent. */
+    private const CONFIRMED = 'passkeys.confirmed';
+
+    public const CONFIRM_SECONDS = 600;
+
     /** Settings → Login security → Passkeys (not on the public demo, whose logins everyone shares). */
     public static function enabled(): bool
     {
         return (bool) config('gaiacp.sign_in.passkeys') && ! Demo::enabled();
+    }
+
+    /**
+     * $user just proved it is them (logged in, or typed the password): for CONFIRM_SECONDS, this session may add a
+     * passkey to that login without asking again. A session someone else took over can't add one of its own.
+     */
+    public static function confirm(User $user): void
+    {
+        session()->put(self::CONFIRMED, ['user' => $user->getKey(), 'at' => now()->getTimestamp()]);
+    }
+
+    public static function confirmed(User $user): bool
+    {
+        $confirmed = session(self::CONFIRMED);
+
+        return is_array($confirmed) && ($confirmed['user'] ?? null) === $user->getKey() && ($confirmed['at'] ?? 0) >= now()->getTimestamp() - self::CONFIRM_SECONDS;
     }
 
     /**

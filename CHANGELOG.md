@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security: the email log no longer keeps the text of sign-in link and password reset emails, since their link logs in
+  whoever opens it; the entry says so. symfony/mime updated for CVE-2026-45070 (email header injection).
+- Security, passkeys: adding one asks for the password unless the login signed in within the last 10 minutes, and
+  emails the login ("A passkey was added"). A password reset removes the login's passkeys, and admins can remove them
+  with **Remove passkeys** on an admin user or on a client's Sign-ins tab.
 - The public demo's made-up company is now Odysseus Hosting (was Aurora Hosting), in its settings, pages, emails and
   downloads.
 - Settings → System → Updates: the line under "GaiaCP X is available" now says which version the date belongs to

@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Mail\ClientMail;
 use App\Mail\ClientMessageMail;
+use App\Mail\PasswordResetMail;
 use App\Models\Client;
 use App\Models\EmailLog;
 use Illuminate\Mail\Events\MessageSent;
@@ -11,6 +12,7 @@ use Illuminate\Mail\Events\MessageSent;
 /**
  * Keeps a copy of every email sent in the email log (Settings → Email log), with the client and template
  * when it is a client email (marked as sent to the client when it went to their address, for their Email history).
+ * A sign-in link or password reset email is kept without its text: its link logs in whoever opens it.
  * Discovered automatically (app/Listeners); a failure here never fails the send.
  */
 class LogSentEmail
@@ -26,6 +28,7 @@ class LogSentEmail
             $client instanceof Client ? $client : null,
             $isClientMail ? ($event->data['mailTemplate'] ?? null) : null,
             $isClientMail || is_a($mailable, ClientMessageMail::class, true),
+            keepBody: $mailable !== PasswordResetMail::class, // not SecurityNoticeMail, which has no such link
         ), report: false);
     }
 }

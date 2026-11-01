@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Aby pokazać stronę w bocznym menu klientów lub odwiedzających, dodaj ją w :menus.",
     "Select all": "Zaznacz wszystko",
     "Read only": "Tylko odczyt",
-    "Clear all": "Odznacz wszystko"
+    "Clear all": "Odznacz wszystko",
+    "The text of this email is not kept: its link logs in whoever opens it.": "Treść tego e-maila nie jest przechowywana: jego link loguje każdego, kto go otworzy.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Klucz dostępu (:device) został dodany do :email dnia :date. Loguje bez hasła.",
+    "A passkey was added to your :name login": "Do Twojego logowania :name dodano klucz dostępu",
+    "Confirm it's you": "Potwierdź, że to Ty",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Jeśli to nie Ty, zresetuj teraz hasło: usunie to też wszystkie klucze dostępu Twojego logowania. Potem skontaktuj się z nami.",
+    "Passkeys removed for :email.": "Usunięto klucze dostępu dla :email.",
+    "Remove passkeys (:count)": "Usuń klucze dostępu (:count)",
+    "Reset my password": "Zresetuj hasło",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Dziękujemy. Jeśli urządzenie nie poprosi teraz o klucz dostępu, naciśnij ponownie „:button”.",
+    "That password is not right.": "To hasło jest nieprawidłowe.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Te przestaną działać: :list. :email loguje się hasłem (i kodem dwuskładnikowym) i może dodać nowe.",
+    "Too many tries. Please wait a few minutes.": "Zbyt wiele prób. Odczekaj kilka minut.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Wpisz hasło, aby dodać klucz dostępu. Nie masz hasła? Wyloguj się i zaloguj ponownie, a potem dodaj go w ciągu 10 minut."
 }
