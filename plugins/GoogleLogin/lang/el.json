@@ -18,5 +18,11 @@
     "No client account uses :email. Log in with the address you gave us, or contact us.": "Κανένας λογαριασμός πελάτη δεν χρησιμοποιεί τη διεύθυνση :email. Συνδεθείτε με τη διεύθυνση που μας έχετε δώσει ή επικοινωνήστε μαζί μας.",
     "Redirect uri": "URI ανακατεύθυνσης",
     "The Google sign-in expired. Please try again.": "Η σύνδεση με Google έληξε. Παρακαλούμε δοκιμάστε ξανά.",
-    "Two-factor authentication is on for :email: log in with your password and code instead.": "Ο έλεγχος ταυτότητας δύο παραγόντων είναι ενεργός για τη διεύθυνση :email: συνδεθείτε με τον κωδικό σας και τον κωδικό της εφαρμογής."
+    "Add this one too when admins log in with Google.": "Προσθέστε και αυτή όταν οι διαχειριστές συνδέονται με Google.",
+    "Admin redirect uri": "URI ανακατεύθυνσης διαχειριστών",
+    "Admins": "Διαχειριστές",
+    "Admins can log in to /admin with Google too": "Οι διαχειριστές μπορούν να συνδέονται και στο /admin με Google",
+    "Authorized redirect URI for admins": "Εξουσιοδοτημένο URI ανακατεύθυνσης για διαχειριστές",
+    "No admin who can log in uses :email.": "Κανένας διαχειριστής που μπορεί να συνδεθεί δεν χρησιμοποιεί τη διεύθυνση :email.",
+    "Only an admin who can log in and has the same email address as the Google account; nobody new gets in. Two-factor authentication is still asked when the admin has it on.": "Μόνο ένας διαχειριστής που μπορεί να συνδεθεί και έχει την ίδια διεύθυνση email με τον λογαριασμό Google· κανείς νέος δεν μπαίνει. Ο έλεγχος δύο παραγόντων ζητείται κανονικά όταν ο διαχειριστής τον έχει ενεργό."
 }

@@ -6,7 +6,10 @@ use App\Plugins\Plugin;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\HtmlString;
 
-/** "Continue with Google" on the client area's login and sign up pages (GoogleSignIn), set up under Settings → Google sign-in. */
+/**
+ * "Continue with Google" on the client area's login and sign up pages and, when its settings let admins, /admin's
+ * login (GoogleSignIn), set up under Settings → Google sign-in.
+ */
 class GoogleLoginPlugin extends Plugin
 {
     /** Google's "G" mark, as Google's sign-in branding asks. */
@@ -44,7 +47,7 @@ class GoogleLoginPlugin extends Plugin
 
     public function settingKeys(): array
     {
-        return ['google_login.client_id', 'google_login.client_secret'];
+        return ['google_login.client_id', 'google_login.client_secret', 'google_login.admins'];
     }
 
     public function encryptedSettingKeys(): array
@@ -63,12 +66,28 @@ class GoogleLoginPlugin extends Plugin
         Route::get('auth/google/callback', [GoogleLoginController::class, 'callback'])->name('google-login.callback');
     }
 
+    public function adminRoutes(): void
+    {
+        $this->clientRoutes(); // the same addresses under /admin
+    }
+
     public function clientLoginButtons(): array
     {
-        return GoogleOAuth::configured() ? [new HtmlString(view('filament.client.sign-in-button', [
-            'url' => route('filament.client.google-login.redirect'),
+        return GoogleOAuth::configured() ? [$this->button('client')] : [];
+    }
+
+    public function adminLoginButtons(): array
+    {
+        return GoogleOAuth::configured() && GoogleOAuth::forAdmins() ? [$this->button('admin')] : [];
+    }
+
+    private function button(string $panel): HtmlString
+    {
+        return new HtmlString(view('filament.client.sign-in-button', [
+            'url' => route("filament.{$panel}.google-login.redirect"),
             'label' => __('Continue with Google'),
             'icon' => self::LOGO,
-        ])->render())] : [];
+            'method' => 'google',
+        ])->render());
     }
 }

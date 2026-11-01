@@ -46,6 +46,7 @@ use App\Http\Controllers\Client\PanelLoginController;
 use App\Http\Controllers\Client\StopViewingController;
 use App\Http\Controllers\Client\TicketAttachmentController;
 use App\Http\Controllers\Client\VisitorTicketFileController;
+use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\ApplyTheme;
 use App\Http\Middleware\BlockBannedIps;
 use App\Http\Middleware\ClientAreaMaintenance;
@@ -217,6 +218,8 @@ class ClientPanelProvider extends PanelProvider
                 Route::get('downloads/{download}/file', DownloadController::class)
                     ->whereNumber('download')
                     ->name('download-file');
+                // A sign-in link from the email (App\SignIn\EmailLinks)
+                Route::get('sign-in-link', SignInLinkController::class)->name('sign-in-link');
                 app(PluginManager::class)->clientRoutes();
                 // A product group's public page (/<slug>), matched last so it never hides another page
                 Route::get('{group}', ProductGroupPage::class)
@@ -259,8 +262,8 @@ class ClientPanelProvider extends PanelProvider
             // Back to the public area's home page from the login and sign up, while it is on
             ->renderHook(PanelsRenderHook::SIMPLE_PAGE_START, fn (): string => PublicArea::home() && ! filament()->auth()->check() ? view('filament.client.public-back')->render() : '')
             ->renderHook(PanelsRenderHook::AUTH_REGISTER_FORM_BEFORE, fn (): string => view('filament.client.cart-notice', ['signup' => true])->render())
-            // Sign-in plugins' buttons (e.g. Continue with Google); not while finishing a sign up that came from one
-            ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn (): string => self::signInButtons())
+            // Sign-in plugins' buttons on the sign up (e.g. Continue with Google; the login has its own, QuickSignIn); not
+            // while finishing a sign up that came from one
             ->renderHook(PanelsRenderHook::AUTH_REGISTER_FORM_AFTER, fn (): string => ClientSignup::pending() === null ? self::signInButtons() : '')
             // The welcome tour: by itself on the first visit, then from the user menu → Tour (App\Support\WelcomeTour)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WelcomeTour::enabled() ? view('filament.welcome-tour', ['opensNow' => WelcomeTour::opensNow()])->render() : '')

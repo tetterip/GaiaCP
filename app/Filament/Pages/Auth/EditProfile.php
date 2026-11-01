@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Auth;
 
 use App\Filament\Concerns\KeepsDemoLogin;
+use App\Filament\Concerns\ManagesPasskeys;
 use App\Models\PushSubscription;
 use App\Push\WebPush;
 use App\Support\Locales;
@@ -18,11 +19,12 @@ use Filament\Support\Enums\Alignment;
 
 /**
  * Filament's profile page plus the admin's own panel language and theme (each shown once there is more than one), their
- * bell, and push notifications on their devices (App\Push\WebPush).
+ * bell, push notifications on their devices (App\Push\WebPush) and passkeys (ManagesPasskeys).
  */
 class EditProfile extends BaseEditProfile
 {
     use KeepsDemoLogin;
+    use ManagesPasskeys;
 
     /** On the right like every other form's (BasePage::alignFormActionsEnd()); Filament pins the profile's to the left. */
     public function getFormActionsAlignment(): string|Alignment
@@ -43,6 +45,7 @@ class EditProfile extends BaseEditProfile
                 $this->getPasswordConfirmationFormComponent(),
                 $this->getCurrentPasswordFormComponent(),
                 $this->getPushFormComponent(),
+                $this->getPasskeysFormComponent(),
             ]);
     }
 

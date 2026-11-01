@@ -6,6 +6,14 @@ Entre com seu endereço de e-mail e sua senha. Se esquecer a senha, clique em "E
 Se o seu endereço de e-mail for uma conta do Google, você também pode clicar em **Continuar com o Google** na página de login em vez de digitar a senha.
 <!-- endif -->
 
+<!-- if:email_link -->
+Em vez da senha, você pode tocar em **Enviar-me um link de acesso**: enviamos por e-mail um link que funciona uma vez, por 15 minutos. Abra-o e toque em **Entrar** na página que abrir.
+<!-- endif -->
+
+<!-- if:passkeys -->
+As **chaves de acesso** fazem você entrar com sua digital, rosto ou bloqueio de tela em vez da senha. Adicione uma em cada celular ou computador no seu perfil com **Adicionar uma chave de acesso neste dispositivo** e depois toque em **Entrar com uma chave de acesso** na página de login. A página de login marca com "Último uso" a forma como você entrou pela última vez neste dispositivo.
+<!-- endif -->
+
 Seu perfil (o menu com o seu nome, no fim do menu ou no canto superior direito) altera seu endereço de e-mail, telefone, idioma e senha, e pode ativar a autenticação em dois fatores para mais segurança.
 
 <!-- if:notifications -->

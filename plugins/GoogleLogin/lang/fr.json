@@ -18,5 +18,11 @@
     "No client account uses :email. Log in with the address you gave us, or contact us.": "Aucun compte client n'utilise :email. Connectez-vous avec l'adresse que vous nous avez donnée, ou contactez-nous.",
     "Redirect uri": "URI de redirection",
     "The Google sign-in expired. Please try again.": "La connexion avec Google a expiré. Veuillez réessayer.",
-    "Two-factor authentication is on for :email: log in with your password and code instead.": "L'authentification à deux facteurs est activée pour :email : connectez-vous plutôt avec votre mot de passe et votre code."
+    "Add this one too when admins log in with Google.": "Ajoutez aussi celle-ci si les administrateurs se connectent avec Google.",
+    "Admin redirect uri": "URI de redirection administrateur",
+    "Admins": "Administrateurs",
+    "Admins can log in to /admin with Google too": "Les administrateurs peuvent aussi se connecter à /admin avec Google",
+    "Authorized redirect URI for admins": "URI de redirection autorisé pour les administrateurs",
+    "No admin who can log in uses :email.": "Aucun administrateur pouvant se connecter n'utilise :email.",
+    "Only an admin who can log in and has the same email address as the Google account; nobody new gets in. Two-factor authentication is still asked when the admin has it on.": "Seul un administrateur pouvant se connecter et ayant la même adresse e-mail que le compte Google ; personne de nouveau n'entre. La double authentification reste demandée si l'administrateur l'a activée."
 }

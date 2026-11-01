@@ -6,6 +6,14 @@ Melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an. Wenn Sie das Pas
 Wenn Ihre E-Mail-Adresse ein Google-Konto ist, können Sie auf der Anmeldeseite auch auf **Weiter mit Google** klicken, statt Ihr Passwort einzugeben.
 <!-- endif -->
 
+<!-- if:email_link -->
+Statt des Passworts können Sie auf **Anmeldelink per E-Mail senden** klicken: Wir senden Ihnen einen Link, der einmal und 15 Minuten lang funktioniert. Öffnen Sie ihn und klicken Sie auf der Seite, die sich öffnet, auf **Anmelden**.
+<!-- endif -->
+
+<!-- if:passkeys -->
+**Passkeys** melden Sie mit Fingerabdruck, Gesicht oder Bildschirmsperre statt mit Ihrem Passwort an. Fügen Sie auf jedem Telefon oder Computer in Ihrem Profil mit **Passkey auf diesem Gerät hinzufügen** einen hinzu und klicken Sie dann auf der Anmeldeseite auf **Mit einem Passkey anmelden**. Die Anmeldeseite markiert den Weg, auf dem Sie sich zuletzt auf diesem Gerät angemeldet haben, mit „Zuletzt verwendet".
+<!-- endif -->
+
 In Ihrem Profil (das Menü mit Ihrem Namen, unten im Menü oder oben rechts) ändern Sie Ihre E-Mail-Adresse, Telefonnummer, Sprache und Ihr Passwort und können für zusätzliche Sicherheit die Zwei-Faktor-Authentifizierung einschalten.
 
 <!-- if:notifications -->

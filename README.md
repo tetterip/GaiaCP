@@ -73,7 +73,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 
 **For you**
 - A dashboard you arrange yourself, a notifications bell, push notifications on your phone, a setup guide
-- Admin users with access levels, two-factor sign-in, login protection, backups, system health, logs
+- Admin users with access levels, two-factor sign-in, passkeys, sign-in links by email, login protection, backups, system health, logs
 - An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama) that improves and translates the texts you write, drafts and
   summarises ticket replies and answers questions about your data
 - Webhooks, Slack, Discord and Telegram, a REST API, and an import from WHMCS

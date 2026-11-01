@@ -4,16 +4,23 @@ namespace App\Filament\Pages\Auth;
 
 use App\Filament\Concerns\BlocksBannedIps;
 use App\Filament\Concerns\HasCaptcha;
+use App\Filament\Concerns\QuickSignIn;
+use App\Plugins\PluginManager;
+use App\SignIn\SignIn;
 use App\Support\Demo;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Schemas\Schema;
 
-/** The admin login, with the captcha Settings → General picks when "Admin login" is ticked there. */
+/**
+ * The admin login, with the captcha Settings → General picks when "Admin login" is ticked there, and the other ways in
+ * (QuickSignIn): passkeys, a link by email and the sign-in plugins (Google).
+ */
 class Login extends BaseLogin
 {
     use BlocksBannedIps;
     use HasCaptcha;
+    use QuickSignIn;
 
     public function form(Schema $schema): Schema
     {
@@ -28,6 +35,7 @@ class Login extends BaseLogin
     public function mount(): void
     {
         parent::mount();
+        $this->startPendingSignIn();
 
         // The public demo: its login filled in (App\Support\Demo)
         if (Demo::enabled()) {
@@ -37,6 +45,21 @@ class Login extends BaseLogin
 
     public function authenticate(): ?LoginResponse
     {
-        return $this->withCaptcha(fn () => $this->countingFailedLogins('admin', fn () => parent::authenticate()));
+        if (($pending = SignIn::pending('admin')) !== null) {
+            return $this->countingFailedLogins('admin', fn () => $this->finishPendingSignIn($pending));
+        }
+
+        $response = $this->withCaptcha(fn () => $this->countingFailedLogins('admin', fn () => parent::authenticate()));
+
+        if ($response !== null) {
+            SignIn::remember('admin', SignIn::PASSWORD);
+        }
+
+        return $response;
+    }
+
+    protected function signInButtons(): array
+    {
+        return app(PluginManager::class)->adminLoginButtons();
     }
 }

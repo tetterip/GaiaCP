@@ -7,6 +7,7 @@ use App\Filament\Clusters\Settings\PluginSwitch;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use BackedEnum;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
@@ -15,7 +16,7 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
 
-/** The Google OAuth client behind "Continue with Google" in the client area. */
+/** The Google OAuth client behind "Continue with Google" in the client area and, if ticked, on /admin's login. */
 class GoogleLoginSettings extends SettingsFormPage
 {
     use PluginSwitch;
@@ -74,6 +75,15 @@ class GoogleLoginSettings extends SettingsFormPage
                             ->readOnly()
                             ->copyable()
                             ->dehydrated(false),
+                        TextInput::make('admin_redirect_uri')
+                            ->label('Authorized redirect URI for admins')
+                            ->default(fn () => GoogleOAuth::redirectUri('admin'))
+                            ->formatStateUsing(fn () => GoogleOAuth::redirectUri('admin'))
+                            ->helperText(__('Add this one too when admins log in with Google.'))
+                            ->readOnly()
+                            ->copyable()
+                            ->dehydrated(false)
+                            ->visible(fn (Get $get) => (bool) $get('google_login.admins')),
                         TextInput::make('google_login.client_id')
                             ->label('Client ID')
                             ->placeholder('1234567890-abc123.apps.googleusercontent.com')
@@ -89,6 +99,27 @@ class GoogleLoginSettings extends SettingsFormPage
                             ->required(fn (Get $get) => filled($get('google_login.client_id')) && blank(config('gaiacp.google_login.client_secret')))
                             ->maxLength(255),
                     ]),
+                Section::make(__('Admins'))
+                    ->schema([
+                        Toggle::make('google_login.admins')
+                            ->label('Admins can log in to /admin with Google too')
+                            ->helperText(__('Only an admin who can log in and has the same email address as the Google account; nobody new gets in. Two-factor authentication is still asked when the admin has it on.'))
+                            ->live(),
+                    ]),
             ]);
+    }
+
+    protected function forForm(array $values): array
+    {
+        $values['google_login.admins'] = (bool) ($values['google_login.admins'] ?? false);
+
+        return $values;
+    }
+
+    protected function forStorage(array $values): array
+    {
+        $values['google_login.admins'] = (bool) ($values['google_login.admins'] ?? false);
+
+        return $values;
     }
 }

@@ -26,17 +26,23 @@ class GoogleOAuth
         return filled(config('gaiacp.google_login.client_id')) && filled(config('gaiacp.google_login.client_secret'));
     }
 
-    /** The "Authorized redirect URI" to register on the OAuth client in Google Cloud Console. */
-    public static function redirectUri(): string
+    /** Whether admins may log in to /admin with Google too (the plugin's settings). */
+    public static function forAdmins(): bool
     {
-        return route('filament.client.google-login.callback');
+        return (bool) config('gaiacp.google_login.admins');
     }
 
-    public function authorizationUrl(string $state): string
+    /** An "Authorized redirect URI" to register on the OAuth client in Google Cloud Console: $panel's (client, admin). */
+    public static function redirectUri(string $panel = 'client'): string
+    {
+        return route("filament.{$panel}.google-login.callback");
+    }
+
+    public function authorizationUrl(string $state, string $panel = 'client'): string
     {
         return self::AUTHORIZE_URL.'?'.http_build_query([
             'client_id' => config('gaiacp.google_login.client_id'),
-            'redirect_uri' => self::redirectUri(),
+            'redirect_uri' => self::redirectUri($panel),
             'response_type' => 'code',
             'scope' => 'openid email profile',
             'state' => $state,
@@ -49,7 +55,7 @@ class GoogleOAuth
      *
      * @throws GoogleLoginException when Google refuses the code or can't be reached
      */
-    public function profile(string $code): array
+    public function profile(string $code, string $panel = 'client'): array
     {
         $secret = (string) config('gaiacp.google_login.client_secret');
 
@@ -58,7 +64,7 @@ class GoogleOAuth
                 'code' => $code,
                 'client_id' => config('gaiacp.google_login.client_id'),
                 'client_secret' => $secret,
-                'redirect_uri' => self::redirectUri(),
+                'redirect_uri' => self::redirectUri($panel),
                 'grant_type' => 'authorization_code',
             ]);
 

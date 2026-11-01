@@ -18,7 +18,10 @@ use Filament\Support\Icons\Heroicon;
 use Symfony\Component\HttpFoundation\IpUtils;
 use UnitEnum;
 
-/** How many failed logins ban an IP address and for how long, and the addresses never banned (LoginSecurity). */
+/**
+ * How many failed logins ban an IP address and for how long, the addresses never banned (LoginSecurity), and the
+ * ways to log in besides the password (App\SignIn\SignIn).
+ */
 class LoginSecuritySettings extends SettingsFormPage
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
@@ -33,12 +36,15 @@ class LoginSecuritySettings extends SettingsFormPage
 
     public static function settingsDescription(): string
     {
-        return __('Ban an IP address after failed logins, for how long, and the addresses that are never banned.');
+        return __('Ban an IP address after failed logins, for how long, the addresses that are never banned, and passkeys and sign-in links.');
     }
 
     public static function keys(): array
     {
-        return ['login_security.enabled', 'login_security.max_attempts', 'login_security.ban_minutes', 'login_security.allowed_ips'];
+        return [
+            'login_security.enabled', 'login_security.max_attempts', 'login_security.ban_minutes', 'login_security.allowed_ips',
+            'sign_in.passkeys', 'sign_in.email_link', 'sign_in.admin_email_link',
+        ];
     }
 
     public function form(Schema $schema): Schema
@@ -72,6 +78,19 @@ class LoginSecuritySettings extends SettingsFormPage
                             ->visible(fn (Get $get) => (bool) $get('login_security.enabled')),
                     ])
                     ->footerActions([Action::make('openBans')->label('Open banned IPs')->link()->url(fn () => IpBanResource::getUrl())]),
+                Section::make(__('Other ways to log in'))
+                    ->description(__('Besides the password, on the admin and client area logins. Google is a plugin: Settings → Google sign-in.'))
+                    ->schema([
+                        Toggle::make('sign_in.passkeys')
+                            ->label('Passkeys')
+                            ->helperText(__('Log in with a fingerprint, face or the screen lock instead of a password. Each admin and client adds their own from their profile; two-factor authentication is not asked after a passkey, which already needs the device and its unlock.')),
+                        Toggle::make('sign_in.email_link')
+                            ->label('Sign-in link by email in the client area')
+                            ->helperText(__('"Email me a sign-in link" on the client area\'s login: a link that works once, for 15 minutes. Two-factor authentication is still asked when it is on.')),
+                        Toggle::make('sign_in.admin_email_link')
+                            ->label('Sign-in link by email for admins')
+                            ->helperText(__('The same on /admin\'s login. Anyone who can read an admin\'s mailbox could then log in, so keep two-factor authentication on.')),
+                    ]),
                 Section::make(__('Never banned'))
                     ->schema([
                         Textarea::make('login_security.allowed_ips')
@@ -110,12 +129,21 @@ class LoginSecuritySettings extends SettingsFormPage
         $values['login_security.enabled'] = (bool) $values['login_security.enabled'];
         $values['login_security.allowed_ips'] = implode("\n", LoginSecurity::allowList());
 
+        foreach (['sign_in.passkeys', 'sign_in.email_link', 'sign_in.admin_email_link'] as $key) {
+            $values[$key] = (bool) $values[$key];
+        }
+
         return $values;
     }
 
     protected function forStorage(array $values): array
     {
         $values['login_security.enabled'] = (bool) $values['login_security.enabled'];
+
+        foreach (['sign_in.passkeys', 'sign_in.email_link', 'sign_in.admin_email_link'] as $key) {
+            $values[$key] = (bool) ($values[$key] ?? false);
+        }
+
         $values['login_security.max_attempts'] = (int) ($values['login_security.max_attempts'] ?? config('gaiacp.login_security.max_attempts'));
         $values['login_security.ban_minutes'] = (int) ($values['login_security.ban_minutes'] ?? config('gaiacp.login_security.ban_minutes'));
         $values['login_security.allowed_ips'] = implode("\n", preg_split('/[\s,]+/', (string) $values['login_security.allowed_ips'], flags: PREG_SPLIT_NO_EMPTY));

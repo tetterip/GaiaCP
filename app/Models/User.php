@@ -91,6 +91,12 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return $this->hasMany(PushSubscription::class);
     }
 
+    /** Passkeys added from the profile (App\SignIn\Passkeys). */
+    public function passkeys(): HasMany
+    {
+        return $this->hasMany(Passkey::class);
+    }
+
     protected static function booted(): void
     {
         static::creating(function (self $user): void {

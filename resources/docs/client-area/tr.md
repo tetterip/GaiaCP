@@ -6,6 +6,14 @@ E-posta adresiniz ve parolanızla giriş yapın. Parolanızı unutursanız giri�
 E-posta adresiniz bir Google hesabıysa, parolanızı yazmak yerine giriş sayfasında **Google ile devam et**'e de basabilirsiniz.
 <!-- endif -->
 
+<!-- if:email_link -->
+Parola yerine **Bana giriş bağlantısı gönder**'e basabilirsiniz: size bir kez ve 15 dakika boyunca çalışan bir bağlantı e-postayla göndeririz. Bağlantıyı açın ve açılan sayfada **Giriş yap**'a basın.
+<!-- endif -->
+
+<!-- if:passkeys -->
+**Geçiş anahtarları**, parolanız yerine parmak iziniz, yüzünüz veya ekran kilidinizle giriş yapmanızı sağlar. Her telefona veya bilgisayara profilinizden **Bu cihaza geçiş anahtarı ekle** ile bir tane ekleyin, ardından giriş sayfasında **Geçiş anahtarıyla giriş yap**'a basın. Giriş sayfası, bu cihazda en son hangi yolla giriş yaptığınızı "Son kullanım" ile işaretler.
+<!-- endif -->
+
 Profiliniz (menünün altında veya sağ üstte adınızın bulunduğu menü) e-posta adresinizi, telefon numaranızı, dilinizi ve parolanızı değiştirir ve ek güvenlik için iki adımlı doğrulamayı açabilir.
 
 <!-- if:notifications -->

@@ -38,6 +38,24 @@ for an admin who lost both the app and the codes (Admin users), or from SSH:
 
 **Forgot password?** on the login page emails active admins a reset link; two-factor is still asked afterwards.
 
+## Other ways to log in
+
+Settings → Security → **Login security** → Other ways to log in:
+
+- **Passkeys** (on by default): each admin adds one from their Profile → Passkeys on each phone or computer, then
+  presses **Log in with a passkey** and unlocks the device with a fingerprint, face or screen lock. No password and no
+  two-factor code: the passkey already needs the device and its unlock. Remove a lost device's passkey from the same
+  list. Passkeys belong to the site's address, so they stop working if GaiaCP moves to another domain.
+- **Sign-in link by email**: "Email me a sign-in link" on the login page sends a link that works once, for 15 minutes.
+  It is on for the client area and off for admins until you tick it. Opening the link logs nobody in by itself: the
+  login page then asks to press **Log in** (and for the two-factor code when it is on), so mail scanners that open
+  links can't use it.
+- **Google**: tick "Admins can log in to /admin with Google too" in Settings → Google sign-in, and add the second
+  redirect URI it shows in Google Cloud Console. Only an active admin whose email address is the Google account's gets
+  in, never someone new; two-factor is asked afterwards when it is on.
+
+The login page marks the way this browser logged in last with **Last used**.
+
 ## Login security
 
 Settings → Security → **Login security**: after 3 wrong passwords or two-factor codes from one IP address in 15 minutes

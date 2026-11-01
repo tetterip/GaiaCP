@@ -15,8 +15,10 @@ Clients don't have a login until you give them one or they sign up:
 - **Sign up** (Settings → Client area, off by default) lets anyone create an account; their email address is confirmed
   first.
 - **Google sign-in** (a plugin) adds "Continue with Google" with your own Google OAuth client.
+- **Passkeys** and **Email me a sign-in link** let clients log in without their password (Settings → Security → Login
+  security; see [Admins and security](12-admins-and-security.md)).
 
-Clients manage their own password, two-factor authentication and signed-in devices from their profile. Your captcha and
+Clients manage their own password, two-factor authentication, passkeys and signed-in devices from their profile. Your captcha and
 login security settings protect their login too; see [Admins and security](12-admins-and-security.md).
 
 ## What clients can do themselves

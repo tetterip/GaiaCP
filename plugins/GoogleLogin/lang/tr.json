@@ -18,5 +18,11 @@
     "No client account uses :email. Log in with the address you gave us, or contact us.": "Hiçbir müşteri hesabı :email kullanmıyor. Bize verdiğiniz adresle giriş yapın veya bize ulaşın.",
     "Redirect uri": "Yönlendirme URI'si",
     "The Google sign-in expired. Please try again.": "Google ile girişin süresi doldu. Lütfen yeniden deneyin.",
-    "Two-factor authentication is on for :email: log in with your password and code instead.": ":email için iki adımlı doğrulama açık: bunun yerine parolanız ve kodunuzla giriş yapın."
+    "Add this one too when admins log in with Google.": "Yöneticiler Google ile giriş yapacaksa bunu da ekleyin.",
+    "Admin redirect uri": "Yönetici yönlendirme URI'si",
+    "Admins": "Yöneticiler",
+    "Admins can log in to /admin with Google too": "Yöneticiler /admin'e de Google ile giriş yapabilir",
+    "Authorized redirect URI for admins": "Yöneticiler için yetkili yönlendirme URI'si",
+    "No admin who can log in uses :email.": "Giriş yapabilen hiçbir yönetici :email adresini kullanmıyor.",
+    "Only an admin who can log in and has the same email address as the Google account; nobody new gets in. Two-factor authentication is still asked when the admin has it on.": "Yalnızca giriş yapabilen ve Google hesabıyla aynı e-posta adresine sahip bir yönetici; yeni kimse giremez. Yönetici iki adımlı doğrulamayı açtıysa yine istenir."
 }

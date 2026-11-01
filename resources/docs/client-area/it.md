@@ -6,6 +6,14 @@ Acceda con il Suo indirizzo email e la Sua password. Se dimentica la password, p
 Se il Suo indirizzo email è un account Google, può anche premere **Continua con Google** nella pagina di accesso invece di digitare la password.
 <!-- endif -->
 
+<!-- if:email_link -->
+Al posto della password puoi premere **Inviami un link di accesso**: ti inviamo via email un link valido una volta, per 15 minuti. Aprilo e premi **Accedi** nella pagina che si apre.
+<!-- endif -->
+
+<!-- if:passkeys -->
+Le **passkey** ti fanno accedere con impronta, volto o blocco schermo invece della password. Aggiungine una su ogni telefono o computer dal tuo profilo con **Aggiungi una passkey su questo dispositivo**, poi premi **Accedi con una passkey** nella pagina di accesso. La pagina di accesso segna con «Ultimo utilizzo» il modo in cui hai effettuato l'ultimo accesso da questo dispositivo.
+<!-- endif -->
+
 Il Suo profilo (il menu con il Suo nome, in fondo al menu o in alto a destra) permette di cambiare indirizzo email, numero di telefono, lingua e password, e di attivare l'autenticazione a due fattori per una maggiore sicurezza.
 
 <!-- if:notifications -->

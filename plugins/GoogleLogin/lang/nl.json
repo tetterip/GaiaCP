@@ -18,5 +18,11 @@
     "No client account uses :email. Log in with the address you gave us, or contact us.": "Geen klantaccount gebruikt :email. Log in met het adres dat u ons gaf, of neem contact met ons op.",
     "Redirect uri": "Omleidings-URI",
     "The Google sign-in expired. Please try again.": "De aanmelding met Google is verlopen. Probeer het opnieuw.",
-    "Two-factor authentication is on for :email: log in with your password and code instead.": "Tweestapsverificatie staat aan voor :email: log in plaats daarvan in met uw wachtwoord en code."
+    "Add this one too when admins log in with Google.": "Voeg ook deze toe als beheerders met Google inloggen.",
+    "Admin redirect uri": "Beheer-redirect-URI",
+    "Admins": "Beheerders",
+    "Admins can log in to /admin with Google too": "Beheerders kunnen ook met Google inloggen op /admin",
+    "Authorized redirect URI for admins": "Geautoriseerde redirect-URI voor beheerders",
+    "No admin who can log in uses :email.": "Geen beheerder die kan inloggen gebruikt :email.",
+    "Only an admin who can log in and has the same email address as the Google account; nobody new gets in. Two-factor authentication is still asked when the admin has it on.": "Alleen een beheerder die kan inloggen en hetzelfde e-mailadres heeft als het Google-account; er komt niemand nieuw binnen. Tweestapsverificatie wordt nog steeds gevraagd als de beheerder die aan heeft staan."
 }

@@ -6,6 +6,14 @@ Log in with your email address and your password. If you forget the password, pr
 If your email address is a Google account, you can also press **Continue with Google** on the login page instead of typing your password.
 <!-- endif -->
 
+<!-- if:email_link -->
+Instead of the password, you can press **Email me a sign-in link**: we email you a link that works once, for 15 minutes. Open it, then press **Log in** on the page that opens.
+<!-- endif -->
+
+<!-- if:passkeys -->
+**Passkeys** log you in with your fingerprint, face or screen lock instead of your password. Add one on each phone or computer in your profile with **Add a passkey on this device**, then press **Log in with a passkey** on the login page. The login page marks the way you logged in last on this device with "Last used".
+<!-- endif -->
+
 Your profile (the menu with your name, at the bottom of the menu or at the top right) changes your email address, phone number, language and password, and can turn on two-factor authentication for extra safety.
 
 <!-- if:notifications -->
