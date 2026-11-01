@@ -42,7 +42,14 @@ class Seo
         return self::open() && ! filament()->auth()->check();
     }
 
-    /** The open page's own description (a product group's page), else the site's. */
+    /** The open page's own picture for link previews (a page of your own's featured image), else null for the logo. */
+    public static function image(): ?string
+    {
+        $page = self::$page;
+
+        return $page && method_exists($page, 'metaImage') ? $page->metaImage() : null;
+    }
+
     /** Whether the open page asks to stay out of search results (a product page without a text of its own). */
     public static function kept(): bool
     {
@@ -51,6 +58,7 @@ class Seo
         return $page && method_exists($page, 'noindex') && $page->noindex();
     }
 
+    /** The open page's own description (a product group's page), else the site's. */
     public static function description(): ?string
     {
         $page = self::$page;

@@ -4,7 +4,8 @@
 @else
     @php
         $description = \App\Support\Seo::description();
-        $logo = \App\Support\Branding::url('logo');
+        $image = \App\Support\Seo::image();
+        $logo = $image ?? \App\Support\Branding::url('logo');
         $name = config('gaiacp.company.name') ?: 'GaiaCP';
         $indexable = \App\Support\Seo::indexable() && ! \App\Support\Seo::kept();
     @endphp
@@ -27,6 +28,9 @@
     <meta property="og:locale" content="{{ app()->getLocale() }}">
     @if ($logo)
         <meta property="og:image" content="{{ $logo }}">
+    @endif
+    @if ($image)
+        <meta name="twitter:card" content="summary_large_image">
     @endif
     @foreach (\App\Support\Seo::structuredData() as $data)
         <script type="application/ld+json">{!! json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>

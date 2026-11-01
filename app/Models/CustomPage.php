@@ -15,12 +15,12 @@ use Illuminate\Support\Str;
 /**
  * A page of your own (Support → Pages): About us, Terms, a guide. A title, a text written with the editor (HTML) and a
  * description for search engines per language, the default language's title and text required and the others falling
- * back to it. Published, it is at /pages/{slug} (App\Filament\Client\Pages\CustomPageView) and can be added to the
+ * back to it. A featured image (`image`, App\Support\PageImages) shows above the text and in link previews. Published, it is at /pages/{slug} (App\Filament\Client\Pages\CustomPageView) and can be added to the
  * client area's menus (Settings → Client area → Menus); visitors open it too, unless it is kept for clients.
  *
  * @property array<string, array{title: ?string, body: ?string, description: ?string}> $texts
  */
-#[Fillable(['slug', 'texts', 'published', 'clients_only', 'created_by'])]
+#[Fillable(['slug', 'image', 'texts', 'published', 'clients_only', 'created_by'])]
 class CustomPage extends Model
 {
     protected $attributes = [
@@ -96,6 +96,12 @@ class CustomPage extends Model
         $text = $this->text($locale);
 
         return filled($text['description']) ? $text['description'] : Str::limit(trim((string) preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($text['body']), ENT_QUOTES | ENT_HTML5))), 160);
+    }
+
+    /** Its featured image's address (App\Support\PageImages), or null. */
+    public function imageUrl(): ?string
+    {
+        return PageImages::url($this->image);
     }
 
     /** @param  Builder<self>  $query */

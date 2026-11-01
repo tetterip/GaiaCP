@@ -135,6 +135,7 @@ class CustomPagesTest extends TestCase
         $this->actingAs($this->admin);
 
         Livewire::test(CreateCustomPage::class)
+            ->assertActionDoesNotExist('createAnother')
             ->fillForm(['texts' => ['en' => ['title' => 'About us', 'body' => '<p>Second <em>time</em>.</p>']], 'published' => true])
             ->call('create')
             ->assertHasNoFormErrors();
@@ -179,5 +180,35 @@ class CustomPagesTest extends TestCase
 
         $this->about->update(['texts' => ['en' => ['title' => 'About us', 'body' => '<p>Us:</p><img src="https://example.com/x.png" data-id="'.$id.'" alt="Team">']]]);
         $this->get('/pages/about-us')->assertOk()->assertSee($url, false)->assertSee('alt="Team"', false);
+    }
+
+    public function test_the_featured_image_shows_above_the_text_and_in_link_previews(): void
+    {
+        Storage::fake(PageImages::DISK);
+        $id = PageImages::store(UploadedFile::fake()->image('cover.jpg', 1200, 630));
+        $this->about->update(['image' => $id]);
+        $url = PageImages::url($id);
+
+        $this->get('/pages/about-us')->assertOk()
+            ->assertSee('<img src="'.$url.'"', false)
+            ->assertSee('<meta property="og:image" content="'.$url.'">', false)
+            ->assertSee('summary_large_image', false);
+
+        // Without one, no large preview card
+        $this->about->update(['image' => null]);
+        $this->get('/pages/about-us')->assertOk()->assertDontSee('summary_large_image', false);
+    }
+
+    public function test_admins_upload_a_featured_image(): void
+    {
+        Storage::fake(PageImages::DISK);
+        $this->actingAs($this->admin);
+
+        Livewire::test(EditCustomPage::class, ['record' => $this->about->getRouteKey()])
+            ->fillForm(['image' => UploadedFile::fake()->image('cover.png', 1200, 630)])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertNotNull(PageImages::url($this->about->fresh()->image));
     }
 }
