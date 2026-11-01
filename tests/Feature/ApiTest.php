@@ -375,6 +375,30 @@ class ApiTest extends TestCase
         $this->api($token)->getJson('/api/v1')->assertTooManyRequests();
     }
 
+    public function test_the_key_form_ticks_all_read_only_or_no_permissions_at_once(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $all = collect(ApiKey::PERMISSIONS)->map(fn (array $actions) => $actions)->all();
+        $read = collect(ApiKey::PERMISSIONS)->map(fn (array $actions) => array_values(array_intersect($actions, ['read'])))->all();
+        $none = collect(ApiKey::PERMISSIONS)->map(fn () => [])->all();
+
+        Livewire::test(ApiKeySettings::class)
+            ->mountAction('create')
+            ->callAction(TestAction::make('permissions_all')->schemaComponent('permissionActions'))
+            ->assertSchemaStateSet(['permissions' => $all], 'mountedActionSchema0')
+            ->callAction(TestAction::make('permissions_read')->schemaComponent('permissionActions'))
+            ->assertSchemaStateSet(['permissions' => $read], 'mountedActionSchema0')
+            ->callAction(TestAction::make('permissions_none')->schemaComponent('permissionActions'))
+            ->assertSchemaStateSet(['permissions' => $none], 'mountedActionSchema0')
+            ->callAction(TestAction::make('permissions_all')->schemaComponent('permissionActions'))
+            ->fillForm(['name' => 'Everything'])
+            ->callMountedAction()
+            ->assertHasNoActionErrors();
+
+        $this->assertSame(OpenApi::permissions(), ApiKey::query()->sole()->permissions);
+    }
+
     public function test_a_super_admin_makes_a_key_that_is_shown_once(): void
     {
         $this->actingAs(User::factory()->create());

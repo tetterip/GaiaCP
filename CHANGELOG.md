@@ -7,6 +7,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [0.5.0] - 2026-11-01
 
+- New / edit API key: **Select all**, **Read only** and **Clear all** above the permissions tick them in one go.
 - Pages of your own (Support → Pages): About us, your terms or a guide, written with an editor (headings, lists,
   links, quotes, tables, pictures), a text per language, at `/pages/…`. Published or a draft, for everyone or only for
   clients; add them to either side menu under Settings → Client area → Menus. Public ones are in the sitemap; a

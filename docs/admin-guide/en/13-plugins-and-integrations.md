@@ -172,8 +172,9 @@ services; a slow machine may take a minute or more per answer.
 ## The REST API
 
 Settings → Integrations → **API keys** (super admins) makes keys for your own scripts and website: one per use, each
-with its permissions per area (read, create, update, delete) and the IP addresses it may call from. A key is shown once;
-revoke it at once if it leaks. Calls go through the same actions as the panel, so they send the same emails and are in
+with its permissions per area (read, create, update, delete) and the IP addresses it may call from (**Select all**,
+**Read only** and **Clear all** above the permissions tick them in one go). A key is shown once; revoke it at once if it
+leaks. Calls go through the same actions as the panel, so they send the same emails and are in
 the activity log under the key's name. **Documentation** on that page lists every call, with `openapi.json` to
 download. Examples: [using the API](../../using-the-api.md).
 
