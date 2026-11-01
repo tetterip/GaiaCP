@@ -11,6 +11,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   links, quotes, tables, pictures), a text per language, at `/pages/…`. Published or a draft, for everyone or only for
   clients; add them to either side menu under Settings → Client area → Menus. Public ones are in the sitemap; a
   featured image shows above the text and in link previews. The text sits in a centred column, like the contact page.
+  Support → Pages says where to add them to the menus, with a link to Settings → Client area → Menus.
 - Menus (Settings → Client area → Menus): the client area's side menu, for logged-in clients and for visitors, as a
   list you drag into order. Rename a page in each language, give it another icon or take it out, and add products,
   product groups, links (opening in a new tab if you like) and headings of your own. Pages added by later updates
@@ -38,6 +39,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   top bar's search and icon buttons have even gaps.
 - Visitors' top bar: the light / dark mode button is an outlined button like the language one next to it.
 - The README on GitHub has new light-mode screenshots and lists the features added since 0.3.
+- The public demo shows the newer features: coupons, sale prices, invoices and a credit note, product group and
+  product pages, the public cart, pages of your own in both menus, downloads and a WHOIS lookup that answers from the
+  demo's own domains.
 
 ## [0.4.0] - 2026-10-31
 

@@ -7,9 +7,12 @@ use App\Models\User;
 use App\Plugins\PluginManager;
 use App\Support\Demo;
 use App\Support\DemoSnapshot;
+use App\Support\Whois;
+use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 /** gaiacp:demo-reset builds the demo data in a process of its own and copies it in: no test transaction around it. */
@@ -47,6 +50,13 @@ class DemoResetTest extends TestCase
             $this->assertTrue(DB::table('sessions')->where('id', 'abc')->exists());
             $this->assertTrue(User::query()->where('email', Demo::ADMIN_EMAIL)->exists());
             $this->assertEqualsWithDelta(time(), $snapshot->restoredAt(), 5);
+
+            // Uploads made meanwhile are deleted, and the demo's own files are written back
+            Storage::disk('public')->put('pages/VisitorUploadedPicture00.png', 'x');
+            Storage::disk('local')->delete(array_key_first(DemoSeeder::FILES['local']));
+            $this->artisan('gaiacp:demo-reset')->assertSuccessful();
+            Storage::disk('public')->assertMissing('pages/VisitorUploadedPicture00.png');
+            Storage::disk('local')->assertExists(array_key_first(DemoSeeder::FILES['local']));
         } finally {
             $this->artisan('migrate:fresh'); // empty, so the rollback after the test runs
             File::delete([$snapshot->path(), dirname($snapshot->path()).'/demo.json', dirname($snapshot->path()).'/restored']);
@@ -54,5 +64,12 @@ class DemoResetTest extends TestCase
                 File::move($backup, $snapshot->path());
             }
         }
+    }
+
+    protected function tearDown(): void
+    {
+        Whois::queryUsing(null);
+
+        parent::tearDown();
     }
 }

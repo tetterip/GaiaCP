@@ -9,10 +9,16 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 class EditCustomPage extends EditRecord
 {
     protected static string $resource = CustomPageResource::class;
+
+    public function getSubheading(): Htmlable
+    {
+        return CustomPageResource::menusHint();
+    }
 
     protected function getHeaderActions(): array
     {

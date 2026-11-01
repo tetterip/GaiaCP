@@ -3549,5 +3549,7 @@
     "draft": "borrador",
     "page": "página",
     "Featured image": "Imagen destacada",
-    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Se muestra sobre el texto y como imagen cuando se comparte la página (Facebook, Viber, Slack…). Lo ideal es unos 1200 × 630 píxeles."
+    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Se muestra sobre el texto y como imagen cuando se comparte la página (Facebook, Viber, Slack…). Lo ideal es unos 1200 × 630 píxeles.",
+    "Settings → Client area → Menus": "Ajustes → Área de clientes → Menús",
+    "To show a page in the side menu of clients or visitors, add it under :menus.": "Para mostrar una página en el menú lateral de clientes o visitantes, añádala en :menus."
 }

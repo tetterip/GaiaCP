@@ -153,6 +153,21 @@ class CustomPagesTest extends TestCase
         $this->get('/admin/pages')->assertOk()->assertSee('/pages/who-we-are');
     }
 
+    public function test_the_pages_say_where_to_add_them_to_the_menus(): void
+    {
+        $this->actingAs($this->admin);
+
+        $this->get('/admin/pages')->assertOk()
+            ->assertSee('To show a page in the side menu of clients or visitors, add it under')
+            ->assertSee('href="'.e(MenuSettings::getUrl()).'"', false);
+        $this->get('/admin/pages/create')->assertOk()->assertSee('Settings → Client area → Menus');
+
+        // Without Settings the place is named, not linked
+        $this->actingAs(User::factory()->limitedTo([AdminArea::Support])->create());
+        $this->get('/admin/pages')->assertOk()->assertSee('Settings → Client area → Menus')
+            ->assertDontSee('href="'.e(MenuSettings::getUrl()).'"', false);
+    }
+
     public function test_admins_without_support_cant_open_it(): void
     {
         $this->actingAs(User::factory()->limitedTo([AdminArea::Billing])->create());

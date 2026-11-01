@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\ProvisioningException;
+use App\Support\Demo;
 use Carbon\CarbonImmutable;
 
 /**
@@ -18,8 +19,6 @@ use Carbon\CarbonImmutable;
 class DemoRegistrar implements ChecksAvailability, DomainRegistrar
 {
     public const NAMESERVERS = ['ns1.demo-hosting.example', 'ns2.demo-hosting.example'];
-
-    private const FAMOUS = ['google', 'facebook', 'amazon', 'wikipedia', 'youtube', 'example', 'microsoft', 'apple'];
 
     public function name(): string
     {
@@ -77,7 +76,7 @@ class DemoRegistrar implements ChecksAvailability, DomainRegistrar
     {
         $name = strtolower(explode('.', $domain)[0]);
 
-        return ! in_array($name, self::FAMOUS, true) && ! $this->service($domain);
+        return ! in_array($name, Demo::FAMOUS, true) && ! $this->service($domain);
     }
 
     private function service(string $domain): ?Service

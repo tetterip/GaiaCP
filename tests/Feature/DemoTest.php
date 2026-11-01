@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\ClientOrder;
 use App\Actions\ServiceLifecycle;
+use App\Enums\BillingCycle;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Filament\Clusters\Settings\Pages\CompanySettings;
@@ -11,21 +12,27 @@ use App\Filament\Clusters\Settings\Pages\CookieSettings;
 use App\Filament\Clusters\Settings\Pages\MailSettings;
 use App\Filament\Pages\Updates;
 use App\Models\Client;
+use App\Models\Coupon;
+use App\Models\CustomPage;
+use App\Models\Download;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Server;
 use App\Models\Service;
+use App\Models\TaxInvoice;
 use App\Models\User;
 use App\Plugins\PluginInstaller;
 use App\Plugins\PluginManager;
 use App\Plugins\PluginState;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\RegistrarFactory;
+use App\Support\ClientMenu;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\DemoSnapshot;
 use App\Support\Settings;
 use App\Support\Version;
+use App\Support\Whois;
 use Carbon\CarbonImmutable;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,6 +40,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Plugins\Demo\DemoPlugin;
 use Plugins\Stripe\StripeSettings;
 use Tests\TestCase;
@@ -161,6 +169,8 @@ class DemoTest extends TestCase
 
     public function test_the_demo_data_works_with_the_demo_panel_and_registrar(): void
     {
+        Storage::fake('local');
+        Storage::fake('public');
         $this->demo();
         $this->seed(DemoSeeder::class);
 
@@ -187,5 +197,61 @@ class DemoTest extends TestCase
         $this->assertTrue($registrar->expiryDate($domain->domain)->equalTo($expiry->addYear()));
         $this->assertFalse($registrar->available($domain->domain));
         $this->assertTrue($registrar->available('surely-free-name.com'));
+    }
+
+    public function test_the_demo_data_shows_the_newer_features(): void
+    {
+        Storage::fake('local');
+        Storage::fake('public');
+        $this->demo();
+        $this->seed(DemoSeeder::class);
+
+        // Coupons, a product and a domain ending on sale, invoices with a credit note
+        $this->assertSame(['DOMAINS5', 'WELCOME10'], Coupon::query()->orderBy('code')->pluck('code')->all());
+        $this->assertNotNull(Product::query()->where('name', 'Hosting Business')->first()->salePriceFor(BillingCycle::Annually));
+        $this->assertSame(3, TaxInvoice::query()->where('type', TaxInvoice::INVOICE)->count());
+        $this->assertSame(1, TaxInvoice::query()->where('type', TaxInvoice::CREDIT_NOTE)->count());
+
+        // Pages of your own, in both menus, with their files on the disks
+        $about = CustomPage::query()->where('slug', 'about-us')->first();
+        Storage::disk('public')->assertExists($about->image);
+        foreach ([ClientMenu::PUBLIC, ClientMenu::CLIENT] as $menu) {
+            $this->assertContains(['type' => 'custom_page', 'custom_page' => $about->id, 'icon' => 'info'], ClientMenu::rows($menu));
+        }
+        $this->assertSame(3, Download::query()->count());
+        Download::query()->each(fn (Download $download) => Storage::disk('local')->assertExists($download->path));
+
+        // The public pages that were off: the cart, a product group's and a product's page, WHOIS
+        foreach (['/cart', '/web-hosting', '/web-hosting/pro', '/pages/about-us', '/pages/terms', '/whois'] as $url) {
+            $this->get($url)->assertOk();
+        }
+
+        // A file a visitor deleted is written back
+        Storage::disk('public')->delete($about->image);
+        DemoSeeder::writeFiles();
+        Storage::disk('public')->assertExists($about->image);
+    }
+
+    public function test_the_whois_lookup_answers_from_the_demo_domains(): void
+    {
+        $this->demo();
+        $this->seed(DemoSeeder::class);
+        config(['gaiacp.public_area.whois' => true]);
+        $domain = Service::query()->where('type', ServiceType::Domain)->first();
+
+        $own = app(Whois::class)->lookup($domain->domain);
+        $this->assertTrue($own['registered']);
+        $this->assertStringContainsString('Registrar: Demo registrar', $own['text']);
+        $this->assertStringContainsString('NS1.DEMO-HOSTING.EXAMPLE', $own['text']);
+
+        $this->assertTrue(app(Whois::class)->lookup('google.gr')['registered']);
+        $this->assertFalse(app(Whois::class)->lookup('surely-free-name.com')['registered']);
+    }
+
+    protected function tearDown(): void
+    {
+        Whois::queryUsing(null);
+
+        parent::tearDown();
     }
 }
