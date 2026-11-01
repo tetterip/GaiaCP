@@ -169,6 +169,17 @@
         font-weight: 600;
     }
 
+    /* A page of your own (CustomPageView): the editor's text at a width that reads well, its pictures within it */
+    .gcp-custom-page {
+        max-width: 48rem;
+    }
+
+    .gcp-custom-page img {
+        max-width: 100%;
+        height: auto;
+        border-radius: .5rem;
+    }
+
     /* Server uptime on a hosting account's page: the dashboard's squares light up one after the other */
     .gcp-server-uptime {
         display: grid;

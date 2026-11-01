@@ -53,6 +53,8 @@ the bin to take it out. **Add to the menu** adds:
 - a **page** you took out earlier, or a **heading** of your own; the lines after a heading are its section;
 - a **product**: its public page when it has one, else the order page with it picked;
 - a **product group**: its public page when it has one, else the order page on that group;
+- a **page of your own** from Support → Pages (drafts stay out, and the visitors' menu leaves out pages only for
+  clients);
 - a **link** to another site or a page of yours, which can open in a new tab.
 
 A page that is switched off elsewhere (the knowledge base, say) stays hidden even when it is in the menu, and a

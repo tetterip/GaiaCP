@@ -15,6 +15,7 @@ use App\Filament\Client\Pages\Auth\RequestPasswordReset;
 use App\Filament\Client\Pages\Cart;
 use App\Filament\Client\Pages\ContactSupport;
 use App\Filament\Client\Pages\Credit;
+use App\Filament\Client\Pages\CustomPageView;
 use App\Filament\Client\Pages\Dashboard;
 use App\Filament\Client\Pages\DomainPrices;
 use App\Filament\Client\Pages\Downloads;
@@ -170,6 +171,7 @@ class ClientPanelProvider extends PanelProvider
                 KnowledgeBaseArticle::class,
                 Announcements::class,
                 AnnouncementPage::class,
+                CustomPageView::class,
                 ServerStatus::class,
                 SignIns::class,
             ])

@@ -175,6 +175,15 @@ How the admin and client panels, users, access, security, branding, themes and l
   (`/announcements/{slug}`; a visitor on one kept for clients goes to the login with `url.intended`); the RSS feed
   `AnnouncementFeedController` (`/announcements/feed`, route `filament.client.announcements.feed`, 404 while off, the
   20 newest public ones); `PublicHome::news()` puts the newest three on the home page.
+  Pages of your own (`App\Models\CustomPage`, admin `CustomPageResource` under Support → Pages, `AdminArea::Support`):
+  texts per locale (title, HTML from Filament's `RichEditor`, description), `slug` like announcements, `published`,
+  `clients_only`. `CustomPage::html()` renders with `RichContentRenderer::toHtml()` (Filament's HTML sanitizer, so no
+  script or `javascript:` link survives). Client page `CustomPageView` (`/pages/{slug}`, visitors and clients; a draft is
+  404, a visitor on one kept for clients goes to the login with `url.intended`; `metaDescription()`, `noindex()` for
+  clients only). Pictures go through `App\Support\PageImages` (a Filament `FileAttachmentProvider` for the renderer,
+  closures on the editor): public disk `pages/<random>.<ext>`, PNG / JPEG / GIF / WebP up to 5 MB, served by
+  `PageImageController` (route `page-image`, `/page-images/{file}`, no `storage:link`); unused images are not deleted.
+  Menus add them as `custom_page` rows (`ClientMenu`); the sitemap lists the published public ones.
   Server status (`public_area.status`, `App\Support\StatusPage`, client page `ServerStatus` at `/status`, visitors and
   clients): active servers with a `monitor_module` and `servers.on_status_page`, named `public_name` else `name` (never
   hostname or IP), with `monitor_status` and `UptimeHistory` 30d / 24h (`filament.client.server-uptime`); the down
@@ -192,7 +201,7 @@ How the admin and client panels, users, access, security, branding, themes and l
   A visitor's language is in the address too (`?lang=`, read by `SetLocale` and kept in the session; the top bar's
   language route drops it on the way back): indexable pages get a canonical link (path, `page` and `lang` only) and
   hreflang alternates per language plus `x-default`, og:title is the page title. `SitemapController` serves
-  `/sitemap.xml` (the public pages switched on, KB articles and announcements not kept for clients, each language) and
+  `/sitemap.xml` (the public pages switched on, KB articles, announcements and pages of your own not kept for clients, each language) and
   `/robots.txt` (Disallow /admin/ and /install/ + Sitemap, or Disallow / while not indexable); `public/robots.txt` is
   gone and the updater leaves an unchanged old copy behind (`Updater::DROPPED`).
   Terms of service (Settings → Client area, `gaiacp.client_area.terms*`, `App\Support\TermsOfService`): link and / or

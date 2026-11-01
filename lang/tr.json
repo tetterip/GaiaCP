@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Size parola olmadan giriş yapmanızı sağlayan bir bağlantı e-postayla göndeririz. Bir kez ve :count dakika boyunca çalışır.",
     "Your :name sign-in link": ":name giriş bağlantınız",
     "added :date": ":date tarihinde eklendi",
-    "last used :date": "son kullanım :date"
+    "last used :date": "son kullanım :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Arama sonuçlarında ve bağlantı önizlemelerinde başlığın altında bir iki satır. Boş: metnin ilk satırları.",
+    "Changed": "Değiştirildi",
+    "Custom page": "Özel sayfa",
+    "Description for search engines": "Arama motorları için açıklama",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Destek → Sayfalar'dan. Taslaklar ve yalnızca müşterilere açık sayfalar bu menüye girmez.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Destek → Sayfalar'dan. Taslaklar yayımlanana kadar menüye girmez.",
+    "Leave empty to show the page in the first language.": "Sayfanın ilk dilde gösterilmesi için boş bırakın.",
+    "New page": "Yeni sayfa",
+    "No pages yet": "Henüz sayfa yok",
+    "Off: a draft nobody sees.": "Kapalı: kimsenin görmediği bir taslak.",
+    "Page of your own": "Kendi sayfanız",
+    "Pages": "Sayfalar",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Hakkımızda veya koşullarınız gibi editörle yazılmış kendi sayfalarınız. Bunları Ayarlar → Müşteri alanı → Menüler altında yan menülere ekleyin.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Ziyaretçilerden önce giriş yapmaları istenir ve arama motorları onu dışarıda bırakır.",
+    "draft": "taslak",
+    "page": "sayfa"
 }

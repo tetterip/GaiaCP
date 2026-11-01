@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Wyślemy Ci e-mailem link, który zaloguje Cię bez hasła. Działa raz, przez :count minut.",
     "Your :name sign-in link": "Twój link do logowania w :name",
     "added :date": "dodano :date",
-    "last used :date": "ostatnio użyto :date"
+    "last used :date": "ostatnio użyto :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Jedna lub dwie linijki pod tytułem w wynikach wyszukiwania i podglądach linków. Puste: pierwsze linijki tekstu.",
+    "Changed": "Zmieniono",
+    "Custom page": "Własna strona",
+    "Description for search engines": "Opis dla wyszukiwarek",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Z Wsparcie → Strony. Szkice i strony tylko dla klientów nie trafiają do tego menu.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Z Wsparcie → Strony. Szkice nie trafiają do menu, dopóki nie zostaną opublikowane.",
+    "Leave empty to show the page in the first language.": "Pozostaw puste, aby pokazać stronę w pierwszym języku.",
+    "New page": "Nowa strona",
+    "No pages yet": "Brak stron",
+    "Off: a draft nobody sees.": "Wyłączone: szkic, którego nikt nie widzi.",
+    "Page of your own": "Własna strona",
+    "Pages": "Strony",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Własne strony, takie jak O nas lub Twój regulamin, napisane w edytorze. Dodaj je do menu bocznych w Ustawienia → Strefa klienta → Menu.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Odwiedzający muszą się najpierw zalogować, a wyszukiwarki ją pomijają.",
+    "draft": "szkic",
+    "page": "strona"
 }

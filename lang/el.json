@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Σας στέλνουμε με email έναν σύνδεσμο που σας συνδέει χωρίς κωδικό. Λειτουργεί μία φορά, για :count λεπτά.",
     "Your :name sign-in link": "Ο σύνδεσμος σύνδεσης για :name",
     "added :date": "προστέθηκε :date",
-    "last used :date": "τελευταία χρήση :date"
+    "last used :date": "τελευταία χρήση :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Μία ή δύο γραμμές κάτω από τον τίτλο στα αποτελέσματα αναζήτησης και στις προεπισκοπήσεις συνδέσμων. Κενό: οι πρώτες γραμμές του κειμένου.",
+    "Changed": "Τελευταία αλλαγή",
+    "Custom page": "Σελίδα",
+    "Description for search engines": "Περιγραφή για τις μηχανές αναζήτησης",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Από Υποστήριξη → Σελίδες. Τα πρόχειρα και οι σελίδες μόνο για πελάτες δεν μπαίνουν σε αυτό το μενού.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Από Υποστήριξη → Σελίδες. Τα πρόχειρα μένουν εκτός μενού μέχρι να δημοσιευτούν.",
+    "Leave empty to show the page in the first language.": "Αφήστε το κενό για να φαίνεται η σελίδα στην πρώτη γλώσσα.",
+    "New page": "Νέα σελίδα",
+    "No pages yet": "Δεν υπάρχουν σελίδες ακόμη",
+    "Off: a draft nobody sees.": "Ανενεργό: πρόχειρο που δεν το βλέπει κανείς.",
+    "Page of your own": "Δική σας σελίδα",
+    "Pages": "Σελίδες",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Δικές σας σελίδες, όπως Ποιοι είμαστε ή οι όροι σας, γραμμένες με τον επεξεργαστή. Προσθέστε τις στα πλαϊνά μενού από Ρυθμίσεις → Περιοχή πελατών → Μενού.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Οι επισκέπτες καλούνται πρώτα να συνδεθούν και οι μηχανές αναζήτησης την αφήνουν έξω.",
+    "draft": "πρόχειρο",
+    "page": "σελίδα"
 }

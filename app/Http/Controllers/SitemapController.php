@@ -6,6 +6,7 @@ use App\Actions\ClientOrder;
 use App\Filament\Client\Pages\AnnouncementPage;
 use App\Filament\Client\Pages\Announcements;
 use App\Filament\Client\Pages\ContactSupport;
+use App\Filament\Client\Pages\CustomPageView;
 use App\Filament\Client\Pages\DomainPrices;
 use App\Filament\Client\Pages\KnowledgeBase;
 use App\Filament\Client\Pages\KnowledgeBaseArticle;
@@ -15,6 +16,7 @@ use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Pages\ServerStatus;
 use App\Filament\Client\Pages\WhoisLookup;
 use App\Models\Announcement;
+use App\Models\CustomPage;
 use App\Models\KbArticle;
 use App\Models\Product;
 use App\Models\ProductGroup;
@@ -113,6 +115,10 @@ class SitemapController extends Controller
             foreach ($announcements as $announcement) {
                 $pages[] = ['url' => AnnouncementPage::getUrl(['slug' => $announcement->slug], panel: 'client'), 'modified' => $announcement->updated_at?->toAtomString()];
             }
+        }
+
+        foreach (CustomPage::query()->published()->where('clients_only', false)->orderBy('id')->get() as $page) {
+            $pages[] = ['url' => CustomPageView::urlFor($page), 'modified' => $page->updated_at?->toAtomString()];
         }
 
         if (StatusPage::enabled()) {
