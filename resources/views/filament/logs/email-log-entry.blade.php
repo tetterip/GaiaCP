@@ -16,5 +16,7 @@
     @if (filled($entry->body))
         {{-- Sandboxed: the email's own HTML, without scripts. --}}
         <iframe sandbox srcdoc="{{ $entry->body }}"></iframe>
+    @elseif (! $entry->error)
+        <div class="gaiacp-log-meta">{{ __('The text of this email is not kept: its link logs in whoever opens it.') }}</div>
     @endif
 </div>

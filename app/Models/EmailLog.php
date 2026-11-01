@@ -29,7 +29,7 @@ class EmailLog extends Model
         ];
     }
 
-    public static function sent(Email $email, ?Client $client = null, ?MailTemplate $template = null, bool $toClient = false): self
+    public static function sent(Email $email, ?Client $client = null, ?MailTemplate $template = null, bool $toClient = false, bool $keepBody = true): self
     {
         $addresses = fn (array $list) => collect($list)->map(fn (Address $a) => $a->toString())->implode(', ') ?: null;
 
@@ -42,7 +42,7 @@ class EmailLog extends Model
             'cc' => $addresses($email->getCc()),
             'bcc' => $addresses($email->getBcc()),
             'subject' => $email->getSubject(),
-            'body' => $email->getHtmlBody() !== null ? (string) $email->getHtmlBody() : (string) $email->getTextBody(),
+            'body' => ! $keepBody ? null : ($email->getHtmlBody() !== null ? (string) $email->getHtmlBody() : (string) $email->getTextBody()),
             'status' => 'sent',
         ]);
     }

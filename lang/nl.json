@@ -3554,5 +3554,6 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Om een pagina in het zijmenu van klanten of bezoekers te tonen, voegt u deze toe onder :menus.",
     "Select all": "Alles selecteren",
     "Read only": "Alleen lezen",
-    "Clear all": "Alles wissen"
+    "Clear all": "Alles wissen",
+    "The text of this email is not kept: its link logs in whoever opens it.": "De tekst van deze e-mail wordt niet bewaard: de link logt iedereen in die hem opent."
 }

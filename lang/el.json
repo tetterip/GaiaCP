@@ -3554,5 +3554,6 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Για να εμφανιστεί μια σελίδα στο πλάγιο μενού των πελατών ή των επισκεπτών, προσθέστε τη στο :menus.",
     "Select all": "Επιλογή όλων",
     "Read only": "Μόνο ανάγνωση",
-    "Clear all": "Καθαρισμός όλων"
+    "Clear all": "Καθαρισμός όλων",
+    "The text of this email is not kept: its link logs in whoever opens it.": "Το κείμενο αυτού του email δεν κρατιέται: ο σύνδεσμός του συνδέει όποιον τον ανοίξει."
 }

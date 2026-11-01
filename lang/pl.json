@@ -3554,5 +3554,6 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Aby pokazać stronę w bocznym menu klientów lub odwiedzających, dodaj ją w :menus.",
     "Select all": "Zaznacz wszystko",
     "Read only": "Tylko odczyt",
-    "Clear all": "Odznacz wszystko"
+    "Clear all": "Odznacz wszystko",
+    "The text of this email is not kept: its link logs in whoever opens it.": "Treść tego e-maila nie jest przechowywana: jego link loguje każdego, kto go otworzy."
 }
