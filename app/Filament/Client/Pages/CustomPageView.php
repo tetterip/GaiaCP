@@ -6,6 +6,7 @@ use App\Filament\Client\Concerns\OpenToVisitors;
 use App\Models\CustomPage;
 use Filament\Pages\Page;
 use Filament\Panel;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 
 /**
@@ -21,6 +22,9 @@ class CustomPageView extends Page
     protected static ?string $slug = 'custom-page';
 
     protected string $view = 'filament.client.custom-page';
+
+    // A centred column like the contact page, so the card fits the text instead of leaving an empty band beside it
+    protected Width|string|null $maxContentWidth = Width::FourExtraLarge;
 
     public CustomPage $page;
 

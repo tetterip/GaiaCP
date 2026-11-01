@@ -169,15 +169,10 @@
         font-weight: 600;
     }
 
-    /* A page of your own (CustomPageView): the editor's text at a width that reads well, its pictures within it */
-    .gcp-custom-page {
-        max-width: 48rem;
-    }
-
+    /* A page of your own (CustomPageView): in a centred column (its maxContentWidth), its pictures within it */
     .gcp-custom-page-image {
         display: block;
         width: 100%;
-        max-width: 48rem;
         max-height: 24rem;
         object-fit: cover;
         border-radius: .75rem;
