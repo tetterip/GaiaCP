@@ -6,8 +6,11 @@ few minutes. It is a normal Git checkout of GaiaCP with `GAIACP_DEMO=true` (`App
 ## What the demo does
 
 - **Data**: `Database\Seeders\DemoSeeder` (a small hosting company, about 25 clients with hosting, domains and care
-  plans, a year of payments, payment notices, an order, tickets, leads, quotes, knowledge base, announcements and 30
-  days of uptime; product colours and tags, one tag hidden). Dates are relative to today.
+  plans, a year of payments, payment notices with three invoices and a credit note, an order, tickets, leads, quotes,
+  knowledge base, announcements and 30 days of uptime; product colours and tags, one tag hidden; a coupon, Hosting
+  Business and .eu on sale; the Web hosting group's page and Hosting Pro's; About us and Terms pages, About us in both
+  menus; three downloads; WHOIS lookup and the public cart on). Dates are relative to today. Its files (the About us
+  picture, the downloads' PDFs) are in `database/seeders/demo` (`DemoSeeder::FILES`) and written back by each reset.
 - **Reset**: `php artisan gaiacp:demo-reset`, from the scheduler every `GAIACP_DEMO_RESET_MINUTES` (default 10,
   counted from the hour). The data is built once a day (and after a deploy that adds migrations) into
   `storage/app/private/demo/demo.sqlite` in a process of its own; each reset copies its tables into the live database
@@ -24,6 +27,8 @@ few minutes. It is a normal Git checkout of GaiaCP with `GAIACP_DEMO=true` (`App
   scripts would run for every visitor, so none are added), Login security, Languages, IP bans. **Plugins kept off**
   (`Demo::PLUGINS_OFF`, their pages closed): Email to ticket, WHMCS import, Stripe, PayPal, Site checks, IP blacklist check.
   Logo uploads and ticket attachments are off.
+- **WHOIS lookup**: answered by `Demo::whois()` from the demo's domains (and a few famous names), never asked of a
+  registry.
 - **Servers, registrar, monitoring**: the Demo plugin (`plugins/Demo`, loaded only in the demo): the panel answers
   from the services GaiaCP stores (create, suspend, terminate, change password always work), the registrar from the
   domains (register, renew, transfer always work; famous names show as taken in the domain search), and every server

@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\ActivityLog;
+use Database\Seeders\DemoSeeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -21,8 +22,11 @@ class DemoSnapshot
     /** Tables a reset leaves alone: who is signed in, and the scheduler's locks (this reset holds one). */
     private const KEPT = ['sessions', 'cache_locks', 'migrations'];
 
-    /** Folders of uploads a reset empties (Filament's temporary uploads, ticket files, logos, plugin zips). */
-    private const UPLOADS = ['local' => ['livewire-tmp', 'tickets', 'plugin-uploads'], 'public' => ['branding']];
+    /**
+     * Folders of uploads a reset empties (Filament's temporary uploads, ticket files, downloads, logos, page images,
+     * plugin zips); the demo's own downloads and page image are then written back (DemoSeeder::FILES).
+     */
+    private const UPLOADS = ['local' => ['livewire-tmp', 'tickets', 'downloads', 'plugin-uploads'], 'public' => ['branding', 'pages']];
 
     public function path(): string
     {
@@ -106,6 +110,8 @@ class DemoSnapshot
                 Storage::disk($disk)->deleteDirectory($folder);
             }
         }
+
+        DemoSeeder::writeFiles();
 
         // Sessions stay, so what they hold of the old data (a cart) can tell it is from before this reset
         touch($this->restoredMarker());

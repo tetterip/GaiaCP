@@ -9,7 +9,9 @@ use App\Actions\RecordInvoicePayment;
 use App\Actions\Tickets;
 use App\Enums\AdminArea;
 use App\Enums\BillingCycle;
+use App\Enums\CouponType;
 use App\Enums\DomainRegistrationType;
+use App\Enums\DownloadVisibility;
 use App\Enums\InvoiceStatus;
 use App\Enums\LeadStatus;
 use App\Enums\ServiceStatus;
@@ -18,8 +20,13 @@ use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use App\Enums\UserRole;
 use App\Invoices\GenerateInvoices;
+use App\Invoicing\IssueCreditNote;
 use App\Models\Announcement;
 use App\Models\Client;
+use App\Models\Coupon;
+use App\Models\CustomPage;
+use App\Models\Download;
+use App\Models\DownloadCategory;
 use App\Models\Invoice;
 use App\Models\KbArticle;
 use App\Models\KbCategory;
@@ -31,15 +38,19 @@ use App\Models\ProductTag;
 use App\Models\Registrar;
 use App\Models\Server;
 use App\Models\Service;
+use App\Models\TaxInvoice;
 use App\Models\TicketDepartment;
 use App\Models\Tld;
 use App\Models\User;
+use App\Support\ClientMenu;
 use App\Support\Demo;
 use App\Support\Settings;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -51,6 +62,19 @@ use Illuminate\Support\Str;
 class DemoSeeder extends Seeder
 {
     /** first, last, company, locale, country, city, [hosting product, cycle, days to due, status], maintenance? */
+    /**
+     * The demo's own files, kept in database/seeders/demo: disk => [path on the disk => file]. Written when the data is
+     * built and again by every reset (DemoSnapshot), so a page image or download deleted by a visitor comes back.
+     */
+    public const FILES = [
+        'public' => ['pages/DemoAboutUsFeaturedImage.jpg' => 'about-us.jpg'],
+        'local' => [
+            'downloads/DemoGettingStartedGuide.pdf' => 'getting-started.pdf',
+            'downloads/DemoEmailSettings.pdf' => 'email-settings.pdf',
+            'downloads/DemoRestoreABackup.pdf' => 'restore-a-backup.pdf',
+        ],
+    ];
+
     private const CLIENTS = [
         ['Alex', 'Morgan', 'Morgan Studio', 'en', 'GB', 'London', ['pro', 'annually', 9, 'active'], true],
         ['Maria', 'Papadopoulou', 'Papadopoulou Bakery', 'el', 'GR', 'Athens', ['basic', 'annually', -16, 'suspended'], false],
@@ -104,7 +128,20 @@ class DemoSeeder extends Seeder
         $this->support($support);
         $this->sales($admin);
         $this->content($admin);
+        $this->pages($admin);
+        $this->downloads();
+        $this->creditNote();
         $this->uptime();
+    }
+
+    /** Writes the demo's files (FILES) to their disks, over whatever is there. */
+    public static function writeFiles(): void
+    {
+        foreach (self::FILES as $disk => $files) {
+            foreach ($files as $path => $file) {
+                Storage::disk($disk)->put($path, File::get(database_path('seeders/demo/'.$file)));
+            }
+        }
     }
 
     private function settings(): void
@@ -128,6 +165,9 @@ class DemoSeeder extends Seeder
             'public_area.announcements' => true,
             'public_area.status' => true,
             'public_area.contact' => true,
+            'public_area.whois' => true,
+            'client_area.public_orders' => true,
+            'invoicing.enabled' => true,
             'domains.nameservers' => ['ns1.demo-hosting.example', 'ns2.demo-hosting.example'],
             'automation.suspend_after_days' => 14,
         ]);
@@ -189,6 +229,10 @@ class DemoSeeder extends Seeder
                 'register_1y_cents' => $price, 'register_2y_cents' => $price * 2,
                 'transfer_1y_cents' => $price, 'renew_1y_cents' => $price, 'renew_2y_cents' => $price * 2,
                 'costs' => ['register_1y_cents' => $cost, 'renew_1y_cents' => $cost],
+                // .eu is on sale: its first year for less
+                'sale_prices' => $tld === '.eu' ? ['register_1y_cents' => 500] : null,
+                'sale_starts_on' => $tld === '.eu' ? $this->today->subDays(5) : null,
+                'sale_ends_on' => $tld === '.eu' ? $this->today->addDays(20) : null,
             ]);
         }
 
@@ -198,6 +242,17 @@ class DemoSeeder extends Seeder
             'descriptions' => ['en' => 'Websites and email on fast servers, with free SSL.', 'el' => 'Ιστοσελίδες και email σε γρήγορους servers, με δωρεάν SSL.'],
             'icon' => 'server',
             'sort' => 1,
+            'page' => true,
+            'page_titles' => ['en' => 'Web hosting on fast NVMe servers', 'el' => 'Φιλοξενία ιστοσελίδων σε γρήγορους NVMe servers'],
+            'page_descriptions' => ['en' => 'Web hosting with free SSL, daily backups and support from real people.', 'el' => 'Φιλοξενία με δωρεάν SSL, ημερήσια backups και υποστήριξη από ανθρώπους.'],
+            'page_texts' => [
+                'en' => "Every plan runs on NVMe SSD servers in Europe, with free SSL certificates, email on your own domain and a control panel you already know.\n\nMoving from another host? We move your websites and email for free.",
+                'el' => "Όλα τα πακέτα τρέχουν σε NVMe SSD servers στην Ευρώπη, με δωρεάν πιστοποιητικά SSL, email στο δικό σας domain και ένα control panel που ήδη ξέρετε.\n\nΈρχεστε από άλλη εταιρεία; Μεταφέρουμε δωρεάν τις ιστοσελίδες και το email σας.",
+            ],
+            'faq' => [
+                ['questions' => ['en' => 'Can I change plan later?', 'el' => 'Μπορώ να αλλάξω πακέτο αργότερα;'], 'answers' => ['en' => 'Yes, ask from your service page: you pay only the difference for the days left.', 'el' => 'Ναι, από τη σελίδα της υπηρεσίας σας: πληρώνετε μόνο τη διαφορά για τις μέρες που απομένουν.']],
+                ['questions' => ['en' => 'Is SSL included?', 'el' => 'Περιλαμβάνεται SSL;'], 'answers' => ['en' => 'Yes, a free certificate for every domain on your plan, renewed by itself.', 'el' => 'Ναι, δωρεάν πιστοποιητικό για κάθε domain του πακέτου σας, που ανανεώνεται μόνο του.']],
+            ],
             'features' => [
                 ['key' => 'disk', 'names' => ['en' => 'Disk space', 'el' => 'Χώρος']],
                 ['key' => 'sites', 'names' => ['en' => 'Websites', 'el' => 'Ιστοσελίδες']],
@@ -226,11 +281,22 @@ class DemoSeeder extends Seeder
                 'features' => $features,
                 'color' => $color,
                 'popular' => $package === 'pro',
+                'slug' => $package,
+                'page' => $package === 'pro',
+                'page_titles' => $package === 'pro' ? ['en' => 'Hosting Pro: ten websites, daily backups', 'el' => 'Hosting Pro: δέκα ιστοσελίδες, ημερήσια backups'] : null,
+                'page_descriptions' => $package === 'pro' ? ['en' => 'Our most popular plan: 50 GB on NVMe, ten websites, fifty mailboxes and daily backups.', 'el' => 'Το πιο δημοφιλές πακέτο μας: 50 GB σε NVMe, δέκα ιστοσελίδες, πενήντα email και ημερήσια backups.'] : null,
+                'page_texts' => $package === 'pro' ? [
+                    'en' => "Hosting Pro is made for small businesses with more than one website: a shop, a blog and a landing page fit easily.\n\nYour files are backed up every day and kept for two weeks, and you can restore any day yourself.",
+                    'el' => "Το Hosting Pro είναι φτιαγμένο για μικρές επιχειρήσεις με περισσότερες από μία ιστοσελίδες: ένα κατάστημα, ένα blog και μια σελίδα προώθησης χωράνε άνετα.\n\nΤα αρχεία σας κρατιούνται σε backup κάθε μέρα για δύο εβδομάδες και επαναφέρετε όποια μέρα θέλετε μόνοι σας.",
+                ] : null,
+                // Hosting Business is on sale this month: its first year for less
+                'sale_starts_on' => $package === 'business' ? $this->today->subDays(3) : null,
+                'sale_ends_on' => $package === 'business' ? $this->today->addDays(25) : null,
                 'currency' => 'EUR',
                 'billing_cycle' => BillingCycle::Annually,
                 'prices' => array_filter([
                     'monthly' => $monthly ? ['enabled' => true, 'price_cents' => $monthly, 'setup_cents' => 0] : null,
-                    'annually' => ['enabled' => true, 'price_cents' => $annually, 'setup_cents' => 0],
+                    'annually' => ['enabled' => true, 'price_cents' => $annually, 'setup_cents' => 0, 'sale_cents' => $package === 'business' ? 16000 : null],
                     'biennially' => $biennially ? ['enabled' => true, 'price_cents' => $biennially, 'setup_cents' => 0] : null,
                 ]),
             ]);
@@ -413,14 +479,14 @@ class DemoSeeder extends Seeder
         });
     }
 
-    /** The notices the daily run issues for what is due soon or overdue; a few of today's are already paid. */
+    /** The notices the daily run issues for what is due soon or overdue; three not yet due are already paid (and invoiced). */
     private function notices(): void
     {
         app(GenerateInvoices::class)->handle($this->today);
 
         Invoice::query()->where('status', InvoiceStatus::Unpaid)->orderBy('id')->get()
-            ->filter(fn (Invoice $invoice) => $invoice->due_date->gt($this->today->addDays(8)) && $invoice->client->email !== Demo::CLIENT_EMAIL)
-            ->take(2)
+            ->filter(fn (Invoice $invoice) => $invoice->due_date->gt($this->today) && $invoice->client->email !== Demo::CLIENT_EMAIL)
+            ->take(3)
             ->each(fn (Invoice $invoice) => app(RecordInvoicePayment::class)->handle($invoice, $this->today->subDay(), 'bank_transfer', 'Bank transfer'));
     }
 
@@ -504,6 +570,11 @@ class DemoSeeder extends Seeder
         ]);
 
         auth()->forgetUser();
+
+        Coupon::query()->create(['code' => 'WELCOME10', 'description' => 'New clients: 10% off the first payment', 'type' => CouponType::Percent,
+            'value' => 10, 'new_clients_only' => true, 'once_per_client' => true, 'ends_on' => $this->today->addMonths(2)]);
+        Coupon::query()->create(['code' => 'DOMAINS5', 'description' => '€5 off every .gr or .com domain', 'type' => CouponType::Fixed,
+            'value' => 500, 'tlds' => ['.gr', '.com'], 'max_uses' => 100]);
     }
 
     private function content(User $admin): void
@@ -537,6 +608,82 @@ class DemoSeeder extends Seeder
             'clients_only' => false,
             'created_by' => $admin->id,
         ]);
+    }
+
+    /** Pages of your own (About us with a featured image, Terms) and both side menus with About us in them. */
+    private function pages(User $admin): void
+    {
+        self::writeFiles();
+
+        $about = CustomPage::query()->create([
+            'slug' => 'about-us',
+            'image' => array_key_first(self::FILES['public']),
+            'published' => true,
+            'created_by' => $admin->id,
+            'texts' => [
+                'en' => ['title' => 'About us', 'description' => 'Aurora Hosting: web hosting and domains since 2012, with support from real people.',
+                    'body' => '<p>Aurora Hosting has been looking after small businesses and their websites since 2012. We are a team of five in Athens, and every ticket is answered by one of us.</p><h2>What we offer</h2><ul><li><p><strong>Web hosting</strong> on fast NVMe servers, with free SSL and daily backups</p></li><li><p><strong>Domain names</strong> in .gr, .eu, .com and more</p></li><li><p><strong>Website care</strong>: updates, monitoring and a monthly report</p></li></ul><h2>Why clients stay</h2><blockquote><p>Real people answer, usually within the hour, in Greek or English.</p></blockquote><p>Questions? <a href="/contact">Contact us</a> or search the knowledge base.</p>'],
+                'el' => ['title' => 'Ποιοι είμαστε', 'description' => 'Aurora Hosting: φιλοξενία και domains από το 2012, με υποστήριξη από ανθρώπους.',
+                    'body' => '<p>Η Aurora Hosting φροντίζει μικρές επιχειρήσεις και τις ιστοσελίδες τους από το 2012. Είμαστε μια ομάδα πέντε ατόμων στην Αθήνα και κάθε ticket το απαντά ένας από εμάς.</p><h2>Τι προσφέρουμε</h2><ul><li><p><strong>Φιλοξενία ιστοσελίδων</strong> σε γρήγορους NVMe servers, με δωρεάν SSL και ημερήσια backups</p></li><li><p><strong>Domains</strong> σε .gr, .eu, .com και άλλα</p></li><li><p><strong>Συντήρηση ιστοσελίδων</strong>: ενημερώσεις, παρακολούθηση και μηνιαία αναφορά</p></li></ul><h2>Γιατί μένουν οι πελάτες μας</h2><blockquote><p>Απαντούν άνθρωποι, συνήθως μέσα σε μία ώρα, στα ελληνικά ή στα αγγλικά.</p></blockquote><p>Ερωτήσεις; <a href="/contact">Επικοινωνήστε μαζί μας</a> ή ψάξτε στη βάση γνώσεων.</p>'],
+            ],
+        ]);
+
+        CustomPage::query()->create([
+            'slug' => 'terms',
+            'published' => true,
+            'created_by' => $admin->id,
+            'texts' => [
+                'en' => ['title' => 'Terms of service', 'body' => '<p>These made-up terms show how a page of your own looks in the demo.</p><h2>Payment</h2><p>Services are paid in advance for each billing cycle. A payment notice is emailed before each due date.</p><h2>Cancellation</h2><p>Ask for a cancellation from your service page; it takes effect at the end of the period you paid for.</p>'],
+                'el' => ['title' => 'Όροι χρήσης', 'body' => '<p>Αυτοί οι φανταστικοί όροι δείχνουν πώς φαίνεται μια δική σας σελίδα στο demo.</p><h2>Πληρωμή</h2><p>Οι υπηρεσίες πληρώνονται προκαταβολικά για κάθε περίοδο. Πριν από κάθε λήξη στέλνεται ειδοποίηση πληρωμής με email.</p><h2>Ακύρωση</h2><p>Ζητήστε ακύρωση από τη σελίδα της υπηρεσίας· ισχύει στο τέλος της περιόδου που έχετε πληρώσει.</p>'],
+            ],
+        ]);
+
+        // About us goes after the visitors' built-in pages (before the first heading), and at the end of the clients' Support
+        foreach ([ClientMenu::PUBLIC, ClientMenu::CLIENT] as $menu) {
+            $rows = ClientMenu::defaultRows($menu);
+            $row = ['type' => 'custom_page', 'custom_page' => $about->id, 'icon' => 'info'];
+            $at = $menu === ClientMenu::PUBLIC
+                ? (collect($rows)->search(fn (array $item) => $item['type'] === 'heading') ?: count($rows))
+                : count($rows);
+            array_splice($rows, $at, 0, [$row]);
+
+            Settings::save([ClientMenu::settingKey($menu) => ['items' => $rows, 'seen' => array_keys(ClientMenu::pages($menu))]]);
+        }
+    }
+
+    /** Support → Downloads: a guide for everyone, one for clients, one for the clients of Hosting Pro and Business. */
+    private function downloads(): void
+    {
+        $guides = DownloadCategory::query()->create(['names' => ['en' => 'Guides', 'el' => 'Οδηγοί'], 'sort' => 1]);
+        $paths = array_keys(self::FILES['local']);
+
+        foreach ([
+            [$paths[0], 'Getting started', 'Πρώτα βήματα', 'From your first login to a website online.', 'Από την πρώτη σύνδεση ως την ιστοσελίδα σας online.', DownloadVisibility::Everyone, null],
+            [$paths[1], 'Email settings', 'Ρυθμίσεις email', 'Set up your mailbox on a phone or computer.', 'Ρυθμίστε το email σας σε κινητό ή υπολογιστή.', DownloadVisibility::Clients, null],
+            [$paths[2], 'Restore a backup', 'Επαναφορά backup', 'For Hosting Pro and Business: bring back any of the last 14 days.', 'Για Hosting Pro και Business: επαναφέρετε όποια από τις 14 τελευταίες μέρες.', DownloadVisibility::Products, [$this->products['pro']->id, $this->products['business']->id]],
+        ] as $sort => [$path, $titleEn, $titleEl, $descriptionEn, $descriptionEl, $visibility, $products]) {
+            Download::query()->create([
+                'download_category_id' => $guides->id,
+                'texts' => ['en' => ['title' => $titleEn, 'description' => $descriptionEn], 'el' => ['title' => $titleEl, 'description' => $descriptionEl]],
+                'path' => $path,
+                'file_name' => Str::slug($titleEn).'.pdf',
+                'size' => Storage::disk('local')->size($path),
+                'visibility' => $visibility,
+                'product_ids' => $products,
+                'published' => true,
+                'sort' => $sort,
+            ]);
+        }
+    }
+
+    /** The last invoice issued for yesterday's payments gets a credit note, so Billing → Invoices shows both kinds. */
+    private function creditNote(): void
+    {
+        $invoice = TaxInvoice::query()->where('type', TaxInvoice::INVOICE)->orderByDesc('id')->first();
+
+        if ($invoice) {
+            app(IssueCreditNote::class)->handle($invoice, reason: 'Paid twice by mistake, refunded');
+        }
     }
 
     /** Thirty days of checks for the uptime bars: hourly, every five minutes for the last day, one short outage. */

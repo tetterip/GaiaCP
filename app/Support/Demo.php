@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Enums\ServiceType;
 use App\Filament\Clusters\Settings\Pages\ApiKeySettings;
 use App\Filament\Clusters\Settings\Pages\BackupSettings;
 use App\Filament\Clusters\Settings\Pages\CookieSettings;
@@ -13,6 +14,7 @@ use App\Filament\Pages\PluginCatalogue;
 use App\Filament\Pages\SystemHealth;
 use App\Filament\Pages\Updates;
 use App\Filament\Resources\IpBans\IpBanResource;
+use App\Models\Service;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Cron\CronExpression;
@@ -25,7 +27,8 @@ use Psr\Http\Message\RequestInterface;
 /**
  * The public demo (GAIACP_DEMO=true, docs/demo-site.md). Its made-up data (Database\Seeders\DemoSeeder) is put back
  * every reset_minutes by gaiacp:demo-reset, the two logins below are filled in on the login pages, and nothing leaves
- * the server: email goes to the log, every HTTP call fails as "cannot connect", plugin uploads and updates are off,
+ * the server: email goes to the log, every HTTP call fails as "cannot connect", the WHOIS lookup answers from the
+ * demo's own domains (whois()), plugin uploads and updates are off,
  * the pages that reach the server itself (backups, error log, mail, login security, …) are closed, and the plugins
  * that open their own connections can't be switched on. The demo accounts keep their email, password and 2FA.
  * Servers and registrars are the Demo plugin's (plugins/Demo), which act on the stored services only.
@@ -37,6 +40,9 @@ class Demo
     public const CLIENT_EMAIL = 'client@example.com';
 
     public const PASSWORD = 'demo';
+
+    /** Names the demo's registrar and WHOIS lookup treat as taken in every ending, besides the domains it has. */
+    public const FAMOUS = ['google', 'facebook', 'amazon', 'wikipedia', 'youtube', 'example', 'microsoft', 'apple'];
 
     /** @var list<class-string> pages and resources closed in the demo (LimitedToAdminArea) */
     public const CLOSED = [
@@ -116,5 +122,44 @@ class Demo
             }
         });
         User::deleting(fn (User $user) => self::isDemoAccount($user) ? false : null);
+
+        // RDAP fails like every HTTP call, so the lookup falls back to WHOIS, answered here instead of on port 43
+        Whois::queryUsing(fn (string $server, string $query) => self::whois($query));
+    }
+
+    /**
+     * The demo's WHOIS answer: the registry's server for an ending (the lookup asks IANA first), then a domain's record,
+     * registered when the demo has it (its own dates and nameservers) or it is a famous name, else "No match".
+     */
+    public static function whois(string $query): string
+    {
+        $query = strtolower(trim($query));
+
+        if (! str_contains($query, '.')) {
+            return "refer: whois.demo-registry.example\nwhois: whois.demo-registry.example\n";
+        }
+
+        $service = Service::query()->where('type', ServiceType::Domain)->where('domain', $query)->with('domainDetails')->latest('id')->first();
+        $famous = in_array(explode('.', $query)[0], self::FAMOUS, true);
+
+        if (! $service && ! $famous) {
+            return "No match for \"{$query}\".\n";
+        }
+
+        $created = $service ? CarbonImmutable::parse($service->start_date) : CarbonImmutable::parse('1997-09-15');
+        $expires = $service ? ($service->domainDetails?->expires_at ?? CarbonImmutable::parse($service->next_due_date)) : CarbonImmutable::create(today()->year + 3, 9, 14);
+        $nameservers = $service?->domainDetails?->nameservers ?: ['ns1.demo-hosting.example', 'ns2.demo-hosting.example'];
+
+        return implode("\n", [
+            'Domain Name: '.strtoupper($query),
+            'Registrar: '.($service ? 'Demo registrar' : 'Example Registrar, Inc.'),
+            'Creation Date: '.$created->format('Y-m-d').'T00:00:00Z',
+            'Registry Expiry Date: '.CarbonImmutable::parse($expires)->format('Y-m-d').'T00:00:00Z',
+            'Domain Status: clientTransferProhibited',
+            ...array_map(fn (string $nameserver) => 'Name Server: '.strtoupper($nameserver), $nameservers),
+            'DNSSEC: unsigned',
+            '',
+            '>>> This is the GaiaCP demo: a made-up answer. <<<',
+        ])."\n";
     }
 }

@@ -3550,6 +3550,8 @@
     "page": "pagina",
     "Featured image": "Immagine in evidenza",
     "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Mostrata sopra il testo e come immagine quando la pagina viene condivisa (Facebook, Viber, Slack…). Ideale circa 1200 × 630 pixel.",
+    "Settings → Client area → Menus": "Impostazioni → Area clienti → Menu",
+    "To show a page in the side menu of clients or visitors, add it under :menus.": "Per mostrare una pagina nel menu laterale dei clienti o dei visitatori, aggiungila in :menus.",
     "Select all": "Seleziona tutto",
     "Read only": "Solo lettura",
     "Clear all": "Deseleziona tutto"

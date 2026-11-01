@@ -23,10 +23,9 @@
 > parts of it haven't been tried against real servers or registrars yet. Keep backups (Settings → System → Backups)
 > and read each release's notes before updating.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/admin-dashboard-dark.png">
-  <img src="docs/screenshots/admin-dashboard.png" alt="The admin dashboard">
-</picture>
+<p align="center">
+  <img src="docs/screenshots/admin-dashboard.png" alt="The admin dashboard: open balance, orders and income, servers with their uptime, and what is due">
+</p>
 
 ## What is GaiaCP?
 
@@ -54,7 +53,9 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 - Payment notices (proformas) made and emailed before each due date, with reminders and overdue notices
 - Automatic suspension of unpaid hosting, and unsuspension once it is paid
 - Card payments through Stripe Checkout, PayPal, bank transfer, client credit, tax and EU reverse charge, several currencies
-- Quotes, upgrades and downgrades, price changes with notice, add-ons and product options
+- Optional numbered invoices and credit notes as PDF, issued when a notice is paid, with a CSV export for your accountant
+- Coupons, sale prices on products and domain endings, quotes, upgrades and downgrades, price changes with notice,
+  add-ons and product options
 - Reports: income, forecast, profit per server and per domain ending
 
 **Hosting, domains and SSL**
@@ -65,17 +66,23 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
   or Better Stack
 
 **Your clients**
-- A client area where clients order, pay, change nameservers, log in to their hosting panel, open tickets and read
-  the knowledge base
-- An optional public site: home page, domain search, domain prices, package comparison, cart, announcements, server
-  status, a contact form and pages of your own written with an editor
+- A client area where clients order, pay, change nameservers, log in to their hosting panel, open tickets, read the
+  knowledge base and download your files, with a short welcome tour on their first visit
+- An optional public site: home page, domain search, WHOIS lookup, domain prices, a page for each product group and
+  product, package comparison, cart, announcements, server status and a contact form, ready for search engines
+  (sitemap, each language at its own address)
+- Pages of your own (About us, your terms, a guide) written with an editor, with pictures and a featured image, and
+  both side menus arranged as you like: drag pages into order, rename them, add products, links and headings
+- Products with their own colour and tags such as New or NVMe SSD, a Popular badge and a sale price
 - Support tickets (also from email), leads, messages to clients, editable email templates in each language
 
 **For you**
 - A dashboard you arrange yourself, a notifications bell, push notifications on your phone, a setup guide
-- Admin users with access levels, two-factor sign-in, passkeys, sign-in links by email, login protection, backups, system health, logs
-- An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama) that improves and translates the texts you write, drafts and
-  summarises ticket replies and answers questions about your data
+- Admin users with access levels, two-factor sign-in, passkeys, sign-in links by email, Google sign-in, login
+  protection, backups, system health, logs
+- An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama) that
+  improves and translates the texts you write, drafts and summarises ticket replies, writes personal payment reminders,
+  fills in missing translations and answers questions about your data in plain words
 - Webhooks, Slack, Discord and Telegram, a REST API, and an import from WHMCS
 - English and Greek built in, plus machine translations into German, Spanish, French, Italian, Dutch, Polish,
   Brazilian Portuguese and Turkish; other languages are uploaded from the panel
@@ -85,16 +92,36 @@ from the signed plugin catalogue at [plugins.gaiacp.digital](https://plugins.gai
 
 The full list, and what is planned, is in [docs/features.md](docs/features.md).
 
+## Screenshots
+
 <table>
   <tr>
-    <td><img src="docs/screenshots/public-home.png" alt="The public home page"></td>
-    <td><img src="docs/screenshots/compare-packages.png" alt="Ordering a hosting package"></td>
+    <td width="50%"><img src="docs/screenshots/admin-client.png" alt="A client's page in the admin panel"></td>
+    <td width="50%"><img src="docs/screenshots/client-home.png" alt="The client area's home page"></td>
   </tr>
   <tr>
-    <td align="center">The public home page</td>
+    <td align="center">A client's page: balance, payment record and every service in tabs</td>
+    <td align="center">The client area: what to pay and what renews next</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/public-home.png" alt="The public home page"></td>
+    <td width="50%"><img src="docs/screenshots/order.png" alt="Ordering a hosting package"></td>
+  </tr>
+  <tr>
+    <td align="center">The public home page, with product colours and tags</td>
     <td align="center">Ordering a package</td>
   </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/page-editor.png" alt="Writing a page with the editor in the admin panel"></td>
+    <td width="50%"><img src="docs/screenshots/custom-page.png" alt="The same page on the site, with its featured image"></td>
+  </tr>
+  <tr>
+    <td align="center">Writing a page of your own with the editor</td>
+    <td align="center">The same page on your site</td>
+  </tr>
 </table>
+
+Taken with the [demo](https://demo.gaiacp.digital)'s made-up data, in light mode; dark mode is one click away in the user menu.
 
 ## What it doesn't do
 

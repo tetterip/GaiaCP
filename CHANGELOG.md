@@ -5,35 +5,44 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
-- New / edit API key: **Select all**, **Read only** and **Clear all** above the permissions tick them in one go.
+## [0.5.0] - 2026-11-01
+
 - Pages of your own (Support → Pages): About us, your terms or a guide, written with an editor (headings, lists,
   links, quotes, tables, pictures), a text per language, at `/pages/…`. Published or a draft, for everyone or only for
-  clients; add them to either side menu under Settings → Client area → Menus. Public ones are in the sitemap; a featured image shows above the text and in link previews.
-- Visitors' top bar: the light / dark mode button is an outlined button like the language one next to it.
+  clients; add them to either side menu under Settings → Client area → Menus. Public ones are in the sitemap; a
+  featured image shows above the text and in link previews. The text sits in a centred column, like the contact page.
+  Support → Pages says where to add them to the menus, with a link to Settings → Client area → Menus.
+- Menus (Settings → Client area → Menus): the client area's side menu, for logged-in clients and for visitors, as a
+  list you drag into order. Rename a page in each language, give it another icon or take it out, and add products,
+  product groups, links (opening in a new tab if you like) and headings of your own. Pages added by later updates
+  appear in their section by themselves; Reset to default puts the menus back.
 - Other ways to log in (Settings → Security → Login security): passkeys on both logins (each admin and client adds
   theirs from their profile, then logs in with a fingerprint, face or screen lock; no two-factor code after one), and
   "Email me a sign-in link" (one use, 15 minutes; on in the client area, off for admins until ticked; two-factor is
   still asked). The login pages mark the way this browser last used "Last used".
 - Google sign-in 1.1.0: admins can log in to /admin with Google too when ticked in its settings; two-factor is asked
   after Google instead of refusing the login.
-
 - WHOIS lookup (Settings → Public area → WHOIS lookup, off by default): visitors and clients look up a domain name at
   `/whois` and see whether it is registered, its registrar, dates, statuses and nameservers, never the owner's contact
   details. It asks the registry's RDAP server, else its WHOIS server, with the domain search's captcha and a limit.
 - Downloads (Support → Downloads): files for clients in categories, with a title and description per language, for
   everyone, clients who are logged in, or only the clients of chosen products. They show under Support → Downloads in
   the client area, are never at a public address, and are counted.
-- Admin menu: Quotes moved to the main group, after Orders; Billing now reads Payment notices, Payments, Invoices,
-  Coupons, Reports.
 - The admin panel and the client area open in light mode instead of following the device's setting. Dark and
   System are still in the user menu, and a choice already made in a browser is kept there.
-- Menus (Settings → Client area → Menus): the client area's side menu, for logged-in clients and for visitors, as a
-  list you drag into order. Rename a page in each language, give it another icon or take it out, and add products,
-  product groups, links (opening in a new tab if you like) and headings of your own. Pages added by later updates
-  appear in their section by themselves; Reset to default puts the menus back.
+- Admin menu: Quotes moved to the main group, after Orders; Billing now reads Payment notices, Payments, Invoices,
+  Coupons, Reports.
+- New / edit API key: **Select all**, **Read only** and **Clear all** above the permissions tick them in one go.
 - The compare packages table is easier on a phone: the feature names sit in a narrow column that scrolls away with
   the packages, and the table nudges sideways when it comes into view and when another package is chosen, as a hint
   that it scrolls.
+- On a phone: Devices and sign-ins fits long IPv6 addresses and shows the current sign-in as stacked rows, and the
+  top bar's search and icon buttons have even gaps.
+- Visitors' top bar: the light / dark mode button is an outlined button like the language one next to it.
+- The README on GitHub has new light-mode screenshots and lists the features added since 0.3.
+- The public demo shows the newer features: coupons, sale prices, invoices and a credit note, product group and
+  product pages, the public cart, pages of your own in both menus, downloads and a WHOIS lookup that answers from the
+  demo's own domains.
 
 ## [0.4.0] - 2026-10-31
 
