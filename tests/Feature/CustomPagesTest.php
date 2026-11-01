@@ -135,6 +135,7 @@ class CustomPagesTest extends TestCase
         $this->actingAs($this->admin);
 
         Livewire::test(CreateCustomPage::class)
+            ->assertActionDoesNotExist('createAnother')
             ->fillForm(['texts' => ['en' => ['title' => 'About us', 'body' => '<p>Second <em>time</em>.</p>']], 'published' => true])
             ->call('create')
             ->assertHasNoFormErrors();
