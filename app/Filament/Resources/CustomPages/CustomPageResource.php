@@ -44,13 +44,13 @@ use UnitEnum;
  */
 class CustomPageResource extends Resource
 {
-    /** Under the title of the list and of each page: pages go into the side menus from Settings → Client area → Menus (a link when it opens). */
+    /** Under the title of the list and of each page: pages go into the side menus from Settings → Client area → Menus (a link when the admin can open it). */
     public static function menusHint(): HtmlString
     {
         $where = e(__('Settings → Client area → Menus'));
 
         if (MenuSettings::canAccess()) {
-            $where = '<a href="'.e(MenuSettings::getUrl()).'" class="text-primary-600 underline dark:text-primary-400">'.$where.'</a>';
+            $where = '<a href="'.e(MenuSettings::getUrl()).'" style="color: var(--primary-600); font-weight: 600; text-decoration: underline; text-underline-offset: 2px;">'.$where.'</a>';
         }
 
         return new HtmlString(__('To show a page in the side menu of clients or visitors, add it under :menus.', ['menus' => $where]));
