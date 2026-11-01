@@ -3,9 +3,11 @@
 namespace App\Support;
 
 use App\Actions\ClientOrder;
+use App\Filament\Client\Pages\CustomPageView;
 use App\Filament\Client\Pages\Order;
 use App\Filament\Client\Pages\ProductGroupPage;
 use App\Filament\Client\Pages\ProductPage;
+use App\Models\CustomPage;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use Closure;
@@ -32,8 +34,8 @@ final class ClientMenu
 
     public const PUBLIC = 'public';
 
-    /** page (a built-in one, by key), heading, product, category (a product group), link */
-    public const TYPES = ['page', 'heading', 'product', 'category', 'link'];
+    /** page (a built-in one, by key), heading, product, category (a product group), custom_page (Support → Pages), link */
+    public const TYPES = ['page', 'heading', 'product', 'category', 'custom_page', 'link'];
 
     /** @var array<string, string> the signed-in menu's headings as they come (ClientPanelProvider): key => English name */
     public const CLIENT_HEADINGS = ['services' => 'Services', 'billing' => 'Billing', 'support' => 'Support'];
@@ -154,6 +156,7 @@ final class ClientMenu
         $rows = self::rows($menu);
         $products = Product::query()->whereIn('id', collect($rows)->where('type', 'product')->pluck('product'))->with('group')->get()->keyBy('id');
         $groups = ProductGroup::query()->whereIn('id', collect($rows)->where('type', 'category')->pluck('category'))->get()->keyBy('id');
+        $customPages = CustomPage::query()->published()->whereIn('id', collect($rows)->where('type', 'custom_page')->pluck('custom_page'))->get()->keyBy('id');
 
         $top = [];
         $sections = [];
@@ -166,7 +169,7 @@ final class ClientMenu
                 continue;
             }
 
-            foreach (self::items($menu, $row, $builtIn, $products, $groups) as $item) {
+            foreach (self::items($menu, $row, $builtIn, $products, $groups, $customPages) as $item) {
                 $item->sort(++$sort)->group(null);
 
                 if ($sections === []) {
@@ -209,7 +212,7 @@ final class ClientMenu
      * @param  array<string, list<NavigationItem>>  $builtIn
      * @return list<NavigationItem>
      */
-    private static function items(string $menu, array $row, array $builtIn, $products, $groups): array
+    private static function items(string $menu, array $row, array $builtIn, $products, $groups, $customPages): array
     {
         $label = self::label($row);
         $icon = self::icon($row['icon'] ?? null);
@@ -218,6 +221,7 @@ final class ClientMenu
             'page' => array_map(fn (NavigationItem $item) => clone $item, $builtIn[$row['key'] ?? ''] ?? []),
             'product' => self::productItem($menu, $products->get((int) ($row['product'] ?? 0))),
             'category' => self::categoryItem($menu, $groups->get((int) ($row['category'] ?? 0))),
+            'custom_page' => self::customPageItem($menu, $customPages->get((int) ($row['custom_page'] ?? 0))),
             'link' => filled($row['url'] ?? null) && $label !== null ? [self::linkItem('link', $label, (string) $row['url'], 'heroicon-o-link')->openUrlInNewTab((bool) ($row['new_tab'] ?? false))] : [],
             default => [],
         };
@@ -265,6 +269,19 @@ final class ClientMenu
         };
 
         return $url === null ? [] : [self::linkItem('category-'.$group->id, $group->name(), $url, ProductIcons::ICONS[$group->icon ?? ''][0] ?? 'heroicon-o-squares-2x2')];
+    }
+
+    /** @return list<NavigationItem> a published page of your own; in the visitors' menu, not one kept for clients */
+    private static function customPageItem(string $menu, ?CustomPage $page): array
+    {
+        if ($page === null || ($menu === self::PUBLIC && $page->clients_only)) {
+            return [];
+        }
+
+        $request = request();
+
+        return [self::linkItem('custom-page-'.$page->id, $page->title(), CustomPageView::urlFor($page), 'heroicon-o-document-text')
+            ->isActiveWhen(fn () => $request->routeIs(CustomPageView::getRouteName()) && $request->route('slug') === $page->slug)];
     }
 
     private static function linkItem(string $key, string $label, string $url, string $icon): NavigationItem

@@ -6,6 +6,7 @@ use App\Actions\ClientOrder;
 use App\Enums\AdminArea;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Filament\Forms\MenuRowBlock;
+use App\Models\CustomPage;
 use App\Models\ProductGroup;
 use App\Support\ClientMenu;
 use App\Support\Locales;
@@ -30,7 +31,7 @@ use UnitEnum;
 /**
  * Settings → Client area → Menus: the client area's side menus (App\Support\ClientMenu) as a list to drag into order,
  * one for signed-in clients and one for visitors. Each built-in page and heading can be renamed, moved or taken out;
- * products, product groups, links and headings of your own can be added.
+ * products, product groups, pages of your own (Support → Pages), links and headings of your own can be added.
  */
 class MenuSettings extends SettingsFormPage
 {
@@ -148,6 +149,21 @@ class MenuSettings extends SettingsFormPage
                             ->native(false),
                         ...$this->looks(required: false),
                     ]),
+                MenuRowBlock::make('custom_page')
+                    ->label(fn (?array $state) => $state === null ? __('Page of your own') : $this->rowName($state, $this->customPageName($state) ?? __('Page of your own')))
+                    ->icon(Heroicon::OutlinedDocumentText)
+                    ->describe(fn (array $data) => $this->preview($data, 'heroicon-o-document-text', __('Page of your own').' · '.($this->customPageName($data) ?? '?')))
+                    ->schema([
+                        Select::make('custom_page')
+                            ->label('Page')
+                            ->helperText($menu === ClientMenu::PUBLIC
+                                ? __('From Support → Pages. Drafts and pages only for clients stay out of this menu.')
+                                : __('From Support → Pages. Drafts stay out of the menu until they are published.'))
+                            ->options(fn () => CustomPage::query()->orderBy('slug')->get()->mapWithKeys(fn (CustomPage $page) => [$page->id => $page->title()]))
+                            ->required()
+                            ->searchable(),
+                        ...$this->looks(required: false),
+                    ]),
                 MenuRowBlock::make('link')
                     ->label(fn (?array $state) => $state === null ? __('Link') : $this->rowName($state, __('Link')))
                     ->icon(Heroicon::OutlinedLink)
@@ -207,6 +223,13 @@ class MenuSettings extends SettingsFormPage
     private function preview(array $data, ?string $icon, string $text): array
     {
         return ['icon' => ClientMenu::icon($data['icon'] ?? null) ?? $icon, 'text' => $text];
+    }
+
+    private function customPageName(array $data): ?string
+    {
+        $page = CustomPage::query()->find((int) ($data['custom_page'] ?? 0));
+
+        return $page === null ? null : $page->title().($page->published ? '' : ' ('.__('draft').')');
     }
 
     private function rowName(array $state, string $usual): string

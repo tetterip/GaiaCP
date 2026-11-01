@@ -63,6 +63,15 @@ Support → **Announcements** are news for clients (and visitors, if the public 
 products, holiday hours. Each has a text per language and a publish date; leave it empty to keep a draft. Mark one
 **clients only** to keep it from visitors.
 
+## Pages
+
+Support → **Pages** are pages of your own, such as About us, your terms or a guide, written with an editor like a word
+processor: headings, bold, lists, links, quotes, tables and pictures (PNG, JPEG, GIF or WebP, up to 5 MB). Each has a
+title, text and a description for search engines per language; the first language's title and text are required and
+the others fall back to it. A page is at `/pages/its-address` once **Published** is on; **Only for clients** asks
+visitors to log in first and keeps it out of search engines. Add pages to the side menus under Settings → Client area →
+**Menus**, or link to their address from anywhere (the terms of service, an email).
+
 ## Messages to clients
 
 Main → **Messages to clients** emails many clients at once, or shows a message at the top of their client area Home

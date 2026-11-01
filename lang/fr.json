@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Nous vous envoyons par e-mail un lien qui vous connecte sans mot de passe. Il fonctionne une fois, pendant :count minutes.",
     "Your :name sign-in link": "Votre lien de connexion à :name",
     "added :date": "ajoutée le :date",
-    "last used :date": "dernière utilisation le :date"
+    "last used :date": "dernière utilisation le :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Une ou deux lignes sous le titre dans les résultats de recherche et les aperçus de liens. Vide : les premières lignes du texte.",
+    "Changed": "Modifié",
+    "Custom page": "Page personnalisée",
+    "Description for search engines": "Description pour les moteurs de recherche",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Depuis Support → Pages. Les brouillons et les pages réservées aux clients restent hors de ce menu.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Depuis Support → Pages. Les brouillons restent hors du menu jusqu'à leur publication.",
+    "Leave empty to show the page in the first language.": "Laissez vide pour afficher la page dans la première langue.",
+    "New page": "Nouvelle page",
+    "No pages yet": "Pas encore de pages",
+    "Off: a draft nobody sees.": "Désactivé : un brouillon que personne ne voit.",
+    "Page of your own": "Page personnalisée",
+    "Pages": "Pages",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Vos propres pages, comme Qui sommes-nous ou vos conditions, rédigées avec l'éditeur. Ajoutez-les aux menus latéraux dans Paramètres → Espace client → Menus.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Les visiteurs doivent d'abord se connecter, et les moteurs de recherche l'ignorent.",
+    "draft": "brouillon",
+    "page": "page"
 }

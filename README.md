@@ -68,7 +68,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 - A client area where clients order, pay, change nameservers, log in to their hosting panel, open tickets and read
   the knowledge base
 - An optional public site: home page, domain search, domain prices, package comparison, cart, announcements, server
-  status and a contact form
+  status, a contact form and pages of your own written with an editor
 - Support tickets (also from email), leads, messages to clients, editable email templates in each language
 
 **For you**

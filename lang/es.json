@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Le enviamos por email un enlace que le inicia sesión sin contraseña. Funciona una vez, durante :count minutos.",
     "Your :name sign-in link": "Su enlace de acceso a :name",
     "added :date": "añadida el :date",
-    "last used :date": "último uso el :date"
+    "last used :date": "último uso el :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Una o dos líneas bajo el título en los resultados de búsqueda y las vistas previas de enlaces. Vacío: las primeras líneas del texto.",
+    "Changed": "Modificado",
+    "Custom page": "Página propia",
+    "Description for search engines": "Descripción para buscadores",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "De Soporte → Páginas. Los borradores y las páginas solo para clientes quedan fuera de este menú.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "De Soporte → Páginas. Los borradores quedan fuera del menú hasta que se publican.",
+    "Leave empty to show the page in the first language.": "Déjelo vacío para mostrar la página en el primer idioma.",
+    "New page": "Nueva página",
+    "No pages yet": "Aún no hay páginas",
+    "Off: a draft nobody sees.": "Desactivado: un borrador que nadie ve.",
+    "Page of your own": "Página propia",
+    "Pages": "Páginas",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Páginas propias, como Quiénes somos o sus condiciones, escritas con el editor. Añádalas a los menús laterales en Ajustes → Área de clientes → Menús.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Se pide a los visitantes que inicien sesión primero, y los buscadores la dejan fuera.",
+    "draft": "borrador",
+    "page": "página"
 }

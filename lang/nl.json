@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "We e-mailen u een link waarmee u zonder wachtwoord inlogt. Hij werkt één keer, :count minuten lang.",
     "Your :name sign-in link": "Uw inloglink voor :name",
     "added :date": "toegevoegd op :date",
-    "last used :date": "laatst gebruikt op :date"
+    "last used :date": "laatst gebruikt op :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Een of twee regels onder de titel in zoekresultaten en linkvoorbeelden. Leeg: de eerste regels van de tekst.",
+    "Changed": "Gewijzigd",
+    "Custom page": "Eigen pagina",
+    "Description for search engines": "Beschrijving voor zoekmachines",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Uit Support → Pagina's. Concepten en pagina's alleen voor klanten blijven buiten dit menu.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Uit Support → Pagina's. Concepten blijven buiten het menu tot ze gepubliceerd zijn.",
+    "Leave empty to show the page in the first language.": "Laat leeg om de pagina in de eerste taal te tonen.",
+    "New page": "Nieuwe pagina",
+    "No pages yet": "Nog geen pagina's",
+    "Off: a draft nobody sees.": "Uit: een concept dat niemand ziet.",
+    "Page of your own": "Eigen pagina",
+    "Pages": "Pagina's",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Eigen pagina's, zoals Over ons of uw voorwaarden, geschreven met de editor. Voeg ze toe aan de zijmenu's onder Instellingen → Klantenzone → Menu's.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Bezoekers moeten eerst inloggen, en zoekmachines laten haar weg.",
+    "draft": "concept",
+    "page": "pagina"
 }

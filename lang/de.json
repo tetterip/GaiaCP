@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Wir senden Ihnen einen Link per E-Mail, der Sie ohne Passwort anmeldet. Er funktioniert einmal, :count Minuten lang.",
     "Your :name sign-in link": "Ihr Anmeldelink für :name",
     "added :date": "hinzugefügt am :date",
-    "last used :date": "zuletzt verwendet am :date"
+    "last used :date": "zuletzt verwendet am :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Ein, zwei Zeilen unter dem Titel in Suchergebnissen und Link-Vorschauen. Leer: die ersten Zeilen des Textes.",
+    "Changed": "Geändert",
+    "Custom page": "Eigene Seite",
+    "Description for search engines": "Beschreibung für Suchmaschinen",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Aus Support → Seiten. Entwürfe und Seiten nur für Kunden bleiben aus diesem Menü.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Aus Support → Seiten. Entwürfe bleiben aus dem Menü, bis sie veröffentlicht sind.",
+    "Leave empty to show the page in the first language.": "Leer lassen, um die Seite in der ersten Sprache zu zeigen.",
+    "New page": "Neue Seite",
+    "No pages yet": "Noch keine Seiten",
+    "Off: a draft nobody sees.": "Aus: ein Entwurf, den niemand sieht.",
+    "Page of your own": "Eigene Seite",
+    "Pages": "Seiten",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Eigene Seiten wie Über uns oder Ihre AGB, mit dem Editor geschrieben. Fügen Sie sie unter Einstellungen → Kundenbereich → Menüs zu den Seitenmenüs hinzu.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Besucher werden zuerst um die Anmeldung gebeten, und Suchmaschinen lassen sie aus.",
+    "draft": "Entwurf",
+    "page": "Seite"
 }

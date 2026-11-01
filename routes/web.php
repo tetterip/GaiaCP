@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandingController;
 use App\Http\Controllers\Client\QuoteController;
 use App\Http\Controllers\Client\UnsubscribeController;
 use App\Http\Controllers\InstallController;
+use App\Http\Controllers\PageImageController;
 use App\Http\Controllers\PwaController;
 use App\Http\Controllers\SitemapController;
 use App\Support\Branding;
@@ -37,6 +38,11 @@ Route::get('admin/sw.js', [PwaController::class, 'serviceWorker'])->name('pwa.se
 Route::get('branding/{asset}', BrandingController::class)
     ->whereIn('asset', array_keys(Branding::ASSETS))
     ->name('branding');
+
+// The images in the texts of Support → Pages (App\Support\PageImages); no storage:link needed
+Route::get('page-images/{file}', PageImageController::class)
+    ->where('file', '[A-Za-z0-9]+\.(png|jpe?g|gif|webp)')
+    ->name('page-image');
 
 // "Stop these emails" at the end of an informational message to clients (signed links, no login)
 Route::controller(UnsubscribeController::class)->middleware('signed')->group(function () {

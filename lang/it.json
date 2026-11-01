@@ -3531,5 +3531,21 @@
     "We email you a link that logs you in without a password. It works once, for :count minutes.": "Ti inviamo via email un link che ti fa accedere senza password. Funziona una volta, per :count minuti.",
     "Your :name sign-in link": "Il tuo link di accesso a :name",
     "added :date": "aggiunta il :date",
-    "last used :date": "ultimo uso il :date"
+    "last used :date": "ultimo uso il :date",
+    "A line or two shown under the title in search results and link previews. Empty: the first lines of the text.": "Una o due righe sotto il titolo nei risultati di ricerca e nelle anteprime dei link. Vuoto: le prime righe del testo.",
+    "Changed": "Modificato",
+    "Custom page": "Pagina personalizzata",
+    "Description for search engines": "Descrizione per i motori di ricerca",
+    "From Support → Pages. Drafts and pages only for clients stay out of this menu.": "Da Supporto → Pagine. Le bozze e le pagine solo per i clienti restano fuori da questo menu.",
+    "From Support → Pages. Drafts stay out of the menu until they are published.": "Da Supporto → Pagine. Le bozze restano fuori dal menu finché non vengono pubblicate.",
+    "Leave empty to show the page in the first language.": "Lascia vuoto per mostrare la pagina nella prima lingua.",
+    "New page": "Nuova pagina",
+    "No pages yet": "Ancora nessuna pagina",
+    "Off: a draft nobody sees.": "Disattivato: una bozza che nessuno vede.",
+    "Page of your own": "Pagina personalizzata",
+    "Pages": "Pagine",
+    "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Pagine tue, come Chi siamo o i tuoi termini, scritte con l'editor. Aggiungile ai menu laterali da Impostazioni → Area clienti → Menu.",
+    "Visitors are asked to log in first, and search engines leave it out.": "Ai visitatori viene chiesto prima di accedere, e i motori di ricerca la escludono.",
+    "draft": "bozza",
+    "page": "pagina"
 }
