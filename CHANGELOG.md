@@ -8,7 +8,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Pages of your own (Support → Pages): About us, your terms or a guide, written with an editor (headings, lists,
   links, quotes, tables, pictures), a text per language, at `/pages/…`. Published or a draft, for everyone or only for
   clients; add them to either side menu under Settings → Client area → Menus. Public ones are in the sitemap.
-
+- Visitors' top bar: the light / dark mode button is an outlined button like the language one next to it.
 - Other ways to log in (Settings → Security → Login security): passkeys on both logins (each admin and client adds
   theirs from their profile, then logs in with a fingerprint, face or screen lock; no two-factor code after one), and
   "Email me a sign-in link" (one use, 15 minutes; on in the client area, off for admins until ticked; two-factor is

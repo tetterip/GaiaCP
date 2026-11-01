@@ -1441,25 +1441,12 @@
         gap: .5rem;
     }
 
-    /* Light / dark mode for visitors: one icon, the three choices in its dropdown */
+    /* Light / dark mode for visitors: one icon, the three choices in its dropdown; an outlined button like the
+       language next to it, square, with the same height and icon size */
     .gcp-public-theme-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.25rem;
-        height: 2.25rem;
-        border-radius: var(--gcp-radius-control);
-        color: var(--gray-500);
-    }
-
-    .gcp-public-theme-btn:hover {
-        color: var(--gcp-ink);
-        background: rgb(127 127 127 / .1);
-    }
-
-    .gcp-public-theme-btn svg {
-        width: 1.25rem;
-        height: 1.25rem;
+        min-width: 2rem;
+        min-height: 2rem;
+        padding: 0;
     }
 
     .gcp-public-back {
