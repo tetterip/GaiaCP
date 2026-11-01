@@ -17,8 +17,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\EmbeddedTable;
 use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -175,7 +177,24 @@ class ApiKeySettings extends Page implements HasTable, SettingsCard
                 ->helperText(__('What uses it, so you know which key to revoke.')),
             Fieldset::make(__('Permissions'))
                 ->columns(1)
-                ->schema($areas),
+                ->schema([
+                    Actions::make([
+                        Action::make('permissions_all')
+                            ->label(__('Select all'))
+                            ->link()
+                            ->action(fn (Set $set) => self::setPermissions($set, fn (array $actions) => $actions)),
+                        Action::make('permissions_read')
+                            ->label(__('Read only'))
+                            ->link()
+                            ->action(fn (Set $set) => self::setPermissions($set, fn (array $actions) => array_values(array_intersect($actions, ['read'])))),
+                        Action::make('permissions_none')
+                            ->label(__('Clear all'))
+                            ->link()
+                            ->color('gray')
+                            ->action(fn (Set $set) => self::setPermissions($set, fn () => [])),
+                    ])->key('permissionActions'),
+                    ...$areas,
+                ]),
             Textarea::make('allowed_ips')
                 ->label('Allowed IPs')
                 ->rows(3)
@@ -191,6 +210,14 @@ class ApiKeySettings extends Page implements HasTable, SettingsCard
                     }
                 }),
         ];
+    }
+
+    /** Ticks, in every area, the actions $pick keeps of that area's actions. */
+    private static function setPermissions(Set $set, Closure $pick): void
+    {
+        foreach (ApiKey::PERMISSIONS as $area => $actions) {
+            $set("permissions.{$area}", $pick($actions));
+        }
     }
 
     /**
