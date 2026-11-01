@@ -3555,5 +3555,17 @@
     "Select all": "Tout sélectionner",
     "Read only": "Lecture seule",
     "Clear all": "Tout désélectionner",
-    "The text of this email is not kept: its link logs in whoever opens it.": "Le texte de cet e-mail n'est pas conservé : son lien connecte quiconque l'ouvre."
+    "The text of this email is not kept: its link logs in whoever opens it.": "Le texte de cet e-mail n'est pas conservé : son lien connecte quiconque l'ouvre.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Une passkey (:device) a été ajoutée à :email le :date. Elle connecte sans mot de passe.",
+    "A passkey was added to your :name login": "Une passkey a été ajoutée à votre compte :name",
+    "Confirm it's you": "Confirmez qu'il s'agit bien de vous",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Si ce n'était pas vous, réinitialisez votre mot de passe maintenant : cela supprime aussi toutes les passkeys de votre compte. Contactez-nous ensuite.",
+    "Passkeys removed for :email.": "Passkeys supprimées pour :email.",
+    "Remove passkeys (:count)": "Supprimer les passkeys (:count)",
+    "Reset my password": "Réinitialiser mon mot de passe",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Merci. Si votre appareil ne demande pas la passkey maintenant, appuyez à nouveau sur « :button ».",
+    "That password is not right.": "Ce mot de passe n'est pas correct.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Celles-ci ne fonctionneront plus : :list. :email se connecte avec le mot de passe (et le code à deux facteurs) et peut en ajouter de nouvelles.",
+    "Too many tries. Please wait a few minutes.": "Trop de tentatives. Veuillez patienter quelques minutes.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Saisissez votre mot de passe pour ajouter une passkey. Pas de mot de passe ? Déconnectez-vous puis reconnectez-vous, et ajoutez-la dans les 10 minutes."
 }

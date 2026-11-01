@@ -11,7 +11,7 @@ Parola yerine **Bana giriş bağlantısı gönder**'e basabilirsiniz: size bir k
 <!-- endif -->
 
 <!-- if:passkeys -->
-**Geçiş anahtarları**, parolanız yerine parmak iziniz, yüzünüz veya ekran kilidinizle giriş yapmanızı sağlar. Her telefona veya bilgisayara profilinizden **Bu cihaza geçiş anahtarı ekle** ile bir tane ekleyin, ardından giriş sayfasında **Geçiş anahtarıyla giriş yap**'a basın. Giriş sayfası, bu cihazda en son hangi yolla giriş yaptığınızı "Son kullanım" ile işaretler.
+**Geçiş anahtarları**, parolanız yerine parmak iziniz, yüzünüz veya ekran kilidinizle giriş yapmanızı sağlar. Her telefona veya bilgisayara profilinizden **Bu cihaza geçiş anahtarı ekle** ile bir tane ekleyin, ardından giriş sayfasında **Geçiş anahtarıyla giriş yap**'a basın. Giriş sayfası, bu cihazda en son hangi yolla giriş yaptığınızı "Son kullanım" ile işaretler. 10 dakikadan uzun süre önce oturum açtıysanız önce parolanızı sorar ve her geçiş anahtarı eklendiğinde size e-posta göndeririz. Parolanızı sıfırlamak tüm geçiş anahtarlarınızı kaldırır.
 <!-- endif -->
 
 Profiliniz (menünün altında veya sağ üstte adınızın bulunduğu menü) e-posta adresinizi, telefon numaranızı, dilinizi ve parolanızı değiştirir ve ek güvenlik için iki adımlı doğrulamayı açabilir.

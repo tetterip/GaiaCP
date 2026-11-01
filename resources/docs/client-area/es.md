@@ -11,7 +11,7 @@ En lugar de la contraseña, puede pulsar **Enviarme un enlace de acceso**: le en
 <!-- endif -->
 
 <!-- if:passkeys -->
-Las **passkeys** le permiten iniciar sesión con su huella, su rostro o el bloqueo de pantalla en lugar de su contraseña. Añada una en cada teléfono u ordenador desde su perfil con **Añadir una passkey en este dispositivo** y luego pulse **Iniciar sesión con una passkey** en la página de inicio de sesión. La página de inicio de sesión marca con «Último uso» la forma en que entró por última vez desde este dispositivo.
+Las **passkeys** le permiten iniciar sesión con su huella, su rostro o el bloqueo de pantalla en lugar de su contraseña. Añada una en cada teléfono u ordenador desde su perfil con **Añadir una passkey en este dispositivo** y luego pulse **Iniciar sesión con una passkey** en la página de inicio de sesión. La página de inicio de sesión marca con «Último uso» la forma en que entró por última vez desde este dispositivo. Si inició sesión hace más de 10 minutos, primero le pide la contraseña, y le enviamos un correo cada vez que se añade una passkey. Restablecer la contraseña elimina todas sus passkeys.
 <!-- endif -->
 
 Su perfil (el menú con su nombre, al final del menú o arriba a la derecha) cambia su dirección de email, teléfono, idioma y contraseña, y puede activar la verificación en dos pasos para mayor seguridad.

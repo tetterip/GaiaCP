@@ -11,7 +11,7 @@ Statt des Passworts können Sie auf **Anmeldelink per E-Mail senden** klicken: W
 <!-- endif -->
 
 <!-- if:passkeys -->
-**Passkeys** melden Sie mit Fingerabdruck, Gesicht oder Bildschirmsperre statt mit Ihrem Passwort an. Fügen Sie auf jedem Telefon oder Computer in Ihrem Profil mit **Passkey auf diesem Gerät hinzufügen** einen hinzu und klicken Sie dann auf der Anmeldeseite auf **Mit einem Passkey anmelden**. Die Anmeldeseite markiert den Weg, auf dem Sie sich zuletzt auf diesem Gerät angemeldet haben, mit „Zuletzt verwendet".
+**Passkeys** melden Sie mit Fingerabdruck, Gesicht oder Bildschirmsperre statt mit Ihrem Passwort an. Fügen Sie auf jedem Telefon oder Computer in Ihrem Profil mit **Passkey auf diesem Gerät hinzufügen** einen hinzu und klicken Sie dann auf der Anmeldeseite auf **Mit einem Passkey anmelden**. Die Anmeldeseite markiert den Weg, auf dem Sie sich zuletzt auf diesem Gerät angemeldet haben, mit „Zuletzt verwendet". Wenn Sie sich vor mehr als 10 Minuten angemeldet haben, wird zuerst Ihr Passwort abgefragt, und wir schicken Ihnen bei jedem neuen Passkey eine E-Mail. Wenn Sie Ihr Passwort zurücksetzen, werden alle Ihre Passkeys entfernt.
 <!-- endif -->
 
 In Ihrem Profil (das Menü mit Ihrem Namen, unten im Menü oder oben rechts) ändern Sie Ihre E-Mail-Adresse, Telefonnummer, Sprache und Ihr Passwort und können für zusätzliche Sicherheit die Zwei-Faktor-Authentifizierung einschalten.

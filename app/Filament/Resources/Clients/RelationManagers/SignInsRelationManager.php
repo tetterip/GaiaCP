@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Clients\RelationManagers;
 
 use App\ClientSessions\ClientSessions;
 use App\Filament\Concerns\TranslatesRelationManagerTitle;
+use App\Filament\Resources\Users\UserActions;
 use App\Models\Client;
 use App\Models\ClientLogin;
 use App\Models\ClientSession;
@@ -89,6 +90,14 @@ class SignInsRelationManager extends RelationManager
                     ->label('Signed in'),
             ])
             ->headerActions([
+                Action::make('removePasskeys')
+                    ->label(fn () => __('Remove passkeys (:count)', ['count' => $this->getOwnerRecord()->user?->passkeys()->count() ?? 0]))
+                    ->icon(Heroicon::OutlinedFingerPrint)
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalDescription(fn () => UserActions::passkeysDescription($this->getOwnerRecord()->user))
+                    ->visible(fn () => (bool) $this->getOwnerRecord()->user?->passkeys()->exists())
+                    ->action(fn () => UserActions::deletePasskeys($this->getOwnerRecord()->user, 'an admin')),
                 Action::make('logOutEverywhere')
                     ->label(fn () => __('Log out everywhere (:count)', ['count' => self::sessions($this->getOwnerRecord())->count()]))
                     ->icon(Heroicon::OutlinedArrowRightStartOnRectangle)

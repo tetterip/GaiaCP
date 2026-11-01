@@ -28,7 +28,7 @@ class LogSentEmail
             $client instanceof Client ? $client : null,
             $isClientMail ? ($event->data['mailTemplate'] ?? null) : null,
             $isClientMail || is_a($mailable, ClientMessageMail::class, true),
-            keepBody: ! is_a($mailable, PasswordResetMail::class, true),
+            keepBody: $mailable !== PasswordResetMail::class, // not SecurityNoticeMail, which has no such link
         ), report: false);
     }
 }
