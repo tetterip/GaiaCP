@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Settings → System → Updates: the line under "GaiaCP X is available" now says which version the date belongs to
+  ("You have 0.4.0. 0.5.0 was released on …"); it read as if your own version came out that day.
+
 ## [0.5.0] - 2026-11-01
 
 - Pages of your own (Support → Pages): About us, your terms or a guide, written with an editor (headings, lists,
