@@ -107,7 +107,8 @@ trait QuickSignIn
         $user = $pending['user'];
 
         if (SignIn::needsTwoFactor($user, $this->panelId())) {
-            if (blank($this->userUndertakingMultiFactorAuthentication)) {
+            // The code must be asked for this login: not one a password login on this page started for another
+            if ($this->getUserUndertakingMultiFactorAuthentication()?->getAuthIdentifier() !== $user->getAuthIdentifier()) {
                 $this->startPendingSignIn();
 
                 return null;

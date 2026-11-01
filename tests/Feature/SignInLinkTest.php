@@ -143,6 +143,25 @@ class SignInLinkTest extends TestCase
         $this->assertAuthenticatedAs($user, 'client');
     }
 
+    public function test_a_code_asked_for_another_login_does_not_open_the_linked_one(): void
+    {
+        $victim = $this->clientUser();
+        $victim->saveAppAuthenticationSecret(app(Google2FA::class)->generateSecretKey(16));
+        $attackerClient = Client::factory()->create(['email' => 'eve@example.gr']);
+        $attacker = User::factory()->create(['role' => UserRole::Client, 'client_id' => $attackerClient->id, 'email' => 'eve@example.gr']);
+        $attacker->saveAppAuthenticationSecret($secret = app(Google2FA::class)->generateSecretKey(16));
+
+        // A password login of the attacker's own account waits for its code…
+        $login = Livewire::test(ClientLogin::class)->fillForm(['email' => 'eve@example.gr', 'password' => 'password'])->call('authenticate');
+        $this->assertNotNull($login->get('userUndertakingMultiFactorAuthentication'));
+
+        // …then a link for another login is opened, and the attacker's own code is sent on the same page
+        $this->get(str_replace(url('/'), '', app(EmailLinks::class)->url($victim, 'client')));
+        $login->fillForm(['app' => ['code' => app(Google2FA::class)->getCurrentOtp($secret)]], 'multiFactorChallengeForm')->call('authenticate');
+
+        $this->assertGuest('client');
+    }
+
     public function test_admins_only_when_ticked(): void
     {
         Filament::setCurrentPanel('admin');
