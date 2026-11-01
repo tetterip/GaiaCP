@@ -324,6 +324,8 @@ class UpdatesTest extends TestCase
 
         Livewire::test(Updates::class)
             ->assertSee('GaiaCP '.self::NEXT.' is available')
+            // The date is the new release's, so the line names it
+            ->assertSee('You have '.Version::current().'. '.self::NEXT.' was released on')
             ->assertSee('Updates</strong> from the panel', false)
             ->assertDontSee('<script>', false)
             ->assertActionVisible('update');

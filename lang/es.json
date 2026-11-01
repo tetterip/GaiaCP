@@ -1281,7 +1281,7 @@
     "This domain cannot be transferred for :years year(s). Choose another term.": "Este dominio no se puede transferir por :years año(s). Elija otro plazo.",
     "This domain is already with us. Contact us if it is yours.": "Este dominio ya está con nosotros. Contáctenos si es suyo.",
     "This email address already has an account here. Log in, use \"Forgot password?\" or contact us.": "Esta dirección de email ya tiene una cuenta aquí. Inicie sesión, use \"¿Ha olvidado su contraseña?\" o contáctenos.",
-    "This is :current. Released on :date.": "Esta es la :current. Publicada el :date.",
+    "You have :current. :version was released on :date.": "Tiene la :current. La :version se publicó el :date.",
     "This is GaiaCP :version.": "Esto es GaiaCP :version.",
     "This is a payment notice, not a tax invoice.": "Esto es un aviso de pago, no una factura fiscal.",
     "This is a test email from GaiaCP.": "Este es un email de prueba de GaiaCP.",

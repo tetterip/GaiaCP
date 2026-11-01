@@ -129,7 +129,7 @@ class Updates extends Page implements SettingsCard
                 $this->error !== null => Callout::make(__('Could not check for updates'))->description($this->error)->danger(),
                 $release === null => Callout::make(__('No release has been published yet'))->description(__('This is GaiaCP :version.', ['version' => $current]))->info(),
                 $this->updateAvailable() => Callout::make(__('GaiaCP :version is available', ['version' => $release->version]))
-                    ->description(__('This is :current. Released on :date.', ['current' => $current, 'date' => $release->publishedAt?->timezone(config('app.timezone'))->format(AppServiceProvider::dateFormat()) ?? '-']))
+                    ->description(__('You have :current. :version was released on :date.', ['current' => $current, 'version' => $release->version, 'date' => $release->publishedAt?->timezone(config('app.timezone'))->format(AppServiceProvider::dateFormat()) ?? '-']))
                     ->warning(),
                 default => Callout::make(__('GaiaCP :version is up to date', ['version' => $current]))->success(),
             },
