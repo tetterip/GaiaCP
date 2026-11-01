@@ -3549,5 +3549,8 @@
     "draft": "Entwurf",
     "page": "Seite",
     "Featured image": "Beitragsbild",
-    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Wird über dem Text gezeigt und als Bild, wenn die Seite geteilt wird (Facebook, Viber, Slack…). Am besten etwa 1200 × 630 Pixel."
+    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Wird über dem Text gezeigt und als Bild, wenn die Seite geteilt wird (Facebook, Viber, Slack…). Am besten etwa 1200 × 630 Pixel.",
+    "Select all": "Alle auswählen",
+    "Read only": "Nur lesen",
+    "Clear all": "Alle abwählen"
 }

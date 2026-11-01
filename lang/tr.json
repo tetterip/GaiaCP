@@ -3549,5 +3549,8 @@
     "draft": "taslak",
     "page": "sayfa",
     "Featured image": "Öne çıkan görsel",
-    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Metnin üstünde ve sayfa paylaşıldığında görsel olarak gösterilir (Facebook, Viber, Slack…). En iyisi yaklaşık 1200 × 630 piksel."
+    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Metnin üstünde ve sayfa paylaşıldığında görsel olarak gösterilir (Facebook, Viber, Slack…). En iyisi yaklaşık 1200 × 630 piksel.",
+    "Select all": "Tümünü seç",
+    "Read only": "Yalnızca okuma",
+    "Clear all": "Tümünü temizle"
 }
