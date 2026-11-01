@@ -147,10 +147,10 @@ class DemoSeeder extends Seeder
     private function settings(): void
     {
         Settings::save([
-            'company.name' => 'Aurora Hosting',
-            'company.email' => 'hello@aurora-hosting.example',
+            'company.name' => 'Odysseus Hosting',
+            'company.email' => 'hello@odysseus-hosting.example',
             'company.phone' => '+30 210 000 0000',
-            'company.website' => 'https://aurora-hosting.example',
+            'company.website' => 'https://odysseus-hosting.example',
             'company.address' => "12 Example Street\n10552 Athens\nGreece",
             'languages.enabled' => ['en', 'el'],
             'region.timezone' => 'Europe/Athens',
@@ -186,7 +186,7 @@ class DemoSeeder extends Seeder
 
         $support = User::query()->create([
             'name' => 'Eleni Support',
-            'email' => 'support@aurora-hosting.example',
+            'email' => 'support@odysseus-hosting.example',
             'password' => Hash::make(Str::random(32)),
             'role' => UserRole::Admin,
             'super_admin' => false,
@@ -508,8 +508,8 @@ class DemoSeeder extends Seeder
 
     private function support(User $support): void
     {
-        $sales = TicketDepartment::query()->create(['name' => 'Sales', 'email' => 'sales@aurora-hosting.example', 'client_visible' => true, 'sort' => 1]);
-        $technical = TicketDepartment::query()->create(['name' => 'Technical support', 'email' => 'support@aurora-hosting.example', 'client_visible' => true, 'sort' => 2]);
+        $sales = TicketDepartment::query()->create(['name' => 'Sales', 'email' => 'sales@odysseus-hosting.example', 'client_visible' => true, 'sort' => 1]);
+        $technical = TicketDepartment::query()->create(['name' => 'Technical support', 'email' => 'support@odysseus-hosting.example', 'client_visible' => true, 'sort' => 2]);
         $tickets = app(Tickets::class);
         $clients = Client::query()->with('user')->orderBy('id')->get();
         $demo = $clients->first();
@@ -621,10 +621,10 @@ class DemoSeeder extends Seeder
             'published' => true,
             'created_by' => $admin->id,
             'texts' => [
-                'en' => ['title' => 'About us', 'description' => 'Aurora Hosting: web hosting and domains since 2012, with support from real people.',
-                    'body' => '<p>Aurora Hosting has been looking after small businesses and their websites since 2012. We are a team of five in Athens, and every ticket is answered by one of us.</p><h2>What we offer</h2><ul><li><p><strong>Web hosting</strong> on fast NVMe servers, with free SSL and daily backups</p></li><li><p><strong>Domain names</strong> in .gr, .eu, .com and more</p></li><li><p><strong>Website care</strong>: updates, monitoring and a monthly report</p></li></ul><h2>Why clients stay</h2><blockquote><p>Real people answer, usually within the hour, in Greek or English.</p></blockquote><p>Questions? <a href="/contact">Contact us</a> or search the knowledge base.</p>'],
-                'el' => ['title' => 'Ποιοι είμαστε', 'description' => 'Aurora Hosting: φιλοξενία και domains από το 2012, με υποστήριξη από ανθρώπους.',
-                    'body' => '<p>Η Aurora Hosting φροντίζει μικρές επιχειρήσεις και τις ιστοσελίδες τους από το 2012. Είμαστε μια ομάδα πέντε ατόμων στην Αθήνα και κάθε ticket το απαντά ένας από εμάς.</p><h2>Τι προσφέρουμε</h2><ul><li><p><strong>Φιλοξενία ιστοσελίδων</strong> σε γρήγορους NVMe servers, με δωρεάν SSL και ημερήσια backups</p></li><li><p><strong>Domains</strong> σε .gr, .eu, .com και άλλα</p></li><li><p><strong>Συντήρηση ιστοσελίδων</strong>: ενημερώσεις, παρακολούθηση και μηνιαία αναφορά</p></li></ul><h2>Γιατί μένουν οι πελάτες μας</h2><blockquote><p>Απαντούν άνθρωποι, συνήθως μέσα σε μία ώρα, στα ελληνικά ή στα αγγλικά.</p></blockquote><p>Ερωτήσεις; <a href="/contact">Επικοινωνήστε μαζί μας</a> ή ψάξτε στη βάση γνώσεων.</p>'],
+                'en' => ['title' => 'About us', 'description' => 'Odysseus Hosting: web hosting and domains since 2012, with support from real people.',
+                    'body' => '<p>Odysseus Hosting has been looking after small businesses and their websites since 2012. We are a team of five in Athens, and every ticket is answered by one of us.</p><h2>What we offer</h2><ul><li><p><strong>Web hosting</strong> on fast NVMe servers, with free SSL and daily backups</p></li><li><p><strong>Domain names</strong> in .gr, .eu, .com and more</p></li><li><p><strong>Website care</strong>: updates, monitoring and a monthly report</p></li></ul><h2>Why clients stay</h2><blockquote><p>Real people answer, usually within the hour, in Greek or English.</p></blockquote><p>Questions? <a href="/contact">Contact us</a> or search the knowledge base.</p>'],
+                'el' => ['title' => 'Ποιοι είμαστε', 'description' => 'Odysseus Hosting: φιλοξενία και domains από το 2012, με υποστήριξη από ανθρώπους.',
+                    'body' => '<p>Η Odysseus Hosting φροντίζει μικρές επιχειρήσεις και τις ιστοσελίδες τους από το 2012. Είμαστε μια ομάδα πέντε ατόμων στην Αθήνα και κάθε ticket το απαντά ένας από εμάς.</p><h2>Τι προσφέρουμε</h2><ul><li><p><strong>Φιλοξενία ιστοσελίδων</strong> σε γρήγορους NVMe servers, με δωρεάν SSL και ημερήσια backups</p></li><li><p><strong>Domains</strong> σε .gr, .eu, .com και άλλα</p></li><li><p><strong>Συντήρηση ιστοσελίδων</strong>: ενημερώσεις, παρακολούθηση και μηνιαία αναφορά</p></li></ul><h2>Γιατί μένουν οι πελάτες μας</h2><blockquote><p>Απαντούν άνθρωποι, συνήθως μέσα σε μία ώρα, στα ελληνικά ή στα αγγλικά.</p></blockquote><p>Ερωτήσεις; <a href="/contact">Επικοινωνήστε μαζί μας</a> ή ψάξτε στη βάση γνώσεων.</p>'],
             ],
         ]);
 

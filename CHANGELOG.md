@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The public demo's made-up company is now Odysseus Hosting (was Aurora Hosting), in its settings, pages, emails and
+  downloads.
 - Settings → System → Updates: the line under "GaiaCP X is available" now says which version the date belongs to
   ("You have 0.4.0. 0.5.0 was released on …"); it read as if your own version came out that day.
 
