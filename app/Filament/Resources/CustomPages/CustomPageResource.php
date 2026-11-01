@@ -17,6 +17,7 @@ use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -31,6 +32,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use UnitEnum;
 
 /**
@@ -93,6 +95,28 @@ class CustomPageResource extends Resource
                         ->alphaDash()
                         ->unique(ignoreRecord: true)
                         ->helperText(__('Empty: made from the title.')),
+                    FileUpload::make('image')
+                        ->label('Featured image')
+                        ->image()
+                        ->disk(PageImages::DISK)
+                        ->directory(PageImages::FOLDER)
+                        ->visibility('public')
+                        ->acceptedFileTypes(PageImages::TYPES)
+                        ->maxSize(PageImages::MAX_KB)
+                        ->imagePreviewHeight('160')
+                        ->columnSpanFull()
+                        ->helperText(__('Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.'))
+                        ->saveUploadedFileUsing(fn (TemporaryUploadedFile $file) => PageImages::store($file))
+                        // The preview comes through the page images route, so it shows without storage:link
+                        ->getUploadedFileUsing(function (FileUpload $component, string $file, string|array|null $storedFileNames): ?array {
+                            $uploaded = $component->getUploadedFile($file, $storedFileNames);
+
+                            if ($uploaded !== null) {
+                                $uploaded['url'] = PageImages::url($file) ?? $uploaded['url'];
+                            }
+
+                            return $uploaded;
+                        }),
                 ]),
             self::texts(),
         ]);

@@ -60,6 +60,12 @@ class CustomPageView extends Page
         return $this->page->description();
     }
 
+    /** Its featured image for link previews (og:image), in place of the company logo. */
+    public function metaImage(): ?string
+    {
+        return $this->page->imageUrl();
+    }
+
     /** Kept for clients: out of search results. */
     public function noindex(): bool
     {

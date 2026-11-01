@@ -3547,5 +3547,7 @@
     "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Eigen pagina's, zoals Over ons of uw voorwaarden, geschreven met de editor. Voeg ze toe aan de zijmenu's onder Instellingen → Klantenzone → Menu's.",
     "Visitors are asked to log in first, and search engines leave it out.": "Bezoekers moeten eerst inloggen, en zoekmachines laten haar weg.",
     "draft": "concept",
-    "page": "pagina"
+    "page": "pagina",
+    "Featured image": "Uitgelichte afbeelding",
+    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Getoond boven de tekst en als afbeelding wanneer de pagina gedeeld wordt (Facebook, Viber, Slack…). Ongeveer 1200 × 630 pixels werkt het best."
 }

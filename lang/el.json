@@ -3547,5 +3547,7 @@
     "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Δικές σας σελίδες, όπως Ποιοι είμαστε ή οι όροι σας, γραμμένες με τον επεξεργαστή. Προσθέστε τις στα πλαϊνά μενού από Ρυθμίσεις → Περιοχή πελατών → Μενού.",
     "Visitors are asked to log in first, and search engines leave it out.": "Οι επισκέπτες καλούνται πρώτα να συνδεθούν και οι μηχανές αναζήτησης την αφήνουν έξω.",
     "draft": "πρόχειρο",
-    "page": "σελίδα"
+    "page": "σελίδα",
+    "Featured image": "Κεντρική εικόνα",
+    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Εμφανίζεται πάνω από το κείμενο και ως εικόνα όταν κάποιος μοιράζεται τη σελίδα (Facebook, Viber, Slack…). Ιδανικό μέγεθος περίπου 1200 × 630 pixels."
 }

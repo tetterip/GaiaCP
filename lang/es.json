@@ -3547,5 +3547,7 @@
     "Pages of your own, such as About us or your terms, written with the editor. Add them to the side menus under Settings → Client area → Menus.": "Páginas propias, como Quiénes somos o sus condiciones, escritas con el editor. Añádalas a los menús laterales en Ajustes → Área de clientes → Menús.",
     "Visitors are asked to log in first, and search engines leave it out.": "Se pide a los visitantes que inicien sesión primero, y los buscadores la dejan fuera.",
     "draft": "borrador",
-    "page": "página"
+    "page": "página",
+    "Featured image": "Imagen destacada",
+    "Shown above the text, and as the picture when the page is shared (Facebook, Viber, Slack…). About 1200 × 630 pixels works best.": "Se muestra sobre el texto y como imagen cuando se comparte la página (Facebook, Viber, Slack…). Lo ideal es unos 1200 × 630 píxeles."
 }

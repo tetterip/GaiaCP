@@ -174,6 +174,16 @@
         max-width: 48rem;
     }
 
+    .gcp-custom-page-image {
+        display: block;
+        width: 100%;
+        max-width: 48rem;
+        max-height: 24rem;
+        object-fit: cover;
+        border-radius: .75rem;
+        margin-bottom: 1.25rem;
+    }
+
     .gcp-custom-page img {
         max-width: 100%;
         height: auto;

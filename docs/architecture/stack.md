@@ -177,7 +177,8 @@ How the admin and client panels, users, access, security, branding, themes and l
   20 newest public ones); `PublicHome::news()` puts the newest three on the home page.
   Pages of your own (`App\Models\CustomPage`, admin `CustomPageResource` under Support → Pages, `AdminArea::Support`):
   texts per locale (title, HTML from Filament's `RichEditor`, description), `slug` like announcements, `published`,
-  `clients_only`. `CustomPage::html()` renders with `RichContentRenderer::toHtml()` (Filament's HTML sanitizer, so no
+  `clients_only`, `image` (featured, `PageImages` path; `CustomPageView::metaImage()` → `Seo::image()` → og:image
+  with `summary_large_image`, else the logo). `CustomPage::html()` renders with `RichContentRenderer::toHtml()` (Filament's HTML sanitizer, so no
   script or `javascript:` link survives). Client page `CustomPageView` (`/pages/{slug}`, visitors and clients; a draft is
   404, a visitor on one kept for clients goes to the login with `url.intended`; `metaDescription()`, `noindex()` for
   clients only). Pictures go through `App\Support\PageImages` (a Filament `FileAttachmentProvider` for the renderer,
