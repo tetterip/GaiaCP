@@ -7,6 +7,7 @@ use App\Filament\Client\Resources\Emails\EmailResource;
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Invoicing\IssueInvoice;
 use App\Plugins\PluginManager;
+use App\SignIn\SignIn;
 use App\Support\CookieConsent;
 use App\Support\Locales;
 use App\Support\PublicArea;
@@ -108,6 +109,8 @@ class Help extends Page
             'ticket_mail' => $plugins->enabled('ticket-mail') && (filled(config('gaiacp.ticket_mail.host')) || filled(config('gaiacp.ticket_mail.inbound_token'))),
             'cookies' => CookieConsent::enabled(),
             'google_login' => $plugins->enabled('google_login') && $plugins->find('google_login')->clientLoginButtons() !== [],
+            'email_link' => SignIn::emailLinks('client'),
+            'passkeys' => SignIn::passkeys('client'),
         ];
         $features['hosting'] = $features['hosting_login'] || $features['hosting_password'] || $features['hosting_usage'] || $features['hosting_uptime'] || $features['vps_power'];
         $features['domains'] = $features['domain_nameservers'] || $features['domain_epp'] || $features['domain_auto_renew']

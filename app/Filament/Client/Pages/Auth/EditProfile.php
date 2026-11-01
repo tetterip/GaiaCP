@@ -5,6 +5,7 @@ namespace App\Filament\Client\Pages\Auth;
 use App\Actions\ClientChangeRequests;
 use App\Enums\ChangeRequestStatus;
 use App\Filament\Concerns\KeepsDemoLogin;
+use App\Filament\Concerns\ManagesPasskeys;
 use App\Models\Client;
 use App\Models\ClientChangeRequest;
 use App\Models\User;
@@ -27,12 +28,13 @@ use Symfony\Component\Intl\Countries;
 
 /**
  * The client's profile. Email and phone save at once on the client (their login follows, Client::booted()); name,
- * company, tax details and address go to the admins as a change request (ClientChangeRequests). Language, the bell, password
- * and two-factor authentication (Filament adds it) are the login's own.
+ * company, tax details and address go to the admins as a change request (ClientChangeRequests). Language, the bell, password,
+ * two-factor authentication (Filament adds it) and passkeys (ManagesPasskeys) are the login's own.
  */
 class EditProfile extends BaseEditProfile
 {
     use KeepsDemoLogin;
+    use ManagesPasskeys;
 
     /** On the right like every other form's (BasePage::alignFormActionsEnd()); Filament pins the profile's to the left. */
     public function getFormActionsAlignment(): string|Alignment
@@ -158,6 +160,7 @@ class EditProfile extends BaseEditProfile
                         $this->getPasswordConfirmationFormComponent(),
                         $this->getCurrentPasswordFormComponent(),
                     ]),
+                $this->getPasskeysFormComponent(),
             ]);
     }
 

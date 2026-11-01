@@ -220,9 +220,22 @@ How the admin and client panels, users, access, security, branding, themes and l
   `Client/Pages/Auth/EmailVerificationPrompt`). A sign-in provider puts its confirmed address in `ClientSignup::continueWith()`
   (session); Register then fixes the email from the session and asks no password. Sign-in plugins add
   `Plugin::clientRoutes()` (guest routes `filament.client.*`) and `clientLoginButtons()` (under the login and sign up
-  forms): `plugins/GoogleLogin` (`GoogleOAuth` code flow + userinfo, `GoogleSignIn`: login by email with that address,
-  `ClientAreaAccess::connect()` for a client without a login, else on to sign up; refuses admins who aren't clients,
-  inactive logins and logins with 2FA), Settings → Google sign-in (`gaiacp.google_login.*`, secret encrypted)
+  forms), and for /admin `adminRoutes()` / `adminLoginButtons()`: `plugins/GoogleLogin` (`GoogleOAuth` code flow +
+  userinfo, one redirect URI per panel, `GoogleSignIn`: login by email with that address, `ClientAreaAccess::connect()`
+  for a client without a login, else on to sign up; refuses admins who aren't clients and inactive logins;
+  `handleAdmin()` only an existing active admin, while `gaiacp.google_login.admins`), Settings → Google sign-in
+  (`gaiacp.google_login.*`, secret encrypted)
+- Other ways in (`App\SignIn`, Settings → Login security → `gaiacp.sign_in.*`), on both login pages through
+  `Filament\Concerns\QuickSignIn` (view `filament.sign-in.options` under the form): passkeys (`SignIn\Passkeys\Passkeys`,
+  WebAuthn by hand: `Cbor`, `CoseKey` (ES256, RS256) to PEM, `openssl_verify`; `passkeys` table, public keys only;
+  discoverable, user verification required, attestation none, rpId = request host, one-time challenge in the session;
+  added from both profiles via `Concerns\ManagesPasskeys`, not while viewing as a client; a passkey skips 2FA) and
+  "Email me a sign-in link" (`SignIn\EmailLinks`: signed `filament.{panel}.sign-in-link` for 15 minutes, nonce used once
+  in the cache, 3 per address / 10 per IP in 15 minutes, `App\Notifications\SignInLink`). Google and a link only prove
+  the email: `SignIn::begin()` keeps a pending sign-in in the session (tied to the login's email and password hash), the
+  login page then asks the 2FA code (Filament's challenge form) or, for a link, a press of Log in (mail scanners open
+  links). `SignIn::complete()` logs in, logs `sign_in.<method>` and sets the `gaiacp_last_sign_in_<panel>` cookie that
+  marks "Last used" (password logins set it too)
 - Captcha: Settings → General (`GeneralSettings`, super admins) picks `gaiacp.captcha.provider` (a `App\Captcha\CaptchaModule`
   key: captcha plugins `plugins/Recaptcha` (v2 checkbox), `plugins/Turnstile`, each with its keys page) and
   `gaiacp.captcha.forms` (`Captcha::FORMS`). `App\Captcha\Captcha::components($form)` adds the field

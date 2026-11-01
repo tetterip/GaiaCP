@@ -6,6 +6,14 @@ Connectez-vous avec votre adresse email et votre mot de passe. Si vous oubliez l
 Si votre adresse email est un compte Google, vous pouvez aussi cliquer sur **Continuer avec Google** sur la page de connexion au lieu de saisir votre mot de passe.
 <!-- endif -->
 
+<!-- if:email_link -->
+Au lieu du mot de passe, vous pouvez appuyer sur **M'envoyer un lien de connexion** : nous vous envoyons par e-mail un lien valable une fois, pendant 15 minutes. Ouvrez-le, puis appuyez sur **Se connecter** sur la page qui s'ouvre.
+<!-- endif -->
+
+<!-- if:passkeys -->
+Les **clés d'accès** vous connectent avec votre empreinte, votre visage ou le verrouillage de l'écran au lieu de votre mot de passe. Ajoutez-en une sur chaque téléphone ou ordinateur depuis votre profil avec **Ajouter une clé d'accès sur cet appareil**, puis appuyez sur **Se connecter avec une clé d'accès** sur la page de connexion. La page de connexion indique « Dernière utilisation » sur le moyen utilisé la dernière fois sur cet appareil.
+<!-- endif -->
+
 Votre profil (le menu à votre nom, en bas du menu ou en haut à droite) permet de modifier votre adresse email, votre numéro de téléphone, votre langue et votre mot de passe, et d'activer l'authentification à deux facteurs pour plus de sécurité.
 
 <!-- if:notifications -->

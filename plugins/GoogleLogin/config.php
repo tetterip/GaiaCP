@@ -7,5 +7,7 @@ return [
     'gaiacp.google_login' => [
         'client_id' => null,
         'client_secret' => null,
+        // Admins may log in to /admin with Google too (an existing active admin with that address; two-factor still asked)
+        'admins' => false,
     ],
 ];

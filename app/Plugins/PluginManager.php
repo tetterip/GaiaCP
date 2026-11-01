@@ -490,6 +490,14 @@ class PluginManager
         }
     }
 
+    /** Every plugin's admin panel routes outside the login (Plugin::adminRoutes()), from the admin panel. */
+    public function adminRoutes(): void
+    {
+        foreach ($this->plugins as $plugin) {
+            $plugin->adminRoutes();
+        }
+    }
+
     /** Every plugin's webhook routes (Plugin::webhookRoutes()), from routes/webhooks.php. */
     public function webhookRoutes(): void
     {
@@ -509,6 +517,13 @@ class PluginManager
     {
         return $this->all()->filter(fn (Plugin $plugin) => $this->enabled($plugin))
             ->flatMap(fn (Plugin $plugin) => $plugin->clientLoginButtons())->values()->all();
+    }
+
+    /** @return list<Htmlable> the enabled plugins' sign-in buttons for the admin login page */
+    public function adminLoginButtons(): array
+    {
+        return $this->all()->filter(fn (Plugin $plugin) => $this->enabled($plugin))
+            ->flatMap(fn (Plugin $plugin) => $plugin->adminLoginButtons())->values()->all();
     }
 
     /** @return list<class-string> */

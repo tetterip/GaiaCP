@@ -205,6 +205,15 @@ return [
         'allowed_ips' => null,
     ],
 
+    // Settings → Login security → Other ways to log in (App\SignIn\SignIn): passkeys on both logins (each login adds
+    // its own from the profile), and "Email me a sign-in link" (one use, 15 minutes) on the client area's login and,
+    // when ticked, /admin's.
+    'sign_in' => [
+        'passkeys' => true,
+        'email_link' => true,
+        'admin_email_link' => false,
+    ],
+
     // What clients can do themselves in the client area (Settings → Client area). Each action goes through
     // the same code as the admin's and is logged with the client's login.
     // The AI assistant (Settings → AI assistant, App\Ai\Assistant): an AI plugin (e.g. Claude) writes suggestions that

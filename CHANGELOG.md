@@ -5,6 +5,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Other ways to log in (Settings → Security → Login security): passkeys on both logins (each admin and client adds
+  theirs from their profile, then logs in with a fingerprint, face or screen lock; no two-factor code after one), and
+  "Email me a sign-in link" (one use, 15 minutes; on in the client area, off for admins until ticked; two-factor is
+  still asked). The login pages mark the way this browser last used "Last used".
+- Google sign-in 1.1.0: admins can log in to /admin with Google too when ticked in its settings; two-factor is asked
+  after Google instead of refusing the login.
+
 - WHOIS lookup (Settings → Public area → WHOIS lookup, off by default): visitors and clients look up a domain name at
   `/whois` and see whether it is registered, its registrar, dates, statuses and nameservers, never the owner's contact
   details. It asks the registry's RDAP server, else its WHOIS server, with the domain search's captcha and a limit.

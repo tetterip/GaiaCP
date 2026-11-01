@@ -106,7 +106,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
 Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Google sign-in ("Continue with Google"
-  in the client area, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
+  in the client area and, when ticked, on /admin, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
   Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot, HetrixTools and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
   the admin panel themes Gaia and Flat are bundled plugins,
   each on by default (except easy.gr, ΑΑΔΕ and VIES VAT check, off in a new install unless `GAIACP_PLUGINS_START_ENABLED` names them)
@@ -267,7 +267,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
 6. ✅ Payment notices (proformas) and tax settings
 7. ✅ Database backups to FTP and email
 8. ✅ Two-factor authentication for admins (authenticator app + recovery codes, opt-in from the profile); "Forgot password?"
-   on the login screen emails a reset link (active admins only, in their panel language; 2FA is still asked)
+   on the login screen emails a reset link (active admins only, in their panel language; 2FA is still asked);
+   ✅ passkeys on both logins (added from the profile, no 2FA after one) and "Email me a sign-in link" (one use, 15
+   minutes; client area on, admins when ticked; 2FA still asked), with "Last used" on the way the browser came in last
 9. ✅ Import from WHMCS
 10. ✅ Admin users (Settings → Admin users)
 11. Plugins: ✅ bundled plugins with on/off switches; ✅ each plugin in its own folder (`plugins/`) with its code,

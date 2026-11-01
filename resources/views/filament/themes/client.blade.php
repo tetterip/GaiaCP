@@ -636,7 +636,7 @@
         height: 1rem;
     }
 
-    /* Under the login and sign up forms: the sign-in plugins' buttons */
+    /* Under the login and sign up forms: the other ways in (QuickSignIn) and the sign-in plugins' buttons */
     .gcp-signin {
         display: grid;
         gap: 1rem;
@@ -676,6 +676,32 @@
 
     .gcp-signin-button:hover {
         background: var(--gcp-soft);
+    }
+
+    .gcp-signin-button {
+        position: relative;
+        cursor: pointer;
+    }
+
+    /* "Last used" on the way this browser last logged in (App\SignIn\SignIn::lastUsed()) */
+    .gcp-signin-last {
+        position: absolute;
+        top: -.625rem;
+        inset-inline-end: .5rem;
+        padding: 0 .5rem;
+        border: 1px solid var(--gcp-line);
+        border-radius: 999px;
+        background: var(--gcp-card);
+        color: var(--gcp-muted);
+        font-size: .75rem;
+        font-weight: 500;
+        line-height: 1.25rem;
+    }
+
+    .gcp-signin-pending {
+        display: grid;
+        gap: 1rem;
+        text-align: center;
     }
 
     .gcp-signin-button svg {

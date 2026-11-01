@@ -10,6 +10,7 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Http\Controllers\Admin\ServerPanelLoginController;
 use App\Http\Controllers\Admin\TicketAttachmentController;
+use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\AlertWhenCronStops;
 use App\Http\Middleware\ApplyTheme;
 use App\Http\Middleware\BlockBannedIps;
@@ -100,6 +101,13 @@ class AdminPanelProvider extends PanelProvider
             // The theme says whether the admin's menu is in the top bar or at the foot of the sidebar
             ->userMenu(position: fn () => Themes::userMenuPosition())
             ->defaultAvatarProvider(InitialsAvatar::class)
+            // Outside the login: a sign-in link from the email (App\SignIn\EmailLinks), the sign-in plugins' return addresses
+            ->routes(function () {
+                Route::get('sign-in-link', SignInLinkController::class)->name('sign-in-link');
+                app(PluginManager::class)->adminRoutes();
+            })
+            // The sign-in buttons' look (QuickSignIn)
+            ->renderHook(PanelsRenderHook::STYLES_AFTER, fn (): string => filament()->auth()->check() ? '' : view('filament.sign-in.admin-styles')->render())
             // Servers → Log in to control panel (a new tab)
             ->authenticatedRoutes(function () {
                 Route::get('servers/{server}/panel-login', ServerPanelLoginController::class)

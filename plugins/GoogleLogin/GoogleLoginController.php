@@ -9,7 +9,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-/** "Continue with Google": off to Google's consent page, and back (GoogleOAuth → GoogleSignIn). */
+/**
+ * "Continue with Google": off to Google's consent page, and back (GoogleOAuth → GoogleSignIn), on the client area's
+ * login or (when the settings let admins) /admin's, each with its own return address.
+ */
 class GoogleLoginController
 {
     private const STATE = 'google_login.state';
@@ -25,7 +28,7 @@ class GoogleLoginController
         $state = Str::random(40);
         session()->put(self::STATE, $state);
 
-        return redirect()->away($google->authorizationUrl($state));
+        return redirect()->away($google->authorizationUrl($state, $this->panel()));
     }
 
     public function callback(Request $request, GoogleOAuth $google, GoogleSignIn $signIn): RedirectResponse
@@ -42,22 +45,30 @@ class GoogleLoginController
         }
 
         try {
-            return redirect()->to($signIn->handle($google->profile((string) $request->query('code'))));
+            $profile = $google->profile((string) $request->query('code'), $this->panel());
+
+            return redirect()->to($this->panel() === 'admin' ? $signIn->handleAdmin($profile) : $signIn->handle($profile));
         } catch (GoogleLoginException $e) {
             return $this->back($e->getMessage());
         }
     }
 
-    /** Only while the plugin is on and set up. */
+    /** Only while the plugin is on and set up (and lets admins in, on /admin). */
     private function ensureAvailable(): void
     {
-        abort_unless(app(PluginManager::class)->enabled('google_login') && GoogleOAuth::configured(), 404);
+        abort_unless(app(PluginManager::class)->enabled('google_login') && GoogleOAuth::configured()
+            && ($this->panel() !== 'admin' || GoogleOAuth::forAdmins()), 404);
+    }
+
+    private function panel(): string
+    {
+        return Filament::getCurrentOrDefaultPanel()->getId();
     }
 
     private function back(string $message): RedirectResponse
     {
         Notification::make()->title($message)->danger()->persistent()->send();
 
-        return redirect()->to(Filament::getPanel('client')->getLoginUrl());
+        return redirect()->to(Filament::getPanel($this->panel())->getLoginUrl());
     }
 }

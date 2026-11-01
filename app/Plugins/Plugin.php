@@ -234,6 +234,15 @@ abstract class Plugin
         return [];
     }
 
+    /** Routes in the admin panel that need no login (e.g. a sign-in provider's return address), under /admin. */
+    public function adminRoutes(): void {}
+
+    /** @return list<Htmlable> sign-in buttons under the admin login form (only while it is on) */
+    public function adminLoginButtons(): array
+    {
+        return [];
+    }
+
     /**
      * Why this client pays no tax although a Settings → Tax rule applies to them (e.g. "Reverse charge"), printed on
      * their payment notices; null = no opinion. Asked only while the plugin is on (App\Support\Tax::ruleFor()).

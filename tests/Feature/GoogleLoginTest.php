@@ -4,11 +4,14 @@ namespace Tests\Feature;
 
 use App\Actions\ClientSignup;
 use App\Enums\UserRole;
+use App\Filament\Client\Pages\Auth\Login as ClientLogin;
 use App\Filament\Client\Pages\Auth\Register;
+use App\Filament\Pages\Auth\Login as AdminLogin;
 use App\Models\Client;
 use App\Models\Setting;
 use App\Models\User;
 use App\Plugins\PluginManager;
+use App\SignIn\SignIn;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
@@ -18,6 +21,7 @@ use Illuminate\Testing\TestResponse;
 use Livewire\Livewire;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\GoogleLogin\GoogleOAuth;
+use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
 /** The Google sign-in plugin: "Continue with Google" on the client area's login, matched to clients by email address. */
@@ -102,7 +106,7 @@ class GoogleLoginTest extends TestCase
 
         $this->assertAuthenticatedAs($user, 'client');
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $this->assertDatabaseHas('activity_logs', ['event' => 'client_area.google_login']);
+        $this->assertDatabaseHas('activity_logs', ['event' => 'sign_in.google']);
         Http::assertSent(fn (Request $request) => $request->url() === GoogleOAuth::TOKEN_URL && $request['client_secret'] === 'shh-secret'
             && $request['code'] === 'code-1' && $request['redirect_uri'] === url('/auth/google/callback'));
     }
@@ -151,7 +155,7 @@ class GoogleLoginTest extends TestCase
         $this->assertDatabaseHas('activity_logs', ['event' => 'client.signed_up', 'client_id' => $user->client_id]);
     }
 
-    public function test_refused_admins_turned_off_logins_two_factor_and_unconfirmed_addresses(): void
+    public function test_refused_admins_turned_off_logins_and_unconfirmed_addresses(): void
     {
         $this->fakeGoogle(['email' => 'admin@example.gr']);
         User::factory()->create(['email' => 'admin@example.gr']);
@@ -164,14 +168,102 @@ class GoogleLoginTest extends TestCase
         $this->assertGuest('client');
 
         $user->update(['active' => true]);
-        $user->saveAppAuthenticationSecret('SECRETSECRETSECRET');
-        $this->signIn()->assertRedirect('/login');
-        $this->assertGuest('client');
-
-        $user->saveAppAuthenticationSecret(null);
         $this->fakeGoogle(['email_verified' => false]);
         $this->signIn()->assertRedirect('/login');
         $this->assertGuest('client');
+    }
+
+    public function test_a_client_with_two_factor_gives_the_code_on_the_login_page(): void
+    {
+        $this->fakeGoogle();
+        $user = $this->clientUser();
+        $user->saveAppAuthenticationSecret($secret = app(Google2FA::class)->generateSecretKey(16));
+
+        $this->signIn()->assertRedirect('/login');
+        $this->assertGuest('client');
+
+        Filament::setCurrentPanel('client');
+        $login = Livewire::test(ClientLogin::class);
+        $this->assertNotNull($login->get('userUndertakingMultiFactorAuthentication'));
+
+        $login->fillForm(['app' => ['code' => '000000']], 'multiFactorChallengeForm')->call('authenticate')
+            ->assertHasFormErrors(['app.code'], 'multiFactorChallengeForm');
+        $this->assertGuest('client');
+
+        $login->fillForm(['app' => ['code' => app(Google2FA::class)->getCurrentOtp($secret)]], 'multiFactorChallengeForm')->call('authenticate')
+            ->assertHasNoFormErrors([], 'multiFactorChallengeForm');
+        $this->assertAuthenticatedAs($user, 'client');
+        $this->assertDatabaseHas('activity_logs', ['event' => 'sign_in.google']);
+    }
+
+    public function test_admins_use_it_only_once_the_settings_let_them(): void
+    {
+        $this->get('/admin/login')->assertOk()->assertDontSee(__('Continue with Google'));
+        $this->get('/admin/auth/google')->assertNotFound();
+
+        config(['gaiacp.google_login.admins' => true]);
+        $this->get('/admin/login')->assertOk()->assertSee(__('Continue with Google'))->assertSee('/admin/auth/google');
+        $this->get('/admin/auth/google')->assertRedirectContains(urlencode(url('/admin/auth/google/callback')));
+    }
+
+    public function test_an_admin_with_that_address_is_logged_in_to_admin(): void
+    {
+        config(['gaiacp.google_login.admins' => true]);
+        $this->fakeGoogle(['email' => 'Alex@Example.gr']);
+        $admin = User::factory()->create(['email' => 'alex@example.gr']);
+
+        $this->get('/admin/auth/google');
+        $this->get('/admin/auth/google/callback?'.http_build_query(['state' => session('google_login.state'), 'code' => 'code-1']))
+            ->assertRedirect(Filament::getPanel('admin')->getUrl())
+            ->assertCookie(SignIn::cookie('admin'), 'google');
+
+        $this->assertAuthenticatedAs($admin, 'web');
+        $this->assertGuest('client');
+        Http::assertSent(fn (Request $request) => $request->url() === GoogleOAuth::TOKEN_URL && $request['redirect_uri'] === url('/admin/auth/google/callback'));
+    }
+
+    public function test_admin_refuses_clients_unknown_addresses_and_turned_off_admins(): void
+    {
+        config(['gaiacp.google_login.admins' => true]);
+        $this->fakeGoogle();
+        $this->clientUser();
+
+        $this->get('/admin/auth/google');
+        $this->get('/admin/auth/google/callback?'.http_build_query(['state' => session('google_login.state'), 'code' => 'code-1']))
+            ->assertRedirect('/admin/login');
+        $this->assertGuest('web');
+
+        $this->fakeGoogle(['email' => 'nobody@example.gr']);
+        $this->get('/admin/auth/google');
+        $this->get('/admin/auth/google/callback?'.http_build_query(['state' => session('google_login.state'), 'code' => 'code-1']))
+            ->assertRedirect('/admin/login');
+        $this->assertGuest('web');
+
+        $this->fakeGoogle(['email' => 'off@example.gr']);
+        User::factory()->create(['email' => 'off@example.gr', 'active' => false]);
+        $this->get('/admin/auth/google');
+        $this->get('/admin/auth/google/callback?'.http_build_query(['state' => session('google_login.state'), 'code' => 'code-1']))
+            ->assertRedirect('/admin/login');
+        $this->assertGuest('web');
+    }
+
+    public function test_an_admin_with_two_factor_gives_the_code_after_google(): void
+    {
+        config(['gaiacp.google_login.admins' => true]);
+        $this->fakeGoogle(['email' => 'alex@example.gr']);
+        $admin = User::factory()->create(['email' => 'alex@example.gr']);
+        $admin->saveAppAuthenticationSecret($secret = app(Google2FA::class)->generateSecretKey(16));
+
+        $this->get('/admin/auth/google');
+        $this->get('/admin/auth/google/callback?'.http_build_query(['state' => session('google_login.state'), 'code' => 'code-1']))
+            ->assertRedirect('/admin/login');
+        $this->assertGuest('web');
+
+        Livewire::test(AdminLogin::class)
+            ->fillForm(['app' => ['code' => app(Google2FA::class)->getCurrentOtp($secret)]], 'multiFactorChallengeForm')
+            ->call('authenticate')
+            ->assertHasNoFormErrors([], 'multiFactorChallengeForm');
+        $this->assertAuthenticatedAs($admin, 'web');
     }
 
     public function test_a_wrong_or_missing_state_is_refused(): void

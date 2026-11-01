@@ -6,6 +6,14 @@ Log in met uw e-mailadres en uw wachtwoord. Bent u het wachtwoord vergeten, druk
 Is uw e-mailadres een Google-account, dan kunt u op de inlogpagina ook op **Doorgaan met Google** drukken in plaats van uw wachtwoord te typen.
 <!-- endif -->
 
+<!-- if:email_link -->
+In plaats van het wachtwoord kunt u op **Stuur mij een inloglink** drukken: we e-mailen u een link die één keer werkt, 15 minuten lang. Open hem en druk op de pagina die opent op **Inloggen**.
+<!-- endif -->
+
+<!-- if:passkeys -->
+Met **passkeys** logt u in met uw vingerafdruk, gezicht of schermvergrendeling in plaats van uw wachtwoord. Voeg er op elke telefoon of computer een toe in uw profiel met **Passkey op dit apparaat toevoegen** en druk daarna op de inlogpagina op **Inloggen met een passkey**. De inlogpagina markeert de manier waarop u het laatst op dit apparaat inlogde met "Laatst gebruikt".
+<!-- endif -->
+
 In uw profiel (het menu met uw naam, onderaan het menu of rechtsboven) wijzigt u uw e-mailadres, telefoonnummer, taal en wachtwoord, en kunt u tweestapsverificatie aanzetten voor extra veiligheid.
 
 <!-- if:notifications -->
