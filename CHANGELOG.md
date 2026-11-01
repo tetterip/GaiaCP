@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Visitors' top bar: the light / dark mode button is an outlined button like the language one next to it.
 - Other ways to log in (Settings → Security → Login security): passkeys on both logins (each admin and client adds
   theirs from their profile, then logs in with a fingerprint, face or screen lock; no two-factor code after one), and
   "Email me a sign-in link" (one use, 15 minutes; on in the client area, off for admins until ticked; two-factor is

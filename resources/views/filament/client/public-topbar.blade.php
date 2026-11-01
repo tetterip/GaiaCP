@@ -11,10 +11,11 @@
     @if (filament()->hasDarkMode() && ! filament()->hasDarkModeForced())
         <x-filament::dropdown placement="bottom-end" teleport class="gcp-public-theme">
             <x-slot name="trigger">
-                <button type="button" class="gcp-public-theme-btn" aria-label="{{ trans('filament-panels::layout.actions.theme_switcher.label') }}" title="{{ trans('filament-panels::layout.actions.theme_switcher.label') }}">
-                    <x-filament::icon icon="heroicon-o-sun" x-show="$store.theme !== 'dark'" />
-                    <x-filament::icon icon="heroicon-o-moon" x-show="$store.theme === 'dark'" x-cloak />
-                </button>
+                {{-- The same outlined button as the language next to it --}}
+                <x-filament::button color="gray" size="sm" outlined class="gcp-public-theme-btn" :aria-label="trans('filament-panels::layout.actions.theme_switcher.label')" :title="trans('filament-panels::layout.actions.theme_switcher.label')">
+                    <x-filament::icon icon="heroicon-o-sun" :size="\Filament\Support\Enums\IconSize::Small" x-show="$store.theme !== 'dark'" />
+                    <x-filament::icon icon="heroicon-o-moon" :size="\Filament\Support\Enums\IconSize::Small" x-show="$store.theme === 'dark'" x-cloak />
+                </x-filament::button>
             </x-slot>
             <x-filament::dropdown.list>
                 <x-filament-panels::theme-switcher />
