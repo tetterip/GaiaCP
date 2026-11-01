@@ -1281,7 +1281,7 @@
     "This domain cannot be transferred for :years year(s). Choose another term.": "Dit domein kan niet voor :years jaar worden verhuisd. Kies een andere termijn.",
     "This domain is already with us. Contact us if it is yours.": "Dit domein is al bij ons. Neem contact met ons op als het van u is.",
     "This email address already has an account here. Log in, use \"Forgot password?\" or contact us.": "Dit e-mailadres heeft hier al een account. Log in, gebruik \"Wachtwoord vergeten?\" of neem contact met ons op.",
-    "This is :current. Released on :date.": "Dit is :current. Uitgebracht op :date.",
+    "You have :current. :version was released on :date.": "U hebt :current. :version is uitgebracht op :date.",
     "This is GaiaCP :version.": "Dit is GaiaCP :version.",
     "This is a payment notice, not a tax invoice.": "Dit is een betalingsverzoek, geen factuur.",
     "This is a test email from GaiaCP.": "Dit is een testmail van GaiaCP.",

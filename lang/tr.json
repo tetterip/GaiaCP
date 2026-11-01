@@ -1281,7 +1281,7 @@
     "This domain cannot be transferred for :years year(s). Choose another term.": "Bu alan adı :years yıllığına transfer edilemez. Başka bir süre seçin.",
     "This domain is already with us. Contact us if it is yours.": "Bu alan adı zaten bizde. Sizinse bize ulaşın.",
     "This email address already has an account here. Log in, use \"Forgot password?\" or contact us.": "Bu e-posta adresinin burada zaten bir hesabı var. Giriş yapın, \"Şifrenizi mi unuttunuz?\" seçeneğini kullanın veya bize ulaşın.",
-    "This is :current. Released on :date.": "Bu sürüm :current. :date tarihinde yayımlandı.",
+    "You have :current. :version was released on :date.": "Sizdeki sürüm :current. :version, :date tarihinde yayımlandı.",
     "This is GaiaCP :version.": "Bu GaiaCP :version.",
     "This is a payment notice, not a tax invoice.": "Bu bir ödeme bildirimidir, vergi belgesi değildir.",
     "This is a test email from GaiaCP.": "Bu, GaiaCP'den bir test e-postasıdır.",
