@@ -38,7 +38,10 @@ The **Email to ticket** plugin reads your support mailbox over IMAP every minute
 ticket, and new emails open one (from someone who isn't a client, a ticket without a client that you can link later).
 Create the mailbox in your mail server and fill in its details under Settings → Support → Email to ticket. A mail
 provider (Mailgun, SendGrid, Postmark) can post the emails to a secret webhook address instead. An email your mail
-server marks as forged (DMARC or SPF failed) counts as from someone who isn't a client, whatever address it shows.
+server marks as forged (DMARC or SPF failed, a DKIM signature only counting when it is of the sender's own domain)
+counts as from someone who isn't a client, whatever address it shows. **Email counts as from the client** set to "Only
+when the mail server confirmed the sender" goes further: only an email your server confirmed (DMARC, DKIM or SPF pass)
+joins a client's ticket.
 
 ## Knowledge base
 

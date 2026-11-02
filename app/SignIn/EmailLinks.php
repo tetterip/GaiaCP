@@ -54,7 +54,17 @@ class EmailLinks
         return URL::temporarySignedRoute("filament.{$panel}.sign-in-link", now()->addMinutes(self::MINUTES), [
             'user' => $user->getKey(),
             'nonce' => Str::random(40),
+            'v' => self::stamp($user),
         ]);
+    }
+
+    /**
+     * The login's email and password as the link was made, so a link sent before either changed (a password reset, a
+     * new address after losing the old mailbox) no longer works.
+     */
+    public static function stamp(User $user): string
+    {
+        return substr(hash_hmac('sha256', Str::lower((string) $user->email)."\n".$user->getAuthPassword(), (string) config('app.key')), 0, 20);
     }
 
     /** Uses up a link's nonce: true the first time only. */

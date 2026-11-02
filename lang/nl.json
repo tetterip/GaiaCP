@@ -1195,6 +1195,7 @@
     "Teal": "Blauwgroen",
     "The domain is the client's hosting account :domain: GaiaCP validates with a file (cPanel) or a DNS record (Plesk) there and installs the certificate once it is issued.": "Het domein is het hostingaccount :domain van de klant: GaiaCP valideert daar met een bestand (cPanel) of een DNS-record (Plesk) en installeert het certificaat zodra het is uitgegeven.",
     "This is not the setup code. Copy it from :file on the server.": "Dit is niet de installatiecode. Kopieer hem uit :file op de server.",
+    "This login is an admin user: only Settings → Admin users can turn it on.": "Deze login is een beheerder: alleen Instellingen → Beheerders kan hem weer aanzetten.",
     "TLD": "TLD",
     "TLDs": "TLD's",
     "Table of the items: description, period, amount": "Tabel van de items: omschrijving, periode, bedrag",

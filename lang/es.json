@@ -1195,6 +1195,7 @@
     "Teal": "Verde azulado",
     "The domain is the client's hosting account :domain: GaiaCP validates with a file (cPanel) or a DNS record (Plesk) there and installs the certificate once it is issued.": "El dominio es la cuenta de hosting :domain del cliente: GaiaCP lo valida allí con un archivo (cPanel) o un registro DNS (Plesk) e instala el certificado en cuanto se emite.",
     "This is not the setup code. Copy it from :file on the server.": "Este no es el código de instalación. Cópielo de :file en el servidor.",
+    "This login is an admin user: only Settings → Admin users can turn it on.": "Este acceso es un usuario administrador: solo Ajustes → Usuarios administradores puede activarlo.",
     "TLD": "TLD",
     "TLDs": "TLD",
     "Table of the items: description, period, amount": "Tabla de las líneas: descripción, periodo, importe",

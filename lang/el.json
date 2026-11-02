@@ -1195,6 +1195,7 @@
     "Teal": "Γαλαζοπράσινο",
     "The domain is the client's hosting account :domain: GaiaCP validates with a file (cPanel) or a DNS record (Plesk) there and installs the certificate once it is issued.": "Το domain είναι ο λογαριασμός φιλοξενίας :domain του πελάτη: το GaiaCP κάνει εκεί την επιβεβαίωση με αρχείο (cPanel) ή εγγραφή DNS (Plesk) και εγκαθιστά το πιστοποιητικό μόλις εκδοθεί.",
     "This is not the setup code. Copy it from :file on the server.": "Αυτός δεν είναι ο κωδικός εγκατάστασης. Αντιγράψτε τον από το :file στον server.",
+    "This login is an admin user: only Settings → Admin users can turn it on.": "Αυτή η σύνδεση είναι διαχειριστής: μόνο από Ρυθμίσεις → Διαχειριστές ενεργοποιείται ξανά.",
     "TLD": "TLD",
     "TLDs": "TLD",
     "Table of the items: description, period, amount": "Πίνακας στοιχείων: περιγραφή, περίοδος, ποσό",

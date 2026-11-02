@@ -1195,6 +1195,7 @@
     "Teal": "Sarcelle",
     "The domain is the client's hosting account :domain: GaiaCP validates with a file (cPanel) or a DNS record (Plesk) there and installs the certificate once it is issued.": "Le domaine est le compte d'hébergement :domain du client : GaiaCP le valide là-bas avec un fichier (cPanel) ou un enregistrement DNS (Plesk) et installe le certificat dès qu'il est émis.",
     "This is not the setup code. Copy it from :file on the server.": "Ce n'est pas le code d'installation. Copiez-le depuis :file sur le serveur.",
+    "This login is an admin user: only Settings → Admin users can turn it on.": "Cet identifiant est un administrateur : seul Paramètres → Administrateurs peut le réactiver.",
     "TLD": "Extension",
     "TLDs": "Extensions",
     "Table of the items: description, period, amount": "Tableau des éléments : description, période, montant",

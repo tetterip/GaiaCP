@@ -39,19 +39,19 @@ class SiteProbe
     }
 
     /**
-     * The certificate $host answers with on port 443: whether the system's CAs trust it for that name, until when, and
+     * The certificate $host answers with on port 443 of $address (null: wherever $host points): whether the system's CAs trust it for that name, until when, and
      * from whom. When nothing answers HTTPS, no valid_to and the reason in error.
      *
      * @return array{trusted: bool, valid_to: ?CarbonImmutable, issuer: ?string, names: list<string>, error: ?string}
      */
-    public function certificate(string $host): array
+    public function certificate(string $host, ?string $address = null): array
     {
         $error = null;
-        $certificate = $this->connect($host, true, $error);
+        $certificate = $this->connect($host, $address, true, $error);
         $trusted = $certificate !== null;
 
         // Not trusted: read it without checking, to say why
-        $certificate ??= $this->connect($host, false, $error);
+        $certificate ??= $this->connect($host, $address, false, $error);
 
         if ($certificate === null) {
             return ['trusted' => false, 'valid_to' => null, 'issuer' => null, 'names' => [], 'error' => $error ?? 'No answer on port 443'];
@@ -75,7 +75,7 @@ class SiteProbe
     }
 
     /** @return \OpenSSLCertificate|null */
-    private function connect(string $host, bool $verify, ?string &$error): mixed
+    private function connect(string $host, ?string $address, bool $verify, ?string &$error): mixed
     {
         $context = stream_context_create(['ssl' => [
             'capture_peer_cert' => true,
@@ -83,6 +83,7 @@ class SiteProbe
             'verify_peer_name' => $verify,
             'peer_name' => $host,
             'SNI_enabled' => true,
+            'SNI_server_name' => $host,
         ]]);
 
         $errno = 0;
@@ -96,7 +97,9 @@ class SiteProbe
         });
 
         try {
-            $stream = stream_socket_client("ssl://{$host}:443", $errno, $errstr, self::TIMEOUT, STREAM_CLIENT_CONNECT, $context);
+            // To the address given, with $host for SNI and the certificate's name (peer_name)
+            $to = $address === null ? $host : (str_contains($address, ':') ? "[{$address}]" : $address);
+            $stream = stream_socket_client("ssl://{$to}:443", $errno, $errstr, self::TIMEOUT, STREAM_CLIENT_CONNECT, $context);
         } finally {
             restore_error_handler();
         }

@@ -51,8 +51,10 @@ class SiteChecksTest extends TestCase
                 return $this->answers["ns:{$host}"] ?? [];
             }
 
-            public function certificate(string $host): array
+            public function certificate(string $host, ?string $address = null): array
             {
+                $this->answers['connected:'.$host] = $address;
+
                 return $this->answers["cert:{$host}"] ?? ['trusted' => false, 'valid_to' => null, 'issuer' => null, 'names' => [], 'error' => 'Connection refused'];
             }
         });
@@ -68,6 +70,25 @@ class SiteChecksTest extends TestCase
     private function certificate(string $validTo, array $names, bool $trusted = true): array
     {
         return ['trusted' => $trusted, 'valid_to' => CarbonImmutable::parse($validTo), 'issuer' => "Let's Encrypt", 'names' => $names, 'error' => $trusted ? null : 'certificate verify failed'];
+    }
+
+    public function test_a_site_pointed_at_a_private_address_is_not_connected_to(): void
+    {
+        $this->answers = [
+            'a:inside.gr' => ['127.0.0.1', '10.0.0.8'], 'ns:inside.gr' => ['ada.ns.cloudflare.com'],
+            'a:mixed.gr' => ['192.168.1.4', '104.16.1.1'], 'ns:mixed.gr' => ['ada.ns.cloudflare.com'],
+            'cert:mixed.gr' => $this->certificate('2027-01-10', ['mixed.gr']),
+        ];
+        $inside = $this->site('inside.gr');
+        $mixed = $this->site('mixed.gr');
+
+        $this->artisan('gaiacp:check-sites')->assertSuccessful();
+
+        $this->assertArrayNotHasKey('connected:inside.gr', $this->answers);
+        $this->assertSame(SslStatus::Skipped, SiteCheck::query()->where('service_id', $inside->id)->sole()->ssl_status);
+        // Only to the public address checked, never a lookup of its own
+        $this->assertSame('104.16.1.1', $this->answers['connected:mixed.gr']);
+        $this->assertSame(SslStatus::Valid, SiteCheck::query()->where('service_id', $mixed->id)->sole()->ssl_status);
     }
 
     public function test_each_site_gets_its_dns_and_https_status(): void

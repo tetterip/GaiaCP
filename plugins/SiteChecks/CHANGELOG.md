@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.4] - 2026-11-02
+
+- The HTTPS check connects only to a public address it has just looked up (or the hosting server's own), never to a
+  private or reserved one a client's DNS points to, and to that address rather than a second lookup
+
 ## [1.0.3] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

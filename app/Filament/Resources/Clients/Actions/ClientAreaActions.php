@@ -64,7 +64,7 @@ class ClientAreaActions
             Action::make('enableClientArea')
                 ->label('Turn on login')
                 ->icon(Heroicon::OutlinedCheckCircle)
-                ->visible(fn (Client $record) => $record->user?->active === false)
+                ->visible(fn (Client $record) => $record->user?->active === false && ! ClientAreaAccess::isLinkedAdmin($record))
                 ->action(function (Client $record) {
                     app(ClientAreaAccess::class)->enable($record);
                     Notification::make()->success()->title(__('Client area login turned on'))->send();

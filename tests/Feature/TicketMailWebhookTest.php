@@ -72,6 +72,45 @@ class TicketMailWebhookTest extends TestCase
         $this->assertSame($client->id, Ticket::query()->latest('id')->first()->client_id);
     }
 
+    public function test_a_signature_or_spf_pass_of_another_domain_and_a_softfail_dont_vouch_for_the_sender(): void
+    {
+        config(['gaiacp.ticket_mail.unknown_senders' => 'open']);
+
+        foreach ([
+            'other-dkim@x' => 'Authentication-Results: mx.gaiacp.test; spf=fail smtp.mailfrom=example.com; dkim=pass header.d=evil.example',
+            'softfail@x' => 'Authentication-Results: mx.gaiacp.test; spf=softfail smtp.mailfrom=example.com',
+            'look-alike@x' => 'Authentication-Results: mx.gaiacp.test; spf=fail smtp.mailfrom=example.com; dkim=pass header.d=notexample.com',
+        ] as $id => $header) {
+            $this->post($this->url(), ['body-mime' => $this->email($id, [$header])])->assertOk()->assertJson(['outcome' => 'opened']);
+            $this->assertNull(Ticket::query()->latest('id')->first()->client_id, $id);
+        }
+
+        // A subdomain's signature is the same sender (DMARC's relaxed alignment)
+        $this->post($this->url(), ['body-mime' => $this->email('sub@x', ['Authentication-Results: mx.gaiacp.test; spf=softfail smtp.mailfrom=example.com; dkim=pass header.d=mail.example.com'])])->assertOk();
+        $this->assertNotNull(Ticket::query()->latest('id')->first()->client_id);
+    }
+
+    public function test_on_verified_only_what_the_receiving_server_confirmed_is_from_the_client(): void
+    {
+        config(['gaiacp.ticket_mail.unknown_senders' => 'open', 'gaiacp.ticket_mail.sender_check' => 'verified']);
+        $client = Client::query()->where('email', 'nikos@example.com')->sole();
+
+        // No result, or a "pass" the sender wrote below the receiving server's header
+        $this->post($this->url(), ['body-mime' => $this->email('none@x')])->assertOk();
+        $this->assertNull(Ticket::query()->latest('id')->first()->client_id);
+        $this->post($this->url(), ['body-mime' => $this->email('below@x', ['Authentication-Results: mx.gaiacp.test; spf=none smtp.mailfrom=example.com', 'Authentication-Results: mx.gaiacp.test; dmarc=pass header.from=example.com'])])->assertOk();
+        $this->assertNull(Ticket::query()->latest('id')->first()->client_id);
+
+        foreach ([
+            'dmarc@x' => 'Authentication-Results: mx.gaiacp.test; dmarc=pass (p=none) header.from=example.com',
+            'dkim@x' => 'Authentication-Results: mx.gaiacp.test; dkim=pass header.i=@example.com',
+            'spf@x' => 'Authentication-Results: mx.gaiacp.test; spf=pass smtp.mailfrom=bounce@example.com',
+        ] as $id => $header) {
+            $this->post($this->url(), ['body-mime' => $this->email($id, [$header])])->assertOk();
+            $this->assertSame($client->id, Ticket::query()->latest('id')->first()->client_id, $id);
+        }
+    }
+
     public function test_a_wrong_token_or_the_plugin_off_finds_nothing(): void
     {
         $this->post($this->url('wrong'), ['body-mime' => $this->email()])->assertNotFound();

@@ -141,6 +141,8 @@ trait ManagesPasskeys
 
     public function removePasskey(int $id): void
     {
+        abort_unless($this->managesPasskeys(), 404);
+
         /** @var User $user */
         $user = $this->getUser();
         $passkey = $user->passkeys()->find($id);

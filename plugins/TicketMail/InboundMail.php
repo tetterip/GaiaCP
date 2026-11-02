@@ -52,8 +52,11 @@ class InboundMail
             return $this->skip($message, $reason);
         }
 
-        // A From address the receiving mail server found forged (DMARC / SPF fail) speaks for no client or ticket
-        $forged = self::failsAuthentication($message);
+        // A From address the receiving mail server found forged (DMARC / SPF fail) speaks for no client or ticket; with
+        // Settings → Email to ticket → Senders on "verified", neither does one it didn't confirm
+        $sender = self::senderCheck($message, $email);
+        $forged = $sender === self::FORGED
+            || ($sender !== self::VERIFIED && config('gaiacp.ticket_mail.sender_check') === 'verified');
         $client = $forged ? null : self::clientFor($email);
 
         $ticket = $forged ? null : $this->ticketFor($message);
@@ -99,22 +102,77 @@ class InboundMail
     }
 
     /** Why this is an automatic email nobody should answer (out of office, bounce, list, our own), or null. */
-    /**
-     * Whether a mail server that received it says the From address is forged: dmarc=fail, or spf=fail without a
-     * passing DKIM signature. A sender can add a header of their own, but only a "pass"; that changes nothing here.
-     */
-    public static function failsAuthentication(MessageInterface $message): bool
-    {
-        for ($i = 0; $i < 10 && ($header = $message->header('Authentication-Results', $i)) !== null; $i++) {
-            $value = strtolower((string) $header->getRawValue());
+    public const VERIFIED = 'verified';
 
-            if (preg_match('/\bdmarc\s*=\s*fail\b/', $value)
-                || (preg_match('/\bspf\s*=\s*fail\b/', $value) && ! preg_match('/\bdkim\s*=\s*pass\b/', $value))) {
-                return true;
+    public const FORGED = 'forged';
+
+    public const UNCONFIRMED = 'unconfirmed';
+
+    /**
+     * What the mail servers that received it say of the From address, in their Authentication-Results headers:
+     * - forged: dmarc=fail, or spf=fail / softfail without a passing DKIM signature of the From domain, in any header
+     *   (a sender can add a header of their own, but writing "fail" there only hurts them);
+     * - verified: the topmost header (the last server's, which is ours) says dmarc=pass, a DKIM signature of the From
+     *   domain passed, or SPF passed for it. Only the topmost counts, as a sender can write a "pass" header below it;
+     * - unconfirmed: neither.
+     * A DKIM signature or SPF pass of another domain says nothing of the From address (anyone can sign their own).
+     */
+    public static function senderCheck(MessageInterface $message, string $email): string
+    {
+        $domain = strtolower((string) substr(strrchr($email, '@') ?: '', 1));
+        $verdict = self::UNCONFIRMED;
+
+        for ($i = 0; $i < 10 && ($header = $message->header('Authentication-Results', $i)) !== null; $i++) {
+            $results = self::results((string) $header->getRawValue(), $domain);
+
+            if ($results['dmarc'] === 'fail' || (in_array($results['spf'], ['fail', 'softfail'], true) && ! $results['dkim'])) {
+                return self::FORGED;
+            }
+
+            if ($i === 0 && ($results['dmarc'] === 'pass' || $results['dkim'] || ($results['spf'] === 'pass' && $results['spf_aligned']))) {
+                $verdict = self::VERIFIED;
             }
         }
 
-        return false;
+        return $verdict;
+    }
+
+    /** @return array{dmarc: ?string, spf: ?string, spf_aligned: bool, dkim: bool} dkim: a signature of $domain passed */
+    private static function results(string $value, string $domain): array
+    {
+        $results = ['dmarc' => null, 'spf' => null, 'spf_aligned' => false, 'dkim' => false];
+
+        // "authserv-id; method=result prop=value ...; method=result ..."; a header's own comments in () dropped
+        foreach (array_slice(explode(';', strtolower((string) preg_replace('/\([^)]*\)/', ' ', $value))), 1) as $part) {
+            if (! preg_match('/^\s*(dmarc|spf|dkim)\s*=\s*([a-z]+)/', $part, $m)) {
+                continue;
+            }
+
+            match ($m[1]) {
+                'dmarc' => $results['dmarc'] = $m[2],
+                'spf' => [$results['spf'] = $m[2], $results['spf_aligned'] = self::aligned(self::property($part, 'smtp.mailfrom'), $domain)],
+                'dkim' => $results['dkim'] = $results['dkim'] || ($m[2] === 'pass'
+                    && self::aligned(self::property($part, 'header.d') ?? self::property($part, 'header.i'), $domain)),
+            };
+        }
+
+        return $results;
+    }
+
+    private static function property(string $part, string $name): ?string
+    {
+        if (! preg_match('/\b'.preg_quote($name, '/').'\s*=\s*"?([^\s";]+)/', $part, $m)) {
+            return null;
+        }
+
+        return ltrim((string) (str_contains($m[1], '@') ? substr((string) strrchr($m[1], '@'), 1) : $m[1]), '.');
+    }
+
+    /** The same domain, or one inside the other (mail.example.com signs for example.com and back, as DMARC allows). */
+    private static function aligned(?string $signer, string $domain): bool
+    {
+        return $signer !== null && $signer !== '' && $domain !== ''
+            && ($signer === $domain || str_ends_with($domain, '.'.$signer) || str_ends_with($signer, '.'.$domain));
     }
 
     private function automatic(MessageInterface $message, string $email): ?string

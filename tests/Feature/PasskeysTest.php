@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\ClientAreaAccess;
 use App\Enums\UserRole;
 use App\Filament\Client\Pages\Auth\EditProfile as ClientProfile;
 use App\Filament\Client\Pages\Auth\Login as ClientLogin;
@@ -266,6 +267,36 @@ class PasskeysTest extends TestCase
         $login = Livewire::test(ClientLogin::class);
         $login->call('passkeyLogin', $this->assertion($login->instance()->passkeyOptions()));
         $this->assertAuthenticatedAs($user, 'client');
+    }
+
+    public function test_an_admin_viewing_as_the_client_cant_remove_its_passkeys(): void
+    {
+        Filament::setCurrentPanel('client');
+        $client = Client::factory()->create(['email' => 'maria@example.gr']);
+        $user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $client->id, 'email' => 'maria@example.gr']);
+        $passkey = $this->addPasskey($user);
+        $this->actingAs($user, 'client')->withSession([ClientAreaAccess::VIEWING_AS => $user->id]);
+
+        Livewire::test(ClientProfile::class)->call('removePasskey', $passkey->id)->assertNotFound();
+        $this->assertSame(1, $user->passkeys()->count());
+    }
+
+    public function test_only_a_super_admin_removes_the_passkeys_of_an_admin_linked_to_a_client(): void
+    {
+        $client = Client::factory()->create(['email' => 'boss@example.gr']);
+        $linked = User::factory()->create(['role' => UserRole::Admin, 'client_id' => $client->id, 'email' => 'boss@example.gr']);
+        $this->addPasskey($linked);
+        $client->clientLogins()->create(['user_id' => $linked->id, 'succeeded' => true, 'ip_address' => '203.0.113.5']);
+
+        $this->actingAs(User::factory()->create(['role' => UserRole::Admin, 'super_admin' => false, 'admin_areas' => ['clients']]));
+        Livewire::test(SignInsRelationManager::class, ['ownerRecord' => $client, 'pageClass' => EditClient::class])
+            ->assertActionHidden(TestAction::make('removePasskeys')->table());
+        $this->assertSame(1, $linked->passkeys()->count());
+
+        $this->actingAs(User::factory()->create(['role' => UserRole::Admin, 'super_admin' => true]));
+        Livewire::test(SignInsRelationManager::class, ['ownerRecord' => $client, 'pageClass' => EditClient::class])
+            ->callAction(TestAction::make('removePasskeys')->table());
+        $this->assertSame(0, $linked->passkeys()->count());
     }
 
     public function test_refused_other_sites_answers_without_verification_replays_and_logins_turned_off(): void

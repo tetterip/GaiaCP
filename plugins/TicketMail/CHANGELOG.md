@@ -2,6 +2,14 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.0] - 2026-11-02
+
+- A DKIM signature counts only when it is of the sender's own domain (or one inside it), and an SPF softfail counts as
+  a fail: before, an email signed by any domain, or softfailing SPF, joined the client's ticket
+- Settings → Email to ticket → **Email counts as from the client**: "Only when the mail server confirmed the sender"
+  (DMARC, DKIM or SPF pass in the receiving server's own Authentication-Results header) for mailboxes whose server
+  adds one
+
 ## [1.1.3] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

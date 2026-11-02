@@ -1195,6 +1195,7 @@
     "Teal": "Turkuaz",
     "The domain is the client's hosting account :domain: GaiaCP validates with a file (cPanel) or a DNS record (Plesk) there and installs the certificate once it is issued.": "Alan adı, müşterinin :domain hosting hesabı: GaiaCP orada bir dosya (cPanel) veya bir DNS kaydı (Plesk) ile doğrular ve sertifika verilir verilmez kurar.",
     "This is not the setup code. Copy it from :file on the server.": "Bu kurulum kodu değil. Sunucudaki :file dosyasından kopyalayın.",
+    "This login is an admin user: only Settings → Admin users can turn it on.": "Bu giriş bir yönetici: yalnızca Ayarlar → Yöneticiler onu yeniden açabilir.",
     "TLD": "TLD",
     "TLDs": "TLD'ler",
     "Table of the items: description, period, amount": "Kalemlerin tablosu: açıklama, dönem, tutar",
