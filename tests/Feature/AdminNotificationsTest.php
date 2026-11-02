@@ -122,6 +122,16 @@ class AdminNotificationsTest extends TestCase
         $this->assertSame(0, $limited->notifications()->count());
     }
 
+    public function test_a_failed_backup_copy_shows_its_whole_error(): void
+    {
+        $admin = User::factory()->create();
+        $reply = 'The FTP server refused the upload into the login folder: gaiacp-backup-2026-11-02-020007.zip.part: Permission denied. The FTP account cannot write to that folder: set Folder to one it may write to, or give the account write access there.';
+
+        ActivityLog::record('backup.failed', 'Backup gaiacp-backup-2026-11-02-020007.zip (119.4 KB), sent to email; failed: ftp: '.$reply, properties: ['errors' => ['ftp' => $reply]]);
+
+        $this->assertSame('FTP: '.$reply, $admin->notifications()->first()->data['body']);
+    }
+
     public function test_other_events_make_no_notification(): void
     {
         $admin = User::factory()->create();

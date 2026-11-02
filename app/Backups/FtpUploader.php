@@ -23,25 +23,32 @@ class FtpUploader
         return app(static::class, ['config' => (array) config('gaiacp.backups.ftp')]);
     }
 
-    /** Log in and open the folder (creating it): the Test FTP button. */
+    /**
+     * The Test FTP button: log in, open the folder (creating it), then write, rename and delete a small
+     * file the way a backup is uploaded, so a folder the account cannot write to shows up here and not
+     * in the night's backup.
+     */
     public function test(): void
     {
-        $this->session(fn () => null);
+        $local = tempnam(sys_get_temp_dir(), 'gaiacp-ftp-test');
+        file_put_contents($local, "GaiaCP FTP test\n");
+
+        try {
+            $this->session(function ($ftp) use ($local): void {
+                $name = 'gaiacp-ftp-test-'.bin2hex(random_bytes(4)).'.txt';
+                $this->put($ftp, $local, $name);
+                @ftp_delete($ftp, $name);
+            });
+        } finally {
+            @unlink($local);
+        }
     }
 
     /** Upload the file into the folder, then delete the oldest backups beyond $keep. @return list<string> deleted file names */
     public function upload(string $localPath, int $keep): array
     {
         return $this->session(function ($ftp) use ($localPath, $keep): array {
-            $name = basename($localPath);
-
-            // Under a temporary name first, so a broken upload never looks like a backup.
-            if (! $this->attempt(fn () => ftp_put($ftp, "{$name}.part", $localPath, FTP_BINARY)) || ! $this->attempt(fn () => ftp_rename($ftp, "{$name}.part", $name))) {
-                $error = $this->lastError();
-                @ftp_delete($ftp, "{$name}.part");
-
-                throw new RuntimeException("Upload of {$name} failed: {$error}");
-            }
+            $this->put($ftp, $localPath, basename($localPath));
 
             $backups = collect(@ftp_nlist($ftp, '.') ?: [])
                 ->map(fn (string $file) => basename($file))
@@ -57,6 +64,39 @@ class FtpUploader
 
             return $old;
         });
+    }
+
+    /** Upload under a temporary name first, so a broken upload never looks like a backup, then rename it. */
+    private function put($ftp, string $localPath, string $name): void
+    {
+        if (! $this->attempt(fn () => ftp_put($ftp, "{$name}.part", $localPath, FTP_BINARY))) {
+            $error = $this->lastError();
+            @ftp_delete($ftp, "{$name}.part");
+
+            throw new RuntimeException('The FTP server refused the upload'.$this->folderName().': '.$error.$this->hint($error));
+        }
+
+        if (! $this->attempt(fn () => ftp_rename($ftp, "{$name}.part", $name))) {
+            $error = $this->lastError();
+            @ftp_delete($ftp, "{$name}.part");
+
+            throw new RuntimeException('The FTP server refused to rename the uploaded file'.$this->folderName().': '.$error.$this->hint($error));
+        }
+    }
+
+    private function folderName(): string
+    {
+        $path = trim((string) ($this->config['path'] ?? ''));
+
+        return ' into '.($path === '' ? 'the login folder' : $path);
+    }
+
+    /** The usual cause of a refused write, which the server's own reply rarely says. */
+    private function hint(string $error): string
+    {
+        return preg_match('/permission denied|not permitted|access denied|not allowed|privileges/i', $error)
+            ? '. The FTP account cannot write to that folder: set Folder to one it may write to, or give the account write access there.'
+            : '';
     }
 
     /**

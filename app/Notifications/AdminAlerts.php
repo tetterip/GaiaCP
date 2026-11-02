@@ -271,7 +271,7 @@ class AdminAlerts
                 ServerResource::getUrl(panel: 'admin'),
             ],
             'backup.failed' => [
-                __('Backup failed'), Str::limit($log->description, 160),
+                __('Backup failed'), self::backupErrors($log),
                 'heroicon-o-archive-box-x-mark', 'danger',
                 BackupSettings::getUrl(panel: 'admin'),
             ],
@@ -451,5 +451,23 @@ class AdminAlerts
         $key = (string) ($log->properties['module'] ?? '');
 
         return app(PluginManager::class)->monitoringModule($key)?->monitoringLabel() ?? $key;
+    }
+
+    /**
+     * What went wrong, in full: the run's description starts with the file name and size, which pushed the
+     * server's reply past the cut-off. Each failed copy is named (FTP, email) before its error.
+     */
+    private static function backupErrors(ActivityLog $log): string
+    {
+        $errors = (array) ($log->properties['errors'] ?? []);
+
+        if ($errors === []) {
+            return Str::limit($log->description, 500);
+        }
+
+        return Str::limit(implode(' ', array_map(
+            fn ($copy, $error) => ($copy === 'backup' ? '' : strtoupper((string) $copy).': ').$error,
+            array_keys($errors), $errors,
+        )), 500);
     }
 }

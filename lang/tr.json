@@ -676,7 +676,7 @@
     "Log in to control panel": "Kontrol paneline giriş yap",
     "Log in to place it.": "Sipariş vermek için giriş yapın.",
     "Log module calls": "Modül çağrılarını kaydet",
-    "Logged in and opened :path.": "Giriş yapıldı ve :path açıldı.",
+    "Logged in, opened :path and wrote a test file there.": "Giriş yapıldı, :path açıldı ve oraya bir test dosyası yazıldı.",
     "Logging": "Günlük kaydı",
     "Logging in from this address is paused. Try again after that time, or contact us if you think this is a mistake.": "Bu adresten giriş duraklatıldı. O süreden sonra yeniden deneyin ya da bunun bir hata olduğunu düşünüyorsanız bize ulaşın.",
     "Logging is off, so nothing new is recorded. Switch it on under Settings → Logging while you look into a problem.": "Günlük kaydı kapalı, yani yeni hiçbir şey kaydedilmiyor. Bir sorunu incelerken Ayarlar → Günlük kaydı altından açın.",
