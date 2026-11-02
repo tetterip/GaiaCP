@@ -46,6 +46,13 @@
             flex-shrink: 0;
         }
 
+        /* The sidebar starts under the top bar, which is .75rem taller than Filament's --topbar-height (the margin
+           above the inset area), and under the public demo's bar (--gcp-demo-bar), so its foot stays in the window */
+        .fi-body-has-navigation:not(.fi-body-has-top-navigation).fi-body-has-topbar .fi-sidebar {
+            top: calc(var(--topbar-height) + .75rem + var(--gcp-demo-bar, 0px));
+            height: calc(100dvh - var(--topbar-height) - .75rem - var(--gcp-demo-bar, 0px));
+        }
+
         .fi-body-has-navigation:not(.fi-body-has-top-navigation) .fi-topbar-end {
             flex: 1;
             margin-top: .75rem;
