@@ -12,6 +12,7 @@ use App\Notifications\SignInLink;
 use App\SignIn\EmailLinks;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
@@ -115,6 +116,21 @@ class SignInLinkTest extends TestCase
         $this->travel(16)->minutes();
         $this->get($link)->assertRedirect('/login');
 
+        Livewire::test(ClientLogin::class)->assertSet('pendingEmail', null);
+        $this->assertGuest('client');
+    }
+
+    public function test_a_link_sent_before_the_password_or_email_changed_is_refused(): void
+    {
+        $user = $this->clientUser();
+        $link = str_replace(url('/'), '', app(EmailLinks::class)->url($user, 'client'));
+        $user->update(['password' => Hash::make('a-new-password')]);
+        $this->get($link)->assertRedirect('/login');
+        Livewire::test(ClientLogin::class)->assertSet('pendingEmail', null);
+
+        $link = str_replace(url('/'), '', app(EmailLinks::class)->url($user->refresh(), 'client'));
+        $user->update(['email' => 'new@example.gr']);
+        $this->get($link)->assertRedirect('/login');
         Livewire::test(ClientLogin::class)->assertSet('pendingEmail', null);
         $this->assertGuest('client');
     }

@@ -52,7 +52,7 @@ class TicketMailPlugin extends Plugin
         return [
             'ticket_mail.host', 'ticket_mail.port', 'ticket_mail.encryption', 'ticket_mail.verify_tls', 'ticket_mail.username',
             'ticket_mail.password', 'ticket_mail.folder', 'ticket_mail.after', 'ticket_mail.department_id',
-            'ticket_mail.unknown_senders', 'ticket_mail.max_per_hour', 'ticket_mail.inbound_token',
+            'ticket_mail.unknown_senders', 'ticket_mail.sender_check', 'ticket_mail.max_per_hour', 'ticket_mail.inbound_token',
         ];
     }
 

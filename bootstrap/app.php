@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Middleware\AuthenticateApiKey;
-use App\Http\Middleware\DenyFraming;
 use App\Http\Middleware\PrepareInstaller;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\TrustProxies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Visitor IPs and https behind Cloudflare (and any proxy in gaiacp.proxies)
         $middleware->replace(LaravelTrustProxies::class, TrustProxies::class);
         // No other site shows GaiaCP's pages in a frame (clickjacking)
-        $middleware->append(DenyFraming::class);
+        $middleware->append(SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

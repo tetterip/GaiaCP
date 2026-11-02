@@ -8,28 +8,77 @@ use App\Install\Installer;
 use App\Support\Currencies;
 use App\Support\Locales;
 use App\Support\Region;
+use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
 use RuntimeException;
 use Symfony\Component\Intl\Countries;
 
 /**
  * The web installer (/install): requirements, database, business and first admin, done. Open only while
- * nothing is installed (App\Http\Middleware\PrepareInstaller); the work is App\Install\Installer's.
+ * nothing is installed (App\Http\Middleware\PrepareInstaller); the work is App\Install\Installer's. Past the first
+ * page it needs the setup code from storage/app/private/install-code.txt, so only whoever can reach the server's
+ * files can install (anyone can open the site until then).
  */
-class InstallController extends Controller
+class InstallController extends Controller implements HasMiddleware
 {
     public function __construct(private Installer $installer) {}
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(function (Request $request, Closure $next) {
+                return $request->session()->get('install.unlocked') === true ? $next($request) : redirect()->route('install');
+            }, except: ['requirements', 'unlock']),
+        ];
+    }
 
     public function requirements(Request $request): View
     {
         $this->localize($request);
+        $ready = $this->installer->meetsRequirements();
+        $unlocked = $request->session()->get('install.unlocked') === true;
+        $codeError = null;
+
+        if ($ready && ! $unlocked) {
+            try {
+                $this->installer->setupCode(); // the file the visitor is about to look for
+            } catch (RuntimeException $e) {
+                $codeError = $e->getMessage();
+            }
+        }
 
         return view('install.requirements', [
             'checks' => $this->installer->requirements(),
-            'ready' => $this->installer->meetsRequirements(),
+            'ready' => $ready,
+            'unlocked' => $unlocked,
+            'codeError' => $codeError,
         ]);
+    }
+
+    /** The setup code typed on the first page: right, and the rest of the installer opens for this browser. */
+    public function unlock(Request $request): RedirectResponse
+    {
+        $this->localize($request);
+        $request->validate(['code' => ['required', 'string', 'max:64']]);
+
+        try {
+            $valid = $this->installer->checkSetupCode((string) $request->input('code'));
+        } catch (RuntimeException $e) {
+            return back()->withErrors(['code' => $e->getMessage()]);
+        }
+
+        if (! $valid) {
+            return back()->withErrors(['code' => __('This is not the setup code. Copy it from :file on the server.', ['file' => 'storage/app/private/install-code.txt'])]);
+        }
+
+        $request->session()->regenerate();
+        $request->session()->put('install.unlocked', true);
+
+        return redirect()->route('install.database');
     }
 
     public function database(Request $request): View|RedirectResponse

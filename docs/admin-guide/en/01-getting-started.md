@@ -17,7 +17,9 @@ GaiaCP needs PHP 8.3 or newer and a MySQL or MariaDB database.
    such as `example.com/billing/`. Point the document root at its `public/` folder if your hosting lets you; on Apache
    and LiteSpeed it also works as it is, thanks to the `.htaccess` it ships with. On nginx, see [Document root](../../installation.md#document-root).
 3. Open the site. Every page goes to the installer, which checks PHP, asks for the database, your business name, the
-   region and the first admin. Run it right after uploading: until it finishes, anyone who opens the site can.
+   region and the first admin. Its first page asks for a setup code: open `storage/app/private/install-code.txt` on
+   the server (File Manager or FTP) and copy it, so nobody else can install your copy before you. Run it right after
+   uploading.
 4. Add the cron line the installer shows you. Without it nothing automatic happens: no payment notices, no reminders,
    no suspensions. It runs every minute:
 

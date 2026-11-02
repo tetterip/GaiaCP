@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Enums\UserRole;
 use App\Models\ActivityLog;
 use App\Models\Passkey;
 use App\Models\User;
@@ -59,6 +60,12 @@ class UserActions
             ->implode('; ');
 
         return __('These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.', ['list' => $list, 'email' => $user->email]);
+    }
+
+    /** A client's passkeys any admin with Clients may remove; an admin user's (linked to a client) only a super admin. */
+    public static function mayRemovePasskeys(?User $user): bool
+    {
+        return $user !== null && ($user->role === UserRole::Client || auth()->user()?->super_admin === true);
     }
 
     public static function deletePasskeys(User $user, string $by): void

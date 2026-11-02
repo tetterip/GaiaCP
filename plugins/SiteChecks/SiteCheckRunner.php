@@ -71,11 +71,17 @@ class SiteCheckRunner
     {
         $domain = DomainName::toAscii((string) $service->domain);
         $addresses = $this->probe->addresses($domain);
-        $dns = $this->dns($service->server, $domain, $addresses);
+        $ours = $service->server ? $this->serverAddresses($service->server) : [];
+        $dns = $this->dns($ours, $domain, $addresses);
 
         $ssl = ['status' => SslStatus::Skipped, 'valid_to' => null, 'issuer' => null, 'error' => null];
         if (! $dns->isProblem()) {
-            $ssl = $this->ssl($domain);
+            // The connection goes to an address checked here, not to a fresh lookup: a client's DNS can't send it to
+            // GaiaCP's own network (a private or reserved address), unless that is the hosting server's own address
+            $target = collect($addresses)->first(fn (string $ip) => in_array($ip, $ours, true) || self::isPublic($ip));
+            $ssl = $target !== null
+                ? $this->ssl($domain, $target)
+                : ['status' => SslStatus::Skipped, 'valid_to' => null, 'issuer' => null, 'error' => 'Points to a private address'];
         }
 
         $check = SiteCheck::query()->firstOrNew(['service_id' => $service->id]);
@@ -112,14 +118,21 @@ class SiteCheckRunner
         ]);
     }
 
-    /** @param  list<string>  $addresses */
-    private function dns(?Server $server, string $domain, array $addresses): DnsStatus
+    public static function isPublic(string $ip): bool
+    {
+        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false
+            && ! str_starts_with(strtolower($ip), '::ffff:'); // IPv4 written as IPv6 is checked as IPv4 or not at all
+    }
+
+    /**
+     * @param  list<string>  $ours  the hosting server's addresses
+     * @param  list<string>  $addresses
+     */
+    private function dns(array $ours, string $domain, array $addresses): DnsStatus
     {
         if ($addresses === []) {
             return DnsStatus::None;
         }
-
-        $ours = $server ? $this->serverAddresses($server) : [];
 
         return match (true) {
             array_intersect($addresses, $ours) !== [] => DnsStatus::Ours,
@@ -139,9 +152,9 @@ class SiteCheckRunner
     }
 
     /** @return array{status: SslStatus, valid_to: ?CarbonImmutable, issuer: ?string, error: ?string} */
-    private function ssl(string $domain): array
+    private function ssl(string $domain, string $address): array
     {
-        $certificate = $this->probe->certificate($domain);
+        $certificate = $this->probe->certificate($domain, $address);
         $validTo = $certificate['valid_to'];
 
         $status = match (true) {

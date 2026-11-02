@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\SignIn\EmailLinks;
 use App\SignIn\SignIn;
 use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
@@ -21,7 +22,8 @@ class SignInLinkController
         $panel = Filament::getCurrentPanel();
         $user = User::query()->find($request->query('user'));
 
-        if (! SignIn::emailLinks($panel->getId()) || ! $request->hasValidSignature() || $user === null || ! $user->canAccessPanel($panel) || blank($request->query('nonce'))) {
+        if (! SignIn::emailLinks($panel->getId()) || ! $request->hasValidSignature() || $user === null || ! $user->canAccessPanel($panel) || blank($request->query('nonce'))
+            || ! hash_equals(EmailLinks::stamp($user), (string) $request->query('v'))) {
             Notification::make()->title(__('This sign-in link has expired or was already used. Ask for a new one.'))->danger()->persistent()->send();
 
             return redirect()->to($panel->getLoginUrl());

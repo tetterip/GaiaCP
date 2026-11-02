@@ -96,8 +96,11 @@ class SignInsRelationManager extends RelationManager
                     ->color('danger')
                     ->requiresConfirmation()
                     ->modalDescription(fn () => UserActions::passkeysDescription($this->getOwnerRecord()->user))
-                    ->visible(fn () => (bool) $this->getOwnerRecord()->user?->passkeys()->exists())
-                    ->action(fn () => UserActions::deletePasskeys($this->getOwnerRecord()->user, 'an admin')),
+                    ->visible(fn () => (bool) $this->getOwnerRecord()->user?->passkeys()->exists() && UserActions::mayRemovePasskeys($this->getOwnerRecord()->user))
+                    ->action(function () {
+                        abort_unless(UserActions::mayRemovePasskeys($this->getOwnerRecord()->user), 403);
+                        UserActions::deletePasskeys($this->getOwnerRecord()->user, 'an admin');
+                    }),
                 Action::make('logOutEverywhere')
                     ->label(fn () => __('Log out everywhere (:count)', ['count' => self::sessions($this->getOwnerRecord())->count()]))
                     ->icon(Heroicon::OutlinedArrowRightStartOnRectangle)

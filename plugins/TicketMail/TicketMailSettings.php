@@ -189,6 +189,14 @@ class TicketMailSettings extends SettingsFormPage
                             ->options(['open' => __('Opens a ticket without a client'), 'ignore' => __('Is ignored')])
                             ->selectablePlaceholder(false)
                             ->helperText(__('You link such a ticket to a client under Change.')),
+                        Select::make('ticket_mail.sender_check')
+                            ->label('Email counts as from the client')
+                            ->options([
+                                'forged' => __('Unless the mail server found the sender forged'),
+                                'verified' => __('Only when the mail server confirmed the sender'),
+                            ])
+                            ->selectablePlaceholder(false)
+                            ->helperText(__('Anyone can write a client\'s address as the sender. The mail server that receives it checks it (DMARC, DKIM, SPF): confirmed is safer, but email from a client whose domain has no such records then opens a ticket without a client.')),
                         TextInput::make('ticket_mail.max_per_hour')
                             ->label('New tickets per sender in an hour')
                             ->numeric()

@@ -17,7 +17,9 @@ From a release zip (GitHub → Releases → `gaiacp-<version>.zip`), on hosting 
 3. Open the site: every page goes to the installer (`/install`), which checks PHP and its extensions, asks for the
    database (writes `.env` with a new app key and creates the tables), then your business name and the first admin.
    It locks itself when it finishes (`storage/app/private/installed`, then `/install` is a 404) and shows the cron
-   line to add. Run it right after uploading: until it finishes, anyone who opens the site can.
+   line to add. Its first page asks for a setup code, written to `storage/app/private/install-code.txt` on the
+   server: copy it from there (File Manager or FTP), so a visitor who finds the site before you can't install it.
+   Still run it right after uploading.
 4. Log in at `/admin`: the setup guide at the top of the dashboard (also Settings → General → Setup guide) takes you
    through the rest, one step at a time: your business, region, mail, payment methods, tax, a server, domain prices,
    your first product, the client area and terms, backups, cron and two-factor sign-in. Skip what you don't need.
@@ -113,6 +115,7 @@ Until a value is saved there, the default comes from `.env` (see `.env.example`)
 |---|---|
 | `MAIL_*` | The mailer used while Settings → Mail → SMTP is off |
 | `GAIACP_CURRENCY` | The base currency (EUR); the installer asks it, other currencies go under Settings → Currencies |
+| `GAIACP_HSTS` | Over https, how many seconds browsers keep to https for this address (HSTS; one year by default, `0` turns it off, subdomains are never included) |
 
 ## Production
 

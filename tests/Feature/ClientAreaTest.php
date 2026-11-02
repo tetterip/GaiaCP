@@ -112,6 +112,22 @@ class ClientAreaTest extends TestCase
         $this->actingAs($clientUser, 'client')->get('/dashboard')->assertForbidden();
     }
 
+    public function test_staff_with_clients_cant_turn_a_disabled_admin_linked_to_a_client_back_on(): void
+    {
+        $client = Client::factory()->create(['email' => 'boss@example.gr']);
+        $linked = User::factory()->create(['role' => UserRole::Admin, 'client_id' => $client->id, 'email' => 'boss@example.gr', 'active' => false]);
+        $this->actingAs(User::factory()->create(['role' => UserRole::Admin, 'super_admin' => false, 'admin_areas' => ['clients']]));
+
+        Livewire::test(EditClient::class, ['record' => $client->getRouteKey()])->assertActionHidden('enableClientArea');
+
+        try {
+            app(ClientAreaAccess::class)->enable($client);
+            $this->fail('An admin user was turned on from a client.');
+        } catch (\RuntimeException) {
+        }
+        $this->assertFalse($linked->refresh()->active);
+    }
+
     public function test_an_admin_can_log_in_as_the_client_and_stays_logged_in_to_admin(): void
     {
         $admin = User::factory()->create();

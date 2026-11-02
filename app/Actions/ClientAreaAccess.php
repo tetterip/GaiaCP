@@ -165,8 +165,13 @@ class ClientAreaAccess
         ActivityLog::record('client_area.disabled', "Client area login of {$client->email} turned off", client: $client);
     }
 
+    /** Turns a client's login on again. Never an admin's: only Settings → Admin users turns an admin back on. */
     public function enable(Client $client): void
     {
+        if (self::isLinkedAdmin($client)) {
+            throw new RuntimeException(__('This login is an admin user: only Settings → Admin users can turn it on.'));
+        }
+
         $client->user?->update(['active' => true]);
         ActivityLog::record('client_area.enabled', "Client area login of {$client->email} turned on", client: $client);
     }

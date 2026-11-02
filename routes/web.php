@@ -20,6 +20,7 @@ Route::redirect('/admin/settings/billing', '/admin/settings/general', 301);
 // Every route has its own name, or `route:cache` (run by `optimize` on deploy) refuses the duplicates.
 Route::controller(InstallController::class)->prefix('install')->group(function () {
     Route::get('/', 'requirements')->name('install');
+    Route::post('/', 'unlock')->middleware('throttle:10,1')->name('install.unlock');
     Route::get('database', 'database')->name('install.database');
     Route::post('database', 'saveDatabase')->name('install.database.save');
     Route::get('admin', 'admin')->name('install.admin');
