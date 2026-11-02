@@ -676,7 +676,7 @@
     "Log in to control panel": "Beim Control Panel anmelden",
     "Log in to place it.": "Melden Sie sich an, um sie aufzugeben.",
     "Log module calls": "Modulaufrufe protokollieren",
-    "Logged in and opened :path.": "Angemeldet und :path geöffnet.",
+    "Logged in, opened :path and wrote a test file there.": "Angemeldet, :path geöffnet und dort eine Testdatei geschrieben.",
     "Logging": "Protokollierung",
     "Logging in from this address is paused. Try again after that time, or contact us if you think this is a mistake.": "Die Anmeldung von dieser Adresse ist pausiert. Versuchen Sie es nach dieser Zeit erneut oder kontaktieren Sie uns, wenn Sie glauben, dass dies ein Fehler ist.",
     "Logging is off, so nothing new is recorded. Switch it on under Settings → Logging while you look into a problem.": "Die Protokollierung ist aus, daher wird nichts Neues aufgezeichnet. Schalten Sie sie unter Einstellungen → Protokollierung ein, während Sie einem Problem nachgehen.",

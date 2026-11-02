@@ -676,7 +676,7 @@
     "Log in to control panel": "Se connecter au panneau de contrôle",
     "Log in to place it.": "Connectez-vous pour la passer.",
     "Log module calls": "Journaliser les appels des modules",
-    "Logged in and opened :path.": "Connecté et a ouvert :path.",
+    "Logged in, opened :path and wrote a test file there.": "Connecté, :path ouvert et un fichier de test y a été écrit.",
     "Logging": "Journalisation",
     "Logging in from this address is paused. Try again after that time, or contact us if you think this is a mistake.": "La connexion depuis cette adresse est suspendue. Réessayez après cette heure, ou contactez-nous si vous pensez qu'il s'agit d'une erreur.",
     "Logging is off, so nothing new is recorded. Switch it on under Settings → Logging while you look into a problem.": "La journalisation est désactivée, rien de nouveau n'est enregistré. Activez-la dans Paramètres → Journalisation le temps d'examiner un problème.",

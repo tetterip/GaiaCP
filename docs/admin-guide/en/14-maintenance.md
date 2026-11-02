@@ -6,6 +6,9 @@ Settings → System → **Backups** makes a zipped copy of the database, daily o
 newest few. Give the zip a **password** (AES-256): the backup holds every client's details. Each backup can be copied
 to an **FTP / FTPS** server and **emailed** to an address. **Back up now**, **Download latest** and **Test FTP** are on
 the page; `php artisan gaiacp:backup` does the same from SSH.
+**Test FTP** logs in, opens the folder and writes and deletes a small file there, so a folder the FTP account
+cannot write to shows up then and not in the night's backup. When a copy fails, the bell and the page show the FTP
+server's whole reply.
 
 Logs go into the backup empty unless you switch on **Include logs**: the module log, the email log (so the clients'
 Email history too), sessions, cache and queued jobs. They are not needed to restore GaiaCP, and the module log alone

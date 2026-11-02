@@ -7,6 +7,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's
   card with its own scrollbar; it is a full, centred window again (GaiaTheme 1.3.2).
+- Backups: **Test FTP** now writes and deletes a small file in the folder, so a folder the FTP account cannot write to
+  shows up on the test. A failed FTP copy shows the server's whole reply in the bell (it was cut after the file name).
 
 ## [0.6.0] - 2026-11-02
 
