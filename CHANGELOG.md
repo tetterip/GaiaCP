@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security, installer: the web installer's first page asks for a **setup code** that only someone with access to the
+  server's files can read (`storage/app/private/install-code.txt`, made on the first visit, deleted once installed;
+  10 tries a minute), so a visitor who finds a new copy before its owner can't install it and take it over.
+  `php artisan gaiacp:install` needs no code.
+- Security, headers: every page now also sends `Referrer-Policy: strict-origin-when-cross-origin`, a
+  `Permissions-Policy` turning off camera, microphone and location, `X-Content-Type-Options: nosniff`, and over https
+  `Strict-Transport-Security` for a year (`GAIACP_HSTS`, `0` turns it off; subdomains not included).
+
 - Security, admin panel: Settings → Login security → Admin panel can **require two-factor authentication** of the super
   admins or of every admin (they set it up before any other page opens; never on the public demo), and limit /admin to
   **a list of addresses** (yours must be on it; `php artisan gaiacp:admin-ips --clear` empties it after a lock-out).

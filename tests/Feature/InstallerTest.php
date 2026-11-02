@@ -37,6 +37,12 @@ class InstallerTest extends TestCase
         return app(Installer::class);
     }
 
+    /** Past the first page, as whoever typed the setup code from the server's files. */
+    private function unlock(): static
+    {
+        return $this->withSession(['install.unlocked' => true]);
+    }
+
     private function freshDatabase(): void
     {
         $this->installer()->useDatabase(['driver' => 'sqlite', 'database' => $this->dir.'/gaiacp.sqlite']);
@@ -68,7 +74,7 @@ class InstallerTest extends TestCase
             ->assertSee('.env file')
             ->assertSee('comes with no warranty')
             ->assertSee('https://www.gnu.org/licenses/gpl-3.0.html', false)
-            ->assertSee(route('install.database'))
+            ->assertSee(route('install.unlock'))
             // The admin panel's look, light only, with the GaiaCP logo
             ->assertSee('<meta name="color-scheme" content="light">', false)
             ->assertSee('images/gaiacp/logo.svg', false)
@@ -82,23 +88,23 @@ class InstallerTest extends TestCase
     public function test_the_installer_speaks_greek_when_asked(): void
     {
         $this->get('/install?lang=el')->assertOk()->assertSee('Εγκατάσταση GaiaCP');
-        $this->get('/install/database')->assertOk()->assertSee('Σύνδεση και δημιουργία πινάκων');
+        $this->unlock()->get('/install/database')->assertOk()->assertSee('Σύνδεση και δημιουργία πινάκων');
     }
 
     public function test_the_database_step_needs_the_server_details_for_mysql(): void
     {
         $this->get('/install');
 
-        $this->post('/install/database', ['driver' => 'mysql'])->assertSessionHasErrors(['host', 'database', 'username']);
+        $this->unlock()->post('/install/database', ['driver' => 'mysql'])->assertSessionHasErrors(['host', 'database', 'username']);
         $this->post('/install/database', ['driver' => 'oracle'])->assertSessionHasErrors('driver');
     }
 
     public function test_the_admin_step_waits_for_the_tables(): void
     {
-        $this->installer()->prepareEnvironment(marker: true);
+        $this->get('/install');
         $this->installer()->useDatabase(['driver' => 'sqlite', 'database' => $this->dir.'/empty.sqlite']);
 
-        $this->get('/install/admin')->assertRedirect(route('install.database'));
+        $this->unlock()->get('/install/admin')->assertRedirect(route('install.database'));
     }
 
     public function test_finishing_creates_the_admin_saves_the_business_and_locks_the_installer(): void
@@ -106,7 +112,8 @@ class InstallerTest extends TestCase
         $this->get('/install?lang=el');
         $this->freshDatabase();
 
-        $this->get('/install/admin')->assertOk()->assertSee('Όνομα επιχείρησης');
+        $this->unlock()->get('/install/admin')->assertOk()->assertSee('Όνομα επιχείρησης');
+        $this->assertFileExists($this->dir.'/install-code.txt');
 
         $this->post('/install/admin', [
             'company' => 'Acme Hosting',
@@ -140,6 +147,7 @@ class InstallerTest extends TestCase
         $this->assertSame('America/New_York', date_default_timezone_get());
         $this->assertSame($this->dir.'/gaiacp.sqlite', $env['DB_DATABASE']);
         $this->assertFileExists($this->dir.'/installed');
+        $this->assertFileDoesNotExist($this->dir.'/install-code.txt');
 
         $this->get('/install')->assertNotFound();
         $this->post('/install/admin', [])->assertNotFound();
@@ -150,10 +158,44 @@ class InstallerTest extends TestCase
         $this->get('/install');
         $this->freshDatabase();
 
-        $this->post('/install/admin', ['company' => 'X', 'name' => 'A', 'email' => 'not-an-email', 'password' => 'short', 'password_confirmation' => 'other'])
+        $this->unlock()->post('/install/admin', ['company' => 'X', 'name' => 'A', 'email' => 'not-an-email', 'password' => 'short', 'password_confirmation' => 'other'])
             ->assertSessionHasErrors(['email', 'password']);
         $this->assertSame(0, User::count());
         $this->assertFileDoesNotExist($this->dir.'/installed');
+    }
+
+    public function test_only_whoever_reads_the_setup_code_from_the_server_gets_past_the_first_page(): void
+    {
+        // A passer-by: the first page asks for the code, every other step sends them back to it
+        $this->get('/install')->assertOk()->assertSee('Setup code')->assertSee('storage/app/private/install-code.txt')
+            ->assertDontSee('href="'.route('install.database').'"', false);
+        $code = trim((string) file_get_contents($this->dir.'/install-code.txt'));
+        $this->assertMatchesRegularExpression('/^[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/', $code);
+
+        $this->get('/install/database')->assertRedirect(route('install'));
+        $this->post('/install/database', ['driver' => 'sqlite'])->assertRedirect(route('install'));
+        $this->get('/install/admin')->assertRedirect(route('install'));
+        $this->post('/install/admin', ['company' => 'X'])->assertRedirect(route('install'));
+        $this->assertFileDoesNotExist($this->dir.'/installed');
+
+        $this->post('/install', ['code' => 'AAAA-BBBB-CCCC'])->assertSessionHasErrors('code');
+        $this->get('/install/database')->assertRedirect(route('install'));
+
+        // The owner, copying it in lower case without the dashes; the code stays the same between visits
+        $this->post('/install', ['code' => strtolower(str_replace('-', ' ', $code))])->assertRedirect(route('install.database'));
+        $this->get('/install/database')->assertOk();
+        $this->get('/install')->assertOk()->assertSee('href="'.route('install.database').'"', false);
+        $this->assertSame($code, trim((string) file_get_contents($this->dir.'/install-code.txt')));
+    }
+
+    public function test_guessing_the_setup_code_is_slowed_down(): void
+    {
+        $this->get('/install');
+
+        for ($i = 0; $i < 10; $i++) {
+            $this->post('/install', ['code' => 'WRONG-'.$i])->assertSessionHasErrors('code');
+        }
+        $this->post('/install', ['code' => 'WRONG'])->assertStatus(429);
     }
 
     public function test_the_command_installs_without_questions(): void

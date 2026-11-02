@@ -48,6 +48,48 @@ class Installer
         return app()->environmentFilePath();
     }
 
+    /** The setup code the web installer asks for: a file only someone with access to the server's files can read. */
+    public function setupCodeFile(): string
+    {
+        return dirname($this->lockFile()).'/install-code.txt';
+    }
+
+    /**
+     * The web installer's setup code, made on first use. Until GaiaCP is installed anyone who opens the site reaches
+     * /install, so it asks for this code first: copying it from storage/app/private/install-code.txt shows the
+     * visitor can reach the server's files, which whoever just uploaded GaiaCP can and a passer-by can't.
+     */
+    public function setupCode(): string
+    {
+        $file = $this->setupCodeFile();
+        $code = is_file($file) ? trim((string) file_get_contents($file)) : '';
+
+        if ($code === '') {
+            $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O or 1/I to mistype
+            for ($i = 0; $i < 12; $i++) {
+                $code .= ($i > 0 && $i % 4 === 0 ? '-' : '').$alphabet[random_int(0, strlen($alphabet) - 1)];
+            }
+
+            if (! is_dir(dirname($file))) {
+                @mkdir(dirname($file), 0755, true);
+            }
+            if (@file_put_contents($file, $code.PHP_EOL) === false) {
+                throw new RuntimeException("Could not write {$file}.");
+            }
+        }
+
+        return $code;
+    }
+
+    /** Whether the code typed matches the setup code (case, spaces and dashes don't matter). */
+    public function checkSetupCode(string $given): bool
+    {
+        $normalize = fn (string $code): string => strtoupper((string) preg_replace('/[^A-Za-z0-9]/', '', $code));
+        $expected = $normalize($this->setupCode());
+
+        return $expected !== '' && hash_equals($expected, $normalize($given));
+    }
+
     public function isLocked(): bool
     {
         return is_file($this->lockFile());
@@ -287,6 +329,9 @@ class Installer
             mkdir(dirname($lock), 0755, true);
         }
         file_put_contents($lock, json_encode(['version' => Version::current(), 'at' => now()->toIso8601String()]).PHP_EOL);
+        if (is_file($this->setupCodeFile())) {
+            @unlink($this->setupCodeFile());
+        }
     }
 
     /** The cron line that runs the daily automation (every minute, as `schedule:run` expects). */

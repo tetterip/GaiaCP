@@ -379,6 +379,12 @@ return [
 
     // Settings → System → Updates: the GitHub repository whose releases (v<version> tags with a gaiacp-<version>.zip)
     // this install updates from. A private repository needs a token that can read it (fine-grained, Contents: read).
+    // Pages opened over https tell browsers to stay on https for this address for this many seconds (HSTS, App\Http\
+    // Middleware\SecurityHeaders). 0 turns it off, e.g. while testing a certificate; subdomains are never included.
+    'security' => [
+        'hsts' => (int) env('GAIACP_HSTS', 31536000),
+    ],
+
     // Settings → Plugins: uploading a plugin zip installs PHP code that runs with GaiaCP's full access. A host can
     // turn uploads off (GAIACP_PLUGIN_UPLOADS=false); folders copied into plugins/ by hand still load.
     'plugins' => [

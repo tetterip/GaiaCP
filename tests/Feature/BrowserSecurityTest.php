@@ -22,6 +22,24 @@ class BrowserSecurityTest extends TestCase
         }
     }
 
+    public function test_pages_keep_paths_from_other_sites_and_https_sticks(): void
+    {
+        User::factory()->create();
+
+        $this->get('/admin/login')->assertOk()
+            ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+            ->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+            ->assertHeader('X-Content-Type-Options', 'nosniff')
+            // Plain http: HSTS would be ignored there and must not be sent
+            ->assertHeaderMissing('Strict-Transport-Security');
+
+        $this->get('https://localhost/admin/login')->assertOk()
+            ->assertHeader('Strict-Transport-Security', 'max-age=31536000');
+
+        config(['gaiacp.security.hsts' => 0]);
+        $this->get('https://localhost/admin/login')->assertOk()->assertHeaderMissing('Strict-Transport-Security');
+    }
+
     public function test_the_session_cookie_is_secure_on_an_https_install(): void
     {
         $url = $_SERVER['APP_URL'] ?? null;

@@ -464,7 +464,11 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   used by `InstallController` (`/install`, plain Blade in `resources/views/install/`, Form Requests `Install*Request`) and
   `gaiacp:install`. `App\Http\Middleware\PrepareInstaller` runs first in the `web` group and the panel: while not
   installed (no `storage/app/private/installed` and no `.env`, or one with `GAIACP_INSTALLER=open`) it writes `.env` + key,
-  keeps the installer's session in files and sends every page to `/install`; installed, `/install` is a 404
+  keeps the installer's session in files and sends every page to `/install`; installed, `/install` is a 404. Past the
+  first page the web installer needs the setup code (`Installer::setupCode()`, `storage/app/private/install-code.txt`,
+  made on the first visit, deleted by `lock()`; tried on `POST /install`, 10 a minute, then session `install.unlocked`).
+  `App\Http\Middleware\SecurityHeaders` (every response): frame-ancestors / X-Frame-Options, nosniff, Referrer-Policy,
+  Permissions-Policy, and HSTS over https (`gaiacp.security.hsts`)
 - Setup guide (Settings → General → Setup guide, `/admin/settings/setup`, super admins): `App\Support\SetupGuide` lists
   the steps after `/install` (business, region, mail, payment methods, tax, server, domain prices, product, client area
   and terms, backups, cron, two-factor), each opening an existing page. A step is done when what it sets up is there
