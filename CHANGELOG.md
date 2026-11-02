@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's
+  card with its own scrollbar; it is a full, centred window again (GaiaTheme 1.3.2).
+
 ## [0.6.0] - 2026-11-02
 
 - Security, admin panel: Settings → Login security → Admin panel can **require two-factor authentication** of the super
