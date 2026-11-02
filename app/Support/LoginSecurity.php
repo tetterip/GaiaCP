@@ -2,8 +2,10 @@
 
 namespace App\Support;
 
+use App\Enums\UserRole;
 use App\Models\ActivityLog;
 use App\Models\IpBan;
+use App\Models\User;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\HttpFoundation\IpUtils;
@@ -38,6 +40,43 @@ final class LoginSecurity
         $value = config('gaiacp.login_security.allowed_ips');
 
         return array_values(array_filter(array_map('trim', is_array($value) ? $value : preg_split('/[\s,]+/', (string) $value))));
+    }
+
+    /** @return list<string> the only addresses and ranges (CIDR) /admin answers; empty = everyone */
+    public static function adminIps(): array
+    {
+        if (Demo::enabled()) {
+            return [];
+        }
+
+        $value = config('gaiacp.login_security.admin_ips');
+
+        return array_values(array_filter(array_map('trim', is_array($value) ? $value : preg_split('/[\s,]+/', (string) $value))));
+    }
+
+    /** Whether /admin answers this address (Settings → Login security → Admin panel addresses). */
+    public static function admitsToAdmin(?string $ip): bool
+    {
+        $list = self::adminIps();
+
+        return $list === [] || ($ip !== null && IpUtils::checkIp($ip, $list));
+    }
+
+    /**
+     * Whether this admin must turn on two-factor authentication before using /admin (Settings → Login security →
+     * Require two-factor authentication: off, super_admins or admins). Never on the public demo.
+     */
+    public static function requiresTwoFactor(User $user): bool
+    {
+        if (Demo::enabled() || $user->role !== UserRole::Admin) {
+            return false;
+        }
+
+        return match (config('gaiacp.login_security.require_two_factor')) {
+            'admins' => true,
+            'super_admins' => (bool) $user->super_admin,
+            default => false,
+        };
     }
 
     public static function isAllowListed(string $ip): bool

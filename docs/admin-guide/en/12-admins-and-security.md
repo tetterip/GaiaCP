@@ -36,6 +36,11 @@ when the phone is lost. Until it is on, a reminder at the top of the panel sugge
 for an admin who lost both the app and the codes (Admin users), or from SSH:
 `php artisan gaiacp:disable-2fa admin@example.com`.
 
+Settings → Security → **Login security** → Admin panel → **Require two-factor authentication** makes it compulsory for
+the super admins or for every admin. An admin it applies to who hasn't turned it on yet is taken to set it up right after
+logging in, and no other page opens until they do. Passkeys don't count: password logins still need the app. The public
+demo never requires it.
+
 **Forgot password?** on the login page emails active admins a reset link; two-factor is still asked afterwards.
 
 ## Other ways to log in
@@ -68,6 +73,23 @@ minutes. Change both numbers, switch banning off, or list addresses and ranges t
 office. **Banned IPs** lists the bans, lifts one, or bans an address by hand. Wrong REST API keys count as wrong
 passwords, and a banned address gets no API answers either.
 
+## Who can open /admin
+
+Settings → Security → **Login security** → Admin panel → **Admin panel addresses**: when you list addresses or ranges
+(CIDR) there, one per line, only they can open /admin, its login included; everyone else gets an error page, even with a
+correct password. The client area, the public pages, the REST API (its keys have their own address lists) and
+webhooks are not affected. Your current address must be on the list, so you can't lock yourself out by saving it. If
+your address changes and you are locked out anyway, run `php artisan gaiacp:admin-ips --clear` on the server (without
+`--clear` it shows the list).
+
+## Changes to server and registrar logins
+
+When an admin adds a server or registrar account, or changes the address, user, API token or password GaiaCP logs in
+with, the change is logged and every super admin with **Receive system emails** on gets an email saying which one, who,
+from which address and when (never the token itself). Replacing a server's stored API token / password asks for your own
+password, and so does **Terminate** on a hosting account that is on a server, since it deletes the account and its
+files there. A browser left signed in is not enough for either.
+
 ## Captcha
 
 Settings → General → **Captcha** puts a "not a robot" check on the login, sign up, forgot password, domain search and
@@ -85,6 +107,32 @@ Cloudflare is in front but not trusted, or set to Flexible SSL.
   sent back to your browser: a blank field keeps the stored value.
 - Service passwords are shown to admins on the service form when you reveal them, and never in lists, logs or exports.
 - The module log masks passwords, tokens and EPP codes.
+
+## Keeping GaiaCP safe
+
+GaiaCP holds the logins of your servers and registrars, so someone who takes over a super admin, or the server GaiaCP
+runs on, can do whatever those logins allow. Limit what that is:
+
+- **Give each panel the least access that works**: a reseller instead of `root` where the panel has resellers, and an
+  API token limited to what GaiaCP calls ([Servers](04-servers.md#giving-gaiacp-the-least-access)).
+- **Let only GaiaCP reach the panels' APIs**: allow your GaiaCP server's IP address in each panel (WHM Host Access
+  Control, Plesk's API IP restriction, HestiaCP's and Enhance's API allow lists) and block the rest. GaiaCP always calls
+  the panels, never the other way round.
+- **Run GaiaCP on its own server**, not on one of the hosting servers it manages, and keep it up to date (System →
+  Updates; updates are signed).
+- **Require two-factor authentication** for every admin, and list your offices under **Admin panel addresses** if your
+  addresses are fixed.
+- **Give staff only their areas**: a super admin is needed only for servers, registrars, plugins and the system settings.
+- **Keep `APP_KEY` safe**: the stored logins are encrypted with the key in GaiaCP's `.env`, so a stolen database or
+  backup alone doesn't reveal them, but the database together with `.env` does. Keep a copy of `.env` somewhere safe
+  apart from your backups: without its key the stored logins can't be read back. Set a zip password under Settings →
+  Backups too.
+- **Turn off plugin uploads** you don't need (`GAIACP_PLUGIN_UPLOADS=false` in `.env`): an uploaded plugin runs with
+  GaiaCP's full access.
+- If something looks wrong, the activity log shows who did what; change the affected server tokens in the panels
+  themselves, then in GaiaCP.
+
+Security problems in GaiaCP itself are reported privately, as `SECURITY.md` in the repository explains.
 
 ## The activity log
 

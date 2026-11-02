@@ -15,6 +15,8 @@ use App\Http\Middleware\AlertWhenCronStops;
 use App\Http\Middleware\ApplyTheme;
 use App\Http\Middleware\BlockBannedIps;
 use App\Http\Middleware\PrepareInstaller;
+use App\Http\Middleware\RequireAdminTwoFactor;
+use App\Http\Middleware\RestrictAdminIps;
 use App\Http\Middleware\SetLocale;
 use App\Livewire\PanelNotifications;
 use App\Livewire\TwoFactorReminder;
@@ -56,12 +58,15 @@ class AdminPanelProvider extends PanelProvider
             // "Forgot password?" link: an email with a reset link to admins who can log in (2FA still asked after)
             ->passwordReset(RequestPasswordReset::class)
             ->profile(EditProfile::class, isSimple: false)
-            // Optional per user: each admin turns it on from their profile (user menu)
+            // Each admin turns it on from their profile (user menu); Settings → Login security can require it of super
+            // admins or every admin, read per request by RequireAdminTwoFactor (never on the demo, whose logins are shared)
             ->multiFactorAuthentication(fn (): array => Demo::enabled() ? [] : [ // the demo's accounts stay as they are
                 AppAuthentication::make()
                     ->brandName('GaiaCP')
                     ->recoverable(),
             ])
+            ->requiresMultiFactorAuthentication(fn (): bool => ! Demo::enabled())
+            ->multiFactorAuthenticationRequiredMiddlewareName(RequireAdminTwoFactor::class)
             ->brandName('GaiaCP')
             // GaiaCP's own brand here (public/images/gaiacp); the company logo is for the client area only.
             ->brandLogo(fn (): string => asset('images/gaiacp/logo.svg'))
@@ -169,6 +174,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             // After the session, so the admin's own language applies (Livewire requests too)
             ->middleware([SetLocale::class, ApplyTheme::class], isPersistent: true)
+            // Settings → Login security → Admin panel addresses: only those reach /admin (Livewire requests too)
+            ->middleware([RestrictAdminIps::class], isPersistent: true)
             // Login, sign up and forgot password answer a banned address with the ban page (LoginSecurity)
             ->middleware([BlockBannedIps::class])
             ->authMiddleware([

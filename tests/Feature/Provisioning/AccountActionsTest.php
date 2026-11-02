@@ -97,19 +97,23 @@ class AccountActionsTest extends TestCase
         $this->assertFalse($this->whmAccounts[$service->username]);
     }
 
-    public function test_terminate_requires_typing_the_username(): void
+    public function test_terminate_requires_typing_the_username_and_the_admins_password(): void
     {
         $service = Service::factory()->create(['username' => 'acme']);
         $this->whmAccounts['acme'] = false;
 
         Livewire::test(EditService::class, ['record' => $service->id])
-            ->callAction('terminate', data: ['confirm_username' => 'nope'])
+            ->callAction('terminate', data: ['confirm_username' => 'nope', 'confirm_password' => 'password'])
             ->assertHasActionErrors(['confirm_username']);
+
+        Livewire::test(EditService::class, ['record' => $service->id])
+            ->callAction('terminate', data: ['confirm_username' => 'acme', 'confirm_password' => 'wrong'])
+            ->assertHasActionErrors(['confirm_password']);
 
         $this->assertArrayHasKey('acme', $this->whmAccounts);
 
         Livewire::test(EditService::class, ['record' => $service->id])
-            ->callAction('terminate', data: ['confirm_username' => 'acme'])
+            ->callAction('terminate', data: ['confirm_username' => 'acme', 'confirm_password' => 'password'])
             ->assertHasNoActionErrors();
 
         $this->assertArrayNotHasKey('acme', $this->whmAccounts);

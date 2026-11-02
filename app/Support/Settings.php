@@ -131,6 +131,8 @@ class Settings
         'login_security.max_attempts',
         'login_security.ban_minutes',
         'login_security.allowed_ips',
+        'login_security.require_two_factor',
+        'login_security.admin_ips',
         'sign_in.passkeys',
         'sign_in.email_link',
         'sign_in.admin_email_link',

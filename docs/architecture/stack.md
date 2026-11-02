@@ -298,6 +298,14 @@ How the admin and client panels, users, access, security, branding, themes and l
   `resources/views/auth/ip-banned.blade.php` (403), signed-in users pass; the pages' Livewire submits check again.
   `allowed_ips` (IPs / CIDR) are never banned. Settings → Banned IPs (`IpBanResource`) lifts or adds bans;
   `gaiacp:prune-logs` deletes bans that ended 30 days ago. Filament's own limits (5 logins, 2 reset emails a minute) stay
+  Admin panel part of the same page: `require_two_factor` (off / super_admins / admins, `LoginSecurity::requiresTwoFactor()`)
+  is read per request by `App\Http\Middleware\RequireAdminTwoFactor`, Filament's MFA-required middleware for /admin
+  (`requiresMultiFactorAuthentication()` is always on outside the demo so the routes don't depend on the setting);
+  `admin_ips` (`LoginSecurity::admitsToAdmin()`) is checked by `RestrictAdminIps`, persistent /admin middleware (403);
+  the form refuses a list without the current address, `gaiacp:admin-ips --clear` empties it. Neither applies on the
+  demo. `App\Support\ConnectionChanges` (Server / Registrar `saved`): a login added or changed by a signed-in admin
+  is logged `server.login_changed` / `registrar.login_changed` and emailed (`ConnectionDetailsChanged`) to super admins
+  with system emails on; replacing a server's token and Terminate on a server ask for the admin's password
 - Proxies: `App\Http\Middleware\TrustProxies` (replaces Laravel's) trusts `App\Support\Cloudflare::IP_RANGES` unless
   `gaiacp.proxies.cloudflare` is off, plus `gaiacp.proxies.trusted`, so `$request->ip()` is the visitor behind Cloudflare;
   System health warns when Cloudflare is in front but untrusted or on Flexible SSL

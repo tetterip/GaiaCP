@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Monitoring\MonitorStatus;
+use App\Support\ConnectionChanges;
 use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -39,6 +40,9 @@ class Server extends Model
                 $server->monitor_ref = null;
             }
         });
+
+        // A login added or changed by an admin: logged and emailed to the super admins.
+        static::saved(fn (self $server) => ConnectionChanges::serverSaved($server));
     }
 
     protected function casts(): array
