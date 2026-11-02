@@ -676,7 +676,7 @@
     "Log in to control panel": "Entrar en el panel de control",
     "Log in to place it.": "Inicie sesión para hacerlo.",
     "Log module calls": "Registrar llamadas de módulos",
-    "Logged in and opened :path.": "Inició sesión y abrió :path.",
+    "Logged in, opened :path and wrote a test file there.": "Inició sesión, abrió :path y escribió allí un archivo de prueba.",
     "Logging": "Registros",
     "Logging in from this address is paused. Try again after that time, or contact us if you think this is a mistake.": "El inicio de sesión desde esta dirección está en pausa. Inténtelo de nuevo después de esa hora, o contáctenos si cree que es un error.",
     "Logging is off, so nothing new is recorded. Switch it on under Settings → Logging while you look into a problem.": "El registro está desactivado, así que no se guarda nada nuevo. Actívelo en Ajustes → Registros mientras investiga un problema.",

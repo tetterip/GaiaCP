@@ -233,7 +233,7 @@ class BackupSettings extends SettingsFormPage
 
         try {
             app(FtpUploader::class, ['config' => $ftp])->test();
-            Notification::make()->success()->title(__('FTP connection works'))->body(__('Logged in and opened :path.', ['path' => ($ftp['path'] ?? null) ?: '/']))->send();
+            Notification::make()->success()->title(__('FTP connection works'))->body(__('Logged in, opened :path and wrote a test file there.', ['path' => ($ftp['path'] ?? null) ?: '/']))->send();
         } catch (Throwable $e) {
             Notification::make()->danger()->title(__('FTP connection failed'))->body($e->getMessage())->persistent()->send();
         }
