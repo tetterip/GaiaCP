@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.2] - 2026-11-02
+
+- A modal opened from a sign-in page (e.g. Set up authenticator app when two-factor is required) fills the screen again instead of being squeezed inside the page's card
+
 ## [1.3.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

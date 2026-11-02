@@ -49,6 +49,15 @@ class ThemesTest extends TestCase
             ->assertSee('images/gaiacp/mark.svg', false);
     }
 
+    public function test_the_page_rise_leaves_no_transform_behind_to_trap_modals(): void
+    {
+        // A transform kept after the animation makes the card the containing block of position: fixed, so a modal
+        // opened from a sign-in page (Set up authenticator app when two-factor is required) was squeezed inside it.
+        $this->get(Filament::getPanel('admin')->getLoginUrl())->assertOk()
+            ->assertSee('animation: gaia-rise .45s var(--gaia-ease) backwards;', false)
+            ->assertDontSee('animation: gaia-rise .45s var(--gaia-ease) both;', false);
+    }
+
     public function test_the_header_logo_uses_the_same_hexagon_as_the_footer_mark(): void
     {
         $mark = file_get_contents(public_path('images/gaiacp/mark.svg'));

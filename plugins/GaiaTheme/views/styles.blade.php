@@ -150,9 +150,11 @@
         }
     }
 
+    /* backwards, not both: a transform kept after the rise would trap the page's modals (position: fixed) inside
+       the card, e.g. Set up authenticator app on the required two-factor page */
     .fi-page > section,
     .fi-simple-main {
-        animation: gaia-rise .45s var(--gaia-ease) both;
+        animation: gaia-rise .45s var(--gaia-ease) backwards;
     }
 
     @media (prefers-reduced-motion: reduce) {
