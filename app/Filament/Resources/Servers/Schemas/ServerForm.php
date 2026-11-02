@@ -122,7 +122,18 @@ class ServerForm
                             // Never send the stored secret back to the browser; a blank field keeps it.
                             ->formatStateUsing(fn () => null)
                             ->dehydrated(fn (?string $state) => filled($state))
+                            ->live(onBlur: true)
                             ->helperText(fn (string $operation, Get $get) => ($operation === 'edit' ? __('Leave blank to keep the current one.').' ' : '').self::type($get)?->tokenHelp()),
+                        // Replacing a stored login asks who is at the keyboard (a session left open is not enough).
+                        TextInput::make('confirm_password')
+                            ->label('Your password')
+                            ->password()
+                            ->autocomplete('current-password')
+                            ->required()
+                            ->currentPassword()
+                            ->dehydrated(false)
+                            ->helperText(__('Needed to replace the stored API token / password.'))
+                            ->visible(fn (string $operation, Get $get) => $operation === 'edit' && filled($get('api_token'))),
                         // Each type's own fields (e.g. Plesk's IP for new subscriptions), shown only for that type.
                         ...app(PluginManager::class)->all()->flatMap(fn ($plugin) => $plugin->serverModules())
                             ->map(fn (ServerModule $module) => Group::make($module->serverFields())

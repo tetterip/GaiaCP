@@ -198,11 +198,16 @@ return [
     // Settings → Login security: after max_attempts wrong passwords or two-factor codes from one IP address within
     // ban_minutes, that address can't open the login, sign up or forgot password pages for ban_minutes (like WHMCS).
     // allowed_ips (addresses or CIDR ranges, one per line) are never banned. App\Support\LoginSecurity.
+    // require_two_factor (off, super_admins, admins): those admins must turn on two-factor authentication before they
+    // can open any other page of /admin. admin_ips (one per line, CIDR too): when set, /admin answers only them
+    // (`php artisan gaiacp:admin-ips --clear` empties it). Neither applies on the public demo.
     'login_security' => [
         'enabled' => true,
         'max_attempts' => 3,
         'ban_minutes' => 15,
         'allowed_ips' => null,
+        'require_two_factor' => 'off',
+        'admin_ips' => null,
     ],
 
     // Settings → Login security → Other ways to log in (App\SignIn\SignIn): passkeys on both logins (each login adds

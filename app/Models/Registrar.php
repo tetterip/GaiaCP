@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Plugins\PluginManager;
 use App\Provisioning\ManualRegistrar;
+use App\Support\ConnectionChanges;
 use Database\Factories\RegistrarFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -43,6 +44,8 @@ class Registrar extends Model
             if ($registrar->is_default) {
                 static::query()->whereKeyNot($registrar->getKey())->where('is_default', true)->update(['is_default' => false]);
             }
+
+            ConnectionChanges::registrarSaved($registrar);
         });
     }
 

@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security, admin panel: Settings → Login security → Admin panel can **require two-factor authentication** of the super
+  admins or of every admin (they set it up before any other page opens; never on the public demo), and limit /admin to
+  **a list of addresses** (yours must be on it; `php artisan gaiacp:admin-ips --clear` empties it after a lock-out).
+- Security, server and registrar logins: adding one or changing its address, user, token or password is logged and
+  emailed to the super admins. Replacing a server's stored API token, and **Terminate** on an account on a server, ask
+  for the admin's password.
+- Admin guide: what access to give each panel (reseller, limited tokens, the API calls GaiaCP makes) and a "Keeping
+  GaiaCP safe" checklist.
 - Security: the email log no longer keeps the text of sign-in link and password reset emails, since their link logs in
   whoever opens it; the entry says so. symfony/mime updated for CVE-2026-45070 (email header injection).
 - Security, passkeys: adding one asks for the password unless the login signed in within the last 10 minutes, and

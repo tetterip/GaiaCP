@@ -192,6 +192,13 @@ class ServiceLifecycleActions
                     ->label(__('Type :username to confirm', ['username' => $record->username]))
                     ->required()
                     ->in([$record->username]),
+                // Deleting an account from the server asks who is at the keyboard (a session left open is not enough).
+                TextInput::make('confirm_password')
+                    ->label('Your password')
+                    ->password()
+                    ->autocomplete('current-password')
+                    ->required()
+                    ->currentPassword(),
             ] : [])
             ->action(self::run(fn (Service $record, ServiceLifecycle $lifecycle) => $lifecycle->terminate($record), __('Service terminated')));
     }

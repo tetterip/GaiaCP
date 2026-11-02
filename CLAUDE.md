@@ -78,6 +78,8 @@ Read the file for the area you are changing before you change it; don't read the
 - `php artisan gaiacp:health [--connections]`: the System health checks; fails when one is a problem
 - `php artisan gaiacp:disable-2fa <email>`: turn off two-factor authentication for an admin who lost their app and
   recovery codes
+- `php artisan gaiacp:admin-ips [--clear]`: show, or empty after a lock-out, the addresses allowed to open /admin
+  (Settings → Login security)
 - `php artisan gaiacp:registrar-check <domain>`: read-only check of a registrar login
 - `php artisan gaiacp:backup`: make a backup now and send it as Settings → Backups says (scheduled when enabled there)
 - `php artisan gaiacp:prune-logs`: delete module / email log rows older than Settings → Logging keeps them (daily at 03:30)

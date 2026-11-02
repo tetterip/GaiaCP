@@ -8,6 +8,7 @@ use App\Support\LoginSecurity;
 use BackedEnum;
 use Closure;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -36,13 +37,14 @@ class LoginSecuritySettings extends SettingsFormPage
 
     public static function settingsDescription(): string
     {
-        return __('Ban an IP address after failed logins, for how long, the addresses that are never banned, and passkeys and sign-in links.');
+        return __('Ban an IP address after failed logins, for how long, the addresses that are never banned, required two-factor authentication, who can open /admin, and passkeys and sign-in links.');
     }
 
     public static function keys(): array
     {
         return [
             'login_security.enabled', 'login_security.max_attempts', 'login_security.ban_minutes', 'login_security.allowed_ips',
+            'login_security.require_two_factor', 'login_security.admin_ips',
             'sign_in.passkeys', 'sign_in.email_link', 'sign_in.admin_email_link',
         ];
     }
@@ -91,6 +93,40 @@ class LoginSecuritySettings extends SettingsFormPage
                             ->label('Sign-in link by email for admins')
                             ->helperText(__('The same on /admin\'s login. Anyone who can read an admin\'s mailbox could then log in, so keep two-factor authentication on.')),
                     ]),
+                Section::make(__('Admin panel'))
+                    ->description(__('Extra protection for /admin, which holds your servers\' and registrars\' logins. The client area is not affected.'))
+                    ->schema([
+                        Select::make('login_security.require_two_factor')
+                            ->label('Require two-factor authentication')
+                            ->options([
+                                'off' => __('No, each admin chooses'),
+                                'super_admins' => __('Super admins'),
+                                'admins' => __('Every admin'),
+                            ])
+                            ->selectablePlaceholder(false)
+                            ->required()
+                            ->helperText(__('An admin it applies to who has not turned it on yet is asked to set it up before any other page opens. Passkeys don\'t count: the authenticator app is needed for password logins.')),
+                        Textarea::make('login_security.admin_ips')
+                            ->label('Admin panel addresses')
+                            ->rows(3)
+                            ->placeholder("203.0.113.10\n2001:db8:1234::/48")
+                            ->helperText(fn () => __('Leave empty to open /admin from anywhere. When set, only these addresses and ranges (CIDR), one per line, can open /admin, its login included; everyone else gets an error. Your address now is :ip and must be on the list. Locked out? Run php artisan gaiacp:admin-ips --clear on the server.', ['ip' => request()->ip()]))
+                            ->rule(fn (): Closure => function (string $attribute, mixed $value, Closure $fail): void {
+                                $entries = preg_split('/[\s,]+/', (string) $value, flags: PREG_SPLIT_NO_EMPTY);
+
+                                foreach ($entries as $entry) {
+                                    if (! self::validEntry($entry)) {
+                                        $fail(__(':entry is not an IP address or range.', ['entry' => $entry]));
+
+                                        return;
+                                    }
+                                }
+
+                                if ($entries !== [] && ! IpUtils::checkIp((string) request()->ip(), $entries)) {
+                                    $fail(__('Your address now (:ip) is not on the list: you would be locked out.', ['ip' => request()->ip()]));
+                                }
+                            }),
+                    ]),
                 Section::make(__('Never banned'))
                     ->schema([
                         Textarea::make('login_security.allowed_ips')
@@ -128,6 +164,8 @@ class LoginSecuritySettings extends SettingsFormPage
     {
         $values['login_security.enabled'] = (bool) $values['login_security.enabled'];
         $values['login_security.allowed_ips'] = implode("\n", LoginSecurity::allowList());
+        $values['login_security.require_two_factor'] = in_array($values['login_security.require_two_factor'] ?? null, ['super_admins', 'admins'], true) ? $values['login_security.require_two_factor'] : 'off';
+        $values['login_security.admin_ips'] = (string) ($values['login_security.admin_ips'] ?? '');
 
         foreach (['sign_in.passkeys', 'sign_in.email_link', 'sign_in.admin_email_link'] as $key) {
             $values[$key] = (bool) $values[$key];
@@ -147,6 +185,8 @@ class LoginSecuritySettings extends SettingsFormPage
         $values['login_security.max_attempts'] = (int) ($values['login_security.max_attempts'] ?? config('gaiacp.login_security.max_attempts'));
         $values['login_security.ban_minutes'] = (int) ($values['login_security.ban_minutes'] ?? config('gaiacp.login_security.ban_minutes'));
         $values['login_security.allowed_ips'] = implode("\n", preg_split('/[\s,]+/', (string) $values['login_security.allowed_ips'], flags: PREG_SPLIT_NO_EMPTY));
+        $values['login_security.admin_ips'] = implode("\n", preg_split('/[\s,]+/', (string) ($values['login_security.admin_ips'] ?? ''), flags: PREG_SPLIT_NO_EMPTY)) ?: null;
+        $values['login_security.require_two_factor'] = in_array($values['login_security.require_two_factor'] ?? null, ['super_admins', 'admins'], true) ? $values['login_security.require_two_factor'] : 'off';
 
         return $values;
     }

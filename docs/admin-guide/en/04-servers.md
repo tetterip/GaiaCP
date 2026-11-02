@@ -24,6 +24,30 @@ it found.
 Most panels only answer the IP addresses you allow: allow your GaiaCP server's address. **Verify TLS certificate** is
 for a server still on a self-signed certificate; turn it back on once it has a real one.
 
+## Giving GaiaCP the least access
+
+Whoever controls GaiaCP can do on a server whatever its login allows, so give each server the smallest login that does
+the job. Adding a server or changing its login emails the super admins, and replacing a stored token asks for your
+password.
+
+- **cPanel / WHM**: a reseller's token reaches only that reseller's accounts; `root`'s reaches the whole server. In WHM →
+  Manage API Tokens you can also limit a token to some privileges. GaiaCP calls `version`, `listpkgs`, `listaccts`,
+  `createacct`, `suspendacct`, `unsuspendacct`, `removeacct`, `passwd` and `changepackage` for accounts; `accountsummary`,
+  `showbw` and `uapi_cpanel` / `cpanel` for usage, disk and the client area's shortcuts; and `create_user_session` for
+  **Log in** (yours and the client's). Leave out what you don't use, then press **Test connection** and try each action
+  once on a test account.
+- **DirectAdmin**: a reseller's login key reaches only that reseller's users. A login key can also be limited to the
+  commands it may run and to GaiaCP's IP address.
+- **HestiaCP**: newer versions let an access key be limited to some API commands; GaiaCP runs `v-list-sys-info`,
+  `v-list-users`, `v-list-user`, `v-list-user-packages`, `v-list-web-domains`, `v-add-user`, `v-add-domain`,
+  `v-suspend-user`, `v-unsuspend-user`, `v-change-user-password`, `v-change-user-package` and `v-delete-user`.
+- **Enhance**: an access token takes a role; pick the smallest that may manage customers and subscriptions.
+- **Proxmox VE**: the token needs to create VMs, users and permissions, which is close to full access to the node.
+- **Plesk** and **CyberPanel**: their APIs need the administrator, so there is nothing smaller to give. Limiting the API
+  to GaiaCP's IP address matters most here (in Plesk, the secret key above is already tied to one address).
+
+See [Keeping GaiaCP safe](12-admins-and-security.md#keeping-gaiacp-safe) for the rest.
+
 The optional **Capacity and costs** fields help you run the servers:
 
 - **Maximum accounts**: the Servers list shows accounts against it ("33/120") and new orders skip a full server.
