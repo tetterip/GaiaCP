@@ -7,15 +7,23 @@ use App\Filament\Client\Pages\Auth\EditProfile as ClientProfile;
 use App\Filament\Client\Pages\Auth\Login as ClientLogin;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Resources\Clients\Pages\EditClient;
+use App\Filament\Resources\Clients\RelationManagers\SignInsRelationManager;
+use App\Filament\Resources\Users\Pages\EditUser;
 use App\Models\Client;
 use App\Models\Passkey;
 use App\Models\User;
+use App\Notifications\PasskeyAdded;
 use App\SignIn\Passkeys\Cbor;
 use App\SignIn\Passkeys\PasskeyException;
 use App\SignIn\Passkeys\Passkeys;
 use App\SignIn\SignIn;
+use Filament\Actions\Testing\TestAction;
 use Filament\Facades\Filament;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use OpenSSLAsymmetricKey;
 use Tests\TestCase;
@@ -124,8 +132,10 @@ class PasskeysTest extends TestCase
 
     public function test_an_admin_adds_a_passkey_from_the_profile(): void
     {
+        Notification::fake();
         $admin = User::factory()->create();
         $this->actingAs($admin);
+        Passkeys::confirm($admin); // as a login just now does
 
         $profile = Livewire::test(EditProfile::class)->assertSee(__('Add a passkey on this device'));
         $options = $profile->instance()->passkeyCreationOptions();
@@ -141,6 +151,7 @@ class PasskeysTest extends TestCase
         $this->assertStringStartsWith('-----BEGIN PUBLIC KEY-----', $passkey->public_key);
         $this->assertArrayNotHasKey('public_key', $passkey->toArray());
         $this->assertDatabaseHas('activity_logs', ['event' => 'sign_in.passkey_added']);
+        Notification::assertSentTo($admin, PasskeyAdded::class);
 
         // The next one is made without it (excludeCredentials), and the same one can't be added twice
         $this->assertSame([['type' => 'public-key', 'id' => $passkey->credential_id]], app(Passkeys::class)->creationOptions($admin)['excludeCredentials']);
@@ -149,6 +160,78 @@ class PasskeysTest extends TestCase
 
         $profile->call('removePasskey', $passkey->id);
         $this->assertSame(0, $admin->passkeys()->count());
+    }
+
+    public function test_adding_one_asks_for_the_password_unless_the_login_is_fresh(): void
+    {
+        Notification::fake();
+        $admin = User::factory()->create(['password' => Hash::make('secret-password')]);
+        $this->actingAs($admin); // signed in long ago (remember me, or an old session)
+
+        $profile = Livewire::test(EditProfile::class);
+        $profile->call('passkeyCreationOptions')->assertActionMounted('confirmPasskey')->assertReturned(['confirm' => true]);
+
+        // Not added without it, even with a made-up answer
+        $profile->call('addPasskey', ['id' => 'x', 'response' => []]);
+        $this->assertSame(0, $admin->passkeys()->count());
+
+        $profile->fillForm(['password' => 'wrong'])->callMountedAction()->assertNotified(__('That password is not right.'));
+        $this->assertFalse(Passkeys::confirmed($admin));
+
+        $profile->fillForm(['password' => 'secret-password'])->callMountedAction()->assertDispatched('passkey-confirmed');
+        $this->assertTrue(Passkeys::confirmed($admin));
+
+        $profile->call('addPasskey', $this->attestation($profile->instance()->passkeyCreationOptions()));
+        $this->assertSame(1, $admin->passkeys()->count());
+        Notification::assertSentTo($admin, PasskeyAdded::class);
+
+        // For this login only, and for ten minutes
+        $this->assertFalse(Passkeys::confirmed(User::factory()->create()));
+        $this->travel(Passkeys::CONFIRM_SECONDS + 1)->seconds();
+        $this->assertFalse(Passkeys::confirmed($admin));
+    }
+
+    public function test_a_password_login_counts_as_confirmed(): void
+    {
+        $admin = User::factory()->create(['email' => 'admin@example.com', 'password' => Hash::make('secret-password')]);
+
+        Livewire::test(Login::class)->set('data.email', 'admin@example.com')->set('data.password', 'secret-password')->call('authenticate');
+
+        $this->assertAuthenticatedAs($admin, 'web');
+        $this->assertTrue(Passkeys::confirmed($admin));
+    }
+
+    public function test_a_password_reset_removes_the_passkeys(): void
+    {
+        $admin = User::factory()->create();
+        $this->addPasskey($admin);
+
+        event(new PasswordReset($admin));
+
+        $this->assertSame(0, $admin->passkeys()->count());
+        $this->assertDatabaseHas('activity_logs', ['event' => 'sign_in.passkeys_removed']);
+    }
+
+    public function test_admins_remove_another_admins_or_a_clients_passkeys(): void
+    {
+        $other = User::factory()->create();
+        $this->addPasskey($other);
+        $this->actingAs(User::factory()->create(['role' => UserRole::Admin]));
+
+        Livewire::test(EditUser::class, ['record' => $other->getRouteKey()])
+            ->assertActionVisible('removePasskeys')
+            ->callAction('removePasskeys');
+        $this->assertSame(0, $other->passkeys()->count());
+
+        $client = Client::factory()->create(['email' => 'maria@example.gr']);
+        $user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $client->id, 'email' => 'maria@example.gr']);
+        $this->credentialId = random_bytes(16);
+        $this->addPasskey($user);
+        $client->clientLogins()->create(['user_id' => $user->id, 'succeeded' => true, 'ip_address' => '203.0.113.5']); // the tab shows once they have logged in
+
+        Livewire::test(SignInsRelationManager::class, ['ownerRecord' => $client, 'pageClass' => EditClient::class])
+            ->callAction(TestAction::make('removePasskeys')->table());
+        $this->assertSame(0, $user->passkeys()->count());
     }
 
     public function test_an_admin_logs_in_with_the_passkey_without_two_factor(): void
@@ -173,6 +256,7 @@ class PasskeysTest extends TestCase
         $client = Client::factory()->create(['email' => 'maria@example.gr']);
         $user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $client->id, 'email' => 'maria@example.gr']);
         $this->actingAs($user, 'client');
+        Passkeys::confirm($user);
 
         $profile = Livewire::test(ClientProfile::class);
         $profile->call('addPasskey', $this->attestation($profile->instance()->passkeyCreationOptions()));

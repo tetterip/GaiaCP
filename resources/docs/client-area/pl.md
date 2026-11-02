@@ -11,7 +11,7 @@ Zamiast hasła możesz nacisnąć **Wyślij mi link do logowania**: wyślemy Ci 
 <!-- endif -->
 
 <!-- if:passkeys -->
-**Klucze dostępu** logują Cię odciskiem palca, twarzą lub blokadą ekranu zamiast hasłem. Dodaj klucz na każdym telefonie lub komputerze w swoim profilu przyciskiem **Dodaj klucz dostępu na tym urządzeniu**, a potem naciśnij **Zaloguj się kluczem dostępu** na stronie logowania. Strona logowania oznacza sposób, w jaki ostatnio logowałeś się na tym urządzeniu, jako „Ostatnio użyty".
+**Klucze dostępu** logują Cię odciskiem palca, twarzą lub blokadą ekranu zamiast hasłem. Dodaj klucz na każdym telefonie lub komputerze w swoim profilu przyciskiem **Dodaj klucz dostępu na tym urządzeniu**, a potem naciśnij **Zaloguj się kluczem dostępu** na stronie logowania. Strona logowania oznacza sposób, w jaki ostatnio logowałeś się na tym urządzeniu, jako „Ostatnio użyty". Jeśli zalogowano się ponad 10 minut temu, najpierw pyta o hasło, a przy każdym dodaniu klucza dostępu wysyłamy e-mail. Zresetowanie hasła usuwa wszystkie Twoje klucze dostępu.
 <!-- endif -->
 
 W profilu (menu z Państwa imieniem, na dole menu lub w prawym górnym rogu) można zmienić adres e-mail, numer telefonu, język i hasło oraz włączyć uwierzytelnianie dwuskładnikowe dla większego bezpieczeństwa.

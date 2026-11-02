@@ -22,6 +22,9 @@
                 this.busy = true;
                 try {
                     const options = await this.$wire.passkeyCreationOptions();
+                    if (options.confirm) {
+                        return; // the password first; passkey-confirmed comes back here
+                    }
                     options.challenge = this.bytes(options.challenge);
                     options.user.id = this.bytes(options.user.id);
                     options.excludeCredentials = options.excludeCredentials.map((c) => ({ ...c, id: this.bytes(c.id) }));
@@ -41,6 +44,7 @@
                 }
             },
         }"
+        x-on:passkey-confirmed.window="add()"
         style="display: flex; flex-direction: column; gap: 0.75rem"
     >
         <p x-show="! supported" x-cloak style="font-size: 0.875rem">{{ __('This browser cannot use passkeys.') }}</p>

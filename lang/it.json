@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Per mostrare una pagina nel menu laterale dei clienti o dei visitatori, aggiungila in :menus.",
     "Select all": "Seleziona tutto",
     "Read only": "Solo lettura",
-    "Clear all": "Deseleziona tutto"
+    "Clear all": "Deseleziona tutto",
+    "The text of this email is not kept: its link logs in whoever opens it.": "Il testo di questa email non viene conservato: il suo link fa accedere chiunque lo apra.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Una passkey (:device) è stata aggiunta a :email il :date. Accede senza password.",
+    "A passkey was added to your :name login": "È stata aggiunta una passkey al tuo accesso :name",
+    "Confirm it's you": "Conferma che sei tu",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Se non sei stato tu, reimposta subito la password: questo rimuove anche tutte le passkey del tuo accesso. Poi contattaci.",
+    "Passkeys removed for :email.": "Passkey rimosse per :email.",
+    "Remove passkeys (:count)": "Rimuovi passkey (:count)",
+    "Reset my password": "Reimposta la password",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Grazie. Se il dispositivo non chiede ora la passkey, premi di nuovo «:button».",
+    "That password is not right.": "La password non è corretta.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Queste smettono di funzionare: :list. :email accede con la password (e il codice a due fattori) e può aggiungerne di nuove.",
+    "Too many tries. Please wait a few minutes.": "Troppi tentativi. Attendi qualche minuto.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Inserisci la password per aggiungere una passkey. Nessuna password? Esci e rientra, poi aggiungila entro 10 minuti."
 }

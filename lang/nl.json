@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Om een pagina in het zijmenu van klanten of bezoekers te tonen, voegt u deze toe onder :menus.",
     "Select all": "Alles selecteren",
     "Read only": "Alleen lezen",
-    "Clear all": "Alles wissen"
+    "Clear all": "Alles wissen",
+    "The text of this email is not kept: its link logs in whoever opens it.": "De tekst van deze e-mail wordt niet bewaard: de link logt iedereen in die hem opent.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Er is op :date een passkey (:device) toegevoegd aan :email. Die logt in zonder wachtwoord.",
+    "A passkey was added to your :name login": "Er is een passkey toegevoegd aan uw :name-login",
+    "Confirm it's you": "Bevestig dat u het bent",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Was u dit niet, reset dan nu uw wachtwoord: dat verwijdert ook alle passkeys van uw login. Neem daarna contact met ons op.",
+    "Passkeys removed for :email.": "Passkeys verwijderd voor :email.",
+    "Remove passkeys (:count)": "Passkeys verwijderen (:count)",
+    "Reset my password": "Mijn wachtwoord resetten",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Bedankt. Vraagt uw apparaat nu niet om de passkey, druk dan opnieuw op ':button'.",
+    "That password is not right.": "Dat wachtwoord klopt niet.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Deze werken niet meer: :list. :email logt in met het wachtwoord (en de tweestapscode) en kan nieuwe toevoegen.",
+    "Too many tries. Please wait a few minutes.": "Te veel pogingen. Wacht een paar minuten.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Typ uw wachtwoord om een passkey toe te voegen. Geen wachtwoord? Log uit en weer in, en voeg hem binnen 10 minuten toe."
 }

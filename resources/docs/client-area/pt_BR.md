@@ -11,7 +11,7 @@ Em vez da senha, você pode tocar em **Enviar-me um link de acesso**: enviamos p
 <!-- endif -->
 
 <!-- if:passkeys -->
-As **chaves de acesso** fazem você entrar com sua digital, rosto ou bloqueio de tela em vez da senha. Adicione uma em cada celular ou computador no seu perfil com **Adicionar uma chave de acesso neste dispositivo** e depois toque em **Entrar com uma chave de acesso** na página de login. A página de login marca com "Último uso" a forma como você entrou pela última vez neste dispositivo.
+As **chaves de acesso** fazem você entrar com sua digital, rosto ou bloqueio de tela em vez da senha. Adicione uma em cada celular ou computador no seu perfil com **Adicionar uma chave de acesso neste dispositivo** e depois toque em **Entrar com uma chave de acesso** na página de login. A página de login marca com "Último uso" a forma como você entrou pela última vez neste dispositivo. Se você entrou há mais de 10 minutos, ele pede sua senha primeiro, e enviamos um e-mail sempre que uma passkey é adicionada. Redefinir sua senha remove todas as suas passkeys.
 <!-- endif -->
 
 Seu perfil (o menu com o seu nome, no fim do menu ou no canto superior direito) altera seu endereço de e-mail, telefone, idioma e senha, e pode ativar a autenticação em dois fatores para mais segurança.

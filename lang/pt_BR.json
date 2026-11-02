@@ -3554,5 +3554,18 @@
     "To show a page in the side menu of clients or visitors, add it under :menus.": "Para mostrar uma página no menu lateral dos clientes ou visitantes, adicione-a em :menus.",
     "Select all": "Selecionar tudo",
     "Read only": "Somente leitura",
-    "Clear all": "Limpar tudo"
+    "Clear all": "Limpar tudo",
+    "The text of this email is not kept: its link logs in whoever opens it.": "O texto deste e-mail não é guardado: o link dele faz login de quem o abrir.",
+    "A passkey (:device) was added to :email on :date. It logs in without a password.": "Uma passkey (:device) foi adicionada a :email em :date. Ela entra sem senha.",
+    "A passkey was added to your :name login": "Uma passkey foi adicionada ao seu login de :name",
+    "Confirm it's you": "Confirme que é você",
+    "If it was not you, reset your password now: that also removes every passkey of your login. Then contact us.": "Se não foi você, redefina sua senha agora: isso também remove todas as passkeys do seu login. Depois, fale conosco.",
+    "Passkeys removed for :email.": "Passkeys removidas para :email.",
+    "Remove passkeys (:count)": "Remover passkeys (:count)",
+    "Reset my password": "Redefinir minha senha",
+    "Thanks. If your device does not ask for the passkey now, press \":button\" again.": "Obrigado. Se o seu dispositivo não pedir a passkey agora, pressione \":button\" novamente.",
+    "That password is not right.": "Essa senha não está correta.",
+    "These stop working: :list. :email logs in with the password (and two-factor code) and can add new ones.": "Estas deixam de funcionar: :list. :email entra com a senha (e o código de dois fatores) e pode adicionar novas.",
+    "Too many tries. Please wait a few minutes.": "Tentativas demais. Aguarde alguns minutos.",
+    "Type your password to add a passkey. No password? Log out and log in again, then add it within 10 minutes.": "Digite sua senha para adicionar uma passkey. Sem senha? Saia e entre novamente, e adicione-a em até 10 minutos."
 }
