@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Backups: **Test FTP** now writes and deletes a small file in the folder, so a folder the FTP account cannot write to
+  shows up on the test. A failed FTP copy shows the server's whole reply in the bell (it was cut after the file name).
+
 ## [0.6.0] - 2026-11-02
 
 - Security, admin panel: Settings → Login security → Admin panel can **require two-factor authentication** of the super
