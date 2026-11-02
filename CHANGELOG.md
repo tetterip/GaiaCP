@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: on a wide screen the sidebar's foot (the user menu) was cut off before the page was scrolled, most of all
+  under the public demo's bar, which now stays at the top.
 - Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's
   card with its own scrollbar; it is a full, centred window again (GaiaTheme 1.3.2).
 - Backups: **Test FTP** now writes and deletes a small file in the folder, so a folder the FTP account cannot write to

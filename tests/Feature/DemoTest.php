@@ -167,6 +167,18 @@ class DemoTest extends TestCase
         $this->get('/login')->assertOk()->assertSee($star, false);
     }
 
+    public function test_the_demo_bar_keeps_the_sidebar_in_the_window(): void
+    {
+        $this->demo();
+
+        // The bar stays at the top on a wide screen and gives its height to the sidebar, so the user menu at the
+        // sidebar's foot is not pushed below the window
+        $this->get('/admin/login')->assertOk()
+            ->assertSee('class="gcp-demo-bar"', false)
+            ->assertSee("setProperty('--gcp-demo-bar'", false)
+            ->assertSee('height: calc(100dvh - var(--gcp-demo-bar, 0px))', false);
+    }
+
     public function test_the_demo_data_works_with_the_demo_panel_and_registrar(): void
     {
         Storage::fake('local');

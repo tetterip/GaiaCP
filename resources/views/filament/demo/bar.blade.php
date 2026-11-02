@@ -2,14 +2,25 @@
 @php
     $seconds = max(0, \App\Support\Demo::nextReset()->getTimestamp() - now()->getTimestamp());
 @endphp
+{{-- On a wide screen the bar stays at the top and the sidebar (sticky, a screen high) and the top bar sit under it, so the
+     user menu at the sidebar's foot is never pushed below the window; on a phone the menu is a drawer over the bar. --}}
+<style>
+    @media (min-width: 64rem) {
+        .gcp-demo-bar { position: sticky; top: 0; z-index: 35; }
+        .fi-body .fi-sidebar { top: var(--gcp-demo-bar, 0px); height: calc(100dvh - var(--gcp-demo-bar, 0px)); }
+        .fi-body.fi-body-has-topbar .fi-sidebar { top: calc(var(--topbar-height) + var(--gcp-demo-bar, 0px)); height: calc(100dvh - var(--topbar-height) - var(--gcp-demo-bar, 0px)); }
+        .fi-topbar-ctn { top: var(--gcp-demo-bar, 0px); }
+    }
+</style>
 <div
     role="status"
+    class="gcp-demo-bar"
     x-data="{
         left: {{ $seconds }},
         clock() { return Math.floor(this.left / 60) + ':' + String(this.left % 60).padStart(2, '0') },
     }"
-    x-init="setInterval(() => { if (left > 0 && --left === 0) setTimeout(() => location.reload(), 15000) }, 1000)"
-    style="padding: .5rem 1rem; text-align: center; font-size: .875rem; line-height: 1.4; background: color-mix(in oklab, var(--warning-500) 16%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--warning-500) 35%, transparent);"
+    x-init="new ResizeObserver(() => document.documentElement.style.setProperty('--gcp-demo-bar', $el.getBoundingClientRect().height + 'px')).observe($el); setInterval(() => { if (left > 0 && --left === 0) setTimeout(() => location.reload(), 15000) }, 1000)"
+    style="padding: .5rem 1rem; text-align: center; font-size: .875rem; line-height: 1.4; background: linear-gradient(color-mix(in oklab, var(--warning-500) 16%, transparent), color-mix(in oklab, var(--warning-500) 16%, transparent)), var(--theme-side, var(--gray-50)); border-bottom: 1px solid color-mix(in oklab, var(--warning-500) 35%, transparent);"
 >
     <strong style="font-weight: 600;">{{ __('Demo') }}:</strong>
     {{ __('everything here is made up and put back every :minutes minutes.', ['minutes' => \App\Support\Demo::minutes()]) }}
