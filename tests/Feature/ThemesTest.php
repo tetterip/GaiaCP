@@ -115,6 +115,10 @@ class ThemesTest extends TestCase
         // Solid panes where the browser can't blur or the system asks for less transparency
         $this->assertStringContainsString('@supports not ((backdrop-filter: blur(1px))', $html);
         $this->assertStringContainsString('@media (prefers-reduced-transparency: reduce)', $html);
+
+        // The top bar stays frosted on wide screens too, so the page scrolling under it doesn't read through
+        $this->assertStringContainsString('background: var(--glass-bar);', $html);
+        $this->assertDoesNotMatchRegularExpression('/\\.fi-topbar::before \\{\\s*content: none;/', $html);
     }
 
     public function test_profile_saves_the_admins_theme(): void

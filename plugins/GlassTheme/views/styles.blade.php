@@ -20,6 +20,8 @@
         --glass-ink: #0f1c1f;
         --glass-muted: #56666a;
         --glass-accent: #1f6e70;
+        --glass-bar: rgba(240, 246, 246, .82);
+        --glass-ok: #7fcfae;
         --glass-blur: blur(18px) saturate(170%);
         --glass-drop: 0 1px 1px rgba(15, 40, 45, .04), 0 18px 40px -22px rgba(15, 40, 45, .28);
         --glass-drop-hover: 0 1px 1px rgba(15, 40, 45, .05), 0 22px 46px -20px rgba(15, 40, 45, .36);
@@ -55,6 +57,8 @@
         --glass-ink: #e8eff0;
         --glass-muted: #9aabad;
         --glass-accent: #7cc9c4;
+        --glass-bar: rgba(9, 14, 16, .8);
+        --glass-ok: #3d9c7b;
         --glass-drop: 0 1px 0 rgba(255, 255, 255, .02), 0 20px 44px -22px rgba(0, 0, 0, .8);
         --glass-drop-hover: 0 1px 0 rgba(255, 255, 255, .03), 0 24px 50px -20px rgba(0, 0, 0, .9);
         --theme-soft: rgba(255, 255, 255, .06);
@@ -175,20 +179,15 @@
         background: color-mix(in oklab, var(--glass-accent) 6%, transparent) !important;
     }
 
-    /* The top bar: clear on wide screens (the page shows through), frosted where it sticks over the page on phones */
+    /* The top bar: frosted glass over the page as it scrolls under it */
     .fi-topbar {
         background: transparent !important;
     }
 
+    /* Frosted and mostly opaque, so the page scrolling under it doesn't read through */
     .fi-topbar::before {
-        background: var(--glass-pane-soft);
+        background: var(--glass-bar);
         border-bottom: 1px solid var(--glass-line);
-    }
-
-    @media (min-width: 1024px) {
-        .fi-body-has-navigation:not(.fi-body-has-top-navigation) .fi-topbar::before {
-            content: none;
-        }
     }
 
     /* The sidebar: a floating glass panel on wide screens, a frosted drawer on phones */
@@ -401,12 +400,103 @@
         color: #fff;
     }
 
+
+    /* Scrollbars: thin, a soft thumb on no track (no grey bar and arrows over the glass) */
+    html.fi,
+    .fi * {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in oklab, var(--glass-ink) 22%, transparent) transparent;
+    }
+
+    .fi ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .fi ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .fi ::-webkit-scrollbar-thumb {
+        background: color-mix(in oklab, var(--glass-ink) 22%, transparent);
+        border-radius: 999px;
+    }
+
+    /* Overdue / past due: a clear red pane, not a faint pink one */
+    html.fi .gx-box-bad {
+        background: color-mix(in oklab, var(--danger-500) 16%, var(--glass-pane-strong)) !important;
+        box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--danger-500) 40%, transparent);
+    }
+
+    html.fi .gx-box-bad > * {
+        color: var(--danger-700) !important;
+    }
+
+    html.fi .gx-box-bad .gx-box-value {
+        font-weight: 800;
+    }
+
+    html.fi.dark .gx-box-bad {
+        background: color-mix(in oklab, var(--danger-500) 24%, transparent) !important;
+    }
+
+    html.fi.dark .gx-box-bad > * {
+        color: var(--danger-300) !important;
+    }
+
+    /* Uptime squares: a softer mint than Filament's green; red and amber stay strong so a problem stands out */
+    html.fi .gx-meter span[style*="--success-500"] {
+        background: var(--glass-ok) !important;
+    }
+
+    /* Pills: badges as tinted glass chips, the quick filter chips (Orders, Services) as glass pills */
+    .fi-badge {
+        border-radius: 999px;
+        font-weight: 600;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 0 0 1px color-mix(in oklab, currentColor 20%, transparent) !important;
+    }
+
+    .fi-badge.fi-color {
+        background: color-mix(in oklab, var(--color-500) 14%, var(--glass-pane-soft)) !important;
+    }
+
+    .dark .fi-badge {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), inset 0 0 0 1px color-mix(in oklab, currentColor 25%, transparent) !important;
+    }
+
+    .dark .fi-badge.fi-color {
+        background: color-mix(in oklab, var(--color-500) 22%, transparent) !important;
+    }
+
+    html.fi .gx-chip,
+    html.fi.dark .gx-chip {
+        border-radius: 999px;
+        background: var(--glass-pane);
+        box-shadow: inset 0 1px 0 var(--glass-shine), 0 0 0 1px var(--glass-edge), 0 4px 12px -8px rgba(15, 40, 45, .3);
+        -webkit-backdrop-filter: blur(12px) saturate(170%);
+        backdrop-filter: blur(12px) saturate(170%);
+    }
+
+    html.fi .gx-chip:hover {
+        background: var(--glass-pane-strong);
+    }
+
+    html.fi .gx-chip.gx-chip-on,
+    html.fi.dark .gx-chip.gx-chip-on {
+        background: color-mix(in oklab, var(--primary-600) 85%, transparent);
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, 0) 60%);
+        color: #fff;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .38), 0 8px 20px -10px var(--primary-600);
+    }
+
+    /* Contained tabs (a client's Details, Hosting, ...): the frame's corners follow the pills inside it, so it stays
+       rounded the same way when the tabs wrap onto two lines */
     .fi-tabs:not(.fi-contained) {
         background: var(--glass-pane-soft);
         box-shadow: inset 0 1px 0 var(--glass-shine), 0 0 0 1px var(--glass-edge);
         -webkit-backdrop-filter: var(--glass-blur);
         backdrop-filter: var(--glass-blur);
-        border-radius: 999px;
+        border-radius: 24px;
     }
 
     .fi-tabs-item {
@@ -538,6 +628,10 @@
 
         .fi-body::before {
             background: var(--glass-bg);
+        }
+
+        .fi-topbar::before {
+            background: var(--glass-pane-strong);
         }
     }
 </style>
