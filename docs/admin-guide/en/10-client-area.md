@@ -40,7 +40,7 @@ changes, cancellations, upgrades) wait for your answer.
 
 ## How it looks
 
-- **Theme** (Gaia or Flat) and a **Brand colour** for buttons and links. The admin panel keeps its own look.
+- **Theme** (Gaia, Flat or Glass) and a **Brand colour** for buttons and links. The admin panel keeps its own look.
 - Your **logo** from Settings → Company, with a dark mode version and a tab icon.
 - The **languages** offered (Settings → Languages): clients pick theirs.
 

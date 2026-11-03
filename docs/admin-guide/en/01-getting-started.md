@@ -74,7 +74,7 @@ problem.
 
 Your user menu → Profile is yours alone:
 
-- **Language** of the panel, and **Theme** (Gaia or Flat; the default is set in Settings → General).
+- **Language** of the panel, and **Theme** (Gaia, Flat or Glass; the default is set in Settings → General).
 - **Two-factor authentication**: after your password you also type a code from an app on your phone. Turn it on: a
   stolen password alone then can't open the panel.
 - **Notifications**: whether the bell shows you what happened (new orders, payments, tickets, servers going down…).

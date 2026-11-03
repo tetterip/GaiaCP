@@ -333,10 +333,13 @@ How the admin and client panels, users, access, security, branding, themes and l
   admin dashboard's `.gx-*` cards (`filament/dashboard/styles`); `App\Support\Greeting` is both dashboards' heading. The
   maintenance and IP-ban pages @include `themes/standalone` (the client-area theme's font and
   `themeStandaloneColors()`). `plugins/GaiaTheme` (default; plain CSS over Filament's classes in
-  `views/styles.blade.php`, no build step) and `plugins/FlatTheme` (Filament's emerald / grey / Inter, no shadows or motion). Both @include the shared layout
+  `views/styles.blade.php`, no build step), `plugins/FlatTheme` (Filament's emerald / grey / Inter, no shadows or motion) and
+  `plugins/GlassTheme` (frosted glass: the blur sits on a `::before` layer of each card, never `backdrop-filter` on the card
+  itself, which would make it the containing block of `position: fixed` and trap modals; no transform on cards for the
+  same reason). All three @include the shared layout
   `resources/views/filament/themes/layout.blade.php` (shell, grouped menu, the admin's card, cards; set by `--theme-*`
   variables; in both panels, the admin-only rules match only admin markup). `themeUserMenuPosition()` = top bar or
-  sidebar foot (both themes: sidebar, in both panels). The client menu, like the admin's: Home and Order, then Services
+  sidebar foot (every theme: sidebar, in both panels). The client menu, like the admin's: Home and Order, then Services
   (Hosting and Other services = the client `ServiceResource::getNavigationItems()` with `?kind=`, Domains between),
   Billing (payment notices, payments, credit) and Support (Tickets, Knowledge base, Help).
   The admin sidebar groups are Main, Billing, Services, System (`AdminPanelProvider::navigationGroups()`, in that
