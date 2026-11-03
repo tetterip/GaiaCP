@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area: Help, knowledge base articles and announcements no longer show a full-width card with the text in its
+  left half on a wide screen; the cards end where the text does (every theme).
 - New **Glass** theme (a bundled plugin, Profile, Settings → General or Settings → Client area): frosted, see-through
   cards, sidebar, menus, windows and pill buttons over a soft background in the logo's teal and greens, in light and
   dark. Where the browser can't blur, or the system asks for less transparency, the cards turn solid.

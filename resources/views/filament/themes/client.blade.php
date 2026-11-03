@@ -132,6 +132,12 @@
     }
 
     /* Help: the guide */
+    /* Pages of reading text (Help, a knowledge base article, an announcement): the cards end where the text does,
+       instead of a full-width card with an empty right half on a wide screen */
+    .fi-page:has(.gcp-help) .fi-page-content {
+        max-width: 52rem;
+    }
+
     .gcp-help {
         max-width: 48rem;
         font-size: .9375rem;
