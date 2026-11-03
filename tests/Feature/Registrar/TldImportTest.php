@@ -58,7 +58,8 @@ class TldImportTest extends TestCase
     {
         $this->assertSame(1200, ImportTldPrices::sellingPrice(1000, 20, 0, 'none'));
         $this->assertSame(1450, ImportTldPrices::sellingPrice(1000, 20, 250, 'none'));
-        $this->assertSame(1300, ImportTldPrices::sellingPrice(1188, 0, 0, 'whole'));
+        $this->assertSame(1200, ImportTldPrices::sellingPrice(1188, 0, 0, 'whole'));
+        $this->assertSame(1300, ImportTldPrices::sellingPrice(1201, 0, 0, 'whole'));
         $this->assertSame(1200, ImportTldPrices::sellingPrice(1200, 0, 0, 'whole'));
         $this->assertSame(1299, ImportTldPrices::sellingPrice(1230, 0, 0, '99'));
         $this->assertSame(1299, ImportTldPrices::sellingPrice(1299, 0, 0, '99'));

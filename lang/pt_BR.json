@@ -3704,5 +3704,10 @@
     "Every night, the registrars that can tell their prices (easy.gr, Enom) update the cost of the TLDs they are the preferred registrar of. Your selling prices never change by themselves: the bell rings when a TLD starts to sell for less than it costs.": "Toda noite, os registradores que informam seus preços (easy.gr, Enom) atualizam o custo dos TLDs dos quais são o registrador preferido. Seus preços de venda nunca mudam sozinhos: o sino toca quando um TLD começa a ser vendido por menos do que custa.",
     ":count TLD(s) now sell at a loss": ":count TLD(s) agora são vendidos com prejuízo",
     "The registrar now charges more than your price for :tlds.": "O registrador agora cobra mais do que o seu preço por :tlds.",
-    "Registrar costs not updated": "Custos do registrador não atualizados"
+    "Registrar costs not updated": "Custos do registrador não atualizados",
+    "Only": "Somente",
+    "Percent": "Porcentagem",
+    "Preferred": "Preferido",
+    "Rounding": "Arredondamento",
+    "Sync costs": "Sincronizar custos"
 }
