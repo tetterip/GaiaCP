@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Domain pricing: **Import from registrar** reads each TLD's cost from easy.gr or Enom and adds or updates TLDs with
+  cost + markup; Settings → Domains → **Update registrar costs daily** keeps the costs current and rings the bell when a
+  TLD starts to sell at a loss (EasyGr 1.2.0, Enom 1.3.0).
 - Fixed: on a wide screen the sidebar's foot (the user menu) was cut off before the page was scrolled, most of all
   under the public demo's bar, which now stays at the top.
 - Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's
