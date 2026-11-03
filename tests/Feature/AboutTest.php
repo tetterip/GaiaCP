@@ -39,32 +39,22 @@ class AboutTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
 
-        // The code and the coins are in the page, the surprise itself starts hidden and is never mentioned in the guide
+        // The code is in the page, the tree itself starts hidden and is never mentioned in the guide
         $this->get('/admin')->assertOk()
-            ->assertSee('class="gcp-egg"', false)
-            ->assertSee('ArrowUp', false)->assertSee('x-on:keydown.window="listen($event)"', false)
-            ->assertSee(__('Hello from Gaia!'));
+            ->assertSee('class="gcp-family-backdrop"', false)
+            ->assertSee('ArrowUp', false)->assertSee('x-on:keydown.window="listen($event)"', false);
 
         $this->assertSame(10, count(About::SECRET));
         $this->assertStringNotContainsString('ArrowUp', file_get_contents(base_path('docs/admin-guide/en/01-getting-started.md')));
     }
 
-    public function test_the_coins_carry_the_base_currency(): void
-    {
-        config(['gaiacp.currency' => 'EUR']);
-        $this->assertSame('€', About::coin());
-
-        config(['gaiacp.currency' => 'USD']);
-        $this->assertSame('$', About::coin());
-    }
-
     public function test_not_on_the_login_page_or_in_the_client_area(): void
     {
-        $this->get('/admin/login')->assertOk()->assertDontSee('class="gcp-about', false)->assertDontSee('class="gcp-egg"', false);
-        $this->get('/login')->assertOk()->assertDontSee('class="gcp-about', false)->assertDontSee('class="gcp-egg"', false);
+        $this->get('/admin/login')->assertOk()->assertDontSee('class="gcp-about', false)->assertDontSee('class="gcp-family-backdrop"', false);
+        $this->get('/login')->assertOk()->assertDontSee('class="gcp-about', false)->assertDontSee('class="gcp-family-backdrop"', false);
     }
 
-    public function test_the_surprise_ends_on_gaias_family_tree(): void
+    public function test_the_surprise_is_gaias_family_tree(): void
     {
         $family = About::family();
         $members = array_merge(...array_column($family, 'members'));
@@ -76,7 +66,7 @@ class AboutTest extends TestCase
 
         $this->actingAs(User::factory()->create());
         $page = $this->get('/admin')->assertOk()->assertSee('class="gcp-family-backdrop"', false)
-            ->assertSee(__('Gaia\'s family'))->assertSee('this.family = true', false);
+            ->assertSee(__('Gaia\'s family'))->assertSee('this.family = true', false)->assertDontSee('gcp-egg', false);
 
         foreach ($members as $member) {
             $page->assertSee(__($member['name']))->assertSee(__($member['job']));

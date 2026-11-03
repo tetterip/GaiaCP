@@ -3,12 +3,11 @@
 namespace App\Support;
 
 use Composer\InstalledVersions;
-use NumberFormatter;
 use Throwable;
 
 /**
  * The admin's About window (resources/views/filament/about.blade.php): opened from the version in the footer or the
- * user menu. It also holds a small surprise for whoever knows the old cheat code.
+ * user menu. It also holds a small surprise for whoever knows the old cheat code: Gaia's family tree.
  */
 final class About
 {
@@ -28,24 +27,8 @@ final class About
         ];
     }
 
-    /** The base currency's symbol (€ for EUR), for the coins of the surprise; the code when there is none. */
-    public static function coin(): string
-    {
-        $code = Currencies::base();
-
-        try {
-            $symbol = class_exists(NumberFormatter::class)
-                ? (new NumberFormatter('en@currency='.$code, NumberFormatter::CURRENCY))->getSymbol(NumberFormatter::CURRENCY_SYMBOL)
-                : '';
-        } catch (Throwable) {
-            $symbol = '';
-        }
-
-        return $symbol !== '' && mb_strlen($symbol) <= 3 ? $symbol : $code;
-    }
-
     /**
-     * Gaia's family tree (Hesiod's Theogony, trimmed), shown after the surprise: one row per generation, each member
+     * Gaia's family tree (Hesiod's Theogony, trimmed), shown by the surprise: one row per generation, each member
      * with what the myths made them god of and the part of GaiaCP that does the same job. Texts are English keys
      * for __(); `icon` names a pictogram in resources/views/filament/about-family.blade.php.
      *
