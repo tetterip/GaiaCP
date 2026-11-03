@@ -4,7 +4,7 @@ Every version of this plugin, newest first. The version is in `plugin.json`; it 
 
 ## [1.1.0] - 2026-11-03
 
-- The top bar is frosted and mostly opaque, so the page scrolling under it no longer shows through
+- The top bar is frosted and mostly opaque, so the page scrolling under it no longer shows through; its colour and blur fade out softly below it
 - Thin, soft scrollbars instead of the grey bar with arrows (the sidebar, the page)
 - Past due / open balance boxes in a clear red with a red edge
 - Uptime squares in a softer mint; red and amber stay strong

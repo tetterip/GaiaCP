@@ -117,7 +117,7 @@ class ThemesTest extends TestCase
         $this->assertStringContainsString('@media (prefers-reduced-transparency: reduce)', $html);
 
         // The top bar stays frosted on wide screens too, so the page scrolling under it doesn't read through
-        $this->assertStringContainsString('background: var(--glass-bar);', $html);
+        $this->assertStringContainsString('background: linear-gradient(to bottom, var(--glass-bar) 0', $html);
         $this->assertDoesNotMatchRegularExpression('/\\.fi-topbar::before \\{\\s*content: none;/', $html);
     }
 

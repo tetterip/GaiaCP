@@ -184,10 +184,13 @@
         background: transparent !important;
     }
 
-    /* Frosted and mostly opaque, so the page scrolling under it doesn't read through */
+    /* Frosted and mostly opaque, so the page scrolling under it doesn't read through; the colour and the blur fade
+       out over a short strip below it instead of ending on a hard line */
     .fi-topbar::before {
-        background: var(--glass-bar);
-        border-bottom: 1px solid var(--glass-line);
+        bottom: -1.5rem;
+        background: linear-gradient(to bottom, var(--glass-bar) 0, var(--glass-bar) calc(100% - 2.5rem), transparent);
+        -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+        mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
     }
 
     /* The sidebar: a floating glass panel on wide screens, a frosted drawer on phones */
