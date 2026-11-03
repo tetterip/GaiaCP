@@ -20,7 +20,7 @@
         --glass-ink: #0f1c1f;
         --glass-muted: #56666a;
         --glass-accent: #1f6e70;
-        --glass-bar: rgba(240, 246, 246, .82);
+        --glass-bar: rgba(240, 246, 246, .62);
         --glass-ok: #7fcfae;
         --glass-blur: blur(18px) saturate(170%);
         --glass-drop: 0 1px 1px rgba(15, 40, 45, .04), 0 18px 40px -22px rgba(15, 40, 45, .28);
@@ -57,7 +57,7 @@
         --glass-ink: #e8eff0;
         --glass-muted: #9aabad;
         --glass-accent: #7cc9c4;
-        --glass-bar: rgba(9, 14, 16, .8);
+        --glass-bar: rgba(9, 14, 16, .6);
         --glass-ok: #3d9c7b;
         --glass-drop: 0 1px 0 rgba(255, 255, 255, .02), 0 20px 44px -22px rgba(0, 0, 0, .8);
         --glass-drop-hover: 0 1px 0 rgba(255, 255, 255, .03), 0 24px 50px -20px rgba(0, 0, 0, .9);
