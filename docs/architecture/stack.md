@@ -333,7 +333,7 @@ How the admin and client panels, users, access, security, branding, themes and l
   admin dashboard's `.gx-*` cards (`filament/dashboard/styles`); `App\Support\Greeting` is both dashboards' heading. The
   maintenance and IP-ban pages @include `themes/standalone` (the client-area theme's font and
   `themeStandaloneColors()`). `plugins/GaiaTheme` (default; plain CSS over Filament's classes in
-  `views/styles.blade.php`, no build step), `plugins/FlatTheme` (Filament's emerald / grey / Inter, no shadows or motion) and
+  `views/styles.blade.php`, no build step), `plugins/FlatTheme` (the logo's green, Filament's grey / Inter, no shadows or motion) and
   `plugins/GlassTheme` (frosted glass: the blur sits on a `::before` layer of each card, never `backdrop-filter` on the card
   itself, which would make it the containing block of `position: fixed` and trap modals; no transform on cards for the
   same reason). All three @include the shared layout

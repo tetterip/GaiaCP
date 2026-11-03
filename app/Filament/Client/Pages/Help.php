@@ -14,6 +14,7 @@ use App\Support\PublicArea;
 use App\Support\TermsOfService;
 use BackedEnum;
 use Filament\Pages\Page;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -27,6 +28,9 @@ use UnitEnum;
 class Help extends Page
 {
     use TranslatesPageLabels;
+
+    /** Centred and as wide as Contact, so the card ends near where the text does. */
+    protected Width|string|null $maxContentWidth = Width::FourExtraLarge;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQuestionMarkCircle;
 

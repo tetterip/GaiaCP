@@ -1,4 +1,4 @@
-{{-- Flat theme: the shared layout (filament.themes.layout) in Filament's own colours (emerald, grey, Inter), flat:
+{{-- Flat theme: the shared layout (filament.themes.layout) in the logo's green with Filament's grey and Inter, flat:
      no shadows, small radii, no motion. Plain CSS over Filament's stylesheet (STYLES_AFTER), nothing to build --}}
 @include('filament.themes.layout')
 <style>
@@ -27,5 +27,26 @@
         --theme-muted: var(--gray-400);
         --theme-soft: color-mix(in oklab, var(--color-white) 5%, transparent);
         --theme-accent: var(--primary-400);
+    }
+
+    /* Filled primary buttons in the logo's green with white text (Filament would pick its pale 400 shade with dark
+       text in light mode); dark mode already does this */
+    html.fi:not(.dark) .fi-btn.fi-color-primary:not(.fi-outlined),
+    html.fi:not(.dark) :checked + label.fi-btn.fi-color-primary:not(.fi-outlined) {
+        --bg: var(--primary-600) !important;
+        --hover-bg: var(--primary-700) !important;
+        --text: var(--color-white) !important;
+        --hover-text: var(--color-white) !important;
+        background-color: var(--primary-600);
+        color: var(--color-white);
+    }
+
+    html.fi:not(.dark) .fi-btn.fi-color-primary:not(.fi-outlined):hover {
+        background-color: var(--primary-700);
+    }
+
+    html.fi:not(.dark) .fi-btn.fi-color-primary:not(.fi-outlined) > .fi-icon,
+    html.fi:not(.dark) .fi-btn.fi-color-primary:not(.fi-outlined) .fi-btn-label {
+        color: var(--color-white);
     }
 </style>

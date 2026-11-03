@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.0] - 2026-11-03
+
+- The logo's green (softer, a little yellower) in place of Filament's emerald, in the admin panel and the client area
+
 ## [1.2.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)
