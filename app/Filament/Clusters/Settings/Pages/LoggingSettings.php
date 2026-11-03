@@ -7,16 +7,25 @@ use App\Filament\Pages\ErrorLog;
 use App\Filament\Resources\ActivityLogs\ActivityLogResource;
 use App\Filament\Resources\EmailLogs\EmailLogResource;
 use App\Filament\Resources\ModuleLogs\ModuleLogResource;
+use App\Support\LogCleanup;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Number;
 use UnitEnum;
 
-/** Debugging options: the module log switch and how long the module, email and activity logs and the bell notifications are kept. */
+/**
+ * Debugging options: the module log switch and how long the module, email and activity logs and the bell notifications are
+ * kept; super admins also clean up by hand (App\Support\LogCleanup): old log rows, files of closed tickets, the cache.
+ */
 class LoggingSettings extends SettingsFormPage
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;
@@ -89,7 +98,86 @@ class LoggingSettings extends SettingsFormPage
                 Section::make(__('Error log'))
                     ->description(__('Laravel\'s own log (storage/logs) with errors and warnings: see Error log.'))
                     ->footerActions([Action::make('openErrorLog')->label('Open the error log')->link()->url(fn () => ErrorLog::getUrl())]),
+                Section::make(__('Clean up'))
+                    ->description(__('Make the database or the disk smaller now, without waiting for the nightly run. What is deleted is gone for good; backups made before still have it.'))
+                    ->visible(fn () => self::cleansUp())
+                    ->schema([
+                        Actions::make(collect(LogCleanup::logs())->map(fn (string $name, string $log) => $this->deleteLogAction($log, $name))->values()->all())
+                            ->key('cleanupLogs'),
+                        Actions::make([
+                            Action::make('deleteTicketFiles')
+                                ->label('Delete files of closed tickets')
+                                ->icon(Heroicon::OutlinedPaperClip)
+                                ->color('gray')
+                                ->badge(fn () => Number::format(app(LogCleanup::class)->attachments()->count()))
+                                ->modalHeading(__('Delete files of closed tickets'))
+                                ->modalDescription(fn () => __('Files of closed tickets now take :size. The messages stay and name each file as deleted. Settings → Support can do this every night.', ['size' => Number::fileSize((int) app(LogCleanup::class)->attachments()->sum('size'), precision: 1)]))
+                                ->schema([
+                                    DatePicker::make('before')
+                                        ->label('Tickets closed before')
+                                        ->default(now()->subDays(90)->toDateString())
+                                        ->maxDate(now()->toDateString())
+                                        ->required(),
+                                ])
+                                ->modalSubmitActionLabel(__('Delete'))
+                                ->action(function (array $data) {
+                                    abort_unless(self::cleansUp(), 403);
+                                    $result = app(LogCleanup::class)->deleteAttachments(Carbon::parse($data['before'])->startOfDay(), manual: true);
+                                    Notification::make()->success()
+                                        ->title(__(':count file(s) deleted, :size freed', ['count' => $result['files'], 'size' => Number::fileSize($result['bytes'], precision: 1)]))
+                                        ->send();
+                                }),
+                            Action::make('clearCache')
+                                ->label('Empty the cache')
+                                ->icon(Heroicon::OutlinedArrowPath)
+                                ->color('gray')
+                                ->requiresConfirmation()
+                                ->modalDescription(__('Deletes the stored cache and the compiled page templates. Both fill again as pages are opened, so the next pages may open a little slower. Useful after changing files on the server by hand.'))
+                                ->action(function () {
+                                    abort_unless(self::cleansUp(), 403);
+                                    app(LogCleanup::class)->clearCache();
+                                    Notification::make()->success()->title(__('Cache emptied'))->send();
+                                }),
+                        ])->key('cleanupOther'),
+                    ]),
             ]);
+    }
+
+    private static function cleansUp(): bool
+    {
+        return (bool) auth()->user()?->super_admin;
+    }
+
+    private function deleteLogAction(string $log, string $name): Action
+    {
+        return Action::make('clean_'.$log)
+            ->label($name)
+            ->icon(Heroicon::OutlinedTrash)
+            ->color('gray')
+            ->badge(fn () => Number::format(app(LogCleanup::class)->count($log)))
+            ->modalHeading(__('Delete old entries: :log', ['log' => __($name)]))
+            ->modalDescription($log === 'activity'
+                ? __('The activity log is the record of every change, so only entries older than :days days can be deleted.', ['days' => LogCleanup::ACTIVITY_MIN_DAYS])
+                : __('Entries written before the day you choose are deleted.'))
+            ->schema([
+                DatePicker::make('before')
+                    ->label('Delete entries older than')
+                    ->default(fn () => app(LogCleanup::class)->defaultBefore($log)->toDateString())
+                    ->maxDate(fn () => LogCleanup::latestBefore($log)->toDateString())
+                    ->required(),
+            ])
+            ->modalSubmitActionLabel(__('Delete'))
+            ->action(function (array $data) use ($log) {
+                abort_unless(self::cleansUp(), 403);
+                $before = Carbon::parse($data['before'])->startOfDay();
+                if ($before->greaterThan(LogCleanup::latestBefore($log))) {
+                    Notification::make()->danger()->title(__('Choose an earlier day'))->send();
+
+                    return;
+                }
+                $deleted = app(LogCleanup::class)->deleteBefore($log, $before);
+                Notification::make()->success()->title(__(':count entries deleted', ['count' => Number::format($deleted)]))->send();
+            });
     }
 
     protected function forForm(array $values): array

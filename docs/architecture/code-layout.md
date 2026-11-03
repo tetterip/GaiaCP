@@ -373,7 +373,11 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   secrets passed in, auth headers and password-like fields. A new API client adds it too. `App\Listeners\LogSentEmail`
   (MessageSent) keeps every sent email in `email_logs`; `ClientMailer` / `SendRenewalReminders` log failed sends.
   `gaiacp:prune-logs` (daily) deletes rows older than the retention days, `activity_logs` and `notifications` too when
-  `debug.activity_log_days` / `debug.notification_days` are set (null = kept), and expired database cache rows. `app/Support/LogReader.php` reads
+  `debug.activity_log_days` / `debug.notification_days` are set (null = kept), expired database cache rows, and the files of
+  tickets closed `support.attachment_days` ago (null = kept; `ticket_attachments.removed_at` set, the row stays and the
+  thread shows "file deleted"). `app/Support/LogCleanup.php` is Settings → Logging → Clean up (super admins): delete a
+  log's rows before a day (the activity log keeps `ACTIVITY_MIN_DAYS`), ticket files, `cache:clear` + `view:clear`;
+  each run logged (`log.cleaned`, `ticket.files_deleted`, `cache.cleared`). `app/Support/LogReader.php` reads
   `storage/logs/*.log` for the Error log page (`Pages/ErrorLog`)
 - `app/Filament/KeyboardShortcuts.php` + `resources/views/filament/keyboard-shortcuts.blade.php` (panel `BODY_END` hook):
   "g" / "n" + letter go to a page / open a new record, "/" and Ctrl/⌘+K search, "?" (or user menu) lists them;

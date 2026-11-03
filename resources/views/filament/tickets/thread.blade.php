@@ -33,6 +33,7 @@
     .dark .gx-msg-file { border-color: rgba(255, 255, 255, .12); }
     .gx-msg-file svg { width: 1rem; height: 1rem; flex: none; }
     .gx-msg-file span { color: var(--gray-500); }
+    .gx-msg-file-removed { opacity: .65; }
 </style>
 @endonce
 
@@ -56,10 +57,17 @@
             @if ($message->attachments->isNotEmpty())
                 <div class="gx-msg-files">
                     @foreach ($message->attachments as $file)
-                        <a class="gx-msg-file" href="{{ $fileUrl($file) }}">
-                            @svg('heroicon-o-paper-clip')
-                            {{ $file->name }} <span>{{ $file->readableSize() }}</span>
-                        </a>
+                        @if ($file->removed())
+                            <span class="gx-msg-file gx-msg-file-removed">
+                                @svg('heroicon-o-paper-clip')
+                                {{ $file->name }} <span>{{ __('file deleted') }}</span>
+                            </span>
+                        @else
+                            <a class="gx-msg-file" href="{{ $fileUrl($file) }}">
+                                @svg('heroicon-o-paper-clip')
+                                {{ $file->name }} <span>{{ $file->readableSize() }}</span>
+                            </a>
+                        @endif
                     @endforeach
                 </div>
             @endif
