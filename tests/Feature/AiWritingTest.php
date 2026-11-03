@@ -2,11 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Enums\BillingCycle;
+use App\Enums\ServiceType;
 use App\Enums\UserRole;
 use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Clusters\Settings\Pages\AiSettings;
 use App\Filament\Clusters\Settings\Pages\ClientAreaSettings;
 use App\Filament\Resources\Products\Pages\EditProduct;
+use App\Filament\Resources\Quotes\Pages\CreateQuote;
 use App\Models\AiUsage;
 use App\Models\Client;
 use App\Models\Product;
@@ -27,7 +30,7 @@ use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-/** The AI assistant writing texts from GaiaCP's own details: product descriptions, the server problem notice, domain names. */
+/** The AI assistant writing texts from GaiaCP's own details: product descriptions, quote terms, the server problem notice, domain names. */
 class AiWritingTest extends TestCase
 {
     use RefreshDatabase;
@@ -83,6 +86,45 @@ class AiWritingTest extends TestCase
         $this->assertStringContainsString('Compare table: Disk space: 50 GB', $sent);
         $this->assertStringNotContainsString('120', $sent, 'no price is sent');
         $this->assertSame('products', AiUsage::query()->sole()->feature);
+    }
+
+    public function test_a_quotes_terms_are_written_from_its_lines_without_prices_or_the_recipient(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $client = Client::factory()->create(['first_name' => 'Maria', 'last_name' => 'Secretidou', 'locale' => 'en']);
+        $product = Product::factory()->priced(12000)->create(['name' => 'Pro hosting']);
+        $this->claudeAnswers('The offer is valid for 30 days. Not included: content writing.');
+
+        Livewire::withQueryParams(['client' => $client->id])
+            ->test(CreateQuote::class)
+            ->fillForm([
+                'for' => 'client',
+                'client_id' => $client->id,
+                'valid_until' => '2026-12-31',
+                'items' => [[
+                    'type' => ServiceType::Hosting->value,
+                    'product_id' => $product->id,
+                    'label' => 'Hosting for secret-shop',
+                    'billing_cycle' => BillingCycle::Annually->value,
+                    'price_cents' => '120,00',
+                ]],
+                'extras' => [['description' => 'Moving the site', 'amount_cents' => '75']],
+                'footer' => 'Bank transfer only',
+            ])
+            ->assertActionVisible(TestAction::make('aiImprove_fix')->schemaComponent('footer', 'form'))
+            ->callAction(TestAction::make('aiWrite')->schemaComponent('footer', 'form'))
+            ->assertSchemaStateSet(['footer' => 'The offer is valid for 30 days. Not included: content writing.']);
+
+        $sent = $this->sentToClaude();
+        $this->assertStringContainsString('in English (en)', $sent);
+        $this->assertStringContainsString('Web hosting, Pro hosting, annually', $sent);
+        $this->assertStringContainsString('Moving the site', $sent);
+        $this->assertStringContainsString('Offer valid until: 2026-12-31', $sent);
+        $this->assertStringContainsString('Draft: Bank transfer only', $sent);
+        foreach (['120', '75', 'Secretidou', 'secret-shop'] as $private) {
+            $this->assertStringNotContainsString($private, $sent);
+        }
+        $this->assertSame('improve', AiUsage::query()->sole()->feature);
     }
 
     public function test_the_server_problem_notice_is_written_from_the_monitors_without_hostnames(): void
