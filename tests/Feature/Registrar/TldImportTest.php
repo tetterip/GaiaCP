@@ -10,6 +10,7 @@ use App\Models\Registrar;
 use App\Models\Tld;
 use App\Models\User;
 use App\Provisioning\ProvisioningException;
+use App\Support\Currencies;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
@@ -112,7 +113,7 @@ class TldImportTest extends TestCase
     {
         $this->fakeEnom();
         Currency::query()->create(['code' => 'USD', 'rate' => 1.25]);
-        \App\Support\Currencies::flush();
+        Currencies::flush();
         $this->enomPrices = ['com' => ['register' => '10.00', 'renew' => '12.50', 'transfer' => '10.00'], 'net' => ['register' => '15.00']];
 
         $rows = app(ImportTldPrices::class)->fetch($this->enomRegistrar); // its own TLDs: .com and .net
