@@ -66,11 +66,15 @@ tablet, swipe a notification left or right to remove it.
 Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a page (`g c` Clients, `g d` Dashboard),
 `n` then a letter starts a new record.
 
+The version number at the foot of every page (or the user menu → **About GaiaCP**) opens a short About: the version,
+what it runs on (PHP, Laravel, Filament), the licence and links to this guide, Updates and GitHub. Handy when you report a
+problem.
+
 ## Your profile
 
 Your user menu → Profile is yours alone:
 
-- **Language** of the panel, and **Theme** (Gaia or Flat; the default is set in Settings → General).
+- **Language** of the panel, and **Theme** (Gaia, Flat or Glass; the default is set in Settings → General).
 - **Two-factor authentication**: after your password you also type a code from an app on your phone. Turn it on: a
   stolen password alone then can't open the panel.
 - **Notifications**: whether the bell shows you what happened (new orders, payments, tickets, servers going down…).

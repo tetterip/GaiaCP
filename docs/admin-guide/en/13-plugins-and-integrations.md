@@ -53,7 +53,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 | Notifications | Slack, Discord, Telegram, Webhooks | Settings → Email & notifications |
 | Support | Email to ticket | Settings → Support |
 | AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Settings → AI assistant (its own group: the assistant's page and each service's) |
-| Look | Gaia and Flat themes | Profile, Settings → General, Settings → Client area |
+| Look | Gaia, Flat and Glass themes | Profile, Settings → General, Settings → Client area |
 | Moving in | WHMCS import | Settings → System |
 
 ## Webhooks

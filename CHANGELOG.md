@@ -8,6 +8,22 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Domain pricing: **Import from registrar** reads each TLD's cost from easy.gr or Enom and adds or updates TLDs with
   cost + markup; Settings → Domains → **Update registrar costs daily** keeps the costs current and rings the bell when a
   TLD starts to sell at a loss (EasyGr 1.2.0, Enom 1.3.0).
+- Client area: Help, knowledge base articles and announcements are centred and as wide as Contact, instead of a
+  full-width card with the text in its left half on a wide screen (every theme).
+- **Flat** theme: the logo's green (softer than Filament's emerald) with filled green buttons and white text, in the
+  admin panel and the client area.
+- Settings → General: a new Default theme shows as soon as you save, not only after the next page load.
+- New **Glass** theme (a bundled plugin, Profile, Settings → General or Settings → Client area): frosted, see-through
+  cards, sidebar, menus, windows and pill buttons over a soft background in the logo's teal and greens, in light and
+  dark. Where the browser can't blur, or the system asks for less transparency, the cards turn solid.
+- **About GaiaCP**: the version in the admin footer (or the user menu) opens a short About with the version, PHP,
+  Laravel and Filament versions, the licence and links. The admin footer now has small icons for the GaiaCP website,
+  GitHub and reporting a problem. There may be something else hidden in there too.
+- Settings → Client area → Search engines: a **Site title** for the site root (browser tab, search results and link
+  previews; empty keeps the page's name and the company name), and the **Description** is now per language (an existing
+  one becomes the first language's).
+- Public demo: Odysseus Hosting has its own logo, dark mode logo and browser tab icon (a trireme, in the style of the
+  GaiaCP globe), shown in the client area, on payment notices and in client emails.
 - Fixed: on a wide screen the sidebar's foot (the user menu) was cut off before the page was scrolled, most of all
   under the public demo's bar, which now stays at the top.
 - Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's

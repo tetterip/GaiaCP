@@ -1,0 +1,43 @@
+# Keeps Laravel, Filament and the other dependencies current.
+#
+# - Security fixes: Dependabot security updates (repository Settings → Code security) open a PR as soon as an
+#   advisory is published; `composer audit` in the Tests workflow fails on one too (every push, PR and Monday).
+# - Patch and minor releases: one grouped PR a month, merged once the tests pass.
+# - Major releases (Laravel 14, Filament 6, ...): never opened here; each is upgraded by hand as its own piece of work.
+version: 2
+
+updates:
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: monthly
+      time: "06:00"
+      timezone: Europe/Athens
+    open-pull-requests-limit: 5
+    versioning-strategy: increase-if-necessary
+    labels: [dependencies]
+    commit-message:
+      prefix: composer
+    ignore:
+      - dependency-name: "*"
+        update-types: [version-update:semver-major]
+    groups:
+      composer-minor-and-patch:
+        applies-to: version-updates
+        update-types: [minor, patch]
+      composer-security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      time: "06:00"
+      timezone: Europe/Athens
+    labels: [dependencies]
+    commit-message:
+      prefix: actions
+    groups:
+      github-actions:
+        patterns: ["*"]

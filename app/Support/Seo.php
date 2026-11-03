@@ -23,6 +23,9 @@ class Seo
     /** The query parameters that change what a page shows, kept in its canonical address. */
     private const KEPT = ['page'];
 
+    /** Whether the client panel is writing the head's `<title>` (between the HEAD_START and STYLES_BEFORE hooks). */
+    private static bool $writingTitle = false;
+
     /** The Filament page being shown (AppServiceProvider, from the panel's layout). */
     private static ?Component $page = null;
 
@@ -64,7 +67,60 @@ class Seo
         $page = self::$page;
         $description = $page && method_exists($page, 'metaDescription') ? self::plain($page->metaDescription()) : null;
 
-        return $description ?? self::plain(config('gaiacp.seo.description'));
+        return $description ?? self::plain(self::text('description'));
+    }
+
+    /** The site's own title (Settings → Client area → Search engines) in the current language, else the first one's. */
+    public static function siteTitle(): ?string
+    {
+        return self::plain(self::text('title'));
+    }
+
+    /** Marks the start (true) and end (false) of the head's `<title>` (ClientPanelProvider's render hooks). */
+    public static function writingTitle(bool $writing): string
+    {
+        self::$writingTitle = $writing;
+
+        return '';
+    }
+
+    /**
+     * The site title while the site root's `<title>` is written, else null. Filament writes "page - brand name" there,
+     * so the brand name becomes the site title and the page's own title is left out (PublicHome, Login).
+     */
+    public static function tabTitle(): ?string
+    {
+        return self::$writingTitle && self::atRoot() ? self::siteTitle() : null;
+    }
+
+    /** Whether the open page is the site root (the public home page, or the login without one). */
+    public static function atRoot(): bool
+    {
+        return trim(request()->path(), '/') === '' || request()->routeIs('filament.client.auth.login') && ! PublicArea::home();
+    }
+
+    /**
+     * A setting kept per language (`seo.title`, `seo.description`), each language's text by its code. A text saved
+     * before it was per language counts as the first language's.
+     *
+     * @return array<string, string>
+     */
+    public static function texts(string $key): array
+    {
+        $texts = config("gaiacp.seo.{$key}");
+
+        if (! is_array($texts)) {
+            $texts = filled($texts) ? [Locales::default() => (string) $texts] : [];
+        }
+
+        return array_filter(array_map(fn ($text) => trim((string) $text), $texts), 'filled');
+    }
+
+    private static function text(string $key): ?string
+    {
+        $texts = self::texts($key);
+
+        return $texts[app()->getLocale()] ?? $texts[Locales::default()] ?? null;
     }
 
     /**
@@ -90,6 +146,10 @@ class Seo
     /** The open page's title with the company's name (as in the browser tab), for link previews. */
     public static function title(): string
     {
+        if (self::atRoot() && ($site = self::siteTitle()) !== null) {
+            return $site;
+        }
+
         $name = config('gaiacp.company.name') ?: 'GaiaCP';
         $page = self::$page;
         $title = $page && method_exists($page, 'getTitle') ? trim(strip_tags((string) $page->getTitle())) : '';

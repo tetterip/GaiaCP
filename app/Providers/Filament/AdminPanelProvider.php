@@ -132,6 +132,10 @@ class AdminPanelProvider extends PanelProvider
                     ->label(fn (): string => __('Keyboard shortcuts'))
                     ->icon(Heroicon::OutlinedCommandLine)
                     ->alpineClickHandler("\$dispatch('open-keyboard-shortcuts')"),
+                Action::make('about')
+                    ->label(fn (): string => __('About GaiaCP'))
+                    ->icon(Heroicon::OutlinedInformationCircle)
+                    ->alpineClickHandler("\$dispatch('open-gaiacp-about')"),
                 Action::make('welcomeTour')
                     ->label(fn (): string => __('Tour'))
                     ->icon(Heroicon::OutlinedMap)
@@ -150,6 +154,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.tables')->render())
             // "g" / "n" sequences and the "?" list (App\Filament\KeyboardShortcuts)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.keyboard-shortcuts')->render() : '')
+            // About GaiaCP, from the footer's version or the user menu, with its surprise (App\Support\About)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.about')->render() : '')
             // "Powered by GaiaCP" on the login page, the copyright line on the others
             ->renderHook(PanelsRenderHook::CONTENT_START, fn (): string => TwoFactorReminder::shows() ? Blade::render('@livewire(\'two-factor-reminder\')') : '')
             // The welcome tour: by itself on the first visit, then from the user menu → Tour (App\Support\WelcomeTour)

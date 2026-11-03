@@ -260,7 +260,8 @@ return [
     // order pages may be indexed; signed-in pages and /admin never are.
     'seo' => [
         'index' => true,
-        'description' => null, // the meta / link preview description; null = none
+        'title' => [], // per language code: the site root's browser tab and link preview title; empty = page + company name
+        'description' => [], // per language code: the meta / link preview description; empty = the first language's, else none
     ],
 
     // The public area (App\Support\PublicArea, Settings → Public area): pages visitors see without logging in, in the

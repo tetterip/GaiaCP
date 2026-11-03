@@ -113,6 +113,7 @@ class Settings
         'public_area.menu',
         'public_area.announcements',
         'public_area.status',
+        'seo.title',
         'seo.description',
         'client_area.email_links',
         'client_area.signup',

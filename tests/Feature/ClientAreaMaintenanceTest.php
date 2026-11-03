@@ -119,6 +119,7 @@ class ClientAreaMaintenanceTest extends TestCase
         $plugins = app(PluginManager::class);
         $plugins->disable($plugins->find('gaia_theme'));
         $plugins->disable($plugins->find('flat_theme'));
+        $plugins->disable($plugins->find('glass_theme'));
         $this->get('/login')->assertStatus(503)->assertSee('--bg: #f7f8f7', false)->assertDontSee('fonts.bunny.net', false);
     }
 }

@@ -108,7 +108,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Google sign-in ("Continue with Google"
   in the client area and, when ticked, on /admin, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
   Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot, HetrixTools and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
-  the admin panel themes Gaia and Flat are bundled plugins,
+  the admin panel themes Gaia, Flat and Glass are bundled plugins,
   each on by default (except easy.gr, ΑΑΔΕ and VIES VAT check, off in a new install unless `GAIACP_PLUGINS_START_ENABLED` names them)
   and switched off when not used (their servers, accounts and settings stay); bundled plugins
   can't be uninstalled. Each has its own version and changelog, shown on that page with when it was installed or
@@ -234,7 +234,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   or Enom and adds or updates TLDs with cost + markup (percent, fixed, rounding); an optional nightly run keeps the costs
   current and rings the bell when a TLD starts to sell at a loss (selling prices never change by themselves)
 - Themes: Gaia (GaiaCP's own look, light and dark: neutral greys, the logo's teal, rounded cards,
-  Commissioner and Literata from Bunny Fonts, quiet motion) and Flat (the same layout in Filament's emerald and grey, flat: no shadows or motion). Each admin picks one
+  Commissioner and Literata from Bunny Fonts, quiet motion) Flat (the same layout in the logo's green and Filament's grey, flat: no shadows or motion) and Glass (frosted, see-through
+  cards, sidebar, menus, windows and pill buttons over a soft teal and green background, Manrope; solid where the browser
+  can't blur or the system asks for less transparency). Each admin picks one
   in Profile; Settings → General sets the admin default (Gaia). The client area, the public order page, sign up and
   the maintenance page take the theme chosen under Settings → Client area → Client area theme (Gaia), with the
   company's logo; clients don't choose. Settings → Client area → Brand colour (empty = the theme's) paints the client

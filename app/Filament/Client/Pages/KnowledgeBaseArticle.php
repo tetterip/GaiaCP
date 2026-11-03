@@ -9,6 +9,7 @@ use App\Models\KbArticle;
 use App\Support\KnowledgeBase as Articles;
 use Filament\Pages\Page;
 use Filament\Panel;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
@@ -20,6 +21,9 @@ use Illuminate\Support\HtmlString;
 class KnowledgeBaseArticle extends Page
 {
     use OpenToVisitors;
+
+    /** Centred and as wide as Contact, so the card ends near where the text does. */
+    protected Width|string|null $maxContentWidth = Width::FourExtraLarge;
 
     protected static bool $shouldRegisterNavigation = false;
 

@@ -199,6 +199,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   Search engines (Settings → Client area, `gaiacp.seo.*`, `App\Support\Seo`): `filament.seo` on `HEAD_END` of both
   panels; /admin and signed-in pages are always `noindex`, the public pages (login, sign up, order page) are indexed
   unless `seo.index` is off, with `seo.description` as meta and Open Graph description (company name and logo too).
+  `seo.title` and `seo.description` are per language (`Seo::texts()`, falling back to the default language; a plain
+  string saved before counts as the default language's); `seo.title` replaces the `<title>` and og:title of the site root
+  only (`Seo::atRoot()`: the public home, else the login).
   A visitor's language is in the address too (`?lang=`, read by `SetLocale` and kept in the session; the top bar's
   language route drops it on the way back): indexable pages get a canonical link (path, `page` and `lang` only) and
   hreflang alternates per language plus `x-default`, og:title is the page title. `SitemapController` serves
@@ -330,10 +333,13 @@ How the admin and client panels, users, access, security, branding, themes and l
   admin dashboard's `.gx-*` cards (`filament/dashboard/styles`); `App\Support\Greeting` is both dashboards' heading. The
   maintenance and IP-ban pages @include `themes/standalone` (the client-area theme's font and
   `themeStandaloneColors()`). `plugins/GaiaTheme` (default; plain CSS over Filament's classes in
-  `views/styles.blade.php`, no build step) and `plugins/FlatTheme` (Filament's emerald / grey / Inter, no shadows or motion). Both @include the shared layout
+  `views/styles.blade.php`, no build step), `plugins/FlatTheme` (the logo's green, Filament's grey / Inter, no shadows or motion) and
+  `plugins/GlassTheme` (frosted glass: the blur sits on a `::before` layer of each card, never `backdrop-filter` on the card
+  itself, which would make it the containing block of `position: fixed` and trap modals; no transform on cards for the
+  same reason). All three @include the shared layout
   `resources/views/filament/themes/layout.blade.php` (shell, grouped menu, the admin's card, cards; set by `--theme-*`
   variables; in both panels, the admin-only rules match only admin markup). `themeUserMenuPosition()` = top bar or
-  sidebar foot (both themes: sidebar, in both panels). The client menu, like the admin's: Home and Order, then Services
+  sidebar foot (every theme: sidebar, in both panels). The client menu, like the admin's: Home and Order, then Services
   (Hosting and Other services = the client `ServiceResource::getNavigationItems()` with `?kind=`, Domains between),
   Billing (payment notices, payments, credit) and Support (Tickets, Knowledge base, Help).
   The admin sidebar groups are Main, Billing, Services, System (`AdminPanelProvider::navigationGroups()`, in that
