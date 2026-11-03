@@ -425,6 +425,21 @@
         border-radius: 999px;
     }
 
+    /* The small boxes inside cards all get a fine edge: a neutral one in the glass line, a warning or a problem in
+       its own colour */
+    html.fi .gx-box {
+        box-shadow: inset 0 0 0 1px var(--glass-line);
+    }
+
+    html.fi .gx-box-warn {
+        background: color-mix(in oklab, var(--warning-500) 14%, var(--glass-pane-strong)) !important;
+        box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--warning-500) 24%, transparent);
+    }
+
+    html.fi.dark .gx-box-warn {
+        background: color-mix(in oklab, var(--warning-500) 20%, transparent) !important;
+    }
+
     /* Overdue / past due: a clear red pane, not a faint pink one */
     html.fi .gx-box-bad {
         background: color-mix(in oklab, var(--danger-500) 16%, var(--glass-pane-strong)) !important;
