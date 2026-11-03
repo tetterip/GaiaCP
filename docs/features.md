@@ -230,6 +230,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
 - Domain costs: each TLD can keep what the registrar charges per term (Settings → Domain pricing → Registrar cost).
   The list shows the renewal margin, red when a term sells at a loss; Income forecast takes the month's domain
   renewal costs off the profit, and Reports → Domain profit shows revenue, cost, profit and margin per TLD
+- TLD import and pricing sync (WHMCS-style): Domain pricing → Import from registrar reads each TLD's cost from easy.gr
+  or Enom and adds or updates TLDs with cost + markup (percent, fixed, rounding); an optional nightly run keeps the costs
+  current and rings the bell when a TLD starts to sell at a loss (selling prices never change by themselves)
 - Themes: Gaia (GaiaCP's own look, light and dark: neutral greys, the logo's teal, rounded cards,
   Commissioner and Literata from Bunny Fonts, quiet motion) and Flat (the same layout in Filament's emerald and grey, flat: no shadows or motion). Each admin picks one
   in Profile; Settings → General sets the admin default (Gaia). The client area, the public order page, sign up and

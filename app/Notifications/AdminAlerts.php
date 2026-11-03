@@ -18,6 +18,7 @@ use App\Filament\Resources\Quotes\QuoteResource;
 use App\Filament\Resources\Servers\ServerResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Filament\Resources\Tickets\TicketResource;
+use App\Filament\Resources\Tlds\TldResource;
 use App\Filament\Resources\UpgradeRequests\UpgradeRequestResource;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
@@ -61,6 +62,8 @@ class AdminAlerts
         'domain.expiring' => AdminArea::Services,
         'site.problems' => AdminArea::Services,
         'service.usage_high' => AdminArea::Services,
+        'tld.selling_at_loss' => AdminArea::ServiceSettings,
+        'tld.cost_sync_failed' => AdminArea::ServiceSettings,
         'ticket.opened' => AdminArea::Support,
         'ticket.client_replied' => AdminArea::Support,
         'lead.follow_up' => AdminArea::Sales,
@@ -220,6 +223,18 @@ class AdminAlerts
                 __(':count failed tries in a row: :error', ['count' => $log->properties['failures'] ?? '', 'error' => Str::limit((string) ($log->properties['error'] ?? ''), 120)]),
                 'heroicon-o-bolt-slash', 'danger',
                 $log->properties['url'] ?? null,
+            ],
+            'tld.selling_at_loss' => [
+                __(':count TLD(s) now sell at a loss', ['count' => $log->properties['count'] ?? '']),
+                __('The registrar now charges more than your price for :tlds.', ['tlds' => implode(', ', $log->properties['tlds'] ?? [])]),
+                'heroicon-o-exclamation-triangle', 'danger',
+                TldResource::getUrl(panel: 'admin'),
+            ],
+            'tld.cost_sync_failed' => [
+                __('Registrar costs not updated'),
+                Str::limit($log->description, 160),
+                'heroicon-o-exclamation-triangle', 'warning',
+                TldResource::getUrl(panel: 'admin'),
             ],
             'site.problems' => [
                 __(':count new site problem(s)', ['count' => $log->properties['count'] ?? '']),

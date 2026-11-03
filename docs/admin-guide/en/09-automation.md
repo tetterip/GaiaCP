@@ -40,6 +40,7 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 | 00:20 | Quotes past their date marked Expired |
 | 03:30 | Old module and email log rows deleted (Settings → Logs → Logging) |
 | 04:00 | Domains' expiry dates and nameservers read from the registrars |
+| 04:15 | Registrar costs of the TLDs, when Settings → Domains → Update registrar costs daily is on |
 | 04:30 | Servers compared with GaiaCP (when switched on) |
 | 05:00 | Site checks |
 | 06:00 | Hosting usage warnings |

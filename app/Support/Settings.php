@@ -68,6 +68,7 @@ class Settings
         'domains.free_renew_requires_product',
         'domains.idn',
         'domains.late_fees',
+        'domains.sync_costs',
         'domains.ssl_product',
         'domains.ssl_discount',
         'domains.ssl_own_hosting',

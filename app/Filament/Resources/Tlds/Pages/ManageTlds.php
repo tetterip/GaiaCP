@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tlds\Pages;
 
+use App\Filament\Actions\ImportTldPricesAction;
 use App\Filament\Resources\Registrars\RegistrarResource;
 use App\Filament\Resources\Tlds\TldResource;
 use Filament\Actions\Action;
@@ -27,6 +28,7 @@ class ManageTlds extends ManageRecords
                 ->color('gray')
                 ->url(RegistrarResource::getUrl())
                 ->visible(RegistrarResource::canAccess()),
+            ImportTldPricesAction::make(),
             CreateAction::make()
                 ->label('Add TLD')
                 ->modalWidth('3xl'),
