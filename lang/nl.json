@@ -3690,5 +3690,7 @@
     ":count entries deleted": ":count items verwijderd",
     "Delete files of closed tickets after": "Bestanden van gesloten tickets verwijderen na",
     "Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.": "Elke nacht worden de bestanden van langer geleden gesloten tickets verwijderd om schijfruimte vrij te maken. De berichten blijven en noemen het bestand verwijderd. Leeg: bewaren.",
-    "file deleted": "bestand verwijderd"
+    "file deleted": "bestand verwijderd",
+    "Attachment days": "Dagen bijlagen",
+    "Before": "Vóór"
 }

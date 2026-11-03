@@ -3690,5 +3690,7 @@
     ":count entries deleted": ":count kayıt silindi",
     "Delete files of closed tickets after": "Kapalı taleplerin dosyalarını şu süreden sonra sil",
     "Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.": "Her gece, daha önce kapanan taleplerin dosyaları disk alanı açmak için silinir. Mesajlar kalır ve dosyayı silinmiş olarak gösterir. Boş: saklanır.",
-    "file deleted": "dosya silindi"
+    "file deleted": "dosya silindi",
+    "Attachment days": "Ek dosya günleri",
+    "Before": "Önce"
 }

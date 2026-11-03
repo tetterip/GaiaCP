@@ -3690,5 +3690,7 @@
     ":count entries deleted": "Usunięto wpisy: :count",
     "Delete files of closed tickets after": "Usuń pliki zamkniętych zgłoszeń po",
     "Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.": "Co noc usuwane są pliki zgłoszeń zamkniętych dawniej, aby zwolnić miejsce. Wiadomości zostają i oznaczają plik jako usunięty. Puste: zachowaj je.",
-    "file deleted": "plik usunięty"
+    "file deleted": "plik usunięty",
+    "Attachment days": "Dni załączników",
+    "Before": "Przed"
 }

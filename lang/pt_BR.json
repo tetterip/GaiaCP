@@ -3690,5 +3690,7 @@
     ":count entries deleted": ":count entradas excluídas",
     "Delete files of closed tickets after": "Excluir arquivos de tickets fechados após",
     "Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.": "Toda noite, os arquivos de tickets fechados há mais tempo são excluídos para liberar espaço. As mensagens ficam e indicam o arquivo como excluído. Vazio: mantê-los.",
-    "file deleted": "arquivo excluído"
+    "file deleted": "arquivo excluído",
+    "Attachment days": "Dias dos anexos",
+    "Before": "Antes de"
 }
