@@ -8,6 +8,7 @@ use App\Filament\Actions\AiTextActions;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Support\ClientAreaMaintenance;
 use App\Support\Locales;
+use App\Support\Seo;
 use App\Support\ServerIncidents;
 use App\Support\TermsOfService;
 use App\Themes\Themes;
@@ -18,7 +19,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -59,7 +63,7 @@ class ClientAreaSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.description', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
+        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.title', 'seo.description', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
     }
 
     public function form(Schema $schema): Schema
@@ -214,11 +218,7 @@ class ClientAreaSettings extends SettingsFormPage
                         Toggle::make('seo.index')
                             ->label('Let search engines show the login, sign up and order pages')
                             ->helperText(fn (): string => __('Also the public area\'s pages, each in every language. Search engines find them in :url.', ['url' => route('sitemap')])),
-                        Textarea::make('seo.description')
-                            ->label('Description')
-                            ->rows(2)
-                            ->maxLength(300)
-                            ->helperText(__('One or two sentences about your business, shown in search results and in link previews (Facebook, Viber, WhatsApp…) with your company name and logo.')),
+                        self::seoTexts(),
                     ]),
                 Section::make(__('Emails'))
                     ->schema([
@@ -241,13 +241,56 @@ class ClientAreaSettings extends SettingsFormPage
             ]);
     }
 
+    /** The site title and description, one tab per language (one language: the fields alone). */
+    private static function seoTexts(): Tabs|Group
+    {
+        $fields = fn (string $locale) => [
+            TextInput::make("seo.title.{$locale}")
+                ->label('Site title')
+                ->maxLength(70)
+                ->placeholder(fn () => config('gaiacp.company.name') ?: 'GaiaCP')
+                ->helperText(Locales::isDefault($locale)
+                    ? __('The title of your site root (the browser tab, search results and link previews), e.g. ":name | Web hosting and domains". Empty: the page\'s name and your company name. Other pages keep theirs.', ['name' => config('gaiacp.company.name') ?: 'GaiaCP'])
+                    : __('Empty: the text of the first language.')),
+            Textarea::make("seo.description.{$locale}")
+                ->label('Description')
+                ->rows(2)
+                ->maxLength(300)
+                ->helperText(Locales::isDefault($locale)
+                    ? __('One or two sentences about your business, shown in search results and in link previews (Facebook, Viber, WhatsApp…) with your company name and logo.')
+                    : __('Empty: the text of the first language.')),
+        ];
+
+        if (! Locales::multiple()) {
+            return Group::make($fields(Locales::default()));
+        }
+
+        return Tabs::make('seo')->tabs(collect(Locales::available())
+            ->map(fn (string $name, string $locale) => Tab::make($name)->schema($fields($locale)))
+            ->values()->all());
+    }
+
+    protected function forForm(array $values): array
+    {
+        // A description saved before it was per language belongs to the first language
+        foreach (['seo.title', 'seo.description'] as $key) {
+            $values[$key] = Seo::texts(Str::after($key, 'seo.'));
+        }
+
+        return $values;
+    }
+
     protected function forStorage(array $values): array
     {
+        foreach (['seo.title', 'seo.description'] as $key) {
+            $values[$key] = array_filter(array_map(fn ($text) => trim((string) $text), (array) ($values[$key] ?? [])), 'filled');
+        }
+
         $values = $this->withTermsVersion($values);
         $values['client_area.brand_color'] = filled($values['client_area.brand_color'] ?? null) ? strtolower((string) $values['client_area.brand_color']) : null;
 
         foreach ($values as $key => $value) {
-            if (! in_array($key, ['client_area.theme', 'client_area.brand_color', 'client_area.maintenance_message', 'client_area.maintenance_redirect', 'client_area.incident_message', 'client_area.terms_url', 'client_area.terms_text', 'client_area.terms_version', 'seo.description'], true)) {
+            if (! in_array($key, ['client_area.theme', 'client_area.brand_color', 'client_area.maintenance_message', 'client_area.maintenance_redirect', 'client_area.incident_message', 'client_area.terms_url', 'client_area.terms_text', 'client_area.terms_version', 'seo.title', 'seo.description'], true)) {
                 $values[$key] = (bool) $value;
             }
         }

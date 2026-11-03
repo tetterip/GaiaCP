@@ -3590,5 +3590,7 @@
     "Super admins": "Οι super admins",
     "The login of registrar account :name was changed": "Άλλαξαν τα στοιχεία σύνδεσης του λογαριασμού registrar :name",
     "The login of server :name was changed": "Άλλαξαν τα στοιχεία σύνδεσης του server :name",
-    "Your address now (:ip) is not on the list: you would be locked out.": "Η διεύθυνσή σας τώρα (:ip) δεν είναι στη λίστα: θα κλειδωνόσασταν έξω."
+    "Your address now (:ip) is not on the list: you would be locked out.": "Η διεύθυνσή σας τώρα (:ip) δεν είναι στη λίστα: θα κλειδωνόσασταν έξω.",
+    "Site title": "Τίτλος ιστότοπου",
+    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Ο τίτλος της αρχικής διεύθυνσης του site σας (καρτέλα του browser, αποτελέσματα αναζήτησης και προεπισκοπήσεις συνδέσμων), π.χ. «:name | Φιλοξενία ιστοσελίδων και domains». Κενό: το όνομα της σελίδας και το όνομα της εταιρείας σας. Οι άλλες σελίδες κρατούν τον δικό τους."
 }

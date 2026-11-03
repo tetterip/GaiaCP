@@ -10,6 +10,7 @@ use App\Plugins\PluginManager;
 use App\SignIn\Passkeys\Passkeys;
 use App\SignIn\SignIn;
 use App\Support\Demo;
+use App\Support\Seo;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Facades\Filament;
@@ -35,6 +36,12 @@ class Login extends BaseLogin
             $this->getRememberFormComponent(),
             ...$this->captchaComponents('client_login'),
         ]);
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        // The site title stands alone in the browser tab while the login is the site root (Seo::tabTitle())
+        return Seo::tabTitle() !== null ? '' : parent::getTitle();
     }
 
     public function mount(): void

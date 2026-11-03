@@ -199,6 +199,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   Search engines (Settings → Client area, `gaiacp.seo.*`, `App\Support\Seo`): `filament.seo` on `HEAD_END` of both
   panels; /admin and signed-in pages are always `noindex`, the public pages (login, sign up, order page) are indexed
   unless `seo.index` is off, with `seo.description` as meta and Open Graph description (company name and logo too).
+  `seo.title` and `seo.description` are per language (`Seo::texts()`, falling back to the default language; a plain
+  string saved before counts as the default language's); `seo.title` replaces the `<title>` and og:title of the site root
+  only (`Seo::atRoot()`: the public home, else the login).
   A visitor's language is in the address too (`?lang=`, read by `SetLocale` and kept in the session; the top bar's
   language route drops it on the way back): indexable pages get a canonical link (path, `page` and `lang` only) and
   hreflang alternates per language plus `x-default`, og:title is the page title. `SitemapController` serves

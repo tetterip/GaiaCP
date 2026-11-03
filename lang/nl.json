@@ -3590,5 +3590,7 @@
     "Super admins": "Superbeheerders",
     "The login of registrar account :name was changed": "De inloggegevens van registraraccount :name zijn gewijzigd",
     "The login of server :name was changed": "De inloggegevens van server :name zijn gewijzigd",
-    "Your address now (:ip) is not on the list: you would be locked out.": "Uw huidige adres (:ip) staat niet op de lijst: u zou uzelf buitensluiten."
+    "Your address now (:ip) is not on the list: you would be locked out.": "Uw huidige adres (:ip) staat niet op de lijst: u zou uzelf buitensluiten.",
+    "Site title": "Sitetitel",
+    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "De titel van de hoofdpagina van uw site (browsertabblad, zoekresultaten en linkvoorbeelden), bijv. \":name | Webhosting en domeinen\". Leeg: de naam van de pagina en uw bedrijfsnaam. Andere pagina's houden die van zichzelf."
 }
