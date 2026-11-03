@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- New **Glass** theme (a bundled plugin, Profile, Settings → General or Settings → Client area): frosted, see-through
+  cards, sidebar, menus, windows and pill buttons over a soft background in the logo's teal and greens, in light and
+  dark. Where the browser can't blur, or the system asks for less transparency, the cards turn solid.
 - **About GaiaCP**: the version in the admin footer (or the user menu) opens a short About with the version, PHP,
   Laravel and Filament versions, the licence and links. The admin footer now has small icons for the GaiaCP website,
   GitHub and reporting a problem. There may be something else hidden in there too.
