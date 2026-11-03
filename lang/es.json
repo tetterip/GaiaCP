@@ -3672,5 +3672,20 @@
     "Wine and celebration": "El vino y la fiesta",
     "Gaia's family": "La familia de Gea",
     "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "¡Lo encontraste! Conoce la familia que da nombre a GaiaCP y el papel de cada uno aquí.",
-    "Write the terms from the quote": "Escribir las condiciones a partir del presupuesto"
+    "Write the terms from the quote": "Escribir las condiciones a partir del presupuesto",
+    "This login is an admin user: only Settings → Admin users can change its password.": "Este acceso es un usuario administrador: solo Ajustes → Usuarios administradores puede cambiar su contraseña.",
+    "The client has no client area login that is turned on: invite them instead.": "El cliente no tiene un acceso activo al área de clientes: invítelo en su lugar.",
+    "We sent you this link to choose a new password for your :name client area (:email).": "Le enviamos este enlace para elegir una nueva contraseña para su área de clientes de :name (:email).",
+    "Until you choose a new one, your password stays as it is.": "Hasta que elija una nueva, su contraseña sigue igual.",
+    "Set password": "Establecer contraseña",
+    "The client logs in with this password from now on. Every browser signed in to their client area is signed out.": "El cliente inicia sesión con esta contraseña a partir de ahora. Se cierra la sesión de todos los navegadores en su área de clientes.",
+    "Creates the client area login of :email with this password.": "Crea el acceso al área de clientes de :email con esta contraseña.",
+    "Sends the Client Area Login Details email with the password. Its switch under Settings → Email templates sets whether this starts ticked.": "Envía el correo Client Area Login Details con la contraseña. Su interruptor en Ajustes → Plantillas de correo decide si empieza marcado.",
+    "Password not set": "Contraseña no establecida",
+    "Password set": "Contraseña establecida",
+    "The login details were emailed to :email.": "Los datos de acceso se enviaron a :email.",
+    "The email could not be sent. See the email log.": "No se pudo enviar el correo. Consulte el registro de correos.",
+    "Send password reset link": "Enviar enlace para restablecer la contraseña",
+    "Emails :email a link to choose a new password, the same one as \"Forgot password?\" on the login. Their current password keeps working until they do.": "Envía a :email un enlace para elegir una nueva contraseña, el mismo que «¿Olvidó su contraseña?» en el acceso. Su contraseña actual sigue funcionando hasta que lo haga.",
+    "Password reset link sent to :email": "Enlace para restablecer la contraseña enviado a :email"
 }

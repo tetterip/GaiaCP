@@ -3672,5 +3672,20 @@
     "Wine and celebration": "Wino i świętowanie",
     "Gaia's family": "Rodzina Gai",
     "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "Udało się! Poznaj rodzinę, od której GaiaCP wzięło nazwę, i rolę każdego z nich.",
-    "Write the terms from the quote": "Napisz warunki na podstawie oferty"
+    "Write the terms from the quote": "Napisz warunki na podstawie oferty",
+    "This login is an admin user: only Settings → Admin users can change its password.": "Ten login to administrator: tylko Ustawienia → Administratorzy mogą zmienić jego hasło.",
+    "The client has no client area login that is turned on: invite them instead.": "Klient nie ma włączonego logowania do strefy klienta: zaproś go zamiast tego.",
+    "We sent you this link to choose a new password for your :name client area (:email).": "Wysyłamy ten link, aby mogli Państwo wybrać nowe hasło do strefy klienta :name (:email).",
+    "Until you choose a new one, your password stays as it is.": "Dopóki nie wybiorą Państwo nowego, hasło pozostaje bez zmian.",
+    "Set password": "Ustaw hasło",
+    "The client logs in with this password from now on. Every browser signed in to their client area is signed out.": "Od teraz klient loguje się tym hasłem. Każda przeglądarka zalogowana do jego strefy klienta zostaje wylogowana.",
+    "Creates the client area login of :email with this password.": "Tworzy logowanie do strefy klienta dla :email z tym hasłem.",
+    "Sends the Client Area Login Details email with the password. Its switch under Settings → Email templates sets whether this starts ticked.": "Wysyła e-mail Client Area Login Details z hasłem. Jego przełącznik w Ustawienia → Szablony e-mail decyduje, czy jest domyślnie zaznaczone.",
+    "Password not set": "Hasło nie ustawione",
+    "Password set": "Hasło ustawione",
+    "The login details were emailed to :email.": "Dane logowania wysłano na :email.",
+    "The email could not be sent. See the email log.": "Nie udało się wysłać e-maila. Zobacz dziennik e-maili.",
+    "Send password reset link": "Wyślij link do resetu hasła",
+    "Emails :email a link to choose a new password, the same one as \"Forgot password?\" on the login. Their current password keeps working until they do.": "Wysyła na :email link do wyboru nowego hasła, ten sam co „Nie pamiętasz hasła?” przy logowaniu. Obecne hasło działa, dopóki tego nie zrobi.",
+    "Password reset link sent to :email": "Link do resetu hasła wysłano na :email"
 }

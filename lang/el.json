@@ -3672,5 +3672,20 @@
     "Wine and celebration": "Το κρασί και το γλέντι",
     "Gaia's family": "Η οικογένεια της Γαίας",
     "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "Το βρήκες! Γνώρισε την οικογένεια που έδωσε στο GaiaCP το όνομά του, και τον ρόλο που παίζει ο καθένας εδώ.",
-    "Write the terms from the quote": "Γράψε τους όρους από την προσφορά"
+    "Write the terms from the quote": "Γράψε τους όρους από την προσφορά",
+    "This login is an admin user: only Settings → Admin users can change its password.": "Αυτό το login είναι διαχειριστής: μόνο οι Ρυθμίσεις → Διαχειριστές αλλάζουν τον κωδικό του.",
+    "The client has no client area login that is turned on: invite them instead.": "Ο πελάτης δεν έχει ανοιχτό login στην περιοχή πελατών: στείλε του πρόσκληση.",
+    "We sent you this link to choose a new password for your :name client area (:email).": "Σας στέλνουμε αυτόν τον σύνδεσμο για να επιλέξετε νέο κωδικό για την περιοχή πελατών :name (:email).",
+    "Until you choose a new one, your password stays as it is.": "Μέχρι να επιλέξετε νέο, ο κωδικός σας μένει ως έχει.",
+    "Set password": "Ορισμός κωδικού",
+    "The client logs in with this password from now on. Every browser signed in to their client area is signed out.": "Ο πελάτης συνδέεται από τώρα με αυτόν τον κωδικό. Κάθε browser συνδεδεμένος στην περιοχή πελατών του αποσυνδέεται.",
+    "Creates the client area login of :email with this password.": "Δημιουργεί το login της περιοχής πελατών για το :email με αυτόν τον κωδικό.",
+    "Sends the Client Area Login Details email with the password. Its switch under Settings → Email templates sets whether this starts ticked.": "Στέλνει το email «Στοιχεία σύνδεσης στην περιοχή πελατών» με τον κωδικό. Ο διακόπτης του στις Ρυθμίσεις → Πρότυπα email ορίζει αν είναι αρχικά τσεκαρισμένο.",
+    "Password not set": "Ο κωδικός δεν ορίστηκε",
+    "Password set": "Ο κωδικός ορίστηκε",
+    "The login details were emailed to :email.": "Τα στοιχεία σύνδεσης στάλθηκαν στο :email.",
+    "The email could not be sent. See the email log.": "Το email δεν στάλθηκε. Δες το αρχείο email.",
+    "Send password reset link": "Αποστολή συνδέσμου επαναφοράς κωδικού",
+    "Emails :email a link to choose a new password, the same one as \"Forgot password?\" on the login. Their current password keeps working until they do.": "Στέλνει στο :email σύνδεσμο για να επιλέξει νέο κωδικό, τον ίδιο με το «Ξεχάσατε τον κωδικό;» της σύνδεσης. Ο τωρινός κωδικός του δουλεύει μέχρι να το κάνει.",
+    "Password reset link sent to :email": "Ο σύνδεσμος επαναφοράς κωδικού στάλθηκε στο :email"
 }

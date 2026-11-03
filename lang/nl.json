@@ -3672,5 +3672,20 @@
     "Wine and celebration": "Wijn en feest",
     "Gaia's family": "De familie van Gaia",
     "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "Gevonden! Maak kennis met de familie waar GaiaCP naar vernoemd is, en de rol van elk van hen hier.",
-    "Write the terms from the quote": "Voorwaarden uit de offerte schrijven"
+    "Write the terms from the quote": "Voorwaarden uit de offerte schrijven",
+    "This login is an admin user: only Settings → Admin users can change its password.": "Deze login is een beheerder: alleen Instellingen → Beheerders kan het wachtwoord wijzigen.",
+    "The client has no client area login that is turned on: invite them instead.": "De klant heeft geen actieve login voor het klantengebied: nodig hem in plaats daarvan uit.",
+    "We sent you this link to choose a new password for your :name client area (:email).": "We sturen u deze link om een nieuw wachtwoord te kiezen voor uw :name klantengebied (:email).",
+    "Until you choose a new one, your password stays as it is.": "Tot u een nieuw kiest, blijft uw wachtwoord hetzelfde.",
+    "Set password": "Wachtwoord instellen",
+    "The client logs in with this password from now on. Every browser signed in to their client area is signed out.": "De klant logt vanaf nu in met dit wachtwoord. Elke browser die in het klantengebied is ingelogd, wordt uitgelogd.",
+    "Creates the client area login of :email with this password.": "Maakt de klantengebied-login van :email met dit wachtwoord.",
+    "Sends the Client Area Login Details email with the password. Its switch under Settings → Email templates sets whether this starts ticked.": "Stuurt de e-mail Client Area Login Details met het wachtwoord. De schakelaar onder Instellingen → E-mailsjablonen bepaalt of dit standaard is aangevinkt.",
+    "Password not set": "Wachtwoord niet ingesteld",
+    "Password set": "Wachtwoord ingesteld",
+    "The login details were emailed to :email.": "De inloggegevens zijn naar :email gestuurd.",
+    "The email could not be sent. See the email log.": "De e-mail kon niet worden verzonden. Zie het e-maillogboek.",
+    "Send password reset link": "Link om wachtwoord te herstellen sturen",
+    "Emails :email a link to choose a new password, the same one as \"Forgot password?\" on the login. Their current password keeps working until they do.": "Stuurt :email een link om een nieuw wachtwoord te kiezen, dezelfde als \"Wachtwoord vergeten?\" bij het inloggen. Het huidige wachtwoord werkt tot hij dat doet.",
+    "Password reset link sent to :email": "Herstellink verzonden naar :email"
 }
