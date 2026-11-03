@@ -67,7 +67,14 @@ class DemoSeeder extends Seeder
      * built and again by every reset (DemoSnapshot), so a page image or download deleted by a visitor comes back.
      */
     public const FILES = [
-        'public' => ['pages/DemoAboutUsFeaturedImage.jpg' => 'about-us.jpg'],
+        'public' => [
+            'pages/DemoAboutUsFeaturedImage.jpg' => 'about-us.jpg',
+            // Odysseus Hosting's logo (a trireme in the GaiaCP globe's style), with the PNG copy emails use
+            'branding/DemoLogo.svg' => 'logo.svg',
+            'branding/DemoLogo.email.png' => 'logo.email.png',
+            'branding/DemoLogoDark.svg' => 'logo-dark.svg',
+            'branding/DemoFavicon.svg' => 'favicon.svg',
+        ],
         'local' => [
             'downloads/DemoGettingStartedGuide.pdf' => 'getting-started.pdf',
             'downloads/DemoEmailSettings.pdf' => 'email-settings.pdf',
@@ -152,6 +159,9 @@ class DemoSeeder extends Seeder
             'company.phone' => '+30 210 000 0000',
             'company.website' => 'https://odysseus-hosting.example',
             'company.address' => "12 Example Street\n10552 Athens\nGreece",
+            'company.logo' => 'branding/DemoLogo.svg',
+            'company.logo_dark' => 'branding/DemoLogoDark.svg',
+            'company.favicon' => 'branding/DemoFavicon.svg',
             'languages.enabled' => ['en', 'el'],
             'region.timezone' => 'Europe/Athens',
             'region.date_format' => 'd/m/Y',
