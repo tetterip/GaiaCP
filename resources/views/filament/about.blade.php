@@ -7,10 +7,12 @@
 
 {{-- About GaiaCP (App\Support\About): opened from the version in the admin footer or the user menu. Also listens for
      the old cheat code (About::SECRET) anywhere in /admin, or About::TAPS taps on the hexagon in this window, and then
-     lets the GaiaCP globe roll across the screen under a shower of coins. Nothing is saved or sent. --}}
+     lets the GaiaCP globe roll across the screen under a shower of coins, then opens Gaia's family tree
+     (filament.about-family). Nothing is saved or sent. --}}
 <div
     x-data="{
         open: false,
+        family: false,
         secret: @js(About::SECRET),
         coin: @js(About::coin()),
         step: 0,
@@ -83,15 +85,18 @@
             stage.classList.toggle('gcp-egg-calm', calm)
             stage.classList.add('gcp-egg-on')
 
+            // Then Gaia's family tree opens, while the last coins fall over it
+            setTimeout(() => { this.family = true; stage.classList.add('gcp-egg-family') }, calm ? 1500 : 3200)
+
             setTimeout(() => {
-                stage.classList.remove('gcp-egg-on')
+                stage.classList.remove('gcp-egg-on', 'gcp-egg-family')
                 this.$refs.coins.innerHTML = ''
                 this.playing = false
             }, calm ? 3500 : 5200)
         },
     }"
     x-on:keydown.window="listen($event)"
-    x-on:keydown.escape.window="open = false"
+    x-on:keydown.escape.window="open = false; family = false"
     x-on:open-gaiacp-about.window="open = true; taps = 0"
     class="gcp-about"
 >
@@ -128,6 +133,7 @@
         .gcp-egg-note strong { display: block; font-size: 1.15rem; }
         .gcp-egg-note span { font-size: .85rem; color: var(--gray-500); }
         .gcp-egg-on .gcp-egg-note { animation: gcp-egg-note 4.8s ease forwards; }
+        .gcp-egg-family .gcp-egg-note { display: none; }
         .gcp-egg-calm .gcp-egg-globe, .gcp-egg-calm .gcp-egg-coin { display: none; }
         .gcp-egg-calm.gcp-egg-on .gcp-egg-note { animation: none; opacity: 1; transform: translate(-50%, 0); }
 
@@ -193,6 +199,8 @@
             </div>
         </div>
     </template>
+
+    @include('filament.about-family')
 
     {{-- Not teleported: this sits at the end of <body> already, and $refs stay simple --}}
     <div class="gcp-egg" x-ref="stage" aria-live="polite">

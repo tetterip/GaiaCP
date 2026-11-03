@@ -63,4 +63,26 @@ class AboutTest extends TestCase
         $this->get('/admin/login')->assertOk()->assertDontSee('class="gcp-about', false)->assertDontSee('class="gcp-egg"', false);
         $this->get('/login')->assertOk()->assertDontSee('class="gcp-about', false)->assertDontSee('class="gcp-egg"', false);
     }
+
+    public function test_the_surprise_ends_on_gaias_family_tree(): void
+    {
+        $family = About::family();
+        $members = array_merge(...array_column($family, 'members'));
+
+        $this->assertSame('Chaos', $members[0]['name']);
+        $this->assertSame('Gaia', $members[1]['name']);
+        $this->assertContains('Zeus', array_column($members, 'name'));
+        $this->assertCount(count($members), array_unique(array_column($members, 'icon')));
+
+        $this->actingAs(User::factory()->create());
+        $page = $this->get('/admin')->assertOk()->assertSee('class="gcp-family-backdrop"', false)
+            ->assertSee(__('Gaia\'s family'))->assertSee('this.family = true', false);
+
+        foreach ($members as $member) {
+            $page->assertSee(__($member['name']))->assertSee(__($member['job']));
+        }
+
+        // Every member but Gaia (the hexagon itself) has a pictogram on the hexagon
+        $this->assertSame(count($members) - 1, substr_count($page->getContent(), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"'));
+    }
 }
