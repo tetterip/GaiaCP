@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Public demo: Odysseus Hosting has its own logo, dark mode logo and browser tab icon (a trireme, in the style of the
+  GaiaCP globe), shown in the client area, on payment notices and in client emails.
 - Fixed: on a wide screen the sidebar's foot (the user menu) was cut off before the page was scrolled, most of all
   under the public demo's bar, which now stays at the top.
 - Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's
