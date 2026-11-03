@@ -15,8 +15,14 @@ class Version
      */
     public const STAGE = 'alpha';
 
-    /** GaiaCP's home on GitHub, linked from the admin footer's Star button (people star it there, signed in). */
+    /** GaiaCP's home on GitHub, linked from the admin footer's GitHub icon (people star it there, signed in). */
     public const REPOSITORY_URL = 'https://github.com/tetterip/GaiaCP';
+
+    /** GaiaCP's website, linked from the admin footer and About GaiaCP. */
+    public const WEBSITE_URL = 'https://gaiacp.digital';
+
+    /** Where admins report a problem or ask a question: the repository's issues. */
+    public const ISSUES_URL = self::REPOSITORY_URL.'/issues';
 
     private static ?string $current = null;
 

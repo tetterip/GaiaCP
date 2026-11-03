@@ -3592,5 +3592,14 @@
     "The login of server :name was changed": "De inloggegevens van server :name zijn gewijzigd",
     "Your address now (:ip) is not on the list: you would be locked out.": "Uw huidige adres (:ip) staat niet op de lijst: u zou uzelf buitensluiten.",
     "Site title": "Sitetitel",
-    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "De titel van de hoofdpagina van uw site (browsertabblad, zoekresultaten en linkvoorbeelden), bijv. \":name | Webhosting en domeinen\". Leeg: de naam van de pagina en uw bedrijfsnaam. Andere pagina's houden die van zichzelf."
+    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "De titel van de hoofdpagina van uw site (browsertabblad, zoekresultaten en linkvoorbeelden), bijv. \":name | Webhosting en domeinen\". Leeg: de naam van de pagina en uw bedrijfsnaam. Andere pagina's houden die van zichzelf.",
+    "About GaiaCP": "Over GaiaCP",
+    "Version :version": "Versie :version",
+    "Billing and provisioning for hosting and domain sellers.": "Facturatie en provisioning voor verkopers van hosting en domeinen.",
+    "Report a problem": "Probleem melden",
+    "Free software under the GNU GPL, version 3 or later. Comes with no warranty.": "Vrije software onder de GNU GPL, versie 3 of later. Zonder enige garantie.",
+    "Hello from Gaia!": "Hallo vanuit Gaia!",
+    "Every payment recorded, none ever charged.": "Elke betaling vastgelegd, nooit één afgeschreven.",
+    "GaiaCP website": "GaiaCP-website",
+    "Report a problem or ask a question": "Probleem melden of een vraag stellen"
 }

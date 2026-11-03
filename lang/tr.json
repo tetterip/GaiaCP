@@ -3592,5 +3592,14 @@
     "The login of server :name was changed": ":name sunucusunun giriş bilgileri değiştirildi",
     "Your address now (:ip) is not on the list: you would be locked out.": "Şu anki adresiniz (:ip) listede değil: kendinizi dışarıda bırakırdınız.",
     "Site title": "Site başlığı",
-    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Sitenizin kök adresinin başlığı (tarayıcı sekmesi, arama sonuçları ve bağlantı önizlemeleri), ör. \":name | Web hosting ve alan adları\". Boş: sayfanın adı ve şirketinizin adı. Diğer sayfalar kendi başlıklarını korur."
+    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Sitenizin kök adresinin başlığı (tarayıcı sekmesi, arama sonuçları ve bağlantı önizlemeleri), ör. \":name | Web hosting ve alan adları\". Boş: sayfanın adı ve şirketinizin adı. Diğer sayfalar kendi başlıklarını korur.",
+    "About GaiaCP": "GaiaCP hakkında",
+    "Version :version": "Sürüm :version",
+    "Billing and provisioning for hosting and domain sellers.": "Hosting ve alan adı satıcıları için faturalama ve hizmet kurulumu.",
+    "Report a problem": "Sorun bildir",
+    "Free software under the GNU GPL, version 3 or later. Comes with no warranty.": "GNU GPL sürüm 3 veya sonrası altında özgür yazılım. Hiçbir garanti verilmez.",
+    "Hello from Gaia!": "Gaia'dan merhaba!",
+    "Every payment recorded, none ever charged.": "Her ödeme kaydedildi, hiçbiri tahsil edilmedi.",
+    "GaiaCP website": "GaiaCP web sitesi",
+    "Report a problem or ask a question": "Sorun bildir veya soru sor"
 }

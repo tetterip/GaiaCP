@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- **About GaiaCP**: the version in the admin footer (or the user menu) opens a short About with the version, PHP,
+  Laravel and Filament versions, the licence and links. The admin footer now has small icons for the GaiaCP website,
+  GitHub and reporting a problem. There may be something else hidden in there too.
 - Settings → Client area → Search engines: a **Site title** for the site root (browser tab, search results and link
   previews; empty keeps the page's name and the company name), and the **Description** is now per language (an existing
   one becomes the first language's).

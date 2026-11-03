@@ -3592,5 +3592,14 @@
     "The login of server :name was changed": "Άλλαξαν τα στοιχεία σύνδεσης του server :name",
     "Your address now (:ip) is not on the list: you would be locked out.": "Η διεύθυνσή σας τώρα (:ip) δεν είναι στη λίστα: θα κλειδωνόσασταν έξω.",
     "Site title": "Τίτλος ιστότοπου",
-    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Ο τίτλος της αρχικής διεύθυνσης του site σας (καρτέλα του browser, αποτελέσματα αναζήτησης και προεπισκοπήσεις συνδέσμων), π.χ. «:name | Φιλοξενία ιστοσελίδων και domains». Κενό: το όνομα της σελίδας και το όνομα της εταιρείας σας. Οι άλλες σελίδες κρατούν τον δικό τους."
+    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Ο τίτλος της αρχικής διεύθυνσης του site σας (καρτέλα του browser, αποτελέσματα αναζήτησης και προεπισκοπήσεις συνδέσμων), π.χ. «:name | Φιλοξενία ιστοσελίδων και domains». Κενό: το όνομα της σελίδας και το όνομα της εταιρείας σας. Οι άλλες σελίδες κρατούν τον δικό τους.",
+    "About GaiaCP": "Σχετικά με το GaiaCP",
+    "Version :version": "Έκδοση :version",
+    "Billing and provisioning for hosting and domain sellers.": "Χρεώσεις και ενεργοποιήσεις για όσους πουλάνε φιλοξενία και domains.",
+    "Report a problem": "Αναφορά προβλήματος",
+    "Free software under the GNU GPL, version 3 or later. Comes with no warranty.": "Ελεύθερο λογισμικό με άδεια GNU GPL, έκδοση 3 ή νεότερη. Χωρίς καμία εγγύηση.",
+    "Hello from Gaia!": "Γεια σου από τη Γαία!",
+    "Every payment recorded, none ever charged.": "Κάθε πληρωμή καταχωρημένη, καμία χρέωση από εμάς.",
+    "GaiaCP website": "Ο ιστότοπος του GaiaCP",
+    "Report a problem or ask a question": "Αναφορά προβλήματος ή ερώτηση"
 }

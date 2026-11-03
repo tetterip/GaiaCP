@@ -3592,5 +3592,14 @@
     "The login of server :name was changed": "L'accesso del server :name è stato modificato",
     "Your address now (:ip) is not on the list: you would be locked out.": "Il tuo indirizzo attuale (:ip) non è nell'elenco: resteresti fuori.",
     "Site title": "Titolo del sito",
-    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Il titolo della radice del tuo sito (scheda del browser, risultati di ricerca e anteprime dei link), ad es. \":name | Hosting web e domini\". Vuoto: il nome della pagina e quello della tua azienda. Le altre pagine mantengono il proprio."
+    "The title of your site root (the browser tab, search results and link previews), e.g. \":name | Web hosting and domains\". Empty: the page's name and your company name. Other pages keep theirs.": "Il titolo della radice del tuo sito (scheda del browser, risultati di ricerca e anteprime dei link), ad es. \":name | Hosting web e domini\". Vuoto: il nome della pagina e quello della tua azienda. Le altre pagine mantengono il proprio.",
+    "About GaiaCP": "Informazioni su GaiaCP",
+    "Version :version": "Versione :version",
+    "Billing and provisioning for hosting and domain sellers.": "Fatturazione e attivazione per chi vende hosting e domini.",
+    "Report a problem": "Segnala un problema",
+    "Free software under the GNU GPL, version 3 or later. Comes with no warranty.": "Software libero sotto GNU GPL, versione 3 o successiva. Senza alcuna garanzia.",
+    "Hello from Gaia!": "Ciao da Gaia!",
+    "Every payment recorded, none ever charged.": "Ogni pagamento registrato, nessuno mai addebitato.",
+    "GaiaCP website": "Sito web di GaiaCP",
+    "Report a problem or ask a question": "Segnala un problema o fai una domanda"
 }
