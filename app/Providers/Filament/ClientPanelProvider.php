@@ -63,6 +63,7 @@ use App\Support\ClientMenu;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\PublicArea;
+use App\Support\Seo;
 use App\Support\ServerIncidents;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
@@ -116,7 +117,7 @@ class ClientPanelProvider extends PanelProvider
                 AppAuthentication::make() // named after the panel's brand: the company
                     ->recoverable(),
             ])
-            ->brandName(fn () => config('gaiacp.company.name') ?: 'GaiaCP')
+            ->brandName(fn () => Seo::tabTitle() ?? (config('gaiacp.company.name') ?: 'GaiaCP'))
             // The company's logo and tab icon (Settings → Company); without a logo the name above is shown
             ->brandLogo(fn () => Branding::url('logo'))
             ->darkModeBrandLogo(fn () => Branding::url('logo-dark'))
@@ -246,6 +247,8 @@ class ClientPanelProvider extends PanelProvider
             })
             // Links inside texts look like links; ones to other sites open in a new tab
             // Search engines and link previews (App\Support\Seo)
+            ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => Seo::writingTitle(true))
+            ->renderHook(PanelsRenderHook::STYLES_BEFORE, fn (): string => Seo::writingTitle(false))
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.seo')->render())
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.links')->render())
             // Form buttons that float at the foot of a long form look like the Settings pages' Save bar

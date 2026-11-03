@@ -26,11 +26,13 @@ use App\Plugins\PluginManager;
 use App\Plugins\PluginState;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\RegistrarFactory;
+use App\Support\Branding;
 use App\Support\ClientMenu;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\DemoSnapshot;
 use App\Support\Settings;
+use App\Support\SvgLogo;
 use App\Support\Version;
 use App\Support\Whois;
 use Carbon\CarbonImmutable;
@@ -232,6 +234,13 @@ class DemoTest extends TestCase
         }
         $this->assertSame(3, Download::query()->count());
         Download::query()->each(fn (Download $download) => Storage::disk('local')->assertExists($download->path));
+
+        // Odysseus Hosting's logo, dark logo and favicon, with the PNG copy for emails; each SVG passes the upload's check
+        foreach (['logo', 'logo-dark', 'favicon'] as $asset) {
+            $this->assertNotNull(Branding::path($asset), $asset);
+            $this->assertNotNull(SvgLogo::clean((string) file_get_contents(Branding::path($asset))), $asset);
+        }
+        $this->assertSame(SvgLogo::pngPath(Branding::path('logo')), Branding::emailLogoPath());
 
         // The public pages that were off: the cart, a product group's and a product's page, WHOIS
         foreach (['/cart', '/web-hosting', '/web-hosting/pro', '/pages/about-us', '/pages/terms', '/whois'] as $url) {

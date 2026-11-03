@@ -101,7 +101,9 @@ until you switch it on:
 
 **Cookies** (Settings → Client area → Cookies, off by default) shows a cookie banner, links your cookie policy and runs
 scripts such as analytics only after the visitor accepts. Search engines index the public pages unless you turn it off
-(Settings → Client area → Search engines); the admin panel and signed-in pages are never indexed. Each language of a
+(Settings → Client area → Search engines); the admin panel and signed-in pages are never indexed. The same section has a
+**Site title** for your site root (the browser tab, search results and link previews; empty, the page's name and your
+company name) and the **Description** search results and previews show, both per language. Each language of a
 page has its own address (`?lang=el`; none for the default language), and search engines find them all in
 `/sitemap.xml`, which `/robots.txt` points to. Give that sitemap address to Google Search Console. In a subfolder install,
 search engines only read the `robots.txt` at the domain's root, so submit the sitemap by hand there.
