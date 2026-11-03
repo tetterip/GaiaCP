@@ -37,7 +37,7 @@ class LogCleanupTest extends TestCase
         parent::setUp();
         Mail::fake();
         Storage::fake('local');
-        $this->admin = User::factory()->create(); // the first admin is a super admin
+        $this->admin = User::factory()->create(); // a super admin
     }
 
     private function closedTicket(int $closedDaysAgo): Ticket
@@ -90,8 +90,7 @@ class LogCleanupTest extends TestCase
 
     public function test_the_clean_up_is_only_for_super_admins(): void
     {
-        $other = User::factory()->create();
-        $this->assertFalse($other->super_admin);
+        $other = User::factory()->create(['super_admin' => false]);
         $this->actingAs($other);
 
         Livewire::test(LoggingSettings::class)->assertDontSee('Delete files of closed tickets');
