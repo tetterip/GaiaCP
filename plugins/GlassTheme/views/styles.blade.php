@@ -428,7 +428,7 @@
     /* Overdue / past due: a clear red pane, not a faint pink one */
     html.fi .gx-box-bad {
         background: color-mix(in oklab, var(--danger-500) 16%, var(--glass-pane-strong)) !important;
-        box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--danger-500) 40%, transparent);
+        box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--danger-500) 20%, transparent);
     }
 
     html.fi .gx-box-bad > * {
