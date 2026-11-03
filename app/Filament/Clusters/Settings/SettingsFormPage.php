@@ -27,6 +27,9 @@ abstract class SettingsFormPage extends Page implements SettingsCard
     use LimitedToAdminArea;
     use TranslatesPageLabels;
 
+    /** Settings that change how the whole panel looks: saving a new value reloads the page. */
+    private const RELOAD_KEYS = ['theme.default'];
+
     protected static ?string $cluster = SettingsCluster::class;
 
     /** @var array<string, mixed> */
@@ -133,6 +136,7 @@ abstract class SettingsFormPage extends Page implements SettingsCard
         }
 
         $previous = Arr::only(SettingsStore::all(), array_keys($values));
+        $looks = collect(self::RELOAD_KEYS)->intersect(static::keys())->mapWithKeys(fn (string $key) => [$key => config('gaiacp.'.$key)]);
 
         SettingsStore::save($values);
 
@@ -145,6 +149,11 @@ abstract class SettingsFormPage extends Page implements SettingsCard
         $this->dispatch('settings-clean');
 
         Notification::make()->success()->title(__(':page settings saved', ['page' => $this->getTitle()]))->send();
+
+        // A new default theme shows on the whole page at once, not only after the next full page load.
+        if ($looks->contains(fn ($before, string $key) => $before !== config('gaiacp.'.$key))) {
+            $this->redirect(static::getUrl());
+        }
     }
 
     /**

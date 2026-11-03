@@ -150,11 +150,15 @@ class ThemesTest extends TestCase
             ->assertSee('Default theme')
             ->fillForm(['theme' => ['default' => 'flat']])
             ->call('save')
-            ->assertHasNoFormErrors();
+            ->assertHasNoFormErrors()
+            ->assertRedirect(GeneralSettings::getUrl()); // the new look shows at once
 
         $this->assertSame('flat', config('gaiacp.theme.default'));
         $this->assertSame('flat', Themes::for($admin)->themeKey());
         $this->assertSame('gaia', Themes::for(new User(['theme' => 'gaia']))->themeKey());
+
+        // Saved again with the same theme: no reload
+        Livewire::test(GeneralSettings::class)->call('save')->assertHasNoFormErrors()->assertNoRedirect();
     }
 
     public function test_a_theme_whose_plugin_is_off_falls_back(): void
