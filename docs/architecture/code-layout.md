@@ -460,6 +460,10 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   `CHANGELOG.md` keeps a `## [<version>] - <date>` section per release (a test checks the current one). A `v<version>` or `<version>`
   tag (pushed, or a release published on GitHub; or Run workflow with a tag) runs `.github/workflows/release.yml`: tests, then `bin/build-release.sh` (git archive minus `export-ignore` in
   `.gitattributes`, `composer install --no-dev`) and attaches the zip + `.sha256` to the tag's release (creating it if needed). Staging still deploys `main`
+- Dependencies: `.github/dependabot.yml` opens one grouped PR a month with Composer patch / minor updates (and one for
+  GitHub Actions); majors (Laravel 14, Filament 6) are ignored there and upgraded by hand. Security updates come as soon
+  as an advisory is out (Dependabot security updates, repository settings), and the Tests workflow runs
+  `composer audit --locked` on every push, PR, release and on Mondays, failing on any advisory
 - Installer: `app/Install/Installer.php` (requirements, `.env` writing, database, migrate, company, first admin, lock),
   used by `InstallController` (`/install`, plain Blade in `resources/views/install/`, Form Requests `Install*Request`) and
   `gaiacp:install`. `App\Http\Middleware\PrepareInstaller` runs first in the `web` group and the panel: while not
