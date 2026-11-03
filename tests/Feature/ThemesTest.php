@@ -119,6 +119,10 @@ class ThemesTest extends TestCase
         // The top bar stays frosted on wide screens too, so the page scrolling under it doesn't read through
         $this->assertStringContainsString('background: linear-gradient(to bottom, var(--glass-bar) 0', $html);
         $this->assertDoesNotMatchRegularExpression('/\\.fi-topbar::before \\{\\s*content: none;/', $html);
+
+        // ... and only once the page has scrolled
+        $this->assertStringContainsString('html.fi.glass-scrolled .fi-topbar::before', $html);
+        $this->assertStringContainsString("root.classList.toggle('glass-scrolled', window.scrollY > 4)", $html);
     }
 
     public function test_profile_saves_the_admins_theme(): void

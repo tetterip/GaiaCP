@@ -187,10 +187,17 @@
     /* Frosted and mostly opaque, so the page scrolling under it doesn't read through; the colour and the blur fade
        out over a short strip below it instead of ending on a hard line */
     .fi-topbar::before {
+        opacity: 0;
+        transition: opacity .25s ease;
         bottom: -1.5rem;
         background: linear-gradient(to bottom, var(--glass-bar) 0, var(--glass-bar) calc(100% - 2.5rem), transparent);
         -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
         mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+    }
+
+    /* Clear at the top of the page, frosted once the page scrolls under it (the script at the end sets the class) */
+    html.fi.glass-scrolled .fi-topbar::before {
+        opacity: 1;
     }
 
     /* The sidebar: a floating glass panel on wide screens, a frosted drawer on phones */
@@ -650,6 +657,17 @@
 
         .fi-topbar::before {
             background: var(--glass-pane-strong);
+            opacity: 1;
         }
     }
 </style>
+<script>
+    // The top bar takes its frosted background only once the page has scrolled (html.glass-scrolled)
+    (() => {
+        const root = document.documentElement;
+        const update = () => root.classList.toggle('glass-scrolled', window.scrollY > 4);
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        document.addEventListener('livewire:navigated', update);
+    })();
+</script>

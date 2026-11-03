@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.0] - 2026-11-03
+
+- The top bar is clear at the top of the page and takes its frosted background only once the page scrolls
+
 ## [1.1.0] - 2026-11-03
 
 - The top bar is frosted and mostly opaque, so the page scrolling under it no longer shows through; its colour and blur fade out softly below it
