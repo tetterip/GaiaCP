@@ -12,6 +12,8 @@ Clients don't have a login until you give them one or they sign up:
 
 - **Invite to client area** (client page → Client area menu) emails a link to set their password.
 - A new client can get a password at once with **Email the login details**.
+- **Set password** (same menu) gives a client a password you choose, signing out their browsers; **Send password reset
+  link** emails them the "Forgot password?" link instead, and their password works until they choose a new one.
 - **Sign up** (Settings → Client area, off by default) lets anyone create an account; their email address is confirmed
   first.
 - **Google sign-in** (a plugin) adds "Continue with Google" with your own Google OAuth client.

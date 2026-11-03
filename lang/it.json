@@ -3671,5 +3671,20 @@
     "Dionysus": "Dioniso",
     "Wine and celebration": "Il vino e la festa",
     "Gaia's family": "La famiglia di Gea",
-    "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "L'hai trovato! Ecco la famiglia da cui GaiaCP prende il nome, e il ruolo di ognuno qui."
+    "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "L'hai trovato! Ecco la famiglia da cui GaiaCP prende il nome, e il ruolo di ognuno qui.",
+    "This login is an admin user: only Settings → Admin users can change its password.": "Questo accesso è un utente amministratore: solo Impostazioni → Utenti amministratori può cambiarne la password.",
+    "The client has no client area login that is turned on: invite them instead.": "Il cliente non ha un accesso attivo all'area clienti: invitalo invece.",
+    "We sent you this link to choose a new password for your :name client area (:email).": "Le inviamo questo link per scegliere una nuova password per la sua area clienti :name (:email).",
+    "Until you choose a new one, your password stays as it is.": "Finché non ne sceglie una nuova, la sua password resta invariata.",
+    "Set password": "Imposta password",
+    "The client logs in with this password from now on. Every browser signed in to their client area is signed out.": "Da ora il cliente accede con questa password. Ogni browser connesso alla sua area clienti viene disconnesso.",
+    "Creates the client area login of :email with this password.": "Crea l'accesso all'area clienti di :email con questa password.",
+    "Sends the Client Area Login Details email with the password. Its switch under Settings → Email templates sets whether this starts ticked.": "Invia l'email Client Area Login Details con la password. Il suo interruttore in Impostazioni → Modelli email decide se parte selezionato.",
+    "Password not set": "Password non impostata",
+    "Password set": "Password impostata",
+    "The login details were emailed to :email.": "I dati di accesso sono stati inviati a :email.",
+    "The email could not be sent. See the email log.": "Impossibile inviare l'email. Vedi il registro email.",
+    "Send password reset link": "Invia link di reimpostazione password",
+    "Emails :email a link to choose a new password, the same one as \"Forgot password?\" on the login. Their current password keeps working until they do.": "Invia a :email un link per scegliere una nuova password, lo stesso di \"Password dimenticata?\" all'accesso. La password attuale funziona finché non lo fa.",
+    "Password reset link sent to :email": "Link di reimpostazione password inviato a :email"
 }

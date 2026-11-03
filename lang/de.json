@@ -3671,5 +3671,20 @@
     "Dionysus": "Dionysos",
     "Wine and celebration": "Wein und Feste",
     "Gaia's family": "Gaias Familie",
-    "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "Gefunden! Lernen Sie die Familie kennen, nach der GaiaCP benannt ist, und welche Rolle jedes Mitglied hier spielt."
+    "You found it. Meet the family GaiaCP is named after, and the part each one plays here.": "Gefunden! Lernen Sie die Familie kennen, nach der GaiaCP benannt ist, und welche Rolle jedes Mitglied hier spielt.",
+    "This login is an admin user: only Settings → Admin users can change its password.": "Dieses Login ist ein Admin-Benutzer: nur Einstellungen → Admin-Benutzer kann sein Passwort ändern.",
+    "The client has no client area login that is turned on: invite them instead.": "Der Kunde hat kein aktives Login für den Kundenbereich: laden Sie ihn stattdessen ein.",
+    "We sent you this link to choose a new password for your :name client area (:email).": "Wir senden Ihnen diesen Link, damit Sie ein neues Passwort für Ihren :name Kundenbereich (:email) wählen.",
+    "Until you choose a new one, your password stays as it is.": "Bis Sie ein neues wählen, bleibt Ihr Passwort unverändert.",
+    "Set password": "Passwort festlegen",
+    "The client logs in with this password from now on. Every browser signed in to their client area is signed out.": "Der Kunde meldet sich ab jetzt mit diesem Passwort an. Jeder im Kundenbereich angemeldete Browser wird abgemeldet.",
+    "Creates the client area login of :email with this password.": "Erstellt das Kundenbereich-Login von :email mit diesem Passwort.",
+    "Sends the Client Area Login Details email with the password. Its switch under Settings → Email templates sets whether this starts ticked.": "Sendet die E-Mail „Client Area Login Details“ mit dem Passwort. Ihr Schalter unter Einstellungen → E-Mail-Vorlagen legt fest, ob dies vorausgewählt ist.",
+    "Password not set": "Passwort nicht festgelegt",
+    "Password set": "Passwort festgelegt",
+    "The login details were emailed to :email.": "Die Anmeldedaten wurden an :email gesendet.",
+    "The email could not be sent. See the email log.": "Die E-Mail konnte nicht gesendet werden. Siehe das E-Mail-Protokoll.",
+    "Send password reset link": "Link zum Zurücksetzen senden",
+    "Emails :email a link to choose a new password, the same one as \"Forgot password?\" on the login. Their current password keeps working until they do.": "Sendet :email einen Link zur Wahl eines neuen Passworts, denselben wie „Passwort vergessen?“ bei der Anmeldung. Das aktuelle Passwort funktioniert, bis er es tut.",
+    "Password reset link sent to :email": "Link zum Zurücksetzen an :email gesendet"
 }
