@@ -231,7 +231,7 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   The list shows the renewal margin, red when a term sells at a loss; Income forecast takes the month's domain
   renewal costs off the profit, and Reports → Domain profit shows revenue, cost, profit and margin per TLD
 - Themes: Gaia (GaiaCP's own look, light and dark: neutral greys, the logo's teal, rounded cards,
-  Commissioner and Literata from Bunny Fonts, quiet motion) Flat (the same layout in Filament's emerald and grey, flat: no shadows or motion) and Glass (frosted, see-through
+  Commissioner and Literata from Bunny Fonts, quiet motion) Flat (the same layout in the logo's green and Filament's grey, flat: no shadows or motion) and Glass (frosted, see-through
   cards, sidebar, menus, windows and pill buttons over a soft teal and green background, Manrope; solid where the browser
   can't blur or the system asks for less transparency). Each admin picks one
   in Profile; Settings → General sets the admin default (Gaia). The client area, the public order page, sign up and

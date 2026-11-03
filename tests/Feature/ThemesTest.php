@@ -83,7 +83,7 @@ class ThemesTest extends TestCase
         $this->assertMatchesRegularExpression('/\.gcp-cart-icon \{[^}]*margin: 0;/', $html);
     }
 
-    public function test_an_admin_who_picked_flat_gets_the_layout_in_emerald_without_shadows(): void
+    public function test_an_admin_who_picked_flat_gets_the_layout_in_the_logo_green_without_shadows(): void
     {
         $this->actingAs(User::factory()->create(['theme' => 'flat']));
 
@@ -92,7 +92,8 @@ class ThemesTest extends TestCase
             ->assertSee('--theme-shadow: 0 0 #0000', false)
             ->assertDontSee('--gaia-side', false)
             ->assertDontSee('fonts.bunny.net', false)
-            ->assertSee(Color::Emerald[500], false);
+            ->assertSee('--primary-600:oklch(0.550 0.103 161)', false)
+            ->assertDontSee(Color::Emerald[500], false);
     }
 
     public function test_an_admin_who_picked_glass_gets_frosted_cards_that_cannot_trap_modals(): void
@@ -149,11 +150,15 @@ class ThemesTest extends TestCase
             ->assertSee('Default theme')
             ->fillForm(['theme' => ['default' => 'flat']])
             ->call('save')
-            ->assertHasNoFormErrors();
+            ->assertHasNoFormErrors()
+            ->assertRedirect(GeneralSettings::getUrl()); // the new look shows at once
 
         $this->assertSame('flat', config('gaiacp.theme.default'));
         $this->assertSame('flat', Themes::for($admin)->themeKey());
         $this->assertSame('gaia', Themes::for(new User(['theme' => 'gaia']))->themeKey());
+
+        // Saved again with the same theme: no reload
+        Livewire::test(GeneralSettings::class)->call('save')->assertHasNoFormErrors()->assertNoRedirect();
     }
 
     public function test_a_theme_whose_plugin_is_off_falls_back(): void

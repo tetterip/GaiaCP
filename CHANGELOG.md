@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area: Help, knowledge base articles and announcements are centred and as wide as Contact, instead of a
+  full-width card with the text in its left half on a wide screen (every theme).
+- **Flat** theme: the logo's green (softer than Filament's emerald) with filled green buttons and white text, in the
+  admin panel and the client area.
+- Settings → General: a new Default theme shows as soon as you save, not only after the next page load.
 - New **Glass** theme (a bundled plugin, Profile, Settings → General or Settings → Client area): frosted, see-through
   cards, sidebar, menus, windows and pill buttons over a soft background in the logo's teal and greens, in light and
   dark. Where the browser can't blur, or the system asks for less transparency, the cards turn solid.
