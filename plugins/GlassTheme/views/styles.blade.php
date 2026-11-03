@@ -493,6 +493,19 @@
         background: color-mix(in oklab, var(--color-500) 22%, transparent) !important;
     }
 
+    /* The bell's and the cart's count stay solid: a see-through chip under white digits can't be read */
+    html.fi .fi-topbar .fi-topbar-database-notifications-btn .fi-badge,
+    html.fi .fi-topbar .gcp-cart-icon .fi-badge {
+        background: var(--primary-600) !important;
+        color: #fff !important;
+        box-shadow: 0 0 0 2px var(--glass-pane-strong), 0 2px 6px -2px rgba(15, 40, 45, .45) !important;
+    }
+
+    html.fi .fi-topbar .fi-topbar-database-notifications-btn .fi-badge *,
+    html.fi .fi-topbar .gcp-cart-icon .fi-badge * {
+        color: #fff !important;
+    }
+
     html.fi .gx-chip,
     html.fi.dark .gx-chip {
         border-radius: 999px;

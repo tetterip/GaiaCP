@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.1] - 2026-11-03
+
+- The bell's and the cart's count in the top bar are solid again, so the number can be read
+
 ## [1.2.0] - 2026-11-03
 
 - The top bar is clear at the top of the page and takes its frosted background only once the page scrolls
