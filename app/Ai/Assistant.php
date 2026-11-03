@@ -159,6 +159,29 @@ class Assistant
     }
 
     /**
+     * The text below a quote's lines: its terms, how to pay, what is not included. Sent: what the quote offers
+     * (types, products, cycles, one-off lines), its valid until date and the admin's draft; no prices, names,
+     * domains or contact details.
+     *
+     * @param  array<string, string>  $details  label => value
+     *
+     * @throws AiException
+     */
+    public function quoteFooter(array $details, string $locale, string $current = ''): string
+    {
+        $language = self::languageName($locale);
+
+        return $this->ask('improve', implode("\n\n", [
+            'You write the text printed below the lines of a quote (a price offer) from a web hosting and domain name company to a prospective customer.',
+            "Task: write a short closing text in {$language} ({$locale}) for the quote described in the <text> tags: its terms (how long the offer is valid, "
+            .'that services renew each cycle until cancelled, when the one-off work is billed), how the customer accepts and pays, and what is not included. '
+            .'Use only what is given: no prices, discounts, bank accounts, guarantees or deadlines that are not there; where a detail the company must add is '
+            .'missing (such as bank details), write a short placeholder in square brackets. If a draft is given, keep its ideas and facts. Plain text, a few short paragraphs or a list.',
+            self::RULES,
+        ]), self::lines($details).(trim($current) !== '' ? "\n\nDraft: {$current}" : ''), maxTokens: 1500);
+    }
+
+    /**
      * The client area's notice text about a server problem, written from what the monitors say now.
      *
      * @param  list<array{server: string, status: string, since: string, accounts: int}>  $problems  empty = none now

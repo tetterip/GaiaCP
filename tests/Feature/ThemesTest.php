@@ -123,6 +123,7 @@ class ThemesTest extends TestCase
 
         // ... and only once the page has scrolled
         $this->assertStringContainsString('html.fi.glass-scrolled .fi-topbar::before', $html);
+        $this->assertStringContainsString('html.fi .fi-topbar .fi-topbar-database-notifications-btn .fi-badge', $html); // the bell's count stays solid
         $this->assertStringContainsString("root.classList.toggle('glass-scrolled', window.scrollY > 4)", $html);
     }
 
