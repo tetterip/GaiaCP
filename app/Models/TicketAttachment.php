@@ -19,13 +19,19 @@ class TicketAttachment extends Model
 
     protected function casts(): array
     {
-        return ['size' => 'integer'];
+        return ['size' => 'integer', 'removed_at' => 'datetime'];
     }
 
     /** @return BelongsTo<TicketMessage, $this> */
     public function message(): BelongsTo
     {
         return $this->belongsTo(TicketMessage::class, 'ticket_message_id');
+    }
+
+    /** Its file was deleted to free disk space (Settings → Support → Delete files of closed tickets after). */
+    public function removed(): bool
+    {
+        return $this->removed_at !== null;
     }
 
     public function readableSize(): string

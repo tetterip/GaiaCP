@@ -7,6 +7,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - Clients: the Client area menu on a client's page can **Set password** (optionally emailing the login details;
   their browsers are signed out) and **Send password reset link**.
+- Settings → Logging → **Clean up** (super admins): delete a log's entries older than a day (the activity log keeps its
+  last 30 days), delete the files of closed tickets, empty the cache. Settings → Support → **Delete files of closed
+  tickets after** does the files every night; the message keeps the file's name, marked as deleted.
 - Client area: Help, knowledge base articles and announcements are centred and as wide as Contact, instead of a
   full-width card with the text in its left half on a wide screen (every theme).
 - **Flat** theme: the logo's green (softer than Filament's emerald) with filled green buttons and white text, in the
