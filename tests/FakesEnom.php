@@ -7,6 +7,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Plugins\Enom\EnomClient;
+use Plugins\Enom\EnomRegistrar;
 
 /**
  * A tiny in-memory Enom reseller account: keeps domains (expiry, nameservers) and answers the commands GaiaCP uses
@@ -28,6 +29,9 @@ trait FakesEnom
 
     /** @var array<string, string> private nameserver host => IP */
     protected array $enomHosts = [];
+
+    /** @var array<string, array{register?: string, renew?: string, transfer?: string}> PE_GetResellerPrice by TLD ("com"); missing = not sold */
+    protected array $enomPrices = [];
 
     protected function fakeEnom(): void
     {
@@ -122,6 +126,11 @@ trait FakesEnom
                     $this->enomDomains[$domain]['locked'] = (int) $params['UnlockRegistrar'] === 0;
 
                     return $this->enomReply($command, '<RRPCode>200</RRPCode>');
+                case 'PE_GetResellerPrice':
+                    $kind = array_search((int) $params['ProductType'], EnomRegistrar::PRODUCT_TYPES, true);
+                    $price = $this->enomPrices[$params['tld']][$kind] ?? null;
+
+                    return $this->enomReply($command, '<productprice><price>'.($price ?? '0.00').'</price><productenabled>'.($price === null ? 'False' : 'True').'</productenabled></productprice>');
                 case 'SynchAuthInfo':
                     return isset($this->enomDomains[$domain]) ? $this->enomReply($command, '<InfoSynched>True</InfoSynched><EPPEmailMessage>Sent</EPPEmailMessage>') : $missing;
             }

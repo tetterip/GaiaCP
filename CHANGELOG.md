@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Domain pricing: **Import from registrar** reads each TLD's cost from easy.gr or Enom and adds or updates TLDs with
+  cost + markup; Settings → Domains → **Update registrar costs daily** keeps the costs current and rings the bell when a
+  TLD starts to sell at a loss (EasyGr 1.2.0, Enom 1.3.0).
 - Clients: the Client area menu on a client's page can **Set password** (optionally emailing the login details;
   their browsers are signed out) and **Send password reset link**.
 - Settings → Logging → **Clean up** (super admins): delete a log's entries older than a day (the activity log keeps its

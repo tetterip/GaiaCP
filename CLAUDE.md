@@ -86,6 +86,8 @@ Read the file for the area you are changing before you change it; don't read the
   closed tickets after Settings → Support's days (daily at 03:30; by hand: Settings → Logging → Clean up, `App\Support\LogCleanup`)
 - `php artisan gaiacp:check-monitors`: read every linked server's status from its monitoring service (every 5 minutes)
 - `php artisan gaiacp:sync-domains`: read every managed domain's expiry and nameservers (daily at 04:00)
+- `php artisan gaiacp:sync-tld-costs [--dry-run]`: update the TLDs' registrar costs from registrars that list prices
+  (Settings → Domains → Update registrar costs daily, at 04:15; never changes selling prices)
 - `php artisan gaiacp:check-certificates [--dry-run]`: read SSL certificates waiting to be issued; reissue one ending inside
   a longer order, renew an order ending when the service is paid beyond it (hourly)
 - `php artisan gaiacp:check-usage [--dry-run]`: warn hosting clients near their package's disk or bandwidth limit
