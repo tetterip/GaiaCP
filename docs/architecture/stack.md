@@ -347,6 +347,10 @@ How the admin and client panels, users, access, security, branding, themes and l
   sidebar foot (every theme: sidebar, in both panels). The client menu, like the admin's: Home and Order, then Services
   (Hosting and Other services = the client `ServiceResource::getNavigationItems()` with `?kind=`, Domains between),
   Billing (payment notices, payments, credit) and Support (Tickets, Knowledge base, Help).
+  Accessibility: `filament/focus.blade.php` (both panels, `HEAD_END`, after the theme's styles) gives everything Tab
+  reaches a 2px `:focus-visible` outline in the primary colour, an outline so no theme's box-shadow can hide it, and
+  real borders in Windows contrast themes (`forced-colors`); a theme never removes it (`FocusMarkTest`). The audit of
+  2026-11-04 (WCAG 2.2 AA) and its fixes, one PR per step, are in the maintainer's notes.
   The admin sidebar groups are Main, Billing, Services, System (`AdminPanelProvider::navigationGroups()`, in that
   order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included); avatars are
   `App\Filament\Avatars\InitialsAvatar` (an SVG data URL, nothing loaded from another site). The dashboard

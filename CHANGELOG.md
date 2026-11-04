@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Accessibility: pressing Tab always shows where you are, in every theme and both panels: a clear outline around the
+  button, link or menu item (Glass hid it entirely). Windows contrast themes now show the edges of buttons, fields and cards.
 - Fixed: a server panel error longer than 255 characters (CyberPanel sends its web server's whole output) showed a
   page error instead of the message, on MySQL / MariaDB. The activity log keeps the whole text.
 - Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the
