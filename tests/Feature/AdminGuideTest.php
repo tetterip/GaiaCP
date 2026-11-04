@@ -33,6 +33,8 @@ class AdminGuideTest extends TestCase
             ->assertSee('Moving from WHMCS')
             // the cron line in Getting started scrolls inside its box on a phone
             ->assertSee('* * * * * cd', false)
+            // and the keyboard reaches it to scroll it (WCAG 2.1.1)
+            ->assertSee('<pre tabindex="0">', false)
             ->assertSee('.gcp-guide-body pre { max-width: 100%; overflow-x: auto; }', false);
     }
 

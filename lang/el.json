@@ -3814,5 +3814,6 @@
     "The sign-in took too long": "Η σύνδεση άργησε πολύ",
     "Complete the check that you are not a robot and sign in again.": "Ολοκληρώστε τον έλεγχο ότι δεν είστε ρομπότ και συνδεθείτε ξανά.",
     "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Μονά πλήκτρα όπως ? (αυτή η λίστα), / (αναζήτηση) και g μετά c (Πελάτες). Κλείστε τα αν χρησιμοποιείτε φωνητικές εντολές ή αν σας ενοχλούν.",
-    "They are turned off in your profile.": "Είναι κλειστές στο προφίλ σας."
+    "They are turned off in your profile.": "Είναι κλειστές στο προφίλ σας.",
+    "Language: :language (:code)": "Γλώσσα: :language (:code)"
 }

@@ -32,6 +32,7 @@ class ClientsTable
                     ->toggleable(),
                 TextColumn::make('vat_number')
                     ->label('VAT number')
+                    ->placeholder('—') // the row's link in an empty cell still needs a text (WCAG 2.4.4)
                     ->searchable()
                     ->toggleable(),
                 TextColumn::make('services_count')

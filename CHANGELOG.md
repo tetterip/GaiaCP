@@ -13,6 +13,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Accessibility: the keyboard shortcuts list (`?`) and the welcome tour keep the keyboard focus inside while open, and the
   list has a Close button. **Profile** → **Keyboard shortcuts** turns the single-key shortcuts off (on by default), e.g.
   for speech input; the user menu still opens the list.
+- Accessibility, smaller fixes: a field reached with Tab no longer hides under the floating Save bar; the quote page's
+  decline reason has a real label; bigger targets for the select's clear cross and the tour's dots; the language button
+  says which language it is; Help's code blocks scroll with the keyboard; an empty VAT number cell in the clients list
+  shows a dash.
 - Fixed: a server panel error longer than 255 characters (CyberPanel sends its web server's whole output) showed a
   page error instead of the message, on MySQL / MariaDB. The activity log keeps the whole text.
 - Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the

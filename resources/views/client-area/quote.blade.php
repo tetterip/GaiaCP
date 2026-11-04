@@ -20,6 +20,7 @@
         .answer { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
         .answer label { display: flex; gap: 8px; align-items: flex-start; }
         .answer details { margin-top: 12px; color: var(--muted); }
+        .answer .reason-label { display: block; margin-top: 12px; font-size: 14px; color: var(--muted); }
         .answer textarea { width: 100%; margin-top: 8px; font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); }
         .secondary { background: transparent; color: var(--text); border: 1px solid var(--line); }
         .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -108,7 +109,9 @@
                 <summary>{{ __('Decline the quote') }}</summary>
                 <form method="post" action="{{ route('quote.decline', ['token' => $quote->token]) }}">
                     @csrf
-                    <textarea name="reason" rows="2" maxlength="255" placeholder="{{ __('Why? (optional, it helps us)') }}"></textarea>
+                    {{-- a real label, not only a placeholder that disappears as you type (WCAG 1.3.1, 3.3.2) --}}
+                    <label for="decline-reason" class="reason-label">{{ __('Why? (optional, it helps us)') }}</label>
+                    <textarea id="decline-reason" name="reason" rows="2" maxlength="255"></textarea>
                     <button type="submit" class="secondary">{{ __('Decline') }}</button>
                 </form>
             </details>
