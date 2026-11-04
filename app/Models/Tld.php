@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\HasSale;
 use App\Support\Currencies;
-use App\Support\DomainName;
+use App\Support\TldLookup;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,6 +45,12 @@ class Tld extends Model
 
     /** The prices a sale can lower: a new domain's first payment, never its renewals. */
     public const SALE_KINDS = ['register', 'transfer'];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => TldLookup::flush());
+        static::deleted(fn () => TldLookup::flush());
+    }
 
     protected function casts(): array
     {
@@ -89,22 +95,12 @@ class Tld extends Model
 
     /**
      * The TLD row of a domain, the longest match ("x.com.gr" → ".com.gr"). $activeOnly leaves out TLDs no longer
-     * sold; renewals, fees and the registrar of a domain already here use the row either way.
+     * sold; renewals, fees and the registrar of a domain already here use the row either way. The table is read once
+     * per request (TldLookup), so loops over many domains cost one query.
      */
     public static function match(?string $domain, bool $activeOnly = true): ?self
     {
-        $domain = DomainName::normalize($domain);
-
-        if ($domain === '') {
-            return null;
-        }
-
-        // An IDN TLD may be entered either way (".ελ" or ".xn--qxam").
-        return self::query()->when($activeOnly, fn (Builder $q) => $q->active())->get()
-            ->filter(fn (self $t) => strlen($domain) > strlen($t->tld)
-                && (str_ends_with($domain, $t->tld) || str_ends_with(DomainName::toAscii($domain), DomainName::toAscii($t->tld))))
-            ->sortByDesc(fn (self $t) => strlen($t->tld))
-            ->first();
+        return TldLookup::find($domain, $activeOnly);
     }
 
     /** @return list<string> every price column: the terms' and the late fees' */

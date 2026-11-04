@@ -49,6 +49,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   one becomes the first language's).
 - Public demo: Odysseus Hosting has its own logo, dark mode logo and browser tab icon (a trireme, in the style of the
   GaiaCP globe), shown in the client area, on payment notices and in client emails.
+- Faster reports on a normal billing history (#81): Sales opportunities → Expired, not renewed, Income forecast, Server
+  revenue, Annual income and the dashboard's Orders and income chart sum in the database and read the TLD table once,
+  instead of loading every payment or service (the income report could run out of memory on a large install).
 - Fixed: on a wide screen the sidebar's foot (the user menu) was cut off before the page was scrolled, most of all
   under the public demo's bar, which now stays at the top.
 - Fixed: on the page that requires two-factor authentication, Set up authenticator app opened squeezed inside the page's

@@ -78,8 +78,10 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   changed something (`changes` on `domain.synced`) or failed plus a count of the rest. Nothing to report = no email
 - `app/Reports/` + `app/Filament/Clusters/Reports/`: Reports (`/admin/reports`, a cluster laid out like Settings: cards by
   `ReportsCluster::GROUPS`, a page joins with `$cluster`, a group and `ReportCard::reportDescription()`). `IncomeReport`
-  (payments as recorded, grouped in PHP so SQLite and MySQL agree) and `IncomeForecast` (each billable service's price on
-  each due date ahead, auto-terminate left out, past cycles = overdue) feed the `IncomeReportPage`s (a table built by
+  (payments as recorded, summed in SQL per day and currency without date functions so SQLite and MySQL agree, other
+  currencies grouped by amount so each payment is converted on its own; `paidBetween()` = a plain date range that can use
+  the `paid_on` index; only the transaction list loads payments) and `IncomeForecast` (each billable service's price on
+  each due date ahead, auto-terminate left out, past cycles = overdue; reads only the columns it needs, once per horizon) feed the `IncomeReportPage`s (a table built by
   `report()`, `resources/views/filament/reports/table.blade.php`). `ServiceReportPage` is the WHMCS-style custom report
   (Domains, Services): `fields()` lists each field once and builds both the toggleable columns and the CSV, which
   exports the filtered, sorted rows with the columns shown. `Csv::download()` writes UTF-8 with a BOM.

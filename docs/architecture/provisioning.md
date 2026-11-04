@@ -130,7 +130,7 @@ never calls a panel API directly.
   the registrar's charge per price column, base currency, `costCents()` / `marginCents()`, used by Income forecast's
   Domain costs (`IncomeForecast::domainCost()`) and Reports → Domain profit (`byTld()`)). New orders
   pre-select it (`domains.registrar_id`, the admin can change it) and offer only priced terms (`Tld::terms()`).
-  `Registrar::forDomain()` = the TLD's preferred registrar (`Tld::match()`, longest TLD match) while active; `RegistrarFactory` builds the
+  `Registrar::forDomain()` = the TLD's preferred registrar (`Tld::match()`, longest TLD match, from the TLD table read once per request: `App\Support\TldLookup`) while active; `RegistrarFactory` builds the
   `DomainRegistrar` from the account's module (`PluginManager::enabledRegistrarModule()`). Only `DomainLifecycle` calls a registrar; `RecordPayment` renews an
   active/suspended yearly domain through it, outside the transaction (a failure keeps the payment).
 - **TLD import and cost sync** (`App\Actions\ImportTldPrices`): a `DomainRegistrar` implementing `ListsTldPrices`
