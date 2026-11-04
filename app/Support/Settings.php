@@ -173,6 +173,7 @@ class Settings
         'support.auto_close_days',
         'support.attachments_max_kb',
         'support.attachment_types',
+        'support.attachment_days',
         'support.reply_to',
         'support.knowledge_base',
         'sales.lead_sources',

@@ -98,6 +98,7 @@ return [
         'auto_close_days' => 7, // close a ticket that waits on the client this many days (null = never)
         'attachments_max_kb' => 5120,
         'attachment_types' => 'jpg,jpeg,png,gif,webp,pdf,txt,log,zip',
+        'attachment_days' => null, // delete the files of tickets closed this many days ago, every night (null = keep them)
         'reply_to' => null, // Reply-To of ticket emails to clients (a department's own email wins), e.g. the Email to ticket mailbox
         'knowledge_base' => true, // the client area's Knowledge base page (once an article is published) and article tips on new tickets
     ],

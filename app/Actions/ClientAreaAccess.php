@@ -7,7 +7,9 @@ use App\Enums\UserRole;
 use App\Mail\ClientMailer;
 use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\ClientSession;
 use App\Models\User;
+use App\Notifications\ResetAdminPassword;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
@@ -17,7 +19,7 @@ use SensitiveParameter;
 
 /**
  * A client's login to the client area: invite (creates the login if needed and emails a link to choose a
- * password), create it with a password when adding the client, turn it off or on, and let an admin look at the client
+ * password), create it with a password when adding the client, set its password or email a reset link, turn it off or on, and let an admin look at the client
  * area as that client. An admin user with the client's email is linked to the client instead (users.client_id): one
  * login for /admin and the client area. Logged.
  */
@@ -86,6 +88,69 @@ class ClientAreaAccess
         }
 
         return $user;
+    }
+
+    /**
+     * An admin sets the client's password: a client without a login gets one (turned on), an existing one keeps
+     * whether it is on or off. Every browser signed in with the old password is signed out. Emailed with the Client
+     * Area Login Details template when asked. Never an admin user linked to the client: their password stays theirs.
+     *
+     * @return bool whether the email went out (false when not asked for)
+     *
+     * @throws RuntimeException when the client has no email, another user already has it, or it is a linked admin
+     */
+    public function setPassword(Client $client, #[SensitiveParameter] string $password, bool $email): bool
+    {
+        if (self::isLinkedAdmin($client) || self::adminWithEmail($client)) {
+            throw new RuntimeException(__('This login is an admin user: only Settings → Admin users can change its password.'));
+        }
+
+        if ($client->user === null) {
+            $this->createLogin($client, $password, false);
+        } else {
+            $client->user->forceFill(['password' => $password, 'remember_token' => Str::random(60)])->save();
+            // AuthenticateSession signs out the browsers with the old password; these rows go with them.
+            ClientSession::query()->where('user_id', $client->user->id)->delete();
+            ActivityLog::record('client_area.password_set', "Client area password of {$client->email} set by an admin", client: $client);
+        }
+
+        if (! $email) {
+            return false;
+        }
+
+        return $this->mailer->send(MailTemplate::ClientAreaLogin, $client, [
+            'client_area_url' => Filament::getPanel('client')->getLoginUrl(),
+            'password' => $password,
+        ], evenIfOff: true);
+    }
+
+    /**
+     * Emails the client the same link as the login's "Forgot password?" (it works once), saying their provider sent
+     * it. Only to a client login that is turned on: inviting is for the others.
+     *
+     * @throws RuntimeException when the client has no login that is turned on
+     */
+    public function sendPasswordResetLink(Client $client): void
+    {
+        $user = $client->user;
+
+        if ($user === null || $user->role !== UserRole::Client || ! $user->active) {
+            throw new RuntimeException(__('The client has no client area login that is turned on: invite them instead.'));
+        }
+
+        $token = Password::broker('clients')->createToken($user);
+        $notification = new ResetAdminPassword($token, byAdmin: true);
+        $notification->url = Filament::getPanel('client')->getResetPasswordUrl($token, $user);
+        $user->notify($notification);
+
+        ActivityLog::record('client_area.password_reset_sent', "Password reset link sent to {$client->email} by an admin", client: $client);
+    }
+
+    /** Whether the client has no login yet and an admin user logs in with its email (inviting would link them). */
+    public static function adminWithEmail(Client $client): bool
+    {
+        return $client->user === null && filled($client->email)
+            && User::query()->where('email', $client->email)->where('role', '!=', UserRole::Client)->whereNull('client_id')->exists();
     }
 
     /**
