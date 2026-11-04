@@ -7,6 +7,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - Accessibility: pressing Tab always shows where you are, in every theme and both panels: a clear outline around the
   button, link or menu item (Glass hid it entirely). Windows contrast themes now show the edges of buttons, fields and cards.
+- Fixed: a server panel error longer than 255 characters (CyberPanel sends its web server's whole output) showed a
+  page error instead of the message, on MySQL / MariaDB. The activity log keeps the whole text.
+- Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the
+  host of generated URLs, host placeholders in route matching, and fixes in http-foundation, html-sanitizer and mime).
 - Faster lists and daily runs on a long billing history: date filters (Overdue, Due soon, the dashboard's Billing overview
   and Needs attention, the overdue badges, the daily payment notices, reminders and suspensions) are plain date ranges
   that MySQL / MariaDB can answer from the due date indexes, instead of reading every notice or service. A payment
@@ -14,6 +18,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   an order's items no longer check each row's payments one by one for Record payment, and an admin page no longer runs
   the setup guide's checks for the tour's last card once the guide is hidden.
 - REST API: `paid_from` / `paid_to` on `GET /payments` must be dates (a 422 otherwise).
+- Updated Filament (5.11), Laravel (13.40), ImapEngine (1.25.7: never signs in over an unencrypted connection when
+  STARTTLS fails), svg-sanitize and PHPUnit, with Greek for Filament's new texts.
 
 ## [0.7.0] - 2026-11-04
 

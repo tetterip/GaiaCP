@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.2] - 2026-11-04
+
+- Tested on a real CyberPanel 3.0: a clear message when the API key from Users → API Access is put in the password
+  field (CyberPanel takes only the admin password for creating, suspending and deleting websites)
+
 ## [1.0.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

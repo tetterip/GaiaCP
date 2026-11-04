@@ -70,13 +70,15 @@ few minutes. It is a normal Git checkout of GaiaCP with `GAIACP_DEMO=true` (`App
    ```
    /opt/plesk/php/8.4/bin/php /usr/local/psa/var/modules/composer/composer.phar install --no-dev --optimize-autoloader --no-interaction
    /opt/plesk/php/8.4/bin/php artisan key:generate --force   # first deploy only, then remove this line
+   /opt/plesk/php/8.4/bin/php artisan filament:assets
    /opt/plesk/php/8.4/bin/php artisan migrate --force
    /opt/plesk/php/8.4/bin/php artisan gaiacp:demo-reset --rebuild
    /opt/plesk/php/8.4/bin/php artisan optimize
    /opt/plesk/php/8.4/bin/php artisan filament:optimize
    ```
 
-   Then Deploy now (the `.env` and the empty database file must exist first).
+   `filament:assets` publishes Filament's CSS and JS again (Composer does it too, but not when its scripts don't run):
+   without it, an update can leave old CSS with new views. Then Deploy now (the `.env` and the empty database file must exist first).
 5. **Cron**: Scheduled Tasks → Add Task, **Run a PHP script** (works whatever the shell; a command needs the
    non-chrooted one): script path `/var/www/vhosts/gaiacp.digital/demo.gaiacp.digital/artisan`,
    arguments `schedule:run`, PHP 8.4, cron style `* * * * *`. Run now answers "No scheduled commands are ready to run"

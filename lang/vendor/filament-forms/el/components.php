@@ -7,6 +7,11 @@ return [
             'no_search_results_message' => 'Κανένα μπλοκ δεν ταιριάζει με την αναζήτηση.',
             'search_prompt' => 'Αναζήτηση μπλοκ',
         ],
+        'reordering' => [
+            'item' => 'Μπλοκ',
+            'position' => ':label, θέση :position από :count',
+            'moved' => ':label: μετακινήθηκε στη θέση :position από :count',
+        ],
     ],
     'checkbox_list' => [
         'required_description' => 'Επιλέξτε τουλάχιστον μία επιλογή.',
@@ -43,8 +48,25 @@ return [
         'editor' => [
             'label' => 'Επεξεργασία εικόνας',
         ],
+        'placeholder' => 'Δεν έχουν μεταφορτωθεί αρχεία',
+    ],
+    'js_field' => [
+        'failed_to_load' => 'Αυτό το πεδίο δεν φορτώθηκε. Ανανεώστε τη σελίδα για να δοκιμάσετε ξανά.',
     ],
     'key_value' => [
+        'actions' => [
+            'move_down' => [
+                'label' => 'Μετακίνηση κάτω',
+            ],
+            'move_up' => [
+                'label' => 'Μετακίνηση πάνω',
+            ],
+        ],
+        'reordering' => [
+            'row' => 'Γραμμή',
+            'position' => ':label, θέση :position από :count',
+            'moved' => ':label: μετακινήθηκε στη θέση :position από :count',
+        ],
         'columns' => [
             'actions' => [
                 'label' => 'Ενέργειες',
@@ -71,6 +93,11 @@ return [
         ],
     ],
     'repeater' => [
+        'reordering' => [
+            'item' => 'Στοιχείο',
+            'position' => ':label, θέση :position από :count',
+            'moved' => ':label: μετακινήθηκε στη θέση :position από :count',
+        ],
         'columns' => [
             'actions' => [
                 'label' => 'Ενέργειες',
@@ -291,7 +318,9 @@ return [
                 'label' => 'Αφαίρεση :label',
             ],
         ],
+        'error_message' => 'Οι επιλογές δεν φορτώθηκαν. Δοκιμάστε ξανά.',
         'no_options_message' => 'Δεν υπάρχουν διαθέσιμες επιλογές.',
+        'required_description' => 'Διαλέξτε μια επιλογή.',
         'search_label' => 'Αναζήτηση',
     ],
     'tags_input' => [

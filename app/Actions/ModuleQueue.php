@@ -96,7 +96,7 @@ class ModuleQueue
                 return; // a call an admin made and saw fail (password, nameservers, login…): nothing to retry later
             }
 
-            $error = Str::after($log->description, 'failed: ');
+            $error = Str::after($log->fullDescription(), 'failed: ');
             $item = ModuleQueueItem::query()->open()->where('service_id', $service->id)->where('action', $action)->first();
 
             if ($item) {
