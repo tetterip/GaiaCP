@@ -18,6 +18,9 @@ git reset --hard origin/main
 
 # Unquoted on purpose: COMPOSER_BIN may be "php composer.phar".
 $COMPOSER install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
+# Composer's post-autoload-dump publishes Filament's CSS and JS too, but not when its scripts are skipped or fail;
+# old CSS with new views breaks layouts (e.g. tabs stacked in a narrow box), so publish them again here.
+"$PHP" artisan filament:assets
 "$PHP" artisan migrate --force
 "$PHP" artisan optimize:clear
 "$PHP" artisan optimize
