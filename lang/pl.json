@@ -3749,5 +3749,13 @@
     "Sync costs": "Synchronizuj koszty",
     "Login on": "Logowanie włączone",
     "Login turned off": "Logowanie wyłączone",
-    "No login": "Brak logowania"
+    "No login": "Brak logowania",
+    "Amount paid": "Zapłacona kwota",
+    "Balance due": "Pozostało do zapłaty",
+    "Credited": "Skorygowana",
+    "Partly credited": "Częściowo skorygowana",
+    "Payment": "Płatność",
+    "Settled": "Opłacona",
+    "Ledger": "Operacje",
+    "Paid into the client's balance": "Wpłacono na saldo klienta"
 }

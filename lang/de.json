@@ -3749,5 +3749,13 @@
     "Sync costs": "Kosten abgleichen",
     "Login on": "Anmeldung aktiv",
     "Login turned off": "Anmeldung deaktiviert",
-    "No login": "Keine Anmeldung"
+    "No login": "Keine Anmeldung",
+    "Amount paid": "Bezahlter Betrag",
+    "Balance due": "Offener Betrag",
+    "Credited": "Gutgeschrieben",
+    "Partly credited": "Teilweise gutgeschrieben",
+    "Payment": "Zahlung",
+    "Settled": "Beglichen",
+    "Ledger": "Buchungen",
+    "Paid into the client's balance": "Auf das Guthaben des Kunden eingezahlt"
 }

@@ -3749,5 +3749,13 @@
     "Sync costs": "Maliyetleri eşitle",
     "Login on": "Giriş açık",
     "Login turned off": "Giriş kapalı",
-    "No login": "Giriş yok"
+    "No login": "Giriş yok",
+    "Amount paid": "Ödenen tutar",
+    "Balance due": "Kalan borç",
+    "Credited": "Alacaklandırıldı",
+    "Partly credited": "Kısmen alacaklandırıldı",
+    "Payment": "Ödeme",
+    "Settled": "Ödendi",
+    "Ledger": "Hareketler",
+    "Paid into the client's balance": "Müşterinin bakiyesine yatırıldı"
 }

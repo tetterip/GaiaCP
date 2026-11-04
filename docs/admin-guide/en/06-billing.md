@@ -23,6 +23,10 @@ most urgent one. Clients can switch off renewal reminders and overdue notices on
 
 A new order gets its own notice at once, for the first payment of its items.
 
+A notice's page shows its status, date and due date, the amount paid and the **Balance due** (the lines not paid yet),
+and a **Payments** section: each payment with its date, the services it paid, the method, the reference and the amount
+(an "Add funds" notice shows the amount paid into the client's balance). A reversed payment is no longer listed.
+
 On a notice you can:
 
 - **Record payment**: records every unpaid line at once.
@@ -51,7 +55,8 @@ notice links to its invoice, and one without (paid before you turned invoices on
 
 The client gets the **Invoice Issued** email with the invoice as a PDF (switch it off under Email templates), finds it
 in the client area under Billing → **Invoices** and on the paid notice. On an invoice's page, **Download PDF** and
-**Send email** (sends it again).
+**Send email** (sends it again). The page also shows its status (**Settled**, **Partly credited** or **Credited**), the
+notice's due date, the **Payments** of its notice and its credit notes, each with its date, reason and amount.
 
 - **Number format**: `{YEAR}`, `{MONTH}`, `{DAY}` and `{NUMBER}` (at least four digits), `INV-{YEAR}-{NUMBER}` by
   default. With `{YEAR}` in it, numbering starts again at 1 each year. Numbers have no gaps and are never given twice.

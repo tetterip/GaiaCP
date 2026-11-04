@@ -3749,5 +3749,13 @@
     "Sync costs": "Συγχρονισμός κόστους",
     "Login on": "Ενεργή σύνδεση",
     "Login turned off": "Απενεργοποιημένη σύνδεση",
-    "No login": "Χωρίς σύνδεση"
+    "No login": "Χωρίς σύνδεση",
+    "Amount paid": "Ποσό που πληρώθηκε",
+    "Balance due": "Υπόλοιπο προς πληρωμή",
+    "Credited": "Πιστωμένο",
+    "Partly credited": "Μερικώς πιστωμένο",
+    "Payment": "Πληρωμή",
+    "Settled": "Εξοφλημένο",
+    "Ledger": "Κινήσεις",
+    "Paid into the client's balance": "Κατατέθηκε στο υπόλοιπο του πελάτη"
 }

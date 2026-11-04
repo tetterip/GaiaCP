@@ -2,13 +2,18 @@
 
 namespace App\Filament\Resources\Invoices\Schemas;
 
+use App\Enums\InvoiceStatus;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
+use App\Invoices\NoticeLedger;
 use App\Models\Invoice;
 use App\Providers\AppServiceProvider;
 use App\Support\ClientFields;
 use App\Support\Money;
+use Closure;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\RepeatableEntry\TableColumn;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -49,6 +54,15 @@ class InvoiceInfolist
                         TextEntry::make('paid_on')
                             ->date(AppServiceProvider::dateFormat())
                             ->placeholder('—'),
+                        TextEntry::make('amount_paid')
+                            ->label('Amount paid')
+                            ->state(fn (Invoice $record) => Money::format(NoticeLedger::paidCents($record), $record->currency)),
+                        TextEntry::make('balance')
+                            ->label('Balance due')
+                            ->state(fn (Invoice $record) => Money::format(NoticeLedger::balanceCents($record), $record->currency))
+                            ->weight('bold')
+                            ->color(fn (Invoice $record) => NoticeLedger::balanceCents($record) > 0 ? 'danger' : 'success')
+                            ->hidden(fn (Invoice $record) => $record->status === InvoiceStatus::Cancelled),
                         TextEntry::make('emailed_at')
                             ->label('Emailed')
                             ->dateTime(AppServiceProvider::dateFormat().' H:i')
@@ -72,6 +86,41 @@ class InvoiceInfolist
                         TextEntry::make('notes')
                             ->placeholder('—')
                             ->columnSpan(2),
+                    ]),
+                self::paymentsSection(fn (Invoice $record) => $record),
+            ]);
+    }
+
+    /**
+     * The payments of a notice (NoticeLedger): date, type, what they paid, method, reference and amount. Also on the
+     * page of the invoice issued from it.
+     *
+     * @param  Closure(mixed): ?Invoice  $notice  the notice of the page's record
+     */
+    public static function paymentsSection(Closure $notice): Section
+    {
+        return Section::make(__('Payments'))
+            ->columnSpanFull()
+            ->schema([
+                RepeatableEntry::make('ledger')
+                    ->hiddenLabel()
+                    ->state(fn ($record) => ($invoice = $notice($record)) ? NoticeLedger::rows($invoice) : [])
+                    ->placeholder(__('No payments yet'))
+                    ->table([
+                        TableColumn::make(__('Date')),
+                        TableColumn::make(__('Type')),
+                        TableColumn::make(__('Description')),
+                        TableColumn::make(__('Method')),
+                        TableColumn::make(__('Reference')),
+                        TableColumn::make(__('Amount')),
+                    ])
+                    ->schema([
+                        TextEntry::make('date'),
+                        TextEntry::make('type')->badge()->color('success'),
+                        TextEntry::make('description'),
+                        TextEntry::make('method')->placeholder('—'),
+                        TextEntry::make('reference')->placeholder('—')->copyable(),
+                        TextEntry::make('amount')->weight('bold'),
                     ]),
             ]);
     }

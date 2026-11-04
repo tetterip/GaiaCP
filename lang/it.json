@@ -3749,5 +3749,13 @@
     "Sync costs": "Sincronizza i costi",
     "Login on": "Accesso attivo",
     "Login turned off": "Accesso disattivato",
-    "No login": "Nessun accesso"
+    "No login": "Nessun accesso",
+    "Amount paid": "Importo pagato",
+    "Balance due": "Saldo dovuto",
+    "Credited": "Stornata",
+    "Partly credited": "Stornata in parte",
+    "Payment": "Pagamento",
+    "Settled": "Saldata",
+    "Ledger": "Movimenti",
+    "Paid into the client's balance": "Versato sul saldo del cliente"
 }

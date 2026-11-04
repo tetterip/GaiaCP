@@ -3749,5 +3749,13 @@
     "Sync costs": "Kosten synchroniseren",
     "Login on": "Inloggen aan",
     "Login turned off": "Inloggen uitgeschakeld",
-    "No login": "Geen login"
+    "No login": "Geen login",
+    "Amount paid": "Betaald bedrag",
+    "Balance due": "Openstaand saldo",
+    "Credited": "Gecrediteerd",
+    "Partly credited": "Deels gecrediteerd",
+    "Payment": "Betaling",
+    "Settled": "Voldaan",
+    "Ledger": "Boekingen",
+    "Paid into the client's balance": "Op het tegoed van de klant gestort"
 }
