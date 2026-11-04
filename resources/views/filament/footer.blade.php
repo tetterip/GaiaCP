@@ -1,4 +1,4 @@
-{{-- Panel footer (PanelsRenderHook::FOOTER): "Powered by GaiaCP" under the login form, the copyright line and (in /admin) the version (it opens About GaiaCP, filament.about), its stage (Alpha) and icon links to the website, GitHub (to star it) and its issues (report a problem) on every other page (not on the login page, so visitors don't learn it), and in the client area "Cookie settings" while the cookie banner is on. --}}
+{{-- Panel footer (PanelsRenderHook::FOOTER): "Powered by GaiaCP" under the login form, the copyright line and (in /admin) the version (it opens About GaiaCP, filament.about), its stage (Beta) and icon links to the website, GitHub (to star it) and its issues (report a problem) on every other page (not on the login page, so visitors don't learn it), and in the client area "Cookie settings" while the cookie banner is on. --}}
 <style>
     .gcp-footer { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .25rem .75rem; padding: 1.5rem 1rem; font-size: .75rem; color: var(--gray-500); text-align: center; }
     .gcp-footer-login { flex-direction: column; gap: .35rem; padding-top: 1rem; }

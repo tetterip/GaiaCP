@@ -5,6 +5,15 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security, module queue: **Retry** on a failed termination, and **Retry all** while one is waiting, ask for the
+  admin's password, as Terminate does, since they delete the account from its server.
+- Security, product limits: an add-on a client adds from a service's page now holds to its **Quantity available** and
+  **Client limit** too (it took neither), and two checkouts at the same moment can no longer both get the last one a
+  client may have (the limit is checked again under a lock as the order is placed).
+- Fixed: with a captcha on the login, a two-factor code given more than five minutes after the password did nothing
+  (the captcha's token was checked again, and refused, on the hidden password form). The solved check now lasts as long
+  as the session; if the session ended, the login goes back to the password step and says why.
+- Sign-in: the first box of the two-factor code is focused as soon as the code step shows.
 - Fixes from the first tries on staging: a client whose client area login is turned off (or an admin user turned off)
   while signed in now lands on the login page instead of a 403 on every page; a password reset link opened in a
   browser that is signed in shows the form (it signs that browser out of the panel) instead of the dashboard; the long

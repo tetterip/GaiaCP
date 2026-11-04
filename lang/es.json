@@ -3810,5 +3810,7 @@
     "Stock": "Existencias",
     "All good": "Todo en orden",
     "No panel or registrar action is waiting to be retried.": "Ninguna acción del panel o del registrador espera un reintento.",
-    "Nothing resolved yet": "Nada resuelto todavía"
+    "Nothing resolved yet": "Nada resuelto todavía",
+    "The sign-in took too long": "El inicio de sesión tardó demasiado",
+    "Complete the check that you are not a robot and sign in again.": "Complete la verificación de que no es un robot e inicie sesión de nuevo."
 }

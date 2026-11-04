@@ -60,7 +60,7 @@ was doing and the error. Nothing is lost: the order and the payment stay, and a 
   ordering the certificate), suspend, unsuspend, terminate and the domain renewal after a payment. Calls you make and
   see fail at once (password, nameservers, logging in to the panel) are not kept.
 - **Retry** tries one again, **Retry all** every open one. **Mark resolved** sends nothing to the server: use it when
-  you did it there by hand.
+  you did it there by hand. Retrying a termination asks for your password, as Terminate does.
 - Set ups, unsuspends and suspensions for non-payment are tried again by themselves every 15 minutes, as many times as
   Settings → Automation → **Retry failed actions** says (3; 0 = only by hand). When they still fail, the bell rings
   once. Terminations and domain renewals wait for you (a renewal reads the domain first, and renews only if it still

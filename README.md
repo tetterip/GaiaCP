@@ -19,8 +19,8 @@
   <a href="docs/using-the-api.md">API</a>
 </p>
 
-> **Alpha.** GaiaCP is still in development: features, settings and the database may change between versions, and
-> parts of it haven't been tried against real servers or registrars yet. Keep backups (Settings → System → Backups)
+> **Beta.** Most of what GaiaCP sets out to do is in place, but it is still young: settings and the database may still
+> change between versions, and parts of it haven't been tried against real servers or registrars yet. Keep backups (Settings → System → Backups)
 > and read each release's notes before updating.
 
 <p align="center">

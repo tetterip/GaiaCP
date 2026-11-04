@@ -130,6 +130,23 @@ class ClientAddonsTest extends TestCase
         $this->assertSame(0, Invoice::count());
     }
 
+    public function test_an_add_on_holds_to_its_quantity_available_and_client_limit(): void
+    {
+        $this->backup->update(['stock' => 0]);
+        $this->assertFalse(ClientAddons::canAdd($this->hosting), 'out of stock: not offered');
+        $this->assertThrows(fn () => app(ClientAddons::class)->order($this->hosting, $this->backup), ValidationException::class);
+
+        $this->backup->update(['stock' => 2, 'client_limit' => 1]);
+        app(ClientAddons::class)->order($this->hosting, $this->backup);
+        $this->assertSame(1, $this->backup->fresh()->stock, 'it takes one');
+
+        // On another service of the same client, the Client limit says no
+        $other = $this->hosting->replicate()->fill(['domain' => 'other.gr']);
+        $other->save();
+        $this->assertThrows(fn () => app(ClientAddons::class)->order($other, $this->backup->fresh()), ValidationException::class);
+        $this->assertSame(1, $this->backup->fresh()->stock);
+    }
+
     public function test_only_fitting_add_ons_on_running_services_are_offered(): void
     {
         Product::factory()->create(['name' => 'Hidden add-on', 'type' => ServiceType::Other, 'package' => null, 'addon' => true, 'hidden' => true,

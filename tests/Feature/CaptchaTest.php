@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Plugins\Recaptcha\RecaptchaPlugin;
 use Plugins\Turnstile\TurnstilePlugin;
+use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
 /** The captcha plugins (Google reCAPTCHA, Cloudflare Turnstile) on the forms Settings → General picks. */
@@ -95,6 +96,37 @@ class CaptchaTest extends TestCase
         $this->assertTrue(Captcha::verify('token-1'));
         $this->assertFalse(Captcha::verify(''));
         Http::assertSentCount(1);
+    }
+
+    public function test_the_two_factor_step_keeps_the_check_and_goes_back_once_it_is_gone(): void
+    {
+        $this->user->saveAppAuthenticationSecret($secret = app(Google2FA::class)->generateSecretKey(16));
+        $accepts = true; // Turnstile takes a token once: asked again, it says no
+        Http::fake([TurnstilePlugin::VERIFY_URL => function () use (&$accepts) {
+            [$answer, $accepts] = [$accepts, false];
+
+            return Http::response(['success' => $answer]);
+        }]);
+        $login = $this->clientLogin(['captcha' => 'token-1'])->assertHasNoFormErrors();
+        $this->assertNotNull($login->get('userUndertakingMultiFactorAuthentication'));
+
+        // The code given twenty minutes later still signs in
+        $this->travel(20)->minutes();
+        $login->fillForm(['app' => ['code' => app(Google2FA::class)->getCurrentOtp($secret)]], 'multiFactorChallengeForm')->call('authenticate')
+            ->assertHasNoFormErrors([], 'multiFactorChallengeForm');
+        $this->assertAuthenticatedAs($this->user, 'client');
+        Http::assertSentCount(1);
+
+        // The session ended while the code step showed: back to the password step, saying why
+        auth('client')->logout();
+        $accepts = true;
+        $login = $this->clientLogin(['captcha' => 'token-2']);
+        $this->assertNotNull($login->get('userUndertakingMultiFactorAuthentication'));
+        session()->flush();
+        $login->fillForm(['app' => ['code' => '123456']], 'multiFactorChallengeForm')->call('authenticate')
+            ->assertNotified(__('The sign-in took too long'))
+            ->assertSet('userUndertakingMultiFactorAuthentication', null);
+        $this->assertGuest('client');
     }
 
     public function test_sign_up_and_forgot_password_too_with_recaptcha(): void

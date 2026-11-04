@@ -13,7 +13,7 @@ class Version
      * the installer and `php artisan about`. Kept apart from `VERSION` so plugins' `requires` and updates still compare
      * plain numbers.
      */
-    public const STAGE = 'alpha';
+    public const STAGE = 'beta';
 
     /** GaiaCP's home on GitHub, linked from the admin footer's GitHub icon (people star it there, signed in). */
     public const REPOSITORY_URL = 'https://github.com/tetterip/GaiaCP';
@@ -31,7 +31,7 @@ class Version
         return self::$current ??= self::read();
     }
 
-    /** The stage as people read it ("Alpha"), or null once GaiaCP is stable. */
+    /** The stage as people read it ("Beta"), or null once GaiaCP is stable. */
     public static function stageLabel(): ?string
     {
         return match (self::STAGE) {

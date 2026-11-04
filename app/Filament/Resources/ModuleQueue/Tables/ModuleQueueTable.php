@@ -7,6 +7,7 @@ use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ModuleQueueItem;
 use App\Providers\AppServiceProvider;
 use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -65,6 +66,8 @@ class ModuleQueueTable
                     ->modalDescription(fn (ModuleQueueItem $record) => $record->action === ModuleQueueItem::RENEW
                         ? __('The domain is read from the registrar first, and renewed only if it still expires before the date it is paid until.')
                         : __('The account is removed from the server.'))
+                    // Deleting an account from the server asks who is at the keyboard, as Terminate does
+                    ->schema(fn (ModuleQueueItem $record) => $record->action === ModuleQueueItem::TERMINATE ? [self::passwordField()] : [])
                     ->action(function (ModuleQueueItem $record) {
                         if (app(ModuleQueue::class)->retry($record)) {
                             Notification::make()->title(__('Done'))->success()->send();
@@ -86,5 +89,16 @@ class ModuleQueueTable
                         Notification::make()->title(__('Marked resolved'))->success()->send();
                     }),
             ]);
+    }
+
+    /** "Your password", asked before a retry that deletes an account from its server (as the service's Terminate). */
+    public static function passwordField(): TextInput
+    {
+        return TextInput::make('confirm_password')
+            ->label('Your password')
+            ->password()
+            ->autocomplete('current-password')
+            ->required()
+            ->currentPassword();
     }
 }

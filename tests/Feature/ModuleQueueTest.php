@@ -185,7 +185,17 @@ class ModuleQueueTest extends TestCase
         $this->actingAs($this->admin);
         Livewire::test(ListModuleQueue::class)
             ->assertCanSeeTableRecords([$item])
-            ->callAction(TestAction::make('retry')->table($item))
+            ->callAction(TestAction::make('retry')->table($item), ['confirm_password' => 'wrong'])
+            ->assertHasFormErrors(['confirm_password']);
+        $this->assertNotSame(ServiceStatus::Terminated, $service->refresh()->status, 'deleting an account asks for the password');
+
+        Livewire::test(ListModuleQueue::class)
+            ->callAction(TestAction::make('retryAll'), ['confirm_password' => 'wrong'])
+            ->assertHasFormErrors(['confirm_password']);
+        $this->assertNotSame(ServiceStatus::Terminated, $service->refresh()->status, 'Retry all too, while a termination is open');
+
+        Livewire::test(ListModuleQueue::class)
+            ->callAction(TestAction::make('retry')->table($item), ['confirm_password' => 'password'])
             ->assertNotified(__('Done'));
 
         $this->assertSame(ServiceStatus::Terminated, $service->refresh()->status);

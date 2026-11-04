@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ModuleQueue\Pages;
 
 use App\Actions\ModuleQueue;
 use App\Filament\Resources\ModuleQueue\ModuleQueueItemResource;
+use App\Filament\Resources\ModuleQueue\Tables\ModuleQueueTable;
 use App\Models\ModuleQueueItem;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -52,6 +53,8 @@ class ListModuleQueue extends ListRecords
                 ->visible(fn () => ModuleQueueItem::query()->open()->exists())
                 ->requiresConfirmation()
                 ->modalDescription(__('Every open item is tried again now, terminations and domain renewals too.'))
+                // A termination deletes the account from its server: the admin's password, as Terminate asks for
+                ->schema(fn () => ModuleQueueItem::query()->open()->where('action', ModuleQueueItem::TERMINATE)->exists() ? [ModuleQueueTable::passwordField()] : [])
                 ->action(function () {
                     $queue = app(ModuleQueue::class);
                     $items = ModuleQueueItem::query()->open()->with('service')->orderBy('id')->get();

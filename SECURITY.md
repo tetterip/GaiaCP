@@ -17,7 +17,7 @@ you'd rather not be.
 
 ## Supported versions
 
-GaiaCP is in **alpha**: only the latest release gets security fixes. Update from Settings → System → Updates (or
+GaiaCP is in **beta**: only the latest release gets security fixes. Update from Settings → System → Updates (or
 `php artisan gaiacp:update`), which backs up first.
 
 ## Already by design
