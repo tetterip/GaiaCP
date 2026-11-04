@@ -390,7 +390,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   same way once they scroll out of view: `BasePage::stickyFormActions()` in `AppServiceProvider` (resource create / edit
   pages, both profile pages), `->sticky()` on custom pages' footer actions (`EditEmailTemplate`), all on the right with
   Save rightmost (`BasePage::alignFormActionsEnd()`; both `EditProfile`s override Filament's left-pinned profile), styled like the Save
-  bar by `resources/views/filament/sticky-actions.blade.php` (HEAD_END in both panels). A page joins with `$cluster`, a `$navigationGroup`, a `$navigationSort`
+  bar by `resources/views/filament/sticky-actions.blade.php` (HEAD_END in both panels). Buttons that open a menu get a
+  chevron and menus grow to their longest choice from `resources/views/filament/menu-buttons.blade.php` (also HEAD_END in both). A page joins with `$cluster`, a `$navigationGroup`, a `$navigationSort`
   inside its group's range and `SettingsCard::settingsDescription()` for its card. A payment plugin's settings page uses
   `PaymentMethodPage`: listed on Settings → Payment methods (`PaymentMethodsSettings`, every plugin with payment modules)
   and nested under it in the sub-navigation, with no card of its own. `PluginSwitch` puts an On switch (= the plugin's

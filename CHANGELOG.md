@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Buttons that open a menu (a client's Client area and Credit, a service's Account and Price, the visitors'
+  language) show a small arrow after their label, in both panels. Menus grow to fit their longest choice instead of
+  cutting it off (most Greek labels were cut).
 - Domain pricing: **Import from registrar** reads each TLD's cost from easy.gr or Enom and adds or updates TLDs with
   cost + markup; Settings → Domains → **Update registrar costs daily** keeps the costs current and rings the bell when a
   TLD starts to sell at a loss (EasyGr 1.2.0, Enom 1.3.0).

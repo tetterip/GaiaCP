@@ -150,6 +150,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.links')->render())
             // Form buttons that float at the foot of a long form look like the Settings pages' Save bar
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.sticky-actions')->render())
+            // Buttons that open a menu show a chevron after their label
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.menu-buttons')->render())
             // No empty toolbar row over a table's search on a phone
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.tables')->render())
             // "g" / "n" sequences and the "?" list (App\Filament\KeyboardShortcuts)
