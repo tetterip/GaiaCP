@@ -171,16 +171,23 @@ final class IncomeForecast
             ->lazyById(1000);
 
         foreach ($services as $service) {
+            // Read once per service: each attribute read casts again, and a service can have dozens of due dates
             $due = $service->next_due_date;
+            $cycle = $service->billing_cycle;
+            $anchor = $service->anchorDay();
             $cost = (int) $this->domainCost($service);
+            $cents = Currencies::toBase($service->price_cents, $service->currency);
+            $from = $service->new_price_from !== null && $service->new_price_cents !== null ? $service->new_price_from : null;
+            $newCents = $from ? Currencies::toBase($service->new_price_cents, $service->currency) : $cents;
 
             while ($due->lessThanOrEqualTo($end)) {
-                $dues[] = ['service' => $service, 'due' => $due, 'cents' => Currencies::toBase($service->priceOn($due), $service->currency), 'cost' => $cost, 'overdue' => $due->lessThan($this->today)];
-                if (! $service->billing_cycle->isRecurring()) {
+                // = Service::priceOn($due), in the base currency
+                $dues[] = ['service' => $service, 'due' => $due, 'cents' => $from && ! $due->lt($from) ? $newCents : $cents, 'cost' => $cost, 'overdue' => $due->lessThan($this->today)];
+                if (! $cycle->isRecurring()) {
                     break; // a one-time service is owed once
                 }
 
-                $due = $service->billing_cycle->advance($due, $service->anchorDay());
+                $due = $cycle->advance($due, $anchor);
             }
         }
 
