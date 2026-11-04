@@ -3780,7 +3780,6 @@
     "Module queue": "Ουρά module",
     "Module retries": "Επαναλήψεις module",
     "No longer needed": "Δεν χρειάζεται πια",
-    "Nothing failed": "Δεν απέτυχε τίποτα",
     "Nothing is retried by itself (Settings → Automation → Retry failed actions).": "Τίποτα δεν ξαναδοκιμάζεται αυτόματα (Ρυθμίσεις → Αυτοματισμοί → Επανάληψη αποτυχημένων ενεργειών).",
     "Nothing is sent to the server: use it when you did it there by hand, or it is no longer needed.": "Δεν στέλνεται τίποτα στον server: χρησιμοποίησέ το όταν το έκανες εκεί με το χέρι ή όταν δεν χρειάζεται πια.",
     "Register or transfer the domain": "Καταχώριση ή μεταφορά domain",
@@ -3808,5 +3807,8 @@
     "Only :count of :name left.": "Έμειναν μόνο :count από το :name.",
     "Out of stock": "Εξαντλήθηκε",
     "Quantity available": "Διαθέσιμη ποσότητα",
-    "Stock": "Απόθεμα"
+    "Stock": "Απόθεμα",
+    "All good": "Όλα είναι εντάξει",
+    "No panel or registrar action is waiting to be retried.": "Καμία ενέργεια σε panel ή registrar δεν περιμένει νέα προσπάθεια.",
+    "Nothing resolved yet": "Τίποτα επιλυμένο ακόμα"
 }

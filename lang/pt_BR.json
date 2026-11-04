@@ -3780,7 +3780,6 @@
     "Module queue": "Fila de módulos",
     "Module retries": "Repetições de módulos",
     "No longer needed": "Já não é necessário",
-    "Nothing failed": "Nada falhou",
     "Nothing is retried by itself (Settings → Automation → Retry failed actions).": "Nada é repetido automaticamente (Definições → Automação → Repetir ações com falha).",
     "Nothing is sent to the server: use it when you did it there by hand, or it is no longer needed.": "Nada é enviado ao servidor: use quando o fez lá manualmente ou já não é necessário.",
     "Register or transfer the domain": "Registar ou transferir o domínio",
@@ -3808,5 +3807,8 @@
     "Only :count of :name left.": "Restam só :count de :name.",
     "Out of stock": "Esgotado",
     "Quantity available": "Quantidade disponível",
-    "Stock": "Estoque"
+    "Stock": "Estoque",
+    "All good": "Tudo em ordem",
+    "No panel or registrar action is waiting to be retried.": "Nenhuma ação do painel ou do registrador aguarda nova tentativa.",
+    "Nothing resolved yet": "Nada resolvido ainda"
 }

@@ -51,7 +51,9 @@ class ModuleQueueTable
                     ->visible(fn ($livewire) => ($livewire->activeTab ?? null) === 'resolved'),
             ])
             ->defaultSort('last_attempt_at', 'desc')
-            ->emptyStateHeading(__('Nothing failed'))
+            // Nothing open is good news: a green tick; the Resolved tab keeps the plain empty state
+            ->emptyState(fn ($livewire) => ($livewire->activeTab ?? 'open') === 'resolved' ? null : view('filament.services.module-queue-empty'))
+            ->emptyStateHeading(__('Nothing resolved yet'))
             ->emptyStateDescription(__('A panel or registrar action that fails (set up, suspend, unsuspend, terminate, domain renewal) waits here to be retried.'))
             ->recordActions([
                 Action::make('retry')
