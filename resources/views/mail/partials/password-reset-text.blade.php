@@ -16,5 +16,5 @@
 {{ $salutation }}
 
 <x-mail::subcopy>
-{{ __("If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:", ['actionText' => $actionText]) }} <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
+{{ __("If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:", ['actionText' => $actionText]) }} <x-mail::long-url :url="$actionUrl" />
 </x-mail::subcopy>

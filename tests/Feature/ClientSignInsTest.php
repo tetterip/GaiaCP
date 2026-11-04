@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\ClientAreaAccess;
 use App\ClientSessions\ClientSessions;
 use App\Enums\UserRole;
 use App\Filament\Client\Pages\SignIns;
@@ -95,6 +96,20 @@ class ClientSignInsTest extends TestCase
         $this->get('/dashboard')->assertRedirect();
         $this->get('/email-verification/prompt')->assertRedirect(Filament::getPanel('client')->getLoginUrl());
         $this->assertFalse(Auth::guard('client')->check());
+    }
+
+    public function test_a_client_whose_login_is_turned_off_while_signed_in_goes_to_the_login_not_a_403(): void
+    {
+        $user = $this->clientUser();
+        $this->actingAs($user, 'client')->get('/dashboard')->assertOk();
+
+        app(ClientAreaAccess::class)->disable($user->client);
+        $user->refresh(); // the signed-in copy, as the next request reads it
+
+        $this->get('/dashboard')->assertRedirect();
+        $this->assertFalse(Auth::guard('client')->check());
+        $this->assertSame(0, ClientSession::query()->count());
+        $this->get('/dashboard')->assertRedirect(Filament::getPanel('client')->getLoginUrl());
     }
 
     public function test_signing_out_ends_the_device_and_a_wrong_password_is_in_the_history(): void

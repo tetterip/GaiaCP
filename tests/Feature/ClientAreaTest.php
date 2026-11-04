@@ -92,12 +92,14 @@ class ClientAreaTest extends TestCase
         $this->get('/login')->assertOk();
 
         $this->actingAs($clientUser, 'client')->get('/dashboard')->assertOk()->assertSee($clientUser->client->first_name);
-        $this->actingAs($clientUser, 'web')->get('/admin/clients')->assertForbidden();
+        $this->actingAs($clientUser, 'web')->get('/admin/clients')->assertRedirect(Filament::getPanel('admin')->getLoginUrl());
+        $this->assertGuest('web');
     }
 
     public function test_admins_cannot_open_the_client_area_as_themselves(): void
     {
-        $this->actingAs(User::factory()->create(), 'client')->get('/dashboard')->assertForbidden();
+        $this->actingAs(User::factory()->create(), 'client')->get('/dashboard')->assertRedirect(Filament::getPanel('client')->getLoginUrl());
+        $this->assertGuest('client');
     }
 
     public function test_a_turned_off_login_cannot_open_the_client_area(): void
@@ -109,7 +111,8 @@ class ClientAreaTest extends TestCase
             ->callAction('disableClientArea');
 
         $this->assertFalse($clientUser->refresh()->active);
-        $this->actingAs($clientUser, 'client')->get('/dashboard')->assertForbidden();
+        $this->actingAs($clientUser, 'client')->get('/dashboard')->assertRedirect(Filament::getPanel('client')->getLoginUrl());
+        $this->assertGuest('client');
     }
 
     public function test_staff_with_clients_cant_turn_a_disabled_admin_linked_to_a_client_back_on(): void

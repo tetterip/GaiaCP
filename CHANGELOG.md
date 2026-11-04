@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixes from the first tries on staging: a client whose client area login is turned off (or an admin user turned off)
+  while signed in now lands on the login page instead of a 403 on every page; a password reset link opened in a
+  browser that is signed in shows the form (it signs that browser out of the panel) instead of the dashboard; the long
+  link under the button of the password reset email breaks over lines instead of scrolling sideways (Yahoo Mail); the
+  two-factor code boxes on the sign-in page are centred.
 - Billing: a payment notice's page shows the amount paid, the **Balance due** and a **Payments** section (date,
   services, method, reference, amount); an invoice's page shows its status (Settled, Partly credited, Credited), the
   notice's due date, the notice's payments and its credit notes.

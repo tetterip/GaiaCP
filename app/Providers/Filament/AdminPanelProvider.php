@@ -8,11 +8,13 @@ use App\Filament\GlobalSearch\GlobalSearchProvider;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\RequestPasswordReset;
+use App\Filament\Pages\Auth\ResetPassword;
 use App\Http\Controllers\Admin\ServerPanelLoginController;
 use App\Http\Controllers\Admin\TicketAttachmentController;
 use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\AlertWhenCronStops;
 use App\Http\Middleware\ApplyTheme;
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\BlockBannedIps;
 use App\Http\Middleware\PrepareInstaller;
 use App\Http\Middleware\RequireAdminTwoFactor;
@@ -28,7 +30,6 @@ use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\ThemeMode;
-use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -56,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(Login::class)
             // "Forgot password?" link: an email with a reset link to admins who can log in (2FA still asked after)
-            ->passwordReset(RequestPasswordReset::class)
+            ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
             ->profile(EditProfile::class, isSimple: false)
             // Each admin turns it on from their profile (user menu); Settings → Login security can require it of super
             // admins or every admin, read per request by RequireAdminTwoFactor (never on the demo, whose logins are shared)
@@ -152,6 +153,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.sticky-actions')->render())
             // Buttons that open a menu show a chevron after their label
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.menu-buttons')->render())
+            // The two-factor code boxes centred on the sign-in page
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.one-time-code')->render())
             // No empty toolbar row over a table's search on a phone
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.tables')->render())
             // "g" / "n" sequences and the "?" list (App\Filament\KeyboardShortcuts)

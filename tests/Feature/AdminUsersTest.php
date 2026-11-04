@@ -10,6 +10,7 @@ use App\Models\ActivityLog;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Filament\Auth\Pages\Login;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
@@ -101,8 +102,10 @@ class AdminUsersTest extends TestCase
         $this->assertFalse($other->fresh()->active);
         $this->assertDatabaseHas('activity_logs', ['event' => 'user.deactivated']);
 
+        // Still signed in when turned off: signed out and sent to the login, not a 403 on every page
         $this->actingAs($other->fresh());
-        $this->get(SettingsCluster::getUrl())->assertForbidden();
+        $this->get(SettingsCluster::getUrl())->assertRedirect(Filament::getPanel('admin')->getLoginUrl());
+        $this->assertGuest();
 
         auth()->logout();
         Livewire::test(Login::class)
