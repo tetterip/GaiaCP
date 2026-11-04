@@ -312,6 +312,12 @@
         border-radius: calc(var(--theme-radius-control) - 2px);
     }
 
+    /* Filament 5.11 wraps a form's tabs in a tablist; its own CSS lays them out in a row. Kept here too, so the tabs
+       never stack in a narrow box when the published Filament CSS (public/css/filament) is older than the views */
+    .fi-sc-tabs > .fi-tabs > .fi-sc-tabs-tablist {
+        display: contents;
+    }
+
     /* A list's tabs: underlined, with their counts, on a line across the page */
     .fi-resource-list-records-page .fi-tabs:not(.fi-contained) {
         margin-inline: 0;
