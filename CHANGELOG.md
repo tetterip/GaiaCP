@@ -14,6 +14,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   an order's items no longer check each row's payments one by one for Record payment, and an admin page no longer runs
   the setup guide's checks for the tour's last card once the guide is hidden.
 - REST API: `paid_from` / `paid_to` on `GET /payments` must be dates (a 422 otherwise).
+- Updated Filament (5.11), Laravel (13.40), ImapEngine (1.25.7: never signs in over an unencrypted connection when
+  STARTTLS fails), svg-sanitize and PHPUnit, with Greek for Filament's new texts.
 
 ## [0.7.0] - 2026-11-04
 
