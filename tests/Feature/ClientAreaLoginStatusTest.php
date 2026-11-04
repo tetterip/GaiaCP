@@ -22,7 +22,7 @@ class ClientAreaLoginStatusTest extends TestCase
     {
         $login = function (string $email, array $attributes = []): Client {
             $client = Client::factory()->create(['email' => $email]);
-            User::factory()->create(['client_id' => $client->id, 'email' => $email, 'role' => UserRole::Client] + $attributes);
+            User::factory()->create($attributes + ['client_id' => $client->id, 'email' => $email, 'role' => UserRole::Client]);
 
             return $client;
         };
