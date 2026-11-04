@@ -3746,5 +3746,8 @@
     "Percent": "Percentuale",
     "Preferred": "Preferito",
     "Rounding": "Arrotondamento",
-    "Sync costs": "Sincronizza i costi"
+    "Sync costs": "Sincronizza i costi",
+    "Login on": "Accesso attivo",
+    "Login turned off": "Accesso disattivato",
+    "No login": "Nessun accesso"
 }

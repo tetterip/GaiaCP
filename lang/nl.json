@@ -3746,5 +3746,8 @@
     "Percent": "Percentage",
     "Preferred": "Voorkeur",
     "Rounding": "Afronding",
-    "Sync costs": "Kosten synchroniseren"
+    "Sync costs": "Kosten synchroniseren",
+    "Login on": "Inloggen aan",
+    "Login turned off": "Inloggen uitgeschakeld",
+    "No login": "Geen login"
 }

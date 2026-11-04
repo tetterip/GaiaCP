@@ -71,6 +71,8 @@
                     @endif
                     {{ $client->status->getLabel() }}
                 </div>
+                @php($login = \App\Enums\ClientAreaLogin::for($client))
+                <div class="gx-box-sub gx-client-login gx-client-login-{{ $login->value }}">{{ __('Client area') }}: {{ $login->getLabel() }}</div>
             </div>
         </div>
     </section>
@@ -80,6 +82,8 @@
         .dark .gx-box-warn { background: color-mix(in oklab, var(--warning-500) 16%, transparent); }
         .gx-box-warn > * { color: var(--warning-700) !important; }
         .dark .gx-box-warn > * { color: var(--warning-300) !important; }
+        .gx-client-login-off { color: var(--danger-600) !important; font-weight: 600; }
+        .dark .gx-client-login-off { color: var(--danger-400) !important; }
         .gx-client-contact a:hover, .gx-box-sub a:hover { text-decoration: underline; }
     </style>
 </x-filament-widgets::widget>

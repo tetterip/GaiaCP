@@ -3746,5 +3746,8 @@
     "Percent": "Prozent",
     "Preferred": "Bevorzugt",
     "Rounding": "Rundung",
-    "Sync costs": "Kosten abgleichen"
+    "Sync costs": "Kosten abgleichen",
+    "Login on": "Anmeldung aktiv",
+    "Login turned off": "Anmeldung deaktiviert",
+    "No login": "Keine Anmeldung"
 }

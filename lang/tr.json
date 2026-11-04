@@ -3746,5 +3746,8 @@
     "Percent": "Yüzde",
     "Preferred": "Tercih edilen",
     "Rounding": "Yuvarlama",
-    "Sync costs": "Maliyetleri eşitle"
+    "Sync costs": "Maliyetleri eşitle",
+    "Login on": "Giriş açık",
+    "Login turned off": "Giriş kapalı",
+    "No login": "Giriş yok"
 }

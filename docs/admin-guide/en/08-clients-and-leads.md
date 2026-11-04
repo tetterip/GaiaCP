@@ -28,7 +28,10 @@ The buttons at the top:
 - **Client area** → **Invite to client area** emails them a link to set their password; **Log in as client** opens the
   client area as they see it, with a bar to go back (it works before they are invited, and leaves no trace in their
   sign-ins). The same menu turns their login off and on, and **Set password** (optionally emailing it) or **Send
-  password reset link** helps a client who can't log in.
+  password reset link** helps a client who can't log in. Turning the login off keeps the client, their services and
+  emails as they are; only the client area stops letting them in. A login made by Log in as client stays off until you
+  invite them or set a password. The **Contact** card shows the login (on, turned off, no login, admin user), and the
+  client list has the same **Client area** column and filter.
 - **Credit** → add or take off credit, when client credit is on.
 - **Suggestions** (with the AI assistant on, for admins who also see billing): what the client might buy, signs they
   may leave and what to look after, from their services, prices, payment history and ticket subjects. Nothing is saved.
