@@ -43,7 +43,7 @@ class DomainSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['domains.nameservers', 'domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.ssl_product', 'domains.ssl_discount', 'domains.ssl_own_hosting'];
+        return ['domains.nameservers', 'domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.sync_costs', 'domains.ssl_product', 'domains.ssl_discount', 'domains.ssl_own_hosting'];
     }
 
     public function form(Schema $schema): Schema
@@ -72,6 +72,9 @@ class DomainSettings extends SettingsFormPage
                         Toggle::make('domains.late_fees')
                             ->label('Charge grace and redemption fees')
                             ->helperText(__('Once a domain has expired, its unpaid payment notice gets the TLD\'s grace fee, and the redemption fee on top after the grace period. Prices per TLD under Registrars.')),
+                        Toggle::make('domains.sync_costs')
+                            ->label('Update registrar costs daily')
+                            ->helperText(__('Every night, the registrars that can tell their prices (easy.gr, Enom) update the cost of the TLDs they are the preferred registrar of. Your selling prices never change by themselves: the bell rings when a TLD starts to sell for less than it costs.')),
                     ]),
                 Section::make(__('SSL with domains'))
                     ->description(__('Offered when a client orders a domain on its own (domain search, Order page, public order page): a certificate for the same name, its own service in the same order and payment notice.'))
@@ -113,7 +116,7 @@ class DomainSettings extends SettingsFormPage
         $values['domains.ssl_product'] = filled($values['domains.ssl_product'] ?? null) ? (int) $values['domains.ssl_product'] : null;
         $values['domains.ssl_discount'] = max(0, min(100, (int) ($values['domains.ssl_discount'] ?? 0)));
 
-        foreach (['domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees'] as $key) {
+        foreach (['domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.sync_costs'] as $key) {
             $values[$key] = (bool) $values[$key];
         }
 

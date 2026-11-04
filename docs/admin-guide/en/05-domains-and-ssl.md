@@ -33,6 +33,26 @@ Each TLD can also keep:
   for their first term; renewals stay at the renew price. Clients see the normal price struck through on the order
   page, the domain search and Domain prices; the day after the sale the normal prices are back by themselves.
 
+### Import from a registrar
+
+**Import from registrar** (top of Domain pricing) reads what a registrar charges for each TLD, like WHMCS's TLD
+import. It shows only for registrars whose plugin can tell its prices: easy.gr lists every TLD it sells (each for its
+shortest term, e.g. 2 years for .gr); Enom is asked about the TLDs you name (at most 50) or else the ones it is the
+preferred registrar of, and gives 1-year prices in USD, so USD must be under Settings → Currencies.
+
+1. Pick the registrar and the **markup**: a percentage, plus a fixed amount, rounded up to the cent, to a whole amount
+   or to .99. Choose whether TLDs already on the list get only the new **cost** (the default) or a new price from it
+   too, whether this registrar becomes their preferred registrar, and whether new TLDs are offered at once.
+2. Tick the TLDs to import. Each shows the cost to register / renew / transfer, the price it would get and its price
+   now. The TLDs already on the list are ticked.
+
+New TLDs get the registrar as their preferred registrar and prices from the cost and the markup (the redemption fee
+too, when the registrar gives one). The import is in the activity log.
+
+Settings → Domains → **Update registrar costs daily** keeps the costs current every night at 04:15, for the TLDs each
+registrar is the preferred registrar of. It never changes your selling prices or adds TLDs: when a TLD starts to sell
+for less than it costs, the bell rings for the admins of products and domain settings.
+
 ## Domain settings
 
 Settings → Products & domains → **Domains**:
@@ -43,6 +63,7 @@ Settings → Products & domains → **Domains**:
 - **Renew at the registrar when a payment is recorded** (on by default). Off, a payment only moves the due date.
 - **Free domains renew only with active hosting**: a domain priced 0 is renewed by the daily run while the client
   still has hosting on it.
+- **Update registrar costs daily**: see Import from a registrar above.
 - **Allow IDN domains**: names in Greek or other letters.
 - **Charge grace and redemption fees**: once the expiry has passed, the domain's unpaid notice gets the TLD's grace
   fee, and the redemption fee on top after its grace days.

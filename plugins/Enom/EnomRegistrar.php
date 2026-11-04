@@ -7,21 +7,25 @@ use App\Provisioning\ChecksAvailability;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
+use App\Provisioning\ListsTldPrices;
 use App\Provisioning\ManagesChildNameservers;
 use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ManagesRegistrarLock;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\TldPrice;
 use App\Support\EppPhone;
 use Carbon\CarbonImmutable;
+use SimpleXMLElement;
 use Throwable;
 
 /**
  * Enom's reseller API commands, with the field names WHMCS-era modules send (Check, Purchase, Extend, TP_CreateOrder,
  * GetDomainInfo, GetDNS, ModifyNS, SynchAuthInfo, GetContacts, Contacts, RegisterNameServer, UpdateNameServer,
  * DeleteNameServer, GetRegLock, SetRegLock). A domain goes as SLD (the first label) and TLD (the rest).
- * Enom does not hand back EPP codes: it emails them to the registrant (EmailsEppCode).
+ * Enom does not hand back EPP codes: it emails them to the registrant (EmailsEppCode). Its costs come from
+ * PE_GetResellerPrice, one call per TLD and kind (PRODUCT_TYPES), for 1 year in USD.
  */
-class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCode, ManagesChildNameservers, ManagesDomainContacts, ManagesRegistrarLock
+class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCode, ListsTldPrices, ManagesChildNameservers, ManagesDomainContacts, ManagesRegistrarLock
 {
     /** Enom takes NS1..NS12. */
     public const MAX_NAMESERVERS = 12;
@@ -31,6 +35,12 @@ class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCod
 
     /** Enom's contact prefix for each of GaiaCP's roles (DomainContact::ROLES). */
     public const ROLES = ['registrant' => 'Registrant', 'admin' => 'Admin', 'tech' => 'Tech', 'billing' => 'AuxBilling'];
+
+    /** PE_GetResellerPrice's ProductType for each kind of price. */
+    public const PRODUCT_TYPES = ['register' => 10, 'renew' => 16, 'transfer' => 19];
+
+    /** TLDs read in one go: three calls each. */
+    public const MAX_PRICED_TLDS = 50;
 
     public function __construct(private EnomClient $client) {}
 
@@ -54,6 +64,51 @@ class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCod
             '211' => false,
             default => throw new ProvisioningException("Enom Check returned an unexpected response for {$domain}."),
         };
+    }
+
+    /** Enom has no list of every TLD with its price here: it is asked about the TLDs given. */
+    public function listsAllTlds(): bool
+    {
+        return false;
+    }
+
+    public function tldPrices(?array $tlds = null): array
+    {
+        $tlds = array_values(array_unique(array_map(fn (string $tld) => '.'.ltrim(mb_strtolower(trim($tld)), '.'), $tlds ?? [])));
+
+        if ($tlds === []) {
+            throw new ProvisioningException('Name the TLDs to read from Enom.');
+        }
+
+        if (count($tlds) > self::MAX_PRICED_TLDS) {
+            throw new ProvisioningException('Enom is asked about at most '.self::MAX_PRICED_TLDS.' TLDs at a time.');
+        }
+
+        return array_map(fn (string $tld) => new TldPrice(
+            tld: $tld,
+            years: 1,
+            currency: 'USD',
+            registerCents: $this->resellerPrice($tld, self::PRODUCT_TYPES['register']),
+            renewCents: $this->resellerPrice($tld, self::PRODUCT_TYPES['renew']),
+            transferCents: $this->resellerPrice($tld, self::PRODUCT_TYPES['transfer']),
+        ), $tlds);
+    }
+
+    /** One price of a TLD (".com" goes as "com"); null when Enom does not sell it. */
+    private function resellerPrice(string $tld, int $productType): ?int
+    {
+        $xml = $this->client->call('PE_GetResellerPrice', ['tld' => ltrim($tld, '.'), 'ProductType' => $productType], timeout: 30);
+        $enabled = self::first($xml, 'productenabled');
+
+        return $enabled !== null && strtolower($enabled) === 'false' ? null : TldPrice::cents(self::first($xml, 'price'));
+    }
+
+    /** The text of the first element named $name anywhere in the reply, whatever its case. */
+    private static function first(SimpleXMLElement $xml, string $name): ?string
+    {
+        $found = $xml->xpath("//*[translate(local-name(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '{$name}']");
+
+        return $found ? trim((string) $found[0]) : null;
     }
 
     public function expiryDate(string $domain): CarbonImmutable

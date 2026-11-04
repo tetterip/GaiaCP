@@ -173,6 +173,10 @@ return [
         // added to unpaid payment notices once the domain has expired.
         'late_fees' => false,
 
+        // Read each registrar's TLD costs every night (gaiacp:sync-tld-costs) for the TLDs it is the preferred
+        // registrar of. Only costs change; the bell rings when a TLD starts to sell at a loss.
+        'sync_costs' => false,
+
         // An SSL certificate product (id) offered with a domain ordered on its own, at ssl_discount percent off its
         // first period (App\Support\DomainSsl); null = none.
         'ssl_product' => null,

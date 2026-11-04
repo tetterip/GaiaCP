@@ -6,9 +6,11 @@ use App\Models\Client;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
+use App\Provisioning\ListsTldPrices;
 use App\Provisioning\ManagesChildNameservers;
 use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\TldPrice;
 use App\Support\EppPhone;
 use Carbon\CarbonImmutable;
 use Throwable;
@@ -17,7 +19,7 @@ use Throwable;
  * Port of easy.gr's WHMCS registrar module (modules/registrars/easy/easy.php).
  * Action codes and field names are the module's; keep to them.
  */
-class EasyRegistrar implements ChecksAvailability, DomainRegistrar, ManagesChildNameservers, ManagesDomainContacts
+class EasyRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPrices, ManagesChildNameservers, ManagesDomainContacts
 {
     /** Whether a domain is free (easy.gr's whoisservers.php for WHMCS). */
     public const AVAILABILITY = 0;
@@ -48,6 +50,9 @@ class EasyRegistrar implements ChecksAvailability, DomainRegistrar, ManagesChild
 
     public const SYNC = 19;
 
+    /** The account's prices for every TLD (easy_GetTldPricing in the WHMCS module). */
+    public const TLD_PRICES = 33;
+
     /** The module sends exactly ns1..ns4. */
     public const MAX_NAMESERVERS = 4;
 
@@ -67,6 +72,41 @@ class EasyRegistrar implements ChecksAvailability, DomainRegistrar, ManagesChild
     public function available(string $domain): bool
     {
         return $this->client->available($domain);
+    }
+
+    public function listsAllTlds(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Action 33: each TLD's prices for its shortest term (min_period years, e.g. 2 for .gr): min_buy to register,
+     * min_ren to renew, transfer and redemption, in EUR, as the WHMCS module imports them.
+     */
+    public function tldPrices(?array $tlds = null): array
+    {
+        $wanted = $tlds === null ? null : array_map(fn (string $tld) => '.'.ltrim(mb_strtolower(trim($tld)), '.'), $tlds);
+        $prices = [];
+
+        foreach ($this->client->tldPrices() as $entry) {
+            $tld = '.'.ltrim(mb_strtolower(trim((string) $entry['tld'])), '.');
+
+            if ($wanted !== null && ! in_array($tld, $wanted, true)) {
+                continue;
+            }
+
+            $prices[] = new TldPrice(
+                tld: $tld,
+                years: max(1, (int) round((float) ($entry['min_period'] ?? 1))),
+                currency: 'EUR',
+                registerCents: TldPrice::cents($entry['min_buy'] ?? null),
+                renewCents: TldPrice::cents($entry['min_ren'] ?? null),
+                transferCents: TldPrice::cents($entry['transfer'] ?? null),
+                redemptionCents: TldPrice::cents($entry['redemption'] ?? null),
+            );
+        }
+
+        return $prices;
     }
 
     public function expiryDate(string $domain): CarbonImmutable

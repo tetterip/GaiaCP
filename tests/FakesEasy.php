@@ -23,6 +23,9 @@ trait FakesEasy
     /** @var array<int, array<string, string>> action => errors map to return with done=0 */
     protected array $easyFailures = [];
 
+    /** @var list<array<string, mixed>> action 33's entries: {tld, min_period, min_buy, min_ren, transfer, redemption} */
+    protected array $easyTldPrices = [];
+
     /** The registrar account the fake answers for; sells .gr, .com and .com.gr. */
     protected Registrar $easyRegistrar;
 
@@ -109,6 +112,8 @@ trait FakesEasy
                     unset($this->easyDomains[$domain]['hosts'][$params['ns']]);
 
                     return $ok();
+                case EasyRegistrar::TLD_PRICES: // the entries, then done and errors, as the WHMCS module reads them
+                    return Http::response([...$this->easyTldPrices, 'done' => 1, 'errors' => []]);
                 case EasyRegistrar::EPP_CODE:
                     return isset($this->easyDomains[$domain]) ? $ok(['response' => $this->easyDomains[$domain]['epp'] ?? 'Epp-Code-1']) : $missing;
             }

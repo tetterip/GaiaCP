@@ -120,6 +120,12 @@ never calls a panel API directly.
   `Registrar::forDomain()` = the TLD's preferred registrar (`Tld::match()`, longest TLD match) while active; `RegistrarFactory` builds the
   `DomainRegistrar` from the account's module (`PluginManager::enabledRegistrarModule()`). Only `DomainLifecycle` calls a registrar; `RecordPayment` renews an
   active/suspended yearly domain through it, outside the transaction (a failure keeps the payment).
+- **TLD import and cost sync** (`App\Actions\ImportTldPrices`): a `DomainRegistrar` implementing `ListsTldPrices`
+  returns `TldPrice`s (easy.gr action 33 for every TLD at its shortest term, EUR; Enom `PE_GetResellerPrice` per TLD
+  and ProductType 10/16/19, 1 year, USD). Settings → Domain pricing → Import from registrar (`ImportTldPricesAction`,
+  a two-step wizard; replies cached 15 minutes as plain arrays) stores costs and, for new TLDs (or when asked), prices
+  = cost + % + fixed, rounded; `gaiacp:sync-tld-costs` (04:15, `domains.sync_costs`) only updates costs of each
+  registrar's preferred TLDs and logs `tld.selling_at_loss` (bell) for TLDs that newly sell at a loss.
 - **Email Notifications** (`plugins/EmailRegistrar`, module `email`, account created by the `tlds` migration, no
   login): for TLDs with no integrated registrar. Its module is a `ManualRegistrar` (`Registrar::isManual()`): every
   call emails the admins (`RegistrarRequestMail`, active admins with system emails on and Services access; none
