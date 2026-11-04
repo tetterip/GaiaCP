@@ -3708,5 +3708,8 @@
     "Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.": "Κάθε βράδυ σβήνονται τα αρχεία των tickets που έκλεισαν πιο παλιά, για να ελευθερωθεί χώρος. Τα μηνύματα μένουν και γράφουν το αρχείο ως διαγραμμένο. Κενό: κρατιούνται.",
     "file deleted": "το αρχείο διαγράφηκε",
     "Attachment days": "Ημέρες συνημμένων",
-    "Before": "Πριν από"
+    "Before": "Πριν από",
+    "Login on": "Ενεργή σύνδεση",
+    "Login turned off": "Απενεργοποιημένη σύνδεση",
+    "No login": "Χωρίς σύνδεση"
 }

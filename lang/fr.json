@@ -3708,5 +3708,8 @@
     "Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.": "Chaque nuit, les fichiers des tickets fermés depuis plus longtemps sont supprimés pour libérer de l'espace. Les messages restent et indiquent le fichier comme supprimé. Vide : on les garde.",
     "file deleted": "fichier supprimé",
     "Attachment days": "Jours des pièces jointes",
-    "Before": "Avant"
+    "Before": "Avant",
+    "Login on": "Connexion active",
+    "Login turned off": "Connexion désactivée",
+    "No login": "Aucune connexion"
 }

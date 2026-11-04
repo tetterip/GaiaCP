@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Clients\Tables;
 
+use App\Enums\ClientAreaLogin;
 use App\Enums\ClientStatus;
 use App\Models\Client;
 use Filament\Actions\EditAction;
@@ -15,6 +16,7 @@ class ClientsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('user'))
             ->columns([
                 TextColumn::make('last_name')
                     ->label('Name')
@@ -38,6 +40,11 @@ class ClientsTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge(),
+                TextColumn::make('client_area_login')
+                    ->label('Client area')
+                    ->state(fn (Client $record) => ClientAreaLogin::for($record))
+                    ->badge()
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->date()
                     ->sortable()
@@ -47,6 +54,12 @@ class ClientsTable
             ->filters([
                 SelectFilter::make('status')
                     ->options(ClientStatus::class),
+                SelectFilter::make('client_area_login')
+                    ->label('Client area')
+                    ->options(ClientAreaLogin::class)
+                    ->query(fn (Builder $query, array $data) => filled($data['value'] ?? null)
+                        ? ClientAreaLogin::from($data['value'])->apply($query)
+                        : null),
             ])
             ->recordActions([
                 EditAction::make(),
