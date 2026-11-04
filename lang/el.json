@@ -3788,5 +3788,17 @@
     "The domain is read from the registrar first, and renewed only if it still expires before the date it is paid until.": "Το domain διαβάζεται πρώτα από τον registrar και ανανεώνεται μόνο αν λήγει ακόμα πριν από την ημερομηνία μέχρι την οποία έχει πληρωθεί.",
     "failed action": "αποτυχημένη ενέργεια",
     "failed actions": "αποτυχημένες ενέργειες",
-    "times": "φορές"
+    "times": "φορές",
+    ":name is limited to :limit per client, and you already have :count.": "Το :name περιορίζεται σε :limit ανά πελάτη, και έχετε ήδη :count.",
+    ":name is limited to :limit per client.": "Το :name περιορίζεται σε :limit ανά πελάτη.",
+    ":name is out of stock.": "Το :name εξαντλήθηκε.",
+    "Client limit": "Όριο ανά πελάτη",
+    "How many clients can still order it, and how many one client can have. Admins can always order more.": "Πόσοι πελάτες μπορούν ακόμα να το παραγγείλουν, και πόσα μπορεί να έχει ένας πελάτης. Οι διαχειριστές μπορούν πάντα να παραγγείλουν περισσότερα.",
+    "How many more can be ordered. Each order takes one and a cancelled order gives it back; at 0 clients see it as out of stock.": "Πόσα ακόμα μπορούν να παραγγελθούν. Κάθε παραγγελία παίρνει ένα και μια ακυρωμένη παραγγελία το επιστρέφει· στο 0 οι πελάτες το βλέπουν ως εξαντλημένο.",
+    "How many services of it one client can have at once, cancelled and terminated ones not counted. 1 for a free trial.": "Πόσες υπηρεσίες του μπορεί να έχει ένας πελάτης ταυτόχρονα, χωρίς τις ακυρωμένες και τις τερματισμένες. 1 για μια δωρεάν δοκιμή.",
+    "Limit to": "Μέχρι",
+    "Only :count of :name left.": "Έμειναν μόνο :count από το :name.",
+    "Out of stock": "Εξαντλήθηκε",
+    "Quantity available": "Διαθέσιμη ποσότητα",
+    "Stock": "Απόθεμα"
 }

@@ -107,6 +107,8 @@ trait OrderForm
                         ->extraAttributes(['class' => 'gcp-product-cards'])
                         ->options(fn (Get $get) => $this->catalogue($get)->map(fn (array $entry) => $entry['name'])->all())
                         ->descriptions(fn (Get $get) => $this->catalogue($get)->map(fn (array $entry) => $entry['description'])->all())
+                        // Out of stock (Quantity available at 0): shown, not chosen
+                        ->disableOptionWhen(fn (string $value) => $value !== ClientOrder::DOMAIN_ONLY && ClientOrder::products()->firstWhere('id', (int) $value)?->inStock() === false)
                         ->required()
                         ->visible(fn (Get $get) => ! $this->hasGroupStep($get) || (filled($this->groupKey($get)) && $this->groupKey($get) !== OrderCatalogue::DOMAINS))
                         ->live()
@@ -268,7 +270,7 @@ trait OrderForm
      */
     private static function cardLabel(?string $icon, string $name, ?Product $product = null): HtmlString
     {
-        $badge = $product === null ? '' : view('filament.client.product-badges', ['sale' => $product->onSale(), 'popular' => $product->popular, 'badges' => $product->badges()])->render();
+        $badge = $product === null ? '' : view('filament.client.product-badges', ['soldOut' => ! $product->inStock(), 'sale' => $product->onSale(), 'popular' => $product->popular, 'badges' => $product->badges()])->render();
 
         $color = $product?->orderColor();
 
@@ -342,6 +344,7 @@ trait OrderForm
                 'badges' => $product->badges(),
                 'color' => $product->orderColor(),
                 'sale' => $product->onSale(),
+                'sold_out' => ! $product->inStock(),
                 'values' => collect($features)->map(fn ($name, string $key) => $product->feature($key))->all(),
                 'prices' => $cycles->mapWithKeys(fn (BillingCycle $cycle) => [$cycle->value => in_array($cycle, $product->cycles(), true) ? $this->comparePrice($product, $cycle) : null])->all(),
             ])->values()->all(),

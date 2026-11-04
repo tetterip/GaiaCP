@@ -90,6 +90,7 @@ class PublicHome extends Page
                     'name' => $product->localName(),
                     'icon' => $product->icon ?? $group['icon'],
                     'sale' => $product->onSale(),
+                    'sold_out' => ! $product->inStock(),
                     'popular' => $product->popular,
                     'badges' => $product->badges(),
                     'color' => $product->orderColor(),

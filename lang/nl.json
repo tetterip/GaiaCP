@@ -3788,5 +3788,17 @@
     "The domain is read from the registrar first, and renewed only if it still expires before the date it is paid until.": "Het domein wordt eerst bij de registrar gelezen en alleen verlengd als het nog verloopt vóór de datum tot wanneer het betaald is.",
     "failed action": "mislukte actie",
     "failed actions": "mislukte acties",
-    "times": "keer"
+    "times": "keer",
+    ":name is limited to :limit per client, and you already have :count.": ":name is beperkt tot :limit per klant, en u hebt er al :count.",
+    ":name is limited to :limit per client.": ":name is beperkt tot :limit per klant.",
+    ":name is out of stock.": ":name is uitverkocht.",
+    "Client limit": "Limiet per klant",
+    "How many clients can still order it, and how many one client can have. Admins can always order more.": "Hoeveel klanten het nog kunnen bestellen, en hoeveel één klant kan hebben. Beheerders kunnen altijd meer bestellen.",
+    "How many more can be ordered. Each order takes one and a cancelled order gives it back; at 0 clients see it as out of stock.": "Hoeveel er nog besteld kunnen worden. Elke bestelling neemt er een en een geannuleerde bestelling geeft hem terug; bij 0 zien klanten het als uitverkocht.",
+    "How many services of it one client can have at once, cancelled and terminated ones not counted. 1 for a free trial.": "Hoeveel diensten ervan één klant tegelijk kan hebben, geannuleerde en beëindigde niet meegeteld. 1 voor een gratis proefperiode.",
+    "Limit to": "Beperken tot",
+    "Only :count of :name left.": "Nog maar :count van :name over.",
+    "Out of stock": "Uitverkocht",
+    "Quantity available": "Beschikbare hoeveelheid",
+    "Stock": "Voorraad"
 }

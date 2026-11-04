@@ -90,8 +90,8 @@ class ClientOrder
      */
     public function addToCart(array $data, ?Client $client = null): string
     {
-        $this->items($data, $client);
         $lines = self::cart();
+        self::checkLimits($this->items($data, $client), $client, self::cartProducts($lines));
 
         if (count($lines) >= self::CART_LIMIT) {
             throw ValidationException::withMessages(['product' => __('Your cart is full. Place this order first, then order the rest.')]);
@@ -280,7 +280,25 @@ class ClientOrder
             throw ValidationException::withMessages(['cart' => __('Your cart is empty.')]);
         }
 
+        // Each item was within the limits on its own; together they may not be.
+        try {
+            self::checkLimits($items, $client);
+        } catch (ValidationException $e) {
+            throw ValidationException::withMessages(['cart' => collect($e->errors())->flatten()->first()]);
+        }
+
         return $items;
+    }
+
+    /**
+     * @param  array<array-key, array<string, mixed>>  $lines
+     * @return array<int, int> product id => how many the cart's items order (each product and its add-ons)
+     */
+    private static function cartProducts(array $lines): array
+    {
+        return collect($lines)
+            ->flatMap(fn (array $line) => [(string) ($line['product'] ?? '') === self::DOMAIN_ONLY ? null : (int) ($line['product'] ?? 0), ...array_map('intval', (array) ($line['addons'] ?? []))])
+            ->filter()->countBy()->all();
     }
 
     /** The domain a choice registers or transfers, if any. */
@@ -329,6 +347,41 @@ class ClientOrder
      * @throws ValidationException when the choice is not orderable (the form shows the message on its field)
      */
     public function items(array $data, ?Client $client = null): array
+    {
+        $items = $this->choiceItems($data, $client);
+        self::checkLimits($items, $client);
+
+        return $items;
+    }
+
+    /**
+     * Whether the items' products can be ordered together: enough of each left (Quantity available) and, for a client,
+     * within its Client limit with the services they already have. A visitor's limit is checked once they log in.
+     *
+     * @param  list<array<string, mixed>>  $items  PlaceOrder items
+     * @param  array<int, int>  $more  product id => how many more are ordered with them (the rest of the cart)
+     *
+     * @throws ValidationException under `product`
+     */
+    public static function checkLimits(array $items, ?Client $client, array $more = []): void
+    {
+        $wanted = collect($items)->pluck('product_id')->filter()->countBy();
+
+        foreach (Product::query()->whereKey($wanted->keys()->all())->get() as $product) {
+            $count = (int) $wanted[$product->id] + ($more[$product->id] ?? 0);
+            $problem = $product->stockProblem($count) ?? ($client ? $product->limitProblem($client, $count) : null);
+
+            if ($problem !== null) {
+                throw ValidationException::withMessages(['product' => $problem]);
+            }
+        }
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return list<array<string, mixed>>
+     */
+    private function choiceItems(array $data, ?Client $client): array
     {
         $currency = Currencies::forClient($client);
         $domainOnly = (string) ($data['product'] ?? '') === self::DOMAIN_ONLY;
@@ -540,7 +593,7 @@ class ClientOrder
             Coupons::check($coupon, $client, $items);
         }
 
-        $order = $this->placeOrder->handle($client, $items, filled($data['notes'] ?? null) ? trim($data['notes']) : null, $terms, $coupon);
+        $order = $this->placeOrder->handle($client, $items, filled($data['notes'] ?? null) ? trim($data['notes']) : null, $terms, $coupon, inStockOnly: true);
 
         ActivityLog::record('order.client_placed', "Order #{$order->id} placed in the client area", client: $client, properties: array_filter(['order_id' => $order->id, 'terms_version' => $order->terms_version]));
         $this->notifyAdmins($order);

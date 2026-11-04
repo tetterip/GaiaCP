@@ -3788,5 +3788,17 @@
     "The domain is read from the registrar first, and renewed only if it still expires before the date it is paid until.": "Alan adı önce kayıt kuruluşundan okunur ve yalnızca ödendiği tarihten önce sona eriyorsa yenilenir.",
     "failed action": "başarısız işlem",
     "failed actions": "başarısız işlemler",
-    "times": "kez"
+    "times": "kez",
+    ":name is limited to :limit per client, and you already have :count.": ":name müşteri başına :limit ile sınırlıdır ve zaten :count tane sahipsiniz.",
+    ":name is limited to :limit per client.": ":name müşteri başına :limit ile sınırlıdır.",
+    ":name is out of stock.": ":name tükendi.",
+    "Client limit": "Müşteri limiti",
+    "How many clients can still order it, and how many one client can have. Admins can always order more.": "Kaç müşterinin hâlâ sipariş verebileceği ve bir müşterinin kaç tane sahip olabileceği. Yöneticiler her zaman daha fazla sipariş verebilir.",
+    "How many more can be ordered. Each order takes one and a cancelled order gives it back; at 0 clients see it as out of stock.": "Daha kaç tane sipariş edilebileceği. Her sipariş bir tane alır, iptal edilen sipariş geri verir; 0'da müşteriler tükendi olarak görür.",
+    "How many services of it one client can have at once, cancelled and terminated ones not counted. 1 for a free trial.": "Bir müşterinin aynı anda sahip olabileceği hizmet sayısı; iptal edilen ve sonlandırılanlar sayılmaz. Ücretsiz deneme için 1.",
+    "Limit to": "Sınırla",
+    "Only :count of :name left.": "Yalnızca :count adet :name kaldı.",
+    "Out of stock": "Tükendi",
+    "Quantity available": "Mevcut miktar",
+    "Stock": "Stok"
 }

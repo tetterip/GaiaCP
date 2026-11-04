@@ -29,6 +29,12 @@ copy of the price, cycle, server and package, so changing a product never change
 - **Hidden**: not offered in New order, but still available on a single new service.
 - **Retired**: offered nowhere any more; services that have it keep it.
 - **Show in client area**: off, clients can never order it and its services are hidden from them.
+- **Limits**: **Quantity available** is how many more can be ordered, for a few dedicated servers or a launch offer.
+  Each order takes one and a cancelled order gives it back; at 0 clients see the product as **Out of stock** and can't
+  order it. **Client limit** is how many services of it one client can have at once (cancelled and terminated ones
+  don't count): 1 for a free trial. Both are Unlimited by default. They hold for the client area, the public cart and
+  the API; your own New order and accepted quotes can always go over them (the quantity then stays at 0). The products
+  list has a Quantity available column.
 
 A product with services has no Delete: retire it instead.
 

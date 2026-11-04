@@ -3788,5 +3788,17 @@
     "The domain is read from the registrar first, and renewed only if it still expires before the date it is paid until.": "Le domaine est d'abord lu chez le registraire, et renouvelé seulement s'il expire encore avant la date jusqu'à laquelle il est payé.",
     "failed action": "action échouée",
     "failed actions": "actions échouées",
-    "times": "fois"
+    "times": "fois",
+    ":name is limited to :limit per client, and you already have :count.": ":name est limité à :limit par client, et vous en avez déjà :count.",
+    ":name is limited to :limit per client.": ":name est limité à :limit par client.",
+    ":name is out of stock.": ":name est épuisé.",
+    "Client limit": "Limite par client",
+    "How many clients can still order it, and how many one client can have. Admins can always order more.": "Combien de clients peuvent encore le commander, et combien un client peut en avoir. Les administrateurs peuvent toujours en commander plus.",
+    "How many more can be ordered. Each order takes one and a cancelled order gives it back; at 0 clients see it as out of stock.": "Combien peuvent encore être commandés. Chaque commande en prend un et une commande annulée le rend ; à 0 les clients le voient épuisé.",
+    "How many services of it one client can have at once, cancelled and terminated ones not counted. 1 for a free trial.": "Combien de services de ce produit un client peut avoir à la fois, sans compter les annulés et résiliés. 1 pour un essai gratuit.",
+    "Limit to": "Limiter à",
+    "Only :count of :name left.": "Il ne reste que :count de :name.",
+    "Out of stock": "Épuisé",
+    "Quantity available": "Quantité disponible",
+    "Stock": "Stock"
 }

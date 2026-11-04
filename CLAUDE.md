@@ -155,6 +155,9 @@ Read the file for the area you are changing before you change it; don't read the
   area", on by default) is copied to a new service (on without a product) and editable there; the client area shows
   only `Service::clientVisible()` (read-only, Maintenance included) and offers only `Product::clientOrderable()`, which
   leaves out types that are not `ServiceType::clientOrderable()` (Maintenance: an add-on only the admin sets up).
+  `products.stock` (Quantity available, null = unlimited) drops by one per item in `PlaceOrder` (row lock; refused only
+  with `inStockOnly`, i.e. client area / API) and comes back in `CancelOrder`; `client_limit` counts the client's
+  services of it that are not cancelled / terminated, checked only by `ClientOrder::checkLimits()`.
   Product options (`ProductOptionGroup`, `App\Support\ProductOptions`) are kept on the service (`services.options`,
   with their price then) and already included in its `price_cents`.
   An add-on product (`products.addon`) is never ordered alone: `AddAddon` makes it a service with `parent_service_id`,
