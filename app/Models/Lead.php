@@ -58,7 +58,7 @@ class Lead extends Model
     /** Open leads whose next contact is today or already past. @param Builder<self> $query */
     public function scopeToContact(Builder $query): void
     {
-        $query->open()->whereNotNull('next_contact_on')->whereDate('next_contact_on', '<=', today());
+        $query->open()->whereNotNull('next_contact_on')->whereOnDate('next_contact_on', '<=', today());
     }
 
     /** @return BelongsTo<User, $this> */

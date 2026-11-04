@@ -104,8 +104,8 @@ abstract class ServiceReportPage extends Page implements HasTable, ReportCard
         $apply = function (Builder $query, ?string $from, ?string $until) use ($column) {
             [$relation, $attribute] = str_contains($column, '.') ? explode('.', $column, 2) : [null, $column];
             $where = fn (Builder $q) => $q
-                ->when($from, fn (Builder $q, string $date) => $q->whereDate($attribute, '>=', $date))
-                ->when($until, fn (Builder $q, string $date) => $q->whereDate($attribute, '<=', $date));
+                ->when($from, fn (Builder $q, string $date) => $q->whereOnDate($attribute, '>=', $date))
+                ->when($until, fn (Builder $q, string $date) => $q->whereOnDate($attribute, '<=', $date));
 
             return $relation ? $query->whereHas($relation, $where) : $where($query);
         };

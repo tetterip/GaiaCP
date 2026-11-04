@@ -70,7 +70,7 @@ class RecordPayment
             $items = InvoiceItem::query()
                 ->where('service_id', $service->id)
                 ->forCycle()
-                ->whereDate('due_date', $before)
+                ->whereOnDate('due_date', $before)
                 ->whereNull('payment_id')
                 ->whereHas('invoice', fn ($q) => $q->unpaid())
                 ->with('invoice')

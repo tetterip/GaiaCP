@@ -31,7 +31,7 @@ class RepriceIssuedNotice
     public static function issuedLine(Service $service): ?InvoiceItem
     {
         return InvoiceItem::query()->where('service_id', $service->id)->whereNull('fee')->whereNull('payment_id')
-            ->whereDate('due_date', $service->next_due_date)
+            ->whereOnDate('due_date', $service->next_due_date)
             ->whereHas('invoice', fn (Builder $q) => $q->unpaid())->with('invoice')->first();
     }
 

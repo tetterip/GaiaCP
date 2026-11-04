@@ -17,6 +17,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Builder;
 
 class RecordPaymentAction
 {
@@ -28,7 +29,7 @@ class RecordPaymentAction
             ->icon(Heroicon::OutlinedBanknotes)
             ->color('success')
             // A pending item already paid (its order's notice, say) waits for set up, not for another cycle's payment.
-            ->visible(fn (Service $record) => ($record->status === ServiceStatus::Pending && ! $record->payments()->exists())
+            ->visible(fn (Service $record) => ($record->status === ServiceStatus::Pending && ! self::paid($record))
                 || (self::renewable($record) && self::due($record)));
     }
 
@@ -50,7 +51,31 @@ class RecordPaymentAction
     public static function due(Service $record): bool
     {
         return ! $record->next_due_date->isAfter(today()->addDays((int) config('gaiacp.invoices.days_before', 14)))
-            || $record->invoiceItems()->whereNull('payment_id')->whereHas('invoice', fn ($q) => $q->unpaid())->exists();
+            || (array_key_exists('unpaid_line_exists', $record->getAttributes())
+                ? (bool) $record->getAttribute('unpaid_line_exists')
+                : $record->invoiceItems()->whereNull('payment_id')->whereHas('invoice', fn ($q) => $q->unpaid())->exists());
+    }
+
+    /**
+     * What a services table loads with its rows, so the action's checks need no query per row (paid(), due()).
+     *
+     * @param  Builder<Service>  $query
+     * @return Builder<Service>
+     */
+    public static function withChecks(Builder $query): Builder
+    {
+        return $query->withExists([
+            'payments',
+            'invoiceItems as unpaid_line_exists' => fn ($q) => $q->whereNull('payment_id')->whereHas('invoice', fn ($q) => $q->unpaid()),
+        ]);
+    }
+
+    /** It has a payment (payments_exists when the table loaded it). */
+    private static function paid(Service $record): bool
+    {
+        return array_key_exists('payments_exists', $record->getAttributes())
+            ? (bool) $record->getAttribute('payments_exists')
+            : $record->payments()->exists();
     }
 
     private static function base(string $name): Action

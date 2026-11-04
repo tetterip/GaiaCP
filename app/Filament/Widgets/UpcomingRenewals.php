@@ -30,7 +30,7 @@ class UpcomingRenewals extends TableWidget
     {
         $table = ServicesTable::configure($table)
             ->heading(__('Overdue and due in the next 30 days'))
-            ->query(fn () => Service::query()->billable()->with('client')->whereDate('next_due_date', '<=', today()->addDays(30)))
+            ->query(fn () => Service::query()->billable()->with('client')->whereOnDate('next_due_date', '<=', today()->addDays(30)))
             ->filters([])
             // A row opens the service; Record payment is the one action here
             ->recordActions([RecordPaymentAction::make()])

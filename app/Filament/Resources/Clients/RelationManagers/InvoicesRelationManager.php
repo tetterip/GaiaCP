@@ -47,7 +47,7 @@ class InvoicesRelationManager extends RelationManager
     public static function getBadgeColor(Model $ownerRecord, string $pageClass): ?string
     {
         /** @var Client $ownerRecord */
-        return $ownerRecord->invoices()->unpaid()->whereDate('due_date', '<', today())->exists() ? 'danger' : 'warning';
+        return $ownerRecord->invoices()->unpaid()->whereOnDate('due_date', '<', today())->exists() ? 'danger' : 'warning';
     }
 
     public static function getBadgeTooltip(Model $ownerRecord, string $pageClass): ?string

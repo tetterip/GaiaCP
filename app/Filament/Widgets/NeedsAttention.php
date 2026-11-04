@@ -96,7 +96,7 @@ class NeedsAttention extends Widget
             ];
         }
 
-        if (InvoiceResource::canAccess() && ($overdue = Invoice::query()->unpaid()->whereDate('due_date', '<', today()))->exists()) {
+        if (InvoiceResource::canAccess() && ($overdue = Invoice::query()->unpaid()->whereOnDate('due_date', '<', today()))->exists()) {
             $items[] = [
                 'icon' => 'heroicon-o-document-text',
                 'tone' => 'bad',

@@ -42,7 +42,7 @@ class SendRenewalReminders
             ->billable()
             ->where('type', ServiceType::Domain)
             ->where('auto_terminate', false)
-            ->whereDate('next_due_date', '<=', $today->addDays($this->planner->horizonDays()))
+            ->whereOnDate('next_due_date', '<=', $today->addDays($this->planner->horizonDays()))
             ->with(['client', 'reminders'])
             ->get();
 
@@ -135,14 +135,14 @@ class SendRenewalReminders
         $services = Service::query()
             ->billable()
             ->where('type', ServiceType::Domain)
-            ->whereHas('domainDetails', fn ($q) => $q->whereDate('expires_at', '<', $today)->where('registration_type', '!=', DomainRegistrationType::External))
+            ->whereHas('domainDetails', fn ($q) => $q->whereOnDate('expires_at', '<', $today)->where('registration_type', '!=', DomainRegistrationType::External))
             ->with(['client', 'domainDetails'])
             ->get();
 
         foreach ($services as $service) {
             $expires = $service->domainDetails->expires_at;
 
-            if (Reminder::query()->where('service_id', $service->id)->whereDate('due_date', $expires)->where('kind', 'domain_expired')->exists()
+            if (Reminder::query()->where('service_id', $service->id)->whereOnDate('due_date', $expires)->where('kind', 'domain_expired')->exists()
                 || ! $this->mailer->domain(MailTemplate::DomainExpired, $service)) {
                 continue;
             }

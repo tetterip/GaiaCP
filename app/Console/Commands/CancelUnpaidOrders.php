@@ -30,7 +30,7 @@ class CancelUnpaidOrders extends Command
         $orders = Order::query()
             ->with('client')
             ->where('status', OrderStatus::Pending)
-            ->whereDate('created_at', '<=', $today->subDays((int) $days))
+            ->whereOnDate('created_at', '<=', $today->subDays((int) $days))
             ->orderBy('id')
             ->get();
 

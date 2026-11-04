@@ -325,6 +325,10 @@ class ApiTest extends TestCase
         Event::assertDispatched(GaiaEvent::class, fn (GaiaEvent $event) => $event->name === 'payment.recorded' && $event->log->api_key_id === ApiKey::query()->sole()->id);
 
         $this->api($token)->getJson("/api/v1/payments?service_id={$service->id}")->assertJsonCount(1, 'data');
+        $paidOn = Payment::find($id)->paid_on->toDateString();
+        $this->api($token)->getJson("/api/v1/payments?paid_from={$paidOn}&paid_to={$paidOn}")->assertJsonCount(1, 'data');
+        $this->api($token)->getJson('/api/v1/payments?paid_to='.Payment::find($id)->paid_on->subDay()->toDateString())->assertJsonCount(0, 'data');
+        $this->api($token)->getJson('/api/v1/payments?paid_from=yesterday-ish')->assertUnprocessable()->assertJsonValidationErrors('paid_from');
 
         // Reversed: the due date goes back
         $this->api($token)->deleteJson("/api/v1/payments/{$id}")->assertNoContent();

@@ -119,7 +119,7 @@ class ListServices extends ListRecords
             'pending' => ['label' => __('Pending'), 'count' => $query()->where('status', ServiceStatus::Pending)->count(), 'active' => $only(ServiceStatus::Pending)],
             'due_soon' => [
                 'label' => __('Due in :count days', ['count' => ServicesTable::DUE_SOON_DAYS]),
-                'count' => $query()->billable()->whereDate('next_due_date', '<=', today()->addDays(ServicesTable::DUE_SOON_DAYS))->count(),
+                'count' => $query()->billable()->whereOnDate('next_due_date', '<=', today()->addDays(ServicesTable::DUE_SOON_DAYS))->count(),
                 'active' => $dueSoon && $statuses === $open,
             ],
         ];

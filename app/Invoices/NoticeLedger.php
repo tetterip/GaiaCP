@@ -16,13 +16,32 @@ use App\Support\Money;
  * What was paid on a payment notice, as shown on the notice's and its invoice's pages: the payments that paid its
  * lines (InvoiceItem::payment_id) and the "Add funds" amounts paid into the client's balance
  * (InvoiceItem::credit_transaction_id), oldest first. A reversed payment is deleted, so it is no longer listed.
+ *
+ * A notice's rows are read once and kept for the rest of the request: its page asks for them many times (Amount paid,
+ * and the Payments table for every cell). Saving or deleting a notice line, a payment or a balance entry forgets them
+ * (AppServiceProvider), so a payment recorded on the page shows at once.
  */
 class NoticeLedger
 {
+    /** @var array<int, list<array<string, mixed>>> rows() by notice id */
+    private static array $rows = [];
+
     /**
      * @return list<array{date: string, sort: string, type: string, description: string, method: string|null, reference: string|null, amount: string, amount_cents: int}>
      */
     public static function rows(Invoice $invoice): array
+    {
+        return self::$rows[$invoice->id] ??= self::read($invoice);
+    }
+
+    /** Read the rows again on the next rows(): a line, payment or balance entry was saved or deleted. */
+    public static function forget(): void
+    {
+        self::$rows = [];
+    }
+
+    /** @return list<array{date: string, sort: string, type: string, description: string, method: string|null, reference: string|null, amount: string, amount_cents: int}> */
+    private static function read(Invoice $invoice): array
     {
         $items = $invoice->items()->with(['payment', 'service'])->get();
         $rows = [];

@@ -34,7 +34,7 @@ class ServicesTable
     public static function configure(Table $table, bool $showClient = true, ?string $tab = null): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->with(['client', 'domainDetails', 'product', 'server']))
+            ->modifyQueryUsing(fn (Builder $query) => RecordPaymentAction::withChecks($query->with(['client', 'domainDetails', 'product', 'server'])))
             ->columns([
                 TextColumn::make('label')
                     ->label('Service')
@@ -107,10 +107,10 @@ class ServicesTable
                     ->label('Price change scheduled')
                     ->query(fn (Builder $query) => $query->whereNotNull('new_price_from')),
                 Filter::make('overdue')
-                    ->query(fn (Builder $query) => $query->billable()->whereDate('next_due_date', '<', today())),
+                    ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<', today())),
                 Filter::make('due_soon')
                     ->label(__('Due in the next :count days', ['count' => self::DUE_SOON_DAYS]))
-                    ->query(fn (Builder $query) => $query->billable()->whereDate('next_due_date', '<=', today()->addDays(self::DUE_SOON_DAYS))),
+                    ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<=', today()->addDays(self::DUE_SOON_DAYS))),
             ])
             ->recordUrl(fn (Service $record) => ServiceResource::getUrl('edit', ['record' => $record]))
             ->recordActions([

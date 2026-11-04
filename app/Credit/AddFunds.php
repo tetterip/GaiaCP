@@ -92,7 +92,7 @@ class AddFunds
      */
     public function cancelStale(CarbonImmutable $today, bool $dryRun = false): int
     {
-        $stale = Invoice::query()->unpaid()->where('credit', true)->whereDate('due_date', '<', $today)->get();
+        $stale = Invoice::query()->unpaid()->where('credit', true)->whereOnDate('due_date', '<', $today)->get();
 
         if (! $dryRun) {
             $stale->each(fn (Invoice $invoice) => $this->cancel($invoice, 'not paid by its due date'));

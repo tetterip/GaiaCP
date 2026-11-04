@@ -64,7 +64,7 @@ class InvoicesTable
                 SelectFilter::make('status')
                     ->options(InvoiceStatus::class),
                 Filter::make('overdue')
-                    ->query(fn (Builder $query) => $query->unpaid()->whereDate('due_date', '<', today())),
+                    ->query(fn (Builder $query) => $query->unpaid()->whereOnDate('due_date', '<', today())),
             ])
             // The chips set these filters and show which one is on, so no filter button or indicator row
             ->filtersLayout(FiltersLayout::Hidden)

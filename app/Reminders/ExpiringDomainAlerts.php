@@ -29,8 +29,8 @@ class ExpiringDomainAlerts
             ->where('auto_terminate', false)
             ->whereHas('domainDetails', fn (Builder $query) => $query
                 ->where('registration_type', '!=', DomainRegistrationType::External)
-                ->whereDate('expires_at', '>=', $today)
-                ->whereDate('expires_at', '<=', $today->addDays(self::DAYS)))
+                ->whereOnDate('expires_at', '>=', $today)
+                ->whereOnDate('expires_at', '<=', $today->addDays(self::DAYS)))
             ->get();
 
         $count = 0;

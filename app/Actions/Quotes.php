@@ -295,7 +295,7 @@ class Quotes
      */
     public function expire(bool $dryRun = false): Collection
     {
-        $due = Quote::query()->where('status', QuoteStatus::Sent)->whereDate('valid_until', '<', today())->orderBy('valid_until')->get();
+        $due = Quote::query()->where('status', QuoteStatus::Sent)->whereOnDate('valid_until', '<', today())->orderBy('valid_until')->get();
 
         if (! $dryRun) {
             foreach ($due as $quote) {

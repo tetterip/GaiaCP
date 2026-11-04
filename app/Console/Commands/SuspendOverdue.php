@@ -33,9 +33,9 @@ class SuspendOverdue extends Command
             ->where('type', ServiceType::Hosting)
             ->where('status', ServiceStatus::Active)
             ->whereNotNull('server_id')
-            ->whereDate('next_due_date', '<=', $today->subDays($days))
+            ->whereOnDate('next_due_date', '<=', $today->subDays($days))
             // "Do not suspend until" on the service
-            ->where(fn ($q) => $q->whereNull('override_suspend_until')->orWhereDate('override_suspend_until', '<', $today))
+            ->where(fn ($q) => $q->whereNull('override_suspend_until')->orWhereOnDate('override_suspend_until', '<', $today))
             ->get();
 
         $failed = 0;

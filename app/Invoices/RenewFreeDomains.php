@@ -62,7 +62,7 @@ class RenewFreeDomains
             // A first payment still owed is billed by GenerateInvoices instead.
             ->where(fn (Builder $q) => $q->whereNull('first_payment_cents')->orWhere('first_payment_cents', 0)->orWhereHas('payments'))
             ->where('auto_terminate', false)
-            ->whereDate('next_due_date', '<=', $today->addDays((int) config('gaiacp.invoices.days_before', 14)))
+            ->whereOnDate('next_due_date', '<=', $today->addDays((int) config('gaiacp.invoices.days_before', 14)))
             ->with('domainDetails')
             ->orderBy('next_due_date')
             ->get();

@@ -58,7 +58,7 @@ class InvoiceResource extends Resource
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return Invoice::query()->unpaid()->whereDate('due_date', '<', today())->exists() ? 'danger' : 'warning';
+        return Invoice::query()->unpaid()->whereOnDate('due_date', '<', today())->exists() ? 'danger' : 'warning';
     }
 
     public static function infolist(Schema $schema): Schema

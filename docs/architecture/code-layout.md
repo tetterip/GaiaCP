@@ -76,6 +76,12 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   `users.system_emails` on (Admin users → Receive system emails, the switch for every admin-bound email): payment notices created since
   the last one (`admin_summary.sent` in the activity log, once a day), every overdue notice, and domain syncs that
   changed something (`changes` on `domain.synced`) or failed plus a count of the rest. Nothing to report = no email
+- Date filters: `whereOnDate()` / `orWhereOnDate()` (`App\Support\DateQueries`, a query builder macro) take the same
+  arguments as `whereDate()` and give the same rows, as a plain range (`<= d` becomes `< d + 1`), so the `due_date` /
+  `next_due_date` indexes are used; `whereDate()` wraps the column in a function and reads every row. Use it in the app
+  (plugins keep `whereDate()` while they declare an older `requires`). `NoticeLedger::rows()` is kept for the request and
+  forgotten when a notice line, payment or balance entry is saved or deleted; services tables load
+  `RecordPaymentAction::withChecks()` so Record payment needs no query per row.
 - `app/Reports/` + `app/Filament/Clusters/Reports/`: Reports (`/admin/reports`, a cluster laid out like Settings: cards by
   `ReportsCluster::GROUPS`, a page joins with `$cluster`, a group and `ReportCard::reportDescription()`). `IncomeReport`
   (payments as recorded, summed in SQL per day and currency without date functions so SQLite and MySQL agree, other
