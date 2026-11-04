@@ -11,7 +11,6 @@ use App\Models\Invoice;
 use App\Providers\AppServiceProvider;
 use App\Support\ClientFields;
 use App\Support\Money;
-use Closure;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\RepeatableEntry\TableColumn;
 use Filament\Infolists\Components\TextEntry;
@@ -87,24 +86,21 @@ class InvoiceInfolist
                             ->placeholder('—')
                             ->columnSpan(2),
                     ]),
-                self::paymentsSection(fn (Invoice $record) => $record),
             ]);
     }
 
     /**
-     * The payments of a notice (NoticeLedger): date, type, what they paid, method, reference and amount. Also on the
-     * page of the invoice issued from it.
-     *
-     * @param  Closure(mixed): ?Invoice  $notice  the notice of the page's record
+     * The payments of a notice (NoticeLedger): date, type, what they paid, method, reference and amount. Shown after the
+     * lines, on the notice's page and on the page of the invoice issued from it.
      */
-    public static function paymentsSection(Closure $notice): Section
+    public static function paymentsSection(?Invoice $notice): Section
     {
         return Section::make(__('Payments'))
             ->columnSpanFull()
             ->schema([
                 RepeatableEntry::make('ledger')
                     ->hiddenLabel()
-                    ->state(fn ($record) => ($invoice = $notice($record)) ? NoticeLedger::rows($invoice) : [])
+                    ->state(fn () => $notice ? NoticeLedger::rows($notice) : [])
                     ->placeholder(__('No payments yet'))
                     ->table([
                         TableColumn::make(__('Date')),

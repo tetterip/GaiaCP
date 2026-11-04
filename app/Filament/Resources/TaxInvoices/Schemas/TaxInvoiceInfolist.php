@@ -94,34 +94,37 @@ class TaxInvoiceInfolist
                             ->listWithLineBreaks()
                             ->columnSpan(2),
                     ]),
-                InvoiceInfolist::paymentsSection(fn (TaxInvoice $record) => $record->isCreditNote() ? null : $record->notice)
-                    ->hidden(fn (TaxInvoice $record) => $record->isCreditNote() || $record->invoice_id === null),
-                Section::make(__('Credit notes'))
-                    ->columnSpanFull()
-                    ->visible(fn (TaxInvoice $record) => ! $record->isCreditNote() && $record->creditNotes()->exists())
+            ]);
+    }
+
+    /** An invoice's credit notes after its lines: date, number, reason and amount. */
+    public static function creditNotesSection(TaxInvoice $invoice): Section
+    {
+        return Section::make(__('Credit notes'))
+            ->columnSpanFull()
+            ->visible(fn () => ! $invoice->isCreditNote() && $invoice->creditNotes()->exists())
+            ->schema([
+                RepeatableEntry::make('creditNotes')
+                    ->hiddenLabel()
+                    ->state(fn () => $invoice->creditNotes()->orderBy('id')->get())
+                    ->table([
+                        TableColumn::make(__('Date')),
+                        TableColumn::make(__('Number')),
+                        TableColumn::make(__('Reason')),
+                        TableColumn::make(__('Total')),
+                    ])
                     ->schema([
-                        RepeatableEntry::make('creditNotes')
-                            ->hiddenLabel()
-                            ->state(fn (TaxInvoice $record) => $record->creditNotes()->orderBy('id')->get())
-                            ->table([
-                                TableColumn::make(__('Date')),
-                                TableColumn::make(__('Number')),
-                                TableColumn::make(__('Reason')),
-                                TableColumn::make(__('Total')),
-                            ])
-                            ->schema([
-                                TextEntry::make('date')->date(AppServiceProvider::dateFormat()),
-                                TextEntry::make('number')
-                                    ->color('primary')
-                                    ->url(fn (TaxInvoice $record) => TaxInvoiceResource::getUrl('view', ['record' => $record])),
-                                TextEntry::make('reason')
-                                    ->formatStateUsing(fn (?string $state) => $state === null ? null : __($state))
-                                    ->placeholder('—'),
-                                TextEntry::make('total_cents')
-                                    ->state(fn (TaxInvoice $record) => Money::format(-$record->total_cents, $record->currency))
-                                    ->color('danger')
-                                    ->weight('bold'),
-                            ]),
+                        TextEntry::make('date')->date(AppServiceProvider::dateFormat()),
+                        TextEntry::make('number')
+                            ->color('primary')
+                            ->url(fn (TaxInvoice $record) => TaxInvoiceResource::getUrl('view', ['record' => $record])),
+                        TextEntry::make('reason')
+                            ->formatStateUsing(fn (?string $state) => $state === null ? null : __($state))
+                            ->placeholder('—'),
+                        TextEntry::make('total_cents')
+                            ->state(fn (TaxInvoice $record) => Money::format(-$record->total_cents, $record->currency))
+                            ->color('danger')
+                            ->weight('bold'),
                     ]),
             ]);
     }
