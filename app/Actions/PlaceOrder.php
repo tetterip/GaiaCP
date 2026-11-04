@@ -31,7 +31,9 @@ use Throwable;
  * Creates an order and its items as pending services. Each item takes its product's
  * auto-setup choice: items set up "as soon as an order is placed" are set up right after
  * (CompleteOrder::setUp), the rest on their first payment or when the order is completed. A coupon lowers the items it
- * covers (App\Support\Coupons); when it leaves nothing to pay, the order's notice is recorded as paid.
+ * covers (App\Support\Coupons); when it leaves nothing to pay, the order's notice is recorded as paid. Each item takes one
+ * of its product's Quantity available (Product::$stock), under a row lock; an order from a client (the client area, the
+ * API) is refused when not enough are left, while an admin's goes ahead and leaves it at 0.
  */
 class PlaceOrder
 {
@@ -47,10 +49,11 @@ class PlaceOrder
      *                                             registration_type, registrar_id, epp_code, nameservers, auto_renew
      * @param  array{terms_accepted_at?: mixed, terms_version?: string|null}  $terms  the client accepted the terms of service (TermsOfService::acceptance())
      * @param  Coupon|null  $coupon  lowers the items it covers (Coupons::apply()), checked again here so its limits hold
+     * @param  bool  $inStockOnly  refuse the order when a product has fewer left than it orders (orders from clients)
      *
-     * @throws ValidationException under `coupon` when the coupon can't be used
+     * @throws ValidationException under `coupon` when the coupon can't be used, under `product` when out of stock
      */
-    public function handle(Client $client, array $items, ?string $notes = null, array $terms = [], ?Coupon $coupon = null): Order
+    public function handle(Client $client, array $items, ?string $notes = null, array $terms = [], ?Coupon $coupon = null, bool $inStockOnly = false): Order
     {
         // A hosting item without a domain is for the order's domain, when there is exactly one.
         $domains = collect($items)->filter(fn (array $item) => self::type($item) === ServiceType::Domain)->map(fn (array $item) => DomainName::normalize($item['domain'] ?? null))->filter();
@@ -62,8 +65,9 @@ class PlaceOrder
             }
         }
 
-        $order = DB::transaction(function () use ($client, $items, $notes, $domains, $terms, $coupon) {
+        $order = DB::transaction(function () use ($client, $items, $notes, $domains, $terms, $coupon, $inStockOnly) {
             $discount = null;
+            self::takeStock($items, $inStockOnly);
 
             if ($coupon !== null) {
                 // Locked, so two orders at once can't both take a coupon's last use.
@@ -145,6 +149,34 @@ class PlaceOrder
         );
 
         return $order->refresh();
+    }
+
+    /**
+     * Takes each item's product off its Quantity available, locked so two orders at once can't both take the last one.
+     *
+     * @param  list<array<string, mixed>>  $items
+     *
+     * @throws ValidationException when $inStockOnly and a product has fewer left than the items want
+     */
+    private static function takeStock(array $items, bool $inStockOnly): void
+    {
+        $wanted = collect($items)->pluck('product_id')->filter()->countBy();
+
+        if ($wanted->isEmpty()) {
+            return;
+        }
+
+        $products = Product::query()->whereKey($wanted->keys()->all())->whereNotNull('stock')->lockForUpdate()->get();
+
+        foreach ($products as $product) {
+            $count = (int) $wanted[$product->id];
+
+            if ($inStockOnly && ($problem = $product->stockProblem($count)) !== null) {
+                throw ValidationException::withMessages(['product' => $problem]);
+            }
+
+            Product::query()->whereKey($product->id)->update(['stock' => max(0, $product->stock - $count)]);
+        }
     }
 
     /** @param  array<string, mixed>  $item */

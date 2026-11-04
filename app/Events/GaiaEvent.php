@@ -77,8 +77,8 @@ class GaiaEvent
     /** Raises the event for a new activity log row in NAMES, after the transaction it was written in commits. */
     public static function fromLog(ActivityLog $log): void
     {
-        if (! in_array($log->event, self::NAMES, true)) {
-            return;
+        if (! in_array($log->event, self::NAMES, true) || ($log->properties['retry'] ?? false)) {
+            return; // a module queue retry that failed again was already told
         }
 
         DB::afterCommit(fn () => (new self($log->event, $log))->dispatch());

@@ -163,6 +163,8 @@ Heeft u een **kortingscode**, typ die dan in de winkelwagen: u ziet wat er afgaa
 
 Wat in de **aanbieding** is, toont de badge Aanbieding en de normale prijs doorgestreept. De aanbiedingsprijs geldt voor de eerste periode van wat u bestelt zolang de aanbieding loopt; verlengingen zijn tegen de normale prijs. Een kortingscode verlaagt een aanbiedingsprijs mogelijk niet verder.
 
+Een pakket met **Uitverkocht** kan pas weer besteld worden als we er weer hebben. Sommige pakketten, zoals een gratis proefperiode, kan elke klant maar een paar keer bestellen: als u er al zoveel hebt als toegestaan, zegt de bestelpagina dat.
+
 <!-- if:terms -->
 Lees voordat u de bestelling plaatst onze servicevoorwaarden (de link naast het vakje) en vink **Ik accepteer de servicevoorwaarden** aan.
 <!-- endif -->

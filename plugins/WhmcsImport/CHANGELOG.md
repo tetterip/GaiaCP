@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.11] - 2026-11-04
+
+- A product with WHMCS stock control keeps its quantity left as Quantity available
+
 ## [1.0.10] - 2026-10-30
 
 - Domains land on the registrar account of their WHMCS registrar module (easy.gr, Enom or any registrar plugin of the

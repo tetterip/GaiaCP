@@ -47,8 +47,8 @@
                     <th></th>
                     @foreach ($compare['products'] as $product)
                         <th @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
-                            @if ($product['sale'] || $product['popular'] || $product['badges'] !== [])
-                                <span class="gcp-compare-badges">@include('filament.client.product-badges', ['sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</span>
+                            @if ($product['sale'] || $product['popular'] || $product['badges'] !== [] || ($product['sold_out'] ?? false))
+                                <span class="gcp-compare-badges">@include('filament.client.product-badges', ['soldOut' => $product['sold_out'] ?? false, 'sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</span>
                             @endif
                             <span class="gcp-compare-name">{{ $product['name'] }}</span>
                             <span class="gcp-compare-price">{{ $product['price'] }}</span>
@@ -104,7 +104,9 @@
                     <th></th>
                     @foreach ($compare['products'] as $product)
                         <td @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
-                            @if (! isset($field))
+                            @if ($product['sold_out'] ?? false)
+                                <x-filament::button size="sm" color="gray" disabled>{{ __('Out of stock') }}</x-filament::button>
+                            @elseif (! isset($field))
                                 <x-filament::button tag="a" size="sm" :href="$product['url']">{{ __('Order') }}</x-filament::button>
                             @elseif ($product['id'] === $chosen)
                                 <x-filament::button size="sm" color="gray" icon="heroicon-m-check" disabled>{{ __('Chosen') }}</x-filament::button>

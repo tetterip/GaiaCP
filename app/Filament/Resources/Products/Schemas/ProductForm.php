@@ -26,6 +26,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -246,6 +247,15 @@ class ProductForm
                             ->required(),
                     ]),
 
+                Section::make(__('Limits'))
+                    ->description(__('How many clients can still order it, and how many one client can have. Admins can always order more.'))
+                    ->columnSpanFull()
+                    ->columns(['default' => 1, 'md' => 2])
+                    ->schema([
+                        self::limit('stock', __('Quantity available'), __('How many more can be ordered. Each order takes one and a cancelled order gives it back; at 0 clients see it as out of stock.'), min: 0),
+                        self::limit('client_limit', __('Client limit'), __('How many services of it one client can have at once, cancelled and terminated ones not counted. 1 for a free trial.'), min: 1),
+                    ]),
+
                 Section::make(__('Pricing'))
                     ->description(__('Price per cycle and a one-off setup fee, charged with the first payment. Enable the cycles you offer.'))
                     ->columnSpanFull()
@@ -336,6 +346,34 @@ class ProductForm
             'Options clients can pick' => ProductOptionGroup::query()->whereKey((array) $get('optionGroups'))->pluck('name')->implode(', '),
             'Sold only as an add-on to another service' => $get('addon') ? 'yes' : '',
         ];
+    }
+
+    /** "Unlimited" or "Limit to" a number: $field is null while unlimited. */
+    private static function limit(string $field, string $label, string $help, int $min): Flex
+    {
+        $mode = "{$field}_mode";
+
+        return Flex::make([
+            Radio::make($mode)
+                ->label($label)
+                ->hintIcon('heroicon-o-information-circle', $help)
+                ->options(['unlimited' => __('Unlimited'), 'limited' => __('Limit to')])
+                ->inline()
+                ->live()
+                ->dehydrated(false)
+                ->afterStateHydrated(fn (Radio $component, ?Product $record) => $component->state($record?->{$field} === null ? 'unlimited' : 'limited'))
+                ->grow(false),
+            TextInput::make($field)
+                ->hiddenLabel()
+                ->integer()
+                ->minValue($min)
+                ->placeholder((string) $min)
+                ->required(fn (Get $get) => $get($mode) === 'limited')
+                ->disabled(fn (Get $get) => $get($mode) !== 'limited')
+                ->dehydrated()
+                ->dehydrateStateUsing(fn ($state, Get $get) => $get($mode) === 'limited' && filled($state) ? (int) $state : null)
+                ->extraInputAttributes(['style' => 'max-width: 8rem']),
+        ])->verticallyAlignEnd();
     }
 
     private static function type(Get $get): ?ServiceType

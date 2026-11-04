@@ -85,6 +85,10 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   profession, other custom fields as client fields), hosting accounts with their passwords, domains and unpaid invoices, with a dry run first; safe to re-run
 - System health (Settings → System): PHP version and extensions, configuration, database, storage, cron and the daily jobs,
   mail, server and registrar connections
+- Module queue (Services → Module queue), like WHMCS's: failed set ups (hosting, domain registration or transfer, SSL),
+  suspend, unsuspend, terminate and domain renewals wait with their error to Retry, Retry all or Mark resolved; set ups,
+  unsuspends and suspensions for non-payment are retried by themselves every 15 minutes (Settings → Automation), then
+  the bell rings once; open items are in the daily summary
 - Debugging (Settings → Logs): a WHMCS-style module log of every request to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, Proxmox VE, easy.gr, Enom and ΑΑΔΕ
   with the reply (passwords, tokens and EPP codes masked; off until switched on), an email log of every email sent or
   failed, and a viewer for Laravel's error log
@@ -218,6 +222,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   period of what is ordered then (renewals at the normal price). The order pages, the public home page, domain search
   and Domain prices show the normal price struck through and a Sale badge; it ends by itself. A coupon lowers a sale
   price only with its Also on sale prices switch
+- Product limits: Quantity available (each order takes one, a cancelled order gives it back; at 0 the order pages show
+  Out of stock) and Client limit (services of it one client can have at once, 1 for a free trial). The client area,
+  the public cart and the API hold to both; an admin's New order can go over them
 - Knowledge base (Support → Knowledge base): help articles in categories, a text per language (Markdown), shown in
   the client area once published, with a search that ignores accents and case, views and "Was this helpful?" counts.
   While a client writes a new ticket, the articles matching its subject show under it. Settings → Support →

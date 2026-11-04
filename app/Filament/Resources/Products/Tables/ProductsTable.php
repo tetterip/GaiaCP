@@ -53,6 +53,13 @@ class ProductsTable
                     ->badge()
                     ->color('danger')
                     ->toggleable(),
+                TextColumn::make('stock')
+                    ->label('Quantity available')
+                    ->placeholder(__('Unlimited'))
+                    ->badge()
+                    ->color(fn (?int $state) => $state === 0 ? 'danger' : 'gray')
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('services_count')
                     ->counts('services')
                     ->label('Services')

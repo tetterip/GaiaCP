@@ -13,6 +13,7 @@ use App\Filament\Resources\CancellationRequests\CancellationRequestResource;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Filament\Resources\Leads\LeadResource;
+use App\Filament\Resources\ModuleQueue\ModuleQueueItemResource;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Filament\Resources\Quotes\QuoteResource;
 use App\Filament\Resources\Servers\ServerResource;
@@ -56,6 +57,7 @@ class AdminAlerts
         'invoice.paid' => AdminArea::Billing,
         'payment.online_unmatched' => AdminArea::Billing,
         'provisioning.failed' => AdminArea::Services,
+        'module_queue.gave_up' => AdminArea::Services,
         'service.cancellation_requested' => AdminArea::Services,
         'service.upgrade_requested' => AdminArea::Services,
         'service.addon_ordered' => AdminArea::Services,
@@ -88,8 +90,8 @@ class AdminAlerts
 
     public static function fromLog(ActivityLog $log): void
     {
-        if (! array_key_exists($log->event, self::EVENTS)) {
-            return;
+        if (! array_key_exists($log->event, self::EVENTS) || ($log->properties['retry'] ?? false)) {
+            return; // a module queue retry that failed again: the queue rings once when it gives up
         }
 
         // A notification that can't be written never undoes what was logged.
@@ -181,6 +183,12 @@ class AdminAlerts
                 $log->service_id
                     ? ServiceResource::getUrl('edit', ['record' => $log->service_id], panel: 'admin')
                     : ActivityLogResource::getUrl(parameters: ['filters' => ['event' => ['value' => $log->event]]], panel: 'admin'),
+            ],
+            'module_queue.gave_up' => [
+                __('Still failing: :name', ['name' => $service]),
+                __(':count automatic tries failed: :error', ['count' => $log->properties['tries'] ?? '', 'error' => Str::limit((string) ($log->properties['error'] ?? ''), 120)]),
+                'heroicon-o-arrow-path', 'danger',
+                ModuleQueueItemResource::getUrl(panel: 'admin'),
             ],
             'service.cancellation_requested' => [
                 __('Cancellation request: :name', ['name' => $service]),

@@ -163,6 +163,8 @@ Se você tem um **código de cupom**, digite-o no carrinho: você vê quanto ele
 
 O que está **em promoção** mostra o selo Promoção e o preço normal riscado. O preço promocional vale para o primeiro período do que você pedir enquanto a promoção durar; as renovações são pelo preço normal. Um cupom pode não reduzir ainda mais um preço promocional.
 
+Um pacote marcado como **Esgotado** não pode ser pedido até termos mais. Alguns pacotes, como um teste grátis, só podem ser pedidos poucas vezes por cliente: se você já tem quantos são permitidos, a página de pedido avisa.
+
 <!-- if:terms -->
 Antes de fazê-lo, leia os nossos Termos de Serviço (o link ao lado da caixa) e marque **Aceito os Termos de Serviço**.
 <!-- endif -->
