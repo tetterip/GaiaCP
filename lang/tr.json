@@ -3780,7 +3780,6 @@
     "Module queue": "Modül kuyruğu",
     "Module retries": "Modül yeniden denemeleri",
     "No longer needed": "Artık gerekli değil",
-    "Nothing failed": "Başarısız bir şey yok",
     "Nothing is retried by itself (Settings → Automation → Retry failed actions).": "Hiçbir şey kendiliğinden yeniden denenmez (Ayarlar → Otomasyon → Başarısız işlemleri yeniden dene).",
     "Nothing is sent to the server: use it when you did it there by hand, or it is no longer needed.": "Sunucuya hiçbir şey gönderilmez: orada elle yaptığınızda veya artık gerekmediğinde kullanın.",
     "Register or transfer the domain": "Alan adını kaydet veya transfer et",
@@ -3808,5 +3807,8 @@
     "Only :count of :name left.": "Yalnızca :count adet :name kaldı.",
     "Out of stock": "Tükendi",
     "Quantity available": "Mevcut miktar",
-    "Stock": "Stok"
+    "Stock": "Stok",
+    "All good": "Her şey yolunda",
+    "No panel or registrar action is waiting to be retried.": "Yeniden denenmeyi bekleyen panel veya kayıt kuruluşu işlemi yok.",
+    "Nothing resolved yet": "Henüz çözülen bir şey yok"
 }

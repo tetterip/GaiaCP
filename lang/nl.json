@@ -3780,7 +3780,6 @@
     "Module queue": "Modulewachtrij",
     "Module retries": "Modulepogingen",
     "No longer needed": "Niet meer nodig",
-    "Nothing failed": "Niets mislukt",
     "Nothing is retried by itself (Settings → Automation → Retry failed actions).": "Niets wordt vanzelf opnieuw geprobeerd (Instellingen → Automatisering → Mislukte acties opnieuw proberen).",
     "Nothing is sent to the server: use it when you did it there by hand, or it is no longer needed.": "Er wordt niets naar de server gestuurd: gebruik het als u het daar met de hand hebt gedaan of als het niet meer nodig is.",
     "Register or transfer the domain": "Domein registreren of verhuizen",
@@ -3808,5 +3807,8 @@
     "Only :count of :name left.": "Nog maar :count van :name over.",
     "Out of stock": "Uitverkocht",
     "Quantity available": "Beschikbare hoeveelheid",
-    "Stock": "Voorraad"
+    "Stock": "Voorraad",
+    "All good": "Alles in orde",
+    "No panel or registrar action is waiting to be retried.": "Geen panel- of registraractie wacht op een nieuwe poging.",
+    "Nothing resolved yet": "Nog niets opgelost"
 }

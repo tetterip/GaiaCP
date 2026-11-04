@@ -244,4 +244,13 @@ class ModuleQueueTest extends TestCase
         $this->assertCount(1, $summary->moduleQueue);
         $this->assertStringContainsString('acme.gr', (new DailySummaryMail($summary))->render());
     }
+
+    public function test_an_empty_queue_says_all_is_well(): void
+    {
+        $this->actingAs($this->admin);
+
+        Livewire::test(ListModuleQueue::class)
+            ->assertSee(__('All good'))
+            ->assertSee(__('No panel or registrar action is waiting to be retried.'));
+    }
 }
