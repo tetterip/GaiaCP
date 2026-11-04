@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the
+  host of generated URLs, host placeholders in route matching, and fixes in http-foundation, html-sanitizer and mime).
 - Faster lists and daily runs on a long billing history: date filters (Overdue, Due soon, the dashboard's Billing overview
   and Needs attention, the overdue badges, the daily payment notices, reminders and suspensions) are plain date ranges
   that MySQL / MariaDB can answer from the due date indexes, instead of reading every notice or service. A payment
