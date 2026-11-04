@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Billing: a payment notice's page shows the amount paid, the **Balance due** and a **Payments** section (date,
+  services, method, reference, amount); an invoice's page shows its status (Settled, Partly credited, Credited), the
+  notice's due date, the notice's payments and its credit notes.
 - Clients: the client list has a **Client area** column and filter (login on, turned off, no login, admin user), and
   the Contact card on a client's page names it too.
 - Buttons that open a menu (a client's Client area and Credit, a service's Account and Price, the visitors'
