@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Buttons that open a menu (a client's Client area and Credit, a service's Account and Price, the visitors'
+  language) show a small arrow after their label, in both panels. Menus grow to fit their longest choice instead of
+  cutting it off (most Greek labels were cut).
 - Clients: the Client area menu on a client's page can **Set password** (optionally emailing the login details;
   their browsers are signed out) and **Send password reset link**.
 - Settings → Logging → **Clean up** (super admins): delete a log's entries older than a day (the activity log keeps its

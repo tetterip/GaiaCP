@@ -253,6 +253,8 @@ class ClientPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.links')->render())
             // Form buttons that float at the foot of a long form look like the Settings pages' Save bar
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.sticky-actions')->render())
+            // Buttons that open a menu show a chevron after their label
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.menu-buttons')->render())
             // An admin looking at the client area as the client (Log in as client), with the way back
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => ClientAreaAccess::viewing()
                 ? view('filament.client.viewing-as-banner')->render() : '')
