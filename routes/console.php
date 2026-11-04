@@ -56,6 +56,12 @@ if (config('queue.default') !== 'sync') {
         ->onOneServer();
 }
 
+// Services → Module queue: failed set ups, unsuspends and suspensions tried again (Settings → Automation → Retry failed actions)
+Schedule::command('gaiacp:retry-module-queue')
+    ->everyFifteenMinutes()
+    ->withoutOverlapping(30)
+    ->onOneServer();
+
 // Slack / Discord messages queued by the chat plugins (nothing to do while none is on)
 Schedule::command('gaiacp:send-chat-messages')
     ->everyMinute()

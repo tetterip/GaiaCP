@@ -26,9 +26,9 @@ class AdminNavigationTest extends TestCase
             ->all();
 
         $this->assertSame([
-            'Main' => ['Dashboard', 'Clients', 'Orders', 'Quotes', 'Messages to clients', 'Leads'],
+            'Main' => ['Dashboard', 'Clients', 'Orders', 'Quotes', 'Leads', 'Messages to clients'],
             'Billing' => ['Payment notices', 'Payments', 'Invoices', 'Coupons', 'Reports'],
-            'Services' => ['Hosting', 'Domains', 'Other services', 'Site checks', 'Upgrade requests', 'Cancellation requests'],
+            'Services' => ['Hosting', 'Domains', 'Other services', 'Site checks', 'Upgrade requests', 'Cancellation requests', 'Module queue'],
             'Support' => ['Tickets', 'Knowledge base', 'Announcements', 'Downloads', 'Pages'],
             'System' => ['Activity log', 'Settings', 'Help'],
         ], $groups);

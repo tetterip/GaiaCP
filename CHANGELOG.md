@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Services → **Module queue**: a failed set up (hosting account, domain registration or transfer, SSL order),
+  suspend, unsuspend, termination or domain renewal waits there with its error, to **Retry**, **Retry all** or **Mark
+  resolved**. Set ups, unsuspends and suspensions for non-payment are retried every 15 minutes (Settings → Automation →
+  **Retry failed actions**, 3 times), then the bell rings once; open items are in Needs attention and the daily summary.
 - Clients: the client list has a **Client area** column and filter (login on, turned off, no login, admin user), and
   the Contact card on a client's page names it too.
 - Buttons that open a menu (a client's Client area and Credit, a service's Account and Price, the visitors'

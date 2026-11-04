@@ -2,6 +2,7 @@
 
 namespace App\Filament\Clusters\Settings\Pages;
 
+use App\Actions\ModuleQueue;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use BackedEnum;
 use Filament\Forms\Components\TagsInput;
@@ -33,7 +34,7 @@ class AutomationSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates'];
+        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates'];
     }
 
     public function form(Schema $schema): Schema
@@ -96,6 +97,14 @@ class AutomationSettings extends SettingsFormPage
                             ->minValue(1)
                             ->maxValue(100)
                             ->helperText(__('At 06:00, reads the disk space and bandwidth of every active hosting account; one that reaches this share of its package\'s limit gets the Usage Warning email (Email templates), and the bell rings, once a month for each. Leave empty to not check.')),
+                        TextInput::make('automation.module_retries')
+                            ->label('Retry failed actions')
+                            ->suffix(__('times'))
+                            ->integer()
+                            ->minValue(0)
+                            ->maxValue(20)
+                            ->required()
+                            ->helperText(__('A failed set up, unsuspend or suspension for non-payment (Services → Module queue) is tried again every :minutes minutes, this many times; then the bell rings once. Terminations and domain renewals are only retried by hand. 0 = only by hand.', ['minutes' => ModuleQueue::RETRY_MINUTES])),
                         TextInput::make('automation.client_messages_per_minute')
                             ->label('Messages per minute')
                             ->integer()
@@ -140,6 +149,7 @@ class AutomationSettings extends SettingsFormPage
         $values['reminders.before_days'] = array_reverse($values['reminders.before_days']);
 
         $values['automation.price_change_notice_days'] = (int) ($values['automation.price_change_notice_days'] ?? 30);
+        $values['automation.module_retries'] = max(0, (int) ($values['automation.module_retries'] ?? 3));
         $values['automation.client_messages_per_minute'] = max(1, (int) ($values['automation.client_messages_per_minute'] ?? 30));
 
         foreach (['automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.usage_warning_percent'] as $key) {

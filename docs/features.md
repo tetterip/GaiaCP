@@ -85,6 +85,10 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   profession, other custom fields as client fields), hosting accounts with their passwords, domains and unpaid invoices, with a dry run first; safe to re-run
 - System health (Settings → System): PHP version and extensions, configuration, database, storage, cron and the daily jobs,
   mail, server and registrar connections
+- Module queue (Services → Module queue), like WHMCS's: failed set ups (hosting, domain registration or transfer, SSL),
+  suspend, unsuspend, terminate and domain renewals wait with their error to Retry, Retry all or Mark resolved; set ups,
+  unsuspends and suspensions for non-payment are retried by themselves every 15 minutes (Settings → Automation), then
+  the bell rings once; open items are in the daily summary
 - Debugging (Settings → Logs): a WHMCS-style module log of every request to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, Proxmox VE, easy.gr, Enom and ΑΑΔΕ
   with the reply (passwords, tokens and EPP codes masked; off until switched on), an email log of every email sent or
   failed, and a viewer for Laravel's error log
