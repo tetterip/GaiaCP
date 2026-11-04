@@ -41,7 +41,7 @@ class AddDomainLateFees
                 ->where('type', ServiceType::Domain)
                 ->whereHas('domainDetails', fn (Builder $q) => $q
                     ->whereNotNull('expires_at')
-                    ->whereDate('expires_at', '<', $today)
+                    ->whereOnDate('expires_at', '<', $today)
                     ->where('registration_type', '!=', DomainRegistrationType::External)))
             ->with(['invoice', 'service.domainDetails'])
             ->get();
@@ -51,7 +51,7 @@ class AddDomainLateFees
             $tld = Tld::match($service->domain, activeOnly: false);
 
             foreach ($tld?->lateFees($service->domainDetails->expires_at, $today, $line->invoice->currency) ?? [] as $fee => $cents) {
-                $exists = $line->invoice->items()->where('service_id', $service->id)->whereDate('due_date', $line->due_date)->where('fee', $fee)->exists();
+                $exists = $line->invoice->items()->where('service_id', $service->id)->whereOnDate('due_date', $line->due_date)->where('fee', $fee)->exists();
 
                 if ($exists) {
                     continue;

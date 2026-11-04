@@ -24,14 +24,16 @@ class PaymentController extends ApiController
 {
     public function index(Request $request): AnonymousResourceCollection
     {
+        $request->validate(['paid_from' => ['nullable', 'date'], 'paid_to' => ['nullable', 'date']]);
+
         $query = $this->filter(Payment::query(), $request, ['client_id', 'service_id', 'method', 'reference']);
 
         if ($request->filled('paid_from')) {
-            $query->whereDate('paid_on', '>=', $request->query('paid_from'));
+            $query->whereOnDate('paid_on', '>=', $request->query('paid_from'));
         }
 
         if ($request->filled('paid_to')) {
-            $query->whereDate('paid_on', '<=', $request->query('paid_to'));
+            $query->whereOnDate('paid_on', '<=', $request->query('paid_to'));
         }
 
         return PaymentResource::collection($query->orderBy('id')->paginate($this->perPage($request))->withQueryString());

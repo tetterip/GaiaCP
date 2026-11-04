@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Faster lists and daily runs on a long billing history: date filters (Overdue, Due soon, the dashboard's Billing overview
+  and Needs attention, the overdue badges, the daily payment notices, reminders and suspensions) are plain date ranges
+  that MySQL / MariaDB can answer from the due date indexes, instead of reading every notice or service. A payment
+  notice's page reads its payments once (it read them again for every cell of the Payments table), services lists and
+  an order's items no longer check each row's payments one by one for Record payment, and an admin page no longer runs
+  the setup guide's checks for the tour's last card once the guide is hidden.
+- REST API: `paid_from` / `paid_to` on `GET /payments` must be dates (a 422 otherwise).
+
 ## [0.7.0] - 2026-11-04
 
 - **The first beta.** GaiaCP leaves alpha: the admin footer, the installer and `php artisan about` say Beta. Settings

@@ -2,11 +2,16 @@
 
 namespace App\Providers;
 
+use App\Invoices\NoticeLedger;
 use App\Models\ApiKey;
+use App\Models\CreditTransaction;
+use App\Models\InvoiceItem;
+use App\Models\Payment;
 use App\Notifications\ResetAdminPassword;
 use App\Plugins\PluginManager;
 use App\Support\ClientFields;
 use App\Support\Currencies;
+use App\Support\DateQueries;
 use App\Support\Demo;
 use App\Support\Locales;
 use App\Support\Region;
@@ -80,6 +85,15 @@ class AppServiceProvider extends ServiceProvider
         // with Save rightmost, like the Settings pages' Save bar
         BasePage::stickyFormActions();
         BasePage::alignFormActionsEnd();
+
+        // whereOnDate(): whereDate() as a range the column's index can serve
+        DateQueries::register();
+
+        // A notice's payments, kept for the request (NoticeLedger), are read again once one of them changes
+        foreach ([InvoiceItem::class, Payment::class, CreditTransaction::class] as $model) {
+            $model::saved(fn () => NoticeLedger::forget());
+            $model::deleted(fn () => NoticeLedger::forget());
+        }
 
         // The page being shown, for its title in link previews (App\Support\Seo::title(), read in the head)
         View::composer('filament-panels::components.layout.base', fn (ViewContract $view) => Seo::showing($view->getData()['livewire'] ?? null));

@@ -172,7 +172,7 @@ class Invoice extends Model
     {
         $items = InvoiceItem::query()->where('service_id', $service->id)->whereNull('payment_id')
             // An upgrade's difference is for days already started: owed unless the service ends now.
-            ->when(! $overdueToo, fn (Builder $q) => $q->whereDate('due_date', '>=', today())->forCycle())
+            ->when(! $overdueToo, fn (Builder $q) => $q->whereOnDate('due_date', '>=', today())->forCycle())
             ->whereHas('invoice', fn (Builder $q) => $q->unpaid())->with('invoice')->get();
 
         foreach ($items->groupBy('invoice_id') as $lines) {

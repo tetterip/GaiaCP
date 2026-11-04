@@ -46,7 +46,7 @@ final class ClientHealth
             ->map(fn (Payment $p) => max(0, (int) $p->due_date_before->diffInDays($p->paid_on, false)))
             ->values();
 
-        $overdue = $client->invoices()->unpaid()->whereDate('due_date', '<', $today)->pluck('due_date')
+        $overdue = $client->invoices()->unpaid()->whereOnDate('due_date', '<', $today)->pluck('due_date')
             ->map(fn ($due) => (int) CarbonImmutable::parse($due)->diffInDays($today));
 
         $all = $delays->concat($overdue);

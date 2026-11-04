@@ -7,7 +7,10 @@ use App\Enums\AdminArea;
 use App\Enums\UserRole;
 use App\Models\Client;
 use App\Models\User;
+use App\Support\SetupGuide;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 /** The welcome tour of both panels: by itself on the first visit only, then from the user menu → Tour. */
@@ -32,6 +35,22 @@ class WelcomeTourTest extends TestCase
             ->assertSee('data-opens-now="no"', false)
             ->assertSee('Welcome to GaiaCP')
             ->assertSee('open-welcome-tour', false);
+    }
+
+    public function test_a_hidden_setup_guide_is_not_offered_and_not_checked(): void
+    {
+        $admin = User::factory()->create();
+        SetupGuide::hide();
+
+        $queries = 0;
+        DB::listen(function (QueryExecuted $query) use (&$queries) {
+            $queries += str_contains($query->sql, 'from "servers"') ? 1 : 0;
+        });
+
+        $this->actingAs($admin)->get('/admin/clients')->assertOk()
+            ->assertSee('Welcome to GaiaCP')
+            ->assertDontSee('Open the setup guide');
+        $this->assertSame(0, $queries);
     }
 
     public function test_an_admin_sees_only_the_parts_they_can_open(): void

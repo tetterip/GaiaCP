@@ -43,7 +43,7 @@ trait HasStatusChips
             'cancelled' => ['label' => __('Cancelled'), 'count' => $this->statusChipsQuery()->where('status', InvoiceStatus::Cancelled)->count(), 'active' => $only(InvoiceStatus::Cancelled)],
             'overdue' => [
                 'label' => __('Overdue'),
-                'count' => $this->statusChipsQuery()->unpaid()->whereDate('due_date', '<', today())->count(),
+                'count' => $this->statusChipsQuery()->unpaid()->whereOnDate('due_date', '<', today())->count(),
                 'active' => $overdue && blank($status),
             ],
         ];

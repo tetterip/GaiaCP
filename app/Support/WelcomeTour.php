@@ -57,10 +57,15 @@ class WelcomeTour
         return array_values(array_filter(self::client() ? self::clientSteps() : self::adminSteps()));
     }
 
-    /** The last card's button: the setup guide while a super admin has steps left in it, else just Done. @return array{label: string, url: string|null} */
+    /**
+     * The last card's button: the setup guide while a super admin has steps left in it and has not hidden it, else just
+     * Done. The tour is part of every admin page, so a hidden guide (most installs) is not checked step by step.
+     *
+     * @return array{label: string, url: string|null}
+     */
     public static function finish(): array
     {
-        if (! self::client() && SetupGuidePage::canAccess() && ! SetupGuide::finished()) {
+        if (! self::client() && SetupGuidePage::canAccess() && ! SetupGuide::state()['hidden'] && ! SetupGuide::finished()) {
             return ['label' => __('Open the setup guide'), 'url' => SetupGuidePage::getUrl()];
         }
 

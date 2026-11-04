@@ -24,7 +24,7 @@ class TerminateScheduled extends Command
             ->with(['client', 'server'])
             ->where('auto_terminate', true)
             ->whereIn('status', [ServiceStatus::Active, ServiceStatus::Suspended])
-            ->whereDate('next_due_date', '<=', $today)
+            ->whereOnDate('next_due_date', '<=', $today)
             ->get();
 
         $failed = 0;

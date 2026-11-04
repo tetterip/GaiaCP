@@ -84,7 +84,7 @@ class DataQuestions
     private function clientsOwing(?int $min, ?int $overdueDays): array
     {
         $notices = Invoice::query()->unpaid()
-            ->when($overdueDays !== null, fn (Builder $q) => $q->whereDate('due_date', '<=', today()->subDays(max($overdueDays, 1))))
+            ->when($overdueDays !== null, fn (Builder $q) => $q->whereOnDate('due_date', '<=', today()->subDays(max($overdueDays, 1))))
             ->with('client')
             ->get(['id', 'client_id', 'currency', 'total_cents', 'due_date']);
 
@@ -110,7 +110,7 @@ class DataQuestions
 
     private function overdueNotices(int $minDays): array
     {
-        $notices = Invoice::query()->unpaid()->whereDate('due_date', '<=', today()->subDays(max($minDays, 1)))->with('client')->orderBy('due_date')->get();
+        $notices = Invoice::query()->unpaid()->whereOnDate('due_date', '<=', today()->subDays(max($minDays, 1)))->with('client')->orderBy('due_date')->get();
 
         return $this->answer(__('Unpaid notices overdue :days days or more', ['days' => max($minDays, 1)]),
             ['number' => __('Number'), 'client' => __('Client'), 'total' => __('Total'), 'due' => __('Due date')],

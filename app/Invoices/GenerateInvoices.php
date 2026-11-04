@@ -65,7 +65,7 @@ class GenerateInvoices
             ->where(fn (Builder $q) => $q->where('price_cents', '>', 0)->orWhere('new_price_cents', '>', 0)
                 ->orWhere(fn (Builder $q) => $q->where('first_payment_cents', '>', 0)->whereDoesntHave('payments')))
             ->where('auto_terminate', false) // ends at its due date, so nothing more is owed
-            ->whereDate('next_due_date', '<=', $today->addDays((int) config('gaiacp.invoices.days_before', 14)))
+            ->whereOnDate('next_due_date', '<=', $today->addDays((int) config('gaiacp.invoices.days_before', 14)))
             ->whereDoesntHave('invoiceItems', fn (Builder $q) => $q
                 ->whereColumn('invoice_items.due_date', 'services.next_due_date')
                 ->forCycle()

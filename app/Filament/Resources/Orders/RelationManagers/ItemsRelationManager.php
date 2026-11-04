@@ -34,7 +34,7 @@ class ItemsRelationManager extends RelationManager
             TextColumn::make('first_payment')
                 ->label('First payment')
                 ->state(fn (Service $record) => Money::format($record->firstPaymentCents(), $record->currency))
-                ->description(fn (Service $record) => $record->payments()->exists() ? __('Paid') : null),
+                ->description(fn (Service $record) => $record->payments_exists ? __('Paid') : null), // loaded by ServicesTable
         ]);
     }
 }

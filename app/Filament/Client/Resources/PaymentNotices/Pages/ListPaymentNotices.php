@@ -41,7 +41,7 @@ class ListPaymentNotices extends ListRecords
             'overdue' => [
                 'label' => __('Overdue'),
                 'filters' => $status(null, overdue: true),
-                'query' => fn (Builder $query) => $query->unpaid()->whereDate('due_date', '<', today()),
+                'query' => fn (Builder $query) => $query->unpaid()->whereOnDate('due_date', '<', today()),
                 'dot' => 'danger',
             ],
         ];

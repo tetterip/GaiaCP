@@ -123,7 +123,7 @@ class TicketResource extends Resource
                             TextEntry::make('owed')
                                 ->label('Owes')
                                 ->state(fn (Ticket $record) => self::owed($record))
-                                ->color(fn (Ticket $record) => $record->client?->invoices()->unpaid()->whereDate('due_date', '<', today())->exists() ? 'danger' : null)
+                                ->color(fn (Ticket $record) => $record->client?->invoices()->unpaid()->whereOnDate('due_date', '<', today())->exists() ? 'danger' : null)
                                 ->placeholder('–'),
                             TextEntry::make('created_at')
                                 ->label('Opened')

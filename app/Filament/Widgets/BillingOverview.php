@@ -36,8 +36,8 @@ class BillingOverview extends Widget
     protected function getViewData(): array
     {
         $currency = Currencies::base();
-        $overdue = Invoice::query()->unpaid()->whereDate('due_date', '<', today());
-        $week = Service::query()->billable()->whereDate('next_due_date', '>=', today())->whereDate('next_due_date', '<=', today()->addDays(7));
+        $overdue = Invoice::query()->unpaid()->whereOnDate('due_date', '<', today());
+        $week = Service::query()->billable()->whereOnDate('next_due_date', '>=', today())->whereOnDate('next_due_date', '<=', today()->addDays(7));
 
         return [
             'balance' => Money::format(Currencies::sumToBase(Invoice::query()->unpaid(), 'total_cents'), $currency),

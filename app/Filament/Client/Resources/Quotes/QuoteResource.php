@@ -48,7 +48,7 @@ class QuoteResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $open = static::getEloquentQuery()->where('status', QuoteStatus::Sent)->whereDate('valid_until', '>=', today())->count();
+        $open = static::getEloquentQuery()->where('status', QuoteStatus::Sent)->whereOnDate('valid_until', '>=', today())->count();
 
         return $open > 0 ? (string) $open : null;
     }

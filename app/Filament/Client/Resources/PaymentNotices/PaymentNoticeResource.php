@@ -81,7 +81,7 @@ class PaymentNoticeResource extends Resource
                         InvoiceStatus::Paid->value => InvoiceStatus::Paid->getLabel(),
                     ]),
                 Filter::make('overdue')
-                    ->query(fn (Builder $query) => $query->unpaid()->whereDate('due_date', '<', today())),
+                    ->query(fn (Builder $query) => $query->unpaid()->whereOnDate('due_date', '<', today())),
             ])
             // The chips over the table (ListPaymentNotices) set them and show which one is on
             ->filtersLayout(FiltersLayout::Hidden)

@@ -58,8 +58,8 @@ class PaymentsTable
                         DatePicker::make('until'),
                     ])
                     ->query(fn (Builder $query, array $data) => $query
-                        ->when($data['from'] ?? null, fn ($q, $date) => $q->whereDate('paid_on', '>=', $date))
-                        ->when($data['until'] ?? null, fn ($q, $date) => $q->whereDate('paid_on', '<=', $date))),
+                        ->when($data['from'] ?? null, fn ($q, $date) => $q->whereOnDate('paid_on', '>=', $date))
+                        ->when($data['until'] ?? null, fn ($q, $date) => $q->whereOnDate('paid_on', '<=', $date))),
             ])
             ->recordUrl(fn (Payment $record) => ServiceResource::getUrl('edit', ['record' => $record->service_id]));
     }
