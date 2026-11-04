@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Clients: the client list has a **Client area** column and filter (login on, turned off, no login, admin user), and
+  the Contact card on a client's page names it too.
 - Clients: the Client area menu on a client's page can **Set password** (optionally emailing the login details;
   their browsers are signed out) and **Send password reset link**.
 - Settings → Logging → **Clean up** (super admins): delete a log's entries older than a day (the activity log keeps its
