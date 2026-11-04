@@ -11,6 +11,8 @@ use Filament\Auth\Pages\PasswordReset\ResetPassword;
 use Filament\Facades\Filament;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Mail\Markdown;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -111,5 +113,30 @@ class PasswordResetTest extends TestCase
             ->call('authenticate');
 
         $this->assertGuest();
+    }
+
+    public function test_a_signed_in_browser_gets_the_form_and_is_signed_out_of_that_panel_only(): void
+    {
+        $admin = User::factory()->create(['email' => 'admin@example.com']);
+        $url = Filament::getPanel('admin')->getResetPasswordUrl(Password::broker()->createToken($admin), $admin);
+
+        // Filament sends a signed-in browser to the dashboard; the emailed link shows the form instead
+        $this->actingAs($admin)->get($url)->assertOk()->assertSee(__('Reset password'));
+        $this->assertFalse(Auth::guard('web')->check());
+    }
+
+    public function test_the_long_link_under_the_button_breaks_instead_of_scrolling_sideways(): void
+    {
+        $admin = User::factory()->create(['email' => 'admin@example.com']);
+        $notification = new ResetAdminPassword('token');
+        $notification->url = 'https://example.com/admin/password-reset/reset?token='.str_repeat('a1', 32).'&email=admin%40example.com';
+        $mail = $notification->toMail($admin);
+
+        $html = $mail->render();
+        $this->assertStringContainsString('overflow-wrap: anywhere;', $html);
+        $this->assertStringContainsString('<wbr', $html);
+
+        $text = app(Markdown::class)->renderText('mail.password-reset', ['client' => false] + $mail->notice()->data());
+        $this->assertStringContainsString($notification->url, (string) $text);
     }
 }
