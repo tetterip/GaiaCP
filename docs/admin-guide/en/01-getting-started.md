@@ -64,7 +64,8 @@ that opens the client area in a new tab, **New order**, and the **bell**. On a p
 tablet, swipe a notification left or right to remove it.
 
 Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a page (`g c` Clients, `g d` Dashboard),
-`n` then a letter starts a new record.
+`n` then a letter starts a new record. If you use speech input, or the single keys get in your way, turn them off in
+**Profile** → **Keyboard shortcuts**; the user menu → **Keyboard shortcuts** still shows the list.
 
 The version number at the foot of every page (or the user menu → **About GaiaCP**) opens a short About: the version,
 what it runs on (PHP, Laravel, Filament), the licence and links to this guide, Updates and GitHub. Handy when you report a

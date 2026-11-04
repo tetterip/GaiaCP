@@ -10,6 +10,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Accessibility: readable colours in every theme (WCAG AA, 4.5:1): links, tabs and selected buttons in the logo's own teal
   in Gaia and Glass (a bright teal at 3.4:1 before), secondary grey text (breadcrumbs, tabs, hints, footer) a little darker,
   and in dark mode a lighter grey for the same texts. Gaia 1.3.3, Glass 1.2.2, Flat 1.3.1.
+- Accessibility: the keyboard shortcuts list (`?`) and the welcome tour keep the keyboard focus inside while open, and the
+  list has a Close button. **Profile** → **Keyboard shortcuts** turns the single-key shortcuts off (on by default), e.g.
+  for speech input; the user menu still opens the list.
 - Fixed: a server panel error longer than 255 characters (CyberPanel sends its web server's whole output) showed a
   page error instead of the message, on MySQL / MariaDB. The activity log keeps the whole text.
 - Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the

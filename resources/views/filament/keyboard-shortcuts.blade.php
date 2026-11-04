@@ -2,10 +2,12 @@
     use App\Filament\KeyboardShortcuts;
 @endphp
 
-{{-- Keyboard shortcuts for the admin (App\Filament\KeyboardShortcuts); "?" opens this list. --}}
+{{-- Keyboard shortcuts for the admin (App\Filament\KeyboardShortcuts); "?" opens this list. Profile → Keyboard shortcuts
+     turns the single keys off (WCAG 2.1.4); the user menu still opens the list. The list holds the focus while open. --}}
 <div
     x-data="{
         open: false,
+        enabled: @js((bool) (auth()->user()?->keyboard_shortcuts ?? true)),
         prefix: null,
         timer: null,
         urls: @js(KeyboardShortcuts::urls()),
@@ -24,7 +26,7 @@
                 return
             }
 
-            if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || this.typing(event)) {
+            if (! this.enabled || event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || this.typing(event)) {
                 return
             }
 
@@ -77,7 +79,9 @@
         .gaiacp-shortcuts-backdrop { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 1rem; background: rgb(0 0 0 / 0.5); }
         .gaiacp-shortcuts-panel { width: 100%; max-width: 34rem; max-height: calc(100vh - 2rem); overflow-y: auto; border-radius: 0.75rem; padding: 1.25rem 1.5rem; background: #fff; color: var(--gray-950); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2); }
         .dark .gaiacp-shortcuts-panel { background: var(--gray-900); color: #fff; }
-        .gaiacp-shortcuts-panel h2 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .gaiacp-shortcuts-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }
+        .gaiacp-shortcuts-panel h2 { font-size: 1.125rem; font-weight: 600; }
+        .gaiacp-shortcuts-off { font-size: 0.875rem; color: var(--gray-500); margin-bottom: 0.5rem; }
         .gaiacp-shortcuts-panel h3 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-500); margin: 1rem 0 0.25rem; }
         .gaiacp-shortcuts-panel li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.3rem 0; font-size: 0.875rem; }
         .gaiacp-shortcuts-panel kbd { display: inline-block; min-width: 1.5rem; padding: 0.1rem 0.4rem; border-radius: 0.375rem; border: 1px solid var(--gray-300); background: var(--gray-50); font-family: ui-monospace, monospace; font-size: 0.75rem; text-align: center; }
@@ -99,8 +103,15 @@
             aria-modal="true"
             aria-labelledby="gaiacp-shortcuts-title"
         >
-            <div class="gaiacp-shortcuts-panel">
-                <h2 id="gaiacp-shortcuts-title">{{ __('Keyboard shortcuts') }}</h2>
+            <div class="gaiacp-shortcuts-panel" x-trap.noscroll="open">
+                <div class="gaiacp-shortcuts-head">
+                    <h2 id="gaiacp-shortcuts-title">{{ __('Keyboard shortcuts') }}</h2>
+                    <x-filament::icon-button icon="heroicon-o-x-mark" color="gray" :label="__('Close')" x-on:click="open = false" />
+                </div>
+
+                @if (! (auth()->user()?->keyboard_shortcuts ?? true))
+                    <p class="gaiacp-shortcuts-off">{{ __('They are turned off in your profile.') }}</p>
+                @endif
 
                 <div class="gaiacp-shortcuts-columns">
                     @foreach (KeyboardShortcuts::sequences() as $group => $items)

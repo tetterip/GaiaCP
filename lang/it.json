@@ -3812,5 +3812,7 @@
     "No panel or registrar action is waiting to be retried.": "Nessuna azione del pannello o del registrar attende di essere ritentata.",
     "Nothing resolved yet": "Ancora nulla di risolto",
     "The sign-in took too long": "L'accesso ha richiesto troppo tempo",
-    "Complete the check that you are not a robot and sign in again.": "Completa la verifica di non essere un robot e accedi di nuovo."
+    "Complete the check that you are not a robot and sign in again.": "Completa la verifica di non essere un robot e accedi di nuovo.",
+    "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Tasti singoli come ? (questo elenco), / (ricerca) e g poi c (Clienti). Disattivali se usi l'input vocale o se ti danno fastidio.",
+    "They are turned off in your profile.": "Sono disattivate nel tuo profilo."
 }

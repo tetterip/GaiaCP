@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'super_admin', 'admin_areas', 'active', 'system_emails', 'panel_notifications'])]
+#[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'super_admin', 'admin_areas', 'active', 'system_emails', 'panel_notifications', 'keyboard_shortcuts'])]
 #[Hidden(['password', 'remember_token'])]
 /**
  * Two-factor authentication is opt-in per user from the profile page (authenticator app plus
@@ -161,6 +161,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'active' => 'boolean',
             'system_emails' => 'boolean',
             'panel_notifications' => 'boolean',
+            'keyboard_shortcuts' => 'boolean',
             'dashboard_layout' => 'array',
             'last_login_at' => 'datetime',
             'two_factor_reminder_dismissed_at' => 'datetime',

@@ -3812,5 +3812,7 @@
     "No panel or registrar action is waiting to be retried.": "Geen panel- of registraractie wacht op een nieuwe poging.",
     "Nothing resolved yet": "Nog niets opgelost",
     "The sign-in took too long": "Het inloggen duurde te lang",
-    "Complete the check that you are not a robot and sign in again.": "Voltooi de controle dat u geen robot bent en log opnieuw in."
+    "Complete the check that you are not a robot and sign in again.": "Voltooi de controle dat u geen robot bent en log opnieuw in.",
+    "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Losse toetsen zoals ? (deze lijst), / (zoeken) en g dan c (Klanten). Zet ze uit als u spraakinvoer gebruikt of als ze in de weg zitten.",
+    "They are turned off in your profile.": "Ze staan uit in uw profiel."
 }
