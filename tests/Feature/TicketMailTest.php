@@ -46,7 +46,8 @@ class TicketMailTest extends TestCase
         parent::setUp();
         Mail::fake();
         Storage::fake('local');
-        config(['gaiacp.support.reply_to' => 'support@gaiacp.test', 'mail.from.address' => 'billing@gaiacp.test']);
+        // These tests are of the older "forged" mode; the default "verified" one is in TicketMailWebhookTest
+        config(['gaiacp.support.reply_to' => 'support@gaiacp.test', 'mail.from.address' => 'billing@gaiacp.test', 'gaiacp.ticket_mail.sender_check' => 'forged']);
 
         $this->admin = User::factory()->create(['email' => 'admin@example.com']);
         $this->client = Client::factory()->create(['first_name' => 'Nikos', 'email' => 'nikos@example.com']);

@@ -18,8 +18,14 @@ class LanguageController extends Controller
 
         $request->session()->put(PublicArea::LOCALE, $locale);
 
-        // Back to the page, without a `?lang=` of its own that would win over the language just picked
-        $previous = url()->previous(filament()->getUrl());
+        // Back to the page, without a `?lang=` of its own that would win over the language just picked. The previous
+        // page is the browser's Referer: only one of this install (same address and folder), never another site.
+        $home = filament()->getUrl();
+        $previous = url()->previous($home);
+        $root = rtrim(url('/'), '/');
+        if ($previous !== $root && ! str_starts_with($previous, $root.'/') && ! str_starts_with($previous, $root.'?')) {
+            $previous = $home;
+        }
 
         return redirect()->to(Seo::withoutLanguage($previous));
     }

@@ -174,7 +174,8 @@ services; a slow machine may take a minute or more per answer.
 Settings → Integrations → **API keys** (super admins) makes keys for your own scripts and website: one per use, each
 with its permissions per area (read, create, update, delete) and the IP addresses it may call from (**Select all**,
 **Read only** and **Clear all** above the permissions tick them in one go). A key is shown once; revoke it at once if it
-leaks. Calls go through the same actions as the panel, so they send the same emails and are in
+leaks. A key works only while the admin who made it is an active super admin: deactivating them (or taking away
+super admin) stops their keys, and deleting them revokes the keys. Calls go through the same actions as the panel, so they send the same emails and are in
 the activity log under the key's name. **Documentation** on that page lists every call, with `openapi.json` to
 download. Examples: [using the API](../../using-the-api.md).
 

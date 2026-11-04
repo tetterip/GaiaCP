@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
@@ -88,6 +89,28 @@ class ApiKey extends Model
     private static function hash(string $token): string
     {
         return hash('sha256', $token);
+    }
+
+    /**
+     * Whether the admin who made it may still use it: an active super admin (only they manage keys). A key whose
+     * admin was deactivated, lost super admin or left the admin role stops working until they get it back; deleting
+     * the admin revokes their keys (User::booted()). A key with no admin (made outside the panel) is not checked.
+     */
+    public function ownerAllowed(): bool
+    {
+        if ($this->user_id === null) {
+            return true;
+        }
+
+        $owner = $this->user;
+
+        return $owner !== null && $owner->active && $owner->role === UserRole::Admin && $owner->super_admin;
+    }
+
+    /** Who is acting for `recorded_by` style columns: the signed-in user, or in an API call the admin who made its key. */
+    public static function actingUserId(): ?int
+    {
+        return auth()->id() ?? self::current()?->user_id;
     }
 
     /** The key of the API call being answered, null outside one. */

@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Plugins\PluginManager;
+use App\Support\Settings;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -88,6 +89,25 @@ class TicketMailWebhookTest extends TestCase
         // A subdomain's signature is the same sender (DMARC's relaxed alignment)
         $this->post($this->url(), ['body-mime' => $this->email('sub@x', ['Authentication-Results: mx.gaiacp.test; spf=softfail smtp.mailfrom=example.com; dkim=pass header.d=mail.example.com'])])->assertOk();
         $this->assertNotNull(Ticket::query()->latest('id')->first()->client_id);
+    }
+
+    public function test_new_installs_trust_only_confirmed_senders_and_set_up_mailboxes_keep_the_old_check(): void
+    {
+        $this->assertSame('verified', config('gaiacp.ticket_mail.sender_check'));
+        $migration = require database_path('migrations/2026_11_04_000200_keep_ticket_mail_sender_check.php');
+
+        // Nothing set up yet: the new default stays
+        $migration->up();
+        $this->assertFalse(Setting::query()->where('key', 'ticket_mail.sender_check')->exists());
+
+        // A mailbox set up before 1.3.0 keeps "forged"; one chosen by hand is left alone
+        Settings::save(['ticket_mail.host' => 'imap.example.com']);
+        $migration->up();
+        $this->assertSame('forged', Setting::query()->where('key', 'ticket_mail.sender_check')->value('value'));
+
+        Settings::save(['ticket_mail.sender_check' => 'verified']);
+        $migration->up();
+        $this->assertSame('verified', Setting::query()->where('key', 'ticket_mail.sender_check')->value('value'));
     }
 
     public function test_on_verified_only_what_the_receiving_server_confirmed_is_from_the_client(): void

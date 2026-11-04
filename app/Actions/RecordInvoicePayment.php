@@ -7,6 +7,7 @@ use App\Credit\ClientCredit;
 use App\Enums\CreditType;
 use App\Enums\InvoiceStatus;
 use App\Models\ActivityLog;
+use App\Models\ApiKey;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Payment;
@@ -117,7 +118,7 @@ class RecordInvoicePayment
                 'reference' => $reference,
                 'due_date_before' => $service->next_due_date,
                 'due_date_after' => $service->next_due_date,
-                'recorded_by' => auth()->id(),
+                'recorded_by' => ApiKey::actingUserId(),
                 'notes' => $notes,
             ]);
 

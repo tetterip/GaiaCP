@@ -137,6 +137,10 @@ class SeoTest extends TestCase
         // Picking a language in the top bar goes back without the old ?lang=
         $this->from(url('/').'?lang=el&page=2')->get('/language/en')->assertRedirect(url('/').'?page=2');
 
+        // Never to another site, even one whose address starts like this one's
+        $this->from('https://evil.example/')->get('/language/en')->assertRedirect(filament()->getPanel('client')->getUrl());
+        $this->from(url('/').'.evil.example/')->get('/language/en')->assertRedirect(filament()->getPanel('client')->getUrl());
+
         config(['gaiacp.languages.enabled' => ['en']]);
         $this->get('/login')->assertOk()->assertDontSee('hreflang', false);
     }

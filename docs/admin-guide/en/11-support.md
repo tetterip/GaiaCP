@@ -40,9 +40,11 @@ ticket, and new emails open one (from someone who isn't a client, a ticket witho
 Create the mailbox in your mail server and fill in its details under Settings → Support → Email to ticket. A mail
 provider (Mailgun, SendGrid, Postmark) can post the emails to a secret webhook address instead. An email your mail
 server marks as forged (DMARC or SPF failed, a DKIM signature only counting when it is of the sender's own domain)
-counts as from someone who isn't a client, whatever address it shows. **Email counts as from the client** set to "Only
-when the mail server confirmed the sender" goes further: only an email your server confirmed (DMARC, DKIM or SPF pass)
-joins a client's ticket.
+counts as from someone who isn't a client, whatever address it shows. **Email counts as from the client** starts on "Only
+when the mail server confirmed the sender": only an email your server confirmed (DMARC, DKIM or SPF pass) joins a
+client's ticket, since anyone can write a client's address as the sender. If your mail server adds no such check, email
+from clients opens tickets without a client; "Unless the mail server found the sender forged" accepts it (mailboxes set
+up before version 0.7.0 keep this one).
 
 ## Knowledge base
 

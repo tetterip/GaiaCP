@@ -115,6 +115,7 @@ Until a value is saved there, the default comes from `.env` (see `.env.example`)
 |---|---|
 | `MAIL_*` | The mailer used while Settings → Mail → SMTP is off |
 | `GAIACP_CURRENCY` | The base currency (EUR); the installer asks it, other currencies go under Settings → Currencies |
+| `GAIACP_TRUSTED_HOSTS` | Other addresses GaiaCP answers on besides `APP_URL`'s host and its subdomains (comma-separated, e.g. a second domain). Any other address gets a 400, so keep `APP_URL` right when you move to another domain |
 | `GAIACP_HSTS` | Over https, how many seconds browsers keep to https for this address (HSTS; one year by default, `0` turns it off, subdomains are never included) |
 
 ## Production

@@ -5,6 +5,7 @@ namespace App\Credit;
 use App\Enums\CreditType;
 use App\Enums\ServiceStatus;
 use App\Models\ActivityLog;
+use App\Models\ApiKey;
 use App\Models\Client;
 use App\Models\CreditTransaction;
 use App\Support\Currencies;
@@ -89,7 +90,7 @@ class ClientCredit
                 'payment_id' => $links['payment_id'] ?? null,
                 'method' => $links['method'] ?? null,
                 'reference' => $links['reference'] ?? null,
-                'user_id' => auth()->id(),
+                'user_id' => ApiKey::actingUserId(),
                 'created_at' => now(),
             ]);
         });
