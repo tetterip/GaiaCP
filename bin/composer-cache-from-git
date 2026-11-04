@@ -1,0 +1,73 @@
+#!/bin/bash
+# Fills Composer's download cache from shallow git clones, so `composer install --prefer-dist`
+# then installs every package from the cache without downloading zips.
+#
+# Why: in Claude Code cloud sessions the GitHub proxy refuses zip downloads
+# (api.github.com/.../zipball, codeload.github.com) of repositories that are not attached to the
+# session, even public ones, so Composer falls back to full git clones of ~160 repositories, which
+# takes 10+ minutes. Plain git fetches of public repositories are allowed, and a shallow fetch of
+# the exact locked commit takes a second or two each.
+#
+# For each package in composer.lock whose zip is not cached yet, this fetches the locked commit
+# (depth 1), runs `git archive` (which honours export-ignore, like GitHub's zips) and stores the zip
+# under the cache key Composer uses (sha1 of the dist URL). Composer checks nothing else for
+# GitHub dists (they carry no shasum), and a package this script skips or fails on is simply
+# downloaded by Composer as before.
+#
+# Usage: bin/composer-cache-from-git [jobs]   (default 12 parallel fetches)
+set -uo pipefail
+
+cd "$(dirname "$0")/.."
+jobs="${1:-12}"
+cache_dir="$(composer config cache-files-dir 2>/dev/null)"
+if [ -z "$cache_dir" ]; then
+  echo "composer-cache-from-git: could not read Composer's cache-files-dir" >&2
+  exit 1
+fi
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+
+# One line per package: name, source git URL, locked commit, cache file.
+php -r '
+  $lock = json_decode(file_get_contents("composer.lock"), true);
+  [$dir, $work] = [$argv[1], $argv[2]];
+  foreach (array_merge($lock["packages"] ?? [], $lock["packages-dev"] ?? []) as $p) {
+      $dist = $p["dist"] ?? null; $src = $p["source"] ?? null;
+      if (! $dist || ! $src || ($dist["type"] ?? "") !== "zip" || ($src["type"] ?? "") !== "git"
+          || ! empty($dist["shasum"]) || ! str_starts_with($src["url"], "https://github.com/")) {
+          continue;
+      }
+      $file = $dir."/".$p["name"]."/".sha1($dist["url"]).".zip";
+      if (! is_file($file)) {
+          echo $p["name"], " ", $src["url"], " ", $dist["reference"], " ", $file, "\n";
+      }
+  }
+' "$cache_dir" "$work" > "$work/list"
+
+total=$(wc -l < "$work/list")
+if [ "$total" -eq 0 ]; then
+  echo "composer-cache-from-git: every package is already cached"
+  exit 0
+fi
+
+fetch() {
+  local name="$1" url="$2" ref="$3" file="$4" repo
+  repo="$(mktemp -d "$WORK/repo.XXXXXX")"
+  if git -C "$repo" init -q \
+    && timeout 300 git -C "$repo" fetch -q --depth 1 "$url" "$ref" 2>/dev/null \
+    && mkdir -p "$(dirname "$file")" \
+    && git -C "$repo" archive --format=zip --prefix="package/" -o "$file.tmp" FETCH_HEAD \
+    && mv "$file.tmp" "$file"; then
+    :
+  else
+    rm -f "$file.tmp"
+    echo "composer-cache-from-git: could not fetch $name ($ref); Composer will download it" >&2
+  fi
+  rm -rf "$repo"
+}
+export -f fetch
+export WORK="$work"
+
+start=$SECONDS
+xargs -P "$jobs" -L 1 bash -c 'fetch "$@"' _ < "$work/list"
+echo "composer-cache-from-git: cached $total packages in $((SECONDS - start)) s"

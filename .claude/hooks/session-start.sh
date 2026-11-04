@@ -21,6 +21,11 @@ restore_origin() {
 }
 trap restore_origin EXIT
 
+# The GitHub proxy refuses package zips from repositories not attached to the session, so Composer
+# would fall back to slow full git clones; fill its cache from shallow clones first (about 20 s).
+if [ ! -f vendor/autoload.php ]; then
+  bin/composer-cache-from-git || true
+fi
 composer install --prefer-dist --no-progress --quiet
 
 # No npm step: nothing uses Vite (Filament ships its own assets).
