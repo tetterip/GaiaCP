@@ -102,6 +102,19 @@ never calls a panel API directly.
   the comparison once saved). `gaiacp:compare-servers` (04:30, Settings → Automation → Compare servers nightly) runs
   it on every active server and logs `server.accounts_differ` (super admins' bell) only for what
   `CompareServerAccounts::problems()` finds that `servers.compare_alerted` (the last run's keys) didn't have
+- **Module queue** (`App\Actions\ModuleQueue`, `module_queue` rows = `ModuleQueueItem`, Services → Module queue): every
+  `provisioning.failed` with a service whose `event` is a pending service's set up (`account.created`,
+  `domain.registered`, `domain.transfer_requested`, `ssl.ordered`), `account.suspended` (the reason kept in the
+  properties), `account.unsuspended`, `account.terminated` or `domain.renewed` opens one item per service and action
+  (`ModuleQueue::fromLog()`, from `ActivityLog`'s `created` hook; a second failure updates it). Calls an admin watches
+  fail (password, nameservers, login, contacts…) are not queued. A success event of the same action (`DONE`) closes it
+  as done; `stillNeeded()` closes the ones the service no longer needs (set up = still pending; a suspension for
+  non-payment = still overdue and not exempt; renew = the known expiry before `next_due_date`), checked by `sweep()`
+  on the page and the cron. Retry runs the action again (renew syncs first and renews only if still needed); the
+  failure of a retry is logged with `properties.retry`, which the bell, `GaiaEvent` and Needs attention skip.
+  `gaiacp:retry-module-queue` (every 15 minutes) retries set up, unsuspend and overdue suspensions
+  (`retriesByItself()`) `RETRY_MINUTES` after their last try, `automation.module_retries` times (default 3, 0 = off),
+  then logs `module_queue.gave_up` once (Services bell). Open items go in the daily summary and Needs attention
 - **Quick shortcuts** (`App\Provisioning\OffersShortcuts`, cPanel and Plesk): `shortcuts()` (key => label, icon) and
   `shortcutUrl()`, a one-time sign-in to that page. cPanel: `create_user_session` with `app` = `Email_Accounts`,
   `FileManager_Home`, `Database_MySQL`, `Database_phpMyAdmin`, `Stats_AWStats`, `Backups_Home`. Plesk: the customer's

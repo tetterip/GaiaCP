@@ -8,6 +8,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Products: a **Limits** section with **Quantity available** (each order takes one, a cancelled order gives it back;
   at 0 clients see Out of stock) and **Client limit** (how many services of it one client can have, 1 for a free
   trial). The client area, the public cart and the API hold to both; WHMCS import keeps stock control (WhmcsImport 1.0.11).
+- Services → **Module queue**: a failed set up (hosting account, domain registration or transfer, SSL order),
+  suspend, unsuspend, termination or domain renewal waits there with its error, to **Retry**, **Retry all** or **Mark
+  resolved**. Set ups, unsuspends and suspensions for non-payment are retried every 15 minutes (Settings → Automation →
+  **Retry failed actions**, 3 times), then the bell rings once; open items are in Needs attention and the daily summary.
 - Clients: the client list has a **Client area** column and filter (login on, turned off, no login, admin user), and
   the Contact card on a client's page names it too.
 - Buttons that open a menu (a client's Client area and Credit, a service's Account and Price, the visitors'

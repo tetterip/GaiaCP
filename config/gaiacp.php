@@ -130,6 +130,10 @@ return [
         // package's limit (gaiacp:check-usage, daily at 06:00); empty = off.
         'usage_warning_percent' => env('GAIACP_USAGE_WARNING_PERCENT') === '' ? null : (int) env('GAIACP_USAGE_WARNING_PERCENT', 85),
 
+        // Services → Module queue: how many times gaiacp:retry-module-queue (every 15 minutes) tries a failed set up,
+        // unsuspend or suspension for non-payment again by itself before it rings the bell; 0 = only by hand.
+        'module_retries' => (int) env('GAIACP_MODULE_RETRIES', 3),
+
         // Emails of messages to clients sent each minute (gaiacp:send-client-messages), kind to the mail server.
         'client_messages_per_minute' => (int) env('GAIACP_CLIENT_MESSAGES_PER_MINUTE', 30),
 

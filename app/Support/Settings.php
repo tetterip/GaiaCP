@@ -54,6 +54,7 @@ class Settings
         'automation.compare_servers',
         'automation.price_change_notice_days',
         'automation.usage_warning_percent',
+        'automation.module_retries',
         'automation.client_messages_per_minute',
         'automation.daily_summary',
         'automation.change_request_email',

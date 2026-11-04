@@ -115,7 +115,7 @@ class ServiceLifecycle
                 $panel->suspendAccount($service, $reason);
 
                 return true;
-            });
+            }, ['reason' => $reason]); // the module queue retries it with the same reason
         }
 
         $wasActive = $service->status === ServiceStatus::Active;
@@ -331,14 +331,15 @@ class ServiceLifecycle
      * @template T
      *
      * @param  Closure(HostingProvisioner): T  $call
+     * @param  array<string, mixed>  $properties  kept with the failure, for the module queue
      * @return T
      */
-    private function panel(Service $service, string $event, Closure $call): mixed
+    private function panel(Service $service, string $event, Closure $call, array $properties = []): mixed
     {
         try {
             return $call($this->provisioners->forService($service));
         } catch (ProvisioningException $e) {
-            ActivityLog::record('provisioning.failed', "{$event} failed: {$e->getMessage()}", $service, properties: ['event' => $event]);
+            ActivityLog::record('provisioning.failed', "{$event} failed: {$e->getMessage()}", $service, properties: ['event' => $event, ...$properties]);
 
             throw $e;
         }
