@@ -19,7 +19,8 @@ a code generator. This guide walks through getting started and the common tasks.
    the key and make a new one.
 
 Give each script its own key with only what it needs: a key that reads clients can't record payments. The list shows
-when and from which IP each key was last used, and **Revoke** stops a key at once.
+when and from which IP each key was last used, and **Revoke** stops a key at once. A key also stops while the admin
+who made it is deactivated or no longer a super admin (the call gets a 401), and is revoked when that admin is deleted.
 
 | Area | read | create | update | delete |
 |---|---|---|---|---|

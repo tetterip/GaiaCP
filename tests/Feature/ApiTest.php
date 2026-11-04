@@ -103,6 +103,45 @@ class ApiTest extends TestCase
         $this->api($token)->getJson('/api/v1')->assertStatus(429);
     }
 
+    public function test_a_key_stops_working_with_its_admins_access(): void
+    {
+        $admin = User::factory()->create(['super_admin' => true]);
+        $this->actingAs($admin);
+        $token = $this->key();
+        auth()->logout();
+
+        $this->api($token)->getJson('/api/v1/clients')->assertOk();
+
+        // Deactivated: refused until they are active again
+        $admin->update(['active' => false]);
+        $this->api($token)->getJson('/api/v1/clients')->assertUnauthorized()->assertJson(['message' => 'The admin who made this API key can no longer use it.']);
+        $admin->update(['active' => true]);
+        $this->api($token)->getJson('/api/v1/clients')->assertOk();
+
+        // No longer a super admin (only they manage keys)
+        $admin->update(['super_admin' => false]);
+        $this->api($token)->getJson('/api/v1/clients')->assertUnauthorized();
+        $admin->update(['super_admin' => true]);
+
+        // Deleted: their keys are revoked, not left without an admin
+        $admin->delete();
+        $this->assertTrue(ApiKey::query()->sole()->revoked());
+        $this->api($token)->getJson('/api/v1/clients')->assertUnauthorized();
+    }
+
+    public function test_a_payment_from_the_api_is_recorded_by_the_keys_admin(): void
+    {
+        $admin = User::factory()->create(['super_admin' => true]);
+        $this->actingAs($admin);
+        $token = $this->key();
+        auth()->logout();
+        $service = Service::factory()->create(['start_date' => '2025-11-01', 'next_due_date' => '2026-11-01', 'price_cents' => 6000, 'billing_cycle' => 'annually', 'status' => ServiceStatus::Active]);
+
+        $id = $this->api($token)->postJson('/api/v1/payments', ['service_id' => $service->id, 'method' => 'cash'])->assertCreated()->json('data.id');
+
+        $this->assertSame($admin->id, Payment::find($id)->recorded_by);
+    }
+
     public function test_a_record_is_not_found_before_the_key_is_checked(): void
     {
         $this->getJson('/api/v1/clients/999')->assertUnauthorized();

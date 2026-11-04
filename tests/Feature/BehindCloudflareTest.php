@@ -37,6 +37,20 @@ class BehindCloudflareTest extends TestCase
         ]));
     }
 
+    public function test_cloudflare_cannot_change_the_host_only_a_proxy_of_the_install_can(): void
+    {
+        Route::get('/_host', fn (Request $request) => $request->getHost().' '.url('/'));
+        $forged = ['X-Forwarded-For' => self::VISITOR, 'X-Forwarded-Host' => 'evil.example', 'X-Forwarded-Prefix' => '/x', 'X-Forwarded-Port' => '8443'];
+
+        $this->withServerVariables(['REMOTE_ADDR' => self::CLOUDFLARE])->withHeaders($forged)->get('/_host')
+            ->assertOk()->assertSeeText('localhost http://localhost')->assertDontSeeText('evil');
+
+        // A load balancer of the install's own may set it
+        config(['gaiacp.proxies.trusted' => ['10.0.0.0/8']]);
+        $this->withServerVariables(['REMOTE_ADDR' => '10.1.2.3'])->withHeaders(['X-Forwarded-Host' => 'billing.example'])->get('/_host')
+            ->assertOk()->assertSeeText('billing.example');
+    }
+
     public function test_cloudflare_ipv6_edges_are_trusted_too(): void
     {
         $this->assertSame(self::VISITOR.' http', $this->ipFrom('2606:4700:10::1', ['X-Forwarded-For' => self::VISITOR]));

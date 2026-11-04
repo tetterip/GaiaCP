@@ -2,6 +2,13 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.0] - 2026-11-04
+
+- **Email counts as from the client** starts on "Only when the mail server confirmed the sender": anyone can write a
+  client's address as the sender, and a mail server (or a provider's webhook) that adds no Authentication-Results
+  header let such an email answer the client's ticket. A mailbox or webhook address set up before keeps the old
+  "Unless the mail server found the sender forged" until it is changed there
+
 ## [1.2.0] - 2026-11-02
 
 - A DKIM signature counts only when it is of the sender's own domain (or one inside it), and an SPF softfail counts as

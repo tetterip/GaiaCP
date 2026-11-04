@@ -104,6 +104,11 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
                 $user->super_admin = true;
             }
         });
+
+        // Their API keys would otherwise lose their admin (nullOnDelete) and keep working
+        static::deleting(function (self $user): void {
+            ApiKey::query()->where('user_id', $user->id)->active()->update(['revoked_at' => now()]);
+        });
     }
 
     /** Super admins open everything; other admins only the areas ticked on their user (Settings → Admin users). */

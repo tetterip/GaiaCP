@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Every REST API call: answered only with an active key (Authorization: Bearer gcp_…, or X-API-Key) from one of its
+ * Every REST API call: answered only with an active key of an admin who may still use it (ApiKey::ownerAllowed()) (Authorization: Bearer gcp_…, or X-API-Key) from one of its
  * allowed IPs, never to a banned address; wrong keys count as failed logins.
  * Notes when and from where the key was last used, and makes it ApiKey::current() for the call, so the activity log
  * says which key did what. `api.key:clients.read` also needs that permission.
@@ -54,6 +54,11 @@ class AuthenticateApiKey
             }
 
             return response()->json(['message' => 'Missing, wrong or revoked API key.'], 401, ['WWW-Authenticate' => 'Bearer']);
+        }
+
+        // The admin who made it was deactivated or is no longer a super admin: the key goes with their access
+        if (! $key->ownerAllowed()) {
+            return response()->json(['message' => 'The admin who made this API key can no longer use it.'], 401, ['WWW-Authenticate' => 'Bearer']);
         }
 
         if (! $key->allowsIp($request->ip())) {

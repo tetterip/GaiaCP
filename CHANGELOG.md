@@ -9,6 +9,18 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - **The first beta.** GaiaCP leaves alpha: the admin footer, the installer and `php artisan about` say Beta. Settings
   and the database may still change between versions, so keep backups and read these notes before updating.
+- Security, addresses: GaiaCP answers only on its own address (`APP_URL`'s host and its subdomains, plus
+  `GAIACP_TRUSTED_HOSTS`); any other gets a 400. Password reset, sign-in link and email confirmation links are made
+  from the address a request came to, so a request sent with another site's name could email a victim a working link
+  to that site. From Cloudflare's addresses only the visitor's IP and https are believed now, never a forwarded host.
+  **Check that `APP_URL` in `.env` is the address you open GaiaCP at before updating.**
+- Security, REST API: a key works only while the admin who made it is an active super admin, and deleting an admin
+  revokes their keys (keys left without an admin by earlier deletions are revoked by the update). Payments, credit,
+  quotes and lead notes made through the API name that admin as who recorded them.
+- Security: the language switch in the client area goes back only to a page of this install, never to another site
+  (open redirect).
+- Security, Email to ticket 1.3.0: new mailboxes count an email as the client's only when the mail server confirmed
+  the sender; mailboxes set up before keep their setting.
 - Security, module queue: **Retry** on a failed termination, and **Retry all** while one is waiting, ask for the
   admin's password, as Terminate does, since they delete the account from its server.
 - Security, product limits: an add-on a client adds from a service's page now holds to its **Quantity available** and

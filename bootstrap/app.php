@@ -3,6 +3,7 @@
 use App\Http\Middleware\AuthenticateApiKey;
 use App\Http\Middleware\PrepareInstaller;
 use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -29,6 +30,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToGroup('web', PrepareInstaller::class);
         // Visitor IPs and https behind Cloudflare (and any proxy in gaiacp.proxies)
         $middleware->replace(LaravelTrustProxies::class, TrustProxies::class);
+        // Only APP_URL's address (and GAIACP_TRUSTED_HOSTS): email links never carry another host
+        $middleware->prepend(TrustHosts::class);
         // No other site shows GaiaCP's pages in a frame (clickjacking)
         $middleware->append(SecurityHeaders::class);
     })

@@ -311,7 +311,12 @@ How the admin and client panels, users, access, security, branding, themes and l
   with system emails on; replacing a server's token and Terminate on a server ask for the admin's password
 - Proxies: `App\Http\Middleware\TrustProxies` (replaces Laravel's) trusts `App\Support\Cloudflare::IP_RANGES` unless
   `gaiacp.proxies.cloudflare` is off, plus `gaiacp.proxies.trusted`, so `$request->ip()` is the visitor behind Cloudflare;
-  System health warns when Cloudflare is in front but untrusted or on Flexible SSL
+  System health warns when Cloudflare is in front but untrusted or on Flexible SSL. From Cloudflare alone only
+  X-Forwarded-For / -Proto are believed (never -Host / -Port / -Prefix); proxies of `gaiacp.proxies.trusted` get them all
+- Hosts: `App\Http\Middleware\TrustHosts` (global, first) answers only on APP_URL's host and its subdomains plus
+  `gaiacp.trusted_hosts` (`GAIACP_TRUSTED_HOSTS`), any other Host gets a 400, so email links (password reset, sign-in
+  links, email confirmation, made from the request's host) never carry an attacker's; off while APP_URL is a local
+  address (fresh copy, `php artisan serve`)
 - Branding: Settings → Company's logo, dark mode logo and tab icon (`company.logo` / `logo_dark` / `favicon`, public disk
   `branding/`) through `App\Support\Branding`, served by `BrandingController` (route `branding`, no `storage:link`
   needed): the client panel's `brandLogo()` / `favicon()`, the payment notice and `MailLayout`. Without a logo the name

@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Enums\LeadStatus;
 use App\Models\ActivityLog;
+use App\Models\ApiKey;
 use App\Models\Client;
 use App\Models\Lead;
 use App\Models\LeadNote;
@@ -44,7 +45,7 @@ class Leads
 
     public function addNote(Lead $lead, string $body): LeadNote
     {
-        $note = $lead->leadNotes()->create(['user_id' => auth()->id(), 'body' => trim($body)]);
+        $note = $lead->leadNotes()->create(['user_id' => ApiKey::actingUserId(), 'body' => trim($body)]);
 
         // A note means someone talked to them: a new lead is now contacted.
         if ($lead->status === LeadStatus::New) {

@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Enums\AutoSetup;
 use App\Enums\ServiceStatus;
 use App\Models\ActivityLog;
+use App\Models\ApiKey;
 use App\Models\InvoiceItem;
 use App\Models\Payment;
 use App\Models\Service;
@@ -58,7 +59,7 @@ class RecordPayment
                 'reference' => $reference,
                 'due_date_before' => $before,
                 'due_date_after' => $after,
-                'recorded_by' => auth()->id(),
+                'recorded_by' => ApiKey::actingUserId(),
                 'notes' => $notes,
             ]);
 

@@ -11,6 +11,7 @@ use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Mail\ClientMailer;
 use App\Models\ActivityLog;
+use App\Models\ApiKey;
 use App\Models\Client;
 use App\Models\Quote;
 use App\Models\Service;
@@ -84,7 +85,7 @@ class Quotes
     /** @param  array<string, mixed>  $data */
     public function create(array $data): Quote
     {
-        $quote = Quote::query()->create(self::attributes($data) + ['user_id' => auth()->id()]);
+        $quote = Quote::query()->create(self::attributes($data) + ['user_id' => ApiKey::actingUserId()]);
 
         ActivityLog::record('quote.created', "Quote {$quote->number} for {$quote->recipientName()} created", client: $quote->client, properties: ['quote_id' => $quote->id, 'lead_id' => $quote->lead_id]);
 

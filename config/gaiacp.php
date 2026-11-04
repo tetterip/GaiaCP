@@ -438,6 +438,10 @@ return [
         'trusted' => array_values(array_filter(array_map('trim', explode(',', (string) env('GAIACP_TRUSTED_PROXIES', ''))))),
     ],
 
+    // Addresses GaiaCP answers on besides APP_URL's host and its subdomains (App\Http\Middleware\TrustHosts), e.g. a
+    // second domain: GAIACP_TRUSTED_HOSTS, comma-separated host names. Any other Host gets a 400.
+    'trusted_hosts' => array_values(array_filter(array_map('trim', explode(',', (string) env('GAIACP_TRUSTED_HOSTS', ''))))),
+
     // REST API (/api/v1, keys under Settings → API keys): calls each key may make per minute, and the most records a
     // list returns per page.
     'api' => [
