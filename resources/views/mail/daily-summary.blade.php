@@ -25,6 +25,14 @@
 @endforeach
 
 @endif
+@if ($summary->moduleQueue->isNotEmpty())
+## [{{ __('Module queue') }}]({{ $queueUrl }}) ({{ $summary->moduleQueue->count() }})
+
+@foreach ($summary->moduleQueue as $item)
+- **[{{ $item->service?->domain ?: $item->service?->label }}]({{ $serviceUrl($item->service) }})** ({{ $item->service?->client?->name }}): {{ $item->actionLabel() }}, {{ __(':count tries', ['count' => $item->attempts]) }}. {{ \Illuminate\Support\Str::limit($item->error, 160) }}
+@endforeach
+
+@endif
 ## {{ __('New payment notices') }} ({{ $summary->newNotices->count() }})
 
 @if ($summary->newNotices->isEmpty())

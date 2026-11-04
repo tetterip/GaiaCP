@@ -78,6 +78,8 @@ Read the file for the area you are changing before you change it; don't read the
 - `php artisan gaiacp:compare-servers --dry-run`: what the nightly server comparison would report as new (Servers →
   Compare with the server; Settings → Automation)
 - `php artisan gaiacp:daily-summary --dry-run`: what the admins' daily summary email would report, and to whom
+- `php artisan gaiacp:retry-module-queue [--dry-run]`: retry the failed set ups, unsuspends and overdue suspensions of
+  Services → Module queue (every 15 minutes, Settings → Automation → Retry failed actions times, then one bell)
 - `php artisan gaiacp:health [--connections]`: the System health checks; fails when one is a problem
 - `php artisan gaiacp:disable-2fa <email>`: turn off two-factor authentication for an admin who lost their app and
   recovery codes
@@ -175,7 +177,8 @@ Read the file for the area you are changing before you change it; don't read the
   (`PlaceOrder`), on the first payment (`RecordPayment`, outside its transaction), on Complete order (default) or
   never. All of them go through `SetUpService`, which completes the order once nothing is pending.
 - Provisioning is idempotent: `ServiceLifecycle` checks `accountState()` on the panel before acting, and a
-  failed call logs `provisioning.failed`, leaves the service unchanged and throws `ProvisioningException`.
+  failed call logs `provisioning.failed`, leaves the service unchanged and throws `ProvisioningException`. The failed
+  set ups, suspends, unsuspends, terminations and renewals wait in Services → Module queue (`App\Actions\ModuleQueue`).
   `RecordPayment` unsuspends outside its transaction, so a panel failure never loses the payment.
 - Suspend / Unsuspend check the panel's `accountState()` whatever the stored status, since the status field can be
   edited by hand; the Account menu offers both on a hosting account with a server. `override_suspend_until` exempts

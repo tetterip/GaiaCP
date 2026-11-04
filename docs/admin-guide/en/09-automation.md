@@ -22,8 +22,8 @@ At the time set in Settings → Billing → **Automation** → Daily run at (09:
    of the service) gets no more notices and is terminated on its next due date. For a domain this switch is shown as
    Auto renew off;
 7. **cancels unpaid orders** after Cancel unpaid orders after days (empty = never);
-8. emails the admins a **daily summary**: new and overdue payment notices and domain syncs that changed or failed.
-   Nothing to report, no email.
+8. emails the admins a **daily summary**: new and overdue payment notices, domain syncs that changed or failed, and
+   what is still in the module queue. Nothing to report, no email.
 
 The same page has **BCC every client email to** (a copy of each client email for your records), the **Price change
 notice** days, the **Usage warning** share (hosting accounts near their disk or bandwidth limit get an email
@@ -35,6 +35,7 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 | When | What |
 |---|---|
 | Every minute | Queued messages to clients, webhooks, Slack / Discord / Telegram messages, the support mailbox |
+| Every 15 minutes | Failed set ups, unsuspends and suspensions in the module queue tried again |
 | Every 5 minutes | Server status from the monitoring service |
 | Hourly | SSL certificates, IP blacklists |
 | 00:20 | Quotes past their date marked Expired |
@@ -49,6 +50,25 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 
 Backups run at the time set under Settings → System → Backups.
 
+## Failed server and registrar actions (module queue)
+
+When a server panel or registrar doesn't do what GaiaCP asked (the server was down, the login changed, the registrar
+refused), the action waits in **Services → Module queue**: the client and service, the server or registrar, what it
+was doing and the error. Nothing is lost: the order and the payment stay, and a pending service stays pending.
+
+- Kept there: setting up a pending service (creating the hosting account, registering or transferring the domain,
+  ordering the certificate), suspend, unsuspend, terminate and the domain renewal after a payment. Calls you make and
+  see fail at once (password, nameservers, logging in to the panel) are not kept.
+- **Retry** tries one again, **Retry all** every open one. **Mark resolved** sends nothing to the server: use it when
+  you did it there by hand.
+- Set ups, unsuspends and suspensions for non-payment are tried again by themselves every 15 minutes, as many times as
+  Settings → Automation → **Retry failed actions** says (3; 0 = only by hand). When they still fail, the bell rings
+  once. Terminations and domain renewals wait for you (a renewal reads the domain first, and renews only if it still
+  expires before the date it is paid until).
+- An item closes by itself when the same action works another way (Complete order, a button on the service, the daily
+  run) or is no longer needed (the client paid, the service was terminated). The Resolved tab keeps the closed ones.
+- The menu shows how many are open, and so do Needs attention on the dashboard and the daily summary.
+
 ## Previewing before it happens
 
 From SSH you can see what a job would do, without doing it:
@@ -59,6 +79,7 @@ php artisan gaiacp:suspend-overdue --dry-run           # hosting that would be s
 php artisan gaiacp:terminate-scheduled --dry-run       # services that would be terminated
 php artisan gaiacp:cancel-unpaid-orders --dry-run      # orders that would be cancelled
 php artisan gaiacp:daily-summary --dry-run             # the admins' summary, and who gets it
+php artisan gaiacp:retry-module-queue --dry-run        # module queue items that would be tried again now
 ```
 
 Add `--date=2026-12-01` to the first four to see a day ahead.

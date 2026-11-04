@@ -8,6 +8,7 @@ use App\Filament\Resources\ActivityLogs\ActivityLogResource;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Filament\Resources\Leads\LeadResource;
+use App\Filament\Resources\ModuleQueue\ModuleQueueItemResource;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Filament\Widgets\Concerns\FitsDashboard;
@@ -15,10 +16,12 @@ use App\Models\ActivityLog;
 use App\Models\ClientChangeRequest;
 use App\Models\Invoice;
 use App\Models\Lead;
+use App\Models\ModuleQueueItem;
 use App\Models\Order;
 use App\Support\Currencies;
 use App\Support\Health\SchedulerMonitor;
 use App\Support\Money;
+use Carbon\CarbonImmutable;
 use Filament\Widgets\Widget;
 
 /**
@@ -103,9 +106,20 @@ class NeedsAttention extends Widget
             ];
         }
 
+        if (ModuleQueueItemResource::canAccess() && ($queue = ModuleQueueItem::query()->open())->exists()) {
+            $items[] = [
+                'icon' => 'heroicon-o-arrow-path',
+                'tone' => 'bad',
+                'title' => __(':count failed action(s) in the module queue', ['count' => (clone $queue)->count()]),
+                'sub' => __('Last failed :time', ['time' => CarbonImmutable::parse((clone $queue)->max('last_attempt_at'))->diffForHumans()]),
+                'url' => ModuleQueueItemResource::getUrl(),
+            ];
+        }
+
         if (ActivityLogResource::canAccess()) {
             $failures = ActivityLog::query()->with('service')
                 ->whereIn('event', self::FAILURES)
+                ->whereNull('properties->retry') // a module queue retry that failed again shows once, in the item above
                 ->where('created_at', '>=', now()->subDays(self::FAILURE_DAYS))
                 ->latest('id')->limit(4)->get();
 
