@@ -394,7 +394,7 @@
     /* A chosen toggle button (e.g. Stripe's Live) and the active tab: a solid accent pill */
     :checked + label.fi-btn:not(.fi-outlined):is(.fi-color-primary, .fi-color-success),
     .fi-tabs-item.fi-active {
-        background: color-mix(in oklab, var(--primary-600) 85%, transparent) !important;
+        background: var(--primary-600) !important; /* solid: white text on a see-through 600 fell to 4:1 */
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 6px 16px -10px var(--primary-600) !important;
     }
 
@@ -482,7 +482,7 @@
     }
 
     .fi-badge.fi-color {
-        background: color-mix(in oklab, var(--color-500) 14%, var(--glass-pane-soft)) !important;
+        background: color-mix(in oklab, var(--color-500) 8%, var(--glass-pane-soft)) !important; /* a light tint, so the label stays 4.5:1 */
     }
 
     .dark .fi-badge {
