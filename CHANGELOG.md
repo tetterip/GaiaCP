@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Billing: a payment notice's page shows the amount paid, the **Balance due** and a **Payments** section (date,
+  services, method, reference, amount); an invoice's page shows its status (Settled, Partly credited, Credited), the
+  notice's due date, the notice's payments and its credit notes.
 - Products: a **Limits** section with **Quantity available** (each order takes one, a cancelled order gives it back;
   at 0 clients see Out of stock) and **Client limit** (how many services of it one client can have, 1 for a free
   trial). The client area, the public cart and the API hold to both; WHMCS import keeps stock control (WhmcsImport 1.0.11).

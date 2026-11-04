@@ -99,6 +99,33 @@ class TaxInvoice extends Model
         return ! $this->isCreditNote() && $this->creditNotes()->exists() && $this->creditableItems()->isEmpty();
     }
 
+    /** "Settled", "Partly credited" or "Credited" for an invoice, "Credit note" for a credit note, in the current language. */
+    public function statusLabel(): string
+    {
+        if ($this->isCreditNote()) {
+            return __('Credit note');
+        }
+
+        return match (true) {
+            $this->fullyCredited() => __('Credited'),
+            $this->creditNotes()->exists() => __('Partly credited'),
+            default => __('Settled'),
+        };
+    }
+
+    public function statusColor(): string
+    {
+        if ($this->isCreditNote()) {
+            return 'gray';
+        }
+
+        return match (true) {
+            $this->fullyCredited() => 'danger',
+            $this->creditNotes()->exists() => 'warning',
+            default => 'success',
+        };
+    }
+
     /** "Bank transfer, Account credit": how it was paid, in the current language; null when unknown. */
     public function paymentMethods(): ?string
     {

@@ -10,6 +10,7 @@ use App\Credit\ApplyCredit;
 use App\Enums\InvoiceStatus;
 use App\Enums\MailTemplate;
 use App\Filament\Resources\Invoices\InvoiceResource;
+use App\Filament\Resources\Invoices\Schemas\InvoiceInfolist;
 use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Invoices\SendInvoiceEmails;
 use App\Invoicing\IssueInvoice;
@@ -26,6 +27,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use RuntimeException;
@@ -37,6 +39,16 @@ class ViewInvoice extends ViewRecord
     public function getTitle(): string
     {
         return __('Payment notice :number', ['number' => $this->getRecord()->number]);
+    }
+
+    /** The payments after the lines. */
+    public function content(Schema $schema): Schema
+    {
+        return $schema->components([
+            $this->getInfolistContentComponent(),
+            $this->getRelationManagersContentComponent(),
+            InvoiceInfolist::paymentsSection($this->getRecord()),
+        ]);
     }
 
     protected function getHeaderActions(): array
