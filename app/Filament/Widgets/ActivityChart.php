@@ -7,6 +7,7 @@ use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Widgets\Concerns\FitsDashboard;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Reports\IncomeReport;
 use App\Support\Currencies;
 use App\Support\Money;
 use App\Support\Region;
@@ -106,19 +107,63 @@ class ActivityChart extends Widget
         $from = $buckets[0]['start'];
         $to = end($buckets)['end'];
 
-        $created = Order::query()->whereBetween('created_at', [$from, $to])->pluck('created_at');
-        $completed = Order::query()->where('status', OrderStatus::Completed)->whereBetween('completed_at', [$from, $to])->pluck('completed_at');
-        $payments = Payment::query()->whereDate('paid_on', '>=', $from)->whereDate('paid_on', '<=', $to)->get(['paid_on', 'amount_cents', 'currency', 'created_at']);
+        $series = array_map(fn (array $bucket) => ['label' => $bucket['label'], 'orders' => 0, 'completed' => 0, 'income' => 0], $buckets);
+        $at = self::locator($buckets);
 
-        $in = fn ($date, array $bucket) => $date >= $bucket['start'] && $date <= $bucket['end'];
+        // One pass over each small projection: the bucket of every order and payment, found by its start
+        foreach (Order::query()->whereBetween('created_at', [$from, $to])->toBase()->pluck('created_at') as $created) {
+            if (($i = $at(CarbonImmutable::parse($created))) !== null) {
+                $series[$i]['orders']++;
+            }
+        }
 
-        return array_map(fn (array $bucket) => [
-            'label' => $bucket['label'],
-            'orders' => $created->filter(fn ($at) => $in(CarbonImmutable::parse($at), $bucket))->count(),
-            'completed' => $completed->filter(fn ($at) => $in(CarbonImmutable::parse($at), $bucket))->count(),
-            'income' => $payments->filter(fn (Payment $payment) => $in(self::paidAt($payment), $bucket))
-                ->sum(fn (Payment $payment) => Currencies::toBase($payment->amount_cents, $payment->currency)),
-        ], $buckets);
+        foreach (Order::query()->where('status', OrderStatus::Completed)->whereBetween('completed_at', [$from, $to])->toBase()->pluck('completed_at') as $completed) {
+            if (($i = $at(CarbonImmutable::parse($completed))) !== null) {
+                $series[$i]['completed']++;
+            }
+        }
+
+        if (($period ?? $this->period) === 'today') {
+            // Hours: each payment of the day at the hour it was recorded
+            foreach (IncomeReport::paidBetween(Payment::query(), $from, $to)->get(['paid_on', 'amount_cents', 'currency', 'created_at']) as $payment) {
+                if (($i = $at(self::paidAt($payment))) !== null) {
+                    $series[$i]['income'] += Currencies::toBase($payment->amount_cents, $payment->currency);
+                }
+            }
+        } else {
+            // Days and months: the day's total, summed in SQL
+            foreach (app(IncomeReport::class)->perDay($from, $to) as $day => $cents) {
+                if (($i = $at(CarbonImmutable::parse($day))) !== null) {
+                    $series[$i]['income'] += $cents;
+                }
+            }
+        }
+
+        return $series;
+    }
+
+    /**
+     * The index of the bucket a moment falls in (null = none), by a binary search over the buckets' starts.
+     *
+     * @param  list<array{start: CarbonImmutable, end: CarbonImmutable}>  $buckets
+     * @return \Closure(CarbonImmutable): ?int
+     */
+    private static function locator(array $buckets): \Closure
+    {
+        $starts = array_map(fn (array $bucket) => $bucket['start']->getTimestamp(), $buckets);
+        $ends = array_map(fn (array $bucket) => $bucket['end']->getTimestamp(), $buckets);
+
+        return function (CarbonImmutable $moment) use ($starts, $ends): ?int {
+            $time = $moment->getTimestamp();
+            [$low, $high] = [0, count($starts) - 1];
+
+            while ($low < $high) {
+                $mid = intdiv($low + $high + 1, 2);
+                $starts[$mid] <= $time ? $low = $mid : $high = $mid - 1;
+            }
+
+            return $starts[$low] <= $time && $time <= $ends[$low] ? $low : null;
+        };
     }
 
     /** Income of the same length of time just before the period; for today, yesterday until the same time. */
@@ -130,7 +175,7 @@ class ActivityChart extends Widget
             $yesterday = $today->subDay();
             $until = $yesterday->setTimeFrom(CarbonImmutable::now());
 
-            return Payment::query()->whereDate('paid_on', $yesterday)->get(['paid_on', 'amount_cents', 'currency', 'created_at'])
+            return IncomeReport::paidBetween(Payment::query(), $yesterday, $yesterday)->get(['paid_on', 'amount_cents', 'currency', 'created_at'])
                 ->filter(fn (Payment $payment) => self::paidAt($payment) <= $until)
                 ->sum(fn (Payment $payment) => Currencies::toBase($payment->amount_cents, $payment->currency));
         }
@@ -139,8 +184,7 @@ class ActivityChart extends Widget
         $end = $buckets[0]['start']->subDay();
         $start = $this->period === '12m' ? $buckets[0]['start']->subYear() : $end->subDays(count($buckets) - 1);
 
-        return Payment::query()->whereDate('paid_on', '>=', $start)->whereDate('paid_on', '<=', $end)->get(['amount_cents', 'currency'])
-            ->sum(fn (Payment $payment) => Currencies::toBase($payment->amount_cents, $payment->currency));
+        return array_sum(app(IncomeReport::class)->perDay($start, $end));
     }
 
     /**

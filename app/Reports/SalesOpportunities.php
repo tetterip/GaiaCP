@@ -100,7 +100,7 @@ final class SalesOpportunities
 
         return self::domains()
             ->whereIn('status', [ServiceStatus::Active, ServiceStatus::Suspended, ServiceStatus::Cancelled, ServiceStatus::Terminated])
-            ->whereDate('next_due_date', '<=', $today)
+            ->where('next_due_date', '<', $today->addDay()->toDateString()) // a range, not whereDate(), so the index can be used
             ->whereDoesntHave('domainDetails', fn (Builder $q) => $q->where('registration_type', DomainRegistrationType::External))
             ->with('domainDetails')
             ->get()
