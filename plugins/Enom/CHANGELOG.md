@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.0] - 2026-11-03
+
+- Tells its TLD prices (PE_GetResellerPrice, 1 year, USD) for Settings → Domain pricing → Import from registrar and the daily cost update
+
 ## [1.2.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

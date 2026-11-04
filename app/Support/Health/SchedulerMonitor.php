@@ -33,6 +33,7 @@ class SchedulerMonitor
         'gaiacp:terminate-scheduled',
         'gaiacp:cancel-unpaid-orders',
         'gaiacp:sync-domains',
+        'gaiacp:sync-tld-costs',
         'gaiacp:compare-servers',
         'gaiacp:check-sites',
         'gaiacp:check-usage',

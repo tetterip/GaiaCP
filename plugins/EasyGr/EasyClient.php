@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Http;
 class EasyClient
 {
     /** Action numbers → names, for the module log. */
-    public const ACTIONS = [0 => 'availability', 1 => 'EPP code', 2 => 'get nameservers', 3 => 'save nameservers', 4 => 'register', 5 => 'renew', 11 => 'transfer', 19 => 'sync'];
+    public const ACTIONS = [0 => 'availability', 1 => 'EPP code', 2 => 'get nameservers', 3 => 'save nameservers', 4 => 'register', 5 => 'renew', 11 => 'transfer', 19 => 'sync', 33 => 'TLD prices'];
 
     /** @param  array{url?: string|null, username?: string|null, password?: string|null, verify_tls?: bool}  $config */
     public function __construct(private array $config) {}
@@ -81,6 +81,38 @@ class EasyClient
         }
 
         return str_contains(mb_strtolower($response->body()), 'not exist');
+    }
+
+    /**
+     * Action 33, the account's TLD prices (easy_GetTldPricing in easy.gr's WHMCS module): a list of {tld, min_period,
+     * min_buy, min_ren, transfer, redemption} in EUR, with done (and errors) after the entries.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function tldPrices(): array
+    {
+        if (! $this->configured()) {
+            throw new ProvisioningException('easy.gr is not set up: enter the username and password under Settings → Registrars.');
+        }
+
+        $response = $this->send('post', EasyRegistrar::TLD_PRICES, [], 60);
+        $json = $response->json();
+
+        if ($response->failed()) {
+            throw new ProvisioningException('easy.gr action '.EasyRegistrar::TLD_PRICES." failed with HTTP {$response->status()}".self::failureReason($json, $response->body()).'.');
+        }
+
+        if (! is_array($json) || (array_key_exists('done', $json) && (int) $json['done'] !== 1)) {
+            throw new ProvisioningException('easy.gr could not list its TLD prices'.(is_array($json) && filled($json['errors'] ?? null) ? ': '.self::errors($json['errors']) : '').'.');
+        }
+
+        $entries = array_values(array_filter($json, fn ($entry) => is_array($entry) && is_string($entry['tld'] ?? null) && trim($entry['tld']) !== ''));
+
+        if ($entries === []) {
+            throw new ProvisioningException('easy.gr returned no TLD prices.');
+        }
+
+        return $entries;
     }
 
     /** @param  array<string, scalar|null>  $params */

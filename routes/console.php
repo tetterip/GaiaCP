@@ -80,6 +80,12 @@ Schedule::command('gaiacp:lead-follow-ups')
     ->withoutOverlapping()
     ->onOneServer();
 
+// Settings → Domains → Update registrar costs daily (the command checks it is on)
+Schedule::command('gaiacp:sync-tld-costs')
+    ->dailyAt('04:15')
+    ->withoutOverlapping()
+    ->onOneServer();
+
 // Billing → Quotes: sent quotes past their valid until date expire
 Schedule::command('gaiacp:expire-quotes')
     ->dailyAt('00:20')
