@@ -67,7 +67,7 @@ class PlaceOrder
 
         $order = DB::transaction(function () use ($client, $items, $notes, $domains, $terms, $coupon, $inStockOnly) {
             $discount = null;
-            self::takeStock($items, $inStockOnly);
+            self::takeStock($items, $inStockOnly, $client);
 
             if ($coupon !== null) {
                 // Locked, so two orders at once can't both take a coupon's last use.
@@ -153,17 +153,31 @@ class PlaceOrder
 
     /**
      * Takes each item's product off its Quantity available, locked so two orders at once can't both take the last one.
+     * For an order from the client ($inStockOnly) the client's row is locked too and each product's Client limit
+     * checked again, so two checkouts at once can't both get the last one a client may have (a free trial). Inside the
+     * order's transaction, before its services are made. Also used by ClientAddons for an add-on ordered alone.
      *
      * @param  list<array<string, mixed>>  $items
      *
-     * @throws ValidationException when $inStockOnly and a product has fewer left than the items want
+     * @throws ValidationException under `product` when $inStockOnly and a product has fewer left than the items want,
+     *                             or the client would go over its Client limit
      */
-    private static function takeStock(array $items, bool $inStockOnly): void
+    public static function takeStock(array $items, bool $inStockOnly, ?Client $client = null): void
     {
         $wanted = collect($items)->pluck('product_id')->filter()->countBy();
 
         if ($wanted->isEmpty()) {
             return;
+        }
+
+        if ($inStockOnly && $client !== null) {
+            Client::query()->whereKey($client->id)->lockForUpdate()->first();
+
+            foreach (Product::query()->whereKey($wanted->keys()->all())->whereNotNull('client_limit')->get() as $product) {
+                if (($problem = $product->limitProblem($client, (int) $wanted[$product->id])) !== null) {
+                    throw ValidationException::withMessages(['product' => $problem]);
+                }
+            }
         }
 
         $products = Product::query()->whereKey($wanted->keys()->all())->whereNotNull('stock')->lockForUpdate()->get();

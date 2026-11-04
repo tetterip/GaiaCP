@@ -3810,5 +3810,7 @@
     "Stock": "Stok",
     "All good": "Her şey yolunda",
     "No panel or registrar action is waiting to be retried.": "Yeniden denenmeyi bekleyen panel veya kayıt kuruluşu işlemi yok.",
-    "Nothing resolved yet": "Henüz çözülen bir şey yok"
+    "Nothing resolved yet": "Henüz çözülen bir şey yok",
+    "The sign-in took too long": "Oturum açma çok uzun sürdü",
+    "Complete the check that you are not a robot and sign in again.": "Robot olmadığınızı doğrulayın ve yeniden oturum açın."
 }

@@ -7,18 +7,44 @@ use App\Models\Client;
 use App\Models\Service;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\DomainRegistrar;
+use App\Provisioning\ListsTldPrices;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\TldPrice;
 use App\Support\Demo;
 use Carbon\CarbonImmutable;
 
 /**
  * The demo's registrar: a domain is "registered" when GaiaCP has it, expiring on its stored expiry (else its next due
  * date). Registering, transferring and renewing always work and only move that expiry; nameservers are GaiaCP's own.
- * A search finds a name taken when GaiaCP has it or it is a famous one.
+ * A search finds a name taken when GaiaCP has it or it is a famous one. Its made-up costs (COSTS) feed Domain pricing →
+ * Import from registrar and the daily cost sync.
  */
-class DemoRegistrar implements ChecksAvailability, DomainRegistrar
+class DemoRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPrices
 {
     public const NAMESERVERS = ['ns1.demo-hosting.example', 'ns2.demo-hosting.example'];
+
+    /** TLD => [register, renew, transfer] for a year, in EUR cents (null: not sold); the first six are the demo's TLDs (DemoSeeder). */
+    public const COSTS = [
+        '.com' => [900, 900, 900], '.gr' => [1000, 1000, null], '.eu' => [600, 600, 600], '.net' => [1050, 1050, 1050],
+        '.org' => [1000, 1000, 1000], '.io' => [3600, 3600, 3600], '.de' => [650, 650, 650], '.dev' => [1100, 1100, 1100],
+        '.app' => [1300, 1300, 1300], '.cloud' => [1600, 1600, 1600], '.shop' => [300, 2900, 2900], '.online' => [150, 2800, 2800],
+    ];
+
+    public function listsAllTlds(): bool
+    {
+        return true;
+    }
+
+    public function tldPrices(?array $tlds = null): array
+    {
+        $wanted = $tlds === null ? null : array_map(fn (string $tld) => '.'.ltrim(mb_strtolower(trim($tld)), '.'), $tlds);
+
+        return collect(self::COSTS)
+            ->when($wanted !== null, fn ($costs) => $costs->only($wanted))
+            ->map(fn (array $cents, string $tld) => new TldPrice($tld, 1, 'EUR', $cents[0], $cents[1], $cents[2]))
+            ->values()
+            ->all();
+    }
 
     public function name(): string
     {

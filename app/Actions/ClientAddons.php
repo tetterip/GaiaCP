@@ -24,7 +24,8 @@ use Illuminate\Validation\ValidationException;
  * clients order). The add-on is a pending service on the same cycle and due date (as App\Actions\AddAddon makes them),
  * with a payment notice due today for the days until that date and its setup fee: an "upgrade" line, paid without
  * moving the due date. Once it is paid (or at once when nothing is owed) the add-on becomes active (activate()) and
- * renews with the service. Add-ons are billing only: the admins are told (bell) and set up the rest by hand.
+ * renews with the service. It takes one of the add-on's Quantity available and holds to its Client limit
+ * (PlaceOrder::takeStock()). Add-ons are billing only: the admins are told (bell) and set up the rest by hand.
  */
 class ClientAddons
 {
@@ -52,7 +53,7 @@ class ClientAddons
         $taken = $service->addons()->whereIn('status', [ServiceStatus::Pending, ServiceStatus::Active, ServiceStatus::Suspended])->pluck('product_id')->filter();
 
         return self::offered($service->product, $service->billing_cycle, $service->currency)
-            ->reject(fn (Product $product) => $taken->contains($product->id))
+            ->reject(fn (Product $product) => $taken->contains($product->id) || ! $product->inStock())
             ->values();
     }
 
@@ -102,6 +103,9 @@ class ClientAddons
         $quote = self::quote($service, $addon, $today);
 
         [$created, $invoice] = DB::transaction(function () use ($service, $addon, $quote, $today) {
+            // Quantity available and Client limit hold here too, as on the Order page (locked, takes one)
+            PlaceOrder::takeStock([['product_id' => $addon->id]], inStockOnly: true, client: $service->client);
+
             $created = Service::create([
                 'client_id' => $service->client_id,
                 'parent_service_id' => $service->id,

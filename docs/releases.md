@@ -3,8 +3,8 @@
 
 GaiaCP's version is in the `VERSION` file (`1.2.3`; `1.2.3-beta.1` for a pre-release). The signed-in panel footer,
 System health and `php artisan about` show it. `Version::STAGE` (`app/Support/Version.php`) says how far along GaiaCP
-is: `alpha` now, shown as a badge next to the version in the admin footer, in the installer and in `php artisan about`;
-set it to `beta`, then `null` once it is stable. It stays out of `VERSION`, so plugins' `requires` and updates keep
+is: `beta` now (it was `alpha` until 0.7.0), shown as a badge next to the version in the admin footer, in the installer and in `php artisan about`;
+set it to `null` once it is stable. It stays out of `VERSION`, so plugins' `requires` and updates keep
 comparing plain numbers. To release:
 
 1. Set `VERSION` to the new number and move the `## [Unreleased]` notes in `CHANGELOG.md` under

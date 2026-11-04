@@ -53,14 +53,14 @@ class VersionTest extends TestCase
 
     public function test_it_says_how_far_along_gaiacp_is(): void
     {
-        $this->assertSame('alpha', Version::STAGE);
-        $this->assertSame('Alpha', Version::stageLabel());
-        $this->assertStringContainsString('**Alpha.**', file_get_contents(base_path('README.md')));
+        $this->assertSame('beta', Version::STAGE);
+        $this->assertSame('Beta', Version::stageLabel());
+        $this->assertStringContainsString('**Beta.**', file_get_contents(base_path('README.md')));
 
         $this->get('/admin/login')->assertOk()->assertDontSee('<span class="gcp-stage"', false); // only signed in
 
         Artisan::call('about', ['--only' => 'gaiacp']);
-        $this->assertStringContainsString('alpha', Artisan::output());
+        $this->assertStringContainsString('beta', Artisan::output());
     }
 
     public function test_system_health_and_artisan_about_name_it(): void

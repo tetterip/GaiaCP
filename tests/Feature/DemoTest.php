@@ -3,19 +3,24 @@
 namespace Tests\Feature;
 
 use App\Actions\ClientOrder;
+use App\Actions\ImportTldPrices;
+use App\Actions\ModuleQueue;
 use App\Actions\ServiceLifecycle;
 use App\Enums\BillingCycle;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Enums\UserRole;
 use App\Filament\Clusters\Settings\Pages\CompanySettings;
 use App\Filament\Clusters\Settings\Pages\CookieSettings;
 use App\Filament\Clusters\Settings\Pages\MailSettings;
 use App\Filament\Pages\Updates;
+use App\Invoices\NoticeLedger;
 use App\Models\Client;
 use App\Models\Coupon;
 use App\Models\CustomPage;
 use App\Models\Download;
 use App\Models\Invoice;
+use App\Models\ModuleQueueItem;
 use App\Models\Product;
 use App\Models\Server;
 use App\Models\Service;
@@ -246,6 +251,19 @@ class DemoTest extends TestCase
         foreach (['/cart', '/web-hosting', '/web-hosting/pro', '/pages/about-us', '/pages/terms', '/whois'] as $url) {
             $this->get($url)->assertOk();
         }
+
+        // 0.7.0: a failed set up waiting in the module queue (not retried by itself), a notice with one line paid,
+        // clients with a login turned on and off, a product with a Quantity available, costs from the demo registrar
+        $item = ModuleQueueItem::query()->open()->sole();
+        $this->assertSame(ModuleQueueItem::SETUP, $item->action);
+        $this->assertSame([], app(ModuleQueue::class)->due(3));
+        $partly = Invoice::query()->where('status', 'unpaid')->get()->first(fn (Invoice $invoice) => NoticeLedger::paidCents($invoice) > 0);
+        $this->assertNotNull($partly);
+        $this->assertGreaterThan(0, NoticeLedger::balanceCents($partly));
+        $this->assertSame([false, true], User::query()->where('role', UserRole::Client)->where('email', '!=', Demo::CLIENT_EMAIL)->orderBy('id')->pluck('active')->all());
+        $this->assertSame(12, Product::query()->where('name', 'Hosting Business')->first()->stock);
+        $registrar = app(ImportTldPrices::class)->registrars()->sole();
+        $this->assertCount(12, app(ImportTldPrices::class)->pricer($registrar)->tldPrices());
 
         // A file a visitor deleted is written back
         Storage::disk('public')->delete($about->image);

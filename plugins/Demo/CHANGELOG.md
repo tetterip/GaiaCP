@@ -3,6 +3,11 @@
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP and loads only in
 the public demo (`GAIACP_DEMO=true`).
 
+## [1.0.3] - 2026-11-04
+
+- The demo registrar lists made-up costs for twelve TLDs, so Domain pricing → Import from registrar and the daily cost
+  sync can be tried
+
 ## [1.0.2] - 2026-11-01
 
 - The famous names a domain search finds taken are shared with the demo's WHOIS lookup (`App\Support\Demo::FAMOUS`)

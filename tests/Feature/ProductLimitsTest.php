@@ -163,6 +163,22 @@ class ProductLimitsTest extends TestCase
         $this->assertSame(2, Service::query()->where('product_id', $product->id)->count());
     }
 
+    public function test_place_order_checks_the_client_limit_again_under_a_lock(): void
+    {
+        // Two checkouts at once: both carts passed the check before either order was placed
+        $trial = $this->product(['name' => 'Free trial', 'client_limit' => 1]);
+        $items = $this->items($trial);
+        app(PlaceOrder::class)->handle($this->client, $items, inStockOnly: true);
+
+        try {
+            app(PlaceOrder::class)->handle($this->client, $items, inStockOnly: true);
+            $this->fail('A second free trial was placed.');
+        } catch (ValidationException $e) {
+            $this->assertSame(['Free trial is limited to 1 per client, and you already have 1.'], $e->errors()['product']);
+        }
+        $this->assertSame(1, $trial->servicesOf($this->client));
+    }
+
     public function test_an_out_of_stock_product_shows_but_cannot_be_chosen(): void
     {
         $product = $this->product(['stock' => 0]);

@@ -25,7 +25,7 @@ changed release is never installed), switches to maintenance mode, swaps in the 
 `storage/`, your own plugins and anything you added to `public/` stay), runs the database changes and comes back. If a
 step fails after the swap, the old code is put back; the backup is there for the database. From SSH:
 `php artisan gaiacp:update` (`--check` only looks). Read each release's notes before you update: GaiaCP is still in
-alpha, and things can change between versions.
+beta, and things can change between versions.
 
 GaiaCP looks for a new release once a day. When one is out, super admins get a bell notification (once per version)
 and the daily summary email mentions it; a copy deployed from Git is told to deploy instead. `GAIACP_UPDATE_CHECK=false`

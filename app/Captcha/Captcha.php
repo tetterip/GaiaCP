@@ -117,6 +117,19 @@ class Captcha
         return true;
     }
 
+    /**
+     * Keeps the solved token for as long as the session lasts (the login's two-factor step, which can stay open for a
+     * while: the captcha service takes a token once, so it can't be checked again later).
+     */
+    public static function keep(): void
+    {
+        $remembered = session(self::SESSION);
+
+        if (is_array($remembered)) {
+            session()->put(self::SESSION, [...$remembered, 'until' => now()->addMinutes(max(5, (int) config('session.lifetime')))->timestamp]);
+        }
+    }
+
     public static function forget(): void
     {
         session()->forget(self::SESSION);

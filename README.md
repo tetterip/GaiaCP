@@ -19,8 +19,8 @@
   <a href="docs/using-the-api.md">API</a>
 </p>
 
-> **Alpha.** GaiaCP is still in development: features, settings and the database may change between versions, and
-> parts of it haven't been tried against real servers or registrars yet. Keep backups (Settings → System → Backups)
+> **Beta.** Most of what GaiaCP sets out to do is in place, but it is still young: settings and the database may still
+> change between versions, and parts of it haven't been tried against real servers or registrars yet. Keep backups (Settings → System → Backups)
 > and read each release's notes before updating.
 
 <p align="center">
@@ -60,7 +60,9 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 
 **Hosting, domains and SSL**
 - Accounts created, suspended and ended on **cPanel / WHM**, **Plesk**, **DirectAdmin**, **HestiaCP**, **CyberPanel** and **Enhance**, and VPS on **Proxmox VE**
-- Domains registered, transferred, renewed and synced at **easy.gr** and **Enom**, or by email for any other registrar
+- Domains registered, transferred, renewed and synced at **easy.gr** and **Enom**, or by email for any other registrar;
+  domain endings and their costs imported from the registrar, with a warning when one sells at a loss
+- A module queue: a set up, suspension or renewal that fails on a server or at a registrar waits there and is retried
 - SSL certificates sold and reissued through **GoGetSSL**, validated and installed on your own cPanel / Plesk hosting
 - A comparison of each server's accounts with what you bill, and uptime from Uptime Kuma, UptimeRobot, HetrixTools
   or Better Stack

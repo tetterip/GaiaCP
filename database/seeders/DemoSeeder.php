@@ -6,6 +6,7 @@ use App\Actions\Leads;
 use App\Actions\PlaceOrder;
 use App\Actions\Quotes;
 use App\Actions\RecordInvoicePayment;
+use App\Actions\RecordPayment;
 use App\Actions\Tickets;
 use App\Enums\AdminArea;
 use App\Enums\BillingCycle;
@@ -21,6 +22,7 @@ use App\Enums\TicketStatus;
 use App\Enums\UserRole;
 use App\Invoices\GenerateInvoices;
 use App\Invoicing\IssueCreditNote;
+use App\Models\ActivityLog;
 use App\Models\Announcement;
 use App\Models\Client;
 use App\Models\Coupon;
@@ -31,6 +33,7 @@ use App\Models\Invoice;
 use App\Models\KbArticle;
 use App\Models\KbCategory;
 use App\Models\Lead;
+use App\Models\ModuleQueueItem;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ProductGroup;
@@ -57,7 +60,8 @@ use Illuminate\Support\Str;
  * The public demo's made-up data (App\Support\Demo, gaiacp:demo-reset): a small hosting company with about 25
  * clients, their hosting, domains and care plans on three demo servers, a year of payments, the payment notices
  * the daily run would have issued, a pending order, tickets, leads, quotes, knowledge base articles and
- * announcements. Dates are relative to today. No Faker, so it runs where dev packages are not installed.
+ * announcements, a failed set up in the module queue, a notice partly paid, clients with and without a login,
+ * a product with a Quantity available. Dates are relative to today. No Faker, so it runs where dev packages are not installed.
  */
 class DemoSeeder extends Seeder
 {
@@ -132,6 +136,7 @@ class DemoSeeder extends Seeder
         $this->history();
         $this->notices();
         $this->order();
+        $this->recent();
         $this->support($support);
         $this->sales($admin);
         $this->content($admin);
@@ -514,6 +519,42 @@ class DemoSeeder extends Seeder
             ['type' => 'hosting', 'label' => 'Hosting Pro', 'domain' => '', 'product_id' => $this->products['pro']->id,
                 'server_id' => $this->servers[1]->id, 'package' => 'pro', 'price_cents' => 10000, 'billing_cycle' => BillingCycle::Annually],
         ], 'Ordered from the website');
+    }
+
+    /**
+     * What the newer pages show: the pending order's hosting failed to set up on its server (Services → Module queue,
+     * no longer retried by itself), a notice with one line paid (its Payments and Balance due), two more clients with a
+     * client area login (one turned off, for the Client area column) and Hosting Business limited to 12.
+     */
+    private function recent(): void
+    {
+        $hosting = Service::query()->where('status', ServiceStatus::Pending)->where('type', ServiceType::Hosting)->latest('id')->first();
+
+        if ($hosting) {
+            ActivityLog::record('provisioning.failed', "account.created failed: Could not connect to {$hosting->server->hostname}: connection timed out after 30 seconds",
+                $hosting, properties: ['event' => 'account.created']);
+            ModuleQueueItem::query()->open()->where('service_id', $hosting->id)
+                ->update(['attempts' => 4, 'auto_attempts' => 3, 'gave_up_at' => now()->subHour(), 'last_attempt_at' => now()->subHour()]);
+        }
+
+        // A notice of three lines where the care plan was paid on its own
+        $notice = Invoice::query()->where('status', InvoiceStatus::Unpaid)->whereHas('items', fn ($items) => $items->whereHas('service', fn ($service) => $service->where('type', ServiceType::Maintenance)))
+            ->whereHas('client', fn ($client) => $client->where('email', '!=', Demo::CLIENT_EMAIL))->orderBy('id')->first();
+        $care = $notice?->items()->with('service')->get()->first(fn ($item) => $item->service?->type === ServiceType::Maintenance)?->service;
+
+        if ($care) {
+            app(RecordPayment::class)->handle($care, $care->price_cents, $this->today->subDays(2), 'bank_transfer', 'Bank transfer');
+        }
+
+        foreach ([1 => false, 2 => true] as $index => $active) {
+            $client = Client::query()->where('email', Str::lower(Str::ascii(self::CLIENTS[$index][0]).'.'.Str::ascii(str_replace(' ', '', self::CLIENTS[$index][1]))).'@example.com')->first();
+            $client && User::query()->create([
+                'name' => $client->name, 'email' => $client->email, 'password' => Hash::make(Str::password(24)),
+                'role' => UserRole::Client, 'client_id' => $client->id, 'active' => $active,
+            ]);
+        }
+
+        $this->products['business']->update(['stock' => 12]);
     }
 
     private function support(User $support): void
