@@ -7,8 +7,11 @@ honest when features are added or dropped.
 ## Working in a session
 
 - Cloud sessions are set up by `.claude/hooks/session-start.sh`: `composer install`, `.env` + key, SQLite
-  `database/database.sqlite` migrated (seeded with demo data when new). Don't repeat these steps; `php artisan serve`
-  then log in at `/admin` as admin@example.com / password. No npm step: nothing uses Vite
+  `database/database.sqlite` migrated (seeded with demo data when new); `php artisan serve` then log in at `/admin` as
+  admin@example.com / password. No npm step: nothing uses Vite. Project threads (several repositories) don't run the
+  hook: when `vendor/` is missing, run `CLAUDE_CODE_REMOTE=true .claude/hooks/session-start.sh` once (about 30 s).
+  Never a bare `composer install` first: the GitHub proxy refuses package zips, so it clones ~160 repositories
+  (5+ minutes); `bin/composer-cache-from-git` fills the cache from shallow clones instead
 - Tests: run the ones for what you changed (`php artisan test --filter=<TestName>`), plus `LocalesTest` after adding
   texts; the full suite (about 90 s) once before pushing, with `./vendor/bin/pint`
 - Screenshots (before / after, light, dark, phone) only for bigger features or when asked, not for small UI tweaks
