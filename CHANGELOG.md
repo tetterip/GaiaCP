@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-04
+
+- **The first beta.** GaiaCP leaves alpha: the admin footer, the installer and `php artisan about` say Beta. Settings
+  and the database may still change between versions, so keep backups and read these notes before updating.
 - Security, module queue: **Retry** on a failed termination, and **Retry all** while one is waiting, ask for the
   admin's password, as Terminate does, since they delete the account from its server.
 - Security, product limits: an add-on a client adds from a service's page now holds to its **Quantity available** and
