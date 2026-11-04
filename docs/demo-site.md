@@ -9,7 +9,9 @@ few minutes. It is a normal Git checkout of GaiaCP with `GAIACP_DEMO=true` (`App
   plans, a year of payments, payment notices with three invoices and a credit note, an order, tickets, leads, quotes,
   knowledge base, announcements and 30 days of uptime; product colours and tags, one tag hidden; a coupon, Hosting
   Business and .eu on sale; the Web hosting group's page and Hosting Pro's; About us and Terms pages, About us in both
-  menus; three downloads; WHOIS lookup and the public cart on). Dates are relative to today. Its files (the About us
+  menus; three downloads; WHOIS lookup and the public cart on; a failed set up in the module queue, a notice with one
+  line paid, clients with a login turned on and off, Hosting Business limited to 12; the demo registrar lists TLD costs
+  for Import from registrar). Dates are relative to today. Its files (the About us
   picture, the downloads' PDFs) are in `database/seeders/demo` (`DemoSeeder::FILES`) and written back by each reset.
 - **Reset**: `php artisan gaiacp:demo-reset`, from the scheduler every `GAIACP_DEMO_RESET_MINUTES` (default 10,
   counted from the hour). The data is built once a day (and after a deploy that adds migrations) into

@@ -14,6 +14,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   (the captcha's token was checked again, and refused, on the hidden password form). The solved check now lasts as long
   as the session; if the session ended, the login goes back to the password step and says why.
 - Sign-in: the first box of the two-factor code is focused as soon as the code step shows.
+- Public demo: a failed set up waits in the module queue, one payment notice is partly paid, two more clients have a
+  client area login (one turned off), Hosting Business has 12 left, and the demo registrar lists TLD costs so **Import
+  from registrar** can be tried (Demo 1.0.3). After the update: `php artisan gaiacp:demo-reset --rebuild`.
 - Fixes from the first tries on staging: a client whose client area login is turned off (or an admin user turned off)
   while signed in now lands on the login page instead of a 403 on every page; a password reset link opened in a
   browser that is signed in shows the form (it signs that browser out of the panel) instead of the dashboard; the long
