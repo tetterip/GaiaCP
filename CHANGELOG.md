@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Accessibility: pressing Tab always shows where you are, in every theme and both panels: a clear outline around the
+  button, link or menu item (Glass hid it entirely). Windows contrast themes now show the edges of buttons, fields and cards.
 - Faster lists and daily runs on a long billing history: date filters (Overdue, Due soon, the dashboard's Billing overview
   and Needs attention, the overdue badges, the daily payment notices, reminders and suspensions) are plain date ranges
   that MySQL / MariaDB can answer from the due date indexes, instead of reading every notice or service. A payment
