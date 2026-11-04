@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: a server panel error longer than 255 characters (CyberPanel sends its web server's whole output) showed a
+  page error instead of the message, on MySQL / MariaDB. The activity log keeps the whole text.
 - Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the
   host of generated URLs, host placeholders in route matching, and fixes in http-foundation, html-sanitizer and mime).
 - Faster lists and daily runs on a long billing history: date filters (Overdue, Due soon, the dashboard's Billing overview
