@@ -3749,5 +3749,17 @@
     "Sync costs": "Kosten abgleichen",
     "Login on": "Anmeldung aktiv",
     "Login turned off": "Anmeldung deaktiviert",
-    "No login": "Keine Anmeldung"
+    "No login": "Keine Anmeldung",
+    ":name is limited to :limit per client, and you already have :count.": ":name ist auf :limit pro Kunde begrenzt, und Sie haben bereits :count.",
+    ":name is limited to :limit per client.": ":name ist auf :limit pro Kunde begrenzt.",
+    ":name is out of stock.": ":name ist ausverkauft.",
+    "Client limit": "Limit pro Kunde",
+    "How many clients can still order it, and how many one client can have. Admins can always order more.": "Wie viele Kunden es noch bestellen können und wie viele ein Kunde haben kann. Admins können immer mehr bestellen.",
+    "How many more can be ordered. Each order takes one and a cancelled order gives it back; at 0 clients see it as out of stock.": "Wie viele noch bestellt werden können. Jede Bestellung nimmt eins, eine stornierte Bestellung gibt es zurück; bei 0 sehen Kunden es als ausverkauft.",
+    "How many services of it one client can have at once, cancelled and terminated ones not counted. 1 for a free trial.": "Wie viele Dienste davon ein Kunde gleichzeitig haben kann, stornierte und beendete nicht mitgezählt. 1 für einen kostenlosen Test.",
+    "Limit to": "Begrenzen auf",
+    "Only :count of :name left.": "Nur noch :count von :name übrig.",
+    "Out of stock": "Ausverkauft",
+    "Quantity available": "Verfügbare Menge",
+    "Stock": "Bestand"
 }

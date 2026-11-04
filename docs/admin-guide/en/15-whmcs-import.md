@@ -32,7 +32,7 @@ leave a kind out.
 | WHMCS | GaiaCP |
 |---|---|
 | cPanel, Plesk and DirectAdmin servers | Servers (other types are skipped) |
-| Products, their prices per cycle and setup fees, product groups | Products and product groups (one-time products are skipped) |
+| Products, their prices per cycle and setup fees, product groups | Products and product groups (one-time products are skipped; stock control becomes Quantity available) |
 | Clients, with tax ID and custom fields | Clients; other custom fields become client fields |
 | Hosting and other services, with username, password, due date, status and end-of-period cancellations | Services |
 | Domains: each on your registrar account for its WHMCS registrar (added under Settings → Registrars); domains at a registrar with no account here as tracked only | Domains |

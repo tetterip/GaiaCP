@@ -163,6 +163,8 @@ Wenn Sie einen **Gutscheincode** haben, geben Sie ihn im Warenkorb ein: Sie sehe
 
 Was im **Angebot** ist, trägt das Abzeichen Angebot und zeigt seinen normalen Preis durchgestrichen. Der Angebotspreis gilt für den ersten Zeitraum dessen, was Sie bestellen, solange das Angebot läuft; Verlängerungen kosten den normalen Preis. Ein Gutschein senkt einen Angebotspreis eventuell nicht weiter.
 
+Ein Paket mit dem Hinweis **Ausverkauft** kann erst wieder bestellt werden, wenn wir wieder welche haben. Manche Pakete, etwa ein kostenloser Test, kann jeder Kunde nur wenige Male bestellen: Wenn Sie bereits so viele haben wie erlaubt, sagt Ihnen das die Bestellseite.
+
 <!-- if:terms -->
 Bevor Sie sie aufgeben, lesen Sie unsere Geschäftsbedingungen (der Link neben dem Feld) und haken Sie **Ich akzeptiere die Geschäftsbedingungen** an.
 <!-- endif -->

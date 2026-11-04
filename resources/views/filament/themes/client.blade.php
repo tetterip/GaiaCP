@@ -916,6 +916,21 @@
         color: color-mix(in srgb, var(--gcp-tag) 55%, white);
     }
 
+    /* A product out of stock (Product::inStock()): a grey badge, and its card on the Order page can't be chosen */
+    .gcp-sold-out {
+        background: color-mix(in srgb, currentColor 10%, transparent);
+        color: rgb(107 114 128);
+    }
+
+    .dark .gcp-sold-out {
+        color: rgb(156 163 175);
+    }
+
+    .gcp-product-cards label:has(input:disabled) {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
     /* A product on sale (Product::onSale()): the Sale badge, and the normal price struck through beside the sale one */
     .gcp-sale {
         --gcp-tag: #dc2626;

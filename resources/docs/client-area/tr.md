@@ -163,6 +163,8 @@ Bir **kupon kodunuz** varsa sepette yazın: siparişi vermeden önce ne kadar d�
 
 **İndirimde** olan ürünlerde İndirim rozeti ve üstü çizili normal fiyatı görünür. İndirimli fiyat, indirim sürerken sipariş ettiğiniz şeyin ilk dönemi için geçerlidir; yenilemeler normal fiyattandır. Bir kupon indirimli fiyatı daha fazla düşürmeyebilir.
 
+**Tükendi** olarak işaretlenen bir paket, yenisi gelene kadar sipariş edilemez. Ücretsiz deneme gibi bazı paketler her müşteri tarafından yalnızca birkaç kez sipariş edilebilir: izin verilen sayıya zaten sahipseniz sipariş sayfası bunu size söyler.
+
 <!-- if:terms -->
 Siparişi vermeden önce Hizmet Koşullarımızı okuyun (kutunun yanındaki bağlantı) ve **Hizmet Koşullarını kabul ediyorum** kutusunu işaretleyin.
 <!-- endif -->

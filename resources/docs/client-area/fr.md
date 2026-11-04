@@ -163,6 +163,8 @@ Si vous avez un **code promo**, saisissez-le dans le panier : vous voyez ce qu'i
 
 Ce qui est **en promotion** affiche le badge Promotion et son prix normal barré. Le prix promotionnel s'applique à la première période de ce que vous commandez pendant la promotion ; les renouvellements sont au prix normal. Un code promo peut ne pas réduire davantage un prix promotionnel.
 
+Une offre marquée **Épuisé** ne peut pas être commandée tant que nous n'en avons pas d'autres. Certaines offres, comme un essai gratuit, ne peuvent être commandées que quelques fois par client : si vous en avez déjà autant qu'autorisé, la page de commande vous le dit.
+
 <!-- if:terms -->
 Avant de la passer, lisez nos conditions d'utilisation (le lien à côté de la case) et cochez **J'accepte les conditions d'utilisation**.
 <!-- endif -->

@@ -163,6 +163,8 @@ Si tiene un **código de cupón**, escríbalo en el carrito: verá lo que descue
 
 Lo que está **en oferta** muestra la insignia Oferta y su precio normal tachado. El precio de oferta es para el primer periodo de lo que pida mientras dure la oferta; las renovaciones son al precio normal. Es posible que un cupón no rebaje más un precio de oferta.
 
+Un paquete marcado como **Agotado** no se puede pedir hasta que tengamos más. Algunos paquetes, como una prueba gratuita, solo se pueden pedir unas pocas veces por cliente: si ya tiene tantos como se permite, la página de pedido se lo indica.
+
 <!-- if:terms -->
 Antes de hacer el pedido, lea nuestras Condiciones del Servicio (el enlace junto a la casilla) y marque **Acepto las Condiciones del Servicio**.
 <!-- endif -->
