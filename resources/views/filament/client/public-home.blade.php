@@ -38,13 +38,17 @@
             <div class="gcp-public-cards">
                 @foreach ($group['products'] as $product)
                     <div class="gcp-card gcp-public-product" @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
-                        <div class="gcp-public-product-name">{!! ProductIcons::svg($product['icon']) !!}<span>{{ $product['name'] }}</span>@include('filament.client.product-badges', ['sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</div>
+                        <div class="gcp-public-product-name">{!! ProductIcons::svg($product['icon']) !!}<span>{{ $product['name'] }}</span>@include('filament.client.product-badges', ['soldOut' => $product['sold_out'] ?? false, 'sale' => $product['sale'], 'popular' => $product['popular'], 'badges' => $product['badges']])</div>
                         <div class="gcp-public-product-price">
                             @foreach ($product['price'] as $line)
                                 <div @class(['gcp-public-price-main' => $loop->first, 'gcp-home-note' => ! $loop->first])>{{ $line }}</div>
                             @endforeach
                         </div>
-                        <x-filament::button tag="a" :href="$product['url']" icon="heroicon-o-shopping-cart">{{ __('Order') }}</x-filament::button>
+                        @if ($product['sold_out'] ?? false)
+                            <x-filament::button color="gray" icon="heroicon-o-no-symbol" disabled>{{ __('Out of stock') }}</x-filament::button>
+                        @else
+                            <x-filament::button tag="a" :href="$product['url']" icon="heroicon-o-shopping-cart">{{ __('Order') }}</x-filament::button>
+                        @endif
                     </div>
                 @endforeach
             </div>

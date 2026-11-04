@@ -163,6 +163,8 @@ Se ha un **codice coupon**, lo inserisca nel carrello: vedrà quanto sconta prim
 
 Ciò che è **in offerta** mostra il badge Offerta e il prezzo normale barrato. Il prezzo in offerta vale per il primo periodo di ciò che ordina mentre l'offerta è attiva; i rinnovi sono al prezzo normale. Un coupon potrebbe non ridurre ulteriormente un prezzo in offerta.
 
+Un pacchetto segnato come **Esaurito** non si può ordinare finché non ne abbiamo altri. Alcuni pacchetti, come una prova gratuita, si possono ordinare solo poche volte per cliente: se ne hai già quanti consentiti, la pagina dell'ordine te lo dice.
+
 <!-- if:terms -->
 Prima di effettuarlo, legga le nostre Condizioni di servizio (il link accanto alla casella) e spunti **Accetto le Condizioni di servizio**.
 <!-- endif -->

@@ -106,6 +106,8 @@ class WhmcsImportTest extends TestCase
             $t->text('description')->default('');
             $t->integer('hidden')->default(0);
             $t->integer('retired')->default(0);
+            $t->integer('stockcontrol')->default(0);
+            $t->integer('qty')->default(0);
             $t->string('paytype')->default('recurring');
             $t->string('servertype')->default('');
             $t->string('configoption1')->default('');
@@ -256,6 +258,7 @@ class WhmcsImportTest extends TestCase
             ['id' => 2, 'gid' => 1, 'name' => 'Plesk Pro', 'servertype' => 'plesk', 'configoption1' => 'Pro plan', 'autosetup' => 'on', 'paytype' => 'recurring', 'type' => 'hostingaccount'],
             ['id' => 3, 'gid' => 0, 'name' => 'Website setup', 'servertype' => '', 'configoption1' => '', 'autosetup' => '', 'paytype' => 'onetime', 'type' => 'other'],
         ]);
+        $db->table('tblproducts')->where('id', 2)->update(['stockcontrol' => 1, 'qty' => 3]);
         $db->table('tblpricing')->insert([
             ['type' => 'product', 'currency' => 1, 'relid' => 1, 'annually' => 60, 'asetupfee' => 10, 'monthly' => 6],
             ['type' => 'product', 'currency' => 1, 'relid' => 2, 'annually' => 120, 'asetupfee' => 0, 'monthly' => -1],
@@ -365,6 +368,7 @@ class WhmcsImportTest extends TestCase
         $this->assertNull($basic->priceFor(BillingCycle::Quarterly));
         $this->assertSame('payment', $basic->auto_setup->value);
         $this->assertNull(Product::where('name', 'Plesk Pro')->sole()->priceFor(BillingCycle::Monthly));
+        $this->assertSame([null, 3], [$basic->stock, Product::where('name', 'Plesk Pro')->sole()->stock]);
         $this->assertSame(2, Product::count());
         $group = ProductGroup::query()->sole(); // both in WHMCS's group
         $this->assertSame(['shared-hosting', 'Shared Hosting', 'Fast SSD hosting', 2], [$group->slug, $group->name(), $group->description(), $group->sort]);

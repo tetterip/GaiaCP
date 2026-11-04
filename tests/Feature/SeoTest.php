@@ -66,12 +66,56 @@ class SeoTest extends TestCase
         $this->actingAs(User::factory()->create());
         Livewire::test(ClientAreaSettings::class)
             ->set('data.seo.index', false)
-            ->set('data.seo.description', 'Hosting in Athens.')
+            ->set('data.seo.description.en', 'Hosting in Athens.')
+            ->set('data.seo.title.en', ' Acme | Hosting ')
             ->call('save')
             ->assertHasNoErrors();
 
         $this->assertFalse(config('gaiacp.seo.index'));
-        $this->assertSame('Hosting in Athens.', config('gaiacp.seo.description'));
+        $this->assertSame(['en' => 'Hosting in Athens.'], config('gaiacp.seo.description'));
+        $this->assertSame(['en' => 'Acme | Hosting'], config('gaiacp.seo.title'));
+    }
+
+    public function test_a_description_saved_before_it_was_per_language_belongs_to_the_first_language(): void
+    {
+        config(['gaiacp.seo.description' => 'Hosting in Athens.']);
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(ClientAreaSettings::class)->assertSet('data.seo.description.en', 'Hosting in Athens.');
+    }
+
+    public function test_the_site_title_and_description_follow_the_language(): void
+    {
+        config([
+            'gaiacp.languages.enabled' => ['en', 'el'],
+            'gaiacp.company.name' => 'Acme',
+            'gaiacp.seo.title' => ['en' => 'Acme | Web hosting', 'el' => 'Acme | Φιλοξενία'],
+            'gaiacp.seo.description' => ['en' => 'Hosting in Athens.'],
+        ]);
+
+        // The login is the site root: the site title stands alone in the tab and the previews
+        $this->get('/login')->assertOk()
+            ->assertSeeInOrder(['<title>', 'Acme | Web hosting', '</title>'], false)
+            ->assertDontSee('Login - Acme', false)
+            ->assertSee('<meta property="og:title" content="Acme | Web hosting">', false)
+            ->assertSee('<meta name="description" content="Hosting in Athens.">', false);
+
+        // Another language: its own title, the first language's description while it has none
+        $this->get('/login?lang=el')->assertOk()
+            ->assertSee('<meta property="og:title" content="Acme | Φιλοξενία">', false)
+            ->assertSee('<meta name="description" content="Hosting in Athens.">', false);
+
+        // With a public home page, that is the root and the login keeps its own title
+        config(['gaiacp.public_area.home' => true]);
+        $this->get('/?lang=en')->assertOk()
+            ->assertSee('<meta property="og:title" content="Acme | Web hosting">', false)
+            ->assertSee('Acme', false);
+        $this->get('/login?lang=en')->assertOk()
+            ->assertSee('<meta property="og:title" content="Login - Acme">', false);
+
+        // No site title: the page's name and the company name as before
+        config(['gaiacp.seo.title' => []]);
+        $this->get('/?lang=en')->assertOk()->assertDontSee('Acme | Web hosting', false);
     }
 
     public function test_each_language_of_a_public_page_has_its_own_address(): void

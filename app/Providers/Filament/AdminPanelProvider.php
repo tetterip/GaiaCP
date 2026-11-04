@@ -8,11 +8,13 @@ use App\Filament\GlobalSearch\GlobalSearchProvider;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\RequestPasswordReset;
+use App\Filament\Pages\Auth\ResetPassword;
 use App\Http\Controllers\Admin\ServerPanelLoginController;
 use App\Http\Controllers\Admin\TicketAttachmentController;
 use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\AlertWhenCronStops;
 use App\Http\Middleware\ApplyTheme;
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\BlockBannedIps;
 use App\Http\Middleware\PrepareInstaller;
 use App\Http\Middleware\RequireAdminTwoFactor;
@@ -28,7 +30,6 @@ use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\ThemeMode;
-use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -56,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(Login::class)
             // "Forgot password?" link: an email with a reset link to admins who can log in (2FA still asked after)
-            ->passwordReset(RequestPasswordReset::class)
+            ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
             ->profile(EditProfile::class, isSimple: false)
             // Each admin turns it on from their profile (user menu); Settings → Login security can require it of super
             // admins or every admin, read per request by RequireAdminTwoFactor (never on the demo, whose logins are shared)
@@ -132,6 +133,10 @@ class AdminPanelProvider extends PanelProvider
                     ->label(fn (): string => __('Keyboard shortcuts'))
                     ->icon(Heroicon::OutlinedCommandLine)
                     ->alpineClickHandler("\$dispatch('open-keyboard-shortcuts')"),
+                Action::make('about')
+                    ->label(fn (): string => __('About GaiaCP'))
+                    ->icon(Heroicon::OutlinedInformationCircle)
+                    ->alpineClickHandler("\$dispatch('open-gaiacp-about')"),
                 Action::make('welcomeTour')
                     ->label(fn (): string => __('Tour'))
                     ->icon(Heroicon::OutlinedMap)
@@ -146,10 +151,16 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.links')->render())
             // Form buttons that float at the foot of a long form look like the Settings pages' Save bar
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.sticky-actions')->render())
+            // Buttons that open a menu show a chevron after their label
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.menu-buttons')->render())
+            // The two-factor code boxes centred on the sign-in page
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.one-time-code')->render())
             // No empty toolbar row over a table's search on a phone
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.tables')->render())
             // "g" / "n" sequences and the "?" list (App\Filament\KeyboardShortcuts)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.keyboard-shortcuts')->render() : '')
+            // About GaiaCP, from the footer's version or the user menu, with its surprise (App\Support\About)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.about')->render() : '')
             // "Powered by GaiaCP" on the login page, the copyright line on the others
             ->renderHook(PanelsRenderHook::CONTENT_START, fn (): string => TwoFactorReminder::shows() ? Blade::render('@livewire(\'two-factor-reminder\')') : '')
             // The welcome tour: by itself on the first visit, then from the user menu → Tour (App\Support\WelcomeTour)

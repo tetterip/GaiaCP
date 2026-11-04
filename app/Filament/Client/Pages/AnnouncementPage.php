@@ -7,6 +7,7 @@ use App\Models\Announcement;
 use App\Providers\AppServiceProvider;
 use Filament\Pages\Page;
 use Filament\Panel;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 
 /**
@@ -16,6 +17,9 @@ use Illuminate\Contracts\Support\Htmlable;
 class AnnouncementPage extends Page
 {
     use OpenToVisitors;
+
+    /** Centred and as wide as Contact, so the card ends near where the text does. */
+    protected Width|string|null $maxContentWidth = Width::FourExtraLarge;
 
     protected static bool $shouldRegisterNavigation = false;
 

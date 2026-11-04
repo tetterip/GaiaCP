@@ -62,7 +62,7 @@ class OrderController extends ApiController
             Coupons::check($coupon = Coupons::find($request->validated('coupon')), $client, $items);
         }
 
-        $order = $placer->handle($client, $items, $request->validated('notes'), coupon: $coupon);
+        $order = $placer->handle($client, $items, $request->validated('notes'), coupon: $coupon, inStockOnly: true);
 
         return (new OrderResource($order->load(['services.domainDetails', 'invoices'])))
             ->additional(['setup_errors' => (object) $placer->setupErrors])

@@ -8,11 +8,13 @@ use App\Enums\ServiceStatus;
 use App\Models\ActivityLog;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Cancels an order that nothing was set up for yet: the order, its items and its unpaid payment notice. Used by the
  * order page's "Cancel order" and by gaiacp:cancel-unpaid-orders (Settings → Automation → Cancel unpaid orders after).
+ * What its items took of their products' Quantity available goes back (PlaceOrder).
  */
 class CancelOrder
 {
@@ -36,6 +38,8 @@ class CancelOrder
         }
 
         DB::transaction(function () use ($order) {
+            $order->services()->whereNotNull('product_id')->pluck('product_id')->countBy()
+                ->each(fn (int $count, int $product) => Product::query()->whereKey($product)->whereNotNull('stock')->increment('stock', $count));
             $order->services()->update(['status' => ServiceStatus::Cancelled]);
             $order->update(['status' => OrderStatus::Cancelled]);
             $order->invoices()->unpaid()->update(['status' => InvoiceStatus::Cancelled]);

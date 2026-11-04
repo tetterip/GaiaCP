@@ -8,13 +8,14 @@ use App\Models\EmailLog;
 use App\Models\IpBan;
 use App\Models\ModuleLog;
 use App\Monitoring\UptimeHistory;
+use App\Support\LogCleanup;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 #[Signature('gaiacp:prune-logs')]
-#[Description('Delete module, email and activity log rows and bell notifications older than Settings → Logging keeps them, IP bans that ended a month ago, server status checks the uptime bar no longer shows and expired cache rows')]
+#[Description('Delete module, email and activity log rows and bell notifications older than Settings → Logging keeps them, IP bans that ended a month ago, server status checks the uptime bar no longer shows and expired cache rows, and the files of tickets closed longer ago than Settings → Support keeps them')]
 class PruneLogs extends Command
 {
     public function handle(): int
@@ -40,7 +41,10 @@ class PruneLogs extends Command
         // Client area devices not seen for longer than a session lasts, and sign-ins older than half a year
         $signIns = app(ClientSessions::class)->prune();
 
-        $this->info("Deleted {$modules} module log, {$emails} email log and {$activity} activity log row(s), {$notifications} bell notification(s), {$cache} expired cache row(s), {$bans} ended IP ban(s), {$checks} old server status check(s), {$signIns} old client sign-in row(s).");
+        // Files of closed tickets (Settings → Support → Delete files of closed tickets after; empty = kept)
+        $files = app(LogCleanup::class)->pruneAttachments();
+
+        $this->info("Deleted {$modules} module log, {$emails} email log and {$activity} activity log row(s), {$notifications} bell notification(s), {$cache} expired cache row(s), {$bans} ended IP ban(s), {$checks} old server status check(s), {$signIns} old client sign-in row(s), {$files} file(s) of closed tickets.");
 
         return self::SUCCESS;
     }

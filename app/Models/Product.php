@@ -35,6 +35,11 @@ use Illuminate\Support\Str;
  * so do its visible tags (Settings → Product tags, badges()). Its `color` (one of ProductTag::COLORS, optional) colours its
  * name, icon, buttons and check marks there (orderColor()).
  *
+ * `stock` (Quantity available) is how many more can be ordered, null = unlimited: PlaceOrder takes one for each item and
+ * CancelOrder puts it back; clients can't order it at 0 (Out of stock on the order pages), admins still can. `client_limit`
+ * is how many services of it a client may have at once (cancelled and terminated ones don't count), null = unlimited;
+ * only the client area and the API hold to it (ClientOrder::checkLimits()).
+ *
  * Prices are in the base currency; currency_prices ({USD: {cycle: {price_cents, setup_cents}}}) holds them in the
  * other currencies of Settings → Currencies, and a missing one is the base price at that currency's rate.
  *
@@ -54,7 +59,7 @@ use Illuminate\Support\Str;
  * @property array<string, ?string>|null $page_texts
  * @property array<string, array<string, array{price_cents?: int|null, setup_cents?: int|null}>>|null $currency_prices
  */
-#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'color', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'auto_setup', 'sale_starts_on', 'sale_ends_on', 'names', 'descriptions', 'slug', 'page', 'page_titles', 'page_descriptions', 'page_texts'])]
+#[Fillable(['name', 'type', 'product_group_id', 'addon', 'description', 'icon', 'features', 'popular', 'color', 'prices', 'currency_prices', 'currency', 'billing_cycle', 'package', 'hidden', 'retired', 'client_visible', 'stock', 'client_limit', 'auto_setup', 'sale_starts_on', 'sale_ends_on', 'names', 'descriptions', 'slug', 'page', 'page_titles', 'page_descriptions', 'page_texts'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
@@ -99,6 +104,8 @@ class Product extends Model
             'hidden' => 'boolean',
             'retired' => 'boolean',
             'client_visible' => 'boolean',
+            'stock' => 'integer',
+            'client_limit' => 'integer',
             'auto_setup' => AutoSetup::class,
             'sale_starts_on' => 'immutable_date',
             'sale_ends_on' => 'immutable_date',
@@ -258,6 +265,49 @@ class Product extends Model
     public function services(): HasMany
     {
         return $this->hasMany(Service::class);
+    }
+
+    /** Whether clients can order it now: no Quantity available set, or some left. */
+    public function inStock(): bool
+    {
+        return $this->stock === null || $this->stock > 0;
+    }
+
+    /** Why $wanted more can't be ordered (out of stock, or fewer left), else null. */
+    public function stockProblem(int $wanted = 1): ?string
+    {
+        if ($this->stock === null || $this->stock >= $wanted) {
+            return null;
+        }
+
+        return $this->stock === 0
+            ? __(':name is out of stock.', ['name' => $this->localName()])
+            : __('Only :count of :name left.', ['count' => $this->stock, 'name' => $this->localName()]);
+    }
+
+    /** Why the client can't have $wanted more of it (its Client limit), else null. */
+    public function limitProblem(Client $client, int $wanted = 1): ?string
+    {
+        if ($this->client_limit === null) {
+            return null;
+        }
+
+        $has = $this->servicesOf($client);
+
+        if ($has + $wanted <= $this->client_limit) {
+            return null;
+        }
+
+        return $has > 0
+            ? __(':name is limited to :limit per client, and you already have :count.', ['name' => $this->localName(), 'limit' => $this->client_limit, 'count' => $has])
+            : __(':name is limited to :limit per client.', ['name' => $this->localName(), 'limit' => $this->client_limit]);
+    }
+
+    /** How many services of it the client has that count against its Client limit: all but cancelled and terminated ones. */
+    public function servicesOf(Client $client): int
+    {
+        return $this->services()->where('client_id', $client->id)
+            ->whereNotIn('status', [ServiceStatus::Cancelled, ServiceStatus::Terminated])->count();
     }
 
     /** @param  Builder<Product>  $query  Offered in admin pickers (New service). */

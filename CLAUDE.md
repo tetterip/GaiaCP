@@ -7,8 +7,11 @@ honest when features are added or dropped.
 ## Working in a session
 
 - Cloud sessions are set up by `.claude/hooks/session-start.sh`: `composer install`, `.env` + key, SQLite
-  `database/database.sqlite` migrated (seeded with demo data when new). Don't repeat these steps; `php artisan serve`
-  then log in at `/admin` as admin@example.com / password. No npm step: nothing uses Vite
+  `database/database.sqlite` migrated (seeded with demo data when new); `php artisan serve` then log in at `/admin` as
+  admin@example.com / password. No npm step: nothing uses Vite. Project threads (several repositories) don't run the
+  hook: when `vendor/` is missing, run `CLAUDE_CODE_REMOTE=true .claude/hooks/session-start.sh` once (about 30 s).
+  Never a bare `composer install` first: the GitHub proxy refuses package zips, so it clones ~160 repositories
+  (5+ minutes); `bin/composer-cache-from-git` fills the cache from shallow clones instead
 - Tests: run the ones for what you changed (`php artisan test --filter=<TestName>`), plus `LocalesTest` after adding
   texts; the full suite (about 90 s) once before pushing, with `./vendor/bin/pint`
 - Screenshots (before / after, light, dark, phone) only for bigger features or when asked, not for small UI tweaks
@@ -75,6 +78,8 @@ Read the file for the area you are changing before you change it; don't read the
 - `php artisan gaiacp:compare-servers --dry-run`: what the nightly server comparison would report as new (Servers →
   Compare with the server; Settings → Automation)
 - `php artisan gaiacp:daily-summary --dry-run`: what the admins' daily summary email would report, and to whom
+- `php artisan gaiacp:retry-module-queue [--dry-run]`: retry the failed set ups, unsuspends and overdue suspensions of
+  Services → Module queue (every 15 minutes, Settings → Automation → Retry failed actions times, then one bell)
 - `php artisan gaiacp:health [--connections]`: the System health checks; fails when one is a problem
 - `php artisan gaiacp:disable-2fa <email>`: turn off two-factor authentication for an admin who lost their app and
   recovery codes
@@ -82,9 +87,12 @@ Read the file for the area you are changing before you change it; don't read the
   (Settings → Login security)
 - `php artisan gaiacp:registrar-check <domain>`: read-only check of a registrar login
 - `php artisan gaiacp:backup`: make a backup now and send it as Settings → Backups says (scheduled when enabled there)
-- `php artisan gaiacp:prune-logs`: delete module / email log rows older than Settings → Logging keeps them (daily at 03:30)
+- `php artisan gaiacp:prune-logs`: delete module / email log rows older than Settings → Logging keeps them, and files of
+  closed tickets after Settings → Support's days (daily at 03:30; by hand: Settings → Logging → Clean up, `App\Support\LogCleanup`)
 - `php artisan gaiacp:check-monitors`: read every linked server's status from its monitoring service (every 5 minutes)
 - `php artisan gaiacp:sync-domains`: read every managed domain's expiry and nameservers (daily at 04:00)
+- `php artisan gaiacp:sync-tld-costs [--dry-run]`: update the TLDs' registrar costs from registrars that list prices
+  (Settings → Domains → Update registrar costs daily, at 04:15; never changes selling prices)
 - `php artisan gaiacp:check-certificates [--dry-run]`: read SSL certificates waiting to be issued; reissue one ending inside
   a longer order, renew an order ending when the service is paid beyond it (hourly)
 - `php artisan gaiacp:check-usage [--dry-run]`: warn hosting clients near their package's disk or bandwidth limit
@@ -147,6 +155,9 @@ Read the file for the area you are changing before you change it; don't read the
   area", on by default) is copied to a new service (on without a product) and editable there; the client area shows
   only `Service::clientVisible()` (read-only, Maintenance included) and offers only `Product::clientOrderable()`, which
   leaves out types that are not `ServiceType::clientOrderable()` (Maintenance: an add-on only the admin sets up).
+  `products.stock` (Quantity available, null = unlimited) drops by one per item in `PlaceOrder` (row lock; refused only
+  with `inStockOnly`, i.e. client area / API) and comes back in `CancelOrder`; `client_limit` counts the client's
+  services of it that are not cancelled / terminated, checked only by `ClientOrder::checkLimits()`.
   Product options (`ProductOptionGroup`, `App\Support\ProductOptions`) are kept on the service (`services.options`,
   with their price then) and already included in its `price_cents`.
   An add-on product (`products.addon`) is never ordered alone: `AddAddon` makes it a service with `parent_service_id`,
@@ -169,7 +180,8 @@ Read the file for the area you are changing before you change it; don't read the
   (`PlaceOrder`), on the first payment (`RecordPayment`, outside its transaction), on Complete order (default) or
   never. All of them go through `SetUpService`, which completes the order once nothing is pending.
 - Provisioning is idempotent: `ServiceLifecycle` checks `accountState()` on the panel before acting, and a
-  failed call logs `provisioning.failed`, leaves the service unchanged and throws `ProvisioningException`.
+  failed call logs `provisioning.failed`, leaves the service unchanged and throws `ProvisioningException`. The failed
+  set ups, suspends, unsuspends, terminations and renewals wait in Services → Module queue (`App\Actions\ModuleQueue`).
   `RecordPayment` unsuspends outside its transaction, so a panel failure never loses the payment.
 - Suspend / Unsuspend check the panel's `accountState()` whatever the stored status, since the status field can be
   edited by hand; the Account menu offers both on a hosting account with a server. `override_suspend_until` exempts

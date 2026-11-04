@@ -163,6 +163,8 @@ Jeśli mają Państwo **kod kuponu**, prosimy wpisać go w koszyku: przed złoż
 
 To, co jest **w promocji**, ma odznakę Promocja i przekreśloną zwykłą cenę. Cena promocyjna dotyczy pierwszego okresu tego, co zamówią Państwo w czasie promocji; odnowienia są w zwykłej cenie. Kupon może nie obniżać dalej ceny promocyjnej.
 
+Pakietu oznaczonego jako **Wyprzedane** nie można zamówić, dopóki nie będziemy mieć więcej. Niektóre pakiety, na przykład bezpłatny okres próbny, każdy klient może zamówić tylko kilka razy: jeśli masz już tyle, ile wolno, strona zamówienia o tym poinformuje.
+
 <!-- if:terms -->
 Przed złożeniem zamówienia prosimy przeczytać nasz Regulamin (link obok pola) i zaznaczyć **Akceptuję Regulamin**.
 <!-- endif -->

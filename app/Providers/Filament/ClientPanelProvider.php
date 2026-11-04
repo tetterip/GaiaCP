@@ -40,6 +40,7 @@ use App\Filament\Client\Resources\Payments\PaymentResource;
 use App\Filament\Client\Resources\Quotes\QuoteResource;
 use App\Filament\Client\Resources\Services\ServiceResource;
 use App\Filament\Client\Resources\Tickets\TicketResource;
+use App\Filament\Pages\Auth\ResetPassword;
 use App\Http\Controllers\Client\AnnouncementFeedController;
 use App\Http\Controllers\Client\DownloadController;
 use App\Http\Controllers\Client\LanguageController;
@@ -49,6 +50,7 @@ use App\Http\Controllers\Client\TicketAttachmentController;
 use App\Http\Controllers\Client\VisitorTicketFileController;
 use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\ApplyTheme;
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\BlockBannedIps;
 use App\Http\Middleware\ClientAreaMaintenance;
 use App\Http\Middleware\PrepareInstaller;
@@ -63,6 +65,7 @@ use App\Support\ClientMenu;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\PublicArea;
+use App\Support\Seo;
 use App\Support\ServerIncidents;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
@@ -70,7 +73,6 @@ use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\ThemeMode;
-use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -110,13 +112,13 @@ class ClientPanelProvider extends PanelProvider
             ->registrationRouteSlug('signup')
             // Only clients who signed up confirm their address (User::hasVerifiedEmail())
             ->emailVerification(EmailVerificationPrompt::class)
-            ->passwordReset(RequestPasswordReset::class)
+            ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
             ->profile(EditProfile::class, isSimple: false)
             ->multiFactorAuthentication(fn (): array => Demo::enabled() ? [] : [ // the demo's accounts stay as they are
                 AppAuthentication::make() // named after the panel's brand: the company
                     ->recoverable(),
             ])
-            ->brandName(fn () => config('gaiacp.company.name') ?: 'GaiaCP')
+            ->brandName(fn () => Seo::tabTitle() ?? (config('gaiacp.company.name') ?: 'GaiaCP'))
             // The company's logo and tab icon (Settings → Company); without a logo the name above is shown
             ->brandLogo(fn () => Branding::url('logo'))
             ->darkModeBrandLogo(fn () => Branding::url('logo-dark'))
@@ -246,10 +248,16 @@ class ClientPanelProvider extends PanelProvider
             })
             // Links inside texts look like links; ones to other sites open in a new tab
             // Search engines and link previews (App\Support\Seo)
+            ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => Seo::writingTitle(true))
+            ->renderHook(PanelsRenderHook::STYLES_BEFORE, fn (): string => Seo::writingTitle(false))
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.seo')->render())
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.links')->render())
             // Form buttons that float at the foot of a long form look like the Settings pages' Save bar
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.sticky-actions')->render())
+            // Buttons that open a menu show a chevron after their label
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.menu-buttons')->render())
+            // The two-factor code boxes centred on the sign-in page
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.one-time-code')->render())
             // An admin looking at the client area as the client (Log in as client), with the way back
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => ClientAreaAccess::viewing()
                 ? view('filament.client.viewing-as-banner')->render() : '')

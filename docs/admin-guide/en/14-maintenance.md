@@ -61,11 +61,24 @@ Settings → **Logs**:
 ever unless you set days, at least 30) and the bell notifications (90, read or not). Older rows are deleted every
 night.
 
+Super admins also find **Clean up** at the bottom of Logging, to make the database or the disk smaller now:
+
+- one button per log (module, email, activity, bell notifications) with its number of entries, to delete the entries
+  older than a day you choose. The activity log always keeps its last 30 days, and each clean up is itself recorded
+  in it;
+- **Delete files of closed tickets**: the files attached to tickets closed before a day. The messages stay and name
+  each file as deleted. Settings → Support → **Delete files of closed tickets after** does the same every night;
+- **Empty the cache**: the stored cache and the compiled page templates, for example after changing files on the
+  server by hand. Both fill again by themselves.
+
+What is deleted is gone for good, but backups made before still have it.
+
 ## When something goes wrong
 
 - **Nothing was emailed or billed today**: check System health for cron, then the Email log.
-- **A server or registrar call failed**: the error is on the service's Activity tab and in Needs attention. Switch on
-  the module log, try again, and read what the panel answered.
+- **A server or registrar call failed**: it waits in Services → Module queue (see
+  [Automation](09-automation.md)), and the error is on the service's Activity tab. Switch on the module log, Retry,
+  and read what the panel answered.
 - **A client says they paid**: look under Billing → Payments and on the payment notice. A Stripe or PayPal payment that
   didn't fit its notice any more is listed in the daily summary.
 - **The client area must close for a while**: Settings → Client area → Maintenance mode.

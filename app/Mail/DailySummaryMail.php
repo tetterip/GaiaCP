@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Filament\Resources\Invoices\InvoiceResource;
+use App\Filament\Resources\ModuleQueue\ModuleQueueItemResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ActivityLog;
 use App\Providers\AppServiceProvider;
@@ -31,6 +32,7 @@ class DailySummaryMail extends Mailable
             'invoiceUrl' => fn ($invoice) => InvoiceResource::getUrl('view', ['record' => $invoice]),
             'serviceUrl' => fn ($service) => $service ? ServiceResource::getUrl('edit', ['record' => $service]) : null,
             'describe' => $this->describeChanges(...),
+            'queueUrl' => ModuleQueueItemResource::getUrl(panel: 'admin'),
         ]);
     }
 

@@ -202,6 +202,7 @@ class ClientAreaPagesTest extends TestCase
         $plugins = app(PluginManager::class);
         $plugins->disable($plugins->find('gaia_theme'));
         $plugins->disable($plugins->find('flat_theme'));
+        $plugins->disable($plugins->find('glass_theme'));
 
         // No theme: Filament's own place, the top bar
         $this->get('/dashboard')->assertOk()->assertDontSee('<div class="fi-sidebar-footer">', false);

@@ -163,6 +163,8 @@ If you have a **coupon code**, type it in the cart: you see what it takes off be
 
 What is **on sale** shows a Sale badge and its normal price struck through. The sale price is for the first period of what you order while the sale runs; renewals are at the normal price. A coupon may not lower a sale price further.
 
+A package marked **Out of stock** can't be ordered until we have more. Some packages, such as a free trial, can be ordered only a few times by each client: if you already have as many as allowed, the order page tells you.
+
 <!-- if:terms -->
 Before you place it, read our Terms of Service (the link next to the box) and tick **I accept the Terms of Service**.
 <!-- endif -->

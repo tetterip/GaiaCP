@@ -12,6 +12,8 @@ Clients don't have a login until you give them one or they sign up:
 
 - **Invite to client area** (client page → Client area menu) emails a link to set their password.
 - A new client can get a password at once with **Email the login details**.
+- **Set password** (same menu) gives a client a password you choose, signing out their browsers; **Send password reset
+  link** emails them the "Forgot password?" link instead, and their password works until they choose a new one.
 - **Sign up** (Settings → Client area, off by default) lets anyone create an account; their email address is confirmed
   first.
 - **Google sign-in** (a plugin) adds "Continue with Google" with your own Google OAuth client.
@@ -40,7 +42,7 @@ changes, cancellations, upgrades) wait for your answer.
 
 ## How it looks
 
-- **Theme** (Gaia or Flat) and a **Brand colour** for buttons and links. The admin panel keeps its own look.
+- **Theme** (Gaia, Flat or Glass) and a **Brand colour** for buttons and links. The admin panel keeps its own look.
 - Your **logo** from Settings → Company, with a dark mode version and a tab icon.
 - The **languages** offered (Settings → Languages): clients pick theirs.
 
@@ -101,7 +103,9 @@ until you switch it on:
 
 **Cookies** (Settings → Client area → Cookies, off by default) shows a cookie banner, links your cookie policy and runs
 scripts such as analytics only after the visitor accepts. Search engines index the public pages unless you turn it off
-(Settings → Client area → Search engines); the admin panel and signed-in pages are never indexed. Each language of a
+(Settings → Client area → Search engines); the admin panel and signed-in pages are never indexed. The same section has a
+**Site title** for your site root (the browser tab, search results and link previews; empty, the page's name and your
+company name) and the **Description** search results and previews show, both per language. Each language of a
 page has its own address (`?lang=el`; none for the default language), and search engines find them all in
 `/sitemap.xml`, which `/robots.txt` points to. Give that sitemap address to Google Search Console. In a subfolder install,
 search engines only read the `robots.txt` at the domain's root, so submit the sitemap by hand there.

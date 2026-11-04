@@ -375,7 +375,11 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   secrets passed in, auth headers and password-like fields. A new API client adds it too. `App\Listeners\LogSentEmail`
   (MessageSent) keeps every sent email in `email_logs`; `ClientMailer` / `SendRenewalReminders` log failed sends.
   `gaiacp:prune-logs` (daily) deletes rows older than the retention days, `activity_logs` and `notifications` too when
-  `debug.activity_log_days` / `debug.notification_days` are set (null = kept), and expired database cache rows. `app/Support/LogReader.php` reads
+  `debug.activity_log_days` / `debug.notification_days` are set (null = kept), expired database cache rows, and the files of
+  tickets closed `support.attachment_days` ago (null = kept; `ticket_attachments.removed_at` set, the row stays and the
+  thread shows "file deleted"). `app/Support/LogCleanup.php` is Settings → Logging → Clean up (super admins): delete a
+  log's rows before a day (the activity log keeps `ACTIVITY_MIN_DAYS`), ticket files, `cache:clear` + `view:clear`;
+  each run logged (`log.cleaned`, `ticket.files_deleted`, `cache.cleared`). `app/Support/LogReader.php` reads
   `storage/logs/*.log` for the Error log page (`Pages/ErrorLog`)
 - `app/Filament/KeyboardShortcuts.php` + `resources/views/filament/keyboard-shortcuts.blade.php` (panel `BODY_END` hook):
   "g" / "n" + letter go to a page / open a new record, "/" and Ctrl/⌘+K search, "?" (or user menu) lists them;
@@ -388,7 +392,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   same way once they scroll out of view: `BasePage::stickyFormActions()` in `AppServiceProvider` (resource create / edit
   pages, both profile pages), `->sticky()` on custom pages' footer actions (`EditEmailTemplate`), all on the right with
   Save rightmost (`BasePage::alignFormActionsEnd()`; both `EditProfile`s override Filament's left-pinned profile), styled like the Save
-  bar by `resources/views/filament/sticky-actions.blade.php` (HEAD_END in both panels). A page joins with `$cluster`, a `$navigationGroup`, a `$navigationSort`
+  bar by `resources/views/filament/sticky-actions.blade.php` (HEAD_END in both panels). Buttons that open a menu get a
+  chevron and menus grow to their longest choice from `resources/views/filament/menu-buttons.blade.php` (also HEAD_END in both). A page joins with `$cluster`, a `$navigationGroup`, a `$navigationSort`
   inside its group's range and `SettingsCard::settingsDescription()` for its card. A payment plugin's settings page uses
   `PaymentMethodPage`: listed on Settings → Payment methods (`PaymentMethodsSettings`, every plugin with payment modules)
   and nested under it in the sub-navigation, with no card of its own. `PluginSwitch` puts an On switch (= the plugin's
@@ -462,6 +467,10 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   `CHANGELOG.md` keeps a `## [<version>] - <date>` section per release (a test checks the current one). A `v<version>` or `<version>`
   tag (pushed, or a release published on GitHub; or Run workflow with a tag) runs `.github/workflows/release.yml`: tests, then `bin/build-release.sh` (git archive minus `export-ignore` in
   `.gitattributes`, `composer install --no-dev`) and attaches the zip + `.sha256` to the tag's release (creating it if needed). Staging still deploys `main`
+- Dependencies: `.github/dependabot.yml` opens one grouped PR a month with Composer patch / minor updates (and one for
+  GitHub Actions); majors (Laravel 14, Filament 6) are ignored there and upgraded by hand. Security updates come as soon
+  as an advisory is out (Dependabot security updates, repository settings), and the Tests workflow runs
+  `composer audit --locked` on every push, PR, release and on Mondays, failing on any advisory
 - Installer: `app/Install/Installer.php` (requirements, `.env` writing, database, migrate, company, first admin, lock),
   used by `InstallController` (`/install`, plain Blade in `resources/views/install/`, Form Requests `Install*Request`) and
   `gaiacp:install`. `App\Http\Middleware\PrepareInstaller` runs first in the `web` group and the panel: while not

@@ -352,6 +352,8 @@ class WhmcsImport
                 'product_group_id' => $this->productGroup($whmcs, (int) ($row->gid ?? 0))?->id,
                 'hidden' => (bool) $row->hidden,
                 'retired' => (bool) ($row->retired ?? false),
+                // Stock control on: its quantity left becomes Quantity available
+                'stock' => ! empty($row->stockcontrol) ? max(0, (int) ($row->qty ?? 0)) : null,
                 'auto_setup' => match ($row->autosetup) {
                     'order' => AutoSetup::OnOrder,
                     'payment' => AutoSetup::OnPayment,

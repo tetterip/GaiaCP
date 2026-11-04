@@ -81,7 +81,7 @@ class ProductGroupPage extends Page
             ?? ['key' => $this->productGroup->slug, 'name' => $this->productGroup->name(), 'description' => $this->productGroup->description(), 'icon' => $this->productGroup->icon, 'group' => $this->productGroup, 'products' => collect()];
     }
 
-    /** @return list<array{name: string, icon: ?string, sale: bool, popular: bool, badges: list<array{name: string, color: string}>, color: ?string, price: list<string|HtmlString>, url: string}> */
+    /** @return list<array{name: string, icon: ?string, sale: bool, sold_out: bool, popular: bool, badges: list<array{name: string, color: string}>, color: ?string, price: list<string|HtmlString>, url: string}> */
     public function products(): array
     {
         if (! config('gaiacp.client_area.orders')) {
@@ -92,6 +92,7 @@ class ProductGroupPage extends Page
             'name' => $product->localName(),
             'icon' => $product->icon ?? $this->productGroup->icon,
             'sale' => $product->onSale(),
+            'sold_out' => ! $product->inStock(),
             'popular' => $product->popular,
             'badges' => $product->badges(),
             'color' => $product->orderColor(),

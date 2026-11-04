@@ -85,6 +85,10 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   profession, other custom fields as client fields), hosting accounts with their passwords, domains and unpaid invoices, with a dry run first; safe to re-run
 - System health (Settings → System): PHP version and extensions, configuration, database, storage, cron and the daily jobs,
   mail, server and registrar connections
+- Module queue (Services → Module queue), like WHMCS's: failed set ups (hosting, domain registration or transfer, SSL),
+  suspend, unsuspend, terminate and domain renewals wait with their error to Retry, Retry all or Mark resolved; set ups,
+  unsuspends and suspensions for non-payment are retried by themselves every 15 minutes (Settings → Automation), then
+  the bell rings once; open items are in the daily summary
 - Debugging (Settings → Logs): a WHMCS-style module log of every request to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, Proxmox VE, easy.gr, Enom and ΑΑΔΕ
   with the reply (passwords, tokens and EPP codes masked; off until switched on), an email log of every email sent or
   failed, and a viewer for Laravel's error log
@@ -108,7 +112,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Google sign-in ("Continue with Google"
   in the client area and, when ticked, on /admin, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
   Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot, HetrixTools and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
-  the admin panel themes Gaia and Flat are bundled plugins,
+  the admin panel themes Gaia, Flat and Glass are bundled plugins,
   each on by default (except easy.gr, ΑΑΔΕ and VIES VAT check, off in a new install unless `GAIACP_PLUGINS_START_ENABLED` names them)
   and switched off when not used (their servers, accounts and settings stay); bundled plugins
   can't be uninstalled. Each has its own version and changelog, shown on that page with when it was installed or
@@ -218,6 +222,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   period of what is ordered then (renewals at the normal price). The order pages, the public home page, domain search
   and Domain prices show the normal price struck through and a Sale badge; it ends by itself. A coupon lowers a sale
   price only with its Also on sale prices switch
+- Product limits: Quantity available (each order takes one, a cancelled order gives it back; at 0 the order pages show
+  Out of stock) and Client limit (services of it one client can have at once, 1 for a free trial). The client area,
+  the public cart and the API hold to both; an admin's New order can go over them
 - Knowledge base (Support → Knowledge base): help articles in categories, a text per language (Markdown), shown in
   the client area once published, with a search that ignores accents and case, views and "Was this helpful?" counts.
   While a client writes a new ticket, the articles matching its subject show under it. Settings → Support →
@@ -230,8 +237,13 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
 - Domain costs: each TLD can keep what the registrar charges per term (Settings → Domain pricing → Registrar cost).
   The list shows the renewal margin, red when a term sells at a loss; Income forecast takes the month's domain
   renewal costs off the profit, and Reports → Domain profit shows revenue, cost, profit and margin per TLD
+- TLD import and pricing sync (WHMCS-style): Domain pricing → Import from registrar reads each TLD's cost from easy.gr
+  or Enom and adds or updates TLDs with cost + markup (percent, fixed, rounding); an optional nightly run keeps the costs
+  current and rings the bell when a TLD starts to sell at a loss (selling prices never change by themselves)
 - Themes: Gaia (GaiaCP's own look, light and dark: neutral greys, the logo's teal, rounded cards,
-  Commissioner and Literata from Bunny Fonts, quiet motion) and Flat (the same layout in Filament's emerald and grey, flat: no shadows or motion). Each admin picks one
+  Commissioner and Literata from Bunny Fonts, quiet motion) Flat (the same layout in the logo's green and Filament's grey, flat: no shadows or motion) and Glass (frosted, see-through
+  cards, sidebar, menus, windows and pill buttons over a soft teal and green background, Manrope; solid where the browser
+  can't blur or the system asks for less transparency). Each admin picks one
   in Profile; Settings → General sets the admin default (Gaia). The client area, the public order page, sign up and
   the maintenance page take the theme chosen under Settings → Client area → Client area theme (Gaia), with the
   company's logo; clients don't choose. Settings → Client area → Brand colour (empty = the theme's) paints the client

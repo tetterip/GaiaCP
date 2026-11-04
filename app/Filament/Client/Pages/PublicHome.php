@@ -10,6 +10,7 @@ use App\Models\Client;
 use App\Models\Product;
 use App\Support\OrderCatalogue;
 use App\Support\PublicArea;
+use App\Support\Seo;
 use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Support\Enums\Width;
@@ -53,6 +54,11 @@ class PublicHome extends Page
 
     public function getTitle(): string|Htmlable
     {
+        // The site title stands alone in the browser tab (Seo::tabTitle())
+        if (Seo::tabTitle() !== null) {
+            return '';
+        }
+
         return PublicArea::welcomeTitle();
     }
 
@@ -84,6 +90,7 @@ class PublicHome extends Page
                     'name' => $product->localName(),
                     'icon' => $product->icon ?? $group['icon'],
                     'sale' => $product->onSale(),
+                    'sold_out' => ! $product->inStock(),
                     'popular' => $product->popular,
                     'badges' => $product->badges(),
                     'color' => $product->orderColor(),

@@ -37,7 +37,7 @@ class SupportSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['support.client_tickets', 'support.client_priority', 'support.admin_emails', 'support.auto_close_days', 'support.attachments_max_kb', 'support.attachment_types', 'support.reply_to', 'support.knowledge_base'];
+        return ['support.client_tickets', 'support.client_priority', 'support.admin_emails', 'support.auto_close_days', 'support.attachments_max_kb', 'support.attachment_types', 'support.attachment_days', 'support.reply_to', 'support.knowledge_base'];
     }
 
     public function form(Schema $schema): Schema
@@ -94,6 +94,15 @@ class SupportSettings extends SettingsFormPage
                             ->required()
                             ->regex('/^\s*\.?[a-z0-9]+(\s*,\s*\.?[a-z0-9]+)*\s*$/i')
                             ->helperText(__('Extensions separated by commas, e.g. jpg, png, pdf, zip')),
+                        TextInput::make('support.attachment_days')
+                            ->label('Delete files of closed tickets after')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(1)
+                            ->maxValue(3650)
+                            ->suffix(__('days'))
+                            ->placeholder(__('Never'))
+                            ->helperText(__('Every night, the files of tickets closed longer ago are deleted to free disk space. The messages stay and name the file as deleted. Empty: keep them.')),
                     ]),
             ]);
     }
@@ -105,6 +114,7 @@ class SupportSettings extends SettingsFormPage
         $values['support.admin_emails'] = (bool) ($values['support.admin_emails'] ?? false);
         $values['support.knowledge_base'] = (bool) ($values['support.knowledge_base'] ?? false);
         $values['support.auto_close_days'] = filled($values['support.auto_close_days'] ?? null) ? (int) $values['support.auto_close_days'] : null;
+        $values['support.attachment_days'] = filled($values['support.attachment_days'] ?? null) ? (int) $values['support.attachment_days'] : null;
         $values['support.attachments_max_kb'] = (int) ($values['support.attachments_max_kb'] ?? 5120);
         $values['support.reply_to'] = filled($values['support.reply_to'] ?? null) ? strtolower(trim($values['support.reply_to'])) : null;
         $values['support.attachment_types'] = strtolower(preg_replace('/[\s.]+/', '', (string) ($values['support.attachment_types'] ?? '')));

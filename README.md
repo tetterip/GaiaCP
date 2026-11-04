@@ -73,7 +73,8 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
   (sitemap, each language at its own address)
 - Pages of your own (About us, your terms, a guide) written with an editor, with pictures and a featured image, and
   both side menus arranged as you like: drag pages into order, rename them, add products, links and headings
-- Products with their own colour and tags such as New or NVMe SSD, a Popular badge and a sale price
+- Products with their own colour and tags such as New or NVMe SSD, a Popular badge and a sale price, a quantity
+  available and a limit per client
 - Support tickets (also from email), leads, messages to clients, editable email templates in each language
 
 **For you**

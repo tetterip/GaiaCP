@@ -98,6 +98,7 @@ return [
         'auto_close_days' => 7, // close a ticket that waits on the client this many days (null = never)
         'attachments_max_kb' => 5120,
         'attachment_types' => 'jpg,jpeg,png,gif,webp,pdf,txt,log,zip',
+        'attachment_days' => null, // delete the files of tickets closed this many days ago, every night (null = keep them)
         'reply_to' => null, // Reply-To of ticket emails to clients (a department's own email wins), e.g. the Email to ticket mailbox
         'knowledge_base' => true, // the client area's Knowledge base page (once an article is published) and article tips on new tickets
     ],
@@ -128,6 +129,10 @@ return [
         // Warn a hosting client (and ring the bell) once a month when disk space or bandwidth reaches this % of the
         // package's limit (gaiacp:check-usage, daily at 06:00); empty = off.
         'usage_warning_percent' => env('GAIACP_USAGE_WARNING_PERCENT') === '' ? null : (int) env('GAIACP_USAGE_WARNING_PERCENT', 85),
+
+        // Services → Module queue: how many times gaiacp:retry-module-queue (every 15 minutes) tries a failed set up,
+        // unsuspend or suspension for non-payment again by itself before it rings the bell; 0 = only by hand.
+        'module_retries' => (int) env('GAIACP_MODULE_RETRIES', 3),
 
         // Emails of messages to clients sent each minute (gaiacp:send-client-messages), kind to the mail server.
         'client_messages_per_minute' => (int) env('GAIACP_CLIENT_MESSAGES_PER_MINUTE', 30),
@@ -171,6 +176,10 @@ return [
         // Late renewal fees from each TLD's grace and redemption prices (Settings → Registrars),
         // added to unpaid payment notices once the domain has expired.
         'late_fees' => false,
+
+        // Read each registrar's TLD costs every night (gaiacp:sync-tld-costs) for the TLDs it is the preferred
+        // registrar of. Only costs change; the bell rings when a TLD starts to sell at a loss.
+        'sync_costs' => false,
 
         // An SSL certificate product (id) offered with a domain ordered on its own, at ssl_discount percent off its
         // first period (App\Support\DomainSsl); null = none.
@@ -256,7 +265,8 @@ return [
     // order pages may be indexed; signed-in pages and /admin never are.
     'seo' => [
         'index' => true,
-        'description' => null, // the meta / link preview description; null = none
+        'title' => [], // per language code: the site root's browser tab and link preview title; empty = page + company name
+        'description' => [], // per language code: the meta / link preview description; empty = the first language's, else none
     ],
 
     // The public area (App\Support\PublicArea, Settings → Public area): pages visitors see without logging in, in the

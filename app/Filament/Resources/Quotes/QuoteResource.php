@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\Quotes;
 
 use App\Actions\Quotes;
+use App\Ai\Assistant;
 use App\Enums\AdminArea;
 use App\Enums\BillingCycle;
 use App\Enums\QuoteStatus;
+use App\Enums\ServiceType;
 use App\Filament\Actions\AiTextActions;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesResourceLabels;
@@ -15,12 +17,15 @@ use App\Filament\Resources\Quotes\Pages\EditQuote;
 use App\Filament\Resources\Quotes\Pages\ListQuotes;
 use App\Models\Client;
 use App\Models\Lead;
+use App\Models\Product;
 use App\Models\Quote;
 use App\Providers\AppServiceProvider;
 use App\Support\Currencies;
+use App\Support\Locales;
 use App\Support\Money;
 use App\Support\Tax;
 use BackedEnum;
+use Carbon\CarbonImmutable;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
@@ -160,13 +165,18 @@ class QuoteResource extends Resource
                     self::currency($get('client_id')),
                 )])),
 
-                Textarea::make('footer')
+                AiTextActions::on(Textarea::make('footer')
                     ->label('Text below the lines')
                     ->placeholder(__('Terms, how to pay, what is not included…'))
                     ->default(fn () => config('gaiacp.sales.quote_footer'))
                     ->rows(3)
                     ->maxLength(5000)
-                    ->columnSpanFull(),
+                    ->columnSpanFull(), write: [[
+                        'name' => 'aiWrite',
+                        'label' => __('Write the terms from the quote'),
+                        'feature' => 'improve',
+                        'ask' => fn (Assistant $ai, string $draft, Get $get) => $ai->quoteFooter(self::footerDetails($get), Client::query()->find($get('client_id'))?->locale ?? Locales::default(), $draft),
+                    ]]),
                 Textarea::make('notes')
                     ->label('Notes for the admins')
                     ->rows(2)
@@ -201,6 +211,36 @@ class QuoteResource extends Resource
         return collect($extras)->values()
             ->map(fn (array $extra) => filled($extra['amount_cents'] ?? null) && preg_match('/^\d+([.,]\d{1,2})?$/', (string) $extra['amount_cents']) ? Money::toCents($extra['amount_cents']) : 0)
             ->all();
+    }
+
+    /**
+     * What the quote offers, for the AI assistant's footer text: each line's type, product and cycle, the one-off
+     * lines and the valid until date. No prices, recipient, domains or labels typed for a custom line.
+     *
+     * @return array<string, string>
+     */
+    private static function footerDetails(Get $get): array
+    {
+        $products = Product::query()->whereKey(collect($get('items') ?? [])->pluck('product_id')->filter()->all())->pluck('name', 'id');
+
+        $services = collect($get('items') ?? [])->map(function (array $item) use ($products) {
+            $type = $item['type'] ?? null;
+            $type = $type instanceof ServiceType ? $type : ServiceType::tryFrom((string) $type);
+            $cycle = $item['billing_cycle'] ?? null;
+            $cycle = $cycle instanceof BillingCycle ? $cycle : BillingCycle::tryFrom((string) $cycle);
+
+            return collect([Assistant::typeName($type), $products[$item['product_id'] ?? null] ?? null, $cycle ? str_replace('_', ' ', $cycle->value) : null])
+                ->filter(fn ($part) => filled($part))->implode(', ');
+        })->filter()->values();
+
+        $valid = $get('valid_until');
+
+        return [
+            'Services offered (renewed each cycle)' => $services->implode('; '),
+            'One-off work (billed with the first payment only)' => collect($get('extras') ?? [])->pluck('description')->filter()->implode('; '),
+            'Offer valid until' => filled($valid) ? CarbonImmutable::parse($valid)->toDateString() : '',
+            'Accepted' => 'online, from the link in the quote email; the order and the first payment notice follow',
+        ];
     }
 
     public static function getRecordTitle(?Model $record): string

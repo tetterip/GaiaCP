@@ -16,7 +16,7 @@
 
     <section class="gcp-card gcp-public-hero" @if ($product->orderColor()) data-gcp-color="{{ $product->orderColor() }}" @endif>
         <h1 class="gcp-public-title">{!! ProductIcons::svg($product->icon ?? $product->group->icon) !!} {{ $product->pageTitle() }}</h1>
-        @include('filament.client.product-badges', ['sale' => $product->onSale(), 'popular' => $product->popular, 'badges' => $product->badges()])
+        @include('filament.client.product-badges', ['soldOut' => ! $product->inStock(), 'sale' => $product->onSale(), 'popular' => $product->popular, 'badges' => $product->badges()])
         @if (filled($description))
             <p class="gcp-public-text" style="white-space: pre-line">{{ strip_tags($description) }}</p>
         @endif
@@ -26,7 +26,11 @@
             @endforeach
         </div>
         <div class="gcp-public-actions">
-            <x-filament::button tag="a" :href="$this->orderLink()" icon="heroicon-o-shopping-cart">{{ __('Order') }}</x-filament::button>
+            @if ($product->inStock())
+                <x-filament::button tag="a" :href="$this->orderLink()" icon="heroicon-o-shopping-cart">{{ __('Order') }}</x-filament::button>
+            @else
+                <x-filament::button color="gray" icon="heroicon-o-no-symbol" disabled>{{ __('Out of stock') }}</x-filament::button>
+            @endif
         </div>
     </section>
 

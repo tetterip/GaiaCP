@@ -27,7 +27,7 @@ class ThemesTest extends TestCase
 
     public function test_gaia_is_the_default_and_brings_its_fonts_colours_and_stylesheet(): void
     {
-        $this->assertSame(['gaia' => 'Gaia', 'flat' => 'Flat'], Themes::options());
+        $this->assertSame(['gaia' => 'Gaia', 'flat' => 'Flat', 'glass' => 'Glass'], Themes::options());
 
         $this->actingAs(User::factory()->create());
 
@@ -83,7 +83,7 @@ class ThemesTest extends TestCase
         $this->assertMatchesRegularExpression('/\.gcp-cart-icon \{[^}]*margin: 0;/', $html);
     }
 
-    public function test_an_admin_who_picked_flat_gets_the_layout_in_emerald_without_shadows(): void
+    public function test_an_admin_who_picked_flat_gets_the_layout_in_the_logo_green_without_shadows(): void
     {
         $this->actingAs(User::factory()->create(['theme' => 'flat']));
 
@@ -92,7 +92,39 @@ class ThemesTest extends TestCase
             ->assertSee('--theme-shadow: 0 0 #0000', false)
             ->assertDontSee('--gaia-side', false)
             ->assertDontSee('fonts.bunny.net', false)
-            ->assertSee(Color::Emerald[500], false);
+            ->assertSee('--primary-600:oklch(0.550 0.103 161)', false)
+            ->assertDontSee(Color::Emerald[500], false);
+    }
+
+    public function test_an_admin_who_picked_glass_gets_frosted_cards_that_cannot_trap_modals(): void
+    {
+        $this->actingAs(User::factory()->create(['theme' => 'glass']));
+
+        $html = $this->get(Dashboard::getUrl())->assertOk()
+            ->assertSee('--theme-side', false) // the shared layout
+            ->assertSee('--glass-pane', false)
+            ->assertSee('fonts.bunny.net/css?family=manrope', false)
+            ->assertDontSee('--gaia-side', false)
+            ->getContent();
+
+        // The blur sits on a layer behind each card: backdrop-filter (or a transform) on the card itself would make it
+        // the containing block of position: fixed and squeeze the modals opened from inside it
+        $this->assertMatchesRegularExpression('/\.fi-section:not\(\.fi-section-not-contained\)::before,[^{]*\{[^}]*backdrop-filter/', $html);
+        $this->assertDoesNotMatchRegularExpression('/\.fi-section:not\(\.fi-section-not-contained\),\s*\.fi-ta-ctn,[^{]*\{[^}]*backdrop-filter/', $html);
+        $this->assertStringContainsString('animation: glass-in .5s var(--glass-ease) backwards;', $html);
+
+        // Solid panes where the browser can't blur or the system asks for less transparency
+        $this->assertStringContainsString('@supports not ((backdrop-filter: blur(1px))', $html);
+        $this->assertStringContainsString('@media (prefers-reduced-transparency: reduce)', $html);
+
+        // The top bar stays frosted on wide screens too, so the page scrolling under it doesn't read through
+        $this->assertStringContainsString('background: linear-gradient(to bottom, var(--glass-bar) 0', $html);
+        $this->assertDoesNotMatchRegularExpression('/\\.fi-topbar::before \\{\\s*content: none;/', $html);
+
+        // ... and only once the page has scrolled
+        $this->assertStringContainsString('html.fi.glass-scrolled .fi-topbar::before', $html);
+        $this->assertStringContainsString('html.fi .fi-topbar .fi-topbar-database-notifications-btn .fi-badge', $html); // the bell's count stays solid
+        $this->assertStringContainsString("root.classList.toggle('glass-scrolled', window.scrollY > 4)", $html);
     }
 
     public function test_profile_saves_the_admins_theme(): void
@@ -119,17 +151,22 @@ class ThemesTest extends TestCase
             ->assertSee('Default theme')
             ->fillForm(['theme' => ['default' => 'flat']])
             ->call('save')
-            ->assertHasNoFormErrors();
+            ->assertHasNoFormErrors()
+            ->assertRedirect(GeneralSettings::getUrl()); // the new look shows at once
 
         $this->assertSame('flat', config('gaiacp.theme.default'));
         $this->assertSame('flat', Themes::for($admin)->themeKey());
         $this->assertSame('gaia', Themes::for(new User(['theme' => 'gaia']))->themeKey());
+
+        // Saved again with the same theme: no reload
+        Livewire::test(GeneralSettings::class)->call('save')->assertHasNoFormErrors()->assertNoRedirect();
     }
 
     public function test_a_theme_whose_plugin_is_off_falls_back(): void
     {
         $admin = User::factory()->create(['theme' => 'gaia']);
         $this->plugins()->disable($this->plugins()->find('gaia_theme'));
+        $this->plugins()->disable($this->plugins()->find('glass_theme'));
 
         // Neither the admin's pick nor the default (gaia) is on: the first theme that is
         $this->assertSame(['flat' => 'Flat'], Themes::options());
@@ -144,6 +181,7 @@ class ThemesTest extends TestCase
     {
         $this->plugins()->disable($this->plugins()->find('gaia_theme'));
         $this->plugins()->disable($this->plugins()->find('flat_theme'));
+        $this->plugins()->disable($this->plugins()->find('glass_theme'));
 
         $this->assertNull(Themes::for(null));
         $this->assertSame(['primary' => Color::Emerald], Themes::colors(null));
@@ -189,6 +227,7 @@ class ThemesTest extends TestCase
         $this->clientLogin()->assertOk()->assertSee('--gaia-side', false);
 
         $this->plugins()->disable($this->plugins()->find('gaia_theme'));
+        $this->plugins()->disable($this->plugins()->find('glass_theme'));
 
         $this->assertNull(Themes::forClientArea());
         $this->clientLogin()->assertOk()
@@ -254,6 +293,7 @@ class ThemesTest extends TestCase
         $this->assertTrue(config('gaiacp.client_area.maintenance'));
 
         $this->plugins()->disable($this->plugins()->find('flat_theme'));
+        $this->plugins()->disable($this->plugins()->find('glass_theme'));
 
         Livewire::test(ClientAreaSettings::class)
             ->fillForm(['client_area.maintenance' => false])

@@ -28,7 +28,8 @@ Settings → Support also holds:
 - **Ticket departments**: where tickets go (Technical support, Billing…), with their own reply address, and whether
   clients can pick each one;
 - **Canned replies**: ready answers with placeholders such as `{client_first_name}` and `{ticket_number}`;
-- who is emailed, the files clients may attach (size and types), and whether clients may set the priority.
+- who is emailed, the files clients may attach (size and types), whether clients may set the priority, and after how
+  many days the files of closed tickets are deleted to free disk space (empty: kept).
 
 The dashboard's Support card lists the tickets waiting for an answer.
 

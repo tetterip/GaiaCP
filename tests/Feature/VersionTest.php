@@ -37,15 +37,17 @@ class VersionTest extends TestCase
             ->assertSee('<span class="gcp-stage"', false);
     }
 
-    public function test_the_admin_footer_links_to_github_to_star_gaiacp(): void
+    public function test_the_admin_footer_links_to_the_website_github_and_its_issues(): void
     {
         $star = 'class="gcp-star" href="'.Version::REPOSITORY_URL.'"';
 
-        $this->get('/admin/login')->assertOk()->assertDontSee($star, false);
-        $this->get('/login')->assertOk()->assertDontSee($star, false); // never in the client area
+        $this->get('/admin/login')->assertOk()->assertDontSee($star, false)->assertDontSee('class="gcp-links"', false);
+        $this->get('/login')->assertOk()->assertDontSee($star, false)->assertDontSee('class="gcp-links"', false); // never in the client area
 
         $this->actingAs(User::factory()->create());
         $this->get('/admin')->assertOk()->assertSee($star, false)->assertSee(__('Star on GitHub'))
+            ->assertSeeInOrder(['class="gcp-links"', 'href="'.Version::WEBSITE_URL.'"', $star, 'href="'.Version::ISSUES_URL.'"'], false)
+            ->assertSee(__('GaiaCP website'))->assertSee(__('Report a problem or ask a question'))
             ->assertSee('target="_blank" rel="noopener"', false);
     }
 

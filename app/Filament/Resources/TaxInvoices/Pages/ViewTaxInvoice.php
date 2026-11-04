@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\TaxInvoices\Pages;
 
+use App\Filament\Resources\Invoices\Schemas\InvoiceInfolist;
+use App\Filament\Resources\TaxInvoices\Schemas\TaxInvoiceInfolist;
 use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Invoicing\InvoicePdf;
 use App\Invoicing\IssueCreditNote;
@@ -14,6 +16,7 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use RuntimeException;
@@ -28,6 +31,18 @@ class ViewTaxInvoice extends ViewRecord
         return $this->getRecord()->isCreditNote()
             ? __('Credit note :number', ['number' => $this->getRecord()->number])
             : __('Invoice :number', ['number' => $this->getRecord()->number]);
+    }
+
+    /** The payments of its notice and its credit notes after the lines. */
+    public function content(Schema $schema): Schema
+    {
+        return $schema->components([
+            $this->getInfolistContentComponent(),
+            $this->getRelationManagersContentComponent(),
+            InvoiceInfolist::paymentsSection($this->getRecord()->notice)
+                ->hidden($this->getRecord()->isCreditNote() || $this->getRecord()->invoice_id === null),
+            TaxInvoiceInfolist::creditNotesSection($this->getRecord()),
+        ]);
     }
 
     protected function getHeaderActions(): array

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\ModuleQueue;
 use App\Events\GaiaEvent;
 use App\Notifications\AdminAlerts;
 use App\Notifications\ClientAlerts;
@@ -18,6 +19,8 @@ class ActivityLog extends Model
     {
         // The admins' and the clients' bells (each picks the events it shows)
         static::created(function (self $log) {
+            // Services → Module queue: a failed panel or registrar action is kept to retry, a success closes it
+            ModuleQueue::fromLog($log);
             AdminAlerts::fromLog($log);
             ClientAlerts::fromLog($log);
             // Plugins and listeners (GaiaEvent picks the events they get)
@@ -41,6 +44,11 @@ class ActivityLog extends Model
      */
     public static function record(string $event, string $description, ?Service $service = null, ?Client $client = null, array $properties = []): self
     {
+        // A module queue retry that fails again is kept in the log, without ringing the bell or telling plugins twice
+        if ($event === 'provisioning.failed' && ModuleQueue::retrying()) {
+            $properties['retry'] = true;
+        }
+
         return self::create([
             'client_id' => $client?->id ?? $service?->client_id,
             'service_id' => $service?->id,
