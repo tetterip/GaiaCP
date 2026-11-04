@@ -161,7 +161,7 @@ class GaiaEvent
             'event' => $this->name,
             'id' => $log->id,
             'occurred_at' => $log->created_at?->toIso8601String(),
-            'description' => $log->description,
+            'description' => $log->fullDescription(),
             'client' => $client ? [
                 'id' => $client->id,
                 'first_name' => $client->first_name,

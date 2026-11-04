@@ -94,6 +94,15 @@ class CyberPanelLifecycleTest extends TestCase
         app(ProvisionerFactory::class)->forServer($this->server)->testConnection();
     }
 
+    public function test_the_api_key_in_the_password_field_is_explained(): void
+    {
+        $this->server->update(['api_token' => 'Basic cp_api_v1_'.str_repeat('x', 64)]);
+
+        $this->expectExceptionMessage('GaiaCP needs the admin user\'s password instead');
+
+        app(ProvisionerFactory::class)->forServer($this->server)->testConnection();
+    }
+
     public function test_a_web_page_instead_of_the_api_is_explained(): void
     {
         $this->cpRawResponse = Http::response('<html>login</html>', 200, ['Content-Type' => 'text/html']);

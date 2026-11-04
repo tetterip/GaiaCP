@@ -36,6 +36,11 @@ class CyberPanelClient
     public function api(string $endpoint, array $params, ?string $statusKey, array $secrets = [], int $timeout = 30, array $secretResponseKeys = []): array
     {
         $password = (string) $this->server->api_token;
+
+        if (str_contains($password, 'cp_api_v1_')) {
+            // CyberPanel 3's API key only opens its read-only calls; creating, suspending and deleting need the password
+            throw new ProvisioningException('CyberPanel: this is the API key from Users → API Access. GaiaCP needs the admin user\'s password instead, since CyberPanel does not take the key for creating, suspending or deleting websites.');
+        }
         $credentials = $endpoint === 'cyberPanelVersion'
             ? ['username' => $this->server->username, 'password' => $password]
             : ['adminUser' => $this->server->username, 'adminPass' => $password];

@@ -485,7 +485,7 @@ class AdminAlerts
         $errors = (array) ($log->properties['errors'] ?? []);
 
         if ($errors === []) {
-            return Str::limit($log->description, 500);
+            return Str::limit($log->fullDescription(), 500);
         }
 
         return Str::limit(implode(' ', array_map(
