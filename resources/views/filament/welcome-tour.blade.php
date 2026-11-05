@@ -189,7 +189,7 @@
     </style>
 
     <template x-teleport="body">
-        <div x-show="open" style="display: none" role="dialog" aria-modal="true" aria-labelledby="gcp-tour-title">
+        <div x-show="open" x-trap="open" style="display: none" role="dialog" aria-modal="true" aria-labelledby="gcp-tour-title">
             {{-- Keeps clicks off the page while the tour is open --}}
             <div class="gcp-tour-catcher" x-bind:class="{ 'is-dim': ! spot }"></div>
             @foreach (['top', 'bottom', 'left', 'right'] as $side)

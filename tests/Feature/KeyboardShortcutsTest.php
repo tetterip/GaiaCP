@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Filament\KeyboardShortcuts;
+use App\Filament\Pages\Auth\EditProfile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class KeyboardShortcutsTest extends TestCase
@@ -42,5 +44,33 @@ class KeyboardShortcutsTest extends TestCase
     public function test_the_login_page_has_no_shortcuts(): void
     {
         $this->get('/admin/login')->assertOk()->assertDontSee('open-keyboard-shortcuts', false);
+    }
+
+    public function test_the_list_holds_the_focus_and_has_a_close_button(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->get('/admin/clients')->assertOk()
+            ->assertSee('x-trap.noscroll="open"', false)
+            ->assertSee('enabled: true', false);
+    }
+
+    /** WCAG 2.1.4: single-key shortcuts can be turned off, e.g. for speech input; the user menu still opens the list. */
+    public function test_an_admin_can_turn_the_single_keys_off_in_the_profile(): void
+    {
+        $user = User::factory()->create();
+        $this->assertTrue($user->fresh()->keyboard_shortcuts);
+        $this->actingAs($user);
+
+        Livewire::test(EditProfile::class)
+            ->fillForm(['keyboard_shortcuts' => false])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertFalse($user->fresh()->keyboard_shortcuts);
+        $this->get('/admin/clients')->assertOk()
+            ->assertSee('enabled: false', false)
+            ->assertSee('open-keyboard-shortcuts', false)
+            ->assertSee('They are turned off in your profile.');
     }
 }

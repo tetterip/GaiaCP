@@ -26,7 +26,8 @@ class WelcomeTourTest extends TestCase
             ->assertSee('Welcome to GaiaCP')
             ->assertSee('data-opens-now="yes"', false)
             ->assertSee('Open the setup guide')
-            ->assertSee('navgroup:', false);
+            ->assertSee('navgroup:', false)
+            ->assertSee('x-trap="open"', false); // the tour holds the keyboard focus while it is open
 
         $this->assertNotNull($admin->refresh()->admin_tour_seen_at);
         $this->assertNull($admin->client_tour_seen_at);

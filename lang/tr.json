@@ -3812,5 +3812,7 @@
     "No panel or registrar action is waiting to be retried.": "Yeniden denenmeyi bekleyen panel veya kayıt kuruluşu işlemi yok.",
     "Nothing resolved yet": "Henüz çözülen bir şey yok",
     "The sign-in took too long": "Oturum açma çok uzun sürdü",
-    "Complete the check that you are not a robot and sign in again.": "Robot olmadığınızı doğrulayın ve yeniden oturum açın."
+    "Complete the check that you are not a robot and sign in again.": "Robot olmadığınızı doğrulayın ve yeniden oturum açın.",
+    "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "? (bu liste), / (arama) ve g ardından c (Müşteriler) gibi tek tuşlar. Sesli giriş kullanıyorsanız veya rahatsız ediyorlarsa kapatın.",
+    "They are turned off in your profile.": "Profilinizde kapalılar."
 }

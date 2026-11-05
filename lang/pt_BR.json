@@ -3812,5 +3812,7 @@
     "No panel or registrar action is waiting to be retried.": "Nenhuma ação do painel ou do registrador aguarda nova tentativa.",
     "Nothing resolved yet": "Nada resolvido ainda",
     "The sign-in took too long": "O login demorou demais",
-    "Complete the check that you are not a robot and sign in again.": "Conclua a verificação de que você não é um robô e entre novamente."
+    "Complete the check that you are not a robot and sign in again.": "Conclua a verificação de que você não é um robô e entre novamente.",
+    "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Teclas únicas como ? (esta lista), / (busca) e g depois c (Clientes). Desative-as se você usa entrada por voz ou se elas atrapalham.",
+    "They are turned off in your profile.": "Eles estão desativados no seu perfil."
 }

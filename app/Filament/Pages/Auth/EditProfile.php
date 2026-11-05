@@ -41,6 +41,7 @@ class EditProfile extends BaseEditProfile
                 $this->getLocaleFormComponent(),
                 $this->getThemeFormComponent(),
                 $this->getNotificationsFormComponent(),
+                $this->getShortcutsFormComponent(),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
                 $this->getCurrentPasswordFormComponent(),
@@ -72,6 +73,13 @@ class EditProfile extends BaseEditProfile
         return Toggle::make('panel_notifications')
             ->label('Notifications in the panel')
             ->helperText(__('The bell in the top bar: new orders and sign-ups, new payment notices, online payments, failed panel or registrar calls, domains about to expire and similar.'));
+    }
+
+    protected function getShortcutsFormComponent(): Component
+    {
+        return Toggle::make('keyboard_shortcuts')
+            ->label('Keyboard shortcuts')
+            ->helperText(__('Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.'));
     }
 
     protected function getPushFormComponent(): Component
@@ -143,6 +151,6 @@ class EditProfile extends BaseEditProfile
     protected function getRedirectUrl(): ?string
     {
         // Reload so a new language, theme or the bell shows on the whole page, not only on the parts that re-render.
-        return $this->getUser()->wasChanged(['locale', 'theme', 'panel_notifications']) ? static::getUrl() : parent::getRedirectUrl();
+        return $this->getUser()->wasChanged(['locale', 'theme', 'panel_notifications', 'keyboard_shortcuts']) ? static::getUrl() : parent::getRedirectUrl();
     }
 }
