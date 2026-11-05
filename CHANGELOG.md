@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Dashboard: **Needs attention** is now the day's to-do list. New lines: servers down, cancellation and upgrade requests
+  to answer, tickets waiting for a reply over 24 hours, payment notices due today, domains to check at the registrar
+  (auto renew on and the registrar's expiry within 14 days, or well before the date they are paid up to) and sent quotes
+  ending within 3 days. When nothing waits, the card is not shown.
 - Accessibility: pressing Tab always shows where you are, in every theme and both panels: a clear outline around the
   button, link or menu item (Glass hid it entirely). Windows contrast themes now show the edges of buttons, fields and cards.
 - Accessibility: readable colours in every theme (WCAG AA, 4.5:1): links, tabs and selected buttons in the logo's own teal

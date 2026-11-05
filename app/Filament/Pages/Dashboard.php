@@ -48,7 +48,8 @@ class Dashboard extends BaseDashboard
         return View::make('filament.dashboard.cards')
             ->viewData(fn (): array => ['columns' => collect(($user = filament()->auth()->user()) ? DashboardLayout::shown($user) : [1 => [], 2 => []])
                 ->map(fn (array $widgets) => collect($widgets)
-                    ->filter(fn (string $widget) => $widget::canView())
+                    // A card with nothing to show (isEmpty(), e.g. Needs attention) is left off until it has something.
+                    ->filter(fn (string $widget) => $widget::canView() && ! (method_exists($widget, 'isEmpty') && $widget::isEmpty()))
                     ->map(fn (string $widget, string $key) => [
                         'class' => $widget,
                         'label' => $widget::dashboardLabel(),
