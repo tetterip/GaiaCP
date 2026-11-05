@@ -231,6 +231,9 @@ class Help extends Page
             $html,
         );
 
+        // A code block that scrolls sideways can be reached and scrolled with the keyboard (WCAG 2.1.1)
+        $html = str_replace('<pre>', '<pre tabindex="0">', $html);
+
         return (string) preg_replace_callback('/href="([^"]+)"/', function (array $m) {
             $href = html_entity_decode($m[1]);
 

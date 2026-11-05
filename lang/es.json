@@ -3814,5 +3814,6 @@
     "The sign-in took too long": "El inicio de sesión tardó demasiado",
     "Complete the check that you are not a robot and sign in again.": "Complete la verificación de que no es un robot e inicie sesión de nuevo.",
     "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Teclas sueltas como ? (esta lista), / (buscar) y g luego c (Clientes). Desactívalas si usas entrada por voz o te molestan.",
-    "They are turned off in your profile.": "Están desactivados en tu perfil."
+    "They are turned off in your profile.": "Están desactivados en tu perfil.",
+    "Language: :language (:code)": "Idioma: :language (:code)"
 }

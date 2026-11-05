@@ -21,6 +21,12 @@
         box-shadow: 0 0 0 1px var(--theme-line, color-mix(in oklab, var(--color-white) 10%, transparent)), 0 18px 40px -20px rgba(0, 0, 0, .6);
     }
 
+    /* A field reached with Tab never hides under the floating bar (WCAG 2.4.11): the page scrolls it above the bar.
+       The Settings pages' Save bar (gx-save-bar) floats the same way. */
+    html:has(.fi-sc-actions.fi-sticky, .gx-save-bar) {
+        scroll-padding-bottom: 6rem;
+    }
+
     /* On a phone the buttons stay on one row, scrolling sideways if they must, and on the right with Save rightmost
        (BasePage::alignFormActionsEnd(); Filament lines them up from the end only on wider screens) */
     @media (max-width: 639px) {

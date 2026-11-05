@@ -281,6 +281,9 @@ class QuotesTest extends TestCase
         $quote = $this->quote();
         auth()->logout();
 
+        // the reason field has a real label (WCAG 1.3.1), not only a placeholder
+        $this->get($quote->url())->assertOk()->assertSee('<label for="decline-reason"', false)->assertSee('id="decline-reason"', false);
+
         $this->post(route('quote.decline', ['token' => $quote->token]), ['reason' => 'Too expensive'])->assertRedirect($quote->url());
 
         $quote->refresh();

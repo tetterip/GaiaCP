@@ -25,14 +25,15 @@
     @if (count($languages) > 1)
         <x-filament::dropdown placement="bottom-end" teleport>
             <x-slot name="trigger">
-                <x-filament::button color="gray" size="sm" outlined icon="heroicon-o-language" class="gcp-public-language">
+                <x-filament::button color="gray" size="sm" outlined icon="heroicon-o-language" class="gcp-public-language" :aria-label="__('Language: :language (:code)', ['language' => $languages[app()->getLocale()] ?? app()->getLocale(), 'code' => strtoupper(app()->getLocale())])">
                     {{ strtoupper(app()->getLocale()) }}
                 </x-filament::button>
             </x-slot>
             <x-filament::dropdown.list>
                 @foreach ($languages as $code => $name)
                     <x-filament::dropdown.list.item tag="a" :href="route('filament.client.language', ['locale' => $code])" :color="$code === app()->getLocale() ? 'primary' : 'gray'">
-                        {{ $name }}
+                        {{-- each language's name in its own language, read with its own pronunciation (WCAG 3.1.2) --}}
+                        <span lang="{{ str_replace('_', '-', $code) }}">{{ $name }}</span>
                     </x-filament::dropdown.list.item>
                 @endforeach
             </x-filament::dropdown.list>

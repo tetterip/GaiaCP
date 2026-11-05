@@ -77,6 +77,16 @@ class PublicAreaTest extends TestCase
         $this->get('/login')->assertOk()->assertSee('class="gcp-public-back"', false);
     }
 
+    public function test_the_language_menu_says_what_it_is_and_names_each_language_in_its_own(): void
+    {
+        config(['gaiacp.public_area.home' => true]);
+
+        // WCAG 2.5.3 / 3.1.2: the button's name holds its visible "EN", each language is read in its own
+        $this->get('/')->assertOk()
+            ->assertSee('aria-label="Language: English (EN)"', false)
+            ->assertSee('<span lang="el">', false);
+    }
+
     public function test_products_link_to_the_public_order_page_while_it_is_on_else_to_sign_up(): void
     {
         config(['gaiacp.public_area.home' => true, 'gaiacp.client_area.signup' => true]);

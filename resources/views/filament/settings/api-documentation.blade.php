@@ -68,7 +68,7 @@
                                 @if ($endpoint['fields'] !== [])
                                     <div class="gcp-api-scroll">
                                         <table>
-                                            <thead><tr><th>{{ __('Field') }}</th><th>{{ __('Type') }}</th><th></th></tr></thead>
+                                            <thead><tr><th>{{ __('Field') }}</th><th>{{ __('Type') }}</th><th>{{ __('Description') }}</th></tr></thead>
                                             <tbody>
                                                 @foreach ($endpoint['fields'] as $field)
                                                     <tr>
