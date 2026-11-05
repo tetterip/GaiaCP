@@ -87,8 +87,12 @@ Your user menu → Profile is yours alone:
 
 The dashboard shows what needs you today: the open balance (what clients owe, what is past due and due in 7 days),
 orders and income over time, the renewals coming up, your servers with their accounts and uptime, the support tickets
-waiting for an answer and **Needs attention** (cron stopped, pending orders, client change requests, overdue notices,
-failed panel or registrar calls, leads to contact today).
+waiting for an answer and **Needs attention**, the day's to-do list: cron stopped, servers down, pending orders,
+cancellation and upgrade requests, client change requests, tickets waiting for a reply over 24 hours, leads to contact
+today, overdue notices and those due today, domains to check at the registrar (auto renew on and the registrar's expiry
+within 14 days, or well before the date they are paid up to), sent quotes ending within 3 days, and failed panel or
+registrar calls. Each line opens what it is about and goes away once that is dealt with; when nothing waits, the card
+is not shown at all.
 
 The cards sit in two columns of the same width, each filling down on its own so a short card leaves no gap under it;
 on a phone the first column comes first, then the second. To move a card, drag it by the handle at the middle of its

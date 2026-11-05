@@ -3815,5 +3815,12 @@
     "Complete the check that you are not a robot and sign in again.": "Completa la verifica di non essere un robot e accedi di nuovo.",
     "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Tasti singoli come ? (questo elenco), / (ricerca) e g poi c (Clienti). Disattivali se usi l'input vocale o se ti danno fastidio.",
     "They are turned off in your profile.": "Sono disattivate nel tuo profilo.",
-    "Language: :language (:code)": "Lingua: :language (:code)"
+    "Language: :language (:code)": "Lingua: :language (:code)",
+    ":count server(s) down": ":count server non raggiungibili",
+    ":count cancellation request(s) to answer": ":count richieste di cancellazione da gestire",
+    ":count upgrade / downgrade request(s) to answer": ":count richieste di upgrade / downgrade da gestire",
+    ":count ticket(s) waiting for a reply over :hours hours": ":count ticket in attesa di risposta da oltre :hours ore",
+    ":count payment notice(s) due today": ":count avvisi di pagamento in scadenza oggi",
+    ":count domain(s) to check at the registrar": ":count domini da controllare presso il registrar",
+    ":count quote(s) ending within :days days": ":count preventivi scadono entro :days giorni"
 }

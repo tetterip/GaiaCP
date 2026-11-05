@@ -3815,5 +3815,12 @@
     "Complete the check that you are not a robot and sign in again.": "Ολοκληρώστε τον έλεγχο ότι δεν είστε ρομπότ και συνδεθείτε ξανά.",
     "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Μονά πλήκτρα όπως ? (αυτή η λίστα), / (αναζήτηση) και g μετά c (Πελάτες). Κλείστε τα αν χρησιμοποιείτε φωνητικές εντολές ή αν σας ενοχλούν.",
     "They are turned off in your profile.": "Είναι κλειστές στο προφίλ σας.",
-    "Language: :language (:code)": "Γλώσσα: :language (:code)"
+    "Language: :language (:code)": "Γλώσσα: :language (:code)",
+    ":count server(s) down": ":count servers εκτός λειτουργίας",
+    ":count cancellation request(s) to answer": ":count αιτήματα ακύρωσης για απάντηση",
+    ":count upgrade / downgrade request(s) to answer": ":count αιτήματα αναβάθμισης / υποβάθμισης για απάντηση",
+    ":count ticket(s) waiting for a reply over :hours hours": ":count tickets περιμένουν απάντηση πάνω από :hours ώρες",
+    ":count payment notice(s) due today": ":count ειδοποιήσεις πληρωμής λήγουν σήμερα",
+    ":count domain(s) to check at the registrar": ":count domains για έλεγχο στον registrar",
+    ":count quote(s) ending within :days days": ":count προσφορές λήγουν σε :days ημέρες"
 }

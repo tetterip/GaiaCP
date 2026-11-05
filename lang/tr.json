@@ -3815,5 +3815,12 @@
     "Complete the check that you are not a robot and sign in again.": "Robot olmadığınızı doğrulayın ve yeniden oturum açın.",
     "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "? (bu liste), / (arama) ve g ardından c (Müşteriler) gibi tek tuşlar. Sesli giriş kullanıyorsanız veya rahatsız ediyorlarsa kapatın.",
     "They are turned off in your profile.": "Profilinizde kapalılar.",
-    "Language: :language (:code)": "Dil: :language (:code)"
+    "Language: :language (:code)": "Dil: :language (:code)",
+    ":count server(s) down": ":count sunucu çalışmıyor",
+    ":count cancellation request(s) to answer": "Yanıt bekleyen :count iptal talebi",
+    ":count upgrade / downgrade request(s) to answer": "Yanıt bekleyen :count yükseltme / düşürme talebi",
+    ":count ticket(s) waiting for a reply over :hours hours": ":hours saatten uzun süredir yanıt bekleyen :count talep",
+    ":count payment notice(s) due today": "Bugün vadesi dolan :count ödeme bildirimi",
+    ":count domain(s) to check at the registrar": "Kayıt firmasında kontrol edilecek :count alan adı",
+    ":count quote(s) ending within :days days": ":days gün içinde sona eren :count teklif"
 }

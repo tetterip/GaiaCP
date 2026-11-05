@@ -3815,5 +3815,12 @@
     "Complete the check that you are not a robot and sign in again.": "Voltooi de controle dat u geen robot bent en log opnieuw in.",
     "Single keys such as ? (this list), / (search) and g then c (Clients). Turn them off if you use speech input or they get in your way.": "Losse toetsen zoals ? (deze lijst), / (zoeken) en g dan c (Klanten). Zet ze uit als u spraakinvoer gebruikt of als ze in de weg zitten.",
     "They are turned off in your profile.": "Ze staan uit in uw profiel.",
-    "Language: :language (:code)": "Taal: :language (:code)"
+    "Language: :language (:code)": "Taal: :language (:code)",
+    ":count server(s) down": ":count server(s) offline",
+    ":count cancellation request(s) to answer": ":count opzeggingsverzoek(en) te beantwoorden",
+    ":count upgrade / downgrade request(s) to answer": ":count up- / downgradeverzoek(en) te beantwoorden",
+    ":count ticket(s) waiting for a reply over :hours hours": ":count ticket(s) wachten langer dan :hours uur op antwoord",
+    ":count payment notice(s) due today": ":count betalingsverzoek(en) vandaag te betalen",
+    ":count domain(s) to check at the registrar": ":count domein(en) te controleren bij de registrar",
+    ":count quote(s) ending within :days days": ":count offerte(s) verlopen binnen :days dagen"
 }
