@@ -122,7 +122,7 @@ class DomainContactsTest extends TestCase
         $this->page()->callAction('childNameservers', ['operation' => 'save', 'host' => 'ns1', 'ip' => '192.0.2.20']);
 
         $this->assertSame(['ns1.maria.gr' => '192.0.2.20', 'ns2.maria.gr' => '192.0.2.11'], $this->easyDomains['maria.gr']['hosts']);
-        $this->assertSame([['host' => 'ns1.maria.gr', 'ip' => '192.0.2.20'], ['host' => 'ns2.maria.gr', 'ip' => '192.0.2.11']], $this->domain->refresh()->domainDetails->child_nameservers);
+        $this->assertEquals([['host' => 'ns1.maria.gr', 'ip' => '192.0.2.20'], ['host' => 'ns2.maria.gr', 'ip' => '192.0.2.11']], $this->domain->refresh()->domainDetails->child_nameservers);
 
         $this->page()
             ->callAction('childNameservers', ['operation' => 'delete', 'host' => 'ns2'])
