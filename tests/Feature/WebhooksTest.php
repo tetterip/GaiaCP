@@ -17,6 +17,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Plugins\Webhooks\DeliveryStatus;
 use Plugins\Webhooks\WebhookAddress;
@@ -272,9 +273,9 @@ class WebhooksTest extends TestCase
         Http::fake();
         config(['gaiacp.debug.module_log_days' => 30]);
         $endpoint = $this->endpoint();
-        $old = $endpoint->deliveries()->create(['uuid' => 'a', 'event' => 'server.down', 'payload' => '{}', 'status' => DeliveryStatus::Sent]);
+        $old = $endpoint->deliveries()->create(['uuid' => (string) Str::uuid(), 'event' => 'server.down', 'payload' => '{}', 'status' => DeliveryStatus::Sent]);
         $old->forceFill(['created_at' => now()->subDays(40)])->save();
-        $recent = $endpoint->deliveries()->create(['uuid' => 'b', 'event' => 'server.down', 'payload' => '{}', 'status' => DeliveryStatus::Sent]);
+        $recent = $endpoint->deliveries()->create(['uuid' => (string) Str::uuid(), 'event' => 'server.down', 'payload' => '{}', 'status' => DeliveryStatus::Sent]);
 
         $this->artisan('gaiacp:send-webhooks')->assertSuccessful();
 

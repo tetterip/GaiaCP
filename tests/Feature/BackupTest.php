@@ -17,6 +17,7 @@ use App\Support\Settings;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
@@ -108,13 +109,42 @@ class BackupTest extends TestCase
         File::ensureDirectoryExists($this->dir);
         app(DatabaseDumper::class)->dump($path);
 
-        $pdo = new PDO('sqlite::memory:');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $pdo->exec(file_get_contents($path));
+        [$pdo, $cleanUp] = $this->emptyDatabase();
 
-        $this->assertSame(151, (int) $pdo->query('SELECT COUNT(*) FROM clients')->fetchColumn());
-        $this->assertSame('Νίκος', $pdo->query("SELECT first_name FROM clients WHERE last_name = 'O''Brien'")->fetchColumn());
-        $this->assertGreaterThan(0, (int) $pdo->query('SELECT COUNT(*) FROM migrations')->fetchColumn());
+        try {
+            $pdo->exec(file_get_contents($path));
+
+            $this->assertSame(151, (int) $pdo->query('SELECT COUNT(*) FROM clients')->fetchColumn());
+            $this->assertSame('Νίκος', $pdo->query("SELECT first_name FROM clients WHERE last_name = 'O''Brien'")->fetchColumn());
+            $this->assertGreaterThan(0, (int) $pdo->query('SELECT COUNT(*) FROM migrations')->fetchColumn());
+        } finally {
+            $cleanUp();
+        }
+    }
+
+    /**
+     * An empty database of the same engine to restore a dump into: in memory for SQLite, a database of its own next to
+     * the test database for MySQL / MariaDB, on a connection of its own so the test's transaction is untouched.
+     *
+     * @return array{0: PDO, 1: callable(): void}
+     */
+    private function emptyDatabase(): array
+    {
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            $pdo = new PDO('sqlite::memory:');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            return [$pdo, fn () => null];
+        }
+
+        $config = DB::connection()->getConfig();
+        $name = $config['database'].'_restore';
+        $pdo = new PDO("mysql:host={$config['host']};port={$config['port']};charset=utf8mb4", $config['username'], $config['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $pdo->exec("DROP DATABASE IF EXISTS `{$name}`");
+        $pdo->exec("CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        $pdo->exec("USE `{$name}`");
+
+        return [$pdo, fn () => $pdo->exec("DROP DATABASE IF EXISTS `{$name}`")];
     }
 
     public function test_backup_is_zipped_uploaded_and_emailed(): void
@@ -151,7 +181,8 @@ class BackupTest extends TestCase
         $sql = $this->sqlIn(RunBackup::localBackups()[0]);
 
         $this->assertStringContainsString('Μαρία', $sql);
-        $this->assertStringContainsString('CREATE TABLE "module_logs"', $sql, 'the table is still there to restore into');
+        $quote = DB::connection()->getDriverName() === 'sqlite' ? '"' : '`';
+        $this->assertStringContainsString("CREATE TABLE {$quote}module_logs{$quote}", $sql, 'the table is still there to restore into');
         $this->assertStringNotContainsString('HUGE-REPLY', $sql);
         $this->assertStringNotContainsString('Old email', $sql);
 
