@@ -5,6 +5,7 @@ namespace Plugins\FlatTheme;
 use App\Plugins\Plugin;
 use App\Themes\ThemeModule;
 use Filament\Enums\UserMenuPosition;
+use Filament\Support\Colors\Color;
 
 /** The logo's green with Filament's grey and Inter in the shared layout, flat: no shadows or motion. */
 class FlatThemePlugin extends Plugin implements ThemeModule
@@ -55,7 +56,10 @@ class FlatThemePlugin extends Plugin implements ThemeModule
             800 => 'oklch(0.430 0.078 161)',
             900 => 'oklch(0.380 0.064 161)',
             950 => 'oklch(0.270 0.045 161)',
-        ]];
+        ],
+            // Zinc with a darker 500, the grey of secondary text (breadcrumbs, tabs, hints), for 4.5:1 on grey cards
+            'gray' => array_replace(Color::Zinc, [500 => 'oklch(0.510 0.016 285.938)']),
+        ];
     }
 
     public function themeFont(): ?string

@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.1] - 2026-11-04
+
+- Readable colours (WCAG AA): the current menu item and tab in a deeper green (3.9:1, now 5:1), and secondary grey text
+  on grey cards a little darker
+
 ## [1.3.0] - 2026-11-03
 
 - The logo's green (softer, a little yellower) in place of Filament's emerald, in the admin panel and the client area

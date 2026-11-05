@@ -49,4 +49,10 @@
     html.fi:not(.dark) .fi-btn.fi-color-primary:not(.fi-outlined) .fi-btn-label {
         color: var(--color-white);
     }
+
+    /* The current menu item and tab: Filament writes them in primary 600 on a pale green, 3.9:1; 700 passes AA */
+    html.fi:not(.dark) .fi-sidebar-item.fi-active > .fi-sidebar-item-btn > :is(.fi-icon, .fi-sidebar-item-label),
+    html.fi:not(.dark) .fi-tabs-item.fi-active :is(.fi-icon, .fi-tabs-item-label) {
+        color: var(--primary-700) !important;
+    }
 </style>

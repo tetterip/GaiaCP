@@ -349,7 +349,10 @@ How the admin and client panels, users, access, security, branding, themes and l
   Billing (payment notices, payments, credit) and Support (Tickets, Knowledge base, Help).
   Accessibility: `filament/focus.blade.php` (both panels, `HEAD_END`, after the theme's styles) gives everything Tab
   reaches a 2px `:focus-visible` outline in the primary colour, an outline so no theme's box-shadow can hide it, and
-  real borders in Windows contrast themes (`forced-colors`); a theme never removes it (`FocusMarkTest`). The audit of
+  real borders in Windows contrast themes (`forced-colors`); a theme never removes it (`FocusMarkTest`). Colours: each
+  theme's primary 600 passes 4.5:1 on white and its grey 500 on the page (Gaia and Glass have hand-made teal palettes,
+  not `Color::hex()`, which gave a bright 600), and `filament/contrast.blade.php` reads grey 500 as 400 in dark mode
+  (`ThemeContrastTest` checks the numbers). The audit of
   2026-11-04 (WCAG 2.2 AA) and its fixes, one PR per step, are in the maintainer's notes.
   The admin sidebar groups are Main, Billing, Services, System (`AdminPanelProvider::navigationGroups()`, in that
   order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included); avatars are

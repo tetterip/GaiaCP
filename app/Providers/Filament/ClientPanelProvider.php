@@ -260,6 +260,8 @@ class ClientPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.one-time-code')->render())
             // A keyboard focus mark no theme can hide
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.focus')->render())
+            // Secondary grey text readable in dark mode
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.contrast')->render())
             // An admin looking at the client area as the client (Log in as client), with the way back
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => ClientAreaAccess::viewing()
                 ? view('filament.client.viewing-as-banner')->render() : '')
