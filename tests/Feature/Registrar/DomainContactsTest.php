@@ -130,7 +130,7 @@ class DomainContactsTest extends TestCase
             ->assertNotified(__('Private nameserver deleted'));
 
         $this->assertSame(['ns1.maria.gr' => '192.0.2.20'], $this->easyDomains['maria.gr']['hosts']);
-        $this->assertSame([['host' => 'ns1.maria.gr', 'ip' => '192.0.2.20']], $this->domain->refresh()->domainDetails->child_nameservers);
+        $this->assertEquals([['host' => 'ns1.maria.gr', 'ip' => '192.0.2.20']], $this->domain->refresh()->domainDetails->child_nameservers);
         $this->assertSame(3, ActivityLog::query()->where('event', 'domain.child_nameserver_saved')->count());
     }
 
