@@ -142,7 +142,8 @@ class ClientDataExport
         with us, payment-notices.json, invoices.json and payments.json your billing, tickets.json and ticket-messages.json
         your support requests (the files you attached are in ticket-files/), emails.json the emails we sent you, sign-ins.json
         and devices.json where your account was used from, activity.json what was done on your account.
-        Amounts are in cents. Passwords, EPP codes and other secrets are not included.
+        Amounts are in cents; times (created_at, sent_at and the like) are in UTC, dates (due_date) as they are.
+        Passwords, EPP codes and other secrets are not included.
 
         TXT;
     }

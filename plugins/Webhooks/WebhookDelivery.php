@@ -2,6 +2,7 @@
 
 namespace Plugins\Webhooks;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['uuid', 'webhook_endpoint_id', 'event', 'payload', 'status', 'attempts', 'next_attempt_at', 'response_code', 'response_body', 'error', 'duration_ms', 'delivered_at'])]
 class WebhookDelivery extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'status' => 'pending',
         'attempts' => 0,

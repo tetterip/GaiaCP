@@ -6,6 +6,7 @@ use App\Actions\ClientAreaAccess;
 use App\Actions\ClientSignup;
 use App\Enums\AdminArea;
 use App\Enums\UserRole;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Database\Factories\UserFactory;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -35,6 +37,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, InteractsWithAppAuthentication, InteractsWithAppAuthenticationRecovery, Notifiable;
+
+    use StoresTimesInUtc;
 
     /** @var array<string, mixed> New users are active admins, also before they are read back from the database. */
     protected $attributes = [
@@ -86,6 +90,12 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 
     /** The first admin is always a super admin (installer, `make:filament-user`), so there is one from the start. */
     /** @return HasMany<PushSubscription, $this> the devices with push notifications on (App\Push\WebPush) */
+    /** The bell's notifications, read through a model that stores times in UTC */
+    public function notifications(): MorphMany
+    {
+        return $this->morphMany(DatabaseNotification::class, 'notifiable')->latest();
+    }
+
     public function pushSubscriptions(): HasMany
     {
         return $this->hasMany(PushSubscription::class);

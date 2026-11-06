@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,8 @@ use LogicException;
 #[Fillable(['tax_invoice_id', 'credited_item_id', 'service_id', 'description', 'period_start', 'period_end', 'amount_cents', 'tax_cents', 'total_cents'])]
 class TaxInvoiceItem extends Model
 {
+    use StoresTimesInUtc;
+
     public $timestamps = false;
 
     protected function casts(): array

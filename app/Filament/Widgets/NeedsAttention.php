@@ -37,7 +37,7 @@ use App\Monitoring\MonitorStatus;
 use App\Support\Currencies;
 use App\Support\Health\SchedulerMonitor;
 use App\Support\Money;
-use Carbon\CarbonImmutable;
+use App\Support\StoredTime;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
 
@@ -149,7 +149,7 @@ class NeedsAttention extends Widget
                 'icon' => 'heroicon-o-chat-bubble-left-right',
                 'tone' => 'warn',
                 'title' => __(':count ticket(s) waiting for a reply over :hours hours', ['count' => (clone $tickets)->count(), 'hours' => self::TICKET_HOURS]),
-                'sub' => __('Oldest :time', ['time' => CarbonImmutable::parse((clone $tickets)->min('last_reply_at'))->diffForHumans()]),
+                'sub' => __('Oldest :time', ['time' => StoredTime::parse((clone $tickets)->min('last_reply_at'))?->diffForHumans()]),
                 'url' => TicketResource::getUrl(parameters: ['activeTab' => 'waiting']),
             ];
         }
@@ -215,7 +215,7 @@ class NeedsAttention extends Widget
                 'icon' => 'heroicon-o-arrow-path',
                 'tone' => 'bad',
                 'title' => __(':count failed action(s) in the module queue', ['count' => (clone $queue)->count()]),
-                'sub' => __('Last failed :time', ['time' => CarbonImmutable::parse((clone $queue)->max('last_attempt_at'))->diffForHumans()]),
+                'sub' => __('Last failed :time', ['time' => StoredTime::parse((clone $queue)->max('last_attempt_at'))?->diffForHumans()]),
                 'url' => ModuleQueueItemResource::getUrl(),
             ];
         }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasSale;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Currencies;
 use App\Support\TldLookup;
 use Carbon\CarbonInterface;
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Tld extends Model
 {
     use HasSale;
+    use StoresTimesInUtc;
 
     /** The terms a domain can be priced for: one per billing cycle of whole years (BillingCycle::forYears()). */
     public const YEARS = [1, 2, 3];

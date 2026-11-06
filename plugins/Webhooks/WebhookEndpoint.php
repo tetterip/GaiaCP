@@ -3,6 +3,7 @@
 namespace Plugins\Webhooks;
 
 use App\Events\GaiaEvent;
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,6 +16,8 @@ use Illuminate\Support\Str;
 #[Hidden(['secret'])]
 class WebhookEndpoint extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'active' => true,
         'failures' => 0,

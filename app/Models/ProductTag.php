@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Filament\Support\Colors\Color;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 #[Fillable(['names', 'color', 'visible', 'sort'])]
 class ProductTag extends Model
 {
+    use StoresTimesInUtc;
+
     /** The colours a tag can have: key => the badge's colour on the client area (light; dark mixes it with white). */
     public const COLORS = [
         'gray' => '#4b5563',

@@ -79,7 +79,18 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
 - Date filters: `whereOnDate()` / `orWhereOnDate()` (`App\Support\DateQueries`, a query builder macro) take the same
   arguments as `whereDate()` and give the same rows, as a plain range (`<= d` becomes `< d + 1`), so the `due_date` /
   `next_due_date` indexes are used; `whereDate()` wraps the column in a function and reads every row. Use it in the app
-  (plugins keep `whereDate()` while they declare an older `requires`). `NoticeLedger::rows()` is kept for the request and
+  (plugins keep `whereDate()` while they declare an older `requires`). It is for plain date columns only.
+- Times are stored in UTC, dates as days of the calendar. Every model uses `App\Models\Concerns\StoresTimesInUtc`
+  (`created_at`, `updated_at` and the `datetime` casts written in UTC, read in the Region's timezone; a string set from a
+  form is local time; `TimesInUtcTest` checks every model has it, the bell's notifications included through
+  `App\Models\DatabaseNotification`). The connections (`App\Database\*Connection`, `SendsTimesInUtc`, registered in
+  `AppServiceProvider::register()`) convert a Carbon given to any query to UTC, and MySQL / MariaDB sessions run in
+  `+00:00`. So compare a time column with a Carbon (`where('created_at', '>=', today())` is the local day's start), give a
+  date column a date string (`toDateString()`, `whereOnDate()`): `Tests\GuardsDateColumns` fails a test that sends a
+  Carbon for a date column. A time read without a model (`DB::table()`, `toBase()->pluck()`, `min()` / `max()`) is the UTC
+  text: `App\Support\StoredTime::parse()`. Password reset tokens read theirs through `App\Auth\UtcTokenRepository`.
+  Migration `2026_11_06_000300_store_times_in_utc` converted the times kept before (each with its own summer or winter
+  offset; MySQL `timestamp` columns read in the server's zone), `down()` puts them back. `NoticeLedger::rows()` is kept for the request and
   forgotten when a notice line, payment or balance entry is saved or deleted; services tables load
   `RecordPaymentAction::withChecks()` so Record payment needs no query per row.
 - `app/Reports/` + `app/Filament/Clusters/Reports/`: Reports (`/admin/reports`, a cluster laid out like Settings: cards by

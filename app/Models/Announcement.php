@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -23,6 +24,8 @@ use Illuminate\Support\Str;
 #[Fillable(['slug', 'texts', 'published_at', 'clients_only', 'created_by'])]
 class Announcement extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'clients_only' => false,
     ];

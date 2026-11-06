@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Monitoring\MonitorStatus;
 use App\Support\ConnectionChanges;
 use Database\Factories\ServerFactory;
@@ -24,6 +25,8 @@ class Server extends Model
 {
     /** @use HasFactory<ServerFactory> */
     use HasFactory;
+
+    use StoresTimesInUtc;
 
     protected static function booted(): void
     {

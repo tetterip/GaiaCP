@@ -2,6 +2,7 @@
 
 namespace Plugins\Vies;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['country_code', 'vat_number', 'valid', 'name', 'address', 'request_identifier', 'user_id', 'checked_at'])]
 class ViesCheck extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

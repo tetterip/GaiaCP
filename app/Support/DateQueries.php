@@ -11,7 +11,8 @@ use InvalidArgumentException;
  * whereOnDate() / orWhereOnDate(): whereDate() as a plain range on the column. whereDate() wraps the column in a
  * function (date(), strftime()), so MySQL / MariaDB can't use its index and reads every row; "due before today" on
  * a large notices or services table then gets slower with every year of history. Same arguments and same results
- * as whereDate() (whole days, in the app's timezone), on date and datetime columns alike:
+ * as whereDate() (whole days, in the app's timezone), for plain date columns (due_date, next_due_date). A time column
+ * (created_at) is stored in UTC: compare it with a Carbon instead, which the connection converts (App\Database\SendsTimesInUtc):
  *
  *   = d    →  col >= d and col < d + 1
  *   <  d   →  col < d

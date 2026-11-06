@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ClientMessageKind;
 use App\Enums\ClientStatus;
 use App\Enums\ServiceStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -32,6 +33,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 ])]
 class ClientMessage extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'kind' => 'info',
         'send_email' => true,

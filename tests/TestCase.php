@@ -5,6 +5,7 @@ namespace Tests;
 use App\Filament\Client\Pages\Cart;
 use App\Support\DomainSearch;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
@@ -19,6 +20,8 @@ abstract class TestCase extends BaseTestCase
         Http::preventStrayRequests();
         // Nor DNS: a domain search finds no nameservers unless a test says otherwise.
         DomainSearch::resolveNameserversUsing(fn () => []);
+        // A Carbon sent for a plain date column would move a day (times go to the database in UTC)
+        DB::beforeExecuting(GuardsDateColumns::check(...));
 
         // On a client area order page: add what is filled in to the cart, then place the cart (Cart) with $cart's
         // fields (notes, accept_terms). With errors on the order page, that page is returned for asserting them.

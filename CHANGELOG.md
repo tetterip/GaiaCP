@@ -7,6 +7,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
   bars fit without scrolling.
+- Times are stored in UTC (payments' and tickets' times, the activity log, emails, sign-ins and every other time),
+  and shown in the timezone of Settings → General → Region. The update converts the times already kept, each with its
+  own summer or winter offset; plain dates (due dates, expiry dates) do not change. On MySQL / MariaDB the connection
+  now runs in UTC, so the database server's own timezone no longer matters.
+- Plugin API: a plugin's models use `App\Models\Concerns\StoresTimesInUtc` (new in the API) so their times are stored in
+  UTC like GaiaCP's; tables of a plugin are converted by the update too. A time read without a model (`DB::table()`)
+  is UTC text: `App\Support\StoredTime::parse()` gives it in local time. A Carbon given to a query is converted to UTC,
+  so a plain date column takes a date string (`toDateString()`) or `whereOnDate()`.
 - Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
   **Open client** by the Client field), and the client's name in the services lists opens their page.
 - VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
