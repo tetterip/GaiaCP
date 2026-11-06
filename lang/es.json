@@ -3887,5 +3887,14 @@
     "Username for the control panel (the VPS console)": "Nombre de usuario del panel de control (la consola del VPS)",
     "VPS": "VPS",
     "VPS Welcome Email": "Correo de bienvenida del VPS",
-    "shown on the VPS's page in the client area once it is known": "se muestra en la página del VPS en el área de clientes en cuanto se conozca"
+    "shown on the VPS's page in the client area once it is known": "se muestra en la página del VPS en el área de clientes en cuanto se conozca",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Los devolví fuera de GaiaCP (Stripe, banco)",
+    "Keep them as they are": "Dejarlos como están",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Marca el pedido y todos sus elementos como cancelados. Aún no se creó nada en un servidor ni en un registrador. Se pagaron :amount por él: elija qué pasa con ese dinero.",
+    "Return them to the client's credit": "Devolverlos al crédito del cliente",
+    "The payments": "Los pagos",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "Los pagos y el aviso de pago pagado siguen registrados para elementos cancelados.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "Los pagos se deshacen y el importe pasa al saldo del cliente para sus próximos pagos.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Los pagos se deshacen, sin crédito. GaiaCP no envía ningún reembolso: hágalo usted. Un pago hecho con crédito vuelve igualmente al crédito.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Los pagos deshechos dejan su aviso de pago cancelado, y una factura emitida recibe una nota de crédito."
 }

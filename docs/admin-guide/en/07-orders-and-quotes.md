@@ -30,7 +30,12 @@ Each product's **Setup** choice decides when its items are set up without you: a
 first recorded payment, on Complete order (the default), or never (you then use Account → Create on server or the
 Registrar menu on the service). The order is completed once no item is pending.
 
-A pending order can be cancelled with **Cancel order**, which cancels its items and payment notice. With Settings →
+A pending order can be cancelled with **Cancel order**, which cancels its items and payment notice. When its items
+were paid for but not set up yet (set up on Complete order, or an automatic set up that failed), the window shows what
+was paid and asks what happens to that money: **return it to the client's credit** (the default while credit is on),
+**I paid it back outside GaiaCP** (GaiaCP sends nothing to Stripe or the bank: make the refund yourself) or **keep it**.
+The first two undo the payments, so the payment notice is cancelled too and an issued invoice gets a credit note; a
+payment made from credit always goes back to credit. With Settings →
 Automation → **Cancel unpaid orders after** set, the daily run does it for orders that are still unpaid after that
 many days; an order with a payment or an item already set up is never cancelled.
 
