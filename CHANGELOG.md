@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
+  bars fit without scrolling.
 - Times are stored in UTC (payments' and tickets' times, the activity log, emails, sign-ins and every other time),
   and shown in the timezone of Settings → General → Region. The update converts the times already kept, each with its
   own summer or winter offset; plain dates (due dates, expiry dates) do not change. On MySQL / MariaDB the connection

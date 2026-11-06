@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Servers\Tables;
 use App\Filament\Actions\TestConnectionAction;
 use App\Filament\Resources\Servers\Pages\CompareServer;
 use App\Models\Server;
-use App\Monitoring\MonitorStatus;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
@@ -17,6 +16,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 
 class ServersTable
@@ -26,15 +26,18 @@ class ServersTable
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query->withAccountsCount())
             ->columns([
+                // The monitor's status sits under the name and the panel type under the hostname, so the list stays narrow.
                 TextColumn::make('name')
+                    ->description(fn (Server $record) => self::statusBadge($record))
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('type')
-                    ->formatStateUsing(fn (string $state) => app(PluginManager::class)->serverModule($state)?->label() ?? $state)
-                    ->badge(),
                 TextColumn::make('hostname')
                     ->formatStateUsing(fn ($record) => "{$record->hostname}:{$record->port}")
-                    ->description(fn (Server $record) => $record->ip_address)
+                    ->description(fn (Server $record) => view('filament.servers.badge', [
+                        'label' => app(PluginManager::class)->serverModule($record->type)?->label() ?? $record->type,
+                        'color' => 'primary',
+                        'after' => $record->ip_address,
+                    ]))
                     ->searchable(['hostname', 'ip_address']),
                 // Active and suspended hosting accounts, against the maximum when it is set.
                 ViewColumn::make('accounts_count')
@@ -47,15 +50,6 @@ class ServersTable
                     ->alignEnd()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                // From the monitor it is linked to (App\Monitoring\ServerMonitoring); shown once a server is.
-                TextColumn::make('monitor_status')
-                    ->label('Status')
-                    ->badge()
-                    ->formatStateUsing(fn (MonitorStatus $state) => $state->label())
-                    ->color(fn (MonitorStatus $state) => $state->color())
-                    ->placeholder(fn (Server $record) => $record->monitor_module ? __('Not checked yet') : null)
-                    ->tooltip(fn (Server $record) => self::monitorTooltip($record))
-                    ->visible(fn () => self::monitored()),
                 // A dot per half hour or day (Servers → Uptime: 24 hours / 30 days), App\Monitoring\UptimeHistory.
                 ViewColumn::make('uptime')
                     ->label(fn ($livewire) => ($livewire->uptimeRange ?? '24h') === '30d' ? __('Uptime, 30 days') : __('Uptime, 24 hours'))
@@ -92,6 +86,20 @@ class ServersTable
     public static function monitored(): bool
     {
         return app(PluginManager::class)->monitoringModules()->isNotEmpty() && Server::query()->whereNotNull('monitor_module')->exists();
+    }
+
+    /** The monitor's status (App\Monitoring\ServerMonitoring), once a server is linked to one. */
+    private static function statusBadge(Server $record): ?View
+    {
+        if (! $record->monitor_module || app(PluginManager::class)->monitoringModules()->isEmpty()) {
+            return null;
+        }
+
+        return view('filament.servers.badge', [
+            'label' => $record->monitor_status?->label() ?? __('Not checked yet'),
+            'color' => $record->monitor_status?->color() ?? 'gray',
+            'tooltip' => self::monitorTooltip($record),
+        ]);
     }
 
     /** "Uptime Kuma · since 17/10/2026 22:05 · checked 22:10" */

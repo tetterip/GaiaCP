@@ -300,8 +300,12 @@ class ServerMonitoringTest extends TestCase
         $this->actingAs($this->admin);
         $this->server()->forceFill(['monitor_status' => MonitorStatus::Down])->save();
 
+        // The status sits under the name and the panel type under the hostname: no columns of their own.
         Livewire::test(ListServers::class)
             ->assertSee('Down')
+            ->assertSee('cPanel / WHM')
+            ->assertTableColumnDoesNotExist('monitor_status')
+            ->assertTableColumnDoesNotExist('type')
             ->assertSee('Uptime, 24 hours')
             ->assertActionVisible('checkMonitors')
             ->set('uptimeRange', '30d')
