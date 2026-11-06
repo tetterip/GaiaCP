@@ -21,7 +21,13 @@ return new class extends Migration
 
     public function down(): void
     {
-        // The indexes stay: dropping one MySQL needs for a foreign key would fail, and they cost little.
+        foreach (Schema::getTableListing(schemaQualified: false) as $table) {
+            foreach (Schema::getIndexes($table) as $index) {
+                if (str_ends_with($index['name'], '_fk_index')) {
+                    Schema::table($table, fn (Blueprint $blueprint) => $blueprint->dropIndex($index['name']));
+                }
+            }
+        }
     }
 
     /** @return list<array{string, string}> table and column of each foreign key without an index that starts with it */
@@ -47,8 +53,8 @@ return new class extends Migration
 
     private static function name(string $table, string $column): string
     {
-        $name = "{$table}_{$column}_index";
+        $name = "{$table}_{$column}_fk_index";
 
-        return strlen($name) <= 64 ? $name : substr($name, 0, 55).'_'.substr(md5($name), 0, 8);
+        return strlen($name) <= 64 ? $name : substr($name, 0, 47).'_'.substr(md5($name), 0, 7).'_fk_index';
     }
 };
