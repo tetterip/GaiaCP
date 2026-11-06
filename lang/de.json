@@ -3888,5 +3888,7 @@
     "VPS": "VPS",
     "VPS Welcome Email": "Willkommens-E-Mail für VPS",
     "shown on the VPS's page in the client area once it is known": "wird auf der Seite des VPS im Kundenbereich angezeigt, sobald sie bekannt ist",
-    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Die angezeigten Einträge (mit Filtern und Suche, die neuesten :count) als JSON-Datei für einen Fehlerbericht. Passwörter und Tokens sind bereits maskiert."
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Die angezeigten Einträge (mit Filtern und Suche, die neuesten :count) als JSON-Datei für einen Fehlerbericht. Passwörter und Tokens sind bereits maskiert.",
+    "Logging settings": "Protokollierungseinstellungen",
+    "Switch logging on": "Protokollierung einschalten"
 }

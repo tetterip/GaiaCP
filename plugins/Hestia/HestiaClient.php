@@ -43,7 +43,7 @@ class HestiaClient
 
         try {
             $response = Http::withOptions(['verify' => $this->server->verify_tls])
-                ->withMiddleware(ModuleLogger::middleware('hestia', $command, [$token, ...explode(':', $token), ...$secrets]))
+                ->withMiddleware(ModuleLogger::middleware('hestia', $command, [$token, ...explode(':', $token), ...$secrets], ['RKEY']))
                 ->asForm()
                 ->connectTimeout(5)
                 ->timeout($timeout)

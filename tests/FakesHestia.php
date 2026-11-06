@@ -59,17 +59,24 @@ trait FakesHestia
 
         switch ($command) {
             case 'v-list-sys-info':
-                return $this->hestiaOk(json_encode(['sysinfo' => ['HOSTNAME' => 'hst.test', 'HESTIA' => '1.9.4']]));
+                return $this->hestiaOk(json_encode(['sysinfo' => ['HOSTNAME' => 'hst.test', 'OS' => 'Ubuntu', 'VERSION' => '24.04', 'ARCH' => 'x86_64',
+                    'HESTIA' => '1.10.5', 'RELEASE' => 'release', 'UPTIME' => '0', 'LOADAVERAGE' => '0.21 / 0.06 / 0.02']], JSON_PRETTY_PRINT));
 
             case 'v-list-user-packages':
-                return $this->hestiaOk(json_encode(array_fill_keys($this->hestiaPackages, ['WEB_DOMAINS' => '1'])));
+                // Every package with its limits, as HestiaCP 1.10 lists them (the built-in "system" one included when it is there)
+                return $this->hestiaOk(json_encode(array_fill_keys($this->hestiaPackages, ['WEB_TEMPLATE' => 'default', 'PROXY_TEMPLATE' => 'default',
+                    'DNS_TEMPLATE' => 'default', 'WEB_DOMAINS' => '1', 'WEB_ALIASES' => '1', 'DNS_DOMAINS' => '1', 'DNS_RECORDS' => 'unlimited',
+                    'MAIL_DOMAINS' => '1', 'MAIL_ACCOUNTS' => '1', 'DATABASES' => '0', 'CRON_JOBS' => 'unlimited', 'DISK_QUOTA' => 'unlimited',
+                    'BANDWIDTH' => 'unlimited', 'NS' => 'ns1.example.com,ns2.example.com', 'SHELL' => 'nologin', 'BACKUPS' => '1',
+                    'TIME' => '18:00:00', 'DATE' => '2019-01-15']), JSON_PRETTY_PRINT));
 
             case 'v-list-users':
                 return $this->hestiaOk(json_encode(collect($this->hestiaUsers)->map(function (array $fields) {
                     unset($fields['domains'], $fields['password']);
 
                     return $fields;
-                })->all() + ['admin' => ['PACKAGE' => 'system', 'SUSPENDED' => 'no']]));
+                })->all() + ['admin' => ['NAME' => 'System Administrator', 'PACKAGE' => 'default', 'CONTACT' => 'admin@example.com', 'RKEY' => '2K085ASf0BT672D2',
+                    'ROLE' => 'admin', 'SUSPENDED' => 'no', 'U_DISK' => '12', 'U_BANDWIDTH' => '0', 'LANGUAGE' => 'en']], JSON_PRETTY_PRINT));
 
             case 'v-list-user':
                 if (! $exists) {
@@ -92,7 +99,7 @@ trait FakesHestia
                 if (! in_array($args[3], $this->hestiaPackages, true)) {
                     return $this->hestiaError(3, "package {$args[3]} doesn't exist");
                 }
-                $this->hestiaUsers[$user] = ['NAME' => $args[4] ?? '', 'CONTACT' => $args[2], 'PACKAGE' => $args[3], 'SUSPENDED' => 'no', 'password' => $args[1], 'domains' => []];
+                $this->hestiaUsers[$user] = ['NAME' => $args[4] ?? '', 'CONTACT' => $args[2], 'PACKAGE' => $args[3], 'ROLE' => 'user', 'SUSPENDED' => 'no', 'password' => $args[1], 'domains' => []];
 
                 return $this->hestiaOk();
 

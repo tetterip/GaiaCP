@@ -59,7 +59,7 @@ The optional **Capacity and costs** fields help you run the servers:
 page).
 
 On CyberPanel a hosting account is a **website** (the service's domain) owned by a CyberPanel user with the service's
-username; the password is that user's CyberPanel login. Packages read like `admin_Default`. New websites start on the
+username; the password is that user's CyberPanel login. Packages read like `Default` (the built-in one) or `admin_Pro` (one an admin added). New websites start on the
 PHP version picked under Settings → Integrations → **CyberPanel** (PHP 8.2 unless you change it).
 
 ### Enhance

@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.2] - 2026-11-07
+
+- An error shows Proxmox's own reason ("no such user") also behind a proxy or HTTP/2, which leave only "Internal Server Error" in the status line; checked against a real Proxmox VE 9.2
+
 ## [1.1.1] - 2026-11-06
 
 - Its times are stored in UTC like GaiaCP's (StoresTimesInUtc); the GaiaCP update converts the ones already kept

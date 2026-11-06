@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Module log: the **Logging settings** / **Switch logging on** button is translated.
+- Proxmox, HetrixTools, HestiaCP and CyberPanel test fakes now answer like the real APIs (from a staging module log);
+  Proxmox errors show their reason behind a proxy, HetrixTools reads its real paging, and the guide says CyberPanel's
+  built-in package is `Default` (not `admin_Default`).
+- HestiaCP: Compare with the server leaves out the panel's admin login, and the module log masks users' password reset
+  keys (RKEY).
 - Module log: **Download** saves the entries shown (filters and search included, newest 500) as a JSON file, with
   passwords and tokens masked as on screen, to attach to a bug report.
 - Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime

@@ -23,7 +23,7 @@ trait FakesCyberPanel
     protected array $cpUsage = [];
 
     /** @var list<string> */
-    protected array $cpPackages = ['admin_Default', 'admin_Pro'];
+    protected array $cpPackages = ['Default', 'admin_Pro']; // the built-in one has no owner prefix, ones an admin adds do (as on a real 3.0)
 
     protected string $cpPassword = 'AdminSecret/1';
 
@@ -87,7 +87,7 @@ trait FakesCyberPanel
             case 'verifyConn':
                 return Http::response(['verifyConn' => 1, 'apiToken' => $this->cpToken]);
             case 'cyberPanelVersion':
-                return Http::response(['getVersion' => 1, 'error_message' => 'none', 'currentVersion' => '2.4', 'build' => 3]);
+                return Http::response(['getVersion' => 1, 'error_message' => 'none', 'currentVersion' => '3.0', 'build' => 8]);
             case 'listPackage':
                 return Http::response($this->cpPackages);
             case 'createWebsite':

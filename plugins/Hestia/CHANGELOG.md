@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.2] - 2026-11-07
+
+- Compare with the server no longer lists the panel's admin login as an unbilled account (a real HestiaCP 1.10 puts it on the "default" package, with ROLE admin)
+- The module log masks each user's password reset key (RKEY) from v-list-users
+
 ## [1.2.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

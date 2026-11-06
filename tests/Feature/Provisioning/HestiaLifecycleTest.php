@@ -51,7 +51,7 @@ class HestiaLifecycleTest extends TestCase
     {
         $hestia = app(ProvisionerFactory::class)->forServer($this->server);
 
-        $this->assertSame('HestiaCP 1.9.4', $hestia->testConnection());
+        $this->assertSame('HestiaCP 1.10.5', $hestia->testConnection());
         $this->assertSame(['default', 'Starter', 'Business'], $hestia->packages(), 'the admin\'s "system" package is left out');
         $this->assertSame(['default', 'Starter', 'Business'], PackageOptions::forServer($this->server->id));
 

@@ -51,7 +51,7 @@ class CyberPanelLifecycleTest extends TestCase
             'status' => ServiceStatus::Pending,
             'domain' => 'bakery-shop.gr',
             'username' => null,
-            'package' => 'admin_Default',
+            'package' => 'Default',
             ...$attributes,
         ]);
     }
@@ -65,10 +65,10 @@ class CyberPanelLifecycleTest extends TestCase
     {
         $cp = app(ProvisionerFactory::class)->forServer($this->server);
 
-        $this->assertSame('CyberPanel 2.4.3', $cp->testConnection());
+        $this->assertSame('CyberPanel 3.0.8', $cp->testConnection());
         $this->assertSame(['cyberPanelVersion', 'verifyConn', 'verifyLogin'], $this->cpActions());
-        $this->assertSame(['admin_Default', 'admin_Pro'], $cp->packages());
-        $this->assertSame(['admin_Default', 'admin_Pro'], PackageOptions::forServer($this->server->id));
+        $this->assertSame(['Default', 'admin_Pro'], $cp->packages());
+        $this->assertSame(['Default', 'admin_Pro'], PackageOptions::forServer($this->server->id));
 
         Http::assertSent(fn (Request $request) => $request->url() === 'https://cp.test:8090/cloudAPI/'
             && $request->header('Authorization')[0] === $this->cpToken
@@ -125,7 +125,7 @@ class CyberPanelLifecycleTest extends TestCase
 
         $params = $this->cpCalls[2][1];
         $this->assertSame(
-            ['admin', $this->cpPassword, 'xn--yxadbght4c.gr', 'maria@example.com', 'admin_Default', $service->username, $service->password, 'PHP 8.3'],
+            ['admin', $this->cpPassword, 'xn--yxadbght4c.gr', 'maria@example.com', 'Default', $service->username, $service->password, 'PHP 8.3'],
             [$params['adminUser'], $params['adminPass'], $params['domainName'], $params['ownerEmail'], $params['packageName'], $params['websiteOwner'], $params['ownerPassword'], $params['phpSelection']],
         );
         $this->assertSame($service->username, $this->cpWebsites['xn--yxadbght4c.gr']['admin']);
@@ -135,7 +135,7 @@ class CyberPanelLifecycleTest extends TestCase
     public function test_create_retry_finds_its_own_website_and_refuses_another_domain(): void
     {
         $service = $this->pending(['username' => 'bakery']);
-        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'bakery', 'package' => 'admin_Default', 'state' => 'Active'];
+        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'bakery', 'package' => 'Default', 'state' => 'Active'];
 
         $this->lifecycle->create($service);
 
@@ -143,7 +143,7 @@ class CyberPanelLifecycleTest extends TestCase
         $this->assertSame(ServiceStatus::Active, $service->fresh()->status);
 
         $other = $this->pending(['username' => 'taken', 'domain' => 'mine.gr']);
-        $this->cpWebsites['theirs.gr'] = ['admin' => 'taken', 'package' => 'admin_Default', 'state' => 'Active'];
+        $this->cpWebsites['theirs.gr'] = ['admin' => 'taken', 'package' => 'Default', 'state' => 'Active'];
 
         $this->expectExceptionMessage('already has a different account for this service (theirs.gr)');
 
@@ -152,7 +152,7 @@ class CyberPanelLifecycleTest extends TestCase
 
     public function test_a_domain_under_another_owner_is_cyberpanels_error(): void
     {
-        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'someoneelse', 'package' => 'admin_Default', 'state' => 'Active'];
+        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'someoneelse', 'package' => 'Default', 'state' => 'Active'];
         $service = $this->pending();
 
         try {
@@ -196,8 +196,8 @@ class CyberPanelLifecycleTest extends TestCase
     {
         $service = $this->pending(['username' => 'bakery', 'status' => ServiceStatus::Active]);
         $this->cpUsers['bakery'] = 'x';
-        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'bakery', 'package' => 'admin_Default', 'state' => 'Active'];
-        $this->cpWebsites['other.gr'] = ['admin' => 'bakery', 'package' => 'admin_Default', 'state' => 'Active'];
+        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'bakery', 'package' => 'Default', 'state' => 'Active'];
+        $this->cpWebsites['other.gr'] = ['admin' => 'bakery', 'package' => 'Default', 'state' => 'Active'];
 
         $this->lifecycle->terminate($service);
 
@@ -209,13 +209,13 @@ class CyberPanelLifecycleTest extends TestCase
     public function test_websites_are_read_page_by_page(): void
     {
         foreach (range(1, 23) as $i) {
-            $this->cpWebsites["site{$i}.gr"] = ['admin' => "user{$i}", 'package' => 'admin_Default', 'state' => $i === 23 ? 'Suspended' : 'Active'];
+            $this->cpWebsites["site{$i}.gr"] = ['admin' => "user{$i}", 'package' => 'Default', 'state' => $i === 23 ? 'Suspended' : 'Active'];
         }
 
         $accounts = app(ProvisionerFactory::class)->forServer($this->server)->accounts();
 
         $this->assertCount(23, $accounts);
-        $this->assertSame(['user23', 'site23.gr', 'admin_Default', true], [$accounts[22]->username, $accounts[22]->domain, $accounts[22]->package, $accounts[22]->suspended]);
+        $this->assertSame(['user23', 'site23.gr', 'Default', true], [$accounts[22]->username, $accounts[22]->domain, $accounts[22]->package, $accounts[22]->suspended]);
         $this->assertSame([1, 2, 3], array_column(array_column(array_filter($this->cpCalls, fn ($c) => $c[0] === 'fetchWebsites'), 1), 'page'));
 
         $service = $this->pending(['username' => 'user23', 'domain' => 'site23.gr', 'status' => ServiceStatus::Suspended]);
@@ -225,7 +225,7 @@ class CyberPanelLifecycleTest extends TestCase
     public function test_usage_comes_from_the_websites_data(): void
     {
         $service = $this->pending(['username' => 'bakery', 'status' => ServiceStatus::Active]);
-        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'bakery', 'package' => 'admin_Default', 'state' => 'Active'];
+        $this->cpWebsites['bakery-shop.gr'] = ['admin' => 'bakery', 'package' => 'Default', 'state' => 'Active'];
         $this->cpUsage['bakery-shop.gr'] = ['diskInMB' => 150.5, 'diskInMBTotal' => 1000, 'bwInMB' => 2048, 'bwInMBTotal' => 0, 'dbUsed' => 1, 'dbAllowed' => 5, 'ftpUsed' => 1, 'ftpAllowed' => 1];
 
         $usage = $this->lifecycle->usage($service);

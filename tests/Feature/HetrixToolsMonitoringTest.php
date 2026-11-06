@@ -32,17 +32,20 @@ class HetrixToolsMonitoringTest extends TestCase
         config(['gaiacp.hetrix_tools.api_token' => 'ht-secret']);
     }
 
-    /** The uptime monitors: pl1 (website) at $pl1, nl1 (ping) up, a paused one. */
+    /** The uptime monitors: pl1 (website) at $pl1, nl1 (ping) up, a paused one (shaped like a real answer, 2026-11). */
     private function answer(string $pl1 = 'up'): array
     {
         return [
             'monitors' => [
-                ['id' => 'a1b2c3', 'name' => 'pl1 Plesk', 'type' => 'website', 'target' => 'https://pl1.example.com:8443/', 'uptime_status' => $pl1,
-                    'monitor_status' => 'active', 'uptime' => 99.91, 'locations' => ['nyc' => ['response_time' => 200], 'ams' => ['response_time' => 262]]],
+                ['id' => 'a1b2c3', 'name' => 'pl1 Plesk', 'type' => 'website', 'target' => 'https://pl1.example.com:8443/', 'resolve_address' => '203.0.113.10',
+                    'port' => null, 'check_frequency' => 1, 'created_at' => 1793003790, 'last_check' => 1794002742, 'uptime_status' => $pl1,
+                    'monitor_status' => 'active', 'uptime' => '99.9100', 'uptime_incl_maint' => '99.9100',
+                    'locations' => ['new_york' => ['uptime_status' => $pl1, 'response_time' => 200, 'last_check' => 1794002725], 'frankfurt' => ['uptime_status' => $pl1, 'response_time' => 262, 'last_check' => 1794002775]],
+                    'ssl_expiration_date' => '2027-01-14', 'has_agent' => false, 'agent_id' => null],
                 ['id' => 'd4e5f6', 'name' => 'nl1', 'type' => 'ping', 'target' => 'nl1.example.com', 'uptime_status' => 'up', 'monitor_status' => 'active', 'uptime' => '100'],
                 ['id' => 'g7h8i9', 'name' => 'old', 'type' => 'website', 'target' => 'https://old.example.com', 'uptime_status' => 'down', 'monitor_status' => 'paused'],
             ],
-            'meta' => ['pagination' => ['page' => 1, 'per_page' => 100, 'total' => 3, 'total_pages' => 1]],
+            'meta' => ['total' => 3, 'total_filtered' => 3, 'returned' => 3, 'pagination' => ['current' => 1, 'last' => 1, 'previous' => null, 'next' => null]],
         ];
     }
 
@@ -84,12 +87,21 @@ class HetrixToolsMonitoringTest extends TestCase
 
     public function test_it_reads_every_page(): void
     {
-        $page = fn (int $number, int $from, int $count) => ['meta' => ['pagination' => ['page' => $number, 'total_pages' => 2]],
+        $page = fn (int $number, int $from, int $count) => ['meta' => ['pagination' => ['current' => $number, 'last' => 2, 'previous' => $number > 1 ? $number - 1 : null, 'next' => $number < 2 ? $number + 1 : null]],
             'monitors' => array_map(fn (int $id) => ['id' => $id, 'name' => "m{$id}", 'uptime_status' => 'up'], range($from + 1, $from + $count))];
         Http::fake(['api.hetrixtools.com/*' => Http::sequence()->push($page(1, 0, 100))->push($page(2, 100, 10))]);
 
         $this->assertCount(110, (new HetrixToolsPlugin)->monitors());
         Http::assertSentCount(2);
+    }
+
+    public function test_a_full_last_page_is_not_followed_by_another_request(): void
+    {
+        $monitors = array_map(fn (int $id) => ['id' => $id, 'name' => "m{$id}", 'uptime_status' => 'up'], range(1, 100));
+        Http::fake(['api.hetrixtools.com/*' => Http::response(['monitors' => $monitors, 'meta' => ['pagination' => ['current' => 1, 'last' => 1, 'previous' => null, 'next' => null]]])]);
+
+        $this->assertCount(100, (new HetrixToolsPlugin)->monitors());
+        Http::assertSentCount(1);
     }
 
     public function test_a_refused_token_is_a_clear_error(): void

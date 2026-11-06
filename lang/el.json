@@ -3888,5 +3888,7 @@
     "VPS": "VPS",
     "VPS Welcome Email": "Email καλωσορίσματος VPS",
     "shown on the VPS's page in the client area once it is known": "εμφανίζεται στη σελίδα του VPS στην περιοχή πελατών μόλις γίνει γνωστή",
-    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Οι εγγραφές που φαίνονται (με τα φίλτρα και την αναζήτηση, οι :count πιο πρόσφατες) σε αρχείο JSON, για αναφορά σφάλματος. Οι κωδικοί και τα tokens είναι ήδη κρυμμένα."
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Οι εγγραφές που φαίνονται (με τα φίλτρα και την αναζήτηση, οι :count πιο πρόσφατες) σε αρχείο JSON, για αναφορά σφάλματος. Οι κωδικοί και τα tokens είναι ήδη κρυμμένα.",
+    "Logging settings": "Ρυθμίσεις καταγραφής",
+    "Switch logging on": "Ενεργοποίηση καταγραφής"
 }
