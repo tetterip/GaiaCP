@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- **Docker**: `docker compose up -d --build` runs GaiaCP with MariaDB and the scheduler on your own machine, installed
+  and ready to log in to, for trying it (docs/docker.md). The installer also accepts a `.env` that is a link to a file
+  not made yet.
 - Faster with thousands of clients (tried with 5,000 clients and 10,000 services): Reports → Income forecast went from
   4.7 s to 0.16 s, Server revenue from 1.9 s to 0.15 s, Domain profit and the Services report about three times
   faster. On SQLite every foreign key now has an index, as MySQL and MariaDB already make. `LargeDataSeeder` fills a

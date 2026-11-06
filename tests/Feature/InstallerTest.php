@@ -49,6 +49,22 @@ class InstallerTest extends TestCase
         $this->installer()->migrate();
     }
 
+    /** The Docker image links .env into the storage volume, where the file is made on the first install. */
+    public function test_a_linked_env_file_is_written_where_the_link_points(): void
+    {
+        mkdir($this->dir.'/storage');
+        symlink('storage/.env', $this->dir.'/.env');
+
+        $this->assertTrue($this->installer()->webInstallerOpen());
+        $check = collect($this->installer()->requirements())->firstWhere('value', 'Writable');
+        $this->assertNotNull($check, 'the .env check passes');
+
+        $this->installer()->prepareEnvironment();
+
+        $this->assertStringContainsString('APP_KEY=base64:', (string) file_get_contents($this->dir.'/storage/.env'));
+        $this->assertTrue(is_link($this->dir.'/.env'));
+    }
+
     public function test_an_existing_install_keeps_the_installer_closed_and_gets_its_lock(): void
     {
         file_put_contents($this->dir.'/.env', "APP_KEY=base64:abc\n");

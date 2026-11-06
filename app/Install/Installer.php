@@ -113,7 +113,12 @@ class Installer
     public function requirements(): array
     {
         $root = base_path();
-        $envWritable = is_file($this->envFile()) ? is_writable($this->envFile()) : is_writable($root);
+        // .env may be a link to a file not made yet (the Docker image links it into the storage volume)
+        $env = $this->envFile();
+        if (is_link($env) && ($link = readlink($env)) !== false) {
+            $env = str_starts_with($link, '/') ? $link : dirname($this->envFile()).'/'.$link;
+        }
+        $envWritable = is_file($env) ? is_writable($env) : is_writable(dirname($env));
         $missing = array_values(array_filter(array_keys(SystemHealth::REQUIRED_EXTENSIONS), fn (string $ext) => ! extension_loaded($ext)));
 
         // System health's own extension check also wants the driver of the database in use, not chosen yet here

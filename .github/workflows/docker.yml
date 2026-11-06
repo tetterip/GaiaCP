@@ -1,0 +1,45 @@
+name: Docker
+
+# Builds the image of docker-compose.yml and checks that it installs GaiaCP and serves the login page
+on:
+  push:
+    branches: [main]
+    paths: [Dockerfile, .dockerignore, docker-compose.yml, 'docker/**', composer.lock, app/Install/**]
+  pull_request:
+    paths: [Dockerfile, .dockerignore, docker-compose.yml, 'docker/**', composer.lock, app/Install/**]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compose:
+    name: docker compose up
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build and start
+        run: docker compose up -d --build
+
+      - name: Installed, scheduler running, login page served
+        run: |
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/admin/login || true)
+            [ "$code" = "200" ] && break
+            sleep 5
+          done
+          docker compose logs app | grep -q 'GaiaCP is installed'
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/admin/login)" = 200
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/install)" = 404
+          sleep 65
+          docker compose logs scheduler | grep -q 'schedule:run\|Running'
+
+      - name: Logs
+        if: always()
+        run: docker compose logs
+
+      - name: Stop
+        if: always()
+        run: docker compose down -v
