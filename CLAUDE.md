@@ -20,7 +20,8 @@ honest when features are added or dropped.
   `DB_CONNECTION=mariadb DB_HOST=127.0.0.1 DB_DATABASE=gaiacp_test DB_USERNAME=… DB_PASSWORD=… php artisan test`.
   A test that changes the schema or uses `DatabaseMigrations` must skip itself there, or the tests after it lose their tables
 - Screenshots (before / after, light, dark, phone) only for bigger features or when asked, not for small UI tweaks
-- Ask the maintainer before merging to `main`: the owner's staging deploys every push to `main`, even when CI fails
+- Ask the maintainer before merging to `main`: the owner's staging deploys the `deploy` branch, which the Deploy
+  branch workflow moves to each commit of `main` once its tests pass (a red `main` is not deployed, a green one is)
 - Check `git remote -v` before pushing after a `composer install` (a failed source clone once rewrote `origin`)
 
 ## Stack
