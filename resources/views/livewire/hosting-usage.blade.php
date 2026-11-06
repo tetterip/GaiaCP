@@ -24,13 +24,14 @@
         .gcp-u-bar div { height: 100%; border-radius: 9999px; animation: gcp-u-bar .9s cubic-bezier(.22, 1, .36, 1) both; transform-origin: left; }
         .gcp-u-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; font-size: .75rem; color: var(--gray-500); }
         .gcp-u-error { font-size: .875rem; color: var(--gray-600); }
+        .gcp-u-address { margin-top: .125rem; font-family: ui-monospace, monospace; font-size: .9375rem; font-weight: 600; color: var(--gray-950); overflow-wrap: anywhere; user-select: all; }
         @keyframes gcp-u-ring { from { stroke-dashoffset: 100; } }
         @keyframes gcp-u-bar { from { transform: scaleX(0); } }
         @media (prefers-reduced-motion: reduce) { .gcp-u-ring .fill, .gcp-u-bar div { animation: none; } }
         .dark .gcp-u-card { border-color: rgb(255 255 255 / .1); }
         .dark .gcp-u-ring .track, .dark .gcp-u-bar { stroke: rgb(255 255 255 / .1); background: rgb(255 255 255 / .1); }
         .dark .gcp-u-tile { background: rgb(255 255 255 / .05); }
-        .dark .gcp-u-value, .dark .gcp-u-ring span { color: #fff; }
+        .dark .gcp-u-value, .dark .gcp-u-ring span, .dark .gcp-u-address { color: #fff; }
         .dark .gcp-u-label, .dark .gcp-u-limit, .dark .gcp-u-foot { color: var(--gray-400); }
         .dark .gcp-u-error { color: var(--gray-400); }
     </style>
@@ -75,8 +76,31 @@
                         @endif
                     </div>
                 @endforeach
+                @isset ($machine)
+                    <div class="gcp-u-tile" @if (! $addresses) style="grid-column: 1 / -1" @endif>
+                        <div class="gcp-u-label">@svg('heroicon-o-globe-alt') {{ __('IP addresses') }}</div>
+                        @forelse ($addresses as $address)
+                            <div class="gcp-u-address">{{ $address }}</div>
+                        @empty
+                            <div class="gcp-u-limit">
+                                {{ $client ? __('Not known yet. Please contact us if you need it.') : __('Not known: the VPS takes it by DHCP and has no QEMU guest agent to report it. Give the server addresses under Settings → Proxmox → IP addresses, or install qemu-guest-agent in the template.') }}
+                            </div>
+                        @endforelse
+                    </div>
+                @endisset
             </div>
         @endif
+
+        @isset ($machine)
+            @if ($login)
+                <div class="gcp-u-limit">
+                    {{ __('Inside the VPS, log in as :user with the service\'s password (SSH or the console).', ['user' => $login['user']]) }}
+                    @if ($login['hint'])
+                        {{ __('Console:') }} {{ $login['hint'] }}
+                    @endif
+                </div>
+            @endif
+        @endisset
 
         @if ($usage?->readAt || ! $client)
             <div class="gcp-u-foot">

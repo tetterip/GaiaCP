@@ -58,6 +58,7 @@ On an active hosting account you can:
 <!-- if:vps_power -->
 - **Start, shut down or restart a VPS** with the buttons on its page. Shut down and Restart stop the programs running on it, so save your work first. To use its console, press **Log in to Proxmox VE** and sign in with the username and password of the service (realm "Proxmox VE authentication server"): you see only your own VPS.
 <!-- endif -->
+- **See your VPS's details** on its page: its IP address, whether it is running, its processors, memory and disk size, and the user to log in with inside it (SSH or the console), with the password of the service.
 <!-- if:hosting_password -->
 - **Change the password** of the account. Use at least 10 characters with capital and small letters and numbers.
 <!-- endif -->

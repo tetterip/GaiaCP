@@ -33,5 +33,7 @@
     "Storage for new VPS": "Yeni VPS için depolama",
     "The API token ID, as user@realm!name (e.g. root@pam!gaiacp). Datacenter → Permissions → API Tokens.": "API token kimliği, user@realm!name biçiminde (ör. root@pam!gaiacp). Datacenter → Permissions → API Tokens.",
     "VPS": "VPS",
-    "cloud-init gives this user the service's password. root on most images.": "cloud-init bu kullanıcıya hizmetin parolasını verir. Çoğu imajda root."
+    "cloud-init gives this user the service's password. root on most images.": "cloud-init bu kullanıcıya hizmetin parolasını verir. Çoğu imajda root.",
+    "Each VPS gets an address from the server's <a href=\":url\" class=\"underline\">IP addresses</a>, or by DHCP when it has none. Install qemu-guest-agent in the template, so that a VPS reports an address it took by DHCP and takes a new password at once.": "Her VPS, sunucunun <a href=\":url\" class=\"underline\">IP adresleri</a> arasından bir adres alır, yoksa DHCP ile alır. Bir VPS'in DHCP ile aldığı adresi bildirmesi ve yeni parolayı hemen alması için şablona qemu-guest-agent kurun.",
+    "Sign in with the username :username, the service's password and the realm \"Proxmox VE authentication server\".": "Kullanıcı adı :username, hizmetin parolası ve \"Proxmox VE authentication server\" realm'i ile giriş yapın."
 }

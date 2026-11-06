@@ -42,7 +42,8 @@ MyPlugin/
   undoes the action. Outside plugins, `Event::listen(GaiaEvent::class, …)` gets them too.
 - A server panel's provisioner may also implement the optional `App\Provisioning\OffersShortcuts` (client area
   Quick shortcuts), `ListsAccounts` (Servers → Compare with the server), `ControlsPower` (Start / Shut down / Restart
-  for a machine, as `plugins/Proxmox` does), `InstallsCertificates` (validates and installs SSL certificates on a
+  for a machine, as `plugins/Proxmox` does), `DescribesMachine` (the service pages show a machine's state, addresses,
+  processors, memory and disk in place of usage, and its welcome email is the VPS Welcome Email), `InstallsCertificates` (validates and installs SSL certificates on a
   hosting account, as cPanel and Plesk do) and `LimitsUsernameLength`.
 - A registrar may also implement `App\Provisioning\ChecksAvailability` (the client area's domain search asks it first),
   `EmailsEppCode`, `ManagesDomainContacts` (a domain's contact

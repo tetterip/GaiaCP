@@ -10,7 +10,9 @@ use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\ControlsPower;
+use App\Provisioning\DescribesMachine;
 use App\Provisioning\HostingProvisioner;
+use App\Provisioning\MachineDetails;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
@@ -278,6 +280,52 @@ class ServiceLifecycle
         ActivityLog::record('account.power', "Power {$action} for {$service->username} on {$service->server->name}", $service, properties: ['action' => $action]);
     }
 
+    /** Whether the service is a machine (DescribesMachine: a Proxmox VPS) rather than a website; asks nothing of the panel. */
+    public function isMachine(Service $service): bool
+    {
+        return $this->onPanel($service)
+            && rescue(fn () => $this->provisioners->forService($service) instanceof DescribesMachine, false, report: false);
+    }
+
+    /**
+     * An active or suspended machine's state, size and addresses, read at most once a minute (power actions read it
+     * again).
+     */
+    public function machine(Service $service, bool $fresh = false): MachineDetails
+    {
+        if (! $this->isMachine($service) || ! in_array($service->status, [ServiceStatus::Active, ServiceStatus::Suspended], true)) {
+            throw new ProvisioningException('Only active or suspended machines can be described.');
+        }
+
+        $key = "service-machine:{$service->id}";
+
+        if ($fresh) {
+            Cache::forget($key);
+        }
+
+        // Kept as an array: the cache unserializes no objects (cache.serializable_classes).
+        return MachineDetails::fromArray(Cache::remember($key, now()->addMinute(), function () use ($service) {
+            $panel = $this->provisioners->forService($service);
+
+            return $panel instanceof DescribesMachine ? $panel->machine($service)->readAt(CarbonImmutable::now())->toArray() : [];
+        }));
+    }
+
+    /**
+     * Whether a new password reaches the machine only at its next start: it runs, and no guest agent answers in it to
+     * set the password at once. False for anything that is not a machine, or that cannot be asked.
+     */
+    public function passwordWaitsForRestart(Service $service): bool
+    {
+        if (! $this->isMachine($service)) {
+            return false;
+        }
+
+        $machine = rescue(fn () => $this->machine($service, fresh: true), null, report: false);
+
+        return $machine !== null && $machine->running && ! $machine->agent;
+    }
+
     /** Whether the account's machine is running, or null when its panel has no power control or cannot be asked. */
     public function isRunning(Service $service): ?bool
     {
@@ -342,6 +390,9 @@ class ServiceLifecycle
             ActivityLog::record('provisioning.failed', "{$event} failed: {$e->getMessage()}", $service, properties: ['event' => $event, ...$properties]);
 
             throw $e;
+        } finally {
+            // A power action, suspension or package change changes the machine: read it again next time
+            Cache::forget("service-machine:{$service->id}");
         }
     }
 }

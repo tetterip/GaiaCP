@@ -13,6 +13,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   UTC like GaiaCP's; tables of a plugin are converted by the update too. A time read without a model (`DB::table()`)
   is UTC text: `App\Support\StoredTime::parse()` gives it in local time. A Carbon given to a query is converted to UTC,
   so a plain date column takes a date string (`toDateString()`) or `whereOnDate()`.
+- Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
+  **Open client** by the Client field), and the client's name in the services lists opens their page.
+- VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
+  a new VPS Welcome Email (off until switched on) sends its address and logins with the right port.
+- Plugin API: new `App\Provisioning\DescribesMachine` and `MachineDetails`, for a server panel that makes virtual
+  machines.
 - Server uptime bars: checks are stored in UTC, so the bars no longer show them two or three hours off (in any timezone
   other than UTC) or leave the last hours empty.
 - Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,

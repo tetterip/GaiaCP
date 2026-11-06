@@ -90,6 +90,14 @@ return [
             ."Apunte su dominio a nuestros servidores de nombres, o su registro A a {\$server_ip}.\n\n"
             .'Paquete: {$package}, {$amount} ({$billing_cycle}), próximo vencimiento el {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Su VPS {$domain} está listo',
+        'body' => "Su VPS **{\$domain}** está listo.\n\n"
+            ."Dirección IP: {\$ip_address}<br>\nUsuario: {\$vps_user}<br>\nContraseña: {\$password}\n\n"
+            .'Conéctese por SSH (`ssh {$vps_user}@{$ip_address}`). Su consola, y también Iniciar, Apagar y Reiniciar, están en el panel de control: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Paquete: {$package}, {$amount} ({$billing_cycle}), próximo vencimiento el {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Servicio suspendido: {$service}',
         'body' => "Su servicio **{\$service}** {\$domain} ha sido suspendido.\n\nMotivo: {\$suspension_reason}\n\n{\$payment_instructions}",

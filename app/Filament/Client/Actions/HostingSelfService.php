@@ -87,14 +87,15 @@ class HostingSelfService
         return $label ? Str::before($label, ' / ') : __('control panel');
     }
 
-    /** The site itself, in a new tab: hosting with a domain, once set up. */
+    /** The site itself, in a new tab: hosting with a domain, once set up (not a VPS, whose domain is only its name). */
     private static function openWebsite(): Action
     {
         return Action::make('openWebsite')
             ->label('Open website')
             ->icon(Heroicon::OutlinedGlobeAlt)
             ->color('gray')
-            ->visible(fn (Service $record) => $record->type === ServiceType::Hosting && filled($record->domain) && $record->status !== ServiceStatus::Pending)
+            ->visible(fn (Service $record) => $record->type === ServiceType::Hosting && filled($record->domain) && $record->status !== ServiceStatus::Pending
+                && ! app(ServiceLifecycle::class)->isMachine($record))
             ->url(fn (Service $record) => 'https://'.$record->domain, shouldOpenInNewTab: true);
     }
 
@@ -145,9 +146,16 @@ class HostingSelfService
             ->icon(Heroicon::OutlinedKey)
             ->color('gray')
             ->visible(fn (Service $record) => self::canChangePassword($record))
-            ->modalDescription(fn (Service $record) => self::isPlesk($record)
+            ->modalDescription(fn (Service $record) => match (true) {
+                app(ServiceLifecycle::class)->isMachine($record) => __('The password of :user inside your VPS, and of your :panel login :username.', [
+                    'user' => rescue(fn () => app(ProvisionerFactory::class)->forService($record)->machineUser(), 'root', report: false),
+                    'panel' => self::panelName($record),
+                    'username' => $record->username,
+                ]),
+                default => self::isPlesk($record)
                 ? __('The password of :username, the FTP and SSH user of :domain. Your Plesk login stays the same.', ['username' => $record->username, 'domain' => $record->domain])
-                : __('The password of :username, for :panel, FTP and SSH. Programs that log in with the old one (an FTP program, for example) will need the new one.', ['username' => $record->username, 'panel' => self::panelName($record)]))
+                    : __('The password of :username, for :panel, FTP and SSH. Programs that log in with the old one (an FTP program, for example) will need the new one.', ['username' => $record->username, 'panel' => self::panelName($record)]),
+            })
             ->schema([
                 PasswordInput::make('password')
                     ->label('New password')
@@ -168,7 +176,12 @@ class HostingSelfService
                     return;
                 }
 
-                Notification::make()->title(__('Password changed'))->success()->send();
+                $restart = app(ServiceLifecycle::class)->passwordWaitsForRestart($record);
+
+                Notification::make()
+                    ->title(__('Password changed'))
+                    ->body($restart ? __('Inside your VPS the new password works after you restart it.') : null)
+                    ->success()->persistent($restart)->send();
             });
     }
 

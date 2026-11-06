@@ -2,9 +2,18 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
-## [1.0.3] - 2026-11-06
+## [1.1.1] - 2026-11-06
 
 - Its times are stored in UTC like GaiaCP's (StoresTimesInUtc); the GaiaCP update converts the ones already kept
+
+## [1.1.0] - 2026-11-06
+
+- The VPS's page (admin and client area) shows its state, processors, memory, disk size and IP addresses (from the pool,
+  or from the QEMU guest agent), and the user to log in with inside it; no Open website button or bandwidth for a VPS
+- VPS Welcome Email (off until switched on under Settings → Email templates): its address, user and password, and the
+  Proxmox login with the server's port (the welcome email used port 2083)
+- After a password change on a VPS without the QEMU guest agent, a note says it works inside the VPS after a restart
+- The New VPS settings link to the IP addresses page and recommend qemu-guest-agent in the template
 
 ## [1.0.2] - 2026-11-06
 

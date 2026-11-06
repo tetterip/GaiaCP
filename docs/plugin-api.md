@@ -45,7 +45,8 @@ can be added.
   provisioner answers.
 - `App\Provisioning\ProvisioningException`: thrown when the panel refuses or can't be reached.
 - Optional: `App\Provisioning\OffersShortcuts`, `App\Provisioning\ListsAccounts`, `App\Provisioning\ControlsPower`,
-  `App\Provisioning\InstallsCertificates`, `App\Provisioning\LimitsUsernameLength`.
+  `App\Provisioning\DescribesMachine` (with `App\Provisioning\MachineDetails`), `App\Provisioning\InstallsCertificates`,
+  `App\Provisioning\LimitsUsernameLength`.
 
 ### Domain registrars
 

@@ -7,8 +7,10 @@ use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\ControlsPower;
+use App\Provisioning\DescribesMachine;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
+use App\Provisioning\MachineDetails;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Support\DomainName;
@@ -24,7 +26,7 @@ use App\Support\DomainName;
  * machine only, to open its console in the Proxmox web interface. API tokens cannot change a password, so a new
  * password replaces that user.
  */
-class ProxmoxProvisioner implements ControlsPower, HostingProvisioner, ListsAccounts
+class ProxmoxProvisioner implements ControlsPower, DescribesMachine, HostingProvisioner, ListsAccounts
 {
     private const TAG = 'gaiacp';
 
@@ -239,6 +241,37 @@ class ProxmoxProvisioner implements ControlsPower, HostingProvisioner, ListsAcco
         );
     }
 
+    /**
+     * Its state and size from the cluster, and its addresses: the one it holds from the server's pool, then what the
+     * QEMU guest agent reports while it runs (an address from DHCP is only known that way).
+     */
+    public function machine(Service $service): MachineDetails
+    {
+        $vm = $this->vm($service);
+        $running = ($vm['status'] ?? null) === 'running';
+        $addresses = ProxmoxAddress::query()->where('server_id', $this->server->id)->where('service_id', $service->id)->pluck('address')->all();
+        $reported = $running ? $this->agentAddresses($vm) : null;
+
+        return new MachineDetails(
+            running: $running,
+            cores: isset($vm['maxcpu']) ? (int) $vm['maxcpu'] : null,
+            memory: isset($vm['maxmem']) && $vm['maxmem'] > 0 ? (int) $vm['maxmem'] : null,
+            disk: isset($vm['maxdisk']) && $vm['maxdisk'] > 0 ? (int) $vm['maxdisk'] : null,
+            addresses: array_values(array_unique([...$addresses, ...($reported ?? [])])),
+            agent: $reported !== null,
+        );
+    }
+
+    public function machineUser(): string
+    {
+        return config('gaiacp.proxmox.ci_user') ?: 'root';
+    }
+
+    public function panelLoginHint(Service $service): ?string
+    {
+        return __('Sign in with the username :username, the service\'s password and the realm "Proxmox VE authentication server".', ['username' => $this->username($service)]);
+    }
+
     public function isRunning(Service $service): bool
     {
         return ($this->vm($service)['status'] ?? null) === 'running';
@@ -377,6 +410,30 @@ class ProxmoxProvisioner implements ControlsPower, HostingProvisioner, ListsAcco
         $vm = collect($this->vms())->first(fn (array $vm) => empty($vm['template']) && $this->usernameOf($vm) === $username);
 
         return $vm === null ? null : ['vmid' => (int) $vm['vmid'], 'node' => (string) $vm['node']] + $vm;
+    }
+
+    /**
+     * The machine's addresses from the guest agent, IPv4 first, without loopback and link-local ones; null when no
+     * agent answers (none installed, or not started yet).
+     *
+     * @param  array<string, mixed>  $vm
+     * @return list<string>|null
+     */
+    private function agentAddresses(array $vm): ?array
+    {
+        $answer = rescue(fn () => $this->proxmox->get($this->vmPath($vm['node'], $vm['vmid']).'/agent/network-get-interfaces'), null, report: false);
+
+        if (! is_array($answer)) {
+            return null;
+        }
+
+        return collect($answer['result'] ?? $answer)
+            ->filter(fn ($interface) => is_array($interface) && ($interface['name'] ?? null) !== 'lo')
+            ->flatMap(fn (array $interface) => (array) ($interface['ip-addresses'] ?? []))
+            ->map(fn ($ip) => is_array($ip) ? (string) ($ip['ip-address'] ?? '') : '')
+            ->filter(fn (string $ip) => filter_var($ip, FILTER_VALIDATE_IP) && ! preg_match('/^(127\.|169\.254\.|fe80:|::1$)/i', $ip))
+            ->sortBy(fn (string $ip) => str_contains($ip, ':') ? 1 : 0)
+            ->values()->all();
     }
 
     /** @return list<array<string, mixed>> the cluster's KVM machines and templates */

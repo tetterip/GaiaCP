@@ -325,6 +325,7 @@ class ServiceResource extends Resource
                         ->viewData(fn (Service $record) => ['uptime' => static::uptime($record)]),
                 ]),
             Section::make(__('Usage'))
+                ->heading(fn (Service $record) => HostingUsage::heading($record))
                 ->columnSpanFull()
                 ->visible(fn (Service $record) => config('gaiacp.client_area.hosting_usage') && HostingUsage::hasUsage($record))
                 ->schema([

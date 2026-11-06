@@ -46,6 +46,8 @@ class ServicesTable
                     ->label('Client')
                     ->formatStateUsing(fn (Service $record) => $record->client->name)
                     ->description(fn (Service $record) => $record->client->company)
+                    // The client opens their page; the rest of the row opens the service.
+                    ->url(fn (Service $record) => ServiceResource::clientUrl($record))
                     ->searchable(['first_name', 'last_name', 'company'])
                     ->sortable()
                     ->visible($showClient),
