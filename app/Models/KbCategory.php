@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['names', 'sort'])]
 class KbCategory extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return ['names' => 'array'];

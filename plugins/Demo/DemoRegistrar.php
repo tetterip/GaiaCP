@@ -69,12 +69,12 @@ class DemoRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPric
 
     public function register(string $domain, int $years, Client $registrant, array $nameservers): void
     {
-        $this->service($domain)?->registration()->update(['expires_at' => today()->addYears($years)]);
+        $this->service($domain)?->registration()->update(['expires_at' => today()->addYears($years)->toDateString()]);
     }
 
     public function transfer(string $domain, string $eppCode, Client $registrant): void
     {
-        $this->service($domain)?->registration()->update(['expires_at' => today()->addYear()]);
+        $this->service($domain)?->registration()->update(['expires_at' => today()->addYear()->toDateString()]);
     }
 
     public function renew(string $domain, int $years): void
@@ -82,7 +82,7 @@ class DemoRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPric
         $service = $this->service($domain);
 
         if ($service) {
-            $service->registration()->update(['expires_at' => $this->expiryDate($domain)->addYears($years)]);
+            $service->registration()->update(['expires_at' => $this->expiryDate($domain)->addYears($years)->toDateString()]);
         }
     }
 

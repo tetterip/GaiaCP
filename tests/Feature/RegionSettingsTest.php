@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Filament\Clusters\Settings\Pages\GeneralSettings;
 use App\Filament\Resources\Services\Pages\ListServices;
+use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\Service;
 use App\Models\Setting;
@@ -12,6 +13,7 @@ use App\Support\EppPhone;
 use App\Support\Health\Status;
 use App\Support\Health\SystemHealth;
 use App\Support\Settings;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -26,6 +28,8 @@ class RegionSettingsTest extends TestCase
     public function test_the_region_is_saved_and_used_at_once(): void
     {
         $this->actingAs(User::factory()->create());
+        $this->travelTo(CarbonImmutable::parse('2026-11-06 12:00:00', 'UTC'));
+        $log = ActivityLog::record('test.done', 'Done');
 
         Livewire::test(GeneralSettings::class)
             ->assertFormSet(['region' => ['timezone' => config('app.timezone'), 'date_format' => 'd/m/Y', 'country' => 'GR']])
@@ -36,6 +40,9 @@ class RegionSettingsTest extends TestCase
         $this->assertSame('America/Chicago', config('app.timezone'));
         $this->assertSame('America/Chicago', date_default_timezone_get());
         $this->assertSame('US', Setting::query()->find('region.country')->value);
+
+        // A time already saved is the same moment, shown in the new timezone
+        $this->assertSame('2026-11-06 06:00', $log->fresh()->created_at->format('Y-m-d H:i'));
 
         Livewire::test(GeneralSettings::class)
             ->fillForm(['region' => ['timezone' => 'Mars/Olympus', 'date_format' => 'Y/d/m']])

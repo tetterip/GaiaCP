@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\CouponType;
 use App\Enums\OrderStatus;
 use App\Enums\ServiceType;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Currencies;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
@@ -30,6 +31,8 @@ use Illuminate\Support\Str;
 #[Fillable(['code', 'description', 'type', 'value', 'recurring', 'product_ids', 'tlds', 'starts_on', 'ends_on', 'max_uses', 'once_per_client', 'new_clients_only', 'active', 'on_sale'])]
 class Coupon extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'type' => 'percent',
         'active' => true,

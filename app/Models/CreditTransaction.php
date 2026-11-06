@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CreditType;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['client_id', 'type', 'amount_cents', 'balance_cents', 'currency', 'description', 'invoice_id', 'payment_id', 'method', 'reference', 'user_id', 'created_at'])]
 class CreditTransaction extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPDATED_AT = null;
 
     protected function casts(): array

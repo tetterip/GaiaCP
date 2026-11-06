@@ -9,6 +9,20 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   to the client's credit (the default while credit is on), mark it refunded outside GaiaCP, or keep it. Before, the
   payments and the paid payment notice stayed as they were for cancelled items. The API's `POST /orders/{id}/cancel`
   takes the same choice as `payments` (`credit`, `refunded`, `keep`).
+- Module log: **Download** saves the entries shown (filters and search included, newest 500) as a JSON file, with
+  passwords and tokens masked as on screen, to attach to a bug report.
+- Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
+  bars fit without scrolling.
+- Times are stored in UTC (payments' and tickets' times, the activity log, emails, sign-ins and every other time),
+  and shown in the timezone of Settings → General → Region. The update converts the times already kept, each with its
+  own summer or winter offset; plain dates (due dates, expiry dates) do not change. On MySQL / MariaDB the connection
+  now runs in UTC, so the database server's own timezone no longer matters.
+- Settings → General → Region: changing the timezone is now safe at any time. Times already saved stay the same
+  moment and are shown in the new timezone (the help text there and the admin guide say so).
+- Plugin API: a plugin's models use `App\Models\Concerns\StoresTimesInUtc` (new in the API) so their times are stored in
+  UTC like GaiaCP's; tables of a plugin are converted by the update too. A time read without a model (`DB::table()`)
+  is UTC text: `App\Support\StoredTime::parse()` gives it in local time. A Carbon given to a query is converted to UTC,
+  so a plain date column takes a date string (`toDateString()`) or `whereOnDate()`.
 - Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
   **Open client** by the Client field), and the client's name in the services lists opens their page.
 - VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
@@ -85,6 +99,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - REST API: `paid_from` / `paid_to` on `GET /payments` must be dates (a 422 otherwise).
 - Updated Filament (5.11), Laravel (13.40), ImapEngine (1.25.7: never signs in over an unencrypted connection when
   STARTTLS fails), svg-sanitize and PHPUnit, with Greek for Filament's new texts.
+- Indexes on payments' paid date and on orders' status + date, so reports by payment date and the daily cancelling of
+  unpaid orders don't read the whole table once there are many.
 
 ## [0.7.0] - 2026-11-04
 

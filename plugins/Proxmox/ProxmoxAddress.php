@@ -2,6 +2,7 @@
 
 namespace Plugins\Proxmox;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Models\Server;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\DB;
  */
 class ProxmoxAddress extends Model
 {
+    use StoresTimesInUtc;
+
     protected $table = 'proxmox_addresses';
 
     protected $fillable = ['server_id', 'address', 'prefix', 'gateway', 'service_id'];

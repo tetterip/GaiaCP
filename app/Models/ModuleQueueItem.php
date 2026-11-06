@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['service_id', 'action', 'module', 'reason', 'error', 'attempts', 'auto_attempts', 'last_attempt_at', 'gave_up_at', 'resolved_at', 'resolution', 'resolved_by'])]
 class ModuleQueueItem extends Model
 {
+    use StoresTimesInUtc;
+
     protected $table = 'module_queue';
 
     /** Set up a pending service: create the hosting account, register / transfer the domain, order the certificate. */

@@ -16,7 +16,9 @@ icon. The admin panel keeps the GaiaCP logo: yours is for your clients.
 
 Settings → General → **Region** sets:
 
-- the **timezone**: due dates, the daily run and every time shown follow it;
+- the **timezone**: due dates, the daily run and every time shown follow it. Times are saved in UTC, so you can
+  change it at any time: payments, tickets and the activity log already saved show in the new timezone, at the same
+  moment as before;
 - the **date format** used in tables and date pickers;
 - the **country** new clients start in (phone numbers without a country code are read as that country's).
 

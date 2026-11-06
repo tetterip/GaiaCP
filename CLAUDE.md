@@ -139,6 +139,10 @@ Read the file for the area you are changing before you change it; don't read the
   `App\Invoicing`): `IssueInvoice` makes a `TaxInvoice` from a notice as `Invoice::settle()` marks it paid (one per
   notice, not for "Add funds"), numbered by `InvoiceNumbers` under a row lock (`invoice_series`, no gaps, next number
   only forward); a `TaxInvoice` and its items throw on update and delete. Transmission (myDATA, Peppol) is for plugins.
+- **Times are stored in UTC, dates are days.** Models use `StoresTimesInUtc` (read back in the Region's timezone); a
+  Carbon given to a query is converted to UTC, so compare time columns with a Carbon and give date columns
+  (`due_date`, `next_due_date`) a date string or `whereOnDate()` (`Tests\GuardsDateColumns` fails otherwise); a time read
+  without a model goes through `StoredTime::parse()`. Details in `docs/architecture/code-layout.md`.
 - Money is stored as **integer cents** with an explicit currency (EUR is the base; others under Settings → Currencies);
   never floats. A service, its notices and payments stay in the currency it was created in.
 - Every automated action (reminder sent, suspension, API call) is logged via `ActivityLog::record()`

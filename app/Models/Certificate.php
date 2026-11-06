@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CertificateStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -28,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Hidden(['private_key'])]
 class Certificate extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'status' => 'not_ordered',
     ];

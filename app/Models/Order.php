@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['client_id', 'status', 'notes', 'completed_at'])]
 class Order extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'status' => 'pending',
     ];

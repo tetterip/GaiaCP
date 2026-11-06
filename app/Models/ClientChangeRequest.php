@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ChangeRequestStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['client_id', 'fields', 'status', 'decided_by', 'decided_at'])]
 class ClientChangeRequest extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'status' => 'pending',
     ];

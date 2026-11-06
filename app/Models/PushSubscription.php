@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\ClientSessions\ClientSessions;
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Hidden(['public_key', 'auth_token'])]
 class PushSubscription extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['client_message_id', 'client_id', 'email', 'sent_at', 'failed_at', 'error'])]
 class ClientMessageRecipient extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

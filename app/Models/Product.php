@@ -7,6 +7,7 @@ use App\Enums\BillingCycle;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Models\Concerns\HasSale;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Currencies;
 use App\Support\Locales;
 use Database\Factories\ProductFactory;
@@ -66,6 +67,7 @@ class Product extends Model
     use HasFactory;
 
     use HasSale;
+    use StoresTimesInUtc;
 
     protected static function booted(): void
     {

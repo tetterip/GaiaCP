@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -27,6 +28,8 @@ use Illuminate\Support\Str;
 #[Fillable(['client_id', 'email', 'name', 'access_token', 'service_id', 'department_id', 'assigned_to', 'subject', 'summary', 'status', 'priority', 'last_reply_at', 'closed_at'])]
 class Ticket extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'status' => 'open',
         'priority' => 'medium',

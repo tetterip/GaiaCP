@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['channel', 'event', 'body', 'status', 'attempts', 'next_attempt_at', 'error'])]
 class ChatMessage extends Model
 {
+    use StoresTimesInUtc;
+
     public const PENDING = 'pending';
 
     public const SENT = 'sent';

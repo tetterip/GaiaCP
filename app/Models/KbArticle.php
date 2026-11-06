@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +22,8 @@ use Normalizer;
 #[Fillable(['kb_category_id', 'slug', 'texts', 'published', 'clients_only', 'sort', 'created_by'])]
 class KbArticle extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'published' => false,
         'clients_only' => false,
