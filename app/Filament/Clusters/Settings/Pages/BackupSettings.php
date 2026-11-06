@@ -37,13 +37,13 @@ class BackupSettings extends SettingsFormPage
 
     public static function settingsDescription(): string
     {
-        return __('Zipped database backups on a schedule, copied to FTP and email.');
+        return __('Zipped database and file backups on a schedule, copied to FTP and email.');
     }
 
     public static function keys(): array
     {
         return [
-            'backups.enabled', 'backups.frequency', 'backups.weekday', 'backups.time', 'backups.keep', 'backups.zip_password', 'backups.include_logs', 'backups.email',
+            'backups.enabled', 'backups.frequency', 'backups.weekday', 'backups.time', 'backups.keep', 'backups.zip_password', 'backups.include_logs', 'backups.include_files', 'backups.email',
             'backups.ftp.enabled', 'backups.ftp.protocol', 'backups.ftp.host', 'backups.ftp.port', 'backups.ftp.username', 'backups.ftp.password',
             'backups.ftp.path', 'backups.ftp.passive',
         ];
@@ -55,7 +55,7 @@ class BackupSettings extends SettingsFormPage
             ->statePath('data')
             ->components([
                 Section::make(__('Schedule'))
-                    ->description(__('A zipped SQL dump of the whole database, kept on this server (storage/app/private/backups) and copied to FTP and/or email.'))
+                    ->description(__('A zip of the whole database and the uploaded files, kept on this server (storage/app/private/backups) and copied to FTP and/or email. Put one back with php artisan gaiacp:restore (System → Help → Keeping GaiaCP healthy).'))
                     ->columns(2)
                     ->schema([
                         Toggle::make('backups.enabled')
@@ -95,7 +95,11 @@ class BackupSettings extends SettingsFormPage
                             ->autocomplete('new-password')
                             ->maxLength(255)
                             ->placeholder(fn () => config('gaiacp.backups.zip_password') ? __('Set (leave blank to keep it)') : __('None'))
-                            ->helperText(__('Encrypts the zip (AES-256; open it with 7-Zip or WinRAR). Recommended, since the backup holds every client\'s details. Keep the password somewhere safe: without it the backup cannot be opened.'))
+                            ->helperText(__('Encrypts the zip (AES-256; open it with 7-Zip or WinRAR). Recommended, since the backup holds every client\'s details; only a zip with a password also carries the APP_KEY that decrypts the stored passwords. Keep the password somewhere safe: without it the backup cannot be opened.'))
+                            ->columnSpanFull(),
+                        Toggle::make('backups.include_files')
+                            ->label('Include files')
+                            ->helperText(__('Uploaded files go into the zip too: the logo, page pictures, ticket attachments, client downloads, uploaded translations and the plugins you added.'))
                             ->columnSpanFull(),
                         Toggle::make('backups.include_logs')
                             ->label('Include logs')
@@ -182,6 +186,7 @@ class BackupSettings extends SettingsFormPage
     {
         $values['backups.enabled'] = (bool) $values['backups.enabled'];
         $values['backups.include_logs'] = (bool) $values['backups.include_logs'];
+        $values['backups.include_files'] = (bool) $values['backups.include_files'];
         $values['backups.ftp.enabled'] = (bool) $values['backups.ftp.enabled'];
         $values['backups.ftp.passive'] = (bool) $values['backups.ftp.passive'];
 
@@ -194,6 +199,7 @@ class BackupSettings extends SettingsFormPage
         $values['backups.weekday'] = (int) ($values['backups.weekday'] ?? config('gaiacp.backups.weekday'));
         $values['backups.keep'] = (int) $values['backups.keep'];
         $values['backups.include_logs'] = (bool) $values['backups.include_logs'];
+        $values['backups.include_files'] = (bool) $values['backups.include_files'];
         $values['backups.ftp.enabled'] = (bool) $values['backups.ftp.enabled'];
         $values['backups.ftp.passive'] = (bool) $values['backups.ftp.passive'];
         $values['backups.ftp.port'] = (int) $values['backups.ftp.port'] ?: 21;

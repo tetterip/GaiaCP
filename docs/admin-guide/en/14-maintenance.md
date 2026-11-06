@@ -2,8 +2,8 @@
 
 ## Backups
 
-Settings → System → **Backups** makes a zipped copy of the database, daily or weekly at a set time, and keeps the
-newest few. Give the zip a **password** (AES-256): the backup holds every client's details. Each backup can be copied
+Settings → System → **Backups** makes a zipped copy of the database and the uploaded files, daily or weekly at a set
+time, and keeps the newest few. Give the zip a **password** (AES-256): the backup holds every client's details. Each backup can be copied
 to an **FTP / FTPS** server and **emailed** to an address. **Back up now**, **Download latest** and **Test FTP** are on
 the page; `php artisan gaiacp:backup` does the same from SSH.
 **Test FTP** logs in, opens the folder and writes and deletes a small file there, so a folder the FTP account
@@ -14,8 +14,36 @@ Logs go into the backup empty unless you switch on **Include logs**: the module 
 Email history too), sessions, cache and queued jobs. They are not needed to restore GaiaCP, and the module log alone
 can be most of the database while it is on.
 
-Keep a copy away from the server GaiaCP runs on, and keep a copy of `.env` somewhere safe: its `APP_KEY` decrypts the
-stored passwords and tokens, so a backup restored without it loses them.
+**Include files** (on by default) puts the uploaded files in the zip too: the company logo, page pictures, ticket
+attachments, client downloads, SSL files, uploaded translations and the plugins you added yourself. GaiaCP's own code is
+not in it: you get that again by installing GaiaCP.
+
+A zip with a password also carries the `APP_KEY` from `.env`, which decrypts the stored server, registrar and other
+passwords, so it is all you need to restore. A zip without a password leaves the key out (a backup found by someone
+should not open those passwords too), and its email reminds you: keep a copy of `.env`'s `APP_KEY` somewhere safe,
+because a backup restored without it loses those passwords. Every zip has a `README.txt` that says what is in it and
+how to restore it.
+
+Keep a copy away from the server GaiaCP runs on.
+
+### Restoring a backup
+
+1. On the new server (or the old one), install GaiaCP the same version or newer, with an empty database of the same
+   kind as the backup's (MySQL / MariaDB or SQLite). An install that is already running works too: its data is replaced.
+2. Upload the backup zip and run, from SSH or a Plesk / cPanel scheduled task run once:
+   `php artisan gaiacp:restore /path/to/gaiacp-backup-….zip --password="the zip password"`.
+   It shows what the zip holds and asks before it goes on (`--force` doesn't ask). Then it switches to maintenance
+   mode, replaces the whole database, writes the files to their places (files that aren't in the backup stay), sets
+   `APP_KEY` in `.env` when the zip has it, applies the database changes of a newer GaiaCP and comes back.
+3. Sign in again. If the zip had no `APP_KEY`, put your saved one in `.env`; without it, enter the passwords of your
+   servers, registrars and other integrations again.
+
+Without SSH or scheduled tasks: open the zip with 7-Zip or WinRAR, import the `.sql` file into the empty database with
+phpMyAdmin, copy the `files/` folder's contents into the GaiaCP folder, set `APP_KEY` in `.env` from `app-key.txt`,  and, when
+the backup is from an older GaiaCP, run `php artisan migrate --force` once (a scheduled task does it too) for the newer
+database changes.
+
+A wrong password, or a zip that isn't a GaiaCP backup, stops the restore before anything changes.
 
 ## Updates
 

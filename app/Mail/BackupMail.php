@@ -33,6 +33,7 @@ class BackupMail extends Mailable
             'file' => $this->result->path ? basename($this->result->path) : null,
             'attached' => $this->attaches(),
             'encrypted' => (bool) config('gaiacp.backups.zip_password'),
+            'withKey' => RunBackup::includesKey(),
         ]);
     }
 

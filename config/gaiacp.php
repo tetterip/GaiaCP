@@ -339,7 +339,7 @@ return [
         'incident_message' => null,
     ],
 
-    // Zipped SQL dump of the whole database (gaiacp:backup), kept in storage/app/private/backups
+    // Zipped SQL dump of the whole database and the uploaded files (gaiacp:backup), kept in storage/app/private/backups
     // and copied to FTP and/or emailed. Edited under Settings → Backups.
     'backups' => [
         'enabled' => false,
@@ -349,6 +349,7 @@ return [
         'keep' => 7, // newest backups kept on this server and on the FTP server
         'zip_password' => null, // AES-256 zip encryption when set
         'include_logs' => false, // off: RunBackup::LOG_TABLES are written without their rows
+        'include_files' => true, // uploaded files and added plugins (RunBackup::files()) go into the zip too
         'email' => null, // send each backup (and failures) to this address
         'ftp' => [
             'enabled' => false,

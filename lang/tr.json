@@ -3822,5 +3822,11 @@
     ":count ticket(s) waiting for a reply over :hours hours": ":hours saatten uzun süredir yanıt bekleyen :count talep",
     ":count payment notice(s) due today": "Bugün vadesi dolan :count ödeme bildirimi",
     ":count domain(s) to check at the registrar": "Kayıt firmasında kontrol edilecek :count alan adı",
-    ":count quote(s) ending within :days days": ":days gün içinde sona eren :count teklif"
+    ":count quote(s) ending within :days days": ":days gün içinde sona eren :count teklif",
+    "A zip of the whole database and the uploaded files, kept on this server (storage/app/private/backups) and copied to FTP and/or email. Put one back with php artisan gaiacp:restore (System → Help → Keeping GaiaCP healthy).": "Tüm veritabanının ve yüklenen dosyaların bir zip'i; bu sunucuda tutulur (storage/app/private/backups) ve FTP ve/veya e-posta ile kopyalanır. Geri yüklemek için php artisan gaiacp:restore (Sistem → Yardım → GaiaCP'yi sağlıklı tutmak).",
+    "Encrypts the zip (AES-256; open it with 7-Zip or WinRAR). Recommended, since the backup holds every client's details; only a zip with a password also carries the APP_KEY that decrypts the stored passwords. Keep the password somewhere safe: without it the backup cannot be opened.": "Zip'i şifreler (AES-256; 7-Zip veya WinRAR ile açın). Yedek tüm müşterilerin bilgilerini içerdiği için önerilir; yalnızca parolalı bir zip, kayıtlı parolaları çözen APP_KEY'i de içerir. Parolayı güvenli bir yerde saklayın: o olmadan yedek açılamaz.",
+    "Include files": "Dosyaları dahil et",
+    "This zip has no APP_KEY (only a zip with a password carries it): keep a copy of APP_KEY from .env somewhere safe, or a restore loses the stored server and registrar passwords.": "Bu zip APP_KEY içermiyor (yalnızca parolalı bir zip içerir): .env içindeki APP_KEY'in bir kopyasını güvenli bir yerde saklayın, yoksa geri yükleme kayıtlı sunucu ve kayıt kuruluşu parolalarını kaybeder.",
+    "Uploaded files go into the zip too: the logo, page pictures, ticket attachments, client downloads, uploaded translations and the plugins you added.": "Yüklenen dosyalar da zip'e girer: logo, sayfa resimleri, destek talebi ekleri, müşteri indirmeleri, yüklenen çeviriler ve eklediğiniz eklentiler.",
+    "Zipped database and file backups on a schedule, copied to FTP and email.": "Veritabanı ve dosyaların zamanlanmış zip yedekleri, FTP ve e-posta ile kopyalanır."
 }

@@ -6,7 +6,7 @@
 
 {{ __('Run `php artisan gaiacp:backup` on the server to see the error, or use Back up now under Settings → Backups.') }}
 @else
-# {{ __('Database backup') }}
+# {{ __('Backup') }}
 
 **{{ $file }}** ({{ $result->sizeForHumans() }}){{ $encrypted ? ', '.__('protected with the zip password from Settings → Backups') : '' }}.
 
@@ -16,6 +16,10 @@
 {{ __('The zip is too big to attach (:size at most).', ['size' => \Illuminate\Support\Number::fileSize(\App\Backups\RunBackup::MAX_ATTACHMENT_BYTES)]) }} {{ in_array('FTP', $result->copies) ? __('It is kept on the server and on the FTP server.') : __('It is kept on the server.') }}
 @endif
 
+@unless ($withKey)
+{{ __('This zip has no APP_KEY (only a zip with a password carries it): keep a copy of APP_KEY from .env somewhere safe, or a restore loses the stored server and registrar passwords.') }}
+
+@endunless
 @foreach ($result->errors as $copy => $error)
 **{{ $copy === 'ftp' ? __('FTP copy failed') : __('Failed') }}:** {{ $error }}
 
