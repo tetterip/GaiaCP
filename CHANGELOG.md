@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Counts read as proper singular or plural in every language ("1 server down", "3 servers down") instead of
+  "server(s)": the dashboard, notifications, Test connection, payment record and the plugins' messages.
+- Development: a count in a text uses `trans_choice(':count thing|:count things', $n)`; `gaiacp:translations` and
+  `LocalesTest` now read those keys too.
 - Development: static analysis with Larastan (level 5, `composer analyse`), in CI too. The errors found when it was
   added are in `phpstan-baseline.neon`; a pull request fails on a new one.
 - Client emails sent from a page (Record payment, a ticket reply, an invite…) wait on the queue, so a slow mail server

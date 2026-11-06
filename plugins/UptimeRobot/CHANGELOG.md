@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.3] - 2026-11-07
+
+- Counts read as proper singular or plural ("1 monitor", "3 monitors") in every language, instead of "monitor(s)"
+
 ## [1.0.2] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

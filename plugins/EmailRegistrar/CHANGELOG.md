@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.2] - 2026-11-07
+
+- The request email says "1 year" or "2 years" in every language, instead of "year(s)"
+
 ## [1.0.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

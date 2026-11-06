@@ -220,7 +220,7 @@ class LocalesTest extends TestCase
     {
         $keys = TranslationKeys::all();
 
-        foreach (['Payment notices', 'First name', ':count payment(s) recorded', 'Hosting Account Welcome Email', 'Bank transfer', 'Keyboard shortcuts', 'Go to'] as $key) {
+        foreach (['Payment notices', 'First name', ':count payment recorded|:count payments recorded', 'Hosting Account Welcome Email', 'Bank transfer', 'Keyboard shortcuts', 'Go to'] as $key) {
             $this->assertContains($key, $keys);
         }
 
@@ -258,6 +258,22 @@ class LocalesTest extends TestCase
             $this->assertSame([], array_keys(array_filter($own, fn (string $text) => $text === '')), "Empty in plugins/{$name}/lang/el.json");
             $this->assertSame([], $this->leftInEnglish($own), "Left in English in plugins/{$name}/lang/el.json");
         }
+    }
+
+    /** A count reads "1 server" or "3 servers" in every language, never "server(s)". */
+    public function test_counts_have_a_singular_and_a_plural(): void
+    {
+        $this->assertSame([], array_values(array_filter(TranslationKeys::all(), fn (string $key) => preg_match('/\p{L}\((s|es)\)/u', $key) === 1)),
+            "Use trans_choice(':count server|:count servers', \$n) for these");
+
+        $this->assertSame('1 server down', trans_choice(':count server down|:count servers down', 1));
+        $this->assertSame('3 servers down', trans_choice(':count server down|:count servers down', 3));
+        $this->assertSame('1 server εκτός λειτουργίας', trans_choice(':count server down|:count servers down', 1, locale: 'el'));
+        $this->assertSame('3 servers εκτός λειτουργίας', trans_choice(':count server down|:count servers down', 3, locale: 'el'));
+        $this->assertSame('Για 2 έτη', trans_choice('For :count year|For :count years', 2, locale: 'el'));
+        $this->assertSame('Pour 1 an', trans_choice('For :count year|For :count years', 1, locale: 'fr'));
+        $this->assertSame('Niedziałające serwery: 5', trans_choice(':count server down|:count servers down', 5, locale: 'pl'));
+        $this->assertSame('Κατά μέσο όρο στην ώρα του', trans_choice('{0} On time on average|{1} :count day late on average|[2,*] :count days late on average', 0, locale: 'el'));
     }
 
     /**
@@ -312,7 +328,7 @@ class LocalesTest extends TestCase
      */
     public function test_panel_text_is_translatable(): void
     {
-        $skipCalls = ['__', 'label', 'make', 'record', 'error', 'info', 'warning', 'icon', 'color', 'config', 'view', 'url'];
+        $skipCalls = ['__', 'trans_choice', 'label', 'make', 'record', 'error', 'info', 'warning', 'icon', 'color', 'config', 'view', 'url'];
         $untranslated = [];
 
         // The panel's own classes, then the plugins' panel code (the files that use Filament).

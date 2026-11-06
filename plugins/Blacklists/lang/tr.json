@@ -1,6 +1,6 @@
 {
-    ":count listing(s) found": ":count listelenme bulundu",
-    ":ips IP address(es) of :servers server(s) checked.": ":servers sunucunun :ips IP adresi kontrol edildi.",
+    ":count listing found|:count listings found": ":count listelenme bulundu",
+    "IP addresses checked: :ips (servers: :servers).": "Kontrol edilen IP adresleri: :ips (sunucular: :servers).",
     ":server (:ip) on :zone since :date": ":date tarihinden beri :zone üzerinde :server (:ip)",
     "Blacklists": "Kara listeler",
     "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Sunucularınızın IP adreslerini her saat spam kara listelerine karşı kontrol eder ve biri listelendiğinde, müşteriler e-postalarını spam'de bulmadan önce zilde size bildirir.",

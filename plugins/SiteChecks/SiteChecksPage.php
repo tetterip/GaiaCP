@@ -72,7 +72,7 @@ class SiteChecksPage extends Page implements HasTable
 
                     Notification::make()
                         ->{$summary['problems'] > 0 ? 'warning' : 'success'}()
-                        ->title(__(':sites site(s) checked, :problems with a problem', ['sites' => $summary['sites'], 'problems' => $summary['problems']]))
+                        ->title(trans_choice(':count site checked, :problems with a problem|:count sites checked, :problems with a problem', $summary['sites'], ['problems' => $summary['problems']]))
                         ->send();
                 }),
         ];

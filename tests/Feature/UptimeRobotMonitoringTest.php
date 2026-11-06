@@ -152,7 +152,7 @@ class UptimeRobotMonitoringTest extends TestCase
             ->assertFormSet(['uptime_robot.api_key' => null])
             ->fillForm(['uptime_robot' => ['api_key' => 'ur999-typed']])
             ->callAction('testConnection')
-            ->assertNotified('Connected: 3 monitor(s)')
+            ->assertNotified('Connected: 3 monitors')
             ->call('save')
             ->assertHasNoFormErrors()
             ->assertSet('data.uptime_robot.api_key', null);

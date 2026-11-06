@@ -12,7 +12,7 @@
                         @if ($billing['overdueCount'] > 0)
                             {{ __(':amount past due', ['amount' => $billing['overdue']]) }}
                         @elseif ($billing['count'] > 0)
-                            {{ __('in :count unpaid payment notice(s)', ['count' => $billing['count']]) }}
+                            {{ trans_choice('in :count unpaid payment notice|in :count unpaid payment notices', $billing['count']) }}
                         @else
                             {{ __('Nothing to pay') }}
                         @endif
@@ -41,7 +41,7 @@
                         @if ($health['averageDays'] === null)
                             {{ __('No payments in the last 12 months') }}
                         @else
-                            {{ __('On average :days day(s) late, :late late payment(s) and :suspensions suspension(s) in 12 months', ['days' => $health['averageDays'], 'late' => $health['late'], 'suspensions' => $health['suspensions']]) }}
+                            {{ trans_choice('{0} On time on average|{1} :count day late on average|[2,*] :count days late on average', $health['averageDays']) }} · {{ __('In 12 months: late payments :late, suspensions :suspensions', ['late' => $health['late'], 'suspensions' => $health['suspensions']]) }}
                         @endif
                     </div>
                 </div>

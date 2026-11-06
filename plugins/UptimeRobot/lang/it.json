@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up online, :down non raggiungibili",
     "Api key": "Chiave API",
-    "Connected: :count monitor(s)": "Connesso: :count monitor",
+    "Connected: :count monitor|Connected: :count monitors": "Connesso: :count monitor|Connesso: :count monitor",
     "Connection": "Connessione",
     "Could not reach UptimeRobot: :error": "Impossibile raggiungere UptimeRobot: :error",
     "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Inserisci la chiave API di UptimeRobot in Impostazioni → UptimeRobot.",

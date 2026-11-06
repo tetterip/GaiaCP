@@ -136,7 +136,7 @@ class ClientMessagesTest extends TestCase
                 'filters.servers' => [$this->server->id],
                 'send_email' => true,
             ])
-            ->assertSee(__('Matches :count active client(s); :emails get the email.', ['count' => 1, 'emails' => 1]))
+            ->assertSee('Matches 1 active client; 1 will receive the email.')
             ->call('create')
             ->assertHasNoFormErrors();
 
@@ -147,7 +147,7 @@ class ClientMessagesTest extends TestCase
             ->callAction('test', ['locale' => 'el'])
             ->assertNotified(__('Test sent to :email', ['email' => 'admin@example.com']))
             ->callAction('send')
-            ->assertNotified(__('Sending to :count client(s)', ['count' => 1]));
+            ->assertNotified('Sending to 1 client');
 
         Mail::assertSent(ClientMessageMail::class, fn (ClientMessageMail $mail) => $mail->client->email === 'admin@example.com'
             && $mail->client->first_name === 'Michalis' && ! str_contains($mail->render(), '/unsubscribe/'));

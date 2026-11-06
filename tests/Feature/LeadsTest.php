@@ -219,7 +219,7 @@ class LeadsTest extends TestCase
         $this->lead(['first_name' => 'Nikos', 'next_contact_on' => '2026-10-20']);
 
         $item = collect(NeedsAttention::items())->firstWhere('icon', 'heroicon-o-phone');
-        $this->assertSame('2 lead(s) to contact today', $item['title']);
+        $this->assertSame('2 leads to contact today', $item['title']);
         $this->assertSame('Nikos Papa, Maria Papa', $item['sub']);
         $this->assertSame('2', LeadResource::getNavigationBadge());
 

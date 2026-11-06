@@ -113,7 +113,7 @@ final class TranslationKeys
             $isMake = $token->text === 'make' && $previous !== null && $tokens[$previous]->is(T_DOUBLE_COLON)
                 && in_array($tokens[self::significant($tokens, $previous, -1)]->text, self::NAMED_COMPONENTS, true);
 
-            if ($token->text !== '__' && ! $isLabel && ! $isMake) {
+            if (! in_array($token->text, ['__', 'trans_choice'], true) && ! $isLabel && ! $isMake) {
                 continue;
             }
 
@@ -136,7 +136,7 @@ final class TranslationKeys
     /** @return list<string> */
     public static function fromBlade(string $view): array
     {
-        preg_match_all("/__\\(\\s*'((?:[^'\\\\]|\\\\.)*)'\\s*[,)]/", $view, $matches);
+        preg_match_all("/(?:__|trans_choice)\\(\\s*'((?:[^'\\\\]|\\\\.)*)'\\s*[,)]/", $view, $matches);
 
         return array_map(fn (string $key) => stripslashes($key), $matches[1]);
     }

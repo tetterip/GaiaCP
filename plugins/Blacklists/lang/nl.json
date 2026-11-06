@@ -1,6 +1,6 @@
 {
-    ":count listing(s) found": ":count vermelding(en) gevonden",
-    ":ips IP address(es) of :servers server(s) checked.": ":ips IP-adres(sen) van :servers server(s) gecontroleerd.",
+    ":count listing found|:count listings found": ":count vermelding gevonden|:count vermeldingen gevonden",
+    "IP addresses checked: :ips (servers: :servers).": "Gecontroleerde IP-adressen: :ips (servers: :servers).",
     ":server (:ip) on :zone since :date": ":server (:ip) op :zone sinds :date",
     "Blacklists": "Blacklists",
     "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Controleert elk uur de IP-adressen van uw servers op spamblacklists en meldt in de bel als er een op staat, voordat klanten hun e-mails in de spam vinden.",

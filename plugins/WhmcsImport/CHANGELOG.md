@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.12] - 2026-11-07
+
+- "1 problem" or "3 problems" in every language, instead of "problem(s)"
+
 ## [1.0.11] - 2026-11-04
 
 - A product with WHMCS stock control keeps its quantity left as Quantity available

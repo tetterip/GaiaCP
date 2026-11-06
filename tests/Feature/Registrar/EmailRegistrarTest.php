@@ -92,7 +92,7 @@ class EmailRegistrarTest extends TestCase
         $service = $this->domain();
         $html = (new RegistrarRequestMail(RegistrarRequestMail::REGISTER, 'acme.de', $service, ['years' => 2, 'registrant' => $this->client, 'nameservers' => ['ns1.host.gr', 'ns2.host.gr']]))->render();
 
-        $this->assertStringContainsString('Register acme.de for 2 year(s)', $html);
+        $this->assertStringContainsString('Register acme.de for 2 years', $html);
         $this->assertStringContainsString('Maria Papa, Acme', $html);
         $this->assertStringContainsString('ns1.host.gr, ns2.host.gr', $html);
         $this->assertStringContainsString("/admin/services/{$service->id}/edit", $html);

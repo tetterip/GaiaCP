@@ -77,7 +77,7 @@ class GoGetSslSettings extends SettingsFormPage
                     }
 
                     Notification::make()->success()
-                        ->title(__('Connected: :count certificate(s) for sale', ['count' => $products]))
+                        ->title(trans_choice('Connected: :count certificate for sale|Connected: :count certificates for sale', $products))
                         ->body(__('Account balance: :balance', ['balance' => trim($balance['balance'].' '.$balance['currency'])]))
                         ->send();
                 }),

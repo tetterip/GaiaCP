@@ -119,7 +119,7 @@ class DomainActions
         $registrar = $details->registrarAccount()?->name ?? __('(no registrar for this TLD!)');
 
         return match ($details->registration_type) {
-            DomainRegistrationType::Register => __('Registers :domain for :years year(s) at :registrar, which charges your registrar account.', ['domain' => $record->domain, 'years' => $record->registrationYears(), 'registrar' => $registrar]),
+            DomainRegistrationType::Register => trans_choice('Registers :domain for :count year at :registrar, which charges your registrar account.|Registers :domain for :count years at :registrar, which charges your registrar account.', $record->registrationYears(), ['domain' => $record->domain, 'registrar' => $registrar]),
             DomainRegistrationType::Transfer => __('Requests the transfer of :domain to :registrar with the EPP code on the form. The registrar may charge for it.', ['domain' => $record->domain, 'registrar' => $registrar]),
             DomainRegistrationType::External => __('Marks :domain active without calling a registrar.', ['domain' => $record->domain]),
         };

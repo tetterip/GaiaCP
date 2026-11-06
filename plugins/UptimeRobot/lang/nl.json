@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up online, :down offline",
     "Api key": "API-sleutel",
-    "Connected: :count monitor(s)": "Verbonden: :count monitor(s)",
+    "Connected: :count monitor|Connected: :count monitors": "Verbonden: :count monitor|Verbonden: :count monitors",
     "Connection": "Verbinding",
     "Could not reach UptimeRobot: :error": "Kon UptimeRobot niet bereiken: :error",
     "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Vul de API-sleutel van UptimeRobot in onder Instellingen → UptimeRobot.",

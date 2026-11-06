@@ -86,7 +86,7 @@ class RecordPaymentAction
                 'from' => $record->next_due_date->format(AppServiceProvider::dateFormat()),
                 'to' => $record->billing_cycle->advance($record->next_due_date, $record->anchorDay())->format(AppServiceProvider::dateFormat()),
             ]).(app(DomainLifecycle::class)->shouldRenewOnPayment($record)
-                ? ' '.__('It also renews :domain at the registrar for :years year(s), which charges your registrar account.', ['domain' => $record->domain, 'years' => $record->registrationYears()])
+                ? ' '.trans_choice('It also renews :domain at the registrar for :count year, which charges your registrar account.|It also renews :domain at the registrar for :count years, which charges your registrar account.', $record->registrationYears(), ['domain' => $record->domain])
                 : ''))
             ->schema([
                 TextInput::make('amount')

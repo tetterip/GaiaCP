@@ -43,9 +43,8 @@ class IncomeForecast extends IncomeReportPage
         $forecast = new Forecast;
         $overdue = $forecast->overdue();
 
-        $note = __('At the services\' prices (before tax when tax is added on top). Services set to auto-terminate are left out. Overdue now and not in the table: :amount for :count renewal(s).', [
+        $note = trans_choice('At the services\' prices (before tax when tax is added on top). Services set to auto-terminate are left out. Overdue now and not in the table: :amount for :count renewal.|At the services\' prices (before tax when tax is added on top). Services set to auto-terminate are left out. Overdue now and not in the table: :amount for :count renewals.', $overdue['count'], [
             'amount' => static::money($overdue['cents']),
-            'count' => $overdue['count'],
         ]);
 
         if ($forecast->serverCosts() > 0) {

@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up σε λειτουργία, :down εκτός λειτουργίας",
     "API key / password": "API key / κωδικός",
-    "Connected: :count monitor(s)": "Συνδέθηκε: :count monitor",
+    "Connected: :count monitor|Connected: :count monitors": "Συνδέθηκε: :count monitor|Συνδέθηκε: :count monitors",
     "Connection": "Σύνδεση",
     "Could not reach Uptime Kuma: :error": "Δεν ήταν δυνατή η σύνδεση με το Uptime Kuma: :error",
     "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Συμπλήρωσε τη διεύθυνση του Uptime Kuma στις Ρυθμίσεις → Uptime Kuma.",

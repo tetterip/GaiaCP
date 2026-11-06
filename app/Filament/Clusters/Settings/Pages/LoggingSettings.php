@@ -124,7 +124,7 @@ class LoggingSettings extends SettingsFormPage
                                     abort_unless(self::cleansUp(), 403);
                                     $result = app(LogCleanup::class)->deleteAttachments(Carbon::parse($data['before'])->startOfDay(), manual: true);
                                     Notification::make()->success()
-                                        ->title(__(':count file(s) deleted, :size freed', ['count' => $result['files'], 'size' => Number::fileSize($result['bytes'], precision: 1)]))
+                                        ->title(trans_choice(':count file deleted, :size freed|:count files deleted, :size freed', $result['files'], ['size' => Number::fileSize($result['bytes'], precision: 1)]))
                                         ->send();
                                 }),
                             Action::make('clearCache')

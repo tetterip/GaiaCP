@@ -77,7 +77,7 @@ class TelegramCommands
             ->sortByDesc('total')
             ->values();
 
-        $text = '🧾 <b>'.e(__('Overdue: :count payment notice(s), :total', ['count' => $notices->count(), 'total' => self::totals($notices)])).'</b>';
+        $text = '🧾 <b>'.e(trans_choice('Overdue: :count payment notice, :total|Overdue: :count payment notices, :total', $notices->count(), ['total' => self::totals($notices)])).'</b>';
 
         foreach ($lines->take(self::LIST_MAX) as $i => $line) {
             $text .= "\n".($i + 1).'. '.e(self::client($line['client'])).' – '.e(__(':amount (:count, since :date)', [

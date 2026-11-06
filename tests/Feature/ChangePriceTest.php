@@ -122,7 +122,7 @@ class ChangePriceTest extends TestCase
         Livewire::test(EditService::class, ['record' => $service->id])
             ->callAction('changePrice', ['mode' => 'amount', 'value' => '72,50', 'from' => '2026-12-01', 'email' => true])
             ->assertHasNoActionErrors()
-            ->assertNotified(__(':count service(s) get the new price from :date', ['count' => 1, 'date' => '01/12/2026']));
+            ->assertNotified('1 service gets the new price from 01/12/2026');
 
         $this->assertSame(7250, $service->fresh()->new_price_cents);
 

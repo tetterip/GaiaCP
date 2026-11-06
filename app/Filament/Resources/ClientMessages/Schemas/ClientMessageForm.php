@@ -135,13 +135,12 @@ class ClientMessageForm
     private static function count(Get $get, ?ClientMessage $record): string
     {
         if ($record?->isQueued()) {
-            return __('Emailed to :count client(s).', ['count' => $record->recipients()->count()]);
+            return trans_choice('Emailed to :count client.|Emailed to :count clients.', $record->recipients()->count());
         }
 
         $message = ClientMessage::make(['kind' => $get('kind') ?? ClientMessageKind::Info, 'filters' => (array) $get('filters')]);
 
-        return __('Matches :count active client(s); :emails get the email.', [
-            'count' => $message->clients()->count(),
+        return trans_choice('Matches :count active client; :emails will receive the email.|Matches :count active clients; :emails will receive the email.', $message->clients()->count(), [
             'emails' => $message->emailClients()->count(),
         ]);
     }

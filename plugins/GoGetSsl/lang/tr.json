@@ -2,7 +2,7 @@
     "API password": "API parolası",
     "API username": "API kullanıcı adı",
     "Account balance: :balance": "Hesap bakiyesi: :balance",
-    "Connected: :count certificate(s) for sale": "Bağlandı: satışta :count sertifika",
+    "Connected: :count certificate for sale|Connected: :count certificates for sale": "Bağlandı: satışta :count sertifika",
     "Connection": "Bağlantı",
     "Dcv method": "DCV yöntemi",
     "GoGetSSL": "GoGetSSL",

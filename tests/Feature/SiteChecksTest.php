@@ -147,7 +147,7 @@ class SiteChecksTest extends TestCase
         $this->artisan('gaiacp:check-sites')->assertSuccessful();
 
         $this->assertSame(1, ActivityLog::query()->where('event', 'site.problems')->count());
-        $this->assertSame('1 new site problem(s)', $services->notifications()->sole()->data['title']);
+        $this->assertSame('1 new site problem', $services->notifications()->sole()->data['title']);
         $this->assertStringEndsWith('/admin/site-checks', $services->notifications()->sole()->data['actions'][0]['url']);
         $this->assertSame(0, $billing->notifications()->count());
 

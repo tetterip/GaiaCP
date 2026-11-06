@@ -2,7 +2,7 @@
     "API password": "Password API",
     "API username": "Nome utente API",
     "Account balance: :balance": "Saldo dell'account: :balance",
-    "Connected: :count certificate(s) for sale": "Connesso: :count certificati in vendita",
+    "Connected: :count certificate for sale|Connected: :count certificates for sale": "Connesso: :count certificato in vendita|Connesso: :count certificati in vendita",
     "Connection": "Connessione",
     "Dcv method": "Metodo DCV",
     "GoGetSSL": "GoGetSSL",

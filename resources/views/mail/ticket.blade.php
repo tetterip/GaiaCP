@@ -14,7 +14,7 @@
 </x-mail::panel>
 
 @if ($files)
-{{ __(':count file(s) attached', ['count' => $files]) }}
+{{ trans_choice(':count file attached|:count files attached', $files) }}
 
 @endif
 <x-mail::button :url="$url">

@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up online, :down offline",
     "API token": "API-token",
-    "Connected: :count monitor(s)": "Verbonden: :count monitor(s)",
+    "Connected: :count monitor|Connected: :count monitors": "Verbonden: :count monitor|Verbonden: :count monitors",
     "Connection": "Verbinding",
     "Could not reach HetrixTools: :error": "Kon HetrixTools niet bereiken: :error",
     "Fill in the HetrixTools API token under Settings → HetrixTools.": "Vul het API-token van HetrixTools in onder Instellingen → HetrixTools.",

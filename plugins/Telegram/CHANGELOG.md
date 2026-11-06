@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.5] - 2026-11-07
+
+- /owed says "1 payment notice" or "3 payment notices" in every language, instead of "notice(s)"
+
 ## [1.0.4] - 2026-11-06
 
 - /today counts the orders and tickets of today in your timezone, and /owed reads due dates as days, now that GaiaCP stores times in UTC

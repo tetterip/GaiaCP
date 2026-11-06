@@ -158,7 +158,7 @@ class HetrixToolsMonitoringTest extends TestCase
             ->assertFormSet(['hetrix_tools.api_token' => null])
             ->fillForm(['hetrix_tools' => ['api_token' => 'ht-typed']])
             ->callAction('testConnection')
-            ->assertNotified('Connected: 3 monitor(s)')
+            ->assertNotified('Connected: 3 monitors')
             ->call('save')
             ->assertHasNoFormErrors()
             ->assertSet('data.hetrix_tools.api_token', null);

@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up erreichbar, :down ausgefallen",
     "Api key": "API-Schlüssel",
-    "Connected: :count monitor(s)": "Verbunden: :count Monitor(e)",
+    "Connected: :count monitor|Connected: :count monitors": "Verbunden: :count Monitor|Verbunden: :count Monitore",
     "Connection": "Verbindung",
     "Could not reach UptimeRobot: :error": "UptimeRobot nicht erreichbar: :error",
     "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Geben Sie den UptimeRobot-API-Schlüssel unter Einstellungen → UptimeRobot ein.",

@@ -227,7 +227,7 @@ class CompareServerAccountsTest extends TestCase
 
         $this->artisan('gaiacp:compare-servers')->assertSuccessful();
         $this->assertSame(1, ActivityLog::query()->where('event', 'server.accounts_differ')->count());
-        $this->assertSame('nl1: 1 new difference(s) with GaiaCP', $super->notifications()->sole()->data['title']);
+        $this->assertSame('nl1: 1 new difference with GaiaCP', $super->notifications()->sole()->data['title']);
 
         // Nothing new: quiet
         $this->artisan('gaiacp:compare-servers')->assertSuccessful();

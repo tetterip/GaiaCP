@@ -1,5 +1,5 @@
 {
-    ":sites site(s) checked, :problems with a problem": ":sites site kontrol edildi, :problems sorunlu",
+    ":count site checked, :problems with a problem|:count sites checked, :problems with a problem": ":count site kontrol edildi, :problems tanesinde sorun var",
     "Behind Cloudflare": "Cloudflare arkasında",
     "Check all now": "Şimdi hepsini kontrol et",
     "Checked": "Kontrol edildi",

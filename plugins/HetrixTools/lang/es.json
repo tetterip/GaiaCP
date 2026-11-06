@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up activos, :down caídos",
     "API token": "Token de API",
-    "Connected: :count monitor(s)": "Conectado: :count monitor(es)",
+    "Connected: :count monitor|Connected: :count monitors": "Conectado: :count monitor|Conectado: :count monitores",
     "Connection": "Conexión",
     "Could not reach HetrixTools: :error": "No se pudo conectar con HetrixTools: :error",
     "Fill in the HetrixTools API token under Settings → HetrixTools.": "Escriba el token de API de HetrixTools en Ajustes → HetrixTools.",

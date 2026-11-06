@@ -1,5 +1,5 @@
 {
-    ":sites site(s) checked, :problems with a problem": ":sites siti verificati, :problems con un problema",
+    ":count site checked, :problems with a problem|:count sites checked, :problems with a problem": ":count sito verificato, :problems con un problema|:count siti verificati, :problems con un problema",
     "Behind Cloudflare": "Dietro Cloudflare",
     "Check all now": "Verifica tutti ora",
     "Checked": "Verificato",

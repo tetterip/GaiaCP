@@ -74,7 +74,7 @@ class TelegramBotTest extends TestCase
         $this->command('/owed@GaiaBot')->assertOk()
             ->assertJsonPath('method', 'sendMessage')
             ->assertJsonPath('chat_id', '-1001')
-            ->assertJsonPath('text', "🧾 <b>Overdue: 3 payment notice(s), €125.00</b>\n1. Nikos Papas – €100.00 (2, since 01/10/2026)\n2. Acme – €25.00 (1, since 20/10/2026)");
+            ->assertJsonPath('text', "🧾 <b>Overdue: 3 payment notices, €125.00</b>\n1. Nikos Papas – €100.00 (2, since 01/10/2026)\n2. Acme – €25.00 (1, since 20/10/2026)");
 
         $this->assertTrue(ActivityLog::query()->where('event', 'telegram.command')->exists());
         $this->command('/today')->assertOk()->assertJsonPath('text', fn (string $text) => str_contains($text, 'Today, 24/10/2026'));

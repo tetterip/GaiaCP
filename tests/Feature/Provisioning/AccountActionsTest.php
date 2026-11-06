@@ -32,7 +32,7 @@ class AccountActionsTest extends TestCase
 
         Livewire::test(EditServer::class, ['record' => $service->server_id])
             ->callAction('testConnection')
-            ->assertNotified(Notification::make()->title('Connected: WHM 11.130.0.4')->body('2 package(s): basic, pro')->success());
+            ->assertNotified(Notification::make()->title('Connected: WHM 11.130.0.4')->body('2 packages: basic, pro')->success());
     }
 
     public function test_test_connection_shows_the_error(): void

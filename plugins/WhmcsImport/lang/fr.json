@@ -1,6 +1,6 @@
 {
     "$cc_encryption_hash in WHMCS's configuration.php. Needed for hosting account and Plesk server passwords.": "$cc_encryption_hash dans le configuration.php de WHMCS. Nécessaire pour les mots de passe des comptes d'hébergement et des serveurs Plesk.",
-    ":count problem(s)": ":count problème(s)",
+    ":count problem|:count problems": ":count problème|:count problèmes",
     "API identifier": "Identifiant API",
     "API secret": "Secret API",
     "Already here (linked)": "Déjà présent (lié)",

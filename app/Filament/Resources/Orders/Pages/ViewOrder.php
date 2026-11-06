@@ -115,8 +115,7 @@ class ViewOrder extends ViewRecord
             ->modalDescription(function (Order $record) {
                 $unpaid = app(RecordOrderPayment::class)->unpaid($record);
 
-                return __('Records the first payment of :count item(s), :total in total. Each due date moves forward one cycle.', [
-                    'count' => $unpaid->count(),
+                return trans_choice('Records the first payment of :count item, :total in total. Its due date moves forward one cycle.|Records the first payment of :count items, :total in total. Each due date moves forward one cycle.', $unpaid->count(), [
                     'total' => Money::format($unpaid->sum(fn (Service $s) => $s->firstPaymentCents()), $record->currency()),
                 ]);
             })
@@ -141,7 +140,7 @@ class ViewOrder extends ViewRecord
                     $data['reference'] ?? null,
                 );
 
-                Notification::make()->title(__(':count payment(s) recorded', ['count' => count($payments)]))->success()->send();
+                Notification::make()->title(trans_choice(':count payment recorded|:count payments recorded', count($payments)))->success()->send();
 
                 foreach ($recorder->setupErrors as $item => $error) {
                     Notification::make()
@@ -288,7 +287,7 @@ class ViewOrder extends ViewRecord
     {
         return match (true) {
             $service->type === ServiceType::Domain => match ($service->registration()->registration_type) {
-                DomainRegistrationType::Register => __('Registers :domain for :years year(s).', ['domain' => $service->domain, 'years' => $service->registrationYears()]),
+                DomainRegistrationType::Register => trans_choice('Registers :domain for :count year.|Registers :domain for :count years.', $service->registrationYears(), ['domain' => $service->domain]),
                 DomainRegistrationType::Transfer => __('Requests the transfer of :domain.', ['domain' => $service->domain]),
                 DomainRegistrationType::External => __('Marks :domain active.', ['domain' => $service->domain]),
             },

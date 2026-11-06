@@ -159,7 +159,7 @@ class ClientAlerts
             ] : [null, null, null, null, null],
             'domain.renewed' => [
                 __('Domain :name renewed', ['name' => $name]),
-                isset($log->properties['years']) ? __('For :years year(s)', ['years' => (int) $log->properties['years']]) : null,
+                isset($log->properties['years']) ? trans_choice('For :count year|For :count years', (int) $log->properties['years']) : null,
                 'heroicon-o-globe-alt', 'success', self::serviceUrl($service),
             ],
             // Nothing for the client to do when GaiaCP validated it on their hosting.

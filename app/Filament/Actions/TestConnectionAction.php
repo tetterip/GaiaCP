@@ -25,7 +25,7 @@ class TestConnectionAction
 
                     Notification::make()
                         ->title(__('Connected: :version', ['version' => $version]))
-                        ->body(__(':count package(s): :list', ['count' => count($packages), 'list' => implode(', ', $packages) ?: __('none')]))
+                        ->body(trans_choice(':count package: :list|:count packages: :list', count($packages), ['list' => implode(', ', $packages) ?: __('none')]))
                         ->success()
                         ->send();
                 } catch (ProvisioningException $e) {

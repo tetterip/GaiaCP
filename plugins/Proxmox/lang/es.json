@@ -1,5 +1,5 @@
 {
-    ":count address(es) added": ":count dirección(es) añadida(s)",
+    ":count address added|:count addresses added": ":count dirección añadida|:count direcciones añadidas",
     "A new VPS takes the first free address of its server, and gives it back when it is terminated. A server with no addresses here gives its VPS an address by DHCP.": "Un VPS nuevo toma la primera dirección libre de su servidor, y la devuelve cuando se da de baja. Un servidor sin direcciones aquí da a su VPS una dirección por DHCP.",
     "Add addresses": "Añadir direcciones",
     "Add the Proxmox server under Settings → Servers with the type <strong>Proxmox VE</strong>. Each product's package is the name of a KVM template with cloud-init: the VPS is a full clone of it, with its CPU, memory and disk, on the template's node.": "Añada el servidor Proxmox en Ajustes → Servidores con el tipo <strong>Proxmox VE</strong>. El paquete de cada producto es el nombre de una plantilla KVM con cloud-init: el VPS es un clon completo de ella, con su CPU, memoria y disco, en el nodo de la plantilla.",
