@@ -70,7 +70,7 @@ class LoginSecurityTest extends TestCase
         // The right password no longer helps, and the pages show the ban
         $this->clientLogin('secret-password')->assertRedirect('/login');
         $this->assertGuest('client');
-        $this->get('/login')->assertForbidden()->assertSee('127.0.0.1')->assertSee('Failed login attempts: 3')->assertSee($ban->expires_at->timezone('Europe/Athens')->format('d/m/Y (H:i)'));
+        $this->get('/login')->assertForbidden()->assertSee('127.0.0.1')->assertSee('Failed login attempts: 3')->assertSee($ban->expires_at->timezone(config('app.timezone'))->format('d/m/Y (H:i)'));
         $this->get('/admin/login')->assertForbidden();
         $this->get('/password-reset/request')->assertForbidden();
 

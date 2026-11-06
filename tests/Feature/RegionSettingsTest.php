@@ -28,7 +28,7 @@ class RegionSettingsTest extends TestCase
         $this->actingAs(User::factory()->create());
 
         Livewire::test(GeneralSettings::class)
-            ->assertFormSet(['region' => ['timezone' => 'Europe/Athens', 'date_format' => 'd/m/Y', 'country' => 'GR']])
+            ->assertFormSet(['region' => ['timezone' => config('app.timezone'), 'date_format' => 'd/m/Y', 'country' => 'GR']])
             ->fillForm(['region' => ['timezone' => 'America/Chicago', 'date_format' => 'm/d/Y', 'country' => 'US']])
             ->call('save')
             ->assertHasNoFormErrors();
@@ -75,7 +75,7 @@ class RegionSettingsTest extends TestCase
         Setting::query()->create(['key' => 'region.country', 'value' => 'CY']);
         $migration->up();
 
-        $this->assertSame('Europe/Athens', Setting::query()->find('region.timezone')->value);
+        $this->assertSame(config('app.timezone'), Setting::query()->find('region.timezone')->value);
         $this->assertSame('d/m/Y', Setting::query()->find('region.date_format')->value);
         $this->assertSame('CY', Setting::query()->find('region.country')->value); // already set: kept
         $this->assertSame([['name' => 'ΦΠΑ', 'rate' => 17, 'country' => null]], Setting::query()->find('tax.rules')->value);
