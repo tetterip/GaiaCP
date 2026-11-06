@@ -48,6 +48,7 @@ There is no npm step: the panels use Filament's own assets.
 
 ```bash
 ./vendor/bin/pint            # code style (Laravel preset)
+composer analyse             # static analysis (Larastan, level 5; new errors only, the rest is in the baseline)
 php artisan test             # the whole suite, in-memory SQLite
 ```
 

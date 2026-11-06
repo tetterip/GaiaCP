@@ -1,0 +1,20 @@
+# Static analysis (Larastan): `composer analyse`, and in CI. The baseline holds the errors found when it was added
+# (mostly Filament's untyped closures and query scopes it cannot see); new code must pass without adding to it.
+# After fixing some of them, `composer analyse -- --generate-baseline=phpstan-baseline.neon` shrinks it.
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    parseModelCastsMethod: true
+    paths:
+        - app
+        - plugins
+        - config
+        - routes
+        - database
+    excludePaths:
+        - plugins/*/views/*
+    tmpDir: storage/framework/cache/phpstan
+    reportUnmatchedIgnoredErrors: false

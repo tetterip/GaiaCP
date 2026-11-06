@@ -13,7 +13,9 @@ honest when features are added or dropped.
   Never a bare `composer install` first: the GitHub proxy refuses package zips, so it clones ~160 repositories
   (5+ minutes); `bin/composer-cache-from-git` fills the cache from shallow clones instead
 - Tests: run the ones for what you changed (`php artisan test --filter=<TestName>`), plus `LocalesTest` after adding
-  texts; the full suite (about 90 s) once before pushing, with `./vendor/bin/pint`
+  texts; the full suite (about 90 s) once before pushing, with `./vendor/bin/pint` and `composer analyse` (Larastan
+  level 5, about a minute; `phpstan-baseline.neon` holds the older errors: fix a new one, never add it to the baseline;
+  set `PAO_DISABLE=1` for its full output)
 - CI also runs the suite on MySQL 8.4 and MariaDB 10.11 (and PHP 8.3 / 8.4 / 8.5). To try MariaDB locally:
   `DB_CONNECTION=mariadb DB_HOST=127.0.0.1 DB_DATABASE=gaiacp_test DB_USERNAME=… DB_PASSWORD=… php artisan test`.
   A test that changes the schema or uses `DatabaseMigrations` must skip itself there, or the tests after it lose their tables
@@ -70,6 +72,7 @@ Read the file for the area you are changing before you change it; don't read the
 
 - `php artisan test`: test suite (PHPUnit, in-memory SQLite)
 - `./vendor/bin/pint`: code style (Laravel preset); run before committing
+- `composer analyse`: static analysis (Larastan, `phpstan.neon`); CI fails on an error not in the baseline
 - `php artisan migrate`: apply migrations
 - `php artisan schedule:run`: the daily automation; production runs it every minute from cron
 - `php artisan gaiacp:send-reminders --dry-run [--date=Y-m-d]`: preview the daily run (payment notices created and
