@@ -2,6 +2,7 @@
 
 namespace App\Updates;
 
+use App\Backups\RestoreBackup;
 use App\Backups\RunBackup;
 use App\Models\ActivityLog;
 use App\Support\Version;
@@ -14,11 +15,13 @@ use Throwable;
 use ZipArchive;
 
 /**
- * Updates this install to a newer release (Settings → System → Updates, `gaiacp:update`): backs up the
- * database, downloads and checks the release zip (its SHA-256, signed by a trusted key when keys are set), puts the site in maintenance mode, swaps in the new code
- * (keeping .env, storage/, the SQLite file, other plugins and anything added to public/), runs the migrations
- * and comes back up. When a step after the swap fails the old code is put back, and the database backup
- * taken first is there to restore.
+ * Updates this install to a newer release (Settings → System → Updates, `gaiacp:update`): downloads and checks the
+ * release zip (its SHA-256, signed by a trusted key when keys are set), puts the site in maintenance mode, backs up the
+ * database (with its logs, so nothing done meanwhile is missing from it), swaps in the new code (keeping .env, storage/,
+ * the SQLite file, other plugins and anything added to public/), runs the migrations and comes back up. When a step
+ * after the swap fails, the old code is put back and the database is restored from that backup: on MySQL / MariaDB each
+ * migration commits its own changes, so a failed one would leave the old code on a half-changed database. If the
+ * restore fails too, the site stays in maintenance mode with the backup's name logged for gaiacp:restore.
  *
  * A Git checkout (staging, deployed from Git) is updated by deploying instead: update() refuses it.
  */
@@ -94,12 +97,6 @@ class Updater
         File::ensureDirectoryExists($work);
 
         try {
-            $say('Backing up the database');
-            $backup = app(RunBackup::class)();
-            if (isset($backup->errors['backup'])) {
-                throw new RuntimeException('The backup failed, so nothing was changed: '.$backup->errors['backup']);
-            }
-
             $say("Downloading GaiaCP {$release->version}");
             $source = $this->download($release, $work);
         } catch (Throwable $e) {
@@ -109,8 +106,26 @@ class Updater
             throw $e;
         }
 
+        // Down before the backup, so no order or payment made meanwhile is lost if the backup is put back
         $say('Switching to maintenance mode');
         Artisan::call('down', ['--retry' => 30]);
+
+        try {
+            $say('Backing up the database');
+            $backup = app(RunBackup::class)(includeLogs: true, includeFiles: false);
+            if (isset($backup->errors['backup'])) {
+                throw new RuntimeException('The backup failed, so nothing was changed: '.$backup->errors['backup']);
+            }
+        } catch (Throwable $e) {
+            Artisan::call('up');
+            File::deleteDirectory($work);
+            ActivityLog::record('update.failed', "Update from {$from} to {$release->version} failed: {$e->getMessage()}");
+
+            throw $e;
+        }
+
+        $migrating = false;
+
         try {
             $say('Replacing the code');
             $this->swap($source, "{$work}/previous");
@@ -120,14 +135,33 @@ class Updater
             }
 
             $say('Updating the database');
+            $migrating = true;
             $this->migrate();
         } catch (Throwable $e) {
             $this->restore("{$work}/previous");
-            Artisan::call('up');
-            ActivityLog::record('update.failed', "Update from {$from} to {$release->version} failed, the code of {$from} was put back: {$e->getMessage()}"
-                .($backup->path ? ' Database backup from before: '.basename($backup->path) : ''));
+            $file = basename((string) $backup->path);
 
-            throw new RuntimeException("The update failed and {$from} was put back: {$e->getMessage()}", previous: $e);
+            if (! $migrating) {
+                Artisan::call('up');
+                ActivityLog::record('update.failed', "Update from {$from} to {$release->version} failed, the code of {$from} was put back (the database was not changed yet): {$e->getMessage()}");
+
+                throw new RuntimeException("The update failed and {$from} was put back: {$e->getMessage()}", previous: $e);
+            }
+
+            try {
+                $say('Putting the database back');
+                $this->restoreDatabase((string) $backup->path);
+            } catch (Throwable $restoreError) {
+                // Old code on a database the new migrations half changed: better down than running on it
+                rescue(fn () => ActivityLog::record('update.failed', "Update from {$from} to {$release->version} failed and the code of {$from} was put back, but restoring the database failed too: {$restoreError->getMessage()}. The site stays in maintenance mode: run php artisan gaiacp:restore with {$file}, then php artisan up. The update failed with: {$e->getMessage()}"), report: false);
+
+                throw new RuntimeException("The update failed and {$from} was put back, but the database could not be restored ({$restoreError->getMessage()}). The site stays in maintenance mode: restore the backup {$file} with php artisan gaiacp:restore, then run php artisan up. The update failed with: {$e->getMessage()}", previous: $e);
+            }
+
+            Artisan::call('up');
+            ActivityLog::record('update.failed', "Update from {$from} to {$release->version} failed, the code of {$from} and the database from the backup {$file} were put back: {$e->getMessage()}");
+
+            throw new RuntimeException("The update failed and {$from} was put back, with the database as it was before: {$e->getMessage()}", previous: $e);
         }
 
         Artisan::call('up');
@@ -136,6 +170,12 @@ class Updater
 
         ActivityLog::record('update.completed', "Updated from {$from} to {$release->version}", properties: ['from' => $from, 'to' => $release->version]);
         $say("GaiaCP {$release->version} is installed");
+    }
+
+    /** The database as the backup taken before the swap has it (the old code is back by then). */
+    protected function restoreDatabase(string $backup): void
+    {
+        (new RestoreBackup($backup, config('gaiacp.backups.zip_password')))->database();
     }
 
     /** The new release's migrations, then no cache of the old code left. */

@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Updates: when the database changes of a new version fail, the database is now put back as it was, not only the old
+  code (MySQL / MariaDB keep each change already made, which left the old version running on a half-changed
+  database). The backup is now taken in maintenance mode, so nothing done while the release downloads is lost, and it
+  keeps the logs. If the database cannot be put back, the site stays in maintenance mode and the activity log says
+  which backup to restore with `gaiacp:restore`.
 - Backups now hold the uploaded files too (logo, page pictures, ticket attachments, client downloads, uploaded
   translations, plugins you added; Settings → Backups → Include files, on by default), and a zip with a password also
   carries the `APP_KEY`, so one backup is enough to get everything back. New `php artisan gaiacp:restore` puts a backup

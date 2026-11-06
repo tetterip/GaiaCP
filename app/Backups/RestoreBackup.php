@@ -95,6 +95,23 @@ class RestoreBackup
      */
     public function __invoke(?string $connection = null, bool $migrate = true): array
     {
+        $this->inspect(); // the files' paths are checked before the database is touched
+        $tables = $this->database($connection);
+        $files = $this->restoreFiles();
+        $key = $this->restoreKey();
+
+        if ($migrate) {
+            Artisan::call('migrate', ['--force' => true, '--database' => $connection]);
+        }
+
+        ActivityLog::record('backup.restored', sprintf('Backup %s restored: %d tables, %d files%s', basename($this->path), $tables, $files, $key === 'set' ? ', APP_KEY set from the backup' : ''));
+
+        return ['tables' => $tables, 'files' => $files, 'key' => $key];
+    }
+
+    /** Only the database, as it was (the updater after a failed migration); @return int tables */
+    public function database(?string $connection = null): int
+    {
         $info = $this->inspect();
         $db = DB::connection($connection);
 
@@ -103,18 +120,9 @@ class RestoreBackup
         }
 
         $tables = $this->restoreDatabase($db);
-        $files = $this->restoreFiles();
-        $key = $this->restoreKey();
-
-        if ($migrate) {
-            Artisan::call('migrate', ['--force' => true, '--database' => $connection]);
-        }
-
         Cache::flush(); // settings and the rest were cached from the database that is gone
 
-        ActivityLog::record('backup.restored', sprintf('Backup %s restored: %d tables, %d files%s', basename($this->path), $tables, $files, $key === 'set' ? ', APP_KEY set from the backup' : ''));
-
-        return ['tables' => $tables, 'files' => $files, 'key' => $key];
+        return $tables;
     }
 
     private function engine(string $driver): string
