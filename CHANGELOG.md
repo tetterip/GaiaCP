@@ -11,6 +11,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   and shown in the timezone of Settings → General → Region. The update converts the times already kept, each with its
   own summer or winter offset; plain dates (due dates, expiry dates) do not change. On MySQL / MariaDB the connection
   now runs in UTC, so the database server's own timezone no longer matters.
+- Settings → General → Region: changing the timezone is now safe at any time. Times already saved stay the same
+  moment and are shown in the new timezone (the help text there and the admin guide say so).
 - Plugin API: a plugin's models use `App\Models\Concerns\StoresTimesInUtc` (new in the API) so their times are stored in
   UTC like GaiaCP's; tables of a plugin are converted by the update too. A time read without a model (`DB::table()`)
   is UTC text: `App\Support\StoredTime::parse()` gives it in local time. A Carbon given to a query is converted to UTC,

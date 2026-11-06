@@ -2340,7 +2340,7 @@
     "since :date": ":date tarihinden beri",
     "{1} Sent to :count device|[2,*] Sent to :count devices": "{1} :count cihaza gönderildi|[2,*] :count cihaza gönderildi",
     "Date format": "Tarih biçimi",
-    "Due dates, the daily run and every time shown. Times already saved keep their clock time.": "Vade tarihleri, günlük çalışma ve gösterilen her saat. Zaten kaydedilmiş saatler saat değerlerini korur.",
+    "Due dates, the daily run and every time shown. Times are saved in UTC, so the ones already saved move to the new timezone with the rest.": "Vade tarihleri, günlük çalışma ve gösterilen her saat. Saatler UTC olarak kaydedilir, bu yüzden zaten kaydedilmiş olanlar da yeni saat diliminde gösterilir.",
     "New clients start in it, and phone numbers without a country code are taken as its.": "Yeni müşteriler bununla başlar ve ülke kodu olmayan telefon numaraları bu ülkenin kabul edilir.",
     "New clients start in the country. Prices are entered in the base currency, which can't change once there are prices; more currencies can be added under Settings → Currencies. The rest can be changed later under Settings → General.": "Yeni müşteriler bu ülkeyle başlar. Fiyatlar temel para biriminde girilir; fiyatlar olduktan sonra değişemez; Ayarlar → Para birimleri altından daha fazla para birimi eklenebilir. Gerisi daha sonra Ayarlar → Genel altından değiştirilebilir.",
     "Region": "Bölge",

@@ -2340,7 +2340,7 @@
     "since :date": "sinds :date",
     "{1} Sent to :count device|[2,*] Sent to :count devices": "{1} Verzonden naar :count apparaat|[2,*] Verzonden naar :count apparaten",
     "Date format": "Datumnotatie",
-    "Due dates, the daily run and every time shown. Times already saved keep their clock time.": "Vervaldatums, de dagelijkse run en elke getoonde tijd. Al opgeslagen tijden behouden hun kloktijd.",
+    "Due dates, the daily run and every time shown. Times are saved in UTC, so the ones already saved move to the new timezone with the rest.": "Vervaldatums, de dagelijkse run en elke getoonde tijd. Tijden worden in UTC opgeslagen, dus ook al opgeslagen tijden worden in de nieuwe tijdzone getoond.",
     "New clients start in it, and phone numbers without a country code are taken as its.": "Nieuwe klanten starten in dit land, en telefoonnummers zonder landcode worden als die van dit land beschouwd.",
     "New clients start in the country. Prices are entered in the base currency, which can't change once there are prices; more currencies can be added under Settings → Currencies. The rest can be changed later under Settings → General.": "Nieuwe klanten starten in het land. Prijzen worden ingevoerd in de basisvaluta, die niet meer kan veranderen zodra er prijzen zijn; meer valuta's kunnen worden toegevoegd onder Instellingen → Valuta's. De rest kan later worden gewijzigd onder Instellingen → Algemeen.",
     "Region": "Regio",
