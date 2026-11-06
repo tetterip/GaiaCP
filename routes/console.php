@@ -144,6 +144,12 @@ if (config('gaiacp.backups.enabled')) {
         : $backup->dailyAt(config('gaiacp.backups.time'));
 }
 
+// Settings → Automation → Ping URL: tells a monitoring service outside GaiaCP that cron runs (nothing to do without one)
+Schedule::command('gaiacp:heartbeat')
+    ->everyFiveMinutes()
+    ->withoutOverlapping(15)
+    ->onOneServer();
+
 // Servers linked to a monitor (Uptime Kuma, …): does nothing while none is.
 Schedule::command('gaiacp:check-monitors')
     ->everyFiveMinutes()

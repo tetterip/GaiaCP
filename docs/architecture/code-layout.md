@@ -367,7 +367,9 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   (saved with Save). Request shape follows a working WooCommerce invoicing plugin
 - `app/Support/Health/`: `SystemHealth` (the checks behind `Pages/SystemHealth`, Settings → System health, and
   `gaiacp:health`), `SchedulerMonitor` (last cron `schedule:run` and last run of each daily job, in the cache, fed by
-  `app/Listeners/RecordCommandRuns`). A new daily command goes in `SchedulerMonitor::DAILY_COMMANDS` too. Cron
+  `app/Listeners/RecordCommandRuns`). A new daily command goes in `SchedulerMonitor::DAILY_COMMANDS` too. `Heartbeat`
+  (`gaiacp:heartbeat`, every 5 minutes): GET to `automation.ping_url` while all is well, `automation.ping_fail_url`
+  (`{message}` = what failed) after a failed daily job (26 h) or backup; both encrypted settings, last result in the cache. Cron
   stopped (`stopped()`: no `schedule:run` for `STOPPED_AFTER_MINUTES`, counted from when the heartbeat was first found
   missing after an emptied cache) shows in the dashboard's Needs attention and rings the super admins' bell once
   (`scheduler.stopped`, checked on admin page loads by `Http/Middleware/AlertWhenCronStops`), then `scheduler.resumed`

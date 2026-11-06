@@ -73,6 +73,20 @@ connections to your servers and registrars. Anything marked as a problem says wh
 prints the same (add `--connections` to test the servers and registrars too) and fails when something is wrong, so a
 monitoring script can run it.
 
+### Monitoring from outside
+
+System health can only warn you while GaiaCP runs. If the server, PHP or cron stops, nothing inside GaiaCP can tell
+you. Settings → Automation → **Monitoring from outside** fixes that: give a **Ping URL** from a heartbeat monitor
+(Uptime Kuma push monitor, Healthchecks.io, Better Stack heartbeat, Cronitor) and GaiaCP calls it every 5 minutes
+while all is well. Set the monitor to expect a ping every 5 minutes, with a few minutes of grace: when the pings stop,
+it alerts you.
+
+When a daily job failed in the last day, or the last backup failed, GaiaCP calls the **Ping URL on failure** instead,
+with `{message}` in it replaced by what failed (Uptime Kuma: `…/api/push/<token>?status=down&msg={message}`;
+Healthchecks.io: the ping URL with `/fail` at the end). Without one, it sends no ping, so the monitor alerts all the
+same. Both URLs are stored encrypted, since anyone who has one can ping it. The page shows the last ping, and **Send a
+ping now** tries it at once; `php artisan gaiacp:heartbeat --dry-run` shows what would be sent.
+
 **Biggest tables** at the bottom shows which tables take the most room, and which ones backups leave empty. When the
 database or the backups grow, look there first: usually it is the module log left on.
 
