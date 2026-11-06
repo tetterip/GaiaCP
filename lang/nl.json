@@ -3847,5 +3847,18 @@
     "Ping url": "Ping-URL",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Herinnerings- en achterstandsdagen, het tijdstip van de dagelijkse run, het opschorten van onbetaalde hosting en de ping naar een externe monitor.",
     "Send a ping now": "Nu een ping sturen",
-    "The ping failed": "De ping is mislukt"
+    "The ping failed": "De ping is mislukt",
+    "Anonymize": "Anonimiseren",
+    "Anonymize this client": "Deze klant anonimiseren",
+    "Client anonymized": "Klant geanonimiseerd",
+    "Confirm": "Bevestigen",
+    "Download their data": "Zijn gegevens downloaden",
+    "It has credit: refund or use it first.": "Er is tegoed: betaal het terug of gebruik het eerst.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Er zijn diensten in afwachting, actief of opgeschort: beëindig of annuleer ze eerst.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Er zijn onbetaalde betalingsberichten: registreer de betaling of annuleer ze eerst.",
+    "Personal data": "Persoonsgegevens",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Naam, e-mail, telefoon, adres, btw-nummer, notities en eigen velden worden vervangen door 'Anonymized #:id'. De login voor het klantgedeelte, aanmeldingen, tickets met hun bestanden, de verzonden e-mails, leads en verzoeken worden verwijderd, en de naam wordt uit het activiteitenlogboek gehaald. Betalingsberichten, facturen, betalingen en tegoed blijven zoals ze zijn, met de gegevens waarop ze zijn uitgegeven, omdat de wet ze bewaart. Dit kan niet ongedaan worden gemaakt: download eerst de gegevens als de klant erom vroeg.",
+    "This client is already anonymized.": "Deze klant is al geanonimiseerd.",
+    "Type :email to confirm": "Typ :email om te bevestigen",
+    "Type the client's email exactly.": "Typ het e-mailadres van de klant precies."
 }

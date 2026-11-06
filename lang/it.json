@@ -3847,5 +3847,18 @@
     "Ping url": "URL di ping",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Giorni di promemoria e di ritardo, l'ora dell'esecuzione giornaliera, la sospensione degli hosting non pagati e il ping a un monitor esterno.",
     "Send a ping now": "Invia un ping ora",
-    "The ping failed": "Il ping è fallito"
+    "The ping failed": "Il ping è fallito",
+    "Anonymize": "Anonimizza",
+    "Anonymize this client": "Anonimizza questo cliente",
+    "Client anonymized": "Cliente anonimizzato",
+    "Confirm": "Conferma",
+    "Download their data": "Scarica i suoi dati",
+    "It has credit: refund or use it first.": "Ha del credito: rimborsalo o usalo prima.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Ha servizi in attesa, attivi o sospesi: terminali o annullali prima.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Ha avvisi di pagamento non pagati: registra il pagamento o annullali prima.",
+    "Personal data": "Dati personali",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Nome, email, telefono, indirizzo, partita IVA, note e campi personalizzati vengono sostituiti da «Anonymized #:id». Il suo accesso all'area clienti, gli accessi, i ticket con i loro file, le email inviategli, i lead e le richieste vengono eliminati, e il suo nome viene tolto dal registro attività. Avvisi di pagamento, fatture, pagamenti e credito restano come sono, con i dati a cui sono stati emessi, perché la legge li conserva. Non si può annullare: scarica prima i suoi dati se li ha chiesti.",
+    "This client is already anonymized.": "Questo cliente è già anonimizzato.",
+    "Type :email to confirm": "Scrivi :email per confermare",
+    "Type the client's email exactly.": "Scrivi esattamente l'email del cliente."
 }

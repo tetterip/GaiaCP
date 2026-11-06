@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Personal data requests (GDPR): on a client, super admins can **Download their data** (a zip with every record kept
+  about them, without secrets or internal notes) and **Anonymize** a client whose services have ended (details replaced,
+  login, tickets, emails and leads deleted, name taken out of the activity log; payment notices, invoices and payments
+  kept for the tax records).
 - Monitoring from outside (Settings → Automation): a Ping URL from Uptime Kuma, Healthchecks.io, Better Stack or
   Cronitor is called every 5 minutes, so you hear when cron or the server stops; a second URL is called with what
   failed when a daily job or the last backup failed. New `php artisan gaiacp:heartbeat`.

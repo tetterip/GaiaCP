@@ -3847,5 +3847,18 @@
     "Ping url": "URL de ping",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Jours de rappel et de retard, l'heure de l'exécution quotidienne, la suspension des hébergements impayés et le ping vers un moniteur externe.",
     "Send a ping now": "Envoyer un ping maintenant",
-    "The ping failed": "Le ping a échoué"
+    "The ping failed": "Le ping a échoué",
+    "Anonymize": "Anonymiser",
+    "Anonymize this client": "Anonymiser ce client",
+    "Client anonymized": "Client anonymisé",
+    "Confirm": "Confirmer",
+    "Download their data": "Télécharger ses données",
+    "It has credit: refund or use it first.": "Il a du crédit : remboursez-le ou utilisez-le d'abord.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Il a des services en attente, actifs ou suspendus : résiliez-les ou annulez-les d'abord.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Il a des avis de paiement impayés : enregistrez le paiement ou annulez-les d'abord.",
+    "Personal data": "Données personnelles",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Son nom, e-mail, téléphone, adresse, numéro de TVA, notes et champs personnalisés sont remplacés par « Anonymized #:id ». Son accès à l'espace client, ses connexions, ses tickets avec leurs fichiers, les e-mails qui lui ont été envoyés, les prospects et les demandes sont supprimés, et son nom est retiré du journal d'activité. Les avis de paiement, factures, paiements et crédit restent tels quels, avec les coordonnées auxquelles ils ont été émis, car la loi les conserve. Irréversible : téléchargez d'abord ses données s'il les a demandées.",
+    "This client is already anonymized.": "Ce client est déjà anonymisé.",
+    "Type :email to confirm": "Saisissez :email pour confirmer",
+    "Type the client's email exactly.": "Saisissez exactement l'e-mail du client."
 }

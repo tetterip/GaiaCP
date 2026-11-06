@@ -3847,5 +3847,18 @@
     "Ping url": "URL pingu",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Dni przypomnień i zaległości, godzina codziennego uruchomienia, zawieszanie nieopłaconych hostingów i ping do zewnętrznego monitora.",
     "Send a ping now": "Wyślij ping teraz",
-    "The ping failed": "Ping się nie powiódł"
+    "The ping failed": "Ping się nie powiódł",
+    "Anonymize": "Anonimizuj",
+    "Anonymize this client": "Anonimizuj tego klienta",
+    "Client anonymized": "Klient zanonimizowany",
+    "Confirm": "Potwierdź",
+    "Download their data": "Pobierz jego dane",
+    "It has credit: refund or use it first.": "Ma środki na koncie: najpierw je zwróć lub wykorzystaj.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Ma usługi oczekujące, aktywne lub zawieszone: najpierw je zakończ lub anuluj.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Ma nieopłacone powiadomienia o płatności: najpierw zarejestruj płatność lub je anuluj.",
+    "Personal data": "Dane osobowe",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Imię i nazwisko, e-mail, telefon, adres, NIP, notatki i pola własne zostają zastąpione przez „Anonymized #:id”. Jego logowanie do strefy klienta, logowania, zgłoszenia z plikami, wysłane do niego e-maile, leady i prośby zostają usunięte, a jego nazwisko znika z dziennika aktywności. Powiadomienia o płatności, faktury, płatności i środki pozostają bez zmian, z danymi, na które zostały wystawione, bo wymaga tego prawo. Nie można tego cofnąć: najpierw pobierz jego dane, jeśli o nie prosił.",
+    "This client is already anonymized.": "Ten klient jest już zanonimizowany.",
+    "Type :email to confirm": "Wpisz :email, aby potwierdzić",
+    "Type the client's email exactly.": "Wpisz dokładnie e-mail klienta."
 }

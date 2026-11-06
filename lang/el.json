@@ -3847,5 +3847,18 @@
     "Ping url": "Ping URL",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Ημέρες υπενθυμίσεων και καθυστέρησης, η ώρα της ημερήσιας εκτέλεσης, η αναστολή απλήρωτων φιλοξενιών και το ping σε εξωτερική παρακολούθηση.",
     "Send a ping now": "Στείλε ping τώρα",
-    "The ping failed": "Το ping απέτυχε"
+    "The ping failed": "Το ping απέτυχε",
+    "Anonymize": "Ανωνυμοποίηση",
+    "Anonymize this client": "Ανωνυμοποίηση αυτού του πελάτη",
+    "Client anonymized": "Ο πελάτης ανωνυμοποιήθηκε",
+    "Confirm": "Επιβεβαίωση",
+    "Download their data": "Λήψη των στοιχείων του",
+    "It has credit: refund or use it first.": "Έχει πίστωση: επίστρεψέ τη ή χρησιμοποίησέ τη πρώτα.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Έχει υπηρεσίες σε αναμονή, ενεργές ή σε αναστολή: τερμάτισέ τες ή ακύρωσέ τες πρώτα.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Έχει απλήρωτες ειδοποιήσεις πληρωμής: κατέγραψε την πληρωμή ή ακύρωσέ τες πρώτα.",
+    "Personal data": "Προσωπικά δεδομένα",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Το όνομα, το email, το τηλέφωνο, η διεύθυνση, το ΑΦΜ, οι σημειώσεις και τα πρόσθετα πεδία του γίνονται «Anonymized #:id». Η σύνδεσή του στην περιοχή πελατών, οι συνδέσεις του, τα tickets με τα αρχεία τους, τα emails που του στάλθηκαν, τα leads και τα αιτήματά του διαγράφονται, και το όνομά του βγαίνει από το αρχείο ενεργειών. Οι ειδοποιήσεις πληρωμής, τα τιμολόγια, οι πληρωμές και η πίστωση μένουν όπως είναι, με τα στοιχεία στα οποία εκδόθηκαν, γιατί τα κρατά ο νόμος. Δεν αναιρείται: κατέβασε πρώτα τα στοιχεία του αν τα ζήτησε.",
+    "This client is already anonymized.": "Ο πελάτης έχει ήδη ανωνυμοποιηθεί.",
+    "Type :email to confirm": "Γράψε :email για επιβεβαίωση",
+    "Type the client's email exactly.": "Γράψε το email του πελάτη ακριβώς."
 }

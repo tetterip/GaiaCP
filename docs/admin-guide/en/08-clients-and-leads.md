@@ -52,6 +52,23 @@ A service's client is fixed once it is set up. To give a service to someone else
 use **Move to another client** on the service: its unpaid lines leave the old client's notices, and past payments stay
 with the client who made them.
 
+### Personal data requests (GDPR)
+
+When a client asks what you keep about them, or asks to be forgotten, a super admin opens the client and uses
+**Personal data**:
+
+- **Download their data** gives a zip with everything GaiaCP keeps about the client, one JSON file per kind of record
+  (details, services and domains, orders, payment notices, invoices, payments, credit, quotes, tickets and the files
+  they attached, the emails sent to them, sign-ins and devices, requests, activity), with a README. Passwords, EPP codes
+  and other secrets, and your internal ticket notes, are left out. Send it to the client yourself.
+- **Anonymize** replaces their name, email, phone, address, VAT number, notes and custom fields with "Anonymized #id"
+  and closes the client. Their client area login, sign-ins, tickets with their files, the emails sent to them, leads
+  and requests are deleted, and their name, email and phone are taken out of the activity log texts. Payment notices,
+  invoices, payments and credit stay as they are, with the details they were issued to: tax law keeps them for years,
+  which the GDPR allows. It works only once every service is terminated or cancelled, nothing is left unpaid and the
+  credit is zero, and you confirm it by typing the client's email. It cannot be undone, so download their data first
+  if they asked for it. Old backups still hold the client until they are replaced.
+
 ## Leads
 
 Main → **Leads** keeps prospective clients apart from your clients until they buy: who they are, where they came from

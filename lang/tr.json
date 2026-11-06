@@ -3847,5 +3847,18 @@
     "Ping url": "Ping URL'si",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Hatırlatma ve gecikme günleri, günlük çalışmanın saati, ödenmemiş barındırmaların askıya alınması ve dış izlemeye ping.",
     "Send a ping now": "Şimdi ping gönder",
-    "The ping failed": "Ping başarısız oldu"
+    "The ping failed": "Ping başarısız oldu",
+    "Anonymize": "Anonimleştir",
+    "Anonymize this client": "Bu müşteriyi anonimleştir",
+    "Client anonymized": "Müşteri anonimleştirildi",
+    "Confirm": "Onayla",
+    "Download their data": "Verilerini indir",
+    "It has credit: refund or use it first.": "Kredisi var: önce iade edin veya kullanın.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Bekleyen, etkin veya askıya alınmış hizmetleri var: önce sonlandırın veya iptal edin.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Ödenmemiş ödeme bildirimleri var: önce ödemeyi kaydedin veya iptal edin.",
+    "Personal data": "Kişisel veriler",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Adı, e-postası, telefonu, adresi, vergi numarası, notları ve özel alanları \"Anonymized #:id\" ile değiştirilir. Müşteri alanı girişi, oturum açmaları, dosyalarıyla birlikte destek talepleri, ona gönderilen e-postalar, potansiyel müşteri kayıtları ve talepleri silinir ve adı etkinlik günlüğünden çıkarılır. Ödeme bildirimleri, faturalar, ödemeler ve kredi, düzenlendikleri bilgilerle olduğu gibi kalır, çünkü yasa bunları saklar. Geri alınamaz: istediyse önce verilerini indirin.",
+    "This client is already anonymized.": "Bu müşteri zaten anonimleştirildi.",
+    "Type :email to confirm": "Onaylamak için :email yazın",
+    "Type the client's email exactly.": "Müşterinin e-postasını tam olarak yazın."
 }

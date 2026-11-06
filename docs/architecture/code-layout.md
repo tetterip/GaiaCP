@@ -110,6 +110,12 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   Payments and Activity log in the sidebar; Products, Servers, Registrars, Email templates and System health in the Settings cluster), shared actions (`RecordPaymentAction`, `ServiceLifecycleActions` =
   the "Account" menu, `DomainActions` = the "Registrar" menu, `TestConnectionAction`),
   dashboard widgets
+- `app/Privacy/`: data requests (GDPR) from the client page's Personal data menu (super admins,
+  `ClientPrivacyActions`): `ClientDataExport` (one JSON per table about the client + ticket files, secret columns and
+  internal notes left out, logged `client.data_exported`) and `AnonymizeClient` (only when `blockers()` is empty: no
+  pending / active / suspended service, unpaid notice or credit; details replaced, login / tickets / emails / leads /
+  requests deleted, identifiers scrubbed from `activity_logs`; notices, tax invoices, payments and credit kept; logged
+  `client.anonymized`). A new table holding a client's personal data belongs in both.
 - `app/Backups/`: `RunBackup` (SQL dump (always the zip's first entry) + `files/` (`RunBackup::files()`: storage/app/public,
   storage/app/private without `SKIPPED_FOLDERS`, plugins not bundled; Include files) + `app-key.txt` only with a zip
   password + `README.txt` → zip, every entry AES-256 with Settings → Backups' zip password → kept in
