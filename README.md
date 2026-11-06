@@ -169,7 +169,8 @@ php artisan migrate --seed   # demo data; log in as admin@example.com / password
 php artisan serve            # then open http://localhost:8000/admin
 ```
 
-Run the tests with `php artisan test` and the code style check with `./vendor/bin/pint`. SQLite is enough; there is
+Run the tests with `php artisan test`, the code style check with `./vendor/bin/pint` and the static analysis with
+`composer analyse`. SQLite is enough; there is
 no front-end build step.
 
 ## Contributing

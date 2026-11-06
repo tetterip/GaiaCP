@@ -48,6 +48,11 @@ jobs:
         if: matrix.php == '8.3'
         run: ./vendor/bin/pint --test
 
+      # Larastan at level 5; phpstan-baseline.neon holds the errors from before it was added, so only new ones fail
+      - name: Static analysis
+        if: matrix.php == '8.3'
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G --no-progress --error-format=github
+
       - name: Tests
         run: php artisan test
         env:

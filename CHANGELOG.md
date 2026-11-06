@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Development: static analysis with Larastan (level 5, `composer analyse`), in CI too. The errors found when it was
+  added are in `phpstan-baseline.neon`; a pull request fails on a new one.
 - Client emails sent from a page (Record payment, a ticket reply, an invite…) wait on the queue, so a slow mail server
   no longer holds the page up: the scheduler sends them within a minute, three tries, then Settings → Failed jobs.
   Settings → Mail → Send client emails in the background (on) turns it off; the daily run's emails still go at once.
