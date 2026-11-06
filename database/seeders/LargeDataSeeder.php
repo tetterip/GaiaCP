@@ -30,7 +30,7 @@ class LargeDataSeeder extends Seeder
 {
     public function run(): void
     {
-        $count = (int) env('LARGE_CLIENTS', 2000);
+        $count = (int) (getenv('LARGE_CLIENTS') ?: 2000);
         $today = CarbonImmutable::today();
         $servers = Server::query()->pluck('id')->all() ?: [Server::factory()->create()->id];
         $products = Product::query()->where('type', ServiceType::Hosting)->pluck('id')->all();
