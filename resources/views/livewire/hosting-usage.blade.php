@@ -76,21 +76,22 @@
                         @endif
                     </div>
                 @endforeach
+                @isset ($machine)
+                    <div class="gcp-u-tile" @if (! $addresses) style="grid-column: 1 / -1" @endif>
+                        <div class="gcp-u-label">@svg('heroicon-o-globe-alt') {{ __('IP addresses') }}</div>
+                        @forelse ($addresses as $address)
+                            <div class="gcp-u-address">{{ $address }}</div>
+                        @empty
+                            <div class="gcp-u-limit">
+                                {{ $client ? __('Not known yet. Please contact us if you need it.') : __('Not known: the VPS takes it by DHCP and has no QEMU guest agent to report it. Give the server addresses under Settings → Proxmox → IP addresses, or install qemu-guest-agent in the template.') }}
+                            </div>
+                        @endforelse
+                    </div>
+                @endisset
             </div>
         @endif
 
         @isset ($machine)
-            <div class="gcp-u-tile">
-                <div class="gcp-u-label">@svg('heroicon-o-globe-alt') {{ __('IP addresses') }}</div>
-                @forelse ($addresses as $address)
-                    <div class="gcp-u-address">{{ $address }}</div>
-                @empty
-                    <div class="gcp-u-limit">
-                        {{ $client ? __('Not known yet. Please contact us if you need it.') : __('Not known: the VPS takes it by DHCP and has no QEMU guest agent to report it. Give the server addresses under Settings → Proxmox → IP addresses, or install qemu-guest-agent in the template.') }}
-                    </div>
-                @endforelse
-            </div>
-
             @if ($login)
                 <div class="gcp-u-limit">
                     {{ __('Inside the VPS, log in as :user with the service\'s password (SSH or the console).', ['user' => $login['user']]) }}
