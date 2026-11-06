@@ -10,10 +10,13 @@ use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Icons\Heroicon;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ListModuleLogs extends ListRecords
 {
     protected static string $resource = ModuleLogResource::class;
+
+    public const DOWNLOAD_LIMIT = 500;
 
     public function getSubheading(): ?string
     {
@@ -25,6 +28,13 @@ class ListModuleLogs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('download')
+                ->label('Download')
+                ->icon(Heroicon::OutlinedArrowDownTray)
+                ->color('gray')
+                ->tooltip(__('The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.', ['count' => self::DOWNLOAD_LIMIT]))
+                ->visible(fn () => ModuleLog::query()->exists())
+                ->action(fn () => $this->download()),
             Action::make('settings')
                 ->label(ModuleLogger::enabled() ? 'Logging settings' : 'Switch logging on')
                 ->icon(Heroicon::OutlinedAdjustmentsHorizontal)
@@ -42,5 +52,28 @@ class ListModuleLogs extends ListRecords
                     Notification::make()->success()->title(__('Module log cleared'))->send();
                 }),
         ];
+    }
+
+    /** The entries the table shows, as JSON: the real answers of a panel or registrar, to check a plugin's test fakes against. */
+    public function download(): StreamedResponse
+    {
+        $entries = $this->getFilteredSortedTableQuery()->reorder()->latest('id')->limit(self::DOWNLOAD_LIMIT)->get()
+            ->map(fn (ModuleLog $log) => [
+                'at' => $log->created_at?->toIso8601String(),
+                'module' => $log->module,
+                'action' => $log->action,
+                'status' => $log->status,
+                'duration_ms' => $log->duration_ms,
+                'url' => $log->url,
+                'request' => $log->request,
+                'response' => $log->response,
+                'error' => $log->error,
+            ])->values()->all();
+
+        return response()->streamDownload(
+            fn () => print (json_encode($entries, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)),
+            'module-log-'.now()->format('Y-m-d-His').'.json',
+            ['Content-Type' => 'application/json'],
+        );
     }
 }

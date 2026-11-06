@@ -94,7 +94,8 @@ A hosting service's page has an **Account** menu:
 Every action first asks the panel for the account's current state, so repeating one or retrying after a timeout does
 no harm. When a call fails, the service is left as it was, the error shows on screen, and it is in the Activity log
 and the dashboard's Needs attention. Turn on Settings → Logs → Logging → **Module log** to see each request and answer
-(passwords masked) when you need to find out why.
+(passwords masked) when you need to find out why. **Download** on the module log saves the entries it shows as a
+JSON file, to attach to a bug report.
 
 The **Usage** section on the service shows disk space and this month's bandwidth against the package's limits, read
 from the panel.

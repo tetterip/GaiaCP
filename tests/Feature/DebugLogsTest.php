@@ -249,6 +249,23 @@ class DebugLogsTest extends TestCase
         File::deleteDirectory($dir);
     }
 
+    public function test_the_entries_shown_can_be_downloaded_for_a_bug_report(): void
+    {
+        $this->actingAs(User::factory()->create());
+        ModuleLog::create(['module' => 'proxmox', 'action' => 'version', 'url' => 'GET https://pve.example.com:8006/api2/json/version', 'request' => 'Authorization: ********', 'status' => 200, 'response' => '{"data":{"version":"9.2"}}', 'duration_ms' => 80]);
+        ModuleLog::create(['module' => 'plesk', 'action' => 'webspace get', 'url' => 'POST https://plesk.example.com:8443/', 'request' => '<packet/>', 'status' => 200, 'response' => '<packet/>', 'duration_ms' => 120]);
+
+        $json = Livewire::test(ListModuleLogs::class)
+            ->filterTable('module', 'proxmox')
+            ->callAction('download')
+            ->assertFileDownloaded(contentType: 'application/json')
+            ->effects['download']['content'] ?? null;
+
+        $entries = json_decode(base64_decode((string) $json), true);
+        $this->assertSame(['version'], array_column($entries, 'action'), 'only what the filters show');
+        $this->assertSame('{"data":{"version":"9.2"}}', $entries[0]['response']);
+    }
+
     public function test_logging_settings_save(): void
     {
         $this->actingAs(User::factory()->create());

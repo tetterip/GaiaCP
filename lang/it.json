@@ -3887,5 +3887,6 @@
     "Username for the control panel (the VPS console)": "Nome utente per il pannello di controllo (la console del VPS)",
     "VPS": "VPS",
     "VPS Welcome Email": "Email di benvenuto VPS",
-    "shown on the VPS's page in the client area once it is known": "mostrato nella pagina del VPS nell'area clienti appena è noto"
+    "shown on the VPS's page in the client area once it is known": "mostrato nella pagina del VPS nell'area clienti appena è noto",
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Le voci mostrate (filtri e ricerca inclusi, le :count più recenti) come file JSON, per una segnalazione di errore. Password e token sono già nascosti."
 }

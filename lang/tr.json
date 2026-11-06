@@ -3887,5 +3887,6 @@
     "Username for the control panel (the VPS console)": "Kontrol paneli kullanıcı adı (VPS konsolu)",
     "VPS": "VPS",
     "VPS Welcome Email": "VPS hoş geldin e-postası",
-    "shown on the VPS's page in the client area once it is known": "bilindiği anda müşteri alanındaki VPS sayfasında gösterilir"
+    "shown on the VPS's page in the client area once it is known": "bilindiği anda müşteri alanındaki VPS sayfasında gösterilir",
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Gösterilen kayıtlar (filtreler ve arama dahil, en yeni :count kayıt) hata raporu için JSON dosyası olarak. Parolalar ve tokenlar zaten gizlenmiştir."
 }
