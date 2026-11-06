@@ -4,6 +4,9 @@
 return [
     'form' => [
         'or_groups' => [
+            'block' => [
+                'picker_group' => 'Λογική',
+            ],
             'group' => [
                 'label' => 'Ομάδα',
             ],

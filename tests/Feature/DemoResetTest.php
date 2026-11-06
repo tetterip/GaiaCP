@@ -20,6 +20,17 @@ class DemoResetTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected function setUp(): void
+    {
+        // The demo runs on SQLite only (docs/demo-site.md). Skipped before the database is touched: on MySQL / MariaDB
+        // DatabaseMigrations would roll back the tables the other tests share.
+        if ((getenv('DB_CONNECTION') ?: 'sqlite') !== 'sqlite') {
+            $this->markTestSkipped('The demo runs on SQLite only.');
+        }
+
+        parent::setUp();
+    }
+
     private function demo(): void
     {
         config(['gaiacp.demo.enabled' => true, 'gaiacp.demo.reset_minutes' => 10]);

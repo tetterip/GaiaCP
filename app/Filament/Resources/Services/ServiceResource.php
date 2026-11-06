@@ -7,6 +7,7 @@ use App\Enums\ServiceType;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesResourceLabels;
 use App\Filament\GlobalSearch\ResultTitle;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Services\Pages\CreateService;
 use App\Filament\Resources\Services\Pages\EditService;
 use App\Filament\Resources\Services\Pages\ListServices;
@@ -158,6 +159,30 @@ class ServiceResource extends Resource
         }
 
         return null;
+    }
+
+    /** The tab of the client page listing this service (a ListServices::TABS key), null for a kind without one. */
+    public static function clientTab(Service $service): ?string
+    {
+        foreach (ListServices::TABS as $tab => $types) {
+            if (in_array($service->type, $types, true)) {
+                return $tab;
+            }
+        }
+
+        return null;
+    }
+
+    /** The service's client page, on the tab listing it; null for an admin who can't open clients. */
+    public static function clientUrl(Service $service): ?string
+    {
+        $client = $service->client;
+
+        if ($client === null || ! ClientResource::canAccess() || ! ClientResource::canEdit($client)) {
+            return null;
+        }
+
+        return ClientResource::getUrl('edit', array_filter(['record' => $client, 'relation' => self::clientTab($service)]));
     }
 
     public static function form(Schema $schema): Schema

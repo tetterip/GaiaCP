@@ -5,6 +5,83 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
+  bars fit without scrolling.
+- Times are stored in UTC (payments' and tickets' times, the activity log, emails, sign-ins and every other time),
+  and shown in the timezone of Settings → General → Region. The update converts the times already kept, each with its
+  own summer or winter offset; plain dates (due dates, expiry dates) do not change. On MySQL / MariaDB the connection
+  now runs in UTC, so the database server's own timezone no longer matters.
+- Settings → General → Region: changing the timezone is now safe at any time. Times already saved stay the same
+  moment and are shown in the new timezone (the help text there and the admin guide say so).
+- Plugin API: a plugin's models use `App\Models\Concerns\StoresTimesInUtc` (new in the API) so their times are stored in
+  UTC like GaiaCP's; tables of a plugin are converted by the update too. A time read without a model (`DB::table()`)
+  is UTC text: `App\Support\StoredTime::parse()` gives it in local time. A Carbon given to a query is converted to UTC,
+  so a plain date column takes a date string (`toDateString()`) or `whereOnDate()`.
+- Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
+  **Open client** by the Client field), and the client's name in the services lists opens their page.
+- VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
+  a new VPS Welcome Email (off until switched on) sends its address and logins with the right port.
+- Plugin API: new `App\Provisioning\DescribesMachine` and `MachineDetails`, for a server panel that makes virtual
+  machines.
+- Server uptime bars: checks are stored in UTC, so the bars no longer show them two or three hours off (in any timezone
+  other than UTC) or leave the last hours empty.
+- Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,
+  registrars, payments, monitoring, settings pages, the main models and enums) and what an update may change in them:
+  breaking changes only in a minor release while GaiaCP is 0.x, listed under "Plugin API" here.
+- SQLite: the database now runs in WAL mode with a 5 second busy timeout, so cron, the client area and webhooks at the
+  same time no longer fail with "database is locked"; System health warns when it does not (`DB_JOURNAL_MODE=delete`
+  for a database on network storage).
+- Personal data requests (GDPR): on a client, super admins can **Download their data** (a zip with every record kept
+  about them, without secrets or internal notes) and **Anonymize** a client whose services have ended (details replaced,
+  login, tickets, emails and leads deleted, name taken out of the activity log; payment notices, invoices and payments
+  kept for the tax records).
+- Monitoring from outside (Settings → Automation): a Ping URL from Uptime Kuma, Healthchecks.io, Better Stack or
+  Cronitor is called every 5 minutes, so you hear when cron or the server stops; a second URL is called with what
+  failed when a daily job or the last backup failed. New `php artisan gaiacp:heartbeat`.
+- Updates: when the database changes of a new version fail, the database is now put back as it was, not only the old
+  code (MySQL / MariaDB keep each change already made, which left the old version running on a half-changed
+  database). The backup is now taken in maintenance mode, so nothing done while the release downloads is lost, and it
+  keeps the logs. If the database cannot be put back, the site stays in maintenance mode and the activity log says
+  which backup to restore with `gaiacp:restore`.
+- Backups now hold the uploaded files too (logo, page pictures, ticket attachments, client downloads, uploaded
+  translations, plugins you added; Settings → Backups → Include files, on by default), and a zip with a password also
+  carries the `APP_KEY`, so one backup is enough to get everything back. New `php artisan gaiacp:restore` puts a backup
+  back (database, files, key, newer database changes), and every zip has a README on restoring it, also in the admin
+  guide (Keeping GaiaCP healthy → Restoring a backup). A backup without a password says in its email to keep the
+  `APP_KEY` elsewhere.
+- Scheduled tasks: one that was cut short (a server restart, a process killed for memory) no longer stops that task for
+  24 hours. Each task's lock now ends before its next run is due, so client messages and monitor checks start again
+  within minutes, hourly tasks miss at most one run, and the daily ones (payment notices, suspensions, backups) run the
+  next day as usual instead of possibly skipping it.
+- REST API: a POST may send an `Idempotency-Key` header. Sent again with the same key (a retry after a timeout), it
+  answers what the first call answered and records nothing twice, so a script can no longer record the same payment
+  twice and move a service's due date two cycles on. Keys are kept 24 hours (`docs/using-the-api.md`).
+- Tests now run on MySQL 8.4 and MariaDB 10.11 as well as SQLite, and on PHP 8.3, 8.4 and 8.5, so problems that only
+  show on the production databases (a text longer than its column, row locks, text comparison) are caught before a
+  release. Fixed on the way: System health said the `pdo_mariadb` extension was missing on an install set to
+  `DB_CONNECTION=mariadb` (it is `pdo_mysql`), so `gaiacp:health` failed there. A backup made on MySQL / MariaDB is now
+  restored in the tests too.
+- Fixed on MySQL: a client who pressed Save again on a profile change already waiting for approval sent the admins the
+  change request email and bell once more each time, and the extra client fields on a payment notice could show in
+  another order than Settings → Client fields (MySQL keeps JSON keys in an order of its own).
+- Dashboard: **Needs attention** is now the day's to-do list. New lines: servers down, cancellation and upgrade requests
+  to answer, tickets waiting for a reply over 24 hours, payment notices due today, domains to check at the registrar
+  (auto renew on and the registrar's expiry within 14 days, or well before the date they are paid up to) and sent quotes
+  ending within 3 days. When nothing waits, the card is not shown.
+- Accessibility: pressing Tab always shows where you are, in every theme and both panels: a clear outline around the
+  button, link or menu item (Glass hid it entirely). Windows contrast themes now show the edges of buttons, fields and cards.
+- Accessibility: readable colours in every theme (WCAG AA, 4.5:1): links, tabs and selected buttons in the logo's own teal
+  in Gaia and Glass (a bright teal at 3.4:1 before), secondary grey text (breadcrumbs, tabs, hints, footer) a little darker,
+  and in dark mode a lighter grey for the same texts. Gaia 1.3.3, Glass 1.2.2, Flat 1.3.1.
+- Accessibility: the keyboard shortcuts list (`?`) and the welcome tour keep the keyboard focus inside while open, and the
+  list has a Close button. **Profile** → **Keyboard shortcuts** turns the single-key shortcuts off (on by default), e.g.
+  for speech input; the user menu still opens the list.
+- Accessibility, smaller fixes: a field reached with Tab no longer hides under the floating Save bar; the quote page's
+  decline reason has a real label; bigger targets for the select's clear cross and the tour's dots; the language button
+  says which language it is; Help's code blocks scroll with the keyboard; an empty VAT number cell in the clients list
+  shows a dash.
+- Fixed: a server panel error longer than 255 characters (CyberPanel sends its web server's whole output) showed a
+  page error instead of the message, on MySQL / MariaDB. The activity log keeps the whole text.
 - Security: Symfony updated to 7.4.23 for the advisories published on 4 November 2026 (forwarded headers setting the
   host of generated URLs, host placeholders in route matching, and fixes in http-foundation, html-sanitizer and mime).
 - Faster lists and daily runs on a long billing history: date filters (Overdue, Due soon, the dashboard's Billing overview
@@ -14,6 +91,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   an order's items no longer check each row's payments one by one for Record payment, and an admin page no longer runs
   the setup guide's checks for the tour's last card once the guide is hidden.
 - REST API: `paid_from` / `paid_to` on `GET /payments` must be dates (a 422 otherwise).
+- Updated Filament (5.11), Laravel (13.40), ImapEngine (1.25.7: never signs in over an unencrypted connection when
+  STARTTLS fails), svg-sanitize and PHPUnit, with Greek for Filament's new texts.
 - Indexes on payments' paid date and on orders' status + date, so reports by payment date and the daily cancelling of
   unpaid orders don't read the whole table once there are many.
 

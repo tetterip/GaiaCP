@@ -3,7 +3,8 @@
 A plugin adds one thing to GaiaCP: a server panel, a domain registrar, a payment method, a captcha, a monitoring
 service, an admin theme or any other integration. GaiaCP's own plugins in `plugins/` are complete examples
 (`plugins/UptimeRobot` is a small one). New to it? [plugin-tutorial.md](plugin-tutorial.md) builds a complete
-plugin step by step.
+plugin step by step. [plugin-api.md](plugin-api.md) lists the GaiaCP classes a plugin can rely on across
+updates.
 
 ## The folder
 
@@ -19,6 +20,9 @@ MyPlugin/
 ```
 
 - The folder name is the namespace: classes are `Plugins\MyPlugin\...`, loaded from the folder (PSR-4).
+- A model of the plugin uses `App\Models\Concerns\StoresTimesInUtc`: times are stored in UTC and read in the
+  Region's timezone. Give a plain date column a date string (`toDateString()`), not a Carbon, in a query; read a time
+  from `DB::table()` with `App\Support\StoredTime::parse()`.
 - `plugin.json` needs `version` (x.y.z). `requires` is the oldest GaiaCP it runs on; on an older one it stays off.
   `class` defaults to `Plugins\<Folder>\<Folder>Plugin`.
 - The class extends `App\Plugins\Plugin` and gives `id()` (lowercase, stable: it is stored in the database),
@@ -38,7 +42,8 @@ MyPlugin/
   undoes the action. Outside plugins, `Event::listen(GaiaEvent::class, …)` gets them too.
 - A server panel's provisioner may also implement the optional `App\Provisioning\OffersShortcuts` (client area
   Quick shortcuts), `ListsAccounts` (Servers → Compare with the server), `ControlsPower` (Start / Shut down / Restart
-  for a machine, as `plugins/Proxmox` does), `InstallsCertificates` (validates and installs SSL certificates on a
+  for a machine, as `plugins/Proxmox` does), `DescribesMachine` (the service pages show a machine's state, addresses,
+  processors, memory and disk in place of usage, and its welcome email is the VPS Welcome Email), `InstallsCertificates` (validates and installs SSL certificates on a
   hosting account, as cPanel and Plesk do) and `LimitsUsernameLength`.
 - A registrar may also implement `App\Provisioning\ChecksAvailability` (the client area's domain search asks it first),
   `EmailsEppCode`, `ManagesDomainContacts` (a domain's contact

@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.2] - 2026-11-04
+
+- Readable colours (WCAG AA): links, tabs and selected buttons in the logo's own teal instead of a bright one (3.3:1,
+  now 4.5:1 or more), and secondary grey text (breadcrumbs, tabs, hints, footer) a little darker
+
 ## [1.2.1] - 2026-11-03
 
 - The bell's and the cart's count in the top bar are solid again, so the number can be read

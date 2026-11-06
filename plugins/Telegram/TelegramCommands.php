@@ -60,7 +60,7 @@ class TelegramCommands
     private function owed(): string
     {
         $today = CarbonImmutable::today();
-        $notices = Invoice::query()->with('client')->where('status', InvoiceStatus::Unpaid)->whereDate('due_date', '<', $today)->get();
+        $notices = Invoice::query()->with('client')->where('status', InvoiceStatus::Unpaid)->whereOnDate('due_date', '<', $today)->get();
 
         if ($notices->isEmpty()) {
             return '✅ '.e(__('No overdue payment notices.'));
@@ -97,9 +97,10 @@ class TelegramCommands
     private function today(): string
     {
         $today = CarbonImmutable::today();
-        $payments = Payment::query()->whereDate('paid_on', $today)->get();
-        $orders = Order::query()->whereDate('created_at', $today)->count();
-        $tickets = Ticket::query()->whereDate('created_at', $today)->count();
+        $payments = Payment::query()->whereOnDate('paid_on', $today)->get();
+        // Times are stored in UTC: today's are those from its start to the next day's, both converted when sent
+        $orders = Order::query()->where('created_at', '>=', $today)->where('created_at', '<', $today->addDay())->count();
+        $tickets = Ticket::query()->where('created_at', '>=', $today)->where('created_at', '<', $today->addDay())->count();
 
         return '📅 <b>'.e(__('Today, :date', ['date' => $today->format(AppServiceProvider::dateFormat())])).'</b>'
             ."\n💶 ".e(__('Payments: :count, :total', ['count' => $payments->count(), 'total' => $payments->isEmpty() ? Money::format(0, (string) config('gaiacp.currency', 'EUR')) : self::totals($payments, 'amount_cents')]))

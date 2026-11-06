@@ -48,8 +48,23 @@ class GlassThemePlugin extends Plugin implements ThemeModule
     {
         return [
             // The logo's blue-teal
-            'primary' => Color::hex('#2B8486'),
-            'gray' => Color::Slate,
+            // The logo's teal (#2B8486) by hand: Color::hex() made a bright 600 (#009ba3) that links, tabs and white button
+            // text sit on at 3.4:1; this 600 is the logo's own shade and passes WCAG AA (4.5:1) on white and on the page
+            'primary' => [
+                50 => 'oklch(0.977 0.014 197.2)',
+                100 => 'oklch(0.950 0.033 197.2)',
+                200 => 'oklch(0.905 0.060 197.2)',
+                300 => 'oklch(0.840 0.090 197.2)',
+                400 => 'oklch(0.755 0.120 197.2)',
+                500 => 'oklch(0.640 0.125 197.2)',
+                600 => 'oklch(0.520 0.105 197.2)',
+                700 => 'oklch(0.460 0.090 197.2)',
+                800 => 'oklch(0.405 0.076 197.2)',
+                900 => 'oklch(0.360 0.062 197.2)',
+                950 => 'oklch(0.260 0.045 197.2)',
+            ],
+            // Slate with a darker 500, the grey of secondary text (breadcrumbs, tabs, hints), for 4.5:1 on the page
+            'gray' => array_replace(Color::Slate, [500 => 'oklch(0.500 0.040 257.417)']),
             'success' => Color::hex('#2F8A5C'),
         ];
     }

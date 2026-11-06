@@ -35,7 +35,7 @@ class ThemesTest extends TestCase
             ->assertSee('fonts.bunny.net/css?family=commissioner', false)
             ->assertSee('fonts.bunny.net/css?family=literata', false)
             ->assertSee('--gaia-side', false)
-            ->assertSee(Color::Zinc[500], false)
+            ->assertSee(Themes::find('gaia')->themeColors()['gray'][500], false)
             ->assertDontSee(Color::Emerald[500], false);
     }
 
@@ -245,7 +245,7 @@ class ThemesTest extends TestCase
 
         // The admin panel keeps its theme's colour
         Filament::setCurrentPanel('admin');
-        $this->assertSame(Color::hex('#2C7A7C'), Themes::colors(Themes::find('gaia'))['primary']);
+        $this->assertSame(Themes::find('gaia')->themeColors()['primary'], Themes::colors(Themes::find('gaia'))['primary']);
         Filament::setCurrentPanel('client');
         $this->assertSame(Color::hex('#d94f00'), Themes::colors(Themes::find('gaia'))['primary']);
     }

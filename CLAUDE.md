@@ -14,6 +14,9 @@ honest when features are added or dropped.
   (5+ minutes); `bin/composer-cache-from-git` fills the cache from shallow clones instead
 - Tests: run the ones for what you changed (`php artisan test --filter=<TestName>`), plus `LocalesTest` after adding
   texts; the full suite (about 90 s) once before pushing, with `./vendor/bin/pint`
+- CI also runs the suite on MySQL 8.4 and MariaDB 10.11 (and PHP 8.3 / 8.4 / 8.5). To try MariaDB locally:
+  `DB_CONNECTION=mariadb DB_HOST=127.0.0.1 DB_DATABASE=gaiacp_test DB_USERNAME=… DB_PASSWORD=… php artisan test`.
+  A test that changes the schema or uses `DatabaseMigrations` must skip itself there, or the tests after it lose their tables
 - Screenshots (before / after, light, dark, phone) only for bigger features or when asked, not for small UI tweaks
 - Ask the maintainer before merging to `main`: the owner's staging deploys every push to `main`, even when CI fails
 - Check `git remote -v` before pushing after a `composer install` (a failed source clone once rewrote `origin`)
@@ -35,6 +38,9 @@ honest when features are added or dropped.
 - Every Filament page and resource names its area through `LimitedToAdminArea` (`AdminAccessTest` checks it)
 - New editable setting: default in `config/gaiacp.php` (or the plugin's `config.php`), key in `Settings::KEYS` (or the
   plugin's `settingKeys()`), and in `keys()` of exactly one `SettingsFormPage`
+- Plugin API (`docs/plugin-api.md`, `App\Plugins\PluginApi`): a bundled plugin uses only classes in `STABLE` or
+  `INTERNAL` (`PluginApiTest`); a breaking change to a `STABLE` class waits for a minor release, keeps the old way
+  `@deprecated` where it can and gets a "Plugin API" line in CHANGELOG.md
 - Admin-bound emails respect each admin's Receive system emails switch; a new daily command goes in
   `SchedulerMonitor::DAILY_COMMANDS`; a new API client adds `ModuleLogger::middleware()`
 - A client-area feature updates the client guide in every language (`resources/docs/client-area/<locale>.md`, the machine
@@ -87,8 +93,12 @@ Read the file for the area you are changing before you change it; don't read the
   (Settings → Login security)
 - `php artisan gaiacp:registrar-check <domain>`: read-only check of a registrar login
 - `php artisan gaiacp:backup`: make a backup now and send it as Settings → Backups says (scheduled when enabled there)
+- `php artisan gaiacp:restore <zip> [--password= --force --database=]`: put a backup back (database replaced, files
+  written, APP_KEY set from a zip with a password, then `migrate`); admin guide → Keeping GaiaCP healthy
 - `php artisan gaiacp:prune-logs`: delete module / email log rows older than Settings → Logging keeps them, and files of
   closed tickets after Settings → Support's days (daily at 03:30; by hand: Settings → Logging → Clean up, `App\Support\LogCleanup`)
+- `php artisan gaiacp:heartbeat [--dry-run]`: ping Settings → Automation → Ping URL (every 5 minutes; the failure URL when
+  a daily job or the last backup failed), so an outside monitor alerts when cron stops
 - `php artisan gaiacp:check-monitors`: read every linked server's status from its monitoring service (every 5 minutes)
 - `php artisan gaiacp:sync-domains`: read every managed domain's expiry and nameservers (daily at 04:00)
 - `php artisan gaiacp:sync-tld-costs [--dry-run]`: update the TLDs' registrar costs from registrars that list prices
@@ -129,6 +139,10 @@ Read the file for the area you are changing before you change it; don't read the
   `App\Invoicing`): `IssueInvoice` makes a `TaxInvoice` from a notice as `Invoice::settle()` marks it paid (one per
   notice, not for "Add funds"), numbered by `InvoiceNumbers` under a row lock (`invoice_series`, no gaps, next number
   only forward); a `TaxInvoice` and its items throw on update and delete. Transmission (myDATA, Peppol) is for plugins.
+- **Times are stored in UTC, dates are days.** Models use `StoresTimesInUtc` (read back in the Region's timezone); a
+  Carbon given to a query is converted to UTC, so compare time columns with a Carbon and give date columns
+  (`due_date`, `next_due_date`) a date string or `whereOnDate()` (`Tests\GuardsDateColumns` fails otherwise); a time read
+  without a model goes through `StoredTime::parse()`. Details in `docs/architecture/code-layout.md`.
 - Money is stored as **integer cents** with an explicit currency (EUR is the base; others under Settings → Currencies);
   never floats. A service, its notices and payments stay in the currency it was created in.
 - Every automated action (reminder sent, suspension, API call) is logged via `ActivityLog::record()`

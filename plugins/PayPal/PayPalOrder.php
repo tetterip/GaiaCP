@@ -2,6 +2,7 @@
 
 namespace Plugins\PayPal;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,8 @@ use Illuminate\Support\Carbon;
 #[Fillable(['invoice_id', 'order_id', 'live', 'amount_cents', 'currency', 'status', 'capture_id', 'paid_at', 'error'])]
 class PayPalOrder extends Model
 {
+    use StoresTimesInUtc;
+
     protected $table = 'paypal_orders';
 
     public const OPEN = 'open';

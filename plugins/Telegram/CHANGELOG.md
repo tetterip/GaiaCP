@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.4] - 2026-11-06
+
+- /today counts the orders and tickets of today in your timezone, and /owed reads due dates as days, now that GaiaCP stores times in UTC
+
 ## [1.0.3] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

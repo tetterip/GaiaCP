@@ -11,6 +11,7 @@ use App\Reports\IncomeReport;
 use App\Support\Currencies;
 use App\Support\Money;
 use App\Support\Region;
+use App\Support\StoredTime;
 use Carbon\CarbonImmutable;
 use Filament\Widgets\Widget;
 use Livewire\Attributes\Session;
@@ -112,13 +113,13 @@ class ActivityChart extends Widget
 
         // One pass over each small projection: the bucket of every order and payment, found by its start
         foreach (Order::query()->whereBetween('created_at', [$from, $to])->toBase()->pluck('created_at') as $created) {
-            if (($i = $at(CarbonImmutable::parse($created))) !== null) {
+            if (($i = $at(StoredTime::parse($created))) !== null) {
                 $series[$i]['orders']++;
             }
         }
 
         foreach (Order::query()->where('status', OrderStatus::Completed)->whereBetween('completed_at', [$from, $to])->toBase()->pluck('completed_at') as $completed) {
-            if (($i = $at(CarbonImmutable::parse($completed))) !== null) {
+            if (($i = $at(StoredTime::parse($completed))) !== null) {
                 $series[$i]['completed']++;
             }
         }

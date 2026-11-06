@@ -90,6 +90,14 @@ return [
             ."Alan adınızı ad sunucularımıza veya A kaydını {\$server_ip} adresine yönlendirin.\n\n"
             .'Paket: {$package}, {$amount} {$billing_cycle}, sonraki vade {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => '{$domain} VPS\'iniz hazır',
+        'body' => "**{\$domain}** VPS'iniz hazır.\n\n"
+            ."IP adresi: {\$ip_address}<br>\nKullanıcı: {\$vps_user}<br>\nParola: {\$password}\n\n"
+            .'SSH ile bağlanın (`ssh {$vps_user}@{$ip_address}`). Konsolu ile Başlat, Kapat ve Yeniden başlat düğmeleri kontrol panelinde de bulunur: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Paket: {$package}, {$amount} {$billing_cycle}, sonraki vade {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Hizmet askıya alındı: {$service}',
         'body' => "**{\$service}** {\$domain} hizmetiniz askıya alındı.\n\nNeden: {\$suspension_reason}\n\n{\$payment_instructions}",

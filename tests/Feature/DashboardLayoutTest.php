@@ -6,6 +6,8 @@ use App\Enums\AdminArea;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Widgets\ActivityChart;
 use App\Filament\Widgets\BillingOverview;
+use App\Models\Client;
+use App\Models\Order;
 use App\Models\User;
 use App\Support\DashboardLayout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,6 +57,7 @@ class DashboardLayoutTest extends TestCase
         $this->assertSame(['SetupGuideCard', 'BillingOverview', 'ServerCapacity', 'NeedsAttention'], array_keys($shown[1]));
         $this->assertSame(['ActivityChart', 'UpcomingRenewals', 'SupportTickets'], array_keys($shown[2]));
 
+        Order::create(['client_id' => Client::factory()->create()->id]); // something waits, so Needs attention shows
         $this->actingAs($admin)->get(Dashboard::getUrl())->assertOk()
             ->assertSee('data-gx-column="2"', false)
             ->assertSee('Show / hide cards')
@@ -83,6 +86,7 @@ class DashboardLayoutTest extends TestCase
         // The hidden card keeps its place and column.
         $this->assertSame(['widget' => 'ActivityChart', 'column' => 2, 'visible' => false], collect(DashboardLayout::rows($admin->fresh()))->firstWhere('widget', 'ActivityChart'));
 
+        Order::create(['client_id' => Client::factory()->create()->id]); // something waits, so Needs attention shows
         $this->get(Dashboard::getUrl())->assertOk()
             ->assertSee('x-sortable-item="NeedsAttention"', false)
             ->assertSeeInOrder(['Open balance', 'Needs attention']);

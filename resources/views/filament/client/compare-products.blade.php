@@ -44,7 +44,7 @@
         <table class="gcp-compare-table">
             <thead>
                 <tr>
-                    <th></th>
+                    <td></td>
                     @foreach ($compare['products'] as $product)
                         <th @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
                             @if ($product['sale'] || $product['popular'] || $product['badges'] !== [] || ($product['sold_out'] ?? false))
@@ -101,7 +101,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th></th>
+                    <td></td>
                     @foreach ($compare['products'] as $product)
                         <td @class(['gcp-compare-chosen' => $product['id'] === $chosen]) @if ($product['color']) data-gcp-color="{{ $product['color'] }}" @endif>
                             @if ($product['sold_out'] ?? false)

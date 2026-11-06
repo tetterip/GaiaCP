@@ -12,8 +12,8 @@ use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 // REST API (App\Api\OpenApi describes it): a key from Settings → API keys as a bearer token, `api.key:<area>.<action>`
-// the permission each call needs. No session, cookies or CSRF.
-Route::prefix('v1')->name('api.v1.')->middleware(['api.key', 'throttle:gaiacp-api'])->group(function () {
+// the permission each call needs. No session, cookies or CSRF. A POST with an Idempotency-Key header runs once per key.
+Route::prefix('v1')->name('api.v1.')->middleware(['api.key', 'throttle:gaiacp-api', 'api.idempotent'])->group(function () {
     Route::get('/', [KeyController::class, 'show'])->name('key');
     Route::get('openapi.json', [KeyController::class, 'openApi'])->name('openapi');
 

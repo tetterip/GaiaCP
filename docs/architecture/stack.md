@@ -347,6 +347,13 @@ How the admin and client panels, users, access, security, branding, themes and l
   sidebar foot (every theme: sidebar, in both panels). The client menu, like the admin's: Home and Order, then Services
   (Hosting and Other services = the client `ServiceResource::getNavigationItems()` with `?kind=`, Domains between),
   Billing (payment notices, payments, credit) and Support (Tickets, Knowledge base, Help).
+  Accessibility: `filament/focus.blade.php` (both panels, `HEAD_END`, after the theme's styles) gives everything Tab
+  reaches a 2px `:focus-visible` outline in the primary colour, an outline so no theme's box-shadow can hide it, and
+  real borders in Windows contrast themes (`forced-colors`); a theme never removes it (`FocusMarkTest`). Colours: each
+  theme's primary 600 passes 4.5:1 on white and its grey 500 on the page (Gaia and Glass have hand-made teal palettes,
+  not `Color::hex()`, which gave a bright 600), and `filament/contrast.blade.php` reads grey 500 as 400 in dark mode
+  (`ThemeContrastTest` checks the numbers). The audit of
+  2026-11-04 (WCAG 2.2 AA) and its fixes, one PR per step, are in the maintainer's notes.
   The admin sidebar groups are Main, Billing, Services, System (`AdminPanelProvider::navigationGroups()`, in that
   order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included); avatars are
   `App\Filament\Avatars\InitialsAvatar` (an SVG data URL, nothing loaded from another site). The dashboard
@@ -391,7 +398,8 @@ How the admin and client panels, users, access, security, branding, themes and l
   `PwaController` serves `/admin/manifest.webmanifest` and the service worker `/admin/sw.js` (scope `/admin/`, shows the
   push and opens its page), `resources/views/filament/pwa.blade.php` links them; icons in `public/images/gaiacp/`
 - Region (Settings → General, `App\Support\Region`, keys `region.*`): the timezone (`Settings::put()` sets
-  `app.timezone` and PHP's default, so due dates and the daily run follow it), the date format (`AppServiceProvider::dateFormat()`,
+  `app.timezone` and PHP's default, so due dates, the daily run and the times shown follow it; times are stored in
+  UTC, see code-layout.md), the date format (`AppServiceProvider::dateFormat()`,
   one of `Region::DATE_FORMATS`; tables and date pickers use it) and the country new clients start in (`Client` fills it
   when blank; `EppPhone` reads a number without a code as the client's country's). The installer asks them with the base
   currency (`Installer::saveRegion()`, which changes `GAIACP_CURRENCY` only while nothing is priced). New installs start in

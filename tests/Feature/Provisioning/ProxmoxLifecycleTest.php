@@ -3,12 +3,15 @@
 namespace Tests\Feature\Provisioning;
 
 use App\Actions\ServiceLifecycle;
+use App\Enums\MailTemplate;
 use App\Enums\ServiceStatus;
 use App\Enums\UserRole;
 use App\Filament\Actions\ServiceLifecycleActions;
 use App\Filament\Client\Actions\HostingSelfService;
 use App\Filament\Client\Resources\Services\Pages\ViewService;
 use App\Filament\Resources\Services\Pages\EditService;
+use App\Livewire\HostingUsage;
+use App\Mail\ClientMail;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\Server;
@@ -18,10 +21,12 @@ use App\Plugins\PluginManager;
 use App\Provisioning\AccountState;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
+use App\Support\MailTemplates;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Sleep;
 use Livewire\Livewire;
 use Plugins\Proxmox\ProxmoxAddress;
@@ -201,6 +206,64 @@ class ProxmoxLifecycleTest extends TestCase
         $this->assertSame('NewPassword123', $this->vm()['config']['cipassword']);
         $this->assertSame(['username' => 'root', 'password' => 'NewPassword123'], $this->proxmoxParams['POST /nodes/pve1/qemu/100/agent/set-user-password'], 'a running VPS gets it at once through its guest agent');
         $this->assertCount(1, collect($this->proxmoxAcl)->where('users', 'bakery@pve'), 'its role on the machine comes back with it');
+    }
+
+    public function test_the_machine_shows_its_size_state_and_addresses(): void
+    {
+        ProxmoxAddress::query()->create(['server_id' => $this->server->id, 'address' => '203.0.113.10', 'prefix' => 24, 'gateway' => '203.0.113.1']);
+        $this->lifecycle->create($service = $this->pending());
+
+        $machine = $this->lifecycle->machine($service->refresh());
+        $this->assertSame([true, 1, 2048 * 1024 ** 2, 10 * 1024 ** 3, ['203.0.113.10'], false], [$machine->running, $machine->cores, $machine->memory, $machine->disk, $machine->addresses, $machine->agent]);
+        $this->assertTrue($this->lifecycle->passwordWaitsForRestart($service), 'no guest agent: the password reaches it at the next start');
+
+        $this->proxmoxVms[100]['agent'] = ['2001:db8::25', '192.168.1.40', 'fe80::1'];
+        $machine = $this->lifecycle->machine($service, fresh: true);
+        $this->assertSame([['203.0.113.10', '192.168.1.40', '2001:db8::25'], true], [$machine->addresses, $machine->agent], 'the pool address first, then IPv4 before IPv6, without link-local');
+        $this->assertFalse($this->lifecycle->passwordWaitsForRestart($service));
+
+        $this->lifecycle->power($service, 'shutdown');
+        $this->assertFalse($this->lifecycle->machine($service)->running, 'a power action reads it again');
+        $this->assertFalse($this->lifecycle->passwordWaitsForRestart($service), 'stopped: the password is there at the next start anyway');
+    }
+
+    public function test_the_welcome_email_of_a_vps_has_its_address_and_the_servers_own_port(): void
+    {
+        Mail::fake();
+        MailTemplates::save(MailTemplate::VpsWelcome, null, null, true);
+        $this->server->update(['hostname' => 'pve.example.ts.net', 'port' => 443]);
+        ProxmoxAddress::query()->create(['server_id' => $this->server->id, 'address' => '203.0.113.10', 'prefix' => 24]);
+
+        $this->lifecycle->create($service = $this->pending());
+
+        $mail = Mail::sent(ClientMail::class)->sole();
+        $this->assertSame(MailTemplate::VpsWelcome, $mail->template());
+        $html = $mail->render();
+        $this->assertStringContainsString('https://pve.example.ts.net:443', $html, 'behind a tunnel the server\'s port, not 8006');
+        $this->assertStringContainsString('203.0.113.10', $html);
+        $this->assertStringContainsString('ssh root@203.0.113.10', $html);
+        $this->assertStringContainsString('Proxmox VE authentication server', $html);
+        $this->assertStringContainsString(e($service->refresh()->password), $html);
+    }
+
+    public function test_the_clients_page_shows_the_vps_and_no_website_button(): void
+    {
+        $this->lifecycle->create($service = $this->pending());
+        $user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $service->client_id, 'email' => $service->client->email]);
+
+        Filament::setCurrentPanel('client');
+        $this->actingAs($user, 'client');
+        Livewire::test(ViewService::class, ['record' => $service->getRouteKey()])
+            ->assertActionHidden('openWebsite')
+            ->assertSee(__('VPS'));
+
+        Livewire::test(HostingUsage::class, ['service' => $service, 'client' => true])
+            ->assertSee(__('Running'))
+            ->assertSee('2 GB')
+            ->assertSee('10 GB')
+            ->assertSee(__('Not known yet. Please contact us if you need it.'))
+            ->assertSee('Proxmox VE authentication server')
+            ->assertDontSee(__('Bandwidth this month'));
     }
 
     public function test_power_actions_are_logged_and_refused_on_a_suspended_vps(): void

@@ -19,6 +19,7 @@ use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -67,9 +68,13 @@ class SystemHealthTest extends TestCase
 
         $tables = app(TableSizes::class)->biggest(100);
         $this->assertSame(3, $tables->firstWhere('table', 'clients')['rows']);
-        $this->assertSame('module_logs', $tables->first()['table'], 'biggest first');
+        $page = $this->get(SystemHealthPage::getUrl())->assertOk();
 
-        $this->get(SystemHealthPage::getUrl())->assertOk()->assertSee('module_logs')->assertSee('left out of backups');
+        // MySQL / MariaDB update information_schema's sizes later, not inside the test's transaction
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            $this->assertSame('module_logs', $tables->first()['table'], 'biggest first');
+            $page->assertSee('module_logs')->assertSee('left out of backups');
+        }
     }
 
     public function test_php_version_and_extensions_are_checked(): void
@@ -81,7 +86,7 @@ class SystemHealthTest extends TestCase
         $this->assertSame(Status::Ok, $extensions->status);
         $this->assertStringContainsString('curl', $extensions->value);
         $this->assertStringContainsString('intl', $extensions->value);
-        $this->assertStringContainsString('pdo_sqlite', $extensions->value);
+        $this->assertStringContainsString(DB::connection()->getDriverName() === 'sqlite' ? 'pdo_sqlite' : 'pdo_mysql', $extensions->value);
     }
 
     public function test_cron_is_a_problem_until_schedule_run_is_seen(): void
@@ -200,5 +205,30 @@ class SystemHealthTest extends TestCase
         $this->cronRuns();
         config(['app.debug' => false]);
         $this->artisan('gaiacp:health')->assertSuccessful();
+    }
+
+    public function test_an_sqlite_file_runs_in_wal_mode_and_another_journal_is_a_warning(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'gaiacp-wal-');
+        config(['database.connections.file' => ['database' => $file] + config('database.connections.sqlite')]);
+
+        try {
+            $pdo = DB::connection('file')->getPdo();
+            $this->assertSame('wal', $pdo->query('PRAGMA journal_mode')->fetchColumn());
+            $this->assertSame(5000, (int) $pdo->query('PRAGMA busy_timeout')->fetchColumn());
+            $this->assertSame(1, (int) $pdo->query('PRAGMA synchronous')->fetchColumn(), 'NORMAL');
+
+            $this->assertSame(Status::Ok, SystemHealth::sqliteJournal(DB::connection('file'))->status);
+
+            DB::purge('file');
+            config(['database.connections.file.journal_mode' => 'delete']);
+            $this->assertSame(Status::Warning, SystemHealth::sqliteJournal(DB::connection('file'))->status);
+            $this->assertNull(SystemHealth::sqliteJournal(DB::connection()), 'not for the tests\' in-memory database');
+        } finally {
+            DB::purge('file');
+            foreach ([$file, "{$file}-wal", "{$file}-shm"] as $path) {
+                @unlink($path);
+            }
+        }
     }
 }

@@ -146,7 +146,13 @@ class ServiceLifecycleActions
                     ->default(fn () => PasswordInput::generate())
                     ->helperText(__('Set on the server, then stored here. A strong one is suggested.')),
             ])
-            ->action(self::run(fn (Service $record, ServiceLifecycle $lifecycle, array $data) => $lifecycle->changePassword($record, $data['password']), __('Password changed')));
+            ->action(self::run(
+                fn (Service $record, ServiceLifecycle $lifecycle, array $data) => $lifecycle->changePassword($record, $data['password']),
+                __('Password changed'),
+                fn (Service $record, ServiceLifecycle $lifecycle) => $lifecycle->passwordWaitsForRestart($record)
+                    ? __('Inside the VPS the new password works after its next restart: no QEMU guest agent answers in it.')
+                    : null,
+            ));
     }
 
     /** Start, Shut down, Restart, Force stop: for a machine (ControlsPower: a Proxmox VPS), while active. */
@@ -211,9 +217,10 @@ class ServiceLifecycleActions
     /**
      * @param  Closure(Service, ServiceLifecycle, array<string, mixed>): void  $call
      */
-    private static function run(Closure $call, string $success): Closure
+    /** @param  (Closure(Service, ServiceLifecycle): ?string)|null  $note  more for the success message, asked after the call */
+    private static function run(Closure $call, string $success, ?Closure $note = null): Closure
     {
-        return function (Service $record, array $data, $livewire) use ($call, $success) {
+        return function (Service $record, array $data, $livewire) use ($call, $success, $note) {
             try {
                 $call($record, app(ServiceLifecycle::class), $data);
             } catch (ProvisioningException $e) {
@@ -222,7 +229,8 @@ class ServiceLifecycleActions
                 return;
             }
 
-            Notification::make()->title($success)->success()->send();
+            $body = $note ? $note($record, app(ServiceLifecycle::class)) : null;
+            Notification::make()->title($success)->body($body)->success()->persistent($body !== null)->send();
 
             if (method_exists($livewire, 'refreshFormData')) {
                 $livewire->refreshFormData(['status', 'suspension_reason', 'username', 'password', 'package']);

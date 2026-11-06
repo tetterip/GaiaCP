@@ -173,7 +173,10 @@ abstract class Plugin
         return [];
     }
 
-    /** Puts its commands on the schedule (routes/console.php); a command checks itself whether the plugin is on. */
+    /**
+     * Puts its commands on the schedule (routes/console.php); a command checks itself whether the plugin is on. Give
+     * withoutOverlapping() its minutes (ScheduleTest): its default, 24 hours, stops the command for a day after a killed run.
+     */
     public function schedule(Schedule $schedule): void {}
 
     /**

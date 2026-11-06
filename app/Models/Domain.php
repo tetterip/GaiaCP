@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\DomainRegistrationType;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Hidden(['epp_code'])]
 class Domain extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'registration_type' => 'register',
     ];

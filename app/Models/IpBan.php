@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['ip', 'reason', 'attempts', 'expires_at', 'user_id'])]
 class IpBan extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

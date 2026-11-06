@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Plugins\PluginManager;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['module', 'action', 'url', 'request', 'status', 'response', 'error', 'duration_ms', 'created_at'])]
 class ModuleLog extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPDATED_AT = null;
 
     /** @return array<string, string> module key → label, for the filter and the badge (each plugin's moduleLogs()) */

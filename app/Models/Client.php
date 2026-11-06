@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ClientStatus;
 use App\Enums\UserRole;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Currencies;
 use App\Support\Locales;
 use App\Support\Region;
@@ -32,6 +33,8 @@ class Client extends Model implements HasLocalePreference
 {
     /** @use HasFactory<ClientFactory> */
     use HasFactory;
+
+    use StoresTimesInUtc;
 
     protected $attributes = [
         'status' => 'active',

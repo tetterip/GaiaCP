@@ -182,14 +182,16 @@
         .dark .gcp-tour-link { color: var(--primary-400); }
         .gcp-tour-link:hover { text-decoration: underline; }
         .gcp-tour-foot { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; }
-        .gcp-tour-dots { display: flex; gap: 0.375rem; margin-inline-end: auto; }
-        .gcp-tour-dots button { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--gray-300); }
-        .dark .gcp-tour-dots button { background: var(--gray-600); }
-        .gcp-tour-dots button.is-on { background: var(--primary-600); }
+        /* Each dot is a 24px target (WCAG 2.5.8) around an 8px dot */
+        .gcp-tour-dots { display: flex; margin-inline: -0.5rem auto; }
+        .gcp-tour-dots button { display: flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 9999px; }
+        .gcp-tour-dots button::before { content: ''; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--gray-300); }
+        .dark .gcp-tour-dots button::before { background: var(--gray-600); }
+        .gcp-tour-dots button.is-on::before { background: var(--primary-600); }
     </style>
 
     <template x-teleport="body">
-        <div x-show="open" style="display: none" role="dialog" aria-modal="true" aria-labelledby="gcp-tour-title">
+        <div x-show="open" x-trap="open" style="display: none" role="dialog" aria-modal="true" aria-labelledby="gcp-tour-title">
             {{-- Keeps clicks off the page while the tour is open --}}
             <div class="gcp-tour-catcher" x-bind:class="{ 'is-dim': ! spot }"></div>
             @foreach (['top', 'bottom', 'left', 'right'] as $side)
@@ -220,7 +222,7 @@
                 <div class="gcp-tour-foot">
                     <div class="gcp-tour-dots">
                         @foreach ($steps as $i => $item)
-                            <button type="button" x-on:click="go({{ $i }})" x-bind:class="{ 'is-on': step === {{ $i }} }" aria-label="{{ $item['title'] }}"></button>
+                            <button type="button" x-on:click="go({{ $i }})" x-bind:class="{ 'is-on': step === {{ $i }} }" x-bind:aria-current="step === {{ $i }} ? 'step' : 'false'" aria-label="{{ $item['title'] }}"></button>
                         @endforeach
                     </div>
 

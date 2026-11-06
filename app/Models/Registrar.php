@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Plugins\PluginManager;
 use App\Provisioning\ManualRegistrar;
 use App\Support\ConnectionChanges;
@@ -26,6 +27,8 @@ class Registrar extends Model
 {
     /** @use HasFactory<RegistrarFactory> */
     use HasFactory;
+
+    use StoresTimesInUtc;
 
     protected function casts(): array
     {

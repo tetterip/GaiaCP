@@ -154,7 +154,7 @@ installs and the settings: [docs/installation.md](docs/installation.md).
 | Running your business with GaiaCP | [Admin guide](docs/admin-guide/README.md) (English and [Ελληνικά](docs/admin-guide/el/01-getting-started.md); also in the panel under System → Help) |
 | Installing, updating, cron and settings | [docs/installation.md](docs/installation.md) |
 | How billing, panels, registrars and the WHMCS import work | [docs/reference.md](docs/reference.md) |
-| Writing a plugin | [Tutorial](docs/plugin-tutorial.md), [reference](docs/writing-plugins.md), [plugin catalogue](docs/plugin-catalogue.md) |
+| Writing a plugin | [Tutorial](docs/plugin-tutorial.md), [reference](docs/writing-plugins.md), [plugin API](docs/plugin-api.md), [plugin catalogue](docs/plugin-catalogue.md) |
 | Scripts and other sites | [REST API](docs/using-the-api.md) |
 | Your own demo | [docs/demo-site.md](docs/demo-site.md) |
 | Releases | [docs/releases.md](docs/releases.md), [CHANGELOG.md](CHANGELOG.md) |

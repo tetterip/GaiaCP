@@ -157,6 +157,10 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.one-time-code')->render())
             // No empty toolbar row over a table's search on a phone
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.tables')->render())
+            // A keyboard focus mark no theme can hide
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.focus')->render())
+            // Secondary grey text readable in dark mode
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.contrast')->render())
             // "g" / "n" sequences and the "?" list (App\Filament\KeyboardShortcuts)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.keyboard-shortcuts')->render() : '')
             // About GaiaCP, from the footer's version or the user menu, with its surprise (App\Support\About)

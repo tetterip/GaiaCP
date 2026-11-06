@@ -2,6 +2,7 @@
 
 namespace Plugins\Blacklists;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Models\Server;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['server_id', 'ip', 'zone', 'answer', 'listed_at', 'checked_at'])]
 class BlacklistListing extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

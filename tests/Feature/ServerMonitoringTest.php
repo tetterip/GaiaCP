@@ -219,7 +219,7 @@ class ServerMonitoringTest extends TestCase
 
     public function test_each_check_is_kept_for_the_uptime_bar(): void
     {
-        $this->freezeSecond();
+        $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', config('app.timezone')));
         $server = $this->server();
 
         $this->fakeKuma(1);
@@ -231,18 +231,40 @@ class ServerMonitoringTest extends TestCase
         $this->assertSame(['up', 'down'], DB::table('server_monitor_checks')->where('server_id', $server->id)->orderBy('id')->pluck('status')->all());
         $this->assertSame(['1d' => 0.99985, '30d' => 0.9991], $server->fresh()->monitor_uptime);
 
+        // Both land in the bar's last slot, whatever the timezone (the column is UTC)
+        $last = UptimeHistory::for($server, '24h')['dots'][23];
+        $this->assertSame(MonitorStatus::Down, $last['status']);
+        $this->assertEqualsWithDelta(0.5, $last['uptime'], 0.001);
+
         // gaiacp:prune-logs drops what no bar shows any more
         $this->travel(UptimeHistory::KEEP_DAYS + 1)->days();
         $this->artisan('gaiacp:prune-logs')->assertSuccessful();
         $this->assertSame(0, DB::table('server_monitor_checks')->count());
     }
 
+    public function test_checks_kept_in_local_time_are_moved_to_utc(): void
+    {
+        config(['gaiacp.region.timezone' => 'Europe/Athens']);
+        $server = $this->server();
+        DB::table('server_monitor_checks')->insert([
+            ['server_id' => $server->id, 'status' => 'up', 'checked_at' => '2026-10-24 12:00:00'], // summer time, +3
+            ['server_id' => $server->id, 'status' => 'up', 'checked_at' => '2026-10-26 12:00:00'], // winter time, +2
+        ]);
+        $migration = require database_path('migrations/2026_11_06_000200_store_server_checks_in_utc.php');
+
+        $migration->up();
+        $this->assertSame(['2026-10-24 09:00:00', '2026-10-26 10:00:00'], DB::table('server_monitor_checks')->orderBy('id')->pluck('checked_at')->all());
+
+        $migration->down();
+        $this->assertSame(['2026-10-24 12:00:00', '2026-10-26 12:00:00'], DB::table('server_monitor_checks')->orderBy('id')->pluck('checked_at')->all());
+    }
+
     public function test_the_bar_takes_each_slots_worst_status(): void
     {
-        $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', 'Europe/Athens'));
+        $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', config('app.timezone')));
         $server = $this->server();
         $check = fn (string $at, string $status) => DB::table('server_monitor_checks')->insert([
-            'server_id' => $server->id, 'status' => $status, 'checked_at' => CarbonImmutable::parse($at, 'Europe/Athens')->utc(),
+            'server_id' => $server->id, 'status' => $status, 'checked_at' => CarbonImmutable::parse($at, config('app.timezone'))->utc(),
         ]);
         $check('2026-10-18 11:35', 'up');
         $check('2026-10-18 11:40', 'down');
@@ -278,8 +300,12 @@ class ServerMonitoringTest extends TestCase
         $this->actingAs($this->admin);
         $this->server()->forceFill(['monitor_status' => MonitorStatus::Down])->save();
 
+        // The status sits under the name and the panel type under the hostname: no columns of their own.
         Livewire::test(ListServers::class)
             ->assertSee('Down')
+            ->assertSee('cPanel / WHM')
+            ->assertTableColumnDoesNotExist('monitor_status')
+            ->assertTableColumnDoesNotExist('type')
             ->assertSee('Uptime, 24 hours')
             ->assertActionVisible('checkMonitors')
             ->set('uptimeRange', '30d')

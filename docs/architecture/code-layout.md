@@ -79,7 +79,18 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
 - Date filters: `whereOnDate()` / `orWhereOnDate()` (`App\Support\DateQueries`, a query builder macro) take the same
   arguments as `whereDate()` and give the same rows, as a plain range (`<= d` becomes `< d + 1`), so the `due_date` /
   `next_due_date` indexes are used; `whereDate()` wraps the column in a function and reads every row. Use it in the app
-  (plugins keep `whereDate()` while they declare an older `requires`). `NoticeLedger::rows()` is kept for the request and
+  (plugins keep `whereDate()` while they declare an older `requires`). It is for plain date columns only.
+- Times are stored in UTC, dates as days of the calendar. Every model uses `App\Models\Concerns\StoresTimesInUtc`
+  (`created_at`, `updated_at` and the `datetime` casts written in UTC, read in the Region's timezone; a string set from a
+  form is local time; `TimesInUtcTest` checks every model has it, the bell's notifications included through
+  `App\Models\DatabaseNotification`). The connections (`App\Database\*Connection`, `SendsTimesInUtc`, registered in
+  `AppServiceProvider::register()`) convert a Carbon given to any query to UTC, and MySQL / MariaDB sessions run in
+  `+00:00`. So compare a time column with a Carbon (`where('created_at', '>=', today())` is the local day's start), give a
+  date column a date string (`toDateString()`, `whereOnDate()`): `Tests\GuardsDateColumns` fails a test that sends a
+  Carbon for a date column. A time read without a model (`DB::table()`, `toBase()->pluck()`, `min()` / `max()`) is the UTC
+  text: `App\Support\StoredTime::parse()`. Password reset tokens read theirs through `App\Auth\UtcTokenRepository`.
+  Migration `2026_11_06_000300_store_times_in_utc` converted the times kept before (each with its own summer or winter
+  offset; MySQL `timestamp` columns read in the server's zone), `down()` puts them back. `NoticeLedger::rows()` is kept for the request and
   forgotten when a notice line, payment or balance entry is saved or deleted; services tables load
   `RecordPaymentAction::withChecks()` so Record payment needs no query per row.
 - `app/Reports/` + `app/Filament/Clusters/Reports/`: Reports (`/admin/reports`, a cluster laid out like Settings: cards by
@@ -110,12 +121,24 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   Payments and Activity log in the sidebar; Products, Servers, Registrars, Email templates and System health in the Settings cluster), shared actions (`RecordPaymentAction`, `ServiceLifecycleActions` =
   the "Account" menu, `DomainActions` = the "Registrar" menu, `TestConnectionAction`),
   dashboard widgets
-- `app/Backups/`: `RunBackup` (SQL dump → zip, AES-256 with Settings → Backups' zip password → kept in
+- `app/Privacy/`: data requests (GDPR) from the client page's Personal data menu (super admins,
+  `ClientPrivacyActions`): `ClientDataExport` (one JSON per table about the client + ticket files, secret columns and
+  internal notes left out, logged `client.data_exported`) and `AnonymizeClient` (only when `blockers()` is empty: no
+  pending / active / suspended service, unpaid notice or credit; details replaced, login / tickets / emails / leads /
+  requests deleted, identifiers scrubbed from `activity_logs`; notices, tax invoices, payments and credit kept; logged
+  `client.anonymized`). A new table holding a client's personal data belongs in both.
+- `app/Backups/`: `RunBackup` (SQL dump (always the zip's first entry) + `files/` (`RunBackup::files()`: storage/app/public,
+  storage/app/private without `SKIPPED_FOLDERS`, plugins not bundled; Include files) + `app-key.txt` only with a zip
+  password + `README.txt` → zip, every entry AES-256 with Settings → Backups' zip password → kept in
   `storage/app/private/backups`, newest `keep` → FTP via `FtpUploader` (ext-ftp, FTP/FTPS) → `BackupMail` to the admin;
   each copy fails on its own and is logged as `backup.created` / `backup.failed`), `DatabaseDumper` (pure PHP,
   MySQL/MariaDB and SQLite, no mysqldump needed; `RunBackup::LOG_TABLES` are written without rows unless
-  `backups.include_logs`). Scheduled in `routes/console.php` only when enabled. System health → Biggest tables is
+  `backups.include_logs`), `RestoreBackup` (`gaiacp:restore`: checks the zip and engine first, drops all tables and
+runs the dump statement by statement on MySQL, writes `files/` only under storage/app and plugins/, sets APP_KEY in
+.env, migrates). Scheduled in `routes/console.php` only when enabled. System health → Biggest tables is
   `App\Support\Health\TableSizes` (information_schema on MySQL, dbstat on SQLite)
+- Plugin API: `App\Plugins\PluginApi::STABLE` (documented in `docs/plugin-api.md`, the promise to plugin authors) and
+  `INTERNAL` (what bundled plugins also reach into); `PluginApiTest` fails on a bundled plugin using any other `App\` class
 - Plugins: `app/Plugins/` has `Plugin` and `PluginManager` (singleton; `BUILT_IN` = cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel (off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check, WHMCS
   import, Bank transfer, Stripe, PayPal, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on
   for a bundled one unless `Plugin::enabledByDefault()` is false (easy.gr, ΑΑΔΕ, VIES; `GAIACP_PLUGINS_START_ENABLED` lists
@@ -363,7 +386,9 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   (saved with Save). Request shape follows a working WooCommerce invoicing plugin
 - `app/Support/Health/`: `SystemHealth` (the checks behind `Pages/SystemHealth`, Settings → System health, and
   `gaiacp:health`), `SchedulerMonitor` (last cron `schedule:run` and last run of each daily job, in the cache, fed by
-  `app/Listeners/RecordCommandRuns`). A new daily command goes in `SchedulerMonitor::DAILY_COMMANDS` too. Cron
+  `app/Listeners/RecordCommandRuns`). A new daily command goes in `SchedulerMonitor::DAILY_COMMANDS` too. `Heartbeat`
+  (`gaiacp:heartbeat`, every 5 minutes): GET to `automation.ping_url` while all is well, `automation.ping_fail_url`
+  (`{message}` = what failed) after a failed daily job (26 h) or backup; both encrypted settings, last result in the cache. Cron
   stopped (`stopped()`: no `schedule:run` for `STOPPED_AFTER_MINUTES`, counted from when the heartbeat was first found
   missing after an emptied cache) shows in the dashboard's Needs attention and rings the super admins' bell once
   (`scheduler.stopped`, checked on admin page loads by `Http/Middleware/AlertWhenCronStops`), then `scheduler.resumed`
@@ -506,7 +531,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   either is served, Info when the site can't reach itself); the installer's requirements include it, so it stops
 - Updates: `gaiacp:check-for-update` (daily 05:50, off with `GAIACP_UPDATE_CHECK=false`) logs `gaiacp.update_available` once per
   newer release (bell for super admins, a line in the daily summary). `app/Updates/` `GitHubReleases` (latest release of `gaiacp.updates.repository`, token for a private repo) and
-  `Updater` (RunBackup, download + SHA-256, `down`, swap the release's top-level entries into place with the old ones in
+  `Updater` (download + SHA-256, `down`, RunBackup with logs and without files, swap the release's top-level entries into place with the old ones in
   `storage/app/private/updates/<version>/previous`, moving back into `database/`, `plugins/` and `public/` what the release
-  lacks, then migrate; any failure after the swap puts the old code back). Never for a Git checkout. Used by
+  lacks, then migrate; any failure after the swap puts the old code back, and a failed migration also the database via
+  `RestoreBackup::database()`; if that fails the site stays down and the log names the backup). Never for a Git checkout. Used by
   `Pages/Updates` (Settings → System → Updates) and `gaiacp:update`

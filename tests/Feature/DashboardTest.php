@@ -2,20 +2,31 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Quotes;
 use App\Enums\AdminArea;
+use App\Enums\BillingCycle;
+use App\Enums\CancellationType;
+use App\Enums\QuoteStatus;
+use App\Enums\ServiceType;
+use App\Enums\TicketStatus;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Widgets\ActivityChart;
 use App\Filament\Widgets\BillingOverview;
 use App\Filament\Widgets\NeedsAttention;
 use App\Filament\Widgets\ServerCapacity;
 use App\Models\ActivityLog;
+use App\Models\CancellationRequest;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Server;
 use App\Models\Service;
+use App\Models\Ticket;
+use App\Models\UpgradeRequest;
 use App\Models\User;
+use App\Monitoring\MonitorStatus;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -56,8 +67,8 @@ class DashboardTest extends TestCase
             // The accounts bar is named, with its value, like the uptime bar.
             ->assertSee('aria-label="Accounts: 0/120 (0%)"', false)
             ->assertSeeInOrder(['Accounts', '0/120 (0%)'])
-            ->assertSee('Needs attention')
-            ->assertSee('Nothing needs your attention')
+            // Nothing waits, so the Needs attention card is left off.
+            ->assertDontSee('gx-slot-NeedsAttention', false)
             ->assertSee('gx-dash', false);
     }
 
@@ -202,5 +213,64 @@ class DashboardTest extends TestCase
         $this->assertSame(['1 overdue payment notice(s)'], array_column(NeedsAttention::items(), 'title'));
         $this->assertFalse(ServerCapacity::canView());
         $this->assertTrue(ActivityChart::canView());
+    }
+
+    public function test_needs_attention_lists_the_daily_tasks_and_leaves_out_what_is_fine(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-11-05 10:00'));
+        $client = Client::factory()->create();
+
+        Server::factory()->create(['name' => 'nl1', 'monitor_status' => MonitorStatus::Down, 'monitor_status_since' => now()->subHour()]);
+        Server::factory()->create(['monitor_status' => MonitorStatus::Down, 'active' => false]);
+
+        $hosting = Service::factory()->create(['client_id' => $client->id]);
+        CancellationRequest::create(['service_id' => $hosting->id, 'client_id' => $client->id, 'type' => CancellationType::EndOfPeriod]);
+        UpgradeRequest::create(['service_id' => $hosting->id, 'client_id' => $client->id, 'product_id' => Product::factory()->create()->id, 'price_cents' => 100]);
+
+        Ticket::create(['client_id' => $client->id, 'subject' => 'Old', 'status' => TicketStatus::Open, 'last_reply_at' => now()->subHours(30)]);
+        Ticket::create(['client_id' => $client->id, 'subject' => 'New', 'status' => TicketStatus::Open, 'last_reply_at' => now()->subHours(2)]);
+        Ticket::create(['client_id' => $client->id, 'subject' => 'Theirs', 'status' => TicketStatus::Answered, 'last_reply_at' => now()->subDays(3)]);
+
+        $this->notice(today()->toDateString());
+        $this->notice(today()->addDay()->toDateString());
+
+        // Expires at the registrar in 10 days; paid two years ahead of its expiry; fine; auto renew off; tracked only.
+        $domain = fn (string $name, string $expires, string $due, array $service = [], string $type = 'register') => tap(
+            Service::factory()->domain()->create(['domain' => $name, 'next_due_date' => $due, ...$service]),
+            fn (Service $service) => $service->registration()->update(['expires_at' => $expires, 'registration_type' => $type]),
+        );
+        $domain('soon.gr', '2026-11-15', '2026-11-15');
+        $domain('paid-ahead.gr', '2028-05-26', '2030-10-14');
+        $domain('fine.gr', '2027-10-14', '2027-10-14');
+        $domain('dropping.gr', '2026-11-10', '2026-11-10', ['auto_terminate' => true]);
+        $domain('tracked.gr', '2026-11-10', '2026-11-10', type: 'external');
+
+        app(Quotes::class)->create(['client_id' => $client->id, 'valid_until' => today()->addDays(2), 'items' => [[
+            'type' => ServiceType::Other->value, 'label' => 'Care', 'billing_cycle' => BillingCycle::Annually->value, 'price_cents' => 100,
+        ]]])->update(['status' => QuoteStatus::Sent]);
+        app(Quotes::class)->create(['client_id' => $client->id, 'valid_until' => today()->addDays(20), 'items' => [[
+            'type' => ServiceType::Other->value, 'label' => 'Later', 'billing_cycle' => BillingCycle::Annually->value, 'price_cents' => 100,
+        ]]])->update(['status' => QuoteStatus::Sent]);
+
+        $this->actingAs(User::factory()->create());
+        $items = collect(NeedsAttention::items())->keyBy('title');
+
+        $this->assertSame([
+            '1 server(s) down',
+            '1 cancellation request(s) to answer',
+            '1 upgrade / downgrade request(s) to answer',
+            '1 ticket(s) waiting for a reply over 24 hours',
+            '1 payment notice(s) due today',
+            '2 domain(s) to check at the registrar',
+            '1 quote(s) ending within 3 days',
+        ], $items->keys()->all());
+        $this->assertStringStartsWith('nl1 · ', $items['1 server(s) down']['sub']);
+        $this->assertSame('soon.gr, paid-ahead.gr', $items['2 domain(s) to check at the registrar']['sub']);
+        $this->assertFalse(NeedsAttention::isEmpty());
+        $this->get(Dashboard::getUrl())->assertOk()->assertSee('gx-slot-NeedsAttention', false)->assertSee('1 server(s) down');
+
+        // Support only: the tickets, nothing else
+        $this->actingAs(User::factory()->limitedTo([AdminArea::Support])->create());
+        $this->assertSame(['1 ticket(s) waiting for a reply over 24 hours'], array_column(NeedsAttention::items(), 'title'));
     }
 }

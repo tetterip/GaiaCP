@@ -58,6 +58,7 @@ Przy aktywnym koncie hostingowym można:
 <!-- if:vps_power -->
 - **Uruchomić, wyłączyć lub uruchomić ponownie VPS** przyciskami na jego stronie. Wyłącz i Uruchom ponownie zatrzymują działające na nim programy, więc prosimy najpierw zapisać pracę. Aby użyć konsoli, prosimy kliknąć **Zaloguj do Proxmox VE** i zalogować się nazwą użytkownika i hasłem usługi (realm „Proxmox VE authentication server”): widoczny jest tylko Państwa VPS.
 <!-- endif -->
+- **Zobaczyć dane swojego VPS** na jego stronie: adres IP, czy działa, procesory, pamięć i rozmiar dysku oraz użytkownika do logowania w nim (SSH lub konsola), z hasłem usługi.
 <!-- if:hosting_password -->
 - **Zmienić hasło** konta. Prosimy użyć co najmniej 10 znaków z wielkimi i małymi literami oraz cyframi.
 <!-- endif -->

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,8 @@ use Illuminate\Support\Number;
 #[Fillable(['ticket_message_id', 'path', 'name', 'size', 'mime'])]
 class TicketAttachment extends Model
 {
+    use StoresTimesInUtc;
+
     protected static function booted(): void
     {
         static::deleted(fn (TicketAttachment $attachment) => Storage::disk('local')->delete($attachment->path));

@@ -13,6 +13,7 @@ use App\Models\Client;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
@@ -91,7 +92,7 @@ class ClientProfileTest extends TestCase
         $this->assertSame('Papa', $this->client->refresh()->last_name);
         $request = $this->client->changeRequests()->sole();
         $this->assertSame(ChangeRequestStatus::Pending, $request->status);
-        $this->assertSame(['last_name' => ['Papa', 'Papadopoulou'], 'company' => [null, 'Papa SA']], $request->fields);
+        $this->assertEquals(['last_name' => ['Papa', 'Papadopoulou'], 'company' => [null, 'Papa SA']], $request->fields); // any key order
         $this->assertTrue(ActivityLog::query()->where('event', 'client.change_requested')->exists());
 
         Mail::assertSent(ClientChangeRequestMail::class, fn (ClientChangeRequestMail $mail) => $mail->hasTo('admin@example.com')
@@ -114,6 +115,23 @@ class ClientProfileTest extends TestCase
         $this->profile()->fillForm(['details.city' => 'Athens'])->call('save');
 
         $this->assertSame(0, $this->client->changeRequests()->count());
+    }
+
+    public function test_asking_for_the_same_again_tells_the_admins_once_whatever_order_the_database_keeps(): void
+    {
+        $this->profile()->fillForm(['details.last_name' => 'Papadopoulou', 'details.company' => 'Papa SA'])->call('save');
+        $request = $this->client->changeRequests()->sole();
+
+        // MySQL's JSON columns give an object's keys back in an order of their own
+        DB::table('client_change_requests')->where('id', $request->id)
+            ->update(['fields' => json_encode(array_reverse($request->fields, true))]);
+        Mail::fake();
+
+        $this->profile()->fillForm(['details.last_name' => 'Papadopoulou', 'details.company' => 'Papa SA'])->call('save');
+
+        $this->assertSame(1, $this->client->changeRequests()->count());
+        Mail::assertNothingSent();
+        $this->assertSame(1, ActivityLog::query()->where('event', 'client.change_requested')->count());
     }
 
     public function test_the_email_switch_in_automation_settings_stops_the_admin_email(): void

@@ -57,6 +57,8 @@ class Settings
         'automation.module_retries',
         'automation.client_messages_per_minute',
         'automation.daily_summary',
+        'automation.ping_url',
+        'automation.ping_fail_url',
         'automation.change_request_email',
         'automation.cancellation_request_email',
         'automation.upgrade_request_email',
@@ -147,6 +149,7 @@ class Settings
         'backups.zip_password',
         'backups.email',
         'backups.include_logs',
+        'backups.include_files',
         'backups.ftp.enabled',
         'backups.ftp.protocol',
         'backups.ftp.host',
@@ -203,6 +206,8 @@ class Settings
         'backups.ftp.password',
         'mail.password',
         'aade.password',
+        'automation.ping_url',
+        'automation.ping_fail_url',
     ];
 
     /** @return list<string> every key a Settings page may store: the core's and the plugins' */

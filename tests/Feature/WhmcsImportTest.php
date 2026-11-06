@@ -337,7 +337,7 @@ class WhmcsImportTest extends TestCase
         $this->assertSame('Α\' Αθηνών', $client->tax_office);
         $this->assertSame('Εμπόριο', $client->profession);
         // and the other custom fields as client fields of their own
-        $this->assertSame(['arithmos_tautotitas' => 'ΑΚ 123456', 'pighi' => 'Φίλος'], $client->custom_fields);
+        $this->assertEquals(['arithmos_tautotitas' => 'ΑΚ 123456', 'pighi' => 'Φίλος'], $client->custom_fields); // any key order (MySQL JSON)
         $id = ClientField::where('key', 'arithmos_tautotitas')->sole();
         $this->assertTrue($id->required && $id->on_notice);
         $this->assertSame(ClientFieldAccess::Editable, $id->client_access);

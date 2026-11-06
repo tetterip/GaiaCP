@@ -90,6 +90,14 @@ return [
             ."Punti il Suo dominio ai nostri nameserver, o il suo record A a {\$server_ip}.\n\n"
             .'Pacchetto: {$package}, {$amount} ({$billing_cycle}), prossimo pagamento entro il {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Il Suo VPS {$domain} è pronto',
+        'body' => "Il Suo VPS **{\$domain}** è pronto.\n\n"
+            ."Indirizzo IP: {\$ip_address}<br>\nUtente: {\$vps_user}<br>\nPassword: {\$password}\n\n"
+            .'Si colleghi via SSH (`ssh {$vps_user}@{$ip_address}`). La console, e anche Avvia, Arresta e Riavvia, si trovano nel pannello di controllo: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Pacchetto: {$package}, {$amount} ({$billing_cycle}), prossimo pagamento entro il {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Sospensione del servizio: {$service}',
         'body' => "Il Suo servizio **{\$service}** {\$domain} è stato sospeso.\n\nMotivo: {\$suspension_reason}\n\n{\$payment_instructions}",

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\LeadStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['first_name', 'last_name', 'company', 'email', 'phone', 'country', 'source', 'status', 'lost_reason', 'notes', 'assigned_to', 'next_contact_on', 'follow_up_sent_on', 'client_id', 'closed_at'])]
 class Lead extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'status' => 'new',
     ];

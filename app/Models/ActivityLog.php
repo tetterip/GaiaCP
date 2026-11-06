@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Actions\ModuleQueue;
 use App\Events\GaiaEvent;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Notifications\AdminAlerts;
 use App\Notifications\ClientAlerts;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -13,7 +14,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['client_id', 'service_id', 'user_id', 'api_key_id', 'event', 'description', 'properties', 'created_at'])]
 class ActivityLog extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPDATED_AT = null;
+
+    /** activity_logs.description is a string(255) */
+    public const DESCRIPTION_LENGTH = 255;
 
     protected static function booted(): void
     {
@@ -49,6 +55,12 @@ class ActivityLog extends Model
             $properties['retry'] = true;
         }
 
+        // The column holds 255 characters (MySQL refuses more): a long panel error keeps its whole text in the properties
+        if (mb_strlen($description) > self::DESCRIPTION_LENGTH) {
+            $properties['full_description'] ??= $description;
+            $description = mb_substr($description, 0, self::DESCRIPTION_LENGTH - 1).'…';
+        }
+
         return self::create([
             'client_id' => $client?->id ?? $service?->client_id,
             'service_id' => $service?->id,
@@ -58,6 +70,12 @@ class ActivityLog extends Model
             'description' => $description,
             'properties' => $properties ?: null,
         ]);
+    }
+
+    /** The whole description, also when it was too long for its column */
+    public function fullDescription(): string
+    {
+        return (string) ($this->properties['full_description'] ?? $this->description);
     }
 
     /** @return BelongsTo<Client, $this> */

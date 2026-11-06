@@ -13,6 +13,7 @@ use App\Enums\OrderStatus;
 use App\Enums\QuoteStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Http\Middleware\IdempotentApiRequest;
 use App\Http\Requests\Api\SendInvoiceRequest;
 use App\Models\ApiKey;
 use App\Support\Version;
@@ -108,7 +109,8 @@ class OpenApi
                     .'Authenticate with a key from Settings → API keys: `Authorization: Bearer gcp_…` (or `X-API-Key: gcp_…` where the web server drops the Authorization header). Each key has its own permissions (`clients.read`, `payments.create`…) and may be limited to some IP addresses. '
                     .'Calls go through the same actions as the admin panel: they are in the activity log with the key\'s name, send the same emails and raise the same events (webhooks). '
                     .'Money is in integer cents with its currency, dates are Y-m-d, times ISO 8601. Lists are paginated (`per_page` up to '.config('gaiacp.api.max_per_page', 100).'). '
-                    .'Each key may make '.config('gaiacp.api.per_minute', 120).' calls a minute (429 after that). Errors are JSON with a `message` (and `errors` per field on 422).',
+                    .'Each key may make '.config('gaiacp.api.per_minute', 120).' calls a minute (429 after that). Errors are JSON with a `message` (and `errors` per field on 422). '
+                    .'A POST with an `Idempotency-Key` header (any unique text, e.g. a UUID) runs once per key for '.IdempotentApiRequest::KEEP_HOURS.' hours: sent again, it answers what the first call answered (with `Idempotent-Replayed: true`) and records nothing twice.',
             ],
             'servers' => [['url' => url('api/v1')]],
             'security' => [['bearer' => []]],
@@ -148,6 +150,11 @@ class OpenApi
 
         foreach ($endpoint['query'] ?? [] as $name) {
             $parameters[] = ['name' => $name, 'in' => 'query', 'required' => false, 'schema' => self::queryType($name)];
+        }
+
+        if ($endpoint['method'] === 'post') {
+            $parameters[] = ['name' => IdempotentApiRequest::HEADER, 'in' => 'header', 'required' => false, 'schema' => ['type' => 'string', 'maxLength' => 255],
+                'description' => 'Any unique text (e.g. a UUID): the call runs once per key, and a retry with the same key gets the first answer back. 409 while the first call still runs, 422 when the key was used for another call.'];
         }
 
         $status = (string) ($endpoint['status'] ?? 200);

@@ -2,6 +2,7 @@
 
 namespace Plugins\SiteChecks;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['service_id', 'domain', 'dns_status', 'addresses', 'ssl_status', 'ssl_valid_to', 'ssl_issuer', 'ssl_error', 'alerted', 'checked_at'])]
 class SiteCheck extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

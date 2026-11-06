@@ -55,6 +55,21 @@ class ModuleQueueTest extends TestCase
         }
     }
 
+    public function test_a_long_panel_error_fits_the_log_and_the_queue_keeps_all_of_it(): void
+    {
+        // CyberPanel answers a failed suspension with its web server's whole output (over 1000 characters); MySQL
+        // refuses more than 255 in activity_logs.description, which turned the toast into a page error.
+        $service = $this->pendingHosting();
+        $long = 'Suspension failed: '.str_repeat('[WARN] license validation failed ', 40).'the real cause';
+        $this->failSetUp($service, $long);
+
+        $log = ActivityLog::query()->where('event', 'provisioning.failed')->sole();
+        $this->assertSame(ActivityLog::DESCRIPTION_LENGTH, mb_strlen($log->description));
+        $this->assertStringEndsWith('…', $log->description);
+        $this->assertStringEndsWith('the real cause', $log->fullDescription());
+        $this->assertStringEndsWith('the real cause', ModuleQueueItem::query()->sole()->error);
+    }
+
     public function test_a_failed_set_up_waits_in_the_queue_and_rings_the_bell(): void
     {
         $service = $this->pendingHosting();
