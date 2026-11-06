@@ -58,6 +58,7 @@ Bei einem aktiven Hosting-Konto können Sie:
 <!-- if:vps_power -->
 - **Einen VPS starten, herunterfahren oder neu starten** mit den Schaltflächen auf seiner Seite. Herunterfahren und Neu starten beenden die darauf laufenden Programme, speichern Sie also zuerst Ihre Arbeit. Um seine Konsole zu verwenden, klicken Sie auf **Bei Proxmox VE anmelden** und melden Sie sich mit Benutzername und Passwort des Dienstes an (Realm „Proxmox VE authentication server“): Sie sehen nur Ihren eigenen VPS.
 <!-- endif -->
+- **Die Daten Ihres VPS sehen** auf seiner Seite: seine IP-Adresse, ob er läuft, seine Prozessoren, Arbeitsspeicher und Festplattengröße sowie den Benutzer für die Anmeldung darin (SSH oder Konsole), mit dem Passwort des Dienstes.
 <!-- if:hosting_password -->
 - **Das Passwort** des Kontos **ändern**. Verwenden Sie mindestens 10 Zeichen mit Groß- und Kleinbuchstaben und Ziffern.
 <!-- endif -->

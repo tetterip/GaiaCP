@@ -90,6 +90,14 @@ return [
             ."Aponte seu domínio para os nossos nameservers ou o registro A dele para o endereço {\$server_ip}.\n\n"
             .'Pacote: {$package}, {$amount} ({$billing_cycle}), próximo pagamento até {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Seu VPS {$domain} está pronto',
+        'body' => "Seu VPS **{\$domain}** está pronto.\n\n"
+            ."Endereço IP: {\$ip_address}<br>\nUsuário: {\$vps_user}<br>\nSenha: {\$password}\n\n"
+            .'Conecte-se por SSH (`ssh {$vps_user}@{$ip_address}`). O console, e também Iniciar, Desligar e Reiniciar, estão no painel de controle: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Pacote: {$package}, {$amount} ({$billing_cycle}), próximo pagamento até {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Serviço suspenso: {$service}',
         'body' => "Seu serviço **{\$service}** {\$domain} foi suspenso.\n\nMotivo: {\$suspension_reason}\n\n{\$payment_instructions}",

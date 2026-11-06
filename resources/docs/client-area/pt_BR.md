@@ -58,6 +58,7 @@ Em uma conta de hospedagem ativa, você pode:
 <!-- if:vps_power -->
 - **Iniciar, desligar ou reiniciar uma VPS** com os botões na página dela. Desligar e Reiniciar param os programas que rodam nela, então salve seu trabalho antes. Para usar o console, clique em **Entrar no Proxmox VE** e entre com o nome de usuário e a senha do serviço (realm "Proxmox VE authentication server"): você vê apenas a sua própria VPS.
 <!-- endif -->
+- **Ver os dados da sua VPS** na página dela: o endereço IP, se está em execução, os processadores, a memória e o tamanho do disco, e o usuário para entrar nela (SSH ou o console), com a senha do serviço.
 <!-- if:hosting_password -->
 - **Alterar a senha** da conta. Use pelo menos 10 caracteres, com letras maiúsculas, minúsculas e números.
 <!-- endif -->

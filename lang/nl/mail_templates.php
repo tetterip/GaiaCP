@@ -90,6 +90,14 @@ return [
             ."Laat uw domein naar onze nameservers wijzen, of het A-record naar het adres {\$server_ip}.\n\n"
             .'Pakket: {$package}, {$amount} ({$billing_cycle}), volgende betaling vóór {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Uw VPS {$domain} is klaar',
+        'body' => "Uw VPS **{\$domain}** is klaar.\n\n"
+            ."IP-adres: {\$ip_address}<br>\nGebruiker: {\$vps_user}<br>\nWachtwoord: {\$password}\n\n"
+            .'Maak verbinding via SSH (`ssh {$vps_user}@{$ip_address}`). De console, en ook Starten, Afsluiten en Herstarten, vindt u in het configuratiescherm: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Pakket: {$package}, {$amount} ({$billing_cycle}), volgende betaling vóór {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Dienst opgeschort: {$service}',
         'body' => "Uw dienst **{\$service}** {\$domain} is opgeschort.\n\nReden: {\$suspension_reason}\n\n{\$payment_instructions}",

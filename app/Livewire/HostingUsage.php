@@ -8,6 +8,8 @@ use App\Enums\ServiceType;
 use App\Models\Service;
 use App\Plugins\PluginManager;
 use App\Provisioning\AccountUsage;
+use App\Provisioning\DescribesMachine;
+use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Number;
@@ -17,7 +19,8 @@ use Livewire\Component;
 /**
  * Disk space and this month's bandwidth of a hosting account, used against its limits, on the admin's service page
  * and the client's. Loaded after the page (lazy), from ServiceLifecycle::usage(), which keeps a reading for a while;
- * the admin can read it again at once.
+ * the admin can read it again at once. A machine (DescribesMachine: a Proxmox VPS) shows instead whether it runs, its
+ * addresses, processors, memory and disk (ServiceLifecycle::machine()).
  */
 class HostingUsage extends Component
 {
@@ -54,8 +57,18 @@ class HostingUsage extends Component
         $this->readNow = true;
     }
 
+    /** The section's heading: "VPS" for a machine, else "Usage". */
+    public static function heading(?Service $service): string
+    {
+        return $service !== null && app(ServiceLifecycle::class)->isMachine($service) ? __('VPS') : __('Usage');
+    }
+
     public function render(): View
     {
+        if (app(ServiceLifecycle::class)->isMachine($this->service)) {
+            return $this->renderMachine();
+        }
+
         $usage = null;
         $error = null;
 
@@ -79,6 +92,41 @@ class HostingUsage extends Component
                 ->map(fn (string $key) => $this->item(self::label($key), self::ICONS[$key], ...$usage->counts[$key], bytes: $key === 'database_disk'))
                 ->values()
                 ->all() : [],
+        ]);
+    }
+
+    private function renderMachine(): View
+    {
+        $machine = null;
+        $error = null;
+
+        try {
+            $machine = app(ServiceLifecycle::class)->machine($this->service, $this->readNow);
+        } catch (ProvisioningException $e) {
+            $error = $this->client
+                ? __('The VPS can\'t be shown right now. Please try again later.')
+                : __('Could not read the VPS: :error', ['error' => $e->getMessage()]);
+        }
+
+        $panel = rescue(fn () => app(ProvisionerFactory::class)->forService($this->service), null, report: false);
+        $size = fn (?int $bytes) => $bytes === null ? '—' : Number::fileSize($bytes, maxPrecision: 1);
+
+        return view('livewire.hosting-usage', [
+            'usage' => $machine,
+            'error' => $error,
+            'main' => [],
+            'tiles' => $machine ? [
+                ['label' => __('Status'), 'icon' => $machine->running ? 'heroicon-o-play-circle' : 'heroicon-o-stop-circle', 'value' => $machine->running ? __('Running') : __('Not running'), 'limit' => '', 'percent' => null, 'color' => 'primary'],
+                ['label' => __('Processors'), 'icon' => 'heroicon-o-cpu-chip', 'value' => $machine->cores === null ? '—' : Number::format($machine->cores), 'limit' => '', 'percent' => null, 'color' => 'primary'],
+                ['label' => __('Memory (RAM)'), 'icon' => 'heroicon-o-rectangle-stack', 'value' => $size($machine->memory), 'limit' => '', 'percent' => null, 'color' => 'primary'],
+                ['label' => __('Disk size'), 'icon' => 'heroicon-o-server', 'value' => $size($machine->disk), 'limit' => '', 'percent' => null, 'color' => 'primary'],
+            ] : [],
+            'addresses' => $machine?->addresses ?? [],
+            'machine' => $machine,
+            'login' => $machine && $panel instanceof DescribesMachine ? [
+                'user' => $panel->machineUser(),
+                'hint' => $panel->panelLoginHint($this->service),
+            ] : null,
         ]);
     }
 

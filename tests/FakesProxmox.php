@@ -66,7 +66,11 @@ trait FakesProxmox
                 }
             }
 
-            return Http::response(['data' => $this->proxmoxAnswer($method, rawurldecode($path), $params)]);
+            try {
+                return Http::response(['data' => $this->proxmoxAnswer($method, rawurldecode($path), $params)]);
+            } catch (\RuntimeException $e) {
+                return Create::promiseFor(new Psr7Response(500, ['Content-Type' => 'application/json'], '{"data":null}', '1.1', $e->getMessage()));
+            }
         });
     }
 
@@ -82,6 +86,7 @@ trait FakesProxmox
             return collect($this->proxmoxVms)->map(fn (array $vm, int $vmid) => [
                 'id' => "qemu/{$vmid}", 'type' => 'qemu', 'vmid' => $vmid, 'node' => $vm['node'], 'name' => $vm['name'],
                 'template' => $vm['template'], 'status' => $vm['status'], 'tags' => $vm['tags'], 'maxdisk' => $vm['maxdisk'],
+                'maxcpu' => (int) ($vm['config']['cores'] ?? 1) * (int) ($vm['config']['sockets'] ?? 1), 'maxmem' => (int) ($vm['config']['memory'] ?? 0) * 1024 ** 2,
             ])->values()->push(['id' => 'lxc/200', 'type' => 'lxc', 'vmid' => 200, 'node' => 'pve1', 'name' => 'ct', 'template' => 0, 'status' => 'running'])->all();
         }
 
@@ -153,6 +158,18 @@ trait FakesProxmox
             $this->proxmoxVms[$vmid]['config'][$params['disk']] = preg_replace('/size=[^,]+/', 'size='.$params['size'], $this->proxmoxVms[$vmid]['config'][$params['disk']]);
 
             return $task($node);
+        }
+
+        if ($rest === '/agent/network-get-interfaces') {
+            // Set $proxmoxVms[id]['agent'] to the addresses its guest agent reports; without it, no agent answers
+            if (! isset($this->proxmoxVms[$vmid]['agent'])) {
+                throw new \RuntimeException('QEMU guest agent is not running');
+            }
+
+            return ['result' => [
+                ['name' => 'lo', 'ip-addresses' => [['ip-address' => '127.0.0.1', 'ip-address-type' => 'ipv4']]],
+                ['name' => 'eth0', 'ip-addresses' => array_map(fn (string $ip) => ['ip-address' => $ip, 'ip-address-type' => str_contains($ip, ':') ? 'ipv6' : 'ipv4'], $this->proxmoxVms[$vmid]['agent'])],
+            ]];
         }
 
         if ($rest === '/status/current') {
