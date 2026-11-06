@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['invoice_id', 'service_id', 'fee', 'description', 'due_date', 'period_end', 'amount_cents', 'tax_cents', 'total_cents', 'payment_id', 'credit', 'credit_transaction_id'])]
 class InvoiceItem extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPGRADE = 'upgrade';
 
     public $timestamps = false;

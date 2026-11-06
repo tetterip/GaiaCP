@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\InvoiceStatus;
 use App\Invoicing\IssueInvoice;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\ClientFields;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
@@ -33,6 +34,8 @@ use Throwable;
 ])]
 class Invoice extends Model
 {
+    use StoresTimesInUtc;
+
     public const NUMBER_PREFIX = 'PF';
 
     /** The client's details a notice keeps from the day it is issued (`bill_to`), shown as "For". */

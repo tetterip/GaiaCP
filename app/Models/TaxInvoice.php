@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Payments\PaymentMethods;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
@@ -27,6 +28,8 @@ use LogicException;
 ])]
 class TaxInvoice extends Model
 {
+    use StoresTimesInUtc;
+
     public const INVOICE = 'invoice';
 
     public const CREDIT_NOTE = 'credit_note';

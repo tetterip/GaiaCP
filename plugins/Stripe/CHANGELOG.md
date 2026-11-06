@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.7] - 2026-11-06
+
+- Its times are stored in UTC like GaiaCP's (StoresTimesInUtc); the GaiaCP update converts the ones already kept
+
 ## [1.0.6] - 2026-11-06
 
 - The hourly check for stuck Stripe checkouts is no longer skipped for a whole day after a run that was cut short (a server restart, for example)

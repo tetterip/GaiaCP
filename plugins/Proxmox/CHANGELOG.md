@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.3] - 2026-11-06
+
+- Its times are stored in UTC like GaiaCP's (StoresTimesInUtc); the GaiaCP update converts the ones already kept
+
 ## [1.0.2] - 2026-11-06
 
 - Greek translation: the texts were still in English

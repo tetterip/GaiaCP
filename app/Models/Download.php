@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DownloadVisibility;
 use App\Enums\ServiceStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,6 +23,8 @@ use Illuminate\Support\Number;
 #[Fillable(['download_category_id', 'texts', 'path', 'file_name', 'size', 'visibility', 'product_ids', 'published', 'sort'])]
 class Download extends Model
 {
+    use StoresTimesInUtc;
+
     /** The private disk's folder of the files. */
     public const FOLDER = 'downloads';
 

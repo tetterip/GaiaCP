@@ -20,6 +20,9 @@ MyPlugin/
 ```
 
 - The folder name is the namespace: classes are `Plugins\MyPlugin\...`, loaded from the folder (PSR-4).
+- A model of the plugin uses `App\Models\Concerns\StoresTimesInUtc`: times are stored in UTC and read in the
+  Region's timezone. Give a plain date column a date string (`toDateString()`), not a Carbon, in a query; read a time
+  from `DB::table()` with `App\Support\StoredTime::parse()`.
 - `plugin.json` needs `version` (x.y.z). `requires` is the oldest GaiaCP it runs on; on an older one it stays off.
   `class` defaults to `Plugins\<Folder>\<Folder>Plugin`.
 - The class extends `App\Plugins\Plugin` and gives `id()` (lowercase, stable: it is stored in the database),

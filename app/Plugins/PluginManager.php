@@ -14,10 +14,10 @@ use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarModule;
 use App\Provisioning\ServerModule;
 use App\Support\Demo;
+use App\Support\StoredTime;
 use App\Support\Translations;
 use App\Support\Version;
 use App\Themes\ThemeModule;
-use Carbon\CarbonImmutable;
 use Filament\Actions\Action;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Foundation\Application;
@@ -276,7 +276,7 @@ class PluginManager
         return (object) [
             'version' => $row->version,
             'previous' => $row->previous_version ?? null,
-            'changedAt' => filled($row->version_changed_at ?? null) ? CarbonImmutable::parse($row->version_changed_at) : null,
+            'changedAt' => StoredTime::parse($row->version_changed_at ?? null),
         ];
     }
 

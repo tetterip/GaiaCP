@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Auth\PasswordBrokerManager;
+use App\Database\MariaDbConnection;
+use App\Database\MySqlConnection;
+use App\Database\SQLiteConnection;
 use App\Invoices\NoticeLedger;
 use App\Models\ApiKey;
 use App\Models\CreditTransaction;
@@ -32,6 +36,7 @@ use Filament\Tables\Filters\BaseFilter;
 use Filament\Tables\Table;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\NoPendingMigrations;
 use Illuminate\Foundation\Console\AboutCommand;
@@ -54,6 +59,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Times are stored in UTC (App\Database\SendsTimesInUtc, App\Models\Concerns\StoresTimesInUtc)
+        Connection::resolverFor('sqlite', fn ($pdo, $database, $prefix, $config) => new SQLiteConnection($pdo, $database, $prefix, $config));
+        Connection::resolverFor('mysql', fn ($pdo, $database, $prefix, $config) => new MySqlConnection($pdo, $database, $prefix, $config));
+        Connection::resolverFor('mariadb', fn ($pdo, $database, $prefix, $config) => new MariaDbConnection($pdo, $database, $prefix, $config));
+        $this->app->extend('auth.password', fn ($manager, $app) => new PasswordBrokerManager($app));
+
         // Building the demo's data (App\Support\DemoSnapshot): this process migrates and seeds that SQLite file, not
         // the live database, before anything reads it. Read from the process's own environment, so a cached config can't hide it.
         if (is_string($building = getenv('GAIACP_DEMO_BUILD')) && $building !== '') {

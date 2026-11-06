@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Times are stored in UTC (payments' and tickets' times, the activity log, emails, sign-ins and every other time),
+  and shown in the timezone of Settings → General → Region. The update converts the times already kept, each with its
+  own summer or winter offset; plain dates (due dates, expiry dates) do not change. On MySQL / MariaDB the connection
+  now runs in UTC, so the database server's own timezone no longer matters.
+- Plugin API: a plugin's models use `App\Models\Concerns\StoresTimesInUtc` (new in the API) so their times are stored in
+  UTC like GaiaCP's; tables of a plugin are converted by the update too. A time read without a model (`DB::table()`)
+  is UTC text: `App\Support\StoredTime::parse()` gives it in local time. A Carbon given to a query is converted to UTC,
+  so a plain date column takes a date string (`toDateString()`) or `whereOnDate()`.
 - Server uptime bars: checks are stored in UTC, so the bars no longer show them two or three hours off (in any timezone
   other than UTC) or leave the last hours empty.
 - Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,

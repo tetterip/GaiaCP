@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,6 +32,8 @@ use Illuminate\Support\Str;
 #[Fillable(['slug', 'names', 'descriptions', 'icon', 'features', 'sort', 'hidden', 'page', 'page_titles', 'page_descriptions', 'page_texts', 'faq'])]
 class ProductGroup extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

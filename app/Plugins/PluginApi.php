@@ -52,6 +52,7 @@ use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\ClientField;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Models\Currency;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -107,6 +108,7 @@ use App\Support\ModuleLogger;
 use App\Support\Money;
 use App\Support\Region;
 use App\Support\Settings;
+use App\Support\StoredTime;
 use App\Support\Tax;
 use App\Themes\ThemeModule;
 
@@ -126,6 +128,8 @@ final class PluginApi
         GaiaEvent::class,
         ActivityLog::class,
         ModuleLogger::class,
+        StoresTimesInUtc::class,
+        StoredTime::class,
 
         // Server panels
         ServerModule::class,

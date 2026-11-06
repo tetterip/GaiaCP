@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CurrencyFormat;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Currencies;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['code', 'prefix', 'suffix', 'format', 'rate'])]
 class Currency extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

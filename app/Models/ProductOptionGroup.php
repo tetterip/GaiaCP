@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,6 +20,8 @@ use Illuminate\Support\Str;
 #[Fillable(['name', 'description', 'options'])]
 class ProductOptionGroup extends Model
 {
+    use StoresTimesInUtc;
+
     protected static function booted(): void
     {
         // Services keep picks by these ids, so every option and choice has one that never changes.

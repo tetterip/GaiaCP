@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MailTemplate;
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,8 @@ use Throwable;
 #[Fillable(['client_id', 'to_client', 'template', 'to', 'cc', 'bcc', 'subject', 'body', 'status', 'error', 'created_at'])]
 class EmailLog extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPDATED_AT = null;
 
     protected function casts(): array

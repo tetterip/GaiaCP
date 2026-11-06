@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use App\Support\PageImages;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
@@ -23,6 +24,8 @@ use Illuminate\Support\Str;
 #[Fillable(['slug', 'image', 'texts', 'published', 'clients_only', 'created_by'])]
 class CustomPage extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'published' => false,
         'clients_only' => false,

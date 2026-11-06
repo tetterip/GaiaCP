@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ClientFieldAccess;
 use App\Enums\ClientFieldType;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Providers\AppServiceProvider;
 use App\Support\Locales;
 use Carbon\CarbonImmutable;
@@ -21,6 +22,8 @@ use Throwable;
 #[Fillable(['key', 'labels', 'type', 'options', 'required', 'client_access', 'on_notice', 'sort'])]
 class ClientField extends Model
 {
+    use StoresTimesInUtc;
+
     protected $attributes = [
         'type' => 'text',
         'client_access' => 'editable',

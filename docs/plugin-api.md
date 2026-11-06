@@ -32,6 +32,11 @@ can be added.
 - `App\Events\GaiaEvent`: what happens in GaiaCP, given to `handleEvent()`.
 - `App\Models\ActivityLog`: `ActivityLog::record()` for what your plugin did.
 - `App\Support\ModuleLogger`: `ModuleLogger::middleware()` on your API client, for the module log.
+- `App\Models\Concerns\StoresTimesInUtc`: use it on every model of your plugin. Times are stored in UTC and read in
+  the timezone of Settings → General → Region; plain dates (`date` casts) stay as they are.
+- `App\Support\StoredTime`: `StoredTime::parse()` turns a time read without a model (`DB::table()`, `min()`, `max()`)
+  from UTC into local time. A Carbon given to a query is converted to UTC for you; give a plain date column a date
+  string (`toDateString()`) or use `whereOnDate()`.
 
 ### Server panels
 

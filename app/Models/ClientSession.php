@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\ClientSessions\ClientSessions;
+use App\Models\Concerns\StoresTimesInUtc;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['user_id', 'token_hash', 'ip_address', 'user_agent', 'last_active_at'])]
 class ClientSession extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

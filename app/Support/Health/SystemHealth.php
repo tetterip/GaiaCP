@@ -10,6 +10,7 @@ use App\Providers\AppServiceProvider;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\RegistrarFactory;
 use App\Support\Branding;
+use App\Support\StoredTime;
 use App\Support\SvgLogo;
 use App\Support\Version;
 use Carbon\CarbonImmutable;
@@ -443,7 +444,7 @@ class SystemHealth
 
         $synced = Domain::query()->max('last_synced_at');
         if ($synced) {
-            $at = CarbonImmutable::parse($synced);
+            $at = StoredTime::parse($synced);
             $checks[] = new Check('Connections', 'Domain sync', $at->diffInHours(now(), true) > self::DAILY_GRACE_HOURS ? Status::Warning : Status::Ok, 'Last domain synced '.$this->ago($at));
         }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\BillingCycle;
 use App\Enums\DomainRegistrationType;
 use App\Enums\QuoteStatus;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use App\Support\Money;
 use App\Support\Tax;
@@ -30,6 +31,8 @@ use Illuminate\Support\Str;
 #[Fillable(['number', 'lead_id', 'client_id', 'status', 'currency', 'locale', 'items', 'extras', 'intro', 'footer', 'valid_until', 'token', 'sent_at', 'accepted_at', 'accepted_ip', 'terms_accepted_at', 'terms_version', 'declined_at', 'decline_reason', 'order_id', 'notes', 'user_id'])]
 class Quote extends Model
 {
+    use StoresTimesInUtc;
+
     public const NUMBER_PREFIX = 'QT';
 
     protected $attributes = [

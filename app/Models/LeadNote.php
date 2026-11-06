@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['lead_id', 'user_id', 'body'])]
 class LeadNote extends Model
 {
+    use StoresTimesInUtc;
+
     /** @return BelongsTo<Lead, $this> */
     public function lead(): BelongsTo
     {
