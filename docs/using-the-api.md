@@ -58,6 +58,7 @@ Things that hold for every call:
   `meta` (`total`, `last_page`, …). Lists take filters, e.g. `/services?client_id=12&status=active`.
 - PATCH changes only the fields you send.
 - Each key may make 120 calls a minute (the host can change it with `GAIACP_API_PER_MINUTE`); more get 429.
+- A POST may send an `Idempotency-Key` header (see [Sending a call again safely](#sending-a-call-again-safely)).
 
 | Status | Meaning |
 |---|---|
@@ -122,6 +123,29 @@ Each unpaid line gets a payment and its service's next due date moves on one bil
 non-payment is unsuspended, and items set up "on payment" are set up. GaiaCP charges nothing: this only records money
 you already received. `POST /payments` with a `service_id` records one cycle of a single service instead, and
 `DELETE /payments/{id}` reverses a payment recorded by mistake (only a service's latest one).
+
+#### Sending a call again safely
+
+A network error or a timeout leaves your script not knowing whether the payment was recorded. Sending it again
+would record it twice and move the due date two cycles on. So give every POST that records something an
+`Idempotency-Key` header, any text unique to that one payment (a UUID, or your bank's transaction id), and send the
+same key when you retry:
+
+```bash
+curl -X POST https://billing.example.com/api/v1/payments \
+  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -H "Accept: application/json" \
+  -H "Idempotency-Key: bank-TX-88231" \
+  -d '{"service_id": 42, "method": "bank_transfer", "reference": "TX-88231"}'
+```
+
+- The first call with a key runs as usual. The same key again (from the same API key, within 24 hours) runs nothing
+  and gets the first answer back, with the header `Idempotent-Replayed: true`.
+- The same key with another body or address gets 422: use a new key for each new call.
+- While the first call is still running, the same key gets 409 with `Retry-After: 1`.
+- Answers that may change on a retry are not kept: 401, 403, 429 and 5xx. Fix the key or wait, and retry with the
+  same Idempotency-Key.
+
+It works on every POST (orders, clients, leads…), and calls without the header behave as before.
 
 ### Who owes what
 
