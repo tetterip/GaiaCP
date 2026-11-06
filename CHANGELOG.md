@@ -14,6 +14,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   an order's items no longer check each row's payments one by one for Record payment, and an admin page no longer runs
   the setup guide's checks for the tour's last card once the guide is hidden.
 - REST API: `paid_from` / `paid_to` on `GET /payments` must be dates (a 422 otherwise).
+- Indexes on payments' paid date and on orders' status + date, so reports by payment date and the daily cancelling of
+  unpaid orders don't read the whole table once there are many.
 
 ## [0.7.0] - 2026-11-04
 
