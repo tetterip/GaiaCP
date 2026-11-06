@@ -159,6 +159,8 @@ class ClientFieldsTest extends TestCase
         $client->update(['custom_fields' => ['id_card' => 'AK 2', 'member' => true]]);
         $this->assertTrue($notice->fresh()->billToChanged());
         $this->assertSame(['Id card: AK 1', 'Member: Yes'], ClientFields::noticeLines($notice->fresh()->billTo()->custom));
+        // in the fields' order, whatever order the database keeps the values in (MySQL's JSON columns sort them)
+        $this->assertSame(['Id card: AK 1', 'Member: Yes'], ClientFields::noticeLines(array_reverse($notice->fresh()->billTo()->custom, true)));
 
         $this->actingAs(User::factory()->create());
         Livewire::test(ViewInvoice::class, ['record' => $notice->id])->assertSee('Id card: AK 1')->assertDontSee('Pays late');

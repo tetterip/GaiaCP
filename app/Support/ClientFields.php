@@ -124,8 +124,11 @@ final class ClientFields
     public static function noticeLines(?array $custom): array
     {
         $fields = self::all()->keyBy('key');
+        $order = $fields->keys()->flip();
 
+        // In the fields' own order: MySQL's JSON columns keep an object's keys in an order of their own
         return collect($custom ?? [])
+            ->sortBy(fn (string $value, string $key) => $order->get($key, PHP_INT_MAX), SORT_NUMERIC)
             ->map(fn (string $value, string $key) => __(':label: :value', ['label' => $fields->get($key)?->label() ?? $key, 'value' => $value]))
             ->values()->all();
     }

@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Tests now run on MySQL 8.4 and MariaDB 10.11 as well as SQLite, and on PHP 8.3, 8.4 and 8.5, so problems that only
+  show on the production databases (a text longer than its column, row locks, text comparison) are caught before a
+  release. Fixed on the way: System health said the `pdo_mariadb` extension was missing on an install set to
+  `DB_CONNECTION=mariadb` (it is `pdo_mysql`), so `gaiacp:health` failed there. A backup made on MySQL / MariaDB is now
+  restored in the tests too.
+- Fixed on MySQL: a client who pressed Save again on a profile change already waiting for approval sent the admins the
+  change request email and bell once more each time, and the extra client fields on a payment notice could show in
+  another order than Settings → Client fields (MySQL keeps JSON keys in an order of its own).
 - Dashboard: **Needs attention** is now the day's to-do list. New lines: servers down, cancellation and upgrade requests
   to answer, tickets waiting for a reply over 24 hours, payment notices due today, domains to check at the registrar
   (auto renew on and the registrar's expiry within 14 days, or well before the date they are paid up to) and sent quotes

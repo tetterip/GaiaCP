@@ -12,15 +12,22 @@ permissions:
   contents: read
 
 jobs:
+  # SQLite (as in development) on every supported PHP, with code style and advisories once
   tests:
+    name: PHP ${{ matrix.php }}, SQLite
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4', '8.5']
 
     steps:
       - uses: actions/checkout@v7
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: ${{ matrix.php }}
           extensions: mbstring, pdo_sqlite, intl
           coverage: none
 
@@ -28,6 +35,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist --no-progress
 
       - name: Security advisories
+        if: matrix.php == '8.3'
         run: composer audit --locked --no-interaction
 
       - name: Prepare environment
@@ -36,8 +44,70 @@ jobs:
           php artisan key:generate
 
       - name: Code style
+        if: matrix.php == '8.3'
         run: ./vendor/bin/pint --test
 
       - name: Tests
         run: php artisan test
 
+  # The production databases: SQLite does not enforce column lengths, ignores row locks (lockForUpdate) and compares
+  # text differently, so the same suite runs on MySQL and MariaDB too
+  databases:
+    name: PHP 8.3, ${{ matrix.name }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: MySQL 8.4
+            image: mysql:8.4
+            connection: mysql
+            health: mysqladmin ping -h 127.0.0.1 -uroot -psecret
+          - name: MariaDB 10.11
+            image: mariadb:10.11
+            connection: mariadb
+            health: healthcheck.sh --connect --innodb_initialized
+
+    services:
+      database:
+        image: ${{ matrix.image }}
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: gaiacp_test
+          MARIADB_ROOT_PASSWORD: secret
+          MARIADB_DATABASE: gaiacp_test
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="${{ matrix.health }}"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      DB_CONNECTION: ${{ matrix.connection }}
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: gaiacp_test
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, pdo_sqlite, intl
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Tests
+        run: php artisan test

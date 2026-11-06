@@ -105,7 +105,8 @@ class SystemHealth
             : new Check('PHP', 'PHP version', Status::Error, PHP_VERSION, 'GaiaCP needs PHP '.self::MIN_PHP.' or newer: pick a newer PHP for this site.')];
 
         $missing = array_filter(array_keys(self::REQUIRED_EXTENSIONS), fn (string $ext) => ! extension_loaded($ext));
-        $driver = 'pdo_'.DB::connection()->getDriverName();
+        // The mariadb connection uses PHP's pdo_mysql, as mysql does
+        $driver = 'pdo_'.str_replace('mariadb', 'mysql', DB::connection()->getDriverName());
         if (! extension_loaded($driver)) {
             $missing[] = $driver;
         }

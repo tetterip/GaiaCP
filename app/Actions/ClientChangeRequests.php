@@ -71,7 +71,7 @@ class ClientChangeRequests
             return null;
         }
 
-        if ($pending && $pending->fields === $changes) {
+        if ($pending && self::same($pending->fields, $changes)) {
             return $pending; // asked for the same again: nothing new to tell the admins
         }
 
@@ -83,6 +83,25 @@ class ClientChangeRequests
         $this->notifyAdmins($request);
 
         return $request;
+    }
+
+    /**
+     * Whether two change lists ask for the same: the same fields with the same old and new values, in any order
+     * (MySQL's JSON columns give an object's keys back in an order of their own).
+     *
+     * @param  array<string, array{0: mixed, 1: mixed}>|null  $a
+     * @param  array<string, array{0: mixed, 1: mixed}>|null  $b
+     */
+    public static function same(?array $a, ?array $b): bool
+    {
+        if ($a === null || $b === null) {
+            return $a === $b;
+        }
+
+        ksort($a);
+        ksort($b);
+
+        return $a === $b;
     }
 
     /** Saves the asked-for values on the client (their login follows the name, Client::booted()). */

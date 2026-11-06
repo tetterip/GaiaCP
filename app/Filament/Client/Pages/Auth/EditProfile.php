@@ -191,7 +191,7 @@ class EditProfile extends BaseEditProfile
             'custom_fields' => array_merge($client->custom_fields ?? [], ClientFields::clean(ClientFields::editable(), $data['custom_fields'] ?? [])) ?: null,
         ]);
         $request = app(ClientChangeRequests::class)->request($client, $data['details'] ?? []);
-        $this->requested = $request !== null && $request->fields !== $before;
+        $this->requested = $request !== null && ! ClientChangeRequests::same($request->fields, $before);
 
         unset($data['email'], $data['phone'], $data['details'], $data['custom_fields']);
 

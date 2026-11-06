@@ -14,6 +14,9 @@ honest when features are added or dropped.
   (5+ minutes); `bin/composer-cache-from-git` fills the cache from shallow clones instead
 - Tests: run the ones for what you changed (`php artisan test --filter=<TestName>`), plus `LocalesTest` after adding
   texts; the full suite (about 90 s) once before pushing, with `./vendor/bin/pint`
+- CI also runs the suite on MySQL 8.4 and MariaDB 10.11 (and PHP 8.3 / 8.4 / 8.5). To try MariaDB locally:
+  `DB_CONNECTION=mariadb DB_HOST=127.0.0.1 DB_DATABASE=gaiacp_test DB_USERNAME=… DB_PASSWORD=… php artisan test`.
+  A test that changes the schema or uses `DatabaseMigrations` must skip itself there, or the tests after it lose their tables
 - Screenshots (before / after, light, dark, phone) only for bigger features or when asked, not for small UI tweaks
 - Ask the maintainer before merging to `main`: the owner's staging deploys every push to `main`, even when CI fails
 - Check `git remote -v` before pushing after a `composer install` (a failed source clone once rewrote `origin`)
