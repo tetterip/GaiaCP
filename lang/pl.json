@@ -3888,5 +3888,14 @@
     "VPS": "VPS",
     "VPS Welcome Email": "E-mail powitalny VPS",
     "shown on the VPS's page in the client area once it is known": "widoczny na stronie VPS w strefie klienta, gdy tylko będzie znany",
-    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Widoczne wpisy (z filtrami i wyszukiwaniem, :count najnowszych) jako plik JSON do zgłoszenia błędu. Hasła i tokeny są już ukryte."
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Widoczne wpisy (z filtrami i wyszukiwaniem, :count najnowszych) jako plik JSON do zgłoszenia błędu. Hasła i tokeny są już ukryte.",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Zwróciłem je poza GaiaCP (Stripe, bank)",
+    "Keep them as they are": "Zostaw je bez zmian",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Oznacza zamówienie i wszystkie jego pozycje jako anulowane. Na żadnym serwerze ani u rejestratora nic jeszcze nie utworzono. Zapłacono za nie :amount: wybierz, co stanie się z tymi pieniędzmi.",
+    "Return them to the client's credit": "Zwróć je na saldo klienta",
+    "The payments": "Płatności",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "Płatności i opłacone powiadomienie o płatności pozostają zapisane dla anulowanych pozycji.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "Płatności zostają cofnięte, a kwota trafia na saldo klienta na kolejne płatności.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Płatności zostają cofnięte, bez dodania salda. GaiaCP nie wysyła zwrotu: zrób go sam. Płatność z salda i tak wraca na saldo.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Cofnięte płatności zostawiają swoje powiadomienie o płatności anulowane, a do wystawionej faktury powstaje korekta."
 }

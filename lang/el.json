@@ -3888,5 +3888,14 @@
     "VPS": "VPS",
     "VPS Welcome Email": "Email καλωσορίσματος VPS",
     "shown on the VPS's page in the client area once it is known": "εμφανίζεται στη σελίδα του VPS στην περιοχή πελατών μόλις γίνει γνωστή",
-    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Οι εγγραφές που φαίνονται (με τα φίλτρα και την αναζήτηση, οι :count πιο πρόσφατες) σε αρχείο JSON, για αναφορά σφάλματος. Οι κωδικοί και τα tokens είναι ήδη κρυμμένα."
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Οι εγγραφές που φαίνονται (με τα φίλτρα και την αναζήτηση, οι :count πιο πρόσφατες) σε αρχείο JSON, για αναφορά σφάλματος. Οι κωδικοί και τα tokens είναι ήδη κρυμμένα.",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Τις επέστρεψα εκτός GaiaCP (Stripe, τράπεζα)",
+    "Keep them as they are": "Μένουν όπως είναι",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Σημειώνει την παραγγελία και όλα τα είδη της ως ακυρωμένα. Δεν έχει δημιουργηθεί ακόμα τίποτα σε server ή registrar. Για αυτήν πληρώθηκαν :amount: επιλέξτε τι γίνεται με αυτά τα χρήματα.",
+    "Return them to the client's credit": "Επιστροφή στην πίστωση του πελάτη",
+    "The payments": "Οι πληρωμές",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "Οι πληρωμές και η πληρωμένη ειδοποίηση πληρωμής μένουν καταχωρημένες για είδη που ακυρώνονται.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "Οι πληρωμές αναιρούνται και το ποσό μπαίνει στο υπόλοιπο του πελάτη για τις επόμενες πληρωμές του.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Οι πληρωμές αναιρούνται, χωρίς πίστωση. Το GaiaCP δεν στέλνει επιστροφή χρημάτων: κάντε την εσείς. Μια πληρωμή από την πίστωση επιστρέφει πάντα στην πίστωση.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Με την αναίρεση των πληρωμών η ειδοποίηση πληρωμής τους ακυρώνεται, και για τιμολόγιο που έχει εκδοθεί βγαίνει πιστωτικό."
 }

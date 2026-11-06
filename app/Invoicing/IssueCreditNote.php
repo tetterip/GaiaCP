@@ -18,6 +18,9 @@ class IssueCreditNote
     /** The reason ReversePayment gives, in English like the activity log; shown translated. */
     public const PAYMENT_REVERSED = 'Payment reversed';
 
+    /** The reason CancelOrder gives when it undoes a paid order's payments. */
+    public const ORDER_CANCELLED = 'Order cancelled';
+
     /**
      * @param  list<int>|null  $itemIds  the invoice lines to credit; null for every line not credited yet
      *

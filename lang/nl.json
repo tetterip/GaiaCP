@@ -3888,5 +3888,14 @@
     "VPS": "VPS",
     "VPS Welcome Email": "Welkomstmail VPS",
     "shown on the VPS's page in the client area once it is known": "getoond op de pagina van de VPS in het klantengedeelte zodra het bekend is",
-    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "De getoonde regels (met filters en zoekopdracht, de nieuwste :count) als JSON-bestand, voor een foutmelding. Wachtwoorden en tokens zijn al gemaskeerd."
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "De getoonde regels (met filters en zoekopdracht, de nieuwste :count) als JSON-bestand, voor een foutmelding. Wachtwoorden en tokens zijn al gemaskeerd.",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Ik heb ze buiten GaiaCP terugbetaald (Stripe, bank)",
+    "Keep them as they are": "Laten zoals ze zijn",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Markeert de bestelling en al haar onderdelen als geannuleerd. Er is nog niets aangemaakt op een server of bij een registrar. Er is :amount voor betaald: kies wat er met dat geld gebeurt.",
+    "Return them to the client's credit": "Terugzetten op het tegoed van de klant",
+    "The payments": "De betalingen",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "De betalingen en de betaalde betalingsmelding blijven geregistreerd voor geannuleerde onderdelen.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "De betalingen worden ongedaan gemaakt en het bedrag gaat naar het saldo van de klant voor volgende betalingen.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "De betalingen worden ongedaan gemaakt, zonder tegoed. GaiaCP stuurt geen terugbetaling: doe dat zelf. Een betaling uit tegoed gaat toch terug naar het tegoed.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Ongedaan gemaakte betalingen laten hun betalingsmelding geannuleerd, en een uitgereikte factuur krijgt een creditnota."
 }

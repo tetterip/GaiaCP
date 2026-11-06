@@ -2,6 +2,7 @@
 
 namespace App\Api;
 
+use App\Actions\CancelOrder;
 use App\Actions\ClientOrder;
 use App\Enums\AutoSetup;
 use App\Enums\BillingCycle;
@@ -56,7 +57,7 @@ class OpenApi
             ['method' => 'post', 'path' => '/orders', 'area' => 'orders', 'permission' => 'orders.create', 'summary' => 'Place an order', 'description' => 'For a client, like the client area\'s cart: products clients can order (shown in the client area), with their options and add-ons, and domains. Prices always come from the products and Settings → Domain pricing. The order\'s payment notice is made and emailed, and items are set up as their product\'s Auto setup says; setup_errors lists those that could not be.', 'body' => 'OrderInput', 'response' => 'Order', 'status' => 201],
             ['method' => 'get', 'path' => '/orders/{id}', 'area' => 'orders', 'permission' => 'orders.read', 'summary' => 'Get an order', 'response' => 'Order'],
             ['method' => 'post', 'path' => '/orders/{id}/complete', 'area' => 'orders', 'permission' => 'orders.update', 'summary' => 'Complete an order', 'description' => 'Sets up every pending item (domains, then hosting, then the rest), as Complete order does. Safe to call again: only what is still pending is retried; setup_errors says why an item is.', 'response' => 'Order'],
-            ['method' => 'post', 'path' => '/orders/{id}/cancel', 'area' => 'orders', 'permission' => 'orders.delete', 'summary' => 'Cancel an order', 'description' => 'Only while it and all its items are pending; its unpaid payment notice is cancelled too.', 'response' => 'Order'],
+            ['method' => 'post', 'path' => '/orders/{id}/cancel', 'area' => 'orders', 'permission' => 'orders.delete', 'summary' => 'Cancel an order', 'description' => 'Only while it and all its items are pending; its unpaid payment notice is cancelled too. When its items were already paid for, payments says what happens to that money.', 'body' => 'CancelOrderInput', 'response' => 'Order'],
 
             ['method' => 'get', 'path' => '/invoices', 'area' => 'invoices', 'permission' => 'invoices.read', 'summary' => 'List payment notices', 'description' => 'Payment notices (proformas, PF-2026-0001), not legal invoices.', 'query' => ['client_id', 'order_id', 'status', 'number', ...$list], 'response' => 'Invoice[]'],
             ['method' => 'get', 'path' => '/invoices/{id}', 'area' => 'invoices', 'permission' => 'invoices.read', 'summary' => 'Get a payment notice', 'response' => 'Invoice'],
@@ -275,6 +276,7 @@ class OpenApi
                 'override_suspend_until' => $date, 'auto_terminate' => $bool,
             ]],
             'SuspendInput' => ['type' => 'object', 'properties' => ['reason' => ['type' => ['string', 'null'], 'description' => 'Shown to the client in the suspension email']]],
+            'CancelOrderInput' => ['type' => 'object', 'properties' => ['payments' => ['type' => ['string', 'null'], 'enum' => [...CancelOrder::PAYMENT_OPTIONS, null], 'description' => 'For an order already paid for: credit (undo the payments, the amount goes into the client\'s balance; the default when credit is on), refunded (undo them, you paid the client back yourself: GaiaCP sends no refund; the default when credit is off) or keep (leave them recorded). A payment made from credit always goes back to credit.']]],
             'Order' => ['type' => 'object', 'properties' => [
                 'id' => $int, 'client_id' => $int, 'status' => self::enum(OrderStatus::class), 'notes' => $nullableString,
                 'total_cents' => ['type' => 'integer', 'description' => 'What the first payment of every item comes to'],
