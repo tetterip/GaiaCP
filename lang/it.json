@@ -3899,5 +3899,8 @@
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "I pagamenti vengono annullati, senza credito. GaiaCP non invia alcun rimborso: fallo tu. Un pagamento fatto con il credito torna comunque al credito.",
     "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "I pagamenti annullati lasciano annullato il loro avviso di pagamento, e una fattura emessa riceve una nota di credito.",
     "Logging settings": "Impostazioni di registrazione",
-    "Switch logging on": "Attiva la registrazione"
+    "Switch logging on": "Attiva la registrazione",
+    "Send client emails in the background": "Invia le email ai clienti in background",
+    "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Una pagina che invia un'email a un cliente prosegue subito; l'email parte entro un minuto, dallo scheduler. Se il server di posta la rifiuta, viene ritentata tre volte e poi compare nel registro email e in Impostazioni → Job non riusciti. Disattivato: viene inviata prima che la pagina prosegua, quindi un server di posta lento la fa attendere.",
+    "Background": "Background"
 }

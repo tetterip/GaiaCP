@@ -381,6 +381,8 @@ return [
         'password' => null,
         'header' => null,
         'footer' => null,
+        // Client emails sent from a page wait on the queue (run by the scheduler every minute) instead of holding the page
+        'background' => true,
     ],
 
     // Settings → Logging: the module log (every panel / registrar / ΑΑΔΕ request and response, secrets masked)

@@ -82,7 +82,9 @@ Updates come from the GitHub releases of `GAIACP_UPDATE_REPOSITORY` (default `te
 repository of your own needs `GAIACP_UPDATE_TOKEN` in `.env`, a token that can read it (fine-grained, Contents: read). Without a token GitHub allows
 60 requests an hour per server address, shared with every site on it; on a shared server set `GAIACP_UPDATE_TOKEN` to
 a fine-grained token with public repositories read-only (5000 an hour). A Git
-checkout (deployed from Git) has no Update button: it is updated by deploying.
+checkout (deployed from Git) has no Update button: it is updated by deploying. Point the deployment at the `deploy`
+branch rather than `main`: the Deploy branch workflow moves it to a commit of `main` only once every test passed there,
+so a push whose tests fail never reaches the site (in Plesk: Git → Repository settings → the branch to deploy).
 
 An install made before the installer existed (its own `.env`) counts as installed: the installer stays closed and
 writes its lock file the first time the site is opened.
@@ -106,7 +108,7 @@ are stored in the `settings` table, and each page saves only its own:
 | ΑΑΔΕ | On/off switch (off by default: no lookup button), special access codes (ειδικοί κωδικοί, password stored encrypted) for the ΑΑΔΕ registry lookup: the magnifying glass next to the ΑΦΜ on the client form fills in the company name, Δ.Ο.Υ., profession and address. Create them at the ΑΑΔΕ special codes console (Δημιουργία Ειδικού Κωδικού for "Αναζήτηση Βασικών Στοιχείων Μητρώου Επιχειρήσεων"); Test lookup tries them |
 | Products, Servers, Domain pricing, Registrars | The catalog, the cPanel/Plesk servers, the prices and preferred registrar of each TLD, and the registrar accounts (Email Notifications included) |
 | Domains | Default nameservers for new registrations, auto renew for new domains, renew at the registrar on payment, free domains renew only with active hosting, IDN domains, grace and redemption fees, an SSL certificate offered with domains ordered on their own (with a discount on its first period) |
-| Mail | SMTP server (host, port, STARTTLS / SSL / none, username, password stored encrypted; off = the `.env` mailer), header and footer text around every client email (Markdown, placeholders), and a Send test email button that tries the values before saving. The company logo (Settings → Company) is embedded in each email |
+| Mail | SMTP server (host, port, STARTTLS / SSL / none, username, password stored encrypted; off = the `.env` mailer), header and footer text around every client email (Markdown, placeholders), Send client emails in the background (on: a page that emails a client doesn't wait for the mail server; the scheduler sends it within a minute, three tries, then Settings → Failed jobs; shown only when `QUEUE_CONNECTION` is not `sync`), and a Send test email button that tries the values before saving. The company logo (Settings → Company) is embedded in each email |
 | Email templates | Every client email (signup, order confirmation, renewal and overdue notices, payment notices (proformas), hosting welcome, suspension, domain registration/renewal/transfer/expiry), each with an on/off switch, subject and text with placeholders such as `{$client_first_name}`, and a preview. Only the renewal, overdue and domain renewal notices are on until you switch others on |
 | Backups | Daily or weekly at a set time, how many to keep, zip password (AES-256), email address, FTP/FTPS server and folder; Back up now, Download latest and Test FTP buttons |
 | Automation | Days before / after the due date, time of the daily run, BCC address for every client email, auto-suspend after N days overdue (empty = never) |
@@ -135,6 +137,9 @@ The scheduler must run every minute:
 ```
 * * * * * cd /path/to/gaiacp && php artisan schedule:run >> /dev/null 2>&1
 ```
+
+It also runs the queue (`QUEUE_CONNECTION=database`, the default) for a minute at a time, so no queue worker is needed:
+client emails sent from a page wait there until it does.
 
 **System health** (Settings → System health) shows whether cron runs (and with which PHP), when each daily job last ran, and
 any setup problem; `php artisan gaiacp:health` prints the same and fails when something is wrong.

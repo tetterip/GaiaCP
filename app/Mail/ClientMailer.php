@@ -58,23 +58,54 @@ class ClientMailer
         $mail->previewText = $text;
         $mail->files = $files;
 
+        $bcc = config('gaiacp.reminders.bcc') ?: null;
+
+        if (self::inBackground($client, $files)) {
+            SendClientMail::dispatch($mail, $service, $bcc);
+
+            return true;
+        }
+
         try {
-            $pending = Mail::to($client->email);
-            if ($bcc = config('gaiacp.reminders.bcc')) {
-                $pending->bcc($bcc);
-            }
-            $pending->send($mail);
+            $this->deliver($mail, $service, $bcc);
         } catch (Throwable $e) {
-            rescue(fn () => EmailLog::failed($client->email, $mail->envelope()->subject, $e, $client, $template, config('gaiacp.reminders.bcc')), report: false);
+            rescue(fn () => EmailLog::failed($client->email, $mail->envelope()->subject, $e, $client, $template, $bcc), report: false);
             Log::error('Client email failed', ['template' => $template->value, 'client_id' => $client->id, 'error' => $e->getMessage()]);
             ActivityLog::record('email.failed', "{$template->label()} to {$client->email} failed: {$e->getMessage()}", $service, $client, ['template' => $template->value]);
 
             return false;
         }
 
-        ActivityLog::record('email.sent', "{$template->label()} sent to {$client->email}", $service, $client, ['template' => $template->value]);
-
         return true;
+    }
+
+    /** Sends it now and logs it as sent; throws when the mail server refuses it. */
+    public function deliver(ClientMail $mail, ?Service $service = null, ?string $bcc = null): void
+    {
+        $client = $mail->client;
+        $pending = Mail::to($client->email);
+        if ($bcc) {
+            $pending->bcc($bcc);
+        }
+        $pending->send($mail);
+
+        ActivityLog::record('email.sent', "{$mail->mailTemplate->label()} sent to {$client->email}", $service, $client, ['template' => $mail->mailTemplate->value]);
+    }
+
+    /**
+     * From a page (not the daily run, which has time and stamps what it sent), with a queue that a worker runs: the
+     * scheduler's queue:work every minute. Not for a sender who is not a client (nothing to load it back from), nor
+     * with files (the queue keeps text only); those go at once as before.
+     *
+     * @param  list<array{name: string, data: string, mime: string}>  $files
+     */
+    private static function inBackground(Client $client, array $files): bool
+    {
+        return config('gaiacp.mail.background')
+            && config('queue.default') !== 'sync'
+            && ! app()->runningInConsole()
+            && $client->exists
+            && $files === [];
     }
 
     /** @param  array<string, string|HtmlString|null>|Closure(): array<string, string|HtmlString|null>  $extra  a closure is called in the client's language */

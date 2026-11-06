@@ -1,0 +1,42 @@
+name: Deploy branch
+
+# Moves the `deploy` branch to a commit of main once every test passed on it. A server that deploys on push (Plesk Git,
+# Forge, a webhook) follows `deploy` instead of main, so a red main never reaches it. Without a server watching
+# `deploy`, this only keeps a branch up to date.
+on:
+  workflow_run:
+    workflows: [Tests]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-branch
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Move deploy to the tested commit
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      # Fast-forward only: an older run that finishes after a newer one never moves `deploy` back
+      - name: Push to deploy
+        env:
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if git ls-remote --exit-code origin refs/heads/deploy > /dev/null; then
+            git fetch origin deploy
+            if ! git merge-base --is-ancestor origin/deploy "$SHA"; then
+              echo "deploy is already at a newer commit than $SHA; leaving it"
+              exit 0
+            fi
+          fi
+          git push origin "$SHA:refs/heads/deploy"

@@ -166,6 +166,7 @@ class Settings
         'mail.password',
         'mail.header',
         'mail.footer',
+        'mail.background',
         'debug.module_log',
         'debug.module_log_days',
         'debug.email_log_days',
