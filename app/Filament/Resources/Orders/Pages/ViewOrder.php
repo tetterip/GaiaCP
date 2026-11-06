@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Orders\Pages;
 use App\Actions\CancelOrder;
 use App\Actions\CompleteOrder;
 use App\Actions\RecordOrderPayment;
+use App\Credit\ClientCredit;
 use App\Enums\AutoSetup;
 use App\Enums\DomainRegistrationType;
 use App\Enums\OrderStatus;
@@ -25,6 +26,7 @@ use App\Support\Tax;
 use Carbon\CarbonImmutable;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -206,9 +208,28 @@ class ViewOrder extends ViewRecord
             // Once something is active it has to be terminated item by item.
             ->visible(fn (Order $record) => CancelOrder::canCancel($record))
             ->requiresConfirmation()
-            ->modalDescription(__('Marks the order, all its items and its unpaid payment notice cancelled. Nothing was created on a server or registrar yet.'))
-            ->action(function (Order $record) {
-                app(CancelOrder::class)->handle($record);
+            ->modalDescription(fn (Order $record) => CancelOrder::hasPayments($record)
+                ? __('Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.', ['amount' => CancelOrder::paidTotal($record)])
+                : __('Marks the order, all its items and its unpaid payment notice cancelled. Nothing was created on a server or registrar yet.'))
+            ->schema(fn (Order $record) => CancelOrder::hasPayments($record) ? [
+                Radio::make('payments')
+                    ->label('The payments')
+                    ->options(array_filter([
+                        CancelOrder::REFUND_TO_CREDIT => ClientCredit::enabled() ? __('Return them to the client\'s credit') : null,
+                        CancelOrder::REFUNDED_ELSEWHERE => __('I paid them back outside GaiaCP (Stripe, bank)'),
+                        CancelOrder::KEEP => __('Keep them as they are'),
+                    ]))
+                    ->descriptions(array_filter([
+                        CancelOrder::REFUND_TO_CREDIT => ClientCredit::enabled() ? __('The payments are undone and the amount goes into the client\'s balance for their next payments.') : null,
+                        CancelOrder::REFUNDED_ELSEWHERE => __('The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.'),
+                        CancelOrder::KEEP => __('The payments and the paid payment notice stay recorded for items that are cancelled.'),
+                    ]))
+                    ->helperText(__('Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.'))
+                    ->default(CancelOrder::defaultPaymentOption())
+                    ->required(),
+            ] : [])
+            ->action(function (Order $record, array $data) {
+                app(CancelOrder::class)->handle($record, payments: $data['payments'] ?? null);
 
                 Notification::make()->title(__('Order cancelled'))->success()->send();
                 $this->refreshFormData(['status']);

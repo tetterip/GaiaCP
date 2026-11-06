@@ -3889,6 +3889,15 @@
     "VPS Welcome Email": "E-mail de boas-vindas do VPS",
     "shown on the VPS's page in the client area once it is known": "mostrado na página do VPS na área do cliente assim que for conhecido",
     "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "As entradas exibidas (com filtros e busca, as :count mais recentes) em um arquivo JSON, para um relatório de erro. Senhas e tokens já estão mascarados.",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Eu os reembolsei fora do GaiaCP (Stripe, banco)",
+    "Keep them as they are": "Deixá-los como estão",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Marca o pedido e todos os seus itens como cancelados. Nada foi criado ainda em um servidor ou registrador. Foram pagos :amount por ele: escolha o que acontece com esse dinheiro.",
+    "Return them to the client's credit": "Devolvê-los ao crédito do cliente",
+    "The payments": "Os pagamentos",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "Os pagamentos e o aviso de pagamento pago continuam registrados para itens cancelados.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "Os pagamentos são desfeitos e o valor vai para o saldo do cliente para os próximos pagamentos.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Os pagamentos são desfeitos, sem crédito. O GaiaCP não envia reembolso: faça você mesmo. Um pagamento feito com crédito volta ao crédito mesmo assim.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Pagamentos desfeitos deixam o seu aviso de pagamento cancelado, e uma fatura emitida recebe uma nota de crédito.",
     "Logging settings": "Configurações de registro",
     "Switch logging on": "Ativar o registro"
 }

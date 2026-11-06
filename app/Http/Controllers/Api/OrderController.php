@@ -6,6 +6,7 @@ use App\Actions\CancelOrder;
 use App\Actions\ClientOrder;
 use App\Actions\CompleteOrder;
 use App\Actions\PlaceOrder;
+use App\Http\Requests\Api\CancelOrderRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Resources\Api\OrderResource;
 use App\Models\Client;
@@ -84,14 +85,15 @@ class OrderController extends ApiController
             ->response();
     }
 
-    /** POST /orders/{id}/cancel: only while nothing of it is set up. */
-    public function cancel(Order $order, CancelOrder $cancel): JsonResponse|OrderResource
+    /** POST /orders/{id}/cancel: only while nothing of it is set up; `payments` says what happens to what was paid. */
+    public function cancel(CancelOrderRequest $request, Order $order, CancelOrder $cancel): JsonResponse|OrderResource
     {
+
         if (! CancelOrder::canCancel($order)) {
             return $this->conflict('Only a pending order with every item still pending can be cancelled; terminate its active items instead.');
         }
 
-        $cancel->handle($order);
+        $cancel->handle($order, payments: $request->validated('payments'));
 
         return new OrderResource($order->refresh()->load(['services.domainDetails', 'invoices']));
     }

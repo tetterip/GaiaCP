@@ -3889,6 +3889,15 @@
     "VPS Welcome Email": "Willkommens-E-Mail für VPS",
     "shown on the VPS's page in the client area once it is known": "wird auf der Seite des VPS im Kundenbereich angezeigt, sobald sie bekannt ist",
     "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Die angezeigten Einträge (mit Filtern und Suche, die neuesten :count) als JSON-Datei für einen Fehlerbericht. Passwörter und Tokens sind bereits maskiert.",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Ich habe sie außerhalb von GaiaCP erstattet (Stripe, Bank)",
+    "Keep them as they are": "Unverändert lassen",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Markiert die Bestellung und alle ihre Positionen als storniert. Auf keinem Server und bei keinem Registrar wurde bisher etwas angelegt. Dafür wurden :amount bezahlt: Wählen Sie, was mit diesem Geld geschieht.",
+    "Return them to the client's credit": "Dem Guthaben des Kunden gutschreiben",
+    "The payments": "Die Zahlungen",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "Die Zahlungen und der bezahlte Zahlungshinweis bleiben für stornierte Positionen erfasst.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "Die Zahlungen werden rückgängig gemacht und der Betrag geht in das Guthaben des Kunden für seine nächsten Zahlungen.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Die Zahlungen werden ohne Gutschrift rückgängig gemacht. GaiaCP sendet keine Erstattung: Nehmen Sie sie selbst vor. Eine Zahlung aus dem Guthaben geht trotzdem ins Guthaben zurück.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Rückgängig gemachte Zahlungen lassen ihren Zahlungshinweis storniert, und eine ausgestellte Rechnung erhält eine Gutschrift.",
     "Logging settings": "Protokollierungseinstellungen",
     "Switch logging on": "Protokollierung einschalten"
 }

@@ -3889,6 +3889,15 @@
     "VPS Welcome Email": "E-mail de bienvenue du VPS",
     "shown on the VPS's page in the client area once it is known": "affichée sur la page du VPS dans l'espace client dès qu'elle est connue",
     "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "Les entrées affichées (filtres et recherche compris, les :count plus récentes) dans un fichier JSON, pour un rapport de bug. Les mots de passe et jetons sont déjà masqués.",
+    "I paid them back outside GaiaCP (Stripe, bank)": "Je les ai remboursés en dehors de GaiaCP (Stripe, banque)",
+    "Keep them as they are": "Les laisser tels quels",
+    "Marks the order and all its items cancelled. Nothing was created on a server or registrar yet. :amount was paid for it: choose what happens to that money.": "Marque la commande et tous ses éléments comme annulés. Rien n'a encore été créé sur un serveur ou chez un registrar. :amount ont été payés pour elle : choisissez ce que devient cet argent.",
+    "Return them to the client's credit": "Les reverser au crédit du client",
+    "The payments": "Les paiements",
+    "The payments and the paid payment notice stay recorded for items that are cancelled.": "Les paiements et l'avis de paiement payé restent enregistrés pour des éléments annulés.",
+    "The payments are undone and the amount goes into the client's balance for their next payments.": "Les paiements sont annulés et le montant va dans le solde du client pour ses prochains paiements.",
+    "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Les paiements sont annulés, sans crédit. GaiaCP n'envoie aucun remboursement : faites-le vous-même. Un paiement fait avec le crédit retourne quand même au crédit.",
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Les paiements annulés laissent leur avis de paiement annulé, et une facture émise reçoit un avoir.",
     "Logging settings": "Paramètres de journalisation",
     "Switch logging on": "Activer la journalisation"
 }

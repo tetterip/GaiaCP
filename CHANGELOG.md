@@ -11,6 +11,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   built-in package is `Default` (not `admin_Default`).
 - HestiaCP: Compare with the server leaves out the panel's admin login, and the module log masks users' password reset
   keys (RKEY).
+- Orders: **Cancel order** on an order that was paid but not set up yet now asks what happens to the money: return it
+  to the client's credit (the default while credit is on), mark it refunded outside GaiaCP, or keep it. Before, the
+  payments and the paid payment notice stayed as they were for cancelled items. The API's `POST /orders/{id}/cancel`
+  takes the same choice as `payments` (`credit`, `refunded`, `keep`).
 - Module log: **Download** saves the entries shown (filters and search included, newest 500) as a JSON file, with
   passwords and tokens masked as on screen, to attach to a bug report.
 - Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
