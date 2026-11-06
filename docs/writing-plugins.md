@@ -3,7 +3,8 @@
 A plugin adds one thing to GaiaCP: a server panel, a domain registrar, a payment method, a captcha, a monitoring
 service, an admin theme or any other integration. GaiaCP's own plugins in `plugins/` are complete examples
 (`plugins/UptimeRobot` is a small one). New to it? [plugin-tutorial.md](plugin-tutorial.md) builds a complete
-plugin step by step.
+plugin step by step. [plugin-api.md](plugin-api.md) lists the GaiaCP classes a plugin can rely on across
+updates.
 
 ## The folder
 
