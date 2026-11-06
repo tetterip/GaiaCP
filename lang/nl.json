@@ -3899,5 +3899,8 @@
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "De betalingen worden ongedaan gemaakt, zonder tegoed. GaiaCP stuurt geen terugbetaling: doe dat zelf. Een betaling uit tegoed gaat toch terug naar het tegoed.",
     "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Ongedaan gemaakte betalingen laten hun betalingsmelding geannuleerd, en een uitgereikte factuur krijgt een creditnota.",
     "Logging settings": "Logboekinstellingen",
-    "Switch logging on": "Logboek inschakelen"
+    "Switch logging on": "Logboek inschakelen",
+    "Send client emails in the background": "E-mails aan klanten op de achtergrond versturen",
+    "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Een pagina die een klant mailt gaat meteen verder; de e-mail volgt binnen een minuut via de planner. Een e-mail die de mailserver weigert wordt drie keer geprobeerd en staat daarna in het e-maillogboek en onder Instellingen → Mislukte taken. Uit: verstuurd voordat de pagina verdergaat, zodat een trage mailserver haar laat wachten.",
+    "Background": "Achtergrond"
 }

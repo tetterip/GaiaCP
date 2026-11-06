@@ -42,6 +42,11 @@ Settings → **Mail** sets how emails leave GaiaCP. Turn on **Send through an SM
 server (host, port, encryption, username, password), or leave it off to use the mailer in `.env`. **Send test email**
 tries the values before you save them.
 
+**Send client emails in the background** (on) lets a page that emails a client, such as Record payment or a ticket
+reply, go on without waiting for the mail server: the email follows within a minute, when cron runs. One the mail
+server refuses is tried three times, then shows in the Email log and under Settings → Failed jobs, where **Retry**
+sends it again. The daily run's emails are always sent at once.
+
 The **header** and **footer** text wrap every client email (Markdown or HTML, with placeholders such as
 `{$client_first_name}` and `{$company_name}`): a good place for your contact details.
 

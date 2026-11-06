@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client emails sent from a page (Record payment, a ticket reply, an invite…) wait on the queue, so a slow mail server
+  no longer holds the page up: the scheduler sends them within a minute, three tries, then Settings → Failed jobs.
+  Settings → Mail → Send client emails in the background (on) turns it off; the daily run's emails still go at once.
+- A **Deploy branch** workflow moves a `deploy` branch to a commit of `main` once all its tests passed: a site deployed
+  from Git can follow `deploy` so a failing push never reaches it (docs/installation.md → Updating).
 - Module log: the **Logging settings** / **Switch logging on** button is translated.
 - Proxmox, HetrixTools, HestiaCP and CyberPanel test fakes now answer like the real APIs (from a staging module log);
   Proxmox errors show their reason behind a proxy, HetrixTools reads its real paging, and the guide says CyberPanel's

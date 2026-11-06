@@ -47,7 +47,7 @@ class MailSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['mail.smtp', 'mail.host', 'mail.port', 'mail.encryption', 'mail.username', 'mail.password', 'mail.header', 'mail.footer'];
+        return ['mail.smtp', 'mail.host', 'mail.port', 'mail.encryption', 'mail.username', 'mail.password', 'mail.header', 'mail.footer', 'mail.background'];
     }
 
     public function form(Schema $schema): Schema
@@ -59,6 +59,11 @@ class MailSettings extends SettingsFormPage
                     ->description(__('Emails go out from the company name and email (Settings → Company).'))
                     ->columns(2)
                     ->schema([
+                        Toggle::make('mail.background')
+                            ->label('Send client emails in the background')
+                            ->helperText(__('A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.'))
+                            ->visible(fn () => config('queue.default') !== 'sync')
+                            ->columnSpanFull(),
                         Toggle::make('mail.smtp')
                             ->label('Send through an SMTP server')
                             ->helperText(__('Off: the mailer set in .env (MAIL_MAILER) is used.'))

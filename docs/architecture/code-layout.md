@@ -491,7 +491,9 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   from Settings → Mail (`MailLayout`: header / footer text with placeholders) inside `<x-client-mail>` (the embedded company logo or name,
   `MailLayout::companyLogo()`). The admins' system emails (`resources/views/mail/*` except `template`) use `<x-admin-mail>` instead, with the GaiaCP logo (`MailLayout::gaiacpLogo()`); `Settings::applyMailer()`
   points Laravel's mailer at the SMTP server from that page (`Settings::ENCRYPTED` keys are stored encrypted). Actions send through `ClientMailer` after they succeed; a failed send logs
-  `email.failed` and never undoes the action. New email: a case with its placeholders, sample values and default text,
+  `email.failed` and never undoes the action. From a web request (not the console) with a queue other than `sync` and
+  `mail.background` on, `send()` queues `App\Mail\SendClientMail` (after commit, 3 tries, `failed()` writes the
+  email log and `email.failed`) and returns true; not for an unsaved client or with files. New email: a case with its placeholders, sample values and default text,
   then a `ClientMailer` call where it happens. The `invoice_*` templates are payment notices (proformas, not myDATA); the invoices work sends them
 - `database/seeders/DatabaseSeeder.php`: local demo data only
 - Releases: `VERSION` (semver) read by `App\Support\Version` (signed-in footer, System health, `artisan about`);
