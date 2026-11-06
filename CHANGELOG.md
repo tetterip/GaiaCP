@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- REST API: a POST may send an `Idempotency-Key` header. Sent again with the same key (a retry after a timeout), it
+  answers what the first call answered and records nothing twice, so a script can no longer record the same payment
+  twice and move a service's due date two cycles on. Keys are kept 24 hours (`docs/using-the-api.md`).
 - Tests now run on MySQL 8.4 and MariaDB 10.11 as well as SQLite, and on PHP 8.3, 8.4 and 8.5, so problems that only
   show on the production databases (a text longer than its column, row locks, text comparison) are caught before a
   release. Fixed on the way: System health said the `pdo_mariadb` extension was missing on an install set to

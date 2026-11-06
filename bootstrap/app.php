@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthenticateApiKey;
+use App\Http\Middleware\IdempotentApiRequest;
 use App\Http\Middleware\PrepareInstaller;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\TrustHosts;
@@ -24,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // REST API: the key (and with :<area>.<action> its permission), routes/api.php
-        $middleware->alias(['api.key' => AuthenticateApiKey::class]);
+        $middleware->alias(['api.key' => AuthenticateApiKey::class, 'api.idempotent' => IdempotentApiRequest::class]);
         $middleware->prependToPriorityList(before: ThrottleRequests::class, prepend: AuthenticateApiKey::class); // throttled by key, no 404s before it
         // Before cookies and the session: sends everything to /install until GaiaCP is installed
         $middleware->prependToGroup('web', PrepareInstaller::class);
