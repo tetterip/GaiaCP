@@ -13,6 +13,7 @@ use App\Support\Branding;
 use App\Support\SvgLogo;
 use App\Support\Version;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
@@ -249,6 +250,21 @@ class SystemHealth
     }
 
     /** @return list<Check> */
+    /** An SQLite file in WAL mode (config/database.php), so requests at the same time wait instead of failing; null for other databases. */
+    public static function sqliteJournal(Connection $connection): ?Check
+    {
+        if ($connection->getDriverName() !== 'sqlite' || $connection->getDatabaseName() === ':memory:') {
+            return null;
+        }
+
+        $mode = strtolower((string) ($connection->selectOne('PRAGMA journal_mode')?->journal_mode ?? ''));
+
+        return $mode === 'wal'
+            ? new Check('Database', 'SQLite journal', Status::Ok, 'WAL')
+            : new Check('Database', 'SQLite journal', Status::Warning, strtoupper($mode),
+                'Requests at the same time can fail with "database is locked". Remove DB_JOURNAL_MODE from .env (WAL is the default), unless the database is on network storage, or move to MySQL / MariaDB.');
+    }
+
     private function database(): array
     {
         try {
@@ -257,6 +273,10 @@ class SystemHealth
             $checks = [new Check('Database', 'Connection', Status::Ok, $connection->getDriverName().' '.$connection->getServerVersion())];
         } catch (Throwable $e) {
             return [new Check('Database', 'Connection', Status::Error, 'Cannot connect', $e->getMessage())];
+        }
+
+        if ($journal = self::sqliteJournal($connection)) {
+            $checks[] = $journal;
         }
 
         /** @var Migrator $migrator */

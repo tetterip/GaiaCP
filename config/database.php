@@ -38,10 +38,14 @@ return [
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
-            'transaction_mode' => 'DEFERRED',
+            // Several requests at once (cron, the client area, webhooks): WAL lets reads go on while one writes, a
+            // writer waits up to 5 s for another instead of failing with "database is locked", and a transaction
+            // takes the write lock when it starts, so it never fails half way when it begins to write.
+            // DB_JOURNAL_MODE=delete for a database on network storage (NFS), where WAL doesn't work.
+            'busy_timeout' => (int) env('DB_BUSY_TIMEOUT', 5000),
+            'journal_mode' => env('DB_JOURNAL_MODE', 'wal'),
+            'synchronous' => env('DB_SYNCHRONOUS', 'normal'),
+            'transaction_mode' => env('DB_TRANSACTION_MODE', 'IMMEDIATE'),
         ],
 
         'mysql' => [

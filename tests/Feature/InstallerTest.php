@@ -242,4 +242,11 @@ class InstallerTest extends TestCase
         $this->assertSame(1, preg_match_all('/^DB_HOST=/m', (string) file_get_contents($this->dir.'/.env')));
         $this->assertSame(0, preg_match_all('/^# DB_HOST=/m', (string) file_get_contents($this->dir.'/.env')));
     }
+
+    public function test_a_new_sqlite_database_runs_in_wal_mode(): void
+    {
+        $this->installer()->useDatabase(['driver' => 'sqlite', 'database' => $this->dir.'/wal.sqlite']);
+
+        $this->assertSame('wal', DB::connection('sqlite')->selectOne('PRAGMA journal_mode')->journal_mode);
+    }
 }
