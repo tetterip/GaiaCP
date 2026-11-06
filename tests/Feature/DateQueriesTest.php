@@ -66,4 +66,12 @@ class DateQueriesTest extends TestCase
 
         $this->assertCount(6, $either->get()); // five datetime rows without a day, and the 3rd
     }
+
+    public function test_the_dates_filtered_most_have_an_index(): void
+    {
+        $this->assertTrue(Schema::hasIndex('payments', ['paid_on']));
+        $this->assertTrue(Schema::hasIndex('orders', ['status', 'created_at']));
+        $this->assertTrue(Schema::hasIndex('invoices', ['status', 'due_date']));
+        $this->assertTrue(Schema::hasIndex('services', ['status', 'next_due_date']));
+    }
 }
