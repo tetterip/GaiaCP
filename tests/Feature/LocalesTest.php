@@ -247,6 +247,7 @@ class LocalesTest extends TestCase
 
         $this->assertSame([], array_values(array_diff(TranslationKeys::core(), array_keys($greek))), 'Missing from lang/el.json');
         $this->assertSame([], array_keys(array_filter($greek, fn (string $text) => $text === '')), 'Empty in lang/el.json');
+        $this->assertSame([], $this->leftInEnglish($greek), 'Left in English in lang/el.json');
 
         // A plugin's texts are in its own lang/el.json, or in the app's.
         foreach (app(PluginManager::class)->all() as $plugin) {
@@ -255,7 +256,21 @@ class LocalesTest extends TestCase
 
             $this->assertSame([], array_values(array_diff(TranslationKeys::forPlugin($plugin), array_keys($greek), array_keys($own))), "Missing from plugins/{$name}/lang/el.json");
             $this->assertSame([], array_keys(array_filter($own, fn (string $text) => $text === '')), "Empty in plugins/{$name}/lang/el.json");
+            $this->assertSame([], $this->leftInEnglish($own), "Left in English in plugins/{$name}/lang/el.json");
         }
+    }
+
+    /**
+     * Texts of four words or more (placeholders left out) whose Greek is the English text copied over (short names such as "Site key" or
+     * "Cron job" may stay as they are).
+     *
+     * @param  array<string, string>  $lines
+     * @return list<string>
+     */
+    private function leftInEnglish(array $lines): array
+    {
+        return array_keys(array_filter($lines, fn (string $text, string $key) => $text === $key
+            && str_word_count(preg_replace('/:\w+/', '', strip_tags($key))) >= 4, ARRAY_FILTER_USE_BOTH));
     }
 
     /**
