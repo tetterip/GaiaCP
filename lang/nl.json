@@ -3887,5 +3887,6 @@
     "Username for the control panel (the VPS console)": "Gebruikersnaam voor het configuratiescherm (de console van de VPS)",
     "VPS": "VPS",
     "VPS Welcome Email": "Welkomstmail VPS",
-    "shown on the VPS's page in the client area once it is known": "getoond op de pagina van de VPS in het klantengedeelte zodra het bekend is"
+    "shown on the VPS's page in the client area once it is known": "getoond op de pagina van de VPS in het klantengedeelte zodra het bekend is",
+    "The entries shown (filters and search included, newest :count) as a JSON file, for a bug report. Passwords and tokens are already masked.": "De getoonde regels (met filters en zoekopdracht, de nieuwste :count) als JSON-bestand, voor een foutmelding. Wachtwoorden en tokens zijn al gemaskeerd."
 }

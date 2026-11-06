@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Module log: **Download** saves the entries shown (filters and search included, newest 500) as a JSON file, with
+  passwords and tokens masked as on screen, to attach to a bug report.
 - Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
   bars fit without scrolling.
 - Times are stored in UTC (payments' and tickets' times, the activity log, emails, sign-ins and every other time),
