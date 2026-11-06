@@ -2340,7 +2340,7 @@
     "since :date": "από :date",
     "{1} Sent to :count device|[2,*] Sent to :count devices": "{1} Στάλθηκε σε :count συσκευή|[2,*] Στάλθηκε σε :count συσκευές",
     "Date format": "Μορφή ημερομηνίας",
-    "Due dates, the daily run and every time shown. Times already saved keep their clock time.": "Οι ημερομηνίες λήξης, η ημερήσια εκτέλεση και κάθε ώρα που εμφανίζεται. Οι ώρες που έχουν ήδη αποθηκευτεί κρατούν την ώρα τους.",
+    "Due dates, the daily run and every time shown. Times are saved in UTC, so the ones already saved move to the new timezone with the rest.": "Οι ημερομηνίες λήξης, η ημερήσια εκτέλεση και κάθε ώρα που εμφανίζεται. Οι ώρες αποθηκεύονται σε UTC, οπότε και όσες έχουν ήδη αποθηκευτεί φαίνονται στη νέα ζώνη ώρας.",
     "New clients start in it, and phone numbers without a country code are taken as its.": "Οι νέοι πελάτες ξεκινούν με αυτή, και τα τηλέφωνα χωρίς κωδικό χώρας θεωρούνται δικά της.",
     "New clients start in the country. Prices are entered in the base currency, which can't change once there are prices; more currencies can be added under Settings → Currencies. The rest can be changed later under Settings → General.": "Οι νέοι πελάτες ξεκινούν με αυτή τη χώρα. Οι τιμές καταχωρούνται στο βασικό νόμισμα, που δεν αλλάζει όταν υπάρχουν τιμές· περισσότερα νομίσματα προσθέτεις στις Ρυθμίσεις → Νομίσματα. Τα υπόλοιπα αλλάζουν αργότερα στις Ρυθμίσεις → Γενικά.",
     "Region": "Περιοχή",

@@ -2340,7 +2340,7 @@
     "since :date": "depuis le :date",
     "{1} Sent to :count device|[2,*] Sent to :count devices": "{1} Envoyée à :count appareil|[2,*] Envoyée à :count appareils",
     "Date format": "Format de date",
-    "Due dates, the daily run and every time shown. Times already saved keep their clock time.": "Échéances, tâche quotidienne et toutes les heures affichées. Les heures déjà enregistrées gardent leur heure d'horloge.",
+    "Due dates, the daily run and every time shown. Times are saved in UTC, so the ones already saved move to the new timezone with the rest.": "Échéances, tâche quotidienne et toutes les heures affichées. Les heures sont enregistrées en UTC : celles déjà enregistrées s'affichent aussi dans le nouveau fuseau horaire.",
     "New clients start in it, and phone numbers without a country code are taken as its.": "Les nouveaux clients démarrent dans ce pays, et les numéros de téléphone sans indicatif sont considérés comme en faisant partie.",
     "New clients start in the country. Prices are entered in the base currency, which can't change once there are prices; more currencies can be added under Settings → Currencies. The rest can be changed later under Settings → General.": "Les nouveaux clients démarrent dans ce pays. Les prix sont saisis dans la devise de base, qui ne peut plus changer une fois des prix saisis ; d'autres devises peuvent être ajoutées dans Paramètres → Devises. Le reste peut être modifié plus tard dans Paramètres → Général.",
     "Region": "Région",

@@ -70,7 +70,7 @@ class GeneralSettings extends SettingsFormPage
                             ->searchable()
                             ->required()
                             ->in(fn () => array_keys(Region::timezoneOptions()))
-                            ->helperText(__('Due dates, the daily run and every time shown. Times already saved keep their clock time.')),
+                            ->helperText(__('Due dates, the daily run and every time shown. Times are saved in UTC, so the ones already saved move to the new timezone with the rest.')),
                         Select::make('region.date_format')
                             ->label('Date format')
                             ->options(fn () => Region::dateFormatOptions())
