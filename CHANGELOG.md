@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Faster with thousands of clients (tried with 5,000 clients and 10,000 services): Reports → Income forecast went from
+  4.7 s to 0.16 s, Server revenue from 1.9 s to 0.15 s, Domain profit and the Services report about three times
+  faster. On SQLite every foreign key now has an index, as MySQL and MariaDB already make. `LargeDataSeeder` fills a
+  development database to try it (CONTRIBUTING.md).
 - Counts read as proper singular or plural in every language ("1 server down", "3 servers down") instead of
   "server(s)": the dashboard, notifications, Test connection, payment record and the plugins' messages.
 - Development: a count in a text uses `trans_choice(':count thing|:count things', $n)`; `gaiacp:translations` and

@@ -2,6 +2,7 @@
 
 namespace App\Reports;
 
+use App\Enums\BillingCycle;
 use App\Enums\DomainRegistrationType;
 use App\Enums\ServiceType;
 use App\Models\Server;
@@ -24,8 +25,11 @@ final class IncomeForecast
 {
     private CarbonImmutable $today;
 
-    /** @var array<int, list<array{service: Service, due: CarbonImmutable, cents: int, cost: int, overdue: bool}>> months => entries() */
+    /** @var array<int, list<array{service_id: int, type: ServiceType, server_id: int|null, due: CarbonImmutable, cents: int, cost: int, overdue: bool}>> months => entries() */
     private array $entries = [];
+
+    /** @var array<string, int|null> "ending|months" => renewCost() */
+    private array $costs = [];
 
     public function __construct(?CarbonInterface $today = null)
     {
@@ -41,7 +45,7 @@ final class IncomeForecast
     /**
      * Every renewal due from today until the end of the last month, plus the cycles already overdue.
      *
-     * @return Collection<int, array{service: Service, due: CarbonImmutable, cents: int, cost: int, overdue: bool}>
+     * @return Collection<int, array{service_id: int, type: ServiceType, server_id: int|null, due: CarbonImmutable, cents: int, cost: int, overdue: bool}>
      */
     public function dues(int $months = 12): Collection
     {
@@ -76,7 +80,7 @@ final class IncomeForecast
             $rows[$key]['count']++;
             $rows[$key]['cents'] += $due['cents'];
             $rows[$key]['domain_costs'] += $due['cost'];
-            $rows[$key]['types'][$due['service']->type->value] += $due['cents'];
+            $rows[$key]['types'][$due['type']->value] += $due['cents'];
         }
 
         return array_values($rows);
@@ -108,13 +112,19 @@ final class IncomeForecast
             return null;
         }
 
-        $months = $service->billing_cycle->months();
+        return $this->renewCost((string) $service->domain, $service->billing_cycle->months());
+    }
 
+    /** The TLD's renew cost for a domain renewed every $months (whole years only), looked up once per ending and term. */
+    private function renewCost(string $domain, int $months): ?int
+    {
         if ($months < 12 || $months % 12 !== 0) {
             return null;
         }
 
-        return $this->tldOf((string) $service->domain)?->costCents('renew', intdiv($months, 12));
+        $key = Str::after($domain, '.').'|'.$months;
+
+        return array_key_exists($key, $this->costs) ? $this->costs[$key] : $this->costs[$key] = $this->tldOf($domain)?->costCents('renew', intdiv($months, 12));
     }
 
     /**
@@ -125,18 +135,27 @@ final class IncomeForecast
      */
     public function byTld(): Collection
     {
-        return Service::query()->billable()->where('auto_terminate', false)->where('type', ServiceType::Domain)
-            ->with('domainDetails')->get()
-            ->reject(fn (Service $s) => $s->domainDetails?->registration_type === DomainRegistrationType::External)
-            ->groupBy(fn (Service $s) => $this->tldOf((string) $s->domain)?->tld ?? '.'.Str::afterLast((string) $s->domain, '.'))
+        $tlds = [];
+        $rows = Service::query()->billable()->where('auto_terminate', false)->where('services.type', ServiceType::Domain)
+            ->leftJoin('domains', 'domains.service_id', '=', 'services.id')
+            ->where(fn ($query) => $query->whereNull('domains.registration_type')->orWhere('domains.registration_type', '!=', DomainRegistrationType::External))
+            ->toBase()->get(['services.domain', 'services.price_cents', 'services.currency', 'services.billing_cycle']);
+
+        return $rows
+            ->groupBy(function (object $row) use (&$tlds) {
+                $ending = Str::after((string) $row->domain, '.');
+
+                return $tlds[$ending] ??= $this->tldOf((string) $row->domain)?->tld ?? '.'.Str::afterLast((string) $row->domain, '.');
+            })
             ->map(function (Collection $domains, string $tld) {
-                $years = fn (Service $s) => max(1, $s->billing_cycle->months()) / 12;
-                $costs = $domains->map(fn (Service $s) => [$s, $this->domainCost($s)]);
+                $months = fn (object $row) => BillingCycle::from($row->billing_cycle)->months();
+                $years = fn (object $row) => max(1, $months($row)) / 12;
+                $costs = $domains->map(fn (object $row) => [$row, $this->renewCost((string) $row->domain, $months($row))]);
 
                 return [
                     'tld' => $tld,
                     'domains' => $domains->count(),
-                    'yearly_cents' => (int) round($domains->sum(fn (Service $s) => Currencies::toBase($s->price_cents, $s->currency) / $years($s))),
+                    'yearly_cents' => (int) round($domains->sum(fn (object $row) => Currencies::toBase((int) $row->price_cents, $row->currency) / $years($row))),
                     'yearly_cost_cents' => (int) round($costs->sum(fn (array $c) => $c[1] === null ? 0 : $c[1] / $years($c[0]))),
                     'without_cost' => $costs->filter(fn (array $c) => $c[1] === null)->count(),
                 ];
@@ -154,7 +173,7 @@ final class IncomeForecast
      * The renewals due until the end of the last month (and the overdue ones), unsorted, worked out once per horizon.
      * Only the columns the forecast reads are loaded: a forecast covers every billable service.
      *
-     * @return list<array{service: Service, due: CarbonImmutable, cents: int, cost: int, overdue: bool}>
+     * @return list<array{service_id: int, type: ServiceType, server_id: int|null, due: CarbonImmutable, cents: int, cost: int, overdue: bool}>
      */
     private function entries(int $months): array
     {
@@ -162,36 +181,58 @@ final class IncomeForecast
             return $this->entries[$months];
         }
 
-        $end = $this->start()->addMonths($months)->subDay();
-        $dues = [];
+        // Plain rows, and dates as Y-m-d strings (they compare in order) made into one Carbon per day: with thousands of
+        // services, models and Carbon arithmetic for every cycle took seconds (advance() is BillingCycle::advance())
+        $end = $this->start()->addMonths($months)->subDay()->toDateString();
+        $today = $this->today->toDateString();
+        $days = $rates = $cycles = $types = $dues = [];
 
-        $services = Service::query()->billable()->where('auto_terminate', false)
-            ->select(['id', 'type', 'status', 'server_id', 'domain', 'currency', 'billing_cycle', 'price_cents', 'new_price_cents', 'new_price_from', 'next_due_date', 'start_date'])
-            ->with(['domainDetails' => fn ($query) => $query->select(['id', 'service_id', 'registration_type'])])
-            ->lazyById(1000);
+        $rows = Service::query()->billable()->where('auto_terminate', false)
+            ->leftJoin('domains', 'domains.service_id', '=', 'services.id')
+            ->select(['services.id', 'services.type', 'services.server_id', 'services.domain', 'services.currency', 'services.billing_cycle',
+                'services.price_cents', 'services.new_price_cents', 'services.new_price_from', 'services.next_due_date', 'services.start_date',
+                'domains.registration_type'])
+            ->toBase()
+            ->lazyById(1000, 'services.id', 'id');
 
-        foreach ($services as $service) {
-            // Read once per service: each attribute read casts again, and a service can have dozens of due dates
-            $due = $service->next_due_date;
-            $cycle = $service->billing_cycle;
-            $anchor = $service->anchorDay();
-            $cost = (int) $this->domainCost($service);
-            $cents = Currencies::toBase($service->price_cents, $service->currency);
-            $from = $service->new_price_from !== null && $service->new_price_cents !== null ? $service->new_price_from : null;
-            $newCents = $from ? Currencies::toBase($service->new_price_cents, $service->currency) : $cents;
+        foreach ($rows as $row) {
+            $cycle = $cycles[$row->billing_cycle] ??= BillingCycle::from($row->billing_cycle);
+            $type = $types[$row->type] ??= ServiceType::from($row->type);
+            $step = $cycle->isRecurring() ? $cycle->months() : 0;
+            $due = substr((string) $row->next_due_date, 0, 10);
+            $anchor = (int) substr((string) $row->start_date, 8, 2);
+            $cost = $type === ServiceType::Domain && $row->registration_type !== DomainRegistrationType::External->value
+                ? (int) $this->renewCost((string) $row->domain, $cycle->months()) : 0;
+            $rate = $rates[$row->currency] ??= Currencies::rate($row->currency);
+            $cents = (int) round($row->price_cents / $rate);
+            $from = $row->new_price_cents !== null && $row->new_price_from !== null ? substr((string) $row->new_price_from, 0, 10) : null;
+            $newCents = $from !== null ? (int) round($row->new_price_cents / $rate) : $cents;
+            $serverId = $row->server_id === null ? null : (int) $row->server_id;
 
-            while ($due->lessThanOrEqualTo($end)) {
+            while ($due <= $end) {
                 // = Service::priceOn($due), in the base currency
-                $dues[] = ['service' => $service, 'due' => $due, 'cents' => $from && ! $due->lt($from) ? $newCents : $cents, 'cost' => $cost, 'overdue' => $due->lessThan($this->today)];
-                if (! $cycle->isRecurring()) {
+                $dues[] = ['service_id' => (int) $row->id, 'type' => $type, 'server_id' => $serverId, 'due' => $days[$due] ??= CarbonImmutable::createFromFormat('!Y-m-d', $due),
+                    'cents' => $from !== null && $due >= $from ? $newCents : $cents, 'cost' => $cost, 'overdue' => $due < $today];
+                if ($step === 0) {
                     break; // a one-time service is owed once
                 }
 
-                $due = $cycle->advance($due, $anchor);
+                $due = self::advance($due, $step, $anchor);
             }
         }
 
         return $this->entries[$months] = $dues;
+    }
+
+    /** BillingCycle::advance() on a Y-m-d string: $months later, on the anchor day or the month's last day. */
+    private static function advance(string $date, int $months, int $anchor): string
+    {
+        $month = (int) substr($date, 5, 2) - 1 + $months;
+        $year = (int) substr($date, 0, 4) + intdiv($month, 12);
+        $month = $month % 12 + 1;
+        $last = $month === 2 ? (($year % 4 === 0 && $year % 100 !== 0) || $year % 400 === 0 ? 29 : 28) : ([4 => 30, 6 => 30, 9 => 30, 11 => 30][$month] ?? 31);
+
+        return sprintf('%04d-%02d-%02d', $year, $month, min($anchor > 0 ? $anchor : (int) substr($date, 8, 2), $last));
     }
 
     /**
@@ -206,13 +247,15 @@ final class IncomeForecast
         $forecast = [];
 
         foreach ($this->entries($months) as $due) {
-            if (! $due['overdue'] && $due['service']->type === ServiceType::Hosting && $due['service']->server_id !== null) {
-                $forecast[$due['service']->server_id] = ($forecast[$due['service']->server_id] ?? 0) + $due['cents'];
+            if (! $due['overdue'] && $due['type'] === ServiceType::Hosting && $due['server_id'] !== null) {
+                $forecast[$due['server_id']] = ($forecast[$due['server_id']] ?? 0) + $due['cents'];
             }
         }
 
-        $services = Service::query()->billable()->where('auto_terminate', false)->where('type', ServiceType::Hosting)
-            ->whereNotNull('server_id')->get(['id', 'server_id', 'price_cents', 'currency', 'billing_cycle'])
+        // Summed in the database per server, currency and cycle
+        $services = Service::query()->billable()->where('auto_terminate', false)->where('type', ServiceType::Hosting)->whereNotNull('server_id')
+            ->toBase()->selectRaw('server_id, currency, billing_cycle, count(*) as accounts, sum(price_cents) as cents')
+            ->groupBy('server_id', 'currency', 'billing_cycle')->get()
             ->groupBy('server_id');
 
         return Server::query()
@@ -220,12 +263,12 @@ final class IncomeForecast
             ->orWhere(fn ($query) => $query->where('active', true)->where('monthly_cost_cents', '>', 0))
             ->get()
             ->map(function (Server $server) use ($services, $forecast) {
-                $accounts = $services->get($server->id, collect());
-                $yearly = (int) round($accounts->sum(fn (Service $s) => Currencies::toBase($s->price_cents, $s->currency) * 12 / max(1, $s->billing_cycle->months())));
+                $groups = $services->get($server->id, collect());
+                $yearly = (int) round($groups->sum(fn (object $g) => Currencies::toBase((int) $g->cents, $g->currency) * 12 / max(1, BillingCycle::from($g->billing_cycle)->months())));
 
                 return [
                     'server' => $server->name,
-                    'accounts' => $accounts->count(),
+                    'accounts' => (int) $groups->sum('accounts'),
                     'monthly_cents' => (int) round($yearly / 12),
                     'yearly_cents' => $yearly,
                     'forecast_cents' => (int) ($forecast[$server->id] ?? 0),

@@ -28,6 +28,13 @@ php artisan serve
 
 There is no npm step: the panels use Filament's own assets.
 
+To see how a page copes with a big business, fill a database with thousands of made-up clients, services, payments,
+notices and tickets (about 20 seconds for 5,000 clients):
+
+```bash
+php artisan migrate:fresh --seed && LARGE_CLIENTS=5000 php artisan db:seed --class=LargeDataSeeder
+```
+
 ## Making a change
 
 - Read the file in `docs/architecture/` for the area you change (`stack.md`, `code-layout.md`, `provisioning.md`);
