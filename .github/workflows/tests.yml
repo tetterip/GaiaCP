@@ -12,9 +12,10 @@ permissions:
   contents: read
 
 jobs:
-  # SQLite (as in development) on every supported PHP, with code style and advisories once
+  # SQLite (as in development) on every supported PHP, with code style and advisories once. PHP 8.4 runs in a timezone
+  # far from UTC (phpunit.xml uses Europe/Athens), so a time stored or compared in the wrong zone shows up
   tests:
-    name: PHP ${{ matrix.php }}, SQLite
+    name: PHP ${{ matrix.php }}, SQLite${{ matrix.php == '8.4' && ', Pacific/Auckland' || '' }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -49,6 +50,8 @@ jobs:
 
       - name: Tests
         run: php artisan test
+        env:
+          APP_TIMEZONE: ${{ matrix.php == '8.4' && 'Pacific/Auckland' || 'Europe/Athens' }}
 
   # The production databases: SQLite does not enforce column lengths, ignores row locks (lockForUpdate) and compares
   # text differently, so the same suite runs on MySQL and MariaDB too

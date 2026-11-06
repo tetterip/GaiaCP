@@ -9,6 +9,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   a new VPS Welcome Email (off until switched on) sends its address and logins with the right port.
 - Plugin API: new `App\Provisioning\DescribesMachine` and `MachineDetails`, for a server panel that makes virtual
   machines.
+- Server uptime bars: checks are stored in UTC, so the bars no longer show them two or three hours off (in any timezone
+  other than UTC) or leave the last hours empty.
 - Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,
   registrars, payments, monitoring, settings pages, the main models and enums) and what an update may change in them:
   breaking changes only in a minor release while GaiaCP is 0.x, listed under "Plugin API" here.
