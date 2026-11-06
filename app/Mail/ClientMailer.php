@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Actions\ServiceLifecycle;
 use App\Enums\MailTemplate;
 use App\Models\ActivityLog;
 use App\Models\Client;
@@ -12,6 +13,8 @@ use App\Models\Service;
 use App\Models\Ticket;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
+use App\Provisioning\DescribesMachine;
+use App\Provisioning\ProvisionerFactory;
 use App\Support\ClientAreaLinks;
 use App\Support\Locales;
 use App\Support\MailTemplates;
@@ -80,10 +83,29 @@ class ClientMailer
         return $this->send($template, $service->client, fn () => $this->serviceValues($service) + value($extra), $service);
     }
 
+    /** The Hosting Account Welcome Email, or the VPS Welcome Email when the account is a machine (DescribesMachine). */
     public function hostingWelcome(Service $service): bool
     {
         $server = $service->server;
-        $port = app(PluginManager::class)->serverModule($server?->type)?->clientPort() ?? 2083;
+        $module = app(PluginManager::class)->serverModule($server?->type);
+        // A panel that serves its clients on its API port (Proxmox, CyberPanel, HestiaCP…) is on the server's own port,
+        // which differs from the usual one behind a proxy or a tunnel.
+        $port = $module && $server && $module->clientPort() === $module->defaultPort() ? $server->port : ($module?->clientPort() ?? 2083);
+        $panel = $server ? rescue(fn () => app(ProvisionerFactory::class)->forService($service), null, report: false) : null;
+
+        if ($panel instanceof DescribesMachine) {
+            $addresses = rescue(fn () => app(ServiceLifecycle::class)->machine($service, fresh: true)->addresses, [], report: false);
+
+            return $this->service(MailTemplate::VpsWelcome, $service, fn () => [
+                'package' => $service->package,
+                'ip_address' => $addresses !== [] ? implode(', ', $addresses) : __('shown on the VPS\'s page in the client area once it is known'),
+                'vps_user' => $panel->machineUser(),
+                'username' => $service->username,
+                'password' => $service->password,
+                'control_panel_url' => "https://{$server->hostname}:{$port}",
+                'control_panel_login' => $panel->panelLoginHint($service),
+            ]);
+        }
 
         return $this->service(MailTemplate::HostingWelcome, $service, [
             'package' => $service->package,

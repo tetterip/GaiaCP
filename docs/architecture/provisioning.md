@@ -48,7 +48,9 @@ never calls a panel API directly.
   `cores` / `sockets` / `memory` and grows the boot disk (`resize`, `ProxmoxProvisioner::bootDisk()`). API tokens can't
   use `PUT /access/password`, so a new password replaces the client's user (and its ACL); it also goes to `cipassword`
   and, on a running VPS, to `agent/set-user-password` (best effort). IP pool: `proxmox_addresses` (`ProxmoxAddress::
-  claim()` / `release()`, Settings → Proxmox → IP addresses); no rows for a server = `ip=dhcp`. Usage = `maxdisk` only.
+  claim()` / `release()`, Settings → Proxmox → IP addresses); no rows for a server = `ip=dhcp`. It implements `DescribesMachine`: `machine()` = state, `maxcpu` / `maxmem` /
+  `maxdisk`, pool addresses then `agent/network-get-interfaces` (no agent = none), shown by `HostingUsage` in place of
+  usage (`ServiceLifecycle::machine()`, cached a minute) and sent in the VPS Welcome Email (`ClientMailer`).
   It implements `ControlsPower` (`isRunning()`, `power()` with `start` / `shutdown` / `reboot` / `stop`,
   `clientsControlPower()` = `proxmox.client_power`): `ServiceLifecycle::power()` (logged `account.power`), the admin's
   Account menu and the client's `HostingSelfService`. Login = the Proxmox web interface (no one-time login for another

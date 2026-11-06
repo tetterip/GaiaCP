@@ -61,7 +61,8 @@ class ProxmoxSettings extends SettingsFormPage
             ->statePath('data')
             ->components([
                 Section::make(__('New VPS'))
-                    ->description(new HtmlString(__('Add the Proxmox server under Settings → Servers with the type <strong>Proxmox VE</strong>. Each product\'s package is the name of a KVM template with cloud-init: the VPS is a full clone of it, with its CPU, memory and disk, on the template\'s node.')))
+                    ->description(new HtmlString(__('Add the Proxmox server under Settings → Servers with the type <strong>Proxmox VE</strong>. Each product\'s package is the name of a KVM template with cloud-init: the VPS is a full clone of it, with its CPU, memory and disk, on the template\'s node.')
+                        .' '.__('Each VPS gets an address from the server\'s <a href=":url" class="underline">IP addresses</a>, or by DHCP when it has none. Install qemu-guest-agent in the template, so that a VPS reports an address it took by DHCP and takes a new password at once.', ['url' => e(ProxmoxAddressesPage::getUrl())])))
                     ->columns(2)
                     ->schema([
                         TextInput::make('proxmox.ci_user')

@@ -58,6 +58,7 @@ Bij een actief hostingaccount kunt u:
 <!-- if:vps_power -->
 - **Een VPS starten, afsluiten of herstarten** met de knoppen op de pagina ervan. Afsluiten en Herstarten stoppen de programma's die erop draaien, dus sla eerst uw werk op. Om de console te gebruiken, drukt u op **Inloggen op Proxmox VE** en meldt u zich aan met de gebruikersnaam en het wachtwoord van de dienst (realm "Proxmox VE authentication server"): u ziet alleen uw eigen VPS.
 <!-- endif -->
+- **De gegevens van uw VPS bekijken** op de pagina ervan: het IP-adres, of hij draait, de processors, het geheugen en de schijfgrootte, en de gebruiker om erin in te loggen (SSH of de console), met het wachtwoord van de dienst.
 <!-- if:hosting_password -->
 - **Het wachtwoord wijzigen** van het account. Gebruik minstens 10 tekens met hoofdletters, kleine letters en cijfers.
 <!-- endif -->

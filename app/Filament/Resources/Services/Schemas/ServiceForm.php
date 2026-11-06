@@ -163,7 +163,10 @@ class ServiceForm
                     ]),
 
                 Section::make(__('Usage'))
-                    ->description(__('Read from the panel; kept for :minutes minutes.', ['minutes' => ServiceLifecycle::USAGE_MINUTES]))
+                    ->heading(fn (?Service $record) => HostingUsage::heading($record))
+                    ->description(fn (?Service $record) => $record !== null && app(ServiceLifecycle::class)->isMachine($record)
+                        ? __('Read from the server; kept for a minute.')
+                        : __('Read from the panel; kept for :minutes minutes.', ['minutes' => ServiceLifecycle::USAGE_MINUTES]))
                     ->columnSpanFull()
                     ->collapsible()
                     ->visible(fn (?Service $record, string $operation) => $operation === 'edit' && HostingUsage::hasUsage($record))

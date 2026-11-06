@@ -58,6 +58,7 @@ Su un account hosting attivo può:
 <!-- if:vps_power -->
 - **Avviare, spegnere o riavviare un VPS** con i pulsanti nella sua pagina. Spegni e Riavvia fermano i programmi in esecuzione, quindi salvi prima il Suo lavoro. Per usarne la console, prema **Accedi a Proxmox VE** ed entri con il nome utente e la password del servizio (realm "Proxmox VE authentication server"): vedrà solo il Suo VPS.
 <!-- endif -->
+- **Vedere i dati del suo VPS** nella sua pagina: il suo indirizzo IP, se è in funzione, i processori, la memoria e la dimensione del disco, e l'utente per accedervi (SSH o la console), con la password del servizio.
 <!-- if:hosting_password -->
 - **Cambiare la password** dell'account. Usi almeno 10 caratteri con lettere maiuscole, minuscole e numeri.
 <!-- endif -->

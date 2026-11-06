@@ -78,6 +78,7 @@ use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\ControlsPower;
+use App\Provisioning\DescribesMachine;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
@@ -86,6 +87,7 @@ use App\Provisioning\InstallsCertificates;
 use App\Provisioning\LimitsUsernameLength;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\ListsTldPrices;
+use App\Provisioning\MachineDetails;
 use App\Provisioning\ManagesChildNameservers;
 use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ManagesRegistrarLock;
@@ -137,6 +139,8 @@ final class PluginApi
         OffersShortcuts::class,
         ListsAccounts::class,
         ControlsPower::class,
+        DescribesMachine::class,
+        MachineDetails::class,
         InstallsCertificates::class,
         LimitsUsernameLength::class,
 
