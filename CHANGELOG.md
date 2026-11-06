@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,
+  registrars, payments, monitoring, settings pages, the main models and enums) and what an update may change in them:
+  breaking changes only in a minor release while GaiaCP is 0.x, listed under "Plugin API" here.
 - SQLite: the database now runs in WAL mode with a 5 second busy timeout, so cron, the client area and webhooks at the
   same time no longer fail with "database is locked"; System health warns when it does not (`DB_JOURNAL_MODE=delete`
   for a database on network storage).

@@ -38,6 +38,9 @@ honest when features are added or dropped.
 - Every Filament page and resource names its area through `LimitedToAdminArea` (`AdminAccessTest` checks it)
 - New editable setting: default in `config/gaiacp.php` (or the plugin's `config.php`), key in `Settings::KEYS` (or the
   plugin's `settingKeys()`), and in `keys()` of exactly one `SettingsFormPage`
+- Plugin API (`docs/plugin-api.md`, `App\Plugins\PluginApi`): a bundled plugin uses only classes in `STABLE` or
+  `INTERNAL` (`PluginApiTest`); a breaking change to a `STABLE` class waits for a minor release, keeps the old way
+  `@deprecated` where it can and gets a "Plugin API" line in CHANGELOG.md
 - Admin-bound emails respect each admin's Receive system emails switch; a new daily command goes in
   `SchedulerMonitor::DAILY_COMMANDS`; a new API client adds `ModuleLogger::middleware()`
 - A client-area feature updates the client guide in every language (`resources/docs/client-area/<locale>.md`, the machine

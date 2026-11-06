@@ -126,6 +126,8 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
 runs the dump statement by statement on MySQL, writes `files/` only under storage/app and plugins/, sets APP_KEY in
 .env, migrates). Scheduled in `routes/console.php` only when enabled. System health → Biggest tables is
   `App\Support\Health\TableSizes` (information_schema on MySQL, dbstat on SQLite)
+- Plugin API: `App\Plugins\PluginApi::STABLE` (documented in `docs/plugin-api.md`, the promise to plugin authors) and
+  `INTERNAL` (what bundled plugins also reach into); `PluginApiTest` fails on a bundled plugin using any other `App\` class
 - Plugins: `app/Plugins/` has `Plugin` and `PluginManager` (singleton; `BUILT_IN` = cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel (off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check, WHMCS
   import, Bank transfer, Stripe, PayPal, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on
   for a bundled one unless `Plugin::enabledByDefault()` is false (easy.gr, ΑΑΔΕ, VIES; `GAIACP_PLUGINS_START_ENABLED` lists
