@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- SQLite: the database now runs in WAL mode with a 5 second busy timeout, so cron, the client area and webhooks at the
+  same time no longer fail with "database is locked"; System health warns when it does not (`DB_JOURNAL_MODE=delete`
+  for a database on network storage).
 - Personal data requests (GDPR): on a client, super admins can **Download their data** (a zip with every record kept
   about them, without secrets or internal notes) and **Anonymize** a client whose services have ended (details replaced,
   login, tickets, emails and leads deleted, name taken out of the activity log; payment notices, invoices and payments

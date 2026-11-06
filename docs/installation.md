@@ -4,7 +4,12 @@
 
 - PHP **8.3+** (Laravel 13)
 - Composer
-- SQLite for development; MySQL/MariaDB in production
+- SQLite for development and small installs; MySQL/MariaDB in production. An SQLite database runs in WAL mode with a
+  5 second busy timeout and transactions that take the write lock when they start (`config/database.php`), so cron,
+  the client area and webhooks at the same time wait for each other instead of failing with "database is locked".
+  It keeps two more files next to it (`database.sqlite-wal`, `-shm`): copy all three when you move it by hand. On
+  network storage (NFS), where WAL doesn't work, set `DB_JOURNAL_MODE=delete`; System health warns when the journal
+  is not WAL.
 
 ## Installation
 

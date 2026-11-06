@@ -181,12 +181,11 @@ class Installer
     {
         $driver = $db['driver'];
         $connection = match ($driver) {
-            'sqlite' => [
-                'driver' => 'sqlite',
+            'sqlite' => array_merge((array) config('database.connections.sqlite'), [
+                'url' => null,
                 'database' => $this->sqlitePath($db['database']),
-                'prefix' => '',
                 'foreign_key_constraints' => true,
-            ],
+            ]),
             'mysql' => array_merge((array) config('database.connections.mysql'), [
                 'host' => $db['host'] ?: '127.0.0.1',
                 'port' => $db['port'] ?: '3306',

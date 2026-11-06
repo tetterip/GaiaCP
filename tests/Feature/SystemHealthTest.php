@@ -206,4 +206,29 @@ class SystemHealthTest extends TestCase
         config(['app.debug' => false]);
         $this->artisan('gaiacp:health')->assertSuccessful();
     }
+
+    public function test_an_sqlite_file_runs_in_wal_mode_and_another_journal_is_a_warning(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'gaiacp-wal-');
+        config(['database.connections.file' => ['database' => $file] + config('database.connections.sqlite')]);
+
+        try {
+            $pdo = DB::connection('file')->getPdo();
+            $this->assertSame('wal', $pdo->query('PRAGMA journal_mode')->fetchColumn());
+            $this->assertSame(5000, (int) $pdo->query('PRAGMA busy_timeout')->fetchColumn());
+            $this->assertSame(1, (int) $pdo->query('PRAGMA synchronous')->fetchColumn(), 'NORMAL');
+
+            $this->assertSame(Status::Ok, SystemHealth::sqliteJournal(DB::connection('file'))->status);
+
+            DB::purge('file');
+            config(['database.connections.file.journal_mode' => 'delete']);
+            $this->assertSame(Status::Warning, SystemHealth::sqliteJournal(DB::connection('file'))->status);
+            $this->assertNull(SystemHealth::sqliteJournal(DB::connection()), 'not for the tests\' in-memory database');
+        } finally {
+            DB::purge('file');
+            foreach ([$file, "{$file}-wal", "{$file}-shm"] as $path) {
+                @unlink($path);
+            }
+        }
+    }
 }
