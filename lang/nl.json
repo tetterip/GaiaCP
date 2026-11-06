@@ -3822,5 +3822,11 @@
     ":count ticket(s) waiting for a reply over :hours hours": ":count ticket(s) wachten langer dan :hours uur op antwoord",
     ":count payment notice(s) due today": ":count betalingsverzoek(en) vandaag te betalen",
     ":count domain(s) to check at the registrar": ":count domein(en) te controleren bij de registrar",
-    ":count quote(s) ending within :days days": ":count offerte(s) verlopen binnen :days dagen"
+    ":count quote(s) ending within :days days": ":count offerte(s) verlopen binnen :days dagen",
+    "A zip of the whole database and the uploaded files, kept on this server (storage/app/private/backups) and copied to FTP and/or email. Put one back with php artisan gaiacp:restore (System → Help → Keeping GaiaCP healthy).": "Een zip van de hele database en de geüploade bestanden, bewaard op deze server (storage/app/private/backups) en gekopieerd via FTP en/of e-mail. Terugzetten met php artisan gaiacp:restore (Systeem → Help → GaiaCP gezond houden).",
+    "Encrypts the zip (AES-256; open it with 7-Zip or WinRAR). Recommended, since the backup holds every client's details; only a zip with a password also carries the APP_KEY that decrypts the stored passwords. Keep the password somewhere safe: without it the backup cannot be opened.": "Versleutelt de zip (AES-256; open hem met 7-Zip of WinRAR). Aanbevolen, want de back-up bevat de gegevens van alle klanten; alleen een zip met wachtwoord bevat ook de APP_KEY die de opgeslagen wachtwoorden ontsleutelt. Bewaar het wachtwoord veilig: zonder kan de back-up niet worden geopend.",
+    "Include files": "Bestanden meenemen",
+    "This zip has no APP_KEY (only a zip with a password carries it): keep a copy of APP_KEY from .env somewhere safe, or a restore loses the stored server and registrar passwords.": "Deze zip bevat geen APP_KEY (alleen een zip met wachtwoord bevat die): bewaar een kopie van de APP_KEY uit .env op een veilige plek, anders gaan bij terugzetten de opgeslagen server- en registrarwachtwoorden verloren.",
+    "Uploaded files go into the zip too: the logo, page pictures, ticket attachments, client downloads, uploaded translations and the plugins you added.": "Ook de geüploade bestanden gaan in de zip: het logo, pagina-afbeeldingen, ticketbijlagen, klantdownloads, geüploade vertalingen en de plugins die u hebt toegevoegd.",
+    "Zipped database and file backups on a schedule, copied to FTP and email.": "Gezipte back-ups van database en bestanden volgens schema, gekopieerd via FTP en e-mail."
 }

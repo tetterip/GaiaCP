@@ -110,11 +110,15 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   Payments and Activity log in the sidebar; Products, Servers, Registrars, Email templates and System health in the Settings cluster), shared actions (`RecordPaymentAction`, `ServiceLifecycleActions` =
   the "Account" menu, `DomainActions` = the "Registrar" menu, `TestConnectionAction`),
   dashboard widgets
-- `app/Backups/`: `RunBackup` (SQL dump → zip, AES-256 with Settings → Backups' zip password → kept in
+- `app/Backups/`: `RunBackup` (SQL dump (always the zip's first entry) + `files/` (`RunBackup::files()`: storage/app/public,
+  storage/app/private without `SKIPPED_FOLDERS`, plugins not bundled; Include files) + `app-key.txt` only with a zip
+  password + `README.txt` → zip, every entry AES-256 with Settings → Backups' zip password → kept in
   `storage/app/private/backups`, newest `keep` → FTP via `FtpUploader` (ext-ftp, FTP/FTPS) → `BackupMail` to the admin;
   each copy fails on its own and is logged as `backup.created` / `backup.failed`), `DatabaseDumper` (pure PHP,
   MySQL/MariaDB and SQLite, no mysqldump needed; `RunBackup::LOG_TABLES` are written without rows unless
-  `backups.include_logs`). Scheduled in `routes/console.php` only when enabled. System health → Biggest tables is
+  `backups.include_logs`), `RestoreBackup` (`gaiacp:restore`: checks the zip and engine first, drops all tables and
+runs the dump statement by statement on MySQL, writes `files/` only under storage/app and plugins/, sets APP_KEY in
+.env, migrates). Scheduled in `routes/console.php` only when enabled. System health → Biggest tables is
   `App\Support\Health\TableSizes` (information_schema on MySQL, dbstat on SQLite)
 - Plugins: `app/Plugins/` has `Plugin` and `PluginManager` (singleton; `BUILT_IN` = cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel (off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check, WHMCS
   import, Bank transfer, Stripe, PayPal, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on

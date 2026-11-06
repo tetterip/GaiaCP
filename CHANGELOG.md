@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Backups now hold the uploaded files too (logo, page pictures, ticket attachments, client downloads, uploaded
+  translations, plugins you added; Settings → Backups → Include files, on by default), and a zip with a password also
+  carries the `APP_KEY`, so one backup is enough to get everything back. New `php artisan gaiacp:restore` puts a backup
+  back (database, files, key, newer database changes), and every zip has a README on restoring it, also in the admin
+  guide (Keeping GaiaCP healthy → Restoring a backup). A backup without a password says in its email to keep the
+  `APP_KEY` elsewhere.
 - Scheduled tasks: one that was cut short (a server restart, a process killed for memory) no longer stops that task for
   24 hours. Each task's lock now ends before its next run is due, so client messages and monitor checks start again
   within minutes, hourly tasks miss at most one run, and the daily ones (payment notices, suspensions, backups) run the

@@ -90,6 +90,8 @@ Read the file for the area you are changing before you change it; don't read the
   (Settings → Login security)
 - `php artisan gaiacp:registrar-check <domain>`: read-only check of a registrar login
 - `php artisan gaiacp:backup`: make a backup now and send it as Settings → Backups says (scheduled when enabled there)
+- `php artisan gaiacp:restore <zip> [--password= --force --database=]`: put a backup back (database replaced, files
+  written, APP_KEY set from a zip with a password, then `migrate`); admin guide → Keeping GaiaCP healthy
 - `php artisan gaiacp:prune-logs`: delete module / email log rows older than Settings → Logging keeps them, and files of
   closed tickets after Settings → Support's days (daily at 03:30; by hand: Settings → Logging → Clean up, `App\Support\LogCleanup`)
 - `php artisan gaiacp:check-monitors`: read every linked server's status from its monitoring service (every 5 minutes)

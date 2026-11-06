@@ -147,6 +147,7 @@ class Settings
         'backups.zip_password',
         'backups.email',
         'backups.include_logs',
+        'backups.include_files',
         'backups.ftp.enabled',
         'backups.ftp.protocol',
         'backups.ftp.host',

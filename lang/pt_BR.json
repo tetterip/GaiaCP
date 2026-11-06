@@ -3822,5 +3822,11 @@
     ":count ticket(s) waiting for a reply over :hours hours": ":count ticket(s) aguardando resposta há mais de :hours horas",
     ":count payment notice(s) due today": ":count aviso(s) de pagamento vencem hoje",
     ":count domain(s) to check at the registrar": ":count domínio(s) para verificar no registrador",
-    ":count quote(s) ending within :days days": ":count orçamento(s) vencem em :days dias"
+    ":count quote(s) ending within :days days": ":count orçamento(s) vencem em :days dias",
+    "A zip of the whole database and the uploaded files, kept on this server (storage/app/private/backups) and copied to FTP and/or email. Put one back with php artisan gaiacp:restore (System → Help → Keeping GaiaCP healthy).": "Um zip de todo o banco de dados e dos arquivos enviados, guardado neste servidor (storage/app/private/backups) e copiado por FTP e/ou e-mail. Restaure com php artisan gaiacp:restore (Sistema → Ajuda → Mantendo o GaiaCP saudável).",
+    "Encrypts the zip (AES-256; open it with 7-Zip or WinRAR). Recommended, since the backup holds every client's details; only a zip with a password also carries the APP_KEY that decrypts the stored passwords. Keep the password somewhere safe: without it the backup cannot be opened.": "Criptografa o zip (AES-256; abra com 7-Zip ou WinRAR). Recomendado, pois o backup tem os dados de todos os clientes; só um zip com senha leva também a APP_KEY que descriptografa as senhas salvas. Guarde a senha em local seguro: sem ela o backup não abre.",
+    "Include files": "Incluir arquivos",
+    "This zip has no APP_KEY (only a zip with a password carries it): keep a copy of APP_KEY from .env somewhere safe, or a restore loses the stored server and registrar passwords.": "Este zip não tem a APP_KEY (só um zip com senha a leva): guarde uma cópia da APP_KEY do .env em local seguro, ou uma restauração perde as senhas salvas de servidores e registradores.",
+    "Uploaded files go into the zip too: the logo, page pictures, ticket attachments, client downloads, uploaded translations and the plugins you added.": "Os arquivos enviados também vão no zip: o logo, as imagens das páginas, os anexos dos tickets, os downloads dos clientes, as traduções enviadas e os plugins que você adicionou.",
+    "Zipped database and file backups on a schedule, copied to FTP and email.": "Backups em zip do banco e dos arquivos, agendados, copiados por FTP e e-mail."
 }

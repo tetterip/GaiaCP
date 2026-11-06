@@ -2932,7 +2932,7 @@
     "Shield": "Ασπίδα",
     "Envelope": "Φάκελος",
     "Storage": "Αποθήκευση",
-    "Backup": "Backup",
+    "Backup": "Αντίγραφο ασφαλείας",
     "Shop": "Κατάστημα",
     "Programming": "Προγραμματισμός",
     "Tools": "Εργαλεία",
@@ -3822,5 +3822,11 @@
     ":count ticket(s) waiting for a reply over :hours hours": ":count tickets περιμένουν απάντηση πάνω από :hours ώρες",
     ":count payment notice(s) due today": ":count ειδοποιήσεις πληρωμής λήγουν σήμερα",
     ":count domain(s) to check at the registrar": ":count domains για έλεγχο στον registrar",
-    ":count quote(s) ending within :days days": ":count προσφορές λήγουν σε :days ημέρες"
+    ":count quote(s) ending within :days days": ":count προσφορές λήγουν σε :days ημέρες",
+    "A zip of the whole database and the uploaded files, kept on this server (storage/app/private/backups) and copied to FTP and/or email. Put one back with php artisan gaiacp:restore (System → Help → Keeping GaiaCP healthy).": "Ένα zip με όλη τη βάση δεδομένων και τα αρχεία που ανέβηκαν, που μένει σε αυτόν τον server (storage/app/private/backups) και αντιγράφεται σε FTP ή/και email. Το επαναφέρεις με php artisan gaiacp:restore (Σύστημα → Βοήθεια → Συντήρηση του GaiaCP).",
+    "Encrypts the zip (AES-256; open it with 7-Zip or WinRAR). Recommended, since the backup holds every client's details; only a zip with a password also carries the APP_KEY that decrypts the stored passwords. Keep the password somewhere safe: without it the backup cannot be opened.": "Κρυπτογραφεί το zip (AES-256· ανοίγει με 7-Zip ή WinRAR). Συνιστάται, αφού το αντίγραφο περιέχει τα στοιχεία κάθε πελάτη· μόνο ένα zip με κωδικό περιέχει και το APP_KEY που ξεκλειδώνει τους αποθηκευμένους κωδικούς. Φύλαξε τον κωδικό κάπου ασφαλές: χωρίς αυτόν το αντίγραφο δεν ανοίγει.",
+    "Include files": "Μαζί τα αρχεία",
+    "This zip has no APP_KEY (only a zip with a password carries it): keep a copy of APP_KEY from .env somewhere safe, or a restore loses the stored server and registrar passwords.": "Αυτό το zip δεν έχει το APP_KEY (το περιέχει μόνο ένα zip με κωδικό): φύλαξε ένα αντίγραφο του APP_KEY από το .env κάπου ασφαλές, αλλιώς μια επαναφορά χάνει τους αποθηκευμένους κωδικούς των servers και των registrars.",
+    "Uploaded files go into the zip too: the logo, page pictures, ticket attachments, client downloads, uploaded translations and the plugins you added.": "Μπαίνουν στο zip και τα αρχεία που ανέβηκαν: το λογότυπο, οι εικόνες των σελίδων, τα συνημμένα των αιτημάτων, τα αρχεία λήψης των πελατών, οι μεταφράσεις που ανέβασες και τα plugins που πρόσθεσες.",
+    "Zipped database and file backups on a schedule, copied to FTP and email.": "Αντίγραφα ασφαλείας της βάσης και των αρχείων σε zip, με πρόγραμμα, σε FTP και email."
 }
