@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Servers list: the monitor status sits under the server name and the panel type with the hostname, so the uptime
+  bars fit without scrolling.
 - Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
   **Open client** by the Client field), and the client's name in the services lists opens their page.
 - VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
