@@ -3897,5 +3897,7 @@
     "The payments and the paid payment notice stay recorded for items that are cancelled.": "Os pagamentos e o aviso de pagamento pago continuam registrados para itens cancelados.",
     "The payments are undone and the amount goes into the client's balance for their next payments.": "Os pagamentos são desfeitos e o valor vai para o saldo do cliente para os próximos pagamentos.",
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Os pagamentos são desfeitos, sem crédito. O GaiaCP não envia reembolso: faça você mesmo. Um pagamento feito com crédito volta ao crédito mesmo assim.",
-    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Pagamentos desfeitos deixam o seu aviso de pagamento cancelado, e uma fatura emitida recebe uma nota de crédito."
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Pagamentos desfeitos deixam o seu aviso de pagamento cancelado, e uma fatura emitida recebe uma nota de crédito.",
+    "Logging settings": "Configurações de registro",
+    "Switch logging on": "Ativar o registro"
 }

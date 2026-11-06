@@ -95,7 +95,7 @@ Off until you switch it on under Settings → Plugins. Built from CyberPanel's o
    off for it, since the API takes the password alone. CyberPanel lets only `admin` read the website list, which
    GaiaCP needs for the account state, usage and Compare with the server.
 2. Add the server with type CyberPanel, port 8090, username `admin` and its password. **Test connection** shows the
-   CyberPanel version; the Package list comes from its packages (named like `admin_Default`).
+   CyberPanel version; the Package list comes from its packages (named like `Default` for the built-in one, `admin_Pro` for one an admin added).
 3. **Create on server** makes a CyberPanel **website** for the service's domain, on its package, owned by a new
    CyberPanel user with the service's username, password and the client's email. It starts on the PHP version under
    Settings → CyberPanel (PHP 8.2 unless changed), which must be installed on the server. CyberPanel finishes the

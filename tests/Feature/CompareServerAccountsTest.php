@@ -11,6 +11,7 @@ use App\Filament\Resources\Servers\ServerResource;
 use App\Filament\Resources\Services\Pages\CreateService;
 use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\ModuleLog;
 use App\Models\Server;
 use App\Models\Service;
 use App\Models\User;
@@ -99,12 +100,26 @@ class CompareServerAccountsTest extends TestCase
         $this->assertSame('shop', $result['onServerOnly'][0]['account']->username);
     }
 
+    public function test_hestias_password_reset_keys_stay_out_of_the_module_log(): void
+    {
+        config(['gaiacp.debug.module_log' => true]);
+        $this->fakeHestia();
+        $hestia = Server::factory()->hestia()->create();
+
+        app(ProvisionerFactory::class)->forServer($hestia)->accounts();
+
+        $log = ModuleLog::query()->where('action', 'v-list-users')->sole();
+        $this->assertStringNotContainsString('2K085ASf0BT672D2', $log->response);
+        $this->assertStringContainsString('"RKEY": "********"', $log->response);
+    }
+
     public function test_hestia_and_directadmin_list_their_accounts(): void
     {
         $this->fakeHestia();
         $this->hestiaUsers = ['maria' => ['PACKAGE' => 'default', 'SUSPENDED' => 'yes', 'domains' => ['maria.gr']]];
         $hestia = Server::factory()->hestia()->create();
 
+        // The fake's admin login (ROLE admin, package "default" as on a real 1.10) is not a client's account
         $this->assertEquals([new PanelAccount('maria', 'maria.gr', 'default', true)], app(ProvisionerFactory::class)->forServer($hestia)->accounts());
 
         $this->fakeDirectAdmin();

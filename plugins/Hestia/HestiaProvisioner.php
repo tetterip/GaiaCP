@@ -57,7 +57,8 @@ class HestiaProvisioner implements HostingProvisioner, ListsAccounts
         $accounts = [];
 
         foreach ($this->hestia->list('v-list-users', timeout: 60) as $username => $user) {
-            if (! is_array($user) || ($user['PACKAGE'] ?? null) === self::SYSTEM_PACKAGE) {
+            // The admin (ROLE admin, on any package: "default" on a real 1.10) is the panel's own login, never a client's
+            if (! is_array($user) || ($user['PACKAGE'] ?? null) === self::SYSTEM_PACKAGE || strtolower((string) ($user['ROLE'] ?? '')) === 'admin') {
                 continue;
             }
 

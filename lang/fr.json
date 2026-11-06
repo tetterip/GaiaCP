@@ -3897,5 +3897,7 @@
     "The payments and the paid payment notice stay recorded for items that are cancelled.": "Les paiements et l'avis de paiement payé restent enregistrés pour des éléments annulés.",
     "The payments are undone and the amount goes into the client's balance for their next payments.": "Les paiements sont annulés et le montant va dans le solde du client pour ses prochains paiements.",
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Les paiements sont annulés, sans crédit. GaiaCP n'envoie aucun remboursement : faites-le vous-même. Un paiement fait avec le crédit retourne quand même au crédit.",
-    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Les paiements annulés laissent leur avis de paiement annulé, et une facture émise reçoit un avoir."
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Les paiements annulés laissent leur avis de paiement annulé, et une facture émise reçoit un avoir.",
+    "Logging settings": "Paramètres de journalisation",
+    "Switch logging on": "Activer la journalisation"
 }

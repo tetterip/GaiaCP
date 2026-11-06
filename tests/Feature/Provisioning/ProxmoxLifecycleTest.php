@@ -78,7 +78,7 @@ class ProxmoxLifecycleTest extends TestCase
     {
         $proxmox = app(ProvisionerFactory::class)->forServer($this->server);
 
-        $this->assertSame('Proxmox VE 8.2.4', $proxmox->testConnection());
+        $this->assertSame('Proxmox VE 9.2.26', $proxmox->testConnection());
         $this->assertSame(['debian12-large', 'debian12-small'], $proxmox->packages());
 
         Http::assertSent(fn (Request $request) => $request->url() === 'https://pve.test:8006/api2/json/version'

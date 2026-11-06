@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Module log: the **Logging settings** / **Switch logging on** button is translated.
+- Proxmox, HetrixTools, HestiaCP and CyberPanel test fakes now answer like the real APIs (from a staging module log);
+  Proxmox errors show their reason behind a proxy, HetrixTools reads its real paging, and the guide says CyberPanel's
+  built-in package is `Default` (not `admin_Default`).
+- HestiaCP: Compare with the server leaves out the panel's admin login, and the module log masks users' password reset
+  keys (RKEY).
 - Orders: **Cancel order** on an order that was paid but not set up yet now asks what happens to the money: return it
   to the client's credit (the default while credit is on), mark it refunded outside GaiaCP, or keep it. Before, the
   payments and the paid payment notice stayed as they were for cancelled items. The API's `POST /orders/{id}/cancel`

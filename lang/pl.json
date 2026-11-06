@@ -3897,5 +3897,7 @@
     "The payments and the paid payment notice stay recorded for items that are cancelled.": "Płatności i opłacone powiadomienie o płatności pozostają zapisane dla anulowanych pozycji.",
     "The payments are undone and the amount goes into the client's balance for their next payments.": "Płatności zostają cofnięte, a kwota trafia na saldo klienta na kolejne płatności.",
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Płatności zostają cofnięte, bez dodania salda. GaiaCP nie wysyła zwrotu: zrób go sam. Płatność z salda i tak wraca na saldo.",
-    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Cofnięte płatności zostawiają swoje powiadomienie o płatności anulowane, a do wystawionej faktury powstaje korekta."
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Cofnięte płatności zostawiają swoje powiadomienie o płatności anulowane, a do wystawionej faktury powstaje korekta.",
+    "Logging settings": "Ustawienia rejestrowania",
+    "Switch logging on": "Włącz rejestrowanie"
 }

@@ -3897,5 +3897,7 @@
     "The payments and the paid payment notice stay recorded for items that are cancelled.": "Οι πληρωμές και η πληρωμένη ειδοποίηση πληρωμής μένουν καταχωρημένες για είδη που ακυρώνονται.",
     "The payments are undone and the amount goes into the client's balance for their next payments.": "Οι πληρωμές αναιρούνται και το ποσό μπαίνει στο υπόλοιπο του πελάτη για τις επόμενες πληρωμές του.",
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Οι πληρωμές αναιρούνται, χωρίς πίστωση. Το GaiaCP δεν στέλνει επιστροφή χρημάτων: κάντε την εσείς. Μια πληρωμή από την πίστωση επιστρέφει πάντα στην πίστωση.",
-    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Με την αναίρεση των πληρωμών η ειδοποίηση πληρωμής τους ακυρώνεται, και για τιμολόγιο που έχει εκδοθεί βγαίνει πιστωτικό."
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Με την αναίρεση των πληρωμών η ειδοποίηση πληρωμής τους ακυρώνεται, και για τιμολόγιο που έχει εκδοθεί βγαίνει πιστωτικό.",
+    "Logging settings": "Ρυθμίσεις καταγραφής",
+    "Switch logging on": "Ενεργοποίηση καταγραφής"
 }

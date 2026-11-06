@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.3] - 2026-11-07
+
+- Reads the pages as HetrixTools sends them (meta.pagination last / next), so exactly 100 monitors no longer asks for an empty second page; checked against the real API
+
 ## [1.0.2] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

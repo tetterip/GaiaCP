@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Http;
 /**
  * A tiny in-memory Proxmox VE API (/api2/json): KVM machines and templates with their config, users and ACLs. Tasks
  * (clone, start, stop, delete, resize) end at once with OK. $proxmoxCalls records "METHOD /path"; $proxmoxFailures
- * makes "METHOD /path" (a regex on it) answer an HTTP error with that reason.
+ * makes "METHOD /path" (a regex on it) answer an HTTP error with that reason. Answers are shaped like Proxmox VE 9.2's
+ * (module log of a real server, 2026-11): an error comes as {"data":null,"message":"…\n"} under a plain status line,
+ * as it does through a proxy, and a missing user is "no such user".
  */
 trait FakesProxmox
 {
@@ -35,9 +37,9 @@ trait FakesProxmox
     protected function fakeProxmox(): void
     {
         $this->proxmoxVms = [
-            9000 => ['node' => 'pve1', 'name' => 'debian12-small', 'template' => 1, 'status' => 'stopped', 'tags' => '', 'maxdisk' => 10 * 1024 ** 3,
+            9000 => ['node' => 'pve1', 'name' => 'debian12-small', 'template' => 1, 'status' => 'stopped', 'maxdisk' => 10 * 1024 ** 3,
                 'config' => ['cores' => 1, 'sockets' => 1, 'memory' => '2048', 'boot' => 'order=scsi0', 'scsi0' => 'local-lvm:base-9000-disk-0,size=10G', 'ide2' => 'local-lvm:vm-9000-cloudinit,media=cdrom']],
-            9001 => ['node' => 'pve2', 'name' => 'debian12-large', 'template' => 1, 'status' => 'stopped', 'tags' => '', 'maxdisk' => 40 * 1024 ** 3,
+            9001 => ['node' => 'pve2', 'name' => 'debian12-large', 'template' => 1, 'status' => 'stopped', 'maxdisk' => 40 * 1024 ** 3,
                 'config' => ['cores' => 4, 'sockets' => 1, 'memory' => '8192', 'boot' => 'order=scsi0', 'scsi0' => 'local-lvm:base-9001-disk-0,size=40G']],
         ];
 
@@ -62,16 +64,22 @@ trait FakesProxmox
 
             foreach ($this->proxmoxFailures as $pattern => [$status, $reason]) {
                 if (preg_match($pattern, $call)) {
-                    return Create::promiseFor(new Psr7Response($status, ['Content-Type' => 'application/json'], '{"data":null}', '1.1', $reason));
+                    return $this->proxmoxError($status, $reason);
                 }
             }
 
             try {
                 return Http::response(['data' => $this->proxmoxAnswer($method, rawurldecode($path), $params)]);
             } catch (\RuntimeException $e) {
-                return Create::promiseFor(new Psr7Response(500, ['Content-Type' => 'application/json'], '{"data":null}', '1.1', $e->getMessage()));
+                return $this->proxmoxError(500, $e->getMessage());
             }
         });
+    }
+
+    /** An error as a real Proxmox answers it behind a proxy: the reason only in the body, the status line plain. */
+    private function proxmoxError(int $status, string $reason): mixed
+    {
+        return Create::promiseFor(new Psr7Response($status, ['Content-Type' => 'application/json'], json_encode(['data' => null, 'message' => "{$reason}\n"])));
     }
 
     private function proxmoxAnswer(string $method, string $path, array $params): mixed
@@ -79,15 +87,15 @@ trait FakesProxmox
         $task = fn (string $node) => "UPID:{$node}:00001234:00ABCDEF:6720F000:task:100:root@pam!gaiacp:";
 
         if ($path === '/version') {
-            return ['version' => '8.2.4', 'release' => '8.2'];
+            return ['repoid' => '41a0e2e09b9e6f9d', 'release' => '9.2', 'version' => '9.2.26'];
         }
 
         if ($path === '/cluster/resources') {
             return collect($this->proxmoxVms)->map(fn (array $vm, int $vmid) => [
                 'id' => "qemu/{$vmid}", 'type' => 'qemu', 'vmid' => $vmid, 'node' => $vm['node'], 'name' => $vm['name'],
-                'template' => $vm['template'], 'status' => $vm['status'], 'tags' => $vm['tags'], 'maxdisk' => $vm['maxdisk'],
+                'template' => $vm['template'], 'status' => $vm['status'], 'maxdisk' => $vm['maxdisk'], 'disk' => 0, 'mem' => 0, 'cpu' => 0, 'uptime' => 0,
                 'maxcpu' => (int) ($vm['config']['cores'] ?? 1) * (int) ($vm['config']['sockets'] ?? 1), 'maxmem' => (int) ($vm['config']['memory'] ?? 0) * 1024 ** 2,
-            ])->values()->push(['id' => 'lxc/200', 'type' => 'lxc', 'vmid' => 200, 'node' => 'pve1', 'name' => 'ct', 'template' => 0, 'status' => 'running'])->all();
+            ] + (filled($vm['tags'] ?? null) ? ['tags' => $vm['tags']] : []))->values()->push(['id' => 'lxc/200', 'type' => 'lxc', 'vmid' => 200, 'node' => 'pve1', 'name' => 'ct', 'template' => 0, 'status' => 'running'])->all();
         }
 
         if ($path === '/cluster/nextid') {
@@ -95,7 +103,10 @@ trait FakesProxmox
         }
 
         if (preg_match('#^/nodes/([^/]+)/tasks/(.+)/status$#', $path, $m)) {
-            return ['status' => 'stopped', 'exitstatus' => 'OK', 'type' => 'task', 'upid' => $m[2]];
+            $parts = explode(':', $m[2]);
+
+            return ['user' => 'root@pam', 'tokenid' => 'gaiacp', 'starttime' => 1793996834, 'exitstatus' => 'OK', 'upid' => $m[2], 'node' => $m[1],
+                'status' => 'stopped', 'type' => $parts[5] ?? 'task', 'id' => $parts[6] ?? '', 'pid' => 63854, 'pstart' => 1257556];
         }
 
         if ($path === '/access/users' && $method === 'POST') {
@@ -105,10 +116,14 @@ trait FakesProxmox
         }
 
         if (preg_match('#^/access/users/(.+)$#', $path, $m)) {
+            if (! isset($this->proxmoxUsers[$m[1]])) {
+                throw new \RuntimeException("no such user ('{$m[1]}')");
+            }
+
             if ($method === 'DELETE') {
                 unset($this->proxmoxUsers[$m[1]]);
                 $this->proxmoxAcl = array_values(array_filter($this->proxmoxAcl, fn ($acl) => $acl['users'] !== $m[1]));
-            } elseif (isset($this->proxmoxUsers[$m[1]])) {
+            } else {
                 $this->proxmoxUsers[$m[1]]['enable'] = (int) $params['enable'];
             }
 
@@ -129,7 +144,7 @@ trait FakesProxmox
 
         if ($rest === '/clone') {
             $template = $this->proxmoxVms[$vmid];
-            $this->proxmoxVms[(int) $params['newid']] = ['node' => $node, 'name' => $params['name'], 'template' => 0, 'status' => 'stopped', 'tags' => $template['tags'],
+            $this->proxmoxVms[(int) $params['newid']] = ['node' => $node, 'name' => $params['name'], 'template' => 0, 'status' => 'stopped', 'tags' => $template['tags'] ?? '',
                 'maxdisk' => $template['maxdisk'], 'config' => $template['config'] + ['description' => $params['description'] ?? '']];
 
             return $task($node);

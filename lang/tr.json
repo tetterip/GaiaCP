@@ -3897,5 +3897,7 @@
     "The payments and the paid payment notice stay recorded for items that are cancelled.": "Ödemeler ve ödenmiş ödeme bildirimi, iptal edilen kalemler için kayıtlı kalır.",
     "The payments are undone and the amount goes into the client's balance for their next payments.": "Ödemeler geri alınır ve tutar müşterinin sonraki ödemeleri için bakiyesine eklenir.",
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Ödemeler bakiye eklenmeden geri alınır. GaiaCP iade göndermez: iadeyi kendiniz yapın. Bakiyeden yapılan bir ödeme yine de bakiyeye döner.",
-    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Geri alınan ödemeler ödeme bildirimlerini iptal edilmiş bırakır ve düzenlenmiş bir faturaya iade faturası kesilir."
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Geri alınan ödemeler ödeme bildirimlerini iptal edilmiş bırakır ve düzenlenmiş bir faturaya iade faturası kesilir.",
+    "Logging settings": "Kayıt ayarları",
+    "Switch logging on": "Kaydı aç"
 }

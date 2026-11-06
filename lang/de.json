@@ -3897,5 +3897,7 @@
     "The payments and the paid payment notice stay recorded for items that are cancelled.": "Die Zahlungen und der bezahlte Zahlungshinweis bleiben für stornierte Positionen erfasst.",
     "The payments are undone and the amount goes into the client's balance for their next payments.": "Die Zahlungen werden rückgängig gemacht und der Betrag geht in das Guthaben des Kunden für seine nächsten Zahlungen.",
     "The payments are undone, with no credit. GaiaCP sends no refund: make it yourself. A payment made from credit still goes back to credit.": "Die Zahlungen werden ohne Gutschrift rückgängig gemacht. GaiaCP sendet keine Erstattung: Nehmen Sie sie selbst vor. Eine Zahlung aus dem Guthaben geht trotzdem ins Guthaben zurück.",
-    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Rückgängig gemachte Zahlungen lassen ihren Zahlungshinweis storniert, und eine ausgestellte Rechnung erhält eine Gutschrift."
+    "Undone payments leave their payment notice cancelled, and an issued invoice gets a credit note.": "Rückgängig gemachte Zahlungen lassen ihren Zahlungshinweis storniert, und eine ausgestellte Rechnung erhält eine Gutschrift.",
+    "Logging settings": "Protokollierungseinstellungen",
+    "Switch logging on": "Protokollierung einschalten"
 }

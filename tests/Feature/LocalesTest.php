@@ -381,7 +381,7 @@ class LocalesTest extends TestCase
         foreach ($files as $file) {
             $code = $file->getContents();
             preg_match_all("/(?:Action|ActionGroup)::make\\('(\\w+)'\\)(.{0,400})/s", $code, $actions, PREG_SET_ORDER);
-            preg_match_all("/->label\\(\\$\\w+ \\? '([^']+)' : '([^']+)'\\)/", $code, $choices, PREG_SET_ORDER);
+            preg_match_all("/->label\\([^'\\n]*? \\? '([^']+)' : '([^']+)'\\)/", $code, $choices, PREG_SET_ORDER);
 
             foreach ($actions as [, $name, $after]) {
                 $chain = preg_split('/;|::make\\(/', $after)[0];

@@ -112,7 +112,9 @@ class ProxmoxClient
             ->map(fn ($error, $field) => is_string($field) ? "{$field}: ".trim((string) $error) : trim((string) $error))
             ->implode('; ');
 
-        $message = trim($response->reason()) ?: "HTTP {$response->status()}";
+        // Proxmox puts the reason in the status line, which a proxy or HTTP/2 drops ("Internal Server Error"); the body's
+        // "message" keeps it ("no such user ('vps1@pve')").
+        $message = trim((string) $response->json('message')) ?: trim($response->reason()) ?: "HTTP {$response->status()}";
 
         throw new ProvisioningException("Proxmox {$path}: {$message}".($errors !== '' ? " ({$errors})" : ''), $response->status());
     }

@@ -92,8 +92,9 @@ class HetrixToolsPlugin extends Plugin implements MonitoringModule
             $list = $body['monitors'] ?? $body['data'] ?? (array_is_list($body) ? $body : []);
             $monitors += HetrixMonitors::parse(is_array($list) ? $list : []);
 
-            $pages = (int) (data_get($body, 'meta.pagination.total_pages') ?? data_get($body, 'meta.last_page') ?? data_get($body, 'pagination.total_pages') ?? 0);
-            $more = $pages > 0 ? $page < $pages : (filled(data_get($body, 'links.next')) || count($list) >= self::PAGE);
+            // HetrixTools answers meta.pagination {current, last, previous, next}; the others are kept in case it changes.
+            $pages = (int) (data_get($body, 'meta.pagination.last') ?? data_get($body, 'meta.pagination.total_pages') ?? data_get($body, 'meta.last_page') ?? 0);
+            $more = $pages > 0 ? $page < $pages : (filled(data_get($body, 'meta.pagination.next')) || filled(data_get($body, 'links.next')) || count($list) >= self::PAGE);
             if (! $more) {
                 break;
             }
