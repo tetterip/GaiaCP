@@ -242,6 +242,23 @@ class ServerMonitoringTest extends TestCase
         $this->assertSame(0, DB::table('server_monitor_checks')->count());
     }
 
+    public function test_checks_kept_in_local_time_are_moved_to_utc(): void
+    {
+        config(['gaiacp.region.timezone' => 'Europe/Athens']);
+        $server = $this->server();
+        DB::table('server_monitor_checks')->insert([
+            ['server_id' => $server->id, 'status' => 'up', 'checked_at' => '2026-10-24 12:00:00'], // summer time, +3
+            ['server_id' => $server->id, 'status' => 'up', 'checked_at' => '2026-10-26 12:00:00'], // winter time, +2
+        ]);
+        $migration = require database_path('migrations/2026_11_06_000200_store_server_checks_in_utc.php');
+
+        $migration->up();
+        $this->assertSame(['2026-10-24 09:00:00', '2026-10-26 10:00:00'], DB::table('server_monitor_checks')->orderBy('id')->pluck('checked_at')->all());
+
+        $migration->down();
+        $this->assertSame(['2026-10-24 12:00:00', '2026-10-26 12:00:00'], DB::table('server_monitor_checks')->orderBy('id')->pluck('checked_at')->all());
+    }
+
     public function test_the_bar_takes_each_slots_worst_status(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', config('app.timezone')));
