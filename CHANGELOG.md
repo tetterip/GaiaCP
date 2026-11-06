@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
+  **Open client** by the Client field), and the client's name in the services lists opens their page.
 - VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
   a new VPS Welcome Email (off until switched on) sends its address and logins with the right port.
 - Plugin API: new `App\Provisioning\DescribesMachine` and `MachineDetails`, for a server panel that makes virtual
