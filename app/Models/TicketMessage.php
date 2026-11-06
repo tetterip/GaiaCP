@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['ticket_id', 'user_id', 'from_client', 'internal', 'body', 'email_message_id'])]
 class TicketMessage extends Model
 {
+    use StoresTimesInUtc;
+
     protected function casts(): array
     {
         return [

@@ -7,6 +7,7 @@ use App\Enums\AutoSetup;
 use App\Enums\BillingCycle;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\DomainName;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -39,6 +40,8 @@ class Service extends Model
 {
     /** @use HasFactory<ServiceFactory> */
     use HasFactory;
+
+    use StoresTimesInUtc;
 
     /** Value of suspension_reason when the service was suspended for non-payment. */
     public const SUSPENDED_OVERDUE = 'overdue';

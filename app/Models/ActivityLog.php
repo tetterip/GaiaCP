@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Actions\ModuleQueue;
 use App\Events\GaiaEvent;
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Notifications\AdminAlerts;
 use App\Notifications\ClientAlerts;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['client_id', 'service_id', 'user_id', 'api_key_id', 'event', 'description', 'properties', 'created_at'])]
 class ActivityLog extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPDATED_AT = null;
 
     /** activity_logs.description is a string(255) */

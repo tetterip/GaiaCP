@@ -51,7 +51,7 @@ class ClientFacts
     {
         $notices = Invoice::query()->where('client_id', $this->client->id)
             ->where('status', '!=', InvoiceStatus::Cancelled)
-            ->where('due_date', '>=', now()->subMonths(self::MONTHS))
+            ->whereOnDate('due_date', '>=', today()->subMonths(self::MONTHS))
             ->when($except, fn ($query) => $query->whereKeyNot($except->id))
             ->get(['id', 'status', 'due_date', 'paid_on', 'total_cents', 'currency']);
 

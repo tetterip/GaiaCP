@@ -106,6 +106,7 @@ class SalesOpportunities extends Page implements HasTable, ReportCard
     {
         return $table
             ->query(fn () => $this->modifyQueryWithActiveTab(Service::query()
+                ->withCasts(['offer_emailed_at' => 'immutable_datetime']) // stored in UTC, read in local time
                 ->select('services.*')
                 ->addSelect(['offer_emailed_at' => ActivityLog::query()
                     ->select('created_at')

@@ -2,6 +2,7 @@
 
 namespace Plugins\Stripe;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,8 @@ use Illuminate\Support\Carbon;
 #[Fillable(['invoice_id', 'session_id', 'livemode', 'amount_cents', 'currency', 'status', 'payment_intent', 'paid_at', 'error'])]
 class StripeCheckout extends Model
 {
+    use StoresTimesInUtc;
+
     public const OPEN = 'open';
 
     public const PROCESSING = 'processing';

@@ -398,7 +398,8 @@ How the admin and client panels, users, access, security, branding, themes and l
   `PwaController` serves `/admin/manifest.webmanifest` and the service worker `/admin/sw.js` (scope `/admin/`, shows the
   push and opens its page), `resources/views/filament/pwa.blade.php` links them; icons in `public/images/gaiacp/`
 - Region (Settings → General, `App\Support\Region`, keys `region.*`): the timezone (`Settings::put()` sets
-  `app.timezone` and PHP's default, so due dates and the daily run follow it), the date format (`AppServiceProvider::dateFormat()`,
+  `app.timezone` and PHP's default, so due dates, the daily run and the times shown follow it; times are stored in
+  UTC, see code-layout.md), the date format (`AppServiceProvider::dateFormat()`,
   one of `Region::DATE_FORMATS`; tables and date pickers use it) and the country new clients start in (`Client` fills it
   when blank; `EppPhone` reads a number without a code as the client's country's). The installer asks them with the base
   currency (`Installer::saveRegion()`, which changes `GAIACP_CURRENCY` only while nothing is priced). New installs start in

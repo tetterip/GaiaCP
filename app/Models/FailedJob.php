@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /** A queued job that failed every try (Laravel's own `failed_jobs`), listed under Settings → Failed jobs. */
 class FailedJob extends Model
 {
+    use StoresTimesInUtc;
+
     public $timestamps = false;
 
     protected function casts(): array

@@ -63,6 +63,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // Times are stored in UTC (App\Database\SendsTimesInUtc): the session too, so MySQL never converts a
+            // timestamp column from the server's own timezone
+            'timezone' => '+00:00',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -83,6 +86,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // Times are stored in UTC (App\Database\SendsTimesInUtc): the session too, so MySQL never converts a
+            // timestamp column from the server's own timezone
+            'timezone' => '+00:00',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ApiKey;
+use App\Support\StoredTime;
 use Closure;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\JsonResponse;
@@ -46,7 +47,7 @@ class IdempotentApiRequest
         $old = DB::table(self::TABLE)->where('api_key_id', $apiKey->id)->where('idempotency_key', $key)->first();
 
         // An old row (not pruned yet) no longer counts
-        if ($old && now()->subHours(self::KEEP_HOURS)->gt($old->created_at)) {
+        if ($old && now()->subHours(self::KEEP_HOURS)->gt(StoredTime::parse($old->created_at))) {
             DB::table(self::TABLE)->where('id', $old->id)->delete();
             $old = null;
         }

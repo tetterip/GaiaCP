@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +22,8 @@ use Symfony\Component\HttpFoundation\IpUtils;
 #[Hidden(['token_hash'])]
 class ApiKey extends Model
 {
+    use StoresTimesInUtc;
+
     /** What a key can be given access to. */
     public const AREAS = ['clients', 'services', 'orders', 'invoices', 'payments', 'products', 'leads', 'quotes'];
 

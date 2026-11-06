@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresTimesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['user_id', 'feature', 'provider', 'model', 'input_tokens', 'output_tokens', 'created_at'])]
 class AiUsage extends Model
 {
+    use StoresTimesInUtc;
+
     public const UPDATED_AT = null;
 
     protected function casts(): array
