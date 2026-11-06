@@ -3847,5 +3847,18 @@
     "Ping url": "URL de ping",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Dias de lembrete e de atraso, a hora da execução diária, a suspensão de hospedagens não pagas e o ping para um monitor externo.",
     "Send a ping now": "Enviar um ping agora",
-    "The ping failed": "O ping falhou"
+    "The ping failed": "O ping falhou",
+    "Anonymize": "Anonimizar",
+    "Anonymize this client": "Anonimizar este cliente",
+    "Client anonymized": "Cliente anonimizado",
+    "Confirm": "Confirmar",
+    "Download their data": "Baixar os dados dele",
+    "It has credit: refund or use it first.": "Tem crédito: reembolse ou use primeiro.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Tem serviços pendentes, ativos ou suspensos: encerre ou cancele-os primeiro.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Tem avisos de pagamento não pagos: registre o pagamento ou cancele-os primeiro.",
+    "Personal data": "Dados pessoais",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Nome, email, telefone, endereço, número fiscal, notas e campos personalizados são substituídos por \"Anonymized #:id\". O acesso à área do cliente, os logins, os tickets com seus arquivos, os emails enviados a ele, os leads e as solicitações são excluídos, e o nome é retirado do registro de atividades. Avisos de pagamento, faturas, pagamentos e crédito ficam como estão, com os dados para os quais foram emitidos, porque a lei os mantém. Não pode ser desfeito: baixe primeiro os dados dele se ele os pediu.",
+    "This client is already anonymized.": "Este cliente já está anonimizado.",
+    "Type :email to confirm": "Digite :email para confirmar",
+    "Type the client's email exactly.": "Digite o email do cliente exatamente."
 }

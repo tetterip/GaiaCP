@@ -9,6 +9,8 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 
 - Clients with the details a domain registration needs (name, company, email, phone, structured
   address, country) plus VAT number, tax office (Δ.Ο.Υ.), profession and email preferences
+- Personal data requests (GDPR): download everything kept about a client as a zip, or anonymize a client whose
+  services have ended (billing records kept for the tax law)
 - Client fields of your own (Settings → Client fields, as WHMCS's client custom fields): text, several lines, a list
   of choices, yes / no or a date, with a label per language; each is required or not, hidden from clients, shown to
   them or filled in by them at sign up and in their profile (saved at once, no approval), and can show on payment

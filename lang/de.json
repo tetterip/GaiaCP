@@ -3847,5 +3847,18 @@
     "Ping url": "Ping-URL",
     "Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.": "Erinnerungs- und Überfälligkeitstage, die Zeit des täglichen Laufs, die Sperrung unbezahlter Hostings und der Ping an einen externen Monitor.",
     "Send a ping now": "Jetzt einen Ping senden",
-    "The ping failed": "Der Ping ist fehlgeschlagen"
+    "The ping failed": "Der Ping ist fehlgeschlagen",
+    "Anonymize": "Anonymisieren",
+    "Anonymize this client": "Diesen Kunden anonymisieren",
+    "Client anonymized": "Kunde anonymisiert",
+    "Confirm": "Bestätigen",
+    "Download their data": "Seine Daten herunterladen",
+    "It has credit: refund or use it first.": "Er hat Guthaben: erstatten oder verbrauchen Sie es zuerst.",
+    "It has services that are pending, active or suspended: terminate or cancel them first.": "Er hat ausstehende, aktive oder gesperrte Dienste: beenden oder stornieren Sie sie zuerst.",
+    "It has unpaid payment notices: record the payment or cancel them first.": "Er hat unbezahlte Zahlungshinweise: erfassen Sie die Zahlung oder stornieren Sie sie zuerst.",
+    "Personal data": "Personenbezogene Daten",
+    "Their name, email, phone, address, VAT number, notes and custom fields are replaced by \"Anonymized #:id\". Their client area login, sign-ins, tickets with their files, the emails sent to them, leads and requests are deleted, and their name is taken out of the activity log. Payment notices, invoices, payments and credit stay as they are, with the details they were issued to, because the law keeps them. This cannot be undone: download their data first if they asked for it.": "Name, E-Mail, Telefon, Adresse, USt-IdNr., Notizen und eigene Felder werden durch „Anonymized #:id“ ersetzt. Sein Kundenbereich-Login, Anmeldungen, Tickets mit ihren Dateien, die an ihn gesendeten E-Mails, Leads und Anfragen werden gelöscht, und sein Name wird aus dem Aktivitätsprotokoll entfernt. Zahlungshinweise, Rechnungen, Zahlungen und Guthaben bleiben unverändert, mit den Angaben, auf die sie ausgestellt wurden, da das Gesetz sie aufbewahrt. Dies kann nicht rückgängig gemacht werden: Laden Sie zuerst seine Daten herunter, falls er sie angefordert hat.",
+    "This client is already anonymized.": "Dieser Kunde ist bereits anonymisiert.",
+    "Type :email to confirm": "Geben Sie :email zur Bestätigung ein",
+    "Type the client's email exactly.": "Geben Sie die E-Mail des Kunden genau ein."
 }
