@@ -10,6 +10,7 @@ use App\Filament\Actions\DomainActions;
 use App\Filament\Actions\RecordPaymentAction;
 use App\Filament\Actions\ServiceLifecycleActions;
 use App\Filament\Actions\TransferServiceAction;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Invoices\RepriceIssuedNotice;
 use App\Models\Product;
@@ -65,6 +66,31 @@ class EditService extends EditRecord
         if (app(RepriceIssuedNotice::class)->handle($this->getRecord()->refresh()) !== null) {
             Notification::make()->success()->title(__('The unpaid payment notice was updated to the new amount.'))->send();
         }
+    }
+
+    /** Clients > client > the client's tab of this kind > service > Edit, so the client is one click away. */
+    public function getBreadcrumbs(): array
+    {
+        /** @var Service $service */
+        $service = $this->getRecord();
+        $tabUrl = ServiceResource::clientUrl($service);
+
+        if ($tabUrl === null) {
+            return parent::getBreadcrumbs();
+        }
+
+        return [
+            ClientResource::getUrl('index') => ClientResource::getBreadcrumb(),
+            ClientResource::getUrl('edit', ['record' => $service->client]) => ClientResource::getRecordTitle($service->client),
+            $tabUrl => match (ServiceResource::clientTab($service)) {
+                'hosting' => __('Hosting'),
+                'domains' => __('Domains'),
+                'other' => __('Other services'),
+                default => __('Services'),
+            },
+            ServiceResource::getUrl('edit', ['record' => $service]) => $this->getRecordTitle(),
+            $this->getBreadcrumb(),
+        ];
     }
 
     protected function getHeaderActions(): array

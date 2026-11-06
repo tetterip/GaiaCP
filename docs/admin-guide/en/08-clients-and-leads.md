@@ -22,6 +22,10 @@ pay (on time, watch, late) from the last 12 months. Below it are tabs for Detail
 Orders, Payment notices, Payments, Tickets and Activity, plus Invoices while invoices are on (or once they have one)
 and Sign-ins once they have a login.
 
+A service's page sits under its client: its path at the top reads Clients › client › Hosting (or Domains, Other
+services) › service, and **Open client** by the Client field goes back to them. In the services lists the client's name
+opens their page too.
+
 The buttons at the top:
 
 - **New order** for this client.

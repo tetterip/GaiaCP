@@ -14,6 +14,7 @@ use App\Filament\Forms\NameserversInput;
 use App\Filament\Forms\PackageSelect;
 use App\Filament\Forms\PasswordInput;
 use App\Filament\Forms\ProductOptionFields;
+use App\Filament\Resources\Services\ServiceResource;
 use App\Livewire\HostingUsage;
 use App\Models\Client;
 use App\Models\Domain;
@@ -25,6 +26,7 @@ use App\Rules\ValidDomain;
 use App\Support\Currencies;
 use App\Support\Money;
 use App\Support\ProductOptions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -38,6 +40,7 @@ use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ServiceForm
@@ -59,6 +62,11 @@ class ServiceForm
                             ->preload()
                             ->required()
                             ->default(fn () => request()->integer('client') ?: null)
+                            ->hintAction(Action::make('openClient')
+                                ->label('Open client')
+                                ->icon(Heroicon::OutlinedUser)
+                                ->url(fn (?Service $record) => $record ? ServiceResource::clientUrl($record) : null)
+                                ->visible(fn (?Service $record) => $record && ServiceResource::clientUrl($record) !== null))
                             // Once set up, moving it to another client also takes it off the old client's notices: Move to another client.
                             ->disabled(fn (?Service $record) => self::typeLocked($record))
                             ->helperText(fn (?Service $record) => self::typeLocked($record) ? __('Fixed once the service has been set up. Use Move to another client.') : null)

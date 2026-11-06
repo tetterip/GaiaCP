@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Services: a service's page now sits under its client (Clients › client › Hosting › service at the top, with
+  **Open client** by the Client field), and the client's name in the services lists opens their page.
 - Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,
   registrars, payments, monitoring, settings pages, the main models and enums) and what an update may change in them:
   breaking changes only in a minor release while GaiaCP is 0.x, listed under "Plugin API" here.
