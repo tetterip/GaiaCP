@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Monitoring from outside (Settings → Automation): a Ping URL from Uptime Kuma, Healthchecks.io, Better Stack or
+  Cronitor is called every 5 minutes, so you hear when cron or the server stops; a second URL is called with what
+  failed when a daily job or the last backup failed. New `php artisan gaiacp:heartbeat`.
 - Updates: when the database changes of a new version fail, the database is now put back as it was, not only the old
   code (MySQL / MariaDB keep each change already made, which left the old version running on a half-changed
   database). The backup is now taken in maintenance mode, so nothing done while the release downloads is lost, and it

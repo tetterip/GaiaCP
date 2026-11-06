@@ -137,6 +137,12 @@ return [
         // Emails of messages to clients sent each minute (gaiacp:send-client-messages), kind to the mail server.
         'client_messages_per_minute' => (int) env('GAIACP_CLIENT_MESSAGES_PER_MINUTE', 30),
 
+        // A monitoring service outside GaiaCP (Uptime Kuma push, Healthchecks.io, Better Stack heartbeat…) gets a GET to
+        // ping_url every 5 minutes while all is well (gaiacp:heartbeat), or to ping_fail_url when a daily command or the
+        // last backup failed ({message} in it becomes what failed). Both stored encrypted: the URL is the secret.
+        'ping_url' => env('GAIACP_PING_URL') ?: null,
+        'ping_fail_url' => env('GAIACP_PING_FAIL_URL') ?: null,
+
         // Email the admins who receive system emails a summary after the daily run.
         'daily_summary' => (bool) env('GAIACP_DAILY_SUMMARY', true),
         // Email the admins when a client asks to change their details from the client area

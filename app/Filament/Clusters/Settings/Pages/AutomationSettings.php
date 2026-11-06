@@ -4,11 +4,18 @@ namespace App\Filament\Clusters\Settings\Pages;
 
 use App\Actions\ModuleQueue;
 use App\Filament\Clusters\Settings\SettingsFormPage;
+use App\Providers\AppServiceProvider;
+use App\Support\Health\Heartbeat;
 use BackedEnum;
+use Carbon\CarbonImmutable;
+use Filament\Actions\Action;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
@@ -29,12 +36,12 @@ class AutomationSettings extends SettingsFormPage
 
     public static function settingsDescription(): string
     {
-        return __('Reminder and overdue days, the time of the daily run and suspension of unpaid hosting.');
+        return __('Reminder and overdue days, the time of the daily run, suspension of unpaid hosting and the ping to an outside monitor.');
     }
 
     public static function keys(): array
     {
-        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates'];
+        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
     }
 
     public function form(Schema $schema): Schema
@@ -137,7 +144,75 @@ class AutomationSettings extends SettingsFormPage
                             ->label('Update exchange rates daily')
                             ->helperText(__('Reads the rates of Settings → Currencies from the European Central Bank every day at 17:00. Prices set in a currency stay as they are; the ones left empty follow the rate.')),
                     ]),
+                Section::make(__('Monitoring from outside'))
+                    ->description(__('A stopped cron or server cannot warn you by itself. Give a monitoring service a heartbeat (Uptime Kuma push monitor, Healthchecks.io, Better Stack heartbeat, Cronitor…): GaiaCP calls its URL every 5 minutes while all is well, so it alerts you when the calls stop.'))
+                    ->schema([
+                        TextInput::make('automation.ping_url')
+                            ->label('Ping URL')
+                            ->url()
+                            ->password()
+                            ->revealable()
+                            ->autocomplete('off')
+                            ->maxLength(1000)
+                            ->placeholder(fn () => config('gaiacp.automation.ping_url') ? __('Set (leave blank to keep it)') : 'https://hc-ping.com/…')
+                            ->helperText(__('Called while cron runs and the daily commands and the last backup succeeded. Stored encrypted: the URL is what lets anyone ping your monitor.')),
+                        TextInput::make('automation.ping_fail_url')
+                            ->label('Ping URL on failure')
+                            ->url()
+                            ->password()
+                            ->revealable()
+                            ->autocomplete('off')
+                            ->maxLength(1000)
+                            ->placeholder(fn () => config('gaiacp.automation.ping_fail_url') ? __('Set (leave blank to keep it)') : 'https://hc-ping.com/…/fail')
+                            ->helperText(__('Called instead when a daily command or the last backup failed; {message} in it becomes what failed (Uptime Kuma: …?status=down&msg={message}). Leave empty to send no ping then, so the monitor alerts as for a stopped cron.')),
+                        Text::make(fn () => $this->lastPing()),
+                        Actions::make([
+                            Action::make('sendPing')
+                                ->label('Send a ping now')
+                                ->icon(Heroicon::OutlinedSignal)
+                                ->color('gray')
+                                ->visible(fn () => Heartbeat::configured())
+                                ->action(fn () => $this->sendPing()),
+                        ])->key('pingActions'),
+                    ]),
             ]);
+    }
+
+    private function lastPing(): string
+    {
+        $last = Heartbeat::last();
+
+        if (! Heartbeat::configured()) {
+            return __('No ping is sent until a Ping URL is set.');
+        }
+
+        if (! $last) {
+            return __('No ping sent yet: the first goes out within 5 minutes once cron runs.');
+        }
+
+        $at = CarbonImmutable::parse($last['at'])->format(AppServiceProvider::dateFormat().' H:i');
+
+        return match (true) {
+            $last['error'] !== null => __('Last ping :date failed: :error', ['date' => $at, 'error' => $last['error']]),
+            ! $last['sent'] => __('Last check :date: :problems, and no Ping URL on failure is set, so no ping was sent.', ['date' => $at, 'problems' => implode('; ', $last['problems'])]),
+            $last['failure'] => __('Last ping :date reported a failure: :problems.', ['date' => $at, 'problems' => implode('; ', $last['problems'])]),
+            default => __('Last ping :date: all is well.', ['date' => $at]),
+        };
+    }
+
+    /** Uses the saved URLs, like the cron run. */
+    private function sendPing(): void
+    {
+        $result = app(Heartbeat::class)->send();
+
+        $notification = match (true) {
+            $result['error'] !== null => Notification::make()->danger()->title(__('The ping failed'))->body($result['error'])->persistent(),
+            ! $result['sent'] => Notification::make()->warning()->title(__('No ping sent'))->body(implode('; ', $result['problems'])),
+            $result['problems'] !== [] => Notification::make()->warning()->title(__('Failure ping sent'))->body(implode('; ', $result['problems'])),
+            default => Notification::make()->success()->title(__('Ping sent')),
+        };
+
+        $notification->send();
     }
 
     protected function forStorage(array $values): array
