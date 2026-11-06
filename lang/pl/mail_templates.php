@@ -90,6 +90,14 @@ return [
             ."Prosimy skierować domenę na nasze serwery nazw lub ustawić jej rekord A na adres {\$server_ip}.\n\n"
             .'Pakiet: {$package}, {$amount} ({$billing_cycle}), następna płatność do {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Państwa VPS {$domain} jest gotowy',
+        'body' => "Państwa VPS **{\$domain}** jest gotowy.\n\n"
+            ."Adres IP: {\$ip_address}<br>\nUżytkownik: {\$vps_user}<br>\nHasło: {\$password}\n\n"
+            .'Prosimy połączyć się przez SSH (`ssh {$vps_user}@{$ip_address}`). Konsola oraz Uruchom, Wyłącz i Uruchom ponownie są też w panelu sterowania: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Pakiet: {$package}, {$amount} ({$billing_cycle}), następna płatność do {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Zawieszenie usługi: {$service}',
         'body' => "Państwa usługa **{\$service}** {\$domain} została zawieszona.\n\nPowód: {\$suspension_reason}\n\n{\$payment_instructions}",

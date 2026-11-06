@@ -58,6 +58,7 @@ Etkin bir hosting hesabında şunları yapabilirsiniz:
 <!-- if:vps_power -->
 - Sayfasındaki düğmelerle **bir VPS'i başlatın, kapatın veya yeniden başlatın**. Kapat ve Yeniden başlat üzerinde çalışan programları durdurur, bu yüzden önce çalışmanızı kaydedin. Konsolunu kullanmak için **Proxmox VE paneline giriş yap**'a basın ve hizmetin kullanıcı adı ve parolasıyla giriş yapın (realm "Proxmox VE authentication server"): yalnızca kendi VPS'inizi görürsünüz.
 <!-- endif -->
+- **VPS'inizin bilgilerini görün** sayfasında: IP adresi, çalışıp çalışmadığı, işlemcileri, belleği ve disk boyutu ile içinde oturum açmak için kullanıcı (SSH veya konsol), hizmetin parolasıyla.
 <!-- if:hosting_password -->
 - Hesabın **parolasını değiştirin**. Büyük ve küçük harf ile rakam içeren en az 10 karakter kullanın.
 <!-- endif -->

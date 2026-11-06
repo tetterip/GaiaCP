@@ -90,6 +90,14 @@ return [
             ."Faites pointer votre domaine vers nos serveurs de noms, ou son enregistrement A vers {\$server_ip}.\n\n"
             .'Forfait : {$package}, {$amount} ({$billing_cycle}), prochaine échéance le {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Votre VPS {$domain} est prêt',
+        'body' => "Votre VPS **{\$domain}** est prêt.\n\n"
+            ."Adresse IP : {\$ip_address}<br>\nUtilisateur : {\$vps_user}<br>\nMot de passe : {\$password}\n\n"
+            .'Connectez-vous en SSH (`ssh {$vps_user}@{$ip_address}`). Sa console, ainsi que Démarrer, Arrêter et Redémarrer, se trouvent aussi dans le panneau de contrôle : '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Forfait : {$package}, {$amount} ({$billing_cycle}), prochaine échéance le {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Service suspendu : {$service}',
         'body' => "Votre service **{\$service}** {\$domain} a été suspendu.\n\nMotif : {\$suspension_reason}\n\n{\$payment_instructions}",

@@ -33,5 +33,7 @@
     "Storage for new VPS": "Αποθηκευτικός χώρος για νέα VPS",
     "The API token ID, as user@realm!name (e.g. root@pam!gaiacp). Datacenter → Permissions → API Tokens.": "Το ID του API token, ως user@realm!name (π.χ. root@pam!gaiacp). Datacenter → Permissions → API Tokens.",
     "VPS": "VPS",
-    "cloud-init gives this user the service's password. root on most images.": "Το cloud-init δίνει σε αυτόν τον χρήστη τον κωδικό της υπηρεσίας. root στις περισσότερες εικόνες."
+    "cloud-init gives this user the service's password. root on most images.": "Το cloud-init δίνει σε αυτόν τον χρήστη τον κωδικό της υπηρεσίας. root στις περισσότερες εικόνες.",
+    "Each VPS gets an address from the server's <a href=\":url\" class=\"underline\">IP addresses</a>, or by DHCP when it has none. Install qemu-guest-agent in the template, so that a VPS reports an address it took by DHCP and takes a new password at once.": "Κάθε VPS παίρνει διεύθυνση από τις <a href=\":url\" class=\"underline\">Διευθύνσεις IP</a> του server, ή με DHCP όταν δεν έχει. Εγκατάστησε το qemu-guest-agent στο template, ώστε ένα VPS να αναφέρει τη διεύθυνση που πήρε με DHCP και να παίρνει αμέσως έναν νέο κωδικό.",
+    "Sign in with the username :username, the service's password and the realm \"Proxmox VE authentication server\".": "Συνδεθείτε με όνομα χρήστη :username, τον κωδικό της υπηρεσίας και realm «Proxmox VE authentication server»."
 }

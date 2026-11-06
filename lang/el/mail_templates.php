@@ -90,6 +90,14 @@ return [
             ."Στρέψτε το domain σας στους nameservers μας ή την εγγραφή A του στη διεύθυνση {\$server_ip}.\n\n"
             .'Πακέτο: {$package}, {$amount} ({$billing_cycle}), επόμενη πληρωμή έως {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Το VPS {$domain} είναι έτοιμο',
+        'body' => "Το VPS σας **{\$domain}** είναι έτοιμο.\n\n"
+            ."Διεύθυνση IP: {\$ip_address}<br>\nΧρήστης: {\$vps_user}<br>\nΚωδικός: {\$password}\n\n"
+            .'Συνδεθείτε με SSH (`ssh {$vps_user}@{$ip_address}`). Η κονσόλα του, καθώς και η Εκκίνηση, ο Τερματισμός και η Επανεκκίνηση, βρίσκονται επίσης στο control panel: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Πακέτο: {$package}, {$amount} ({$billing_cycle}), επόμενη πληρωμή έως {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Αναστολή υπηρεσίας: {$service}',
         'body' => "Η υπηρεσία σας **{\$service}** {\$domain} έχει ανασταλεί.\n\nΑιτία: {\$suspension_reason}\n\n{\$payment_instructions}",

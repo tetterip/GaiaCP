@@ -58,6 +58,7 @@ En una cuenta de hosting activa puede:
 <!-- if:vps_power -->
 - **Iniciar, apagar o reiniciar un VPS** con los botones de su página. Apagar y Reiniciar detienen los programas que se ejecutan en él, así que guarde antes su trabajo. Para usar su consola, pulse **Entrar en Proxmox VE** e inicie sesión con el nombre de usuario y la contraseña del servicio (realm "Proxmox VE authentication server"): solo verá su propio VPS.
 <!-- endif -->
+- **Ver los datos de su VPS** en su página: su dirección IP, si está en marcha, sus procesadores, memoria y tamaño de disco, y el usuario para iniciar sesión dentro de él (SSH o la consola), con la contraseña del servicio.
 <!-- if:hosting_password -->
 - **Cambiar la contraseña** de la cuenta. Use al menos 10 caracteres con mayúsculas, minúsculas y números.
 <!-- endif -->

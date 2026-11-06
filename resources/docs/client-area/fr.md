@@ -58,6 +58,7 @@ Sur un compte d'hébergement actif, vous pouvez :
 <!-- if:vps_power -->
 - **Démarrer, éteindre ou redémarrer un VPS** avec les boutons de sa page. Éteindre et Redémarrer arrêtent les programmes qui y tournent : enregistrez d'abord votre travail. Pour utiliser sa console, cliquez sur **Se connecter à Proxmox VE** et connectez-vous avec le nom d'utilisateur et le mot de passe du service (realm « Proxmox VE authentication server ») : vous ne voyez que votre propre VPS.
 <!-- endif -->
+- **Voir les informations de votre VPS** sur sa page : son adresse IP, s'il fonctionne, ses processeurs, sa mémoire et la taille de son disque, et l'utilisateur pour se connecter à l'intérieur (SSH ou la console), avec le mot de passe du service.
 <!-- if:hosting_password -->
 - **Changer le mot de passe** du compte. Utilisez au moins 10 caractères avec majuscules, minuscules et chiffres.
 <!-- endif -->

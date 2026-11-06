@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- VPS (Proxmox VE 1.1.0): the service page shows the VPS's state, processors, memory, disk size and IP addresses, and
+  a new VPS Welcome Email (off until switched on) sends its address and logins with the right port.
+- Plugin API: new `App\Provisioning\DescribesMachine` and `MachineDetails`, for a server panel that makes virtual
+  machines.
 - Server uptime bars: checks are stored in UTC, so the bars no longer show them two or three hours off (in any timezone
   other than UTC) or leave the last hours empty.
 - Plugin API: [docs/plugin-api.md](docs/plugin-api.md) now names the GaiaCP classes a plugin can rely on (server panels,

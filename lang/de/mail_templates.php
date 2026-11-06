@@ -90,6 +90,14 @@ return [
             ."Richten Sie Ihre Domain auf unsere Nameserver oder ihren A-Eintrag auf {\$server_ip} aus.\n\n"
             .'Paket: {$package}, {$amount} ({$billing_cycle}), nächste Zahlung fällig am {$next_due_date}.',
     ],
+    'vps_welcome' => [
+        'subject' => 'Ihr VPS {$domain} ist bereit',
+        'body' => "Ihr VPS **{\$domain}** ist bereit.\n\n"
+            ."IP-Adresse: {\$ip_address}<br>\nBenutzer: {\$vps_user}<br>\nPasswort: {\$password}\n\n"
+            .'Verbinden Sie sich per SSH (`ssh {$vps_user}@{$ip_address}`). Die Konsole sowie Starten, Herunterfahren und Neustarten finden Sie auch im Control Panel: '
+            ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
+            .'Paket: {$package}, {$amount} ({$billing_cycle}), nächste Zahlung fällig am {$next_due_date}.',
+    ],
     'service_suspension' => [
         'subject' => 'Dienst gesperrt: {$service}',
         'body' => "Ihr Dienst **{\$service}** {\$domain} wurde gesperrt.\n\nGrund: {\$suspension_reason}\n\n{\$payment_instructions}",

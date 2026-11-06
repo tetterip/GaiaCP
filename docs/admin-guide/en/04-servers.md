@@ -119,6 +119,12 @@ Proxmox server:
   Proxmox.
 - **Suspend** shuts the VPS down and locks the client's Proxmox user; **Terminate** deletes the VPS with its disks, the
   user, and frees its address.
+- **The VPS's page** shows its state, processors, memory, disk size and IP addresses, read from Proxmox (kept for a
+  minute; Read again reads now). An address it took by DHCP shows only when the VPS runs the QEMU guest agent:
+  install `qemu-guest-agent` in the template and tick its Guest Agent option, or give the server addresses.
+- **Welcome email.** Switch on the **VPS Welcome Email** under Settings → Email templates: a VPS then gets it in place of
+  the Hosting Account Welcome Email, with its address, the user and password to log in inside it, and the Proxmox
+  login with the server's own port.
 
 GaiaCP finds each VPS again by its tags in Proxmox (`gaiacp`, `gaiacp-user-<username>`): don't remove them.
 

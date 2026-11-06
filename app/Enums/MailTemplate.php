@@ -31,6 +31,7 @@ enum MailTemplate: string
     case Quote = 'quote';
 
     case HostingWelcome = 'hosting_welcome';
+    case VpsWelcome = 'vps_welcome';
     case ServiceSuspension = 'service_suspension';
     case ServiceUnsuspension = 'service_unsuspension';
     case CancellationApproved = 'cancellation_approved';
@@ -77,6 +78,7 @@ enum MailTemplate: string
             self::PriceChange => 'Price Change Notice',
             self::Quote => 'Quote',
             self::HostingWelcome => 'Hosting Account Welcome Email',
+            self::VpsWelcome => 'VPS Welcome Email',
             self::ServiceSuspension => 'Service Suspension Notification',
             self::ServiceUnsuspension => 'Service Unsuspension Notification',
             self::CancellationApproved => 'Cancellation Request Approved',
@@ -106,7 +108,7 @@ enum MailTemplate: string
             self::ClientSignup, self::OrderConfirmation, self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification => 'General',
             self::RenewalReminder, self::OverdueNotice, self::InvoiceCreated, self::InvoicePaymentReminder,
             self::InvoiceFirstOverdue, self::InvoiceSecondOverdue, self::InvoiceModified, self::InvoiceIssued, self::PriceChange, self::Quote => 'Billing',
-            self::HostingWelcome, self::ServiceSuspension, self::ServiceUnsuspension,
+            self::HostingWelcome, self::VpsWelcome, self::ServiceSuspension, self::ServiceUnsuspension,
             self::CancellationApproved, self::CancellationRejected, self::UpgradeApproved, self::UpgradeRejected, self::HostingOffer, self::UsageWarning => 'Hosting',
             self::SslValidation, self::SslIssued => 'SSL certificates',
             self::TicketOpened, self::TicketReply, self::TicketClosed => 'Support',
@@ -133,6 +135,7 @@ enum MailTemplate: string
             self::PriceChange => 'When you schedule a price change with "Email the clients" ticked (Change price on a service, the Services list, a product or a TLD). One email per client lists their services.',
             self::Quote => 'When you press Send on a quote (Billing → Quotes), to the lead or client it is for.',
             self::HostingWelcome => 'When a hosting account is created on its server (Account → Create, or completing an order).',
+            self::VpsWelcome => 'In place of the Hosting Account Welcome Email when the account is a VPS (a Proxmox VE server): its address and how to log in.',
             self::ServiceSuspension => 'When a service is suspended, by hand or automatically for non-payment.',
             self::ServiceUnsuspension => 'When a suspended service is unsuspended, e.g. after its payment is recorded.',
             self::CancellationApproved => 'When you approve a cancellation request a client sent from the client area (Services → Cancellation requests).',
@@ -166,7 +169,7 @@ enum MailTemplate: string
      */
     public function holdsSecrets(): bool
     {
-        return in_array($this, [self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::HostingWelcome], true);
+        return in_array($this, [self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::HostingWelcome, self::VpsWelcome], true);
     }
 
     /** Whether it is sent until the admin switches it off: the reminders GaiaCP sends on its own are on. */
@@ -293,6 +296,15 @@ enum MailTemplate: string
                 'server_ip' => 'Server shared IP',
                 'control_panel_url' => 'Control panel login address (cPanel :2083, Plesk :8443, HestiaCP :8083, DirectAdmin :2222)',
             ],
+            self::VpsWelcome => $service + [
+                'package' => 'Package (the template it was made from)',
+                'ip_address' => 'The VPS\'s IP addresses (may be empty when only the VPS knows it)',
+                'vps_user' => 'The user that logs in inside the VPS (root on most images)',
+                'username' => 'Username for the control panel (the VPS console)',
+                'password' => 'Password, inside the VPS and for the control panel',
+                'control_panel_url' => 'Control panel address (Proxmox VE)',
+                'control_panel_login' => 'How to sign in to the control panel (e.g. the realm to pick)',
+            ],
             self::ServiceSuspension => $service + ['suspension_reason' => 'Why it was suspended'],
             self::ServiceUnsuspension => $service,
             self::CancellationApproved, self::CancellationRejected => $service + [
@@ -337,6 +349,7 @@ enum MailTemplate: string
             'next_due_date' => now()->addYear()->format(AppServiceProvider::dateFormat()), 'package' => 'starter', 'username' => 'examplegr',
             'password' => 'Xy7pQ2mN4vR8sT1w', 'server_name' => 'server1', 'server_hostname' => 'server1.example.com', 'server_ip' => '203.0.113.10',
             'control_panel_url' => 'https://server1.example.com:8443', 'suspension_reason' => 'Overdue on payment',
+            'ip_address' => '203.0.113.25', 'vps_user' => 'root', 'control_panel_login' => 'Sign in with the username examplegr, the service\'s password and the realm "Proxmox VE authentication server".',
             'cancellation_type' => 'At the end of the billing period', 'cancellation_date' => now()->addYear()->format(AppServiceProvider::dateFormat()),
             'registration_years' => '1', 'expiry_date' => now()->addYear()->format(AppServiceProvider::dateFormat()), 'nameservers' => "ns1.example.com\nns2.example.com",
             'order_number' => '42', 'order_date' => now()->format(AppServiceProvider::dateFormat()), 'order_total' => '€95.00',
@@ -398,6 +411,7 @@ enum MailTemplate: string
             self::PriceChange => 'Price change for your services from {$effective_date}',
             self::Quote => 'Quote {$quote_number} from {$company_name}',
             self::HostingWelcome => 'Your hosting account for {$domain} is ready',
+            self::VpsWelcome => 'Your VPS {$domain} is ready',
             self::ServiceSuspension => 'Service suspended: {$service}',
             self::ServiceUnsuspension => 'Service reactivated: {$service}',
             self::CancellationApproved => 'Cancellation confirmed: {$service}',
@@ -462,6 +476,11 @@ enum MailTemplate: string
             self::HostingWelcome => "Your hosting account for **{\$domain}** is ready.\n\n"
                 ."Control panel: {\$control_panel_url}<br>\nUsername: {\$username}<br>\nPassword: {\$password}\n\n"
                 ."Point your domain to our nameservers, or its A record to {\$server_ip}.\n\n"
+                .'Package: {$package}, {$amount} {$billing_cycle}, next due on {$next_due_date}.',
+            self::VpsWelcome => "Your VPS **{\$domain}** is ready.\n\n"
+                ."IP address: {\$ip_address}<br>\nUser: {\$vps_user}<br>\nPassword: {\$password}\n\n"
+                .'Connect with SSH (`ssh {$vps_user}@{$ip_address}`). Its console, and Start, Shut down and Restart, are also in the control panel: '
+                ."{\$control_panel_url}<br>\n{\$control_panel_login}\n\n"
                 .'Package: {$package}, {$amount} {$billing_cycle}, next due on {$next_due_date}.',
             self::ServiceSuspension => "Your service **{\$service}** {\$domain} has been suspended.\n\nReason: {\$suspension_reason}\n\n{\$payment_instructions}",
             self::ServiceUnsuspension => 'Your service **{$service}** {$domain} is active again.',
