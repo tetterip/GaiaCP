@@ -64,12 +64,14 @@ e.g. `--db-connection=mysql --db-host=… --admin-email=…`, with `--no-interac
 
 ### Updating
 
-Settings → System → Updates shows this install's version, the latest release and its notes. **Update** backs up the
-database first (as Settings → Backups says), downloads the release zip and checks its SHA-256 and the
+Settings → System → Updates shows this install's version, the latest release and its notes. **Update** downloads the
+release zip and checks its SHA-256 and the
 signature of that checksum (Ed25519, by a key in `gaiacp.updates.keys`; see [Releases](releases.md#signing)), switches to maintenance
-mode, swaps in the new code (`.env`, `storage/`, a SQLite database, plugins of your own and anything added to `public/`
-stay), runs the migrations and comes back up. If a step after the swap fails, the old code is put back; the backup is
-there for the database. From SSH: `php artisan gaiacp:update` (`--check` only looks).
+mode, backs up the database (with its logs; copied as Settings → Backups says), swaps in the new code (`.env`, `storage/`, a SQLite database, plugins of your own and anything added to `public/`
+stay), runs the migrations and comes back up. If a step after the swap fails, the old code is put back, and after a failed
+migration the database is restored from that backup too (MySQL / MariaDB commit each migration's changes, so it would
+otherwise stay half changed). If even that restore fails, the site stays in maintenance mode and the activity log names
+the backup to put back with `php artisan gaiacp:restore`. From SSH: `php artisan gaiacp:update` (`--check` only looks).
 
 Updates come from the GitHub releases of `GAIACP_UPDATE_REPOSITORY` (default `tetterip/GaiaCP`, public). A private
 repository of your own needs `GAIACP_UPDATE_TOKEN` in `.env`, a token that can read it (fine-grained, Contents: read). Without a token GitHub allows

@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Backups\RestoreBackup;
 use App\Backups\RunBackup;
 use App\Models\Client;
+use App\Models\ModuleLog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -217,5 +219,29 @@ class BackupRestoreTest extends TestCase
             ->assertFailed();
 
         $this->assertFileDoesNotExist($this->dir.'/.env');
+    }
+
+    public function test_the_updaters_backup_keeps_the_logs_and_restores_only_the_database(): void
+    {
+        ModuleLog::create(['module' => 'cpanel', 'action' => 'createacct', 'url' => 'POST x', 'response' => 'ok', 'created_at' => now()]);
+        $this->file('storage/app/public/branding/logo.png', 'logo');
+
+        $result = app(RunBackup::class)(includeLogs: true, includeFiles: false);
+        $entries = $this->entries($result->path);
+
+        $this->assertStringContainsString('createacct', reset($entries));
+        $this->assertSame([], array_filter(array_keys($entries), fn ($name) => str_starts_with($name, RunBackup::FILES_PREFIX)));
+
+        File::delete($this->dir.'/storage/app/public/branding/logo.png');
+        $cleanUp = $this->restoreConnection();
+
+        try {
+            (new RestoreBackup($result->path))->database('restore');
+            $this->assertSame(1, DB::connection('restore')->table('module_logs')->count());
+        } finally {
+            $cleanUp();
+        }
+
+        $this->assertFileDoesNotExist($this->dir.'/storage/app/public/branding/logo.png');
     }
 }

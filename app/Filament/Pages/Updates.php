@@ -147,7 +147,7 @@ class Updates extends Page implements SettingsCard
                 : null,
             Section::make(__('How updating works'))
                 ->schema([
-                    Text::make(__('Update backs up the database first (copied to FTP and email as Settings → Backups says), then downloads the release and checks its checksum. The panel goes into maintenance mode while the new code replaces the old one: .env, storage (uploads, backups, logs), the SQLite database and plugins of your own stay. Then the database is updated and the panel comes back. If a step fails, this version is put back and the backup is there to restore.')),
+                    Text::make(__('Update downloads the release and checks its checksum, then puts the panel in maintenance mode and backs up the database (copied to FTP and email as Settings → Backups says). The new code replaces the old one: .env, storage (uploads, backups, logs), the SQLite database and plugins of your own stay. Then the database is updated and the panel comes back. If a step fails, this version is put back, and the database too from that backup.')),
                     Text::make(__('From SSH: php artisan gaiacp:update')),
                 ])
                 ->collapsible()

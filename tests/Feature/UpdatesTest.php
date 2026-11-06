@@ -269,22 +269,47 @@ class UpdatesTest extends TestCase
         $this->assertFalse(Process::run([PHP_BINARY, base_path('bin/release-key'), 'verify', $file, $public])->successful());
     }
 
-    public function test_a_failed_migration_puts_the_old_code_back(): void
+    /** @param  array{restored?: list<string>, restoreError?: string}  $calls */
+    private function failingMigration(array &$calls): void
+    {
+        $this->app->bind(Updater::class, function ($app) use (&$calls) {
+            return new class($app->make(GitHubReleases::class), $calls) extends Updater
+            {
+                public function __construct(GitHubReleases $releases, private array &$calls)
+                {
+                    parent::__construct($releases);
+                }
+
+                protected function migrate(): void
+                {
+                    throw new RuntimeException('table exists');
+                }
+
+                protected function restoreDatabase(string $backup): void
+                {
+                    $this->calls['restored'][] = $backup;
+                    $this->calls['down'] = app()->isDownForMaintenance();
+
+                    if (isset($this->calls['restoreError'])) {
+                        throw new RuntimeException($this->calls['restoreError']);
+                    }
+                }
+            };
+        });
+    }
+
+    public function test_a_failed_migration_puts_the_old_code_and_the_database_back(): void
     {
         $this->fakeGitHub();
-        $this->app->bind(Updater::class, fn ($app) => new class($app->make(GitHubReleases::class)) extends Updater
-        {
-            protected function migrate(): void
-            {
-                throw new RuntimeException('table exists');
-            }
-        });
+        $calls = [];
+        $this->failingMigration($calls);
 
         try {
             $this->updater()->update($this->updater()->latest(fresh: true));
             $this->fail('No exception');
         } catch (RuntimeException $e) {
             $this->assertStringContainsString('table exists', $e->getMessage());
+            $this->assertStringContainsString('with the database as it was before', $e->getMessage());
         }
 
         $this->assertFileExists("{$this->root}/app/Old.php");
@@ -296,7 +321,36 @@ class UpdatesTest extends TestCase
         $this->assertFileExists("{$this->root}/plugins/Mine/Plugin.php");
         $this->assertFileExists("{$this->root}/plugins/Cpanel/Old.php");
         $this->assertTrue(is_link("{$this->root}/public/storage"));
-        $this->assertDatabaseHas('activity_logs', ['event' => 'update.failed']);
+
+        // The backup taken in maintenance mode is put back while still down, then the site comes up
+        $backups = File::files($this->dir.'/backups');
+        $this->assertCount(1, $backups);
+        $this->assertSame([$backups[0]->getPathname()], $calls['restored']);
+        $this->assertTrue($calls['down']);
+        $this->assertFalse(app()->isDownForMaintenance());
+        $this->assertStringContainsString('the database from the backup '.$backups[0]->getFilename().' were put back', ActivityLog::query()->where('event', 'update.failed')->value('description'));
+    }
+
+    public function test_when_the_database_cannot_be_put_back_the_site_stays_down(): void
+    {
+        $this->fakeGitHub();
+        $calls = ['restoreError' => 'disk full'];
+        $this->failingMigration($calls);
+
+        try {
+            $this->updater()->update($this->updater()->latest(fresh: true));
+            $this->fail('No exception');
+        } catch (RuntimeException $e) {
+            $this->assertStringContainsString('disk full', $e->getMessage());
+            $this->assertStringContainsString('gaiacp:restore', $e->getMessage());
+        } finally {
+            $down = app()->isDownForMaintenance();
+            $this->artisan('up');
+        }
+
+        $this->assertTrue($down);
+        $this->assertFileExists("{$this->root}/app/Old.php");
+        $this->assertStringContainsString('stays in maintenance mode', ActivityLog::query()->where('event', 'update.failed')->value('description'));
     }
 
     public function test_a_git_checkout_and_an_older_release_are_refused(): void

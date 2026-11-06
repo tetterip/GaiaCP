@@ -118,8 +118,19 @@ class RunBackup
             ->all();
     }
 
-    public function __invoke(): BackupResult
+    private bool $logs = false;
+
+    private bool $withFiles = true;
+
+    /**
+     * @param  ?bool  $includeLogs  null: as Settings → Backups says (the updater's backup keeps them, since a failed update restores it)
+     * @param  ?bool  $includeFiles  null: as Settings → Backups says (the updater leaves storage alone, so it skips them)
+     */
+    public function __invoke(?bool $includeLogs = null, ?bool $includeFiles = null): BackupResult
     {
+        $this->logs = $includeLogs ?? (bool) config('gaiacp.backups.include_logs');
+        $this->withFiles = $includeFiles ?? (bool) config('gaiacp.backups.include_files');
+
         $result = new BackupResult;
 
         try {
@@ -173,7 +184,7 @@ class RunBackup
         $sqlPath = self::directory().'/'.self::PREFIX.$stamp.'.sql';
 
         try {
-            $this->dumper->dump($sqlPath, withoutData: config('gaiacp.backups.include_logs') ? [] : self::LOG_TABLES);
+            $this->dumper->dump($sqlPath, withoutData: $this->logs ? [] : self::LOG_TABLES);
 
             $zip = new ZipArchive;
 
@@ -183,7 +194,7 @@ class RunBackup
 
             $zip->addFile($sqlPath, basename($sqlPath));
 
-            if (config('gaiacp.backups.include_files')) {
+            if ($this->withFiles) {
                 foreach (self::files() as $entry => $path) {
                     $zip->addFile($path, self::FILES_PREFIX.$entry);
                 }
@@ -226,7 +237,7 @@ class RunBackup
             config('app.name').' backup, made '.now()->toIso8601String().' by GaiaCP '.Version::current().' ('.$driver.' database).',
             '',
             "- {$sql}: the whole database as SQL (it restores on {$driver} only).",
-            config('gaiacp.backups.include_files') ? '- files/: uploaded files (storage/app/public, storage/app/private) and plugins you added, by their path in the GaiaCP folder.' : '- Uploaded files are not included (Settings -> Backups -> Include files was off).',
+            $this->withFiles ? '- files/: uploaded files (storage/app/public, storage/app/private) and plugins you added, by their path in the GaiaCP folder.' : '- Uploaded files are not included.',
             self::includesKey()
                 ? '- '.self::KEY_ENTRY.': the APP_KEY from .env. It decrypts the stored server, registrar and other passwords: keep it secret.'
                 : '- The APP_KEY is not included (only zips with a password carry it). Without the APP_KEY of the install that made this backup, stored server, registrar and other passwords cannot be read and must be entered again.',

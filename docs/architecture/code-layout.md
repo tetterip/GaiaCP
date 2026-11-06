@@ -510,7 +510,8 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   either is served, Info when the site can't reach itself); the installer's requirements include it, so it stops
 - Updates: `gaiacp:check-for-update` (daily 05:50, off with `GAIACP_UPDATE_CHECK=false`) logs `gaiacp.update_available` once per
   newer release (bell for super admins, a line in the daily summary). `app/Updates/` `GitHubReleases` (latest release of `gaiacp.updates.repository`, token for a private repo) and
-  `Updater` (RunBackup, download + SHA-256, `down`, swap the release's top-level entries into place with the old ones in
+  `Updater` (download + SHA-256, `down`, RunBackup with logs and without files, swap the release's top-level entries into place with the old ones in
   `storage/app/private/updates/<version>/previous`, moving back into `database/`, `plugins/` and `public/` what the release
-  lacks, then migrate; any failure after the swap puts the old code back). Never for a Git checkout. Used by
+  lacks, then migrate; any failure after the swap puts the old code back, and a failed migration also the database via
+  `RestoreBackup::database()`; if that fails the site stays down and the log names the backup). Never for a Git checkout. Used by
   `Pages/Updates` (Settings → System → Updates) and `gaiacp:update`

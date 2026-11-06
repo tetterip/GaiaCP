@@ -47,11 +47,13 @@ A wrong password, or a zip that isn't a GaiaCP backup, stops the restore before 
 
 ## Updates
 
-Settings → System → **Updates** shows your version, the latest release and what changed. **Update** backs up the
-database first, downloads the release and checks it (that it arrived whole and that it is signed by GaiaCP's release key, so a
-changed release is never installed), switches to maintenance mode, swaps in the new code (your `.env`,
+Settings → System → **Updates** shows your version, the latest release and what changed. **Update** downloads the
+release and checks it (that it arrived whole and that it is signed by GaiaCP's release key, so a
+changed release is never installed), switches to maintenance mode, backs up the database, swaps in the new code (your `.env`,
 `storage/`, your own plugins and anything you added to `public/` stay), runs the database changes and comes back. If a
-step fails after the swap, the old code is put back; the backup is there for the database. From SSH:
+step fails after the swap, the old code is put back, and the database is restored from the backup it just took, so a
+half-done database change never stays behind. Only if that restore fails too does the site stay in maintenance mode:
+the activity log then names the backup to restore with `php artisan gaiacp:restore` (see Restoring a backup). From SSH:
 `php artisan gaiacp:update` (`--check` only looks). Read each release's notes before you update: GaiaCP is still in
 beta, and things can change between versions.
 
