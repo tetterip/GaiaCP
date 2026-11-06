@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.4] - 2026-11-06
+
+- The hourly blacklist check is no longer skipped for a whole day after a run that was cut short (a server restart, for example)
+
 ## [1.0.3] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

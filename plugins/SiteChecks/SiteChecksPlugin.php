@@ -52,7 +52,7 @@ class SiteChecksPlugin extends Plugin
     {
         $schedule->command('gaiacp:check-sites')
             ->dailyAt('05:00')
-            ->withoutOverlapping()
+            ->withoutOverlapping(720)
             ->onOneServer();
     }
 }

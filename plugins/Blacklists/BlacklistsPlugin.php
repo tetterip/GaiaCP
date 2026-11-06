@@ -52,7 +52,7 @@ class BlacklistsPlugin extends Plugin
     {
         $schedule->command('gaiacp:check-blacklists')
             ->hourly()
-            ->withoutOverlapping()
+            ->withoutOverlapping(55)
             ->onOneServer();
     }
 }

@@ -85,7 +85,7 @@ class StripePlugin extends Plugin implements PaymentModule
         $schedule->call(fn () => app(StripeCheckouts::class)->flagStuck())
             ->name('stripe:flag-stuck-checkouts')
             ->hourly()
-            ->withoutOverlapping()
+            ->withoutOverlapping(55)
             ->onOneServer();
     }
 

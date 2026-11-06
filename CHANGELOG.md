@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Scheduled tasks: one that was cut short (a server restart, a process killed for memory) no longer stops that task for
+  24 hours. Each task's lock now ends before its next run is due, so client messages and monitor checks start again
+  within minutes, hourly tasks miss at most one run, and the daily ones (payment notices, suspensions, backups) run the
+  next day as usual instead of possibly skipping it.
 - REST API: a POST may send an `Idempotency-Key` header. Sent again with the same key (a retry after a timeout), it
   answers what the first call answered and records nothing twice, so a script can no longer record the same payment
   twice and move a service's due date two cycles on. Keys are kept 24 hours (`docs/using-the-api.md`).

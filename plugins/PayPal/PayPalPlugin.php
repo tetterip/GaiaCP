@@ -91,7 +91,7 @@ class PayPalPlugin extends Plugin implements PaymentModule
         $schedule->call(fn () => app(PayPalPayments::class)->flagStuck())
             ->name('paypal:flag-stuck-orders')
             ->hourly()
-            ->withoutOverlapping()
+            ->withoutOverlapping(55)
             ->onOneServer();
     }
 

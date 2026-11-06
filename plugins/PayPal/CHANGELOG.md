@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.1] - 2026-11-06
+
+- The hourly check for stuck PayPal orders is no longer skipped for a whole day after a run that was cut short (a server restart, for example)
+
 ## [1.0.0] - 2026-10-31
 
 - Payments with PayPal: a "Pay with PayPal" button on unpaid payment notices in the client area opens PayPal's own
