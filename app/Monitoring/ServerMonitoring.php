@@ -53,14 +53,15 @@ class ServerMonitoring
                 $monitor = $monitors[$server->monitor_ref] ?? null;
                 $result['servers']++;
                 $result['changed'] += (int) $this->apply($server, $monitor, $module);
-                $checks[] = ['server_id' => $server->id, 'status' => ($monitor?->status ?? MonitorStatus::Unknown)->value, 'checked_at' => now()];
+                $checks[] = ['server_id' => $server->id, 'status' => ($monitor?->status ?? MonitorStatus::Unknown)->value, 'checked_at' => now()->utc()];
 
                 if (($monitor?->uptime ?: null) !== $server->monitor_uptime) {
                     $server->forceFill(['monitor_uptime' => $monitor?->uptime ?: null])->saveQuietly();
                 }
             }
 
-            // The uptime bar's history (UptimeHistory); gaiacp:prune-logs drops it after UptimeHistory::KEEP_DAYS.
+            // The uptime bar's history (UptimeHistory), kept in UTC because the query builder stores a date as it is given;
+            // gaiacp:prune-logs drops it after UptimeHistory::KEEP_DAYS.
             DB::table('server_monitor_checks')->insert($checks);
             Server::query()->whereKey($servers->modelKeys())->update(['monitor_checked_at' => now()]);
         }

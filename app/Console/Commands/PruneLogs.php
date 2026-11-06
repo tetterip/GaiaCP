@@ -37,7 +37,7 @@ class PruneLogs extends Command
         $bans = IpBan::query()->where('expires_at', '<', now()->subDays(30))->delete();
 
         // Server statuses older than the uptime bar's longest range
-        $checks = DB::table('server_monitor_checks')->where('checked_at', '<', now()->subDays(UptimeHistory::KEEP_DAYS))->delete();
+        $checks = DB::table('server_monitor_checks')->where('checked_at', '<', now()->utc()->subDays(UptimeHistory::KEEP_DAYS))->delete();
 
         // Client area devices not seen for longer than a session lasts, and sign-ins older than half a year
         $signIns = app(ClientSessions::class)->prune();

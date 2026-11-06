@@ -219,7 +219,7 @@ class ServerMonitoringTest extends TestCase
 
     public function test_each_check_is_kept_for_the_uptime_bar(): void
     {
-        $this->freezeSecond();
+        $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', config('app.timezone')));
         $server = $this->server();
 
         $this->fakeKuma(1);
@@ -231,6 +231,11 @@ class ServerMonitoringTest extends TestCase
         $this->assertSame(['up', 'down'], DB::table('server_monitor_checks')->where('server_id', $server->id)->orderBy('id')->pluck('status')->all());
         $this->assertSame(['1d' => 0.99985, '30d' => 0.9991], $server->fresh()->monitor_uptime);
 
+        // Both land in the bar's last slot, whatever the timezone (the column is UTC)
+        $last = UptimeHistory::for($server, '24h')['dots'][23];
+        $this->assertSame(MonitorStatus::Down, $last['status']);
+        $this->assertEqualsWithDelta(0.5, $last['uptime'], 0.001);
+
         // gaiacp:prune-logs drops what no bar shows any more
         $this->travel(UptimeHistory::KEEP_DAYS + 1)->days();
         $this->artisan('gaiacp:prune-logs')->assertSuccessful();
@@ -239,10 +244,10 @@ class ServerMonitoringTest extends TestCase
 
     public function test_the_bar_takes_each_slots_worst_status(): void
     {
-        $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', 'Europe/Athens'));
+        $this->travelTo(CarbonImmutable::parse('2026-10-18 12:10', config('app.timezone')));
         $server = $this->server();
         $check = fn (string $at, string $status) => DB::table('server_monitor_checks')->insert([
-            'server_id' => $server->id, 'status' => $status, 'checked_at' => CarbonImmutable::parse($at, 'Europe/Athens')->utc(),
+            'server_id' => $server->id, 'status' => $status, 'checked_at' => CarbonImmutable::parse($at, config('app.timezone'))->utc(),
         ]);
         $check('2026-10-18 11:35', 'up');
         $check('2026-10-18 11:40', 'down');
