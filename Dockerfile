@@ -23,8 +23,10 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --no-scripts --no-autoloader
 
 COPY . .
+# .env lives in the storage volume. The link belongs to www-data: /var/www/html is world-writable with the sticky
+# bit, and where the kernel protects symlinks (fs.protected_symlinks, on in Ubuntu) www-data can't follow root's link
 RUN composer dump-autoload --no-dev --optimize --no-interaction \
-    && rm -f .env && ln -s storage/.env .env \
+    && rm -f .env && ln -s storage/.env .env && chown -h www-data:www-data .env \
     && chown -R www-data:www-data storage bootstrap/cache plugins lang
 
 COPY docker/entrypoint.sh /usr/local/bin/gaiacp-entrypoint

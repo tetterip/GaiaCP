@@ -26,14 +26,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # Healthy once GaiaCP is installed and Apache answers; the scheduler starts only then, so it never touches the
-    # shared storage volume while the first start is still writing .env there
-    healthcheck:
-      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/up"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-      start_period: 3m
     restart: unless-stopped
 
   # The cron job: the daily automation, reminders, queued emails (php artisan schedule:work)
@@ -47,8 +39,7 @@ services:
     volumes:
       - storage:/var/www/html/storage
     depends_on:
-      app:
-        condition: service_healthy
+      - app
     restart: unless-stopped
 
   db:
