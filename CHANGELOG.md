@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The create pages (clients, services, products, option groups, servers, registrars, admins, announcements, messages
+  to clients, knowledge base articles, leads) and Add currency no longer show "Create & create another"; the small
+  windows under Settings (TLDs, coupons, tags, departments and the like) keep it.
+
 ## [0.8.0] - 2026-11-07
 
 - Security (audit before this release): client emails waiting on the queue (welcome emails with a password, sign-in
