@@ -9,7 +9,9 @@ use App\Mail\SendClientMail;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\EmailLog;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use RuntimeException;
@@ -52,6 +54,20 @@ class BackgroundClientMailTest extends TestCase
         Queue::assertPushed(SendClientMail::class, fn (SendClientMail $job) => $job->mail->client->is($this->client) && $job->afterCommit);
         Mail::assertNothingSent();
         $this->assertFalse(ActivityLog::query()->where('event', 'email.sent')->exists(), 'logged as sent only once it is');
+    }
+
+    public function test_the_queued_email_is_encrypted_since_it_can_hold_a_password(): void
+    {
+        $this->assertInstanceOf(ShouldBeEncrypted::class, new SendClientMail(new ClientMail(MailTemplate::HostingWelcome, $this->client, ['password' => 'Xy7pQ2mN'])));
+
+        // On a real database queue the password is nowhere in the stored job
+        Queue::swap(Queue::getFacadeRoot()->queue);
+        $this->fromAPage();
+        app(ClientMailer::class)->send(MailTemplate::ClientAreaInvite, $this->client, ['set_password_url' => 'https://example.com/reset/secret-token-123'], evenIfOff: true);
+
+        $payload = (string) DB::table('jobs')->value('payload');
+        $this->assertNotSame('', $payload);
+        $this->assertStringNotContainsString('secret-token-123', $payload);
     }
 
     public function test_the_queued_email_is_sent_and_logged_by_the_worker(): void

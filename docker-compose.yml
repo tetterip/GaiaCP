@@ -5,7 +5,8 @@ services:
     build: .
     image: gaiacp:local
     ports:
-      - "8080:80"
+      # Only this machine can open it: for other computers, put a proxy with HTTPS in front (docs/docker.md)
+      - "127.0.0.1:8080:80"
     environment: &environment
       APP_URL: http://localhost:8080
       DB_CONNECTION: mysql

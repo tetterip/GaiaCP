@@ -33,6 +33,10 @@ php -r '
   [$dir, $work] = [$argv[1], $argv[2]];
   foreach (array_merge($lock["packages"] ?? [], $lock["packages-dev"] ?? []) as $p) {
       $dist = $p["dist"] ?? null; $src = $p["source"] ?? null;
+      // A package published as a zip only (phpstan/phpstan): its repository from the GitHub zipball URL
+      if (! $src && $dist && preg_match("~^https://api\.github\.com/repos/([^/]+/[^/]+)/zipball/~", $dist["url"] ?? "", $m)) {
+          $src = ["type" => "git", "url" => "https://github.com/".$m[1]];
+      }
       if (! $dist || ! $src || ($dist["type"] ?? "") !== "zip" || ($src["type"] ?? "") !== "git"
           || ! empty($dist["shasum"]) || ! str_starts_with($src["url"], "https://github.com/")) {
           continue;
