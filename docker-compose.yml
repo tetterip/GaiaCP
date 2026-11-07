@@ -31,6 +31,7 @@ services:
   # The cron job: the daily automation, reminders, queued emails (php artisan schedule:work)
   scheduler:
     image: gaiacp:local
+    pull_policy: never
     environment:
       <<: *environment
       GAIACP_ROLE: scheduler
