@@ -11,6 +11,7 @@ use App\Support\Health\SchedulerMonitor;
 use App\Support\Settings;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
@@ -95,7 +96,20 @@ class HeartbeatTest extends TestCase
         $this->status = 503;
 
         $this->artisan('gaiacp:heartbeat')->expectsOutputToContain('The ping failed')->assertFailed();
-        $this->assertNotNull(Heartbeat::last()['error']);
+        $this->assertSame('HTTP 503', Heartbeat::last()['error'], 'the status only, not the text of whatever answered');
+        $this->assertSame(503, Heartbeat::last()['status']);
+    }
+
+    public function test_a_connection_error_never_shows_the_secret_url(): void
+    {
+        config(['gaiacp.automation.ping_url' => self::OK]);
+        Http::fake(fn () => throw new ConnectionException('cURL error 28: Operation timed out for '.self::OK));
+
+        app(Heartbeat::class)->send();
+
+        $error = Heartbeat::last()['error'];
+        $this->assertStringNotContainsString('abc-123', $error);
+        $this->assertStringContainsString('hc-ping.com', $error);
     }
 
     public function test_it_runs_every_five_minutes(): void

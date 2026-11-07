@@ -144,7 +144,7 @@ You need PHP 8.3 or later, a MySQL or MariaDB database and a cron job. No SSH, C
    your admin account.
 3. Add the cron line it shows you, log in at `/admin` and follow the setup guide on the dashboard.
 
-Updates are one button under Settings → System → Updates (a backup is made first). Document root, nginx, SSH
+Updates are one button under Settings → System → Updates (a backup is made first, and put back if the update fails). Document root, nginx, SSH
 installs and the settings: [docs/installation.md](docs/installation.md).
 
 To try it on your own machine instead: `docker compose up -d --build`, then open http://localhost:8080/admin

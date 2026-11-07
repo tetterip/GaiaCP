@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\EmailLog;
 use App\Models\Service;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,9 +17,10 @@ use Throwable;
 /**
  * A client email sent from the queue, so a slow or unreachable mail server never holds up the page that sent it
  * (ClientMailer::send() during a web request). Tried three times; the last failure is in the email log, the activity
- * log and Settings → Failed jobs, where it can be retried.
+ * log and Settings → Failed jobs, where it can be retried. Kept encrypted on the queue (jobs, failed_jobs) with the
+ * APP_KEY, since a welcome or login email carries a password or a sign-in link.
  */
-class SendClientMail implements ShouldQueue
+class SendClientMail implements ShouldBeEncrypted, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
