@@ -4,6 +4,7 @@ namespace App\Support\Health;
 
 use App\Models\ActivityLog;
 use App\Support\ModuleLogger;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Throwable;
@@ -79,8 +80,11 @@ class Heartbeat
                     ->get($url)
                     ->throw()
                     ->status();
+            } catch (RequestException $e) {
+                $status = $e->response->status();
+                $error = 'HTTP '.$status; // not the answer's text: the URL may be any address the admin typed
             } catch (Throwable $e) {
-                $error = $e->getMessage();
+                $error = self::withoutUrl($e->getMessage(), $url);
             }
         }
 
@@ -88,6 +92,14 @@ class Heartbeat
         Cache::forever(self::LAST, ['at' => now()->toIso8601String(), 'failure' => $problems !== []] + $result);
 
         return $result;
+    }
+
+    /** A connection error names the URL, which is the secret (stored encrypted, never shown again): only its host stays. */
+    private static function withoutUrl(string $message, string $url): string
+    {
+        $masked = parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST).'/…';
+
+        return str_replace($url, $masked, (string) preg_replace('~https?://[^\s`\'"]+~i', $masked, $message));
     }
 
     /** @return array{at: string, failure: bool, sent: bool, problems: list<string>, status: ?int, error: ?string}|null */

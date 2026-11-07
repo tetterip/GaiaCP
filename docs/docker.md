@@ -40,7 +40,27 @@ Change them in `docker-compose.yml` before the first start:
   Settings.
 - `DB_PASSWORD` and `MARIADB_PASSWORD` must match; change both, and `MARIADB_ROOT_PASSWORD`.
 - `MAIL_MAILER: log` writes emails to `storage/logs/laravel.log`; set a mail server under Settings → Mail to send them.
-- `APP_URL`: the address you open; change it and the port (`8080:80`) together.
+- `APP_URL`: the address you open; change it and the port (`127.0.0.1:8080:80`) together. The port listens on this
+  machine only, so nobody else on the network reaches the panel while it still has the passwords above; for a public
+  address, see below.
+
+To keep your own values out of `docker-compose.yml` (so a `git pull` never clashes with them), put them in a
+`docker-compose.override.yml` next to it, which Compose reads on its own:
+
+```yaml
+services:
+  app:
+    environment:
+      GAIACP_ADMIN_PASSWORD: a-long-password-of-your-own
+      DB_PASSWORD: another-long-password
+  scheduler:
+    environment:
+      DB_PASSWORD: another-long-password
+  db:
+    environment:
+      MARIADB_PASSWORD: another-long-password
+      MARIADB_ROOT_PASSWORD: a-third-long-password
+```
 
 ## Day to day
 
@@ -58,9 +78,57 @@ container only, which a new container loses, so update the image instead.
 Plugins uploaded from the panel are kept in the container too: copy their folders into `plugins/` and build again to
 keep them in the image.
 
+## Backups
+
+Settings → Backups works as on any install; the zips are kept in the `storage` volume
+(`storage/app/private/backups`), so also send them to FTP or email there, or copy them out now and then:
+
+```bash
+docker compose exec -u www-data app php artisan gaiacp:backup
+docker compose cp app:/var/www/html/storage/app/private/backups ./backups
+```
+
+To put one back (it replaces the database: admin guide → Keeping GaiaCP healthy → Restoring a backup):
+
+```bash
+docker compose cp gaiacp-backup-….zip app:/tmp/backup.zip
+docker compose exec -u www-data app php artisan gaiacp:restore /tmp/backup.zip --password="the zip password"
+```
+
+## A public address with HTTPS
+
+The image serves plain HTTP; give it a domain through a reverse proxy that takes care of the certificate. With Caddy,
+in `docker-compose.override.yml` (point the domain's DNS at this machine first, and open ports 80 and 443):
+
+```yaml
+services:
+  app:
+    ports: !reset []
+    environment:
+      APP_URL: https://billing.example.com
+      # The proxy's requests come from the Docker network: trust it for the visitor's address and https
+      GAIACP_TRUSTED_PROXIES: 172.16.0.0/12
+  scheduler:
+    environment:
+      APP_URL: https://billing.example.com
+  caddy:
+    image: caddy:2
+    command: caddy reverse-proxy --from billing.example.com --to app:80
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy:/data
+    restart: unless-stopped
+volumes:
+  caddy:
+```
+
+Then `docker compose up -d`. The containers' `APP_URL` comes before the one in `storage/.env`. GaiaCP answers only
+for the host of `APP_URL` (and its subdomains), so a request for any other name is refused.
+
 ## Limits
 
-- One machine, no HTTPS: put a reverse proxy (Caddy, Traefik, nginx) in front for a public address, and set
-  `APP_URL` to it.
+- One machine; HTTPS only through a proxy in front (above).
 - System health shows *Private files: not checked*, because from inside the container the site's own address is not
   reachable; the image serves only `public/`, so `.env` and `storage/` are never reachable from outside.

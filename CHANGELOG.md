@@ -5,6 +5,16 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-07
+
+- Security (audit before this release): client emails waiting on the queue (welcome emails with a password, sign-in
+  and set-password links) are stored encrypted with the APP_KEY in `jobs` and `failed_jobs` instead of as plain text;
+  a failed heartbeat ping shows only the HTTP status, not the answer's text, and a connection error no longer shows
+  the secret Ping URL; `docker-compose.yml` opens port 8080 on this machine only, so the panel with its example
+  passwords is not reachable from the network (docs/docker.md: your own passwords in `docker-compose.override.yml`,
+  HTTPS with Caddy, backups).
+- Development: `bin/composer-cache-from-git` also caches a package published only as a zip (phpstan/phpstan), so a
+  cloud session's `composer install` no longer stops at it.
 - **Docker**: `docker compose up -d --build` runs GaiaCP with MariaDB and the scheduler on your own machine, installed
   and ready to log in to, for trying it (docs/docker.md). The installer also accepts a `.env` that is a link to a file
   not made yet.
