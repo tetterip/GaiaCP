@@ -18,6 +18,8 @@ class CreateClient extends CreateRecord
 {
     protected static string $resource = ClientResource::class;
 
+    protected static bool $canCreateAnother = false;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         if (array_key_exists('custom_fields', $data)) {

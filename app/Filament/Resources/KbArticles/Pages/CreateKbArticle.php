@@ -9,6 +9,8 @@ class CreateKbArticle extends CreateRecord
 {
     protected static string $resource = KbArticleResource::class;
 
+    protected static bool $canCreateAnother = false;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         return $data + ['created_by' => auth()->id()];
