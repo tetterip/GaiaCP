@@ -1,6 +1,6 @@
 <?php
 
-// Texts Filament's own Greek file lacks; merged over it by Laravel.
+// Texts Filament's own Greek file lacks or leaves in English; merged over it by Laravel.
 return [
     'builder' => [
         'block_picker' => [
@@ -79,6 +79,9 @@ return [
     'markdown_editor' => [
         'file_attachments_accepted_file_types_message' => 'Τα αρχεία πρέπει να είναι τύπου: :values.',
         'file_attachments_max_size_message' => 'Τα αρχεία δεν πρέπει να ξεπερνούν τα :max kilobytes.',
+        'tools' => [
+            'blockquote' => 'Παράθεση',
+        ],
     ],
     'modal_table_select' => [
         'actions' => [
@@ -306,6 +309,7 @@ return [
             'table_toggle_header_row' => 'Γραμμή επικεφαλίδας',
             'table_toggle_header_cell' => 'Κελί επικεφαλίδας',
             'text_color' => 'Χρώμα κειμένου',
+            'blockquote' => 'Παράθεση',
         ],
         'uploading_file_message' => 'Μεταφόρτωση αρχείου...',
     ],
