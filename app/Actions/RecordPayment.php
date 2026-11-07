@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\DB;
  * one cycle, and a service suspended for non-payment becomes active again
  * (on the panel too, for hosting). A payment on an active or suspended
  * domain also renews it at its registrar for one cycle. The payment notice line for that
- * cycle is marked paid, and the notice with it once all its lines are.
+ * cycle is marked paid, and the notice with it once all its lines are. Given `$forDueDate` (a notice line's cycle), it
+ * throws AlreadyPaid when the service is no longer due on that date by the time it holds the service's row lock.
  */
 class RecordPayment
 {
@@ -38,6 +39,7 @@ class RecordPayment
         string $method,
         ?string $reference = null,
         ?string $notes = null,
+        ?CarbonInterface $forDueDate = null,
     ): Payment {
         $this->renewalError = null;
         $this->setupError = null;
@@ -45,8 +47,13 @@ class RecordPayment
         // Read before the transaction: the payment does not change the status.
         $renewDomain = $this->domains->shouldRenewOnPayment($service->fresh());
 
-        $payment = DB::transaction(function () use ($service, $amountCents, $paidOn, $method, $reference, $notes) {
+        $payment = DB::transaction(function () use ($service, $amountCents, $paidOn, $method, $reference, $notes, $forDueDate) {
             $service = Service::query()->lockForUpdate()->findOrFail($service->id);
+
+            // Paying a notice's line: another request may have paid that cycle while this one waited for the lock
+            if ($forDueDate !== null && ! $service->next_due_date->isSameDay($forDueDate)) {
+                throw new AlreadyPaid("The cycle due on {$forDueDate->toDateString()} of {$service->label} is paid already.");
+            }
 
             $before = $service->next_due_date;
             $after = $service->billing_cycle->advance($before, $service->anchorDay());

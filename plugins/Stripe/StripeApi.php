@@ -32,13 +32,16 @@ class StripeApi
         return filled($key) ? (string) $key : null;
     }
 
-    /** @return list<string> the webhook signing secrets of both modes: an event signed with either is Stripe's */
-    public static function webhookSecrets(): array
+    /**
+     * The webhook signing secret of one mode: an event is checked with the secret of the mode it says it is from
+     * (`livemode`), so a test-mode secret, often kept less carefully, can never sign a live event. Both modes still work
+     * while switching, each with its own secret.
+     */
+    public static function webhookSecret(bool $live): ?string
     {
-        return array_values(array_filter([
-            config('gaiacp.stripe.'.self::mode().'_webhook_secret'),
-            config('gaiacp.stripe.'.(self::mode() === 'live' ? 'test' : 'live').'_webhook_secret'),
-        ], 'filled'));
+        $secret = config('gaiacp.stripe.'.($live ? 'live' : 'test').'_webhook_secret');
+
+        return filled($secret) ? (string) $secret : null;
     }
 
     /** Whether the mode in use has its secret key (no "Pay by card" button until it has). */

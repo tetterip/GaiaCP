@@ -39,7 +39,7 @@ class InstallController extends Controller implements HasMiddleware
     public function requirements(Request $request): View
     {
         $this->localize($request);
-        $ready = $this->installer->meetsRequirements();
+        $ready = $this->installer->meetsRequirements($request);
         $unlocked = $request->session()->get('install.unlocked') === true;
         $codeError = null;
 
@@ -52,7 +52,7 @@ class InstallController extends Controller implements HasMiddleware
         }
 
         return view('install.requirements', [
-            'checks' => $this->installer->requirements(),
+            'checks' => $this->installer->requirements($request),
             'ready' => $ready,
             'unlocked' => $unlocked,
             'codeError' => $codeError,
@@ -85,7 +85,7 @@ class InstallController extends Controller implements HasMiddleware
     {
         $this->localize($request);
 
-        if (! $this->installer->meetsRequirements()) {
+        if (! $this->installer->meetsRequirements($request)) {
             return redirect()->route('install');
         }
 

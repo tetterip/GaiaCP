@@ -29,11 +29,13 @@ class StripeController
     {
         abort_unless(app(PluginManager::class)->enabled('stripe'), 404);
 
-        if (! WebhookSignature::valid($request->getContent(), $request->header('Stripe-Signature'), StripeApi::webhookSecrets())) {
+        $event = json_decode($request->getContent(), true);
+        $secret = StripeApi::webhookSecret((bool) data_get($event, 'livemode', false));
+
+        // Checked with the secret of the mode the event says it is from: a test secret can't sign a live event
+        if ($secret === null || ! WebhookSignature::valid($request->getContent(), $request->header('Stripe-Signature'), [$secret])) {
             return response()->json(status: 400); // not signed by Stripe with a secret saved here
         }
-
-        $event = json_decode($request->getContent(), true);
         $session = (array) data_get($event, 'data.object', []);
 
         match (data_get($event, 'type')) {

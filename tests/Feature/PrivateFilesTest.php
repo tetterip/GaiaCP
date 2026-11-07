@@ -6,6 +6,7 @@ use App\Install\Installer;
 use App\Support\Health\Status;
 use App\Support\Health\SystemHealth;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -91,10 +92,48 @@ class PrivateFilesTest extends TestCase
             Http::fake(['*/composer.json' => Http::response('{"require": {"laravel/framework": "^13.0"}}'), '*' => Http::response('', 404)]);
 
             $this->assertFalse(app(Installer::class)->meetsRequirements());
-            $this->get('/install')->assertOk()->assertSee('Private files')->assertSee('Served to anyone: composer.json');
+            $this->get('http://localhost/install')->assertOk()->assertSee('Private files')->assertSee('Served to anyone: composer.json');
             $this->get('/install/database')->assertRedirect(route('install'));
         } finally {
             File::deleteDirectory($dir);
         }
+    }
+
+    public function test_the_installer_checks_only_this_server_whatever_host_the_visitor_sends(): void
+    {
+        $dir = sys_get_temp_dir().'/gaiacp-install-'.uniqid();
+        mkdir($dir);
+        $this->app->useEnvironmentPath($dir);
+        config(['gaiacp.install_lock' => $dir.'/installed']);
+
+        try {
+            Http::fake(['*' => Http::response('', 404)]);
+
+            // An address of another machine as the host, and a host with another port
+            $this->withServerVariables(['SERVER_ADDR' => '203.0.113.7']);
+            $this->get('http://169.254.169.254/install')->assertOk();
+            $this->get('http://internal.example:6379/install')->assertOk();
+
+            $this->get('http://localhost:8000/install')->assertOk()->assertSee('The site is on port 8000');
+
+            $urls = Http::recorded()->map(fn (array $pair) => $pair[0]->url())->unique()->values()->all();
+            $this->assertNotEmpty($urls);
+            foreach ($urls as $url) {
+                $this->assertStringNotContainsString('169.254.169.254', $url);
+                $this->assertStringNotContainsString(':6379', $url);
+                $this->assertMatchesRegularExpression('#^http://(203\.0\.113\.7|internal\.example)(:80)?/(\.env|composer\.json)$#', $url);
+            }
+        } finally {
+            File::deleteDirectory($dir);
+        }
+    }
+
+    public function test_the_check_keeps_the_subfolder_and_connects_to_the_servers_own_address(): void
+    {
+        Http::fake(['*' => Http::response('', 404)]);
+        $request = Request::create('https://billing.example/gaiacp/install', server: ['SERVER_ADDR' => '2001:db8::5', 'SERVER_PORT' => 443, 'HTTPS' => 'on', 'SCRIPT_FILENAME' => base_path('public/index.php'), 'SCRIPT_NAME' => '/gaiacp/index.php']);
+
+        $this->assertSame(Status::Ok, app(SystemHealth::class)->privateFilesOf($request)->status);
+        Http::assertSent(fn ($sent) => in_array($sent->url(), ['https://billing.example/gaiacp/.env', 'https://billing.example:443/gaiacp/.env'], true));
     }
 }

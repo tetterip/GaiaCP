@@ -97,15 +97,12 @@ class ApiKey extends Model
     /**
      * Whether the admin who made it may still use it: an active super admin (only they manage keys). A key whose
      * admin was deactivated, lost super admin or left the admin role stops working until they get it back; deleting
-     * the admin revokes their keys (User::booted()). A key with no admin (made outside the panel) is not checked.
+     * the admin revokes their keys (User::booted()). A key with no admin (its admin removed outside the panel, or made
+     * outside it) does not work either.
      */
     public function ownerAllowed(): bool
     {
-        if ($this->user_id === null) {
-            return true;
-        }
-
-        $owner = $this->user;
+        $owner = $this->user_id === null ? null : $this->user;
 
         return $owner !== null && $owner->active && $owner->role === UserRole::Admin && $owner->super_admin;
     }

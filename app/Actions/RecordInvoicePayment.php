@@ -69,9 +69,19 @@ class RecordInvoicePayment
             });
         }
 
+        // A line another request paid a moment ago (two "pay" calls at once) is skipped, found under the service's lock
+        $skipped = 0;
+
         foreach ($items->whereNull('fee')->where('credit', false) as $item) {
             $amount = $item->total_cents + (int) $fees->get($item->service_id)?->sum('total_cents');
-            $recorded[] = $this->payments->handle($item->service, $amount, $paidOn, $method, $reference, "Payment notice {$invoice->number}");
+
+            try {
+                $recorded[] = $this->payments->handle($item->service, $amount, $paidOn, $method, $reference, "Payment notice {$invoice->number}", $item->due_date);
+            } catch (AlreadyPaid) {
+                $skipped++;
+
+                continue;
+            }
 
             if ($this->payments->renewalError !== null) {
                 $this->renewalErrors[$item->description] = $this->payments->renewalError;
@@ -79,7 +89,16 @@ class RecordInvoicePayment
         }
 
         foreach ($items->where('fee', InvoiceItem::UPGRADE) as $item) {
-            $recorded[] = $this->payUpgrade($item, $item->total_cents, $paidOn, $method, $reference, "Payment notice {$invoice->number}");
+            try {
+                $recorded[] = $this->payUpgrade($item, $item->total_cents, $paidOn, $method, $reference, "Payment notice {$invoice->number}");
+            } catch (AlreadyPaid) {
+                $skipped++;
+            }
+        }
+
+        // The other request paid all of it: the same answer as a payment sent after it
+        if ($recorded === [] && $skipped > 0) {
+            throw new RuntimeException("Payment notice {$invoice->number} is not unpaid.");
         }
 
         // Lines whose service is gone have nothing to pay through; settle the rest.
@@ -109,6 +128,11 @@ class RecordInvoicePayment
     {
         $payment = DB::transaction(function () use ($item, $amountCents, $paidOn, $method, $reference, $notes) {
             $service = Service::query()->lockForUpdate()->findOrFail($item->service_id);
+
+            // Paid by another request while this one waited for the lock
+            if (InvoiceItem::query()->lockForUpdate()->whereKey($item->id)->whereNull('payment_id')->doesntExist()) {
+                throw new AlreadyPaid("{$item->description} is paid already.");
+            }
 
             $payment = $service->payments()->create([
                 'amount_cents' => $amountCents,

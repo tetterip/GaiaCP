@@ -150,7 +150,7 @@ class CancelPaidOrderTest extends TestCase
     public function test_the_api_takes_the_payments_option(): void
     {
         $order = $this->paidOrder();
-        [, $token] = ApiKey::generate(['name' => 'Test', 'permissions' => OpenApi::permissions()]);
+        [, $token] = ApiKey::generate(['name' => 'Test', 'user_id' => auth()->id() ?? User::factory()->create()->id, 'permissions' => OpenApi::permissions()]);
 
         $this->withToken($token)->postJson("/api/v1/orders/{$order->id}/cancel", ['payments' => 'nonsense'])->assertUnprocessable();
         $this->withToken($token)->postJson("/api/v1/orders/{$order->id}/cancel", ['payments' => 'refunded'])->assertOk();

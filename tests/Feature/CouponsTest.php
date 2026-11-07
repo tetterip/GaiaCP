@@ -200,7 +200,7 @@ class CouponsTest extends TestCase
     public function test_the_api_takes_a_code(): void
     {
         $this->coupon();
-        [, $token] = ApiKey::generate(['name' => 'Website', 'permissions' => OpenApi::permissions()]);
+        [, $token] = ApiKey::generate(['name' => 'Website', 'user_id' => auth()->id() ?? User::factory()->create()->id, 'permissions' => OpenApi::permissions()]);
         $api = $this->withHeaders(['Authorization' => "Bearer {$token}", 'Accept' => 'application/json']);
         $body = ['client_id' => $this->client->id, 'items' => [['product_id' => $this->hosting->id, 'billing_cycle' => 'monthly', 'domain' => 'maria.gr']]];
 

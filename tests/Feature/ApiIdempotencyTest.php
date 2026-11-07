@@ -8,6 +8,7 @@ use App\Http\Middleware\IdempotentApiRequest;
 use App\Models\ApiKey;
 use App\Models\Payment;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -27,7 +28,7 @@ class ApiIdempotencyTest extends TestCase
     /** @param  list<string>|null  $permissions  null = all of them */
     private function key(?array $permissions = null): string
     {
-        [, $token] = ApiKey::generate(['name' => 'Bank import', 'permissions' => $permissions ?? OpenApi::permissions()]);
+        [, $token] = ApiKey::generate(['name' => 'Bank import', 'user_id' => auth()->id() ?? User::factory()->create()->id, 'permissions' => $permissions ?? OpenApi::permissions()]);
 
         return $token;
     }

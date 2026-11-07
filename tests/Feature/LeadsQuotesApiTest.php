@@ -36,7 +36,7 @@ class LeadsQuotesApiTest extends TestCase
     /** @param  list<string>|null  $permissions */
     private function api(?array $permissions = null): static
     {
-        [, $token] = ApiKey::generate(['name' => 'Website', 'permissions' => $permissions ?? OpenApi::permissions()]);
+        [, $token] = ApiKey::generate(['name' => 'Website', 'user_id' => auth()->id() ?? User::factory()->create()->id, 'permissions' => $permissions ?? OpenApi::permissions()]);
 
         return $this->withHeaders(['Authorization' => "Bearer {$token}", 'Accept' => 'application/json']);
     }
