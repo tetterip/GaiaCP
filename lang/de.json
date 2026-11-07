@@ -3903,5 +3903,13 @@
     "Switch logging on": "Protokollierung einschalten",
     "Send client emails in the background": "Kunden-E-Mails im Hintergrund senden",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Eine Seite, die einem Kunden eine E-Mail sendet, geht sofort weiter; die E-Mail folgt innerhalb einer Minute über den Scheduler. Eine vom Mailserver abgelehnte E-Mail wird dreimal versucht und erscheint dann im E-Mail-Protokoll und unter Einstellungen → Fehlgeschlagene Jobs. Aus: Sie wird gesendet, bevor die Seite weitergeht, sodass ein langsamer Mailserver sie warten lässt.",
-    "Background": "Hintergrund"
+    "Background": "Hintergrund",
+    ":amount went into the client's balance.": ":amount wurden dem Guthaben des Kunden gutgeschrieben.",
+    "Difference": "Differenz",
+    "Give the difference as a discount on this cycle": "Die Differenz als Rabatt auf diesen Zeitraum gewähren",
+    "Pay the cycle and put the rest in the client's balance": "Den Zeitraum bezahlen und den Rest dem Guthaben des Kunden gutschreiben",
+    "Put in the client's balance": "Dem Guthaben des Kunden gutgeschrieben",
+    "Put it in the client's balance; the notice still asks for the cycle": "Dem Guthaben des Kunden gutschreiben; die Zahlungsaufforderung verlangt den Zeitraum weiterhin",
+    "Record the whole amount for the cycle": "Den ganzen Betrag für den Zeitraum erfassen",
+    "The payment notice asks for :amount. The difference:": "Die Zahlungsaufforderung verlangt :amount. Die Differenz:"
 }

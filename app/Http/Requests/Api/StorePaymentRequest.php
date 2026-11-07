@@ -19,6 +19,7 @@ class StorePaymentRequest extends ApiRequest
             'paid_on' => ['sometimes', 'date_format:Y-m-d', 'before_or_equal:today'],
             'method' => ['sometimes', Rule::in(array_keys(PaymentMethods::options()))],
             'reference' => ['nullable', 'string', 'max:255'],
+            'difference' => $forService ? ['sometimes', Rule::in(['credit', 'discount', 'keep'])] : ['prohibited'],
             'notes' => $forService ? ['nullable', 'string', 'max:5000'] : ['prohibited'],
         ];
     }

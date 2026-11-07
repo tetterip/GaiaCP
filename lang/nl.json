@@ -3903,5 +3903,13 @@
     "Switch logging on": "Logboek inschakelen",
     "Send client emails in the background": "E-mails aan klanten op de achtergrond versturen",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Een pagina die een klant mailt gaat meteen verder; de e-mail volgt binnen een minuut via de planner. Een e-mail die de mailserver weigert wordt drie keer geprobeerd en staat daarna in het e-maillogboek en onder Instellingen → Mislukte taken. Uit: verstuurd voordat de pagina verdergaat, zodat een trage mailserver haar laat wachten.",
-    "Background": "Achtergrond"
+    "Background": "Achtergrond",
+    ":amount went into the client's balance.": ":amount is bijgeschreven op het tegoed van de klant.",
+    "Difference": "Verschil",
+    "Give the difference as a discount on this cycle": "Het verschil als korting op deze periode geven",
+    "Pay the cycle and put the rest in the client's balance": "De periode betalen en de rest op het tegoed van de klant zetten",
+    "Put in the client's balance": "Op het tegoed van de klant gezet",
+    "Put it in the client's balance; the notice still asks for the cycle": "Op het tegoed van de klant zetten; de betalingsherinnering vraagt nog steeds om de periode",
+    "Record the whole amount for the cycle": "Het hele bedrag voor de periode registreren",
+    "The payment notice asks for :amount. The difference:": "De betalingsherinnering vraagt om :amount. Het verschil:"
 }

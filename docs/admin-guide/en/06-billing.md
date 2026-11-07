@@ -88,8 +88,19 @@ Recording a payment moves the service's due date forward one cycle, renews a dom
 hosting account that was suspended for not paying. If the panel fails to unsuspend, the payment is still kept; use
 Account → Unsuspend once the server answers.
 
+The amount starts on what the payment notice asks for the cycle, with tax. If the client paid a different amount, type
+what came in and choose what happens to the difference:
+
+- **Less**: put it in the client's balance, so the notice still asks for the cycle and the balance pays it once the rest
+  arrives; or give the difference as a **discount** on this cycle, a Discount line on the notice, so the notice and its
+  invoice come to what was paid. The service's price stays as it is.
+- **More**: pay the cycle and put the rest in the client's balance, or record the whole amount for the cycle.
+
+The balance choices need Settings → Billing → Client credit switched on.
+
 Entered one by mistake? The service's **Payments** tab has **Reverse** on the latest payment: it deletes it and sets
-the due date back. Reversing never undoes a domain renewal.
+the due date back, takes off a discount it gave and takes out of the balance what it put in. Reversing never undoes a
+domain renewal.
 
 Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe or PayPal are recorded by
 themselves once the provider confirms them. Refunds are made there, not in GaiaCP.

@@ -3,7 +3,7 @@
 namespace App\Filament\Actions;
 
 use App\Actions\DomainLifecycle;
-use App\Actions\RecordPayment;
+use App\Actions\RecordServicePayment;
 use App\Enums\ServiceStatus;
 use App\Models\Service;
 use App\Payments\PaymentMethods;
@@ -12,10 +12,13 @@ use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -89,11 +92,21 @@ class RecordPaymentAction
                 ? ' '.trans_choice('It also renews :domain at the registrar for :count year, which charges your registrar account.|It also renews :domain at the registrar for :count years, which charges your registrar account.', $record->registrationYears(), ['domain' => $record->domain])
                 : ''))
             ->schema([
+                // What its payment notice asks for the cycle (with tax), so a payment of the notice's amount needs no typing
                 TextInput::make('amount')
                     ->required()
                     ->prefix(fn (Service $record) => $record->currency)
                     ->rules(['regex:/^\d+([.,]\d{1,2})?$/'])
-                    ->default(fn (Service $record) => Money::toDecimal($record->price_cents)),
+                    ->default(fn (Service $record) => Money::toDecimal(RecordServicePayment::suggested($record)))
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Service $record, $state, Set $set) => $set('difference', RecordServicePayment::defaultOption($record, self::cents($state)))),
+                Radio::make('difference')
+                    ->label(fn (Service $record, Get $get) => __('The payment notice asks for :amount. The difference:', [
+                        'amount' => Money::format((int) RecordServicePayment::expected($record), $record->currency),
+                    ]))
+                    ->options(fn (Service $record, Get $get) => RecordServicePayment::options($record, self::cents($get('amount'))))
+                    ->visible(fn (Service $record, Get $get) => RecordServicePayment::options($record, self::cents($get('amount'))) !== [])
+                    ->required(fn (Service $record, Get $get) => RecordServicePayment::options($record, self::cents($get('amount'))) !== []),
                 DatePicker::make('paid_on')
                     ->required()
                     ->default(now())
@@ -109,21 +122,26 @@ class RecordPaymentAction
                     ->rows(2),
             ])
             ->action(function (Service $record, array $data, $livewire) {
-                $recorder = app(RecordPayment::class);
-                $recorder->handle(
+                $service = app(RecordServicePayment::class);
+                $recorder = $service->recorder;
+                $service->handle(
                     $record,
                     Money::toCents($data['amount']),
                     CarbonImmutable::parse($data['paid_on']),
                     $data['method'],
                     $data['reference'] ?? null,
                     $data['notes'] ?? null,
+                    $data['difference'] ?? null,
                 );
 
                 $record->refresh();
 
                 Notification::make()
-                    ->title(__('Payment recorded'))
-                    ->body(__('Next due date: :date', ['date' => $record->next_due_date->format(AppServiceProvider::dateFormat())]))
+                    ->title($service->payment ? __('Payment recorded') : __('Put in the client\'s balance'))
+                    ->body(collect([
+                        __('Next due date: :date', ['date' => $record->next_due_date->format(AppServiceProvider::dateFormat())]),
+                        $service->credited > 0 ? __(':amount went into the client\'s balance.', ['amount' => Money::format($service->credited, $record->currency)]) : null,
+                    ])->filter()->join(' '))
                     ->success()
                     ->send();
 
@@ -149,5 +167,10 @@ class RecordPaymentAction
                     $livewire->refreshFormData(['next_due_date', 'status', 'suspension_reason']);
                 }
             });
+    }
+
+    private static function cents(mixed $amount): int
+    {
+        return is_string($amount) && preg_match('/^\d+([.,]\d{1,2})?$/', $amount) ? Money::toCents($amount) : -1;
     }
 }

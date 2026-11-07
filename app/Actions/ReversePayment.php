@@ -7,6 +7,7 @@ use App\Enums\CreditType;
 use App\Enums\InvoiceStatus;
 use App\Invoicing\IssueCreditNote;
 use App\Models\ActivityLog;
+use App\Models\CreditTransaction;
 use App\Models\InvoiceItem;
 use App\Models\Payment;
 use App\Models\Service;
@@ -31,6 +32,13 @@ class ReversePayment
             }
 
             $service->update(['next_due_date' => $payment->due_date_before]);
+
+            // A discount it was given comes off again; what it paid into the balance beyond the notice comes out of it.
+            RecordServicePayment::dropDiscounts($payment);
+
+            foreach (CreditTransaction::query()->where('payment_id', $payment->id)->where('type', CreditType::Deposit)->get() as $excess) {
+                app(ClientCredit::class)->record($service->client, CreditType::Adjustment, -$excess->amount_cents, "Payment reversed: {$service->label}");
+            }
 
             // Its payment notice owes that line again.
             foreach (InvoiceItem::query()->where('payment_id', $payment->id)->with('invoice')->get() as $item) {

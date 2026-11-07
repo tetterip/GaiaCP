@@ -3903,5 +3903,13 @@
     "Switch logging on": "Activar el registro",
     "Send client emails in the background": "Enviar los correos a clientes en segundo plano",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Una página que envía un correo a un cliente continúa al instante; el correo sale en menos de un minuto, desde el programador. Si el servidor de correo lo rechaza, se intenta tres veces y luego aparece en el registro de correos y en Ajustes → Trabajos fallidos. Desactivado: se envía antes de que la página continúe, así que un servidor de correo lento la hace esperar.",
-    "Background": "Segundo plano"
+    "Background": "Segundo plano",
+    ":amount went into the client's balance.": ":amount se añadieron al saldo del cliente.",
+    "Difference": "Diferencia",
+    "Give the difference as a discount on this cycle": "Dar la diferencia como descuento en este ciclo",
+    "Pay the cycle and put the rest in the client's balance": "Pagar el ciclo y añadir el resto al saldo del cliente",
+    "Put in the client's balance": "Añadido al saldo del cliente",
+    "Put it in the client's balance; the notice still asks for the cycle": "Añadirlo al saldo del cliente; el aviso sigue pidiendo el ciclo",
+    "Record the whole amount for the cycle": "Registrar el importe completo para el ciclo",
+    "The payment notice asks for :amount. The difference:": "El aviso de pago pide :amount. La diferencia:"
 }

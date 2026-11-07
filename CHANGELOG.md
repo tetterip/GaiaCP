@@ -5,6 +5,18 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Payments that don't add up: the order's **Record payment** recorded each item's price without tax, so the payments
+  came to less than the payment notice and its invoice; it now records what the notice asks for each item. The
+  service's Record payment starts on the notice's amount with tax, and a different amount asks what happens to the
+  difference: less goes into the client's balance (the cycle stays owed, and the balance pays it once the rest comes)
+  or is a discount on that cycle (a Discount line, so the notice and invoice come to what was paid); more pays the cycle
+  with the rest into the balance, or is kept as one payment. Before, any amount, even €0.01, paid the whole cycle and
+  invoiced it in full. Reverse takes such a discount off again and the rest out of the balance. API: `POST /payments`
+  defaults `amount_cents` to the notice's amount and needs `difference` (`credit`, `discount`, `keep`) when it differs.
+- A deleted service (one with no payments) comes off its unpaid payment notices: before, its line stayed, so the notice
+  kept asking for it, or was marked paid and invoiced with it in once the rest was paid. A migration takes such old
+  lines off.
+
 ## [0.8.0] - 2026-11-07
 
 - Security (audit before this release): client emails waiting on the queue (welcome emails with a password, sign-in

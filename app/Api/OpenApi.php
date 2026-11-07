@@ -66,7 +66,7 @@ class OpenApi
             ['method' => 'post', 'path' => '/invoices/{id}/cancel', 'area' => 'invoices', 'permission' => 'invoices.delete', 'summary' => 'Cancel a payment notice', 'description' => 'Only an unpaid one. While a service on it stays active and due, the next daily run makes a new notice for it.', 'response' => 'Invoice'],
 
             ['method' => 'get', 'path' => '/payments', 'area' => 'payments', 'permission' => 'payments.read', 'summary' => 'List payments', 'query' => ['client_id', 'service_id', 'method', 'reference', 'paid_from', 'paid_to', ...$list], 'response' => 'Payment[]'],
-            ['method' => 'post', 'path' => '/payments', 'area' => 'payments', 'permission' => 'payments.create', 'summary' => 'Record a payment for a service', 'description' => 'One billing cycle: the due date moves on one cycle, its payment notice line is marked paid, a service suspended for non-payment is unsuspended and a domain is renewed at its registrar (renewal_error when that failed; the payment stays). amount_cents defaults to the service\'s price.', 'body' => 'PaymentInput', 'response' => 'Payment', 'status' => 201],
+            ['method' => 'post', 'path' => '/payments', 'area' => 'payments', 'permission' => 'payments.create', 'summary' => 'Record a payment for a service', 'description' => 'One billing cycle: the due date moves on one cycle, its payment notice line is marked paid, a service suspended for non-payment is unsuspended and a domain is renewed at its registrar (renewal_error when that failed; the payment stays). amount_cents defaults to what its payment notice asks for the cycle, with tax and late fees. A different amount needs difference (422 otherwise): less = credit (into the client\'s balance, the cycle stays owed; data is null unless the balance then paid it) or discount (a Discount line on the notice, the cycle is paid); more = credit (the rest into the balance, credited_cents) or keep.', 'body' => 'PaymentInput', 'response' => 'Payment', 'status' => 201],
             ['method' => 'get', 'path' => '/payments/{id}', 'area' => 'payments', 'permission' => 'payments.read', 'summary' => 'Get a payment', 'response' => 'Payment'],
             ['method' => 'delete', 'path' => '/payments/{id}', 'area' => 'payments', 'permission' => 'payments.delete', 'summary' => 'Reverse a payment', 'description' => 'Only the latest payment of a service, while its due date is still the one that payment set.', 'response' => null, 'status' => 204],
 
@@ -335,7 +335,8 @@ class OpenApi
             ]],
             'PaymentInput' => ['type' => 'object', 'required' => ['service_id'], 'properties' => [
                 'service_id' => $int,
-                'amount_cents' => ['type' => 'integer', 'description' => 'The service\'s price when left out'],
+                'amount_cents' => ['type' => 'integer', 'description' => 'What its payment notice asks for the cycle (with tax) when left out'],
+                'difference' => ['type' => 'string', 'enum' => ['credit', 'discount', 'keep'], 'description' => 'Required when amount_cents differs from the payment notice\'s: less = credit or discount, more = credit or keep'],
                 'paid_on' => ['type' => 'string', 'format' => 'date', 'description' => 'Today when left out'],
                 'method' => ['type' => 'string', 'description' => 'The client\'s default when left out'],
                 'reference' => $nullableString, 'notes' => $nullableString,

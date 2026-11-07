@@ -3903,5 +3903,13 @@
     "Switch logging on": "Ενεργοποίηση καταγραφής",
     "Send client emails in the background": "Αποστολή των email πελατών στο παρασκήνιο",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Μια σελίδα που στέλνει email σε πελάτη συνεχίζει αμέσως· το email ακολουθεί μέσα σε ένα λεπτό, από τον προγραμματιστή εργασιών. Αν ο mail server το αρνηθεί, δοκιμάζεται τρεις φορές και μετά εμφανίζεται στο αρχείο email και στις Ρυθμίσεις → Αποτυχημένες εργασίες. Κλειστό: στέλνεται πριν συνεχίσει η σελίδα, οπότε ένας αργός mail server την καθυστερεί.",
-    "Background": "Παρασκήνιο"
+    "Background": "Παρασκήνιο",
+    ":amount went into the client's balance.": "Τα :amount μπήκαν στο υπόλοιπο του πελάτη.",
+    "Difference": "Διαφορά",
+    "Give the difference as a discount on this cycle": "Η διαφορά δίνεται ως έκπτωση σε αυτόν τον κύκλο",
+    "Pay the cycle and put the rest in the client's balance": "Εξοφλείται ο κύκλος και τα υπόλοιπα μπαίνουν στο υπόλοιπο του πελάτη",
+    "Put in the client's balance": "Μπήκαν στο υπόλοιπο του πελάτη",
+    "Put it in the client's balance; the notice still asks for the cycle": "Μπαίνουν στο υπόλοιπο του πελάτη και η ειδοποίηση συνεχίζει να ζητάει τον κύκλο",
+    "Record the whole amount for the cycle": "Καταχωρείται όλο το ποσό για τον κύκλο",
+    "The payment notice asks for :amount. The difference:": "Η ειδοποίηση πληρωμής ζητάει :amount. Η διαφορά:"
 }

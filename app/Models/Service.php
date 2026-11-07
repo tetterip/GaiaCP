@@ -66,6 +66,12 @@ class Service extends Model
             }
         });
 
+        // Deleted (one with no payments): its lines come off its unpaid notices, which would otherwise keep asking for
+        // them, or be marked paid, and invoiced, with them in once the rest is paid.
+        static::deleting(function (Service $service) {
+            Invoice::withdraw($service, overdueToo: true, reason: 'it was deleted');
+        });
+
         // Set to end at its due date: the cycles it won't start are owed no more. Terminated or cancelled by hand
         // (the Account menu or the status field): none of its unpaid cycles is owed, so it gets no more reminders.
         // One that ended through Auto-terminate keeps owing an overdue cycle, as it did when it was set to end.

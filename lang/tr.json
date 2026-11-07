@@ -3903,5 +3903,13 @@
     "Switch logging on": "Kaydı aç",
     "Send client emails in the background": "Müşteri e-postalarını arka planda gönder",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Bir müşteriye e-posta gönderen sayfa hemen devam eder; e-posta bir dakika içinde zamanlayıcıdan gider. Posta sunucusunun reddettiği bir e-posta üç kez denenir, sonra e-posta kaydında ve Ayarlar → Başarısız işler altında görünür. Kapalı: sayfa devam etmeden önce gönderilir, bu yüzden yavaş bir posta sunucusu onu bekletir.",
-    "Background": "Arka plan"
+    "Background": "Arka plan",
+    ":amount went into the client's balance.": ":amount müşterinin bakiyesine eklendi.",
+    "Difference": "Fark",
+    "Give the difference as a discount on this cycle": "Farkı bu dönem için indirim olarak ver",
+    "Pay the cycle and put the rest in the client's balance": "Dönemi öde ve kalanı müşterinin bakiyesine ekle",
+    "Put in the client's balance": "Müşterinin bakiyesine eklendi",
+    "Put it in the client's balance; the notice still asks for the cycle": "Müşterinin bakiyesine ekle; bildirim dönemi istemeye devam eder",
+    "Record the whole amount for the cycle": "Tutarın tamamını dönem için kaydet",
+    "The payment notice asks for :amount. The difference:": "Ödeme bildirimi :amount istiyor. Fark:"
 }

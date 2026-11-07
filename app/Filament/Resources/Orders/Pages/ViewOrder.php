@@ -116,7 +116,7 @@ class ViewOrder extends ViewRecord
                 $unpaid = app(RecordOrderPayment::class)->unpaid($record);
 
                 return trans_choice('Records the first payment of :count item, :total in total. Its due date moves forward one cycle.|Records the first payment of :count items, :total in total. Each due date moves forward one cycle.', $unpaid->count(), [
-                    'total' => Money::format($unpaid->sum(fn (Service $s) => $s->firstPaymentCents()), $record->currency()),
+                    'total' => Money::format($unpaid->sum(fn (Service $s) => RecordOrderPayment::amount($s)), $record->currency()),
                 ]);
             })
             ->schema([
