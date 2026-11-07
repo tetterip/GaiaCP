@@ -6,7 +6,7 @@
     "Better Stack answered: :error": "Better Stack ha risposto: :error",
     "Better Stack asked to slow down (too many requests). It is read again at the next check.": "Better Stack ha chiesto di rallentare (troppe richieste). Verrà letto di nuovo al prossimo controllo.",
     "Better Stack refused the API token.": "Better Stack ha rifiutato il token API.",
-    "Connected: :count monitor(s)": "Connesso: :count monitor",
+    "Connected: :count monitor|Connected: :count monitors": "Connesso: :count monitor|Connesso: :count monitor",
     "Connection": "Connessione",
     "Could not reach Better Stack: :error": "Impossibile raggiungere Better Stack: :error",
     "Fill in the Better Stack API token under Settings → Better Stack.": "Inserisci il token API di Better Stack in Impostazioni → Better Stack.",

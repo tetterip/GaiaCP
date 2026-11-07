@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.3] - 2026-11-07
+
+- Test connection says "1 certificate" or "3 certificates" in every language, instead of "certificate(s)"
+
 ## [1.0.2] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)

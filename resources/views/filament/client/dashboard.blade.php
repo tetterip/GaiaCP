@@ -37,7 +37,7 @@
                 <div @class(['gx-box', 'gx-box-bad' => $overdue->isNotEmpty()])>
                     <div class="gx-box-label">{{ __('Past due') }}</div>
                     <div class="gx-box-value">{{ $sum($overdue) }}</div>
-                    <div class="gx-box-sub">{{ __(':count notice(s)', ['count' => $overdue->count()]) }}</div>
+                    <div class="gx-box-sub">{{ trans_choice(':count notice|:count notices', $overdue->count()) }}</div>
                 </div>
                 <div class="gx-box">
                     <div class="gx-box-label">{{ __('Next renewal') }}</div>

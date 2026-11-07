@@ -60,9 +60,9 @@ class BlacklistsSettings extends SettingsFormPage
                     Notification::make()
                         ->{$summary['listed'] > 0 ? 'danger' : 'success'}()
                         ->title($summary['listed'] > 0
-                            ? __(':count listing(s) found', ['count' => $summary['listed']])
+                            ? trans_choice(':count listing found|:count listings found', $summary['listed'])
                             : __('No server is listed'))
-                        ->body(__(':ips IP address(es) of :servers server(s) checked.', ['ips' => $summary['ips'], 'servers' => $summary['servers']])
+                        ->body(__('IP addresses checked: :ips (servers: :servers).', ['ips' => $summary['ips'], 'servers' => $summary['servers']])
                             .($summary['refused'] !== [] ? ' '.__('Did not answer: :zones.', ['zones' => implode(', ', $summary['refused'])]) : ''))
                         ->send();
                 }),

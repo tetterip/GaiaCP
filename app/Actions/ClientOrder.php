@@ -438,8 +438,8 @@ class ClientOrder
         if ($first === null) {
             throw ValidationException::withMessages(['domain' => $tld
                 ? ($option === self::REGISTER
-                    ? __('This domain cannot be registered for :years year(s). Choose another term.', ['years' => $years])
-                    : __('This domain cannot be transferred for :years year(s). Choose another term.', ['years' => $years]))
+                    ? trans_choice('This domain cannot be registered for :count year. Choose another term.|This domain cannot be registered for :count years. Choose another term.', $years)
+                    : trans_choice('This domain cannot be transferred for :count year. Choose another term.|This domain cannot be transferred for :count years. Choose another term.', $years))
                 : __('We do not offer domains ending like this one.')]);
         }
 

@@ -122,8 +122,11 @@ class TransferServiceTest extends TestCase
         DB::table('payments')->update(['client_id' => null]);
 
         $migration = require database_path('migrations/2026_10_22_000020_add_client_id_to_payments_table.php');
+        $indexes = require database_path('migrations/2026_11_07_000100_index_foreign_keys.php'); // SQLite can't drop an indexed column
+        $indexes->down();
         $migration->down();
         $migration->up();
+        $indexes->up();
 
         $this->assertSame($this->from->id, $payment->fresh()->client_id);
     }

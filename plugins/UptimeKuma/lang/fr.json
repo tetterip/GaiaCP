@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up en ligne, :down hors ligne",
     "API key / password": "Clé API / mot de passe",
-    "Connected: :count monitor(s)": "Connecté : :count sonde(s)",
+    "Connected: :count monitor|Connected: :count monitors": "Connecté : :count sonde|Connecté : :count sondes",
     "Connection": "Connexion",
     "Could not reach Uptime Kuma: :error": "Impossible de joindre Uptime Kuma : :error",
     "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Renseignez l'adresse d'Uptime Kuma dans Paramètres → Uptime Kuma.",

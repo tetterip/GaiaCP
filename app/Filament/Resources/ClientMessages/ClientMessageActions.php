@@ -23,8 +23,7 @@ final class ClientMessageActions
             ->visible(fn (ClientMessage $record) => $record->send_email && ! $record->isQueued())
             ->requiresConfirmation()
             ->modalHeading(__('Send this message?'))
-            ->modalDescription(fn (ClientMessage $record) => __(':count client(s) get the email, :rate a minute. It can\'t be stopped or sent again.', [
-                'count' => $record->emailClients()->count(),
+            ->modalDescription(fn (ClientMessage $record) => trans_choice(':count client gets the email, :rate a minute. It can\'t be stopped or sent again.|:count clients get the email, :rate a minute. It can\'t be stopped or sent again.', $record->emailClients()->count(), [
                 'rate' => (int) config('gaiacp.automation.client_messages_per_minute', 30),
             ]))
             ->action(function (ClientMessage $record, $livewire) {
@@ -36,7 +35,7 @@ final class ClientMessageActions
                 $count = app(SendClientMessages::class)->queue($record);
 
                 Notification::make()->success()
-                    ->title(__('Sending to :count client(s)', ['count' => $count]))
+                    ->title(trans_choice('Sending to :count client|Sending to :count clients', $count))
                     ->body(__('The cron sends them a few a minute; the Recipients list below shows each one.'))
                     ->send();
             });

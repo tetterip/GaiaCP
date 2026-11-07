@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up çalışıyor, :down kapalı",
     "Api key": "API anahtarı",
-    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connected: :count monitor|Connected: :count monitors": "Bağlandı: :count monitör",
     "Connection": "Bağlantı",
     "Could not reach UptimeRobot: :error": "UptimeRobot'a ulaşılamadı: :error",
     "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Ayarlar → UptimeRobot altında UptimeRobot API anahtarını doldurun.",

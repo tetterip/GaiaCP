@@ -1,7 +1,7 @@
 {
     ":up up, :down down": "działa: :up, nie działa: :down",
     "API token": "Token API",
-    "Connected: :count monitor(s)": "Połączono, monitory: :count",
+    "Connected: :count monitor|Connected: :count monitors": "Połączono, monitory: :count",
     "Connection": "Połączenie",
     "Could not reach HetrixTools: :error": "Nie udało się połączyć z HetrixTools: :error",
     "Fill in the HetrixTools API token under Settings → HetrixTools.": "Wpisz token API HetrixTools w Ustawienia → HetrixTools.",

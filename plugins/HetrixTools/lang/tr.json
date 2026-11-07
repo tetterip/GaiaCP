@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up çalışıyor, :down kapalı",
     "API token": "API token",
-    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connected: :count monitor|Connected: :count monitors": "Bağlandı: :count monitör",
     "Connection": "Bağlantı",
     "Could not reach HetrixTools: :error": "HetrixTools'a ulaşılamadı: :error",
     "Fill in the HetrixTools API token under Settings → HetrixTools.": "Ayarlar → HetrixTools altında HetrixTools API token'ını doldurun.",

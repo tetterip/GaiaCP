@@ -101,7 +101,7 @@ class OneTimeServicesTest extends TestCase
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
 
         // The forecast counts it once instead of every cycle.
-        $dues = (new IncomeForecast(today()))->dues()->filter(fn (array $due) => $due['service']->is($service));
+        $dues = (new IncomeForecast(today()))->dues()->filter(fn (array $due) => $due['service_id'] === $service->id);
         $this->assertCount(1, $dues);
     }
 

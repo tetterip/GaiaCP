@@ -1,5 +1,5 @@
 {
-    ":count address(es) added": "Προστέθηκαν :count διευθύνσεις",
+    ":count address added|:count addresses added": "Προστέθηκε :count διεύθυνση|Προστέθηκαν :count διευθύνσεις",
     "A new VPS takes the first free address of its server, and gives it back when it is terminated. A server with no addresses here gives its VPS an address by DHCP.": "Ένα νέο VPS παίρνει την πρώτη ελεύθερη διεύθυνση του server του και την επιστρέφει όταν τερματιστεί. Ένας server χωρίς διευθύνσεις εδώ δίνει στα VPS του διεύθυνση μέσω DHCP.",
     "Add addresses": "Προσθήκη διευθύνσεων",
     "Add the Proxmox server under Settings → Servers with the type <strong>Proxmox VE</strong>. Each product's package is the name of a KVM template with cloud-init: the VPS is a full clone of it, with its CPU, memory and disk, on the template's node.": "Πρόσθεσε τον server Proxmox στις Ρυθμίσεις → Servers με τύπο <strong>Proxmox VE</strong>. Το πακέτο κάθε προϊόντος είναι το όνομα ενός KVM template με cloud-init: το VPS είναι πλήρης κλώνος του, με τους επεξεργαστές, τη μνήμη και τον δίσκο του, στο node του template.",

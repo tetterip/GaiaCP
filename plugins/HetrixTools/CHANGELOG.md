@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.4] - 2026-11-07
+
+- Counts read as proper singular or plural ("1 monitor", "3 monitors") in every language, instead of "monitor(s)"
+
 ## [1.0.3] - 2026-11-07
 
 - Reads the pages as HetrixTools sends them (meta.pagination last / next), so exactly 100 monitors no longer asks for an empty second page; checked against the real API

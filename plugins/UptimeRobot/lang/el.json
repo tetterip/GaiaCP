@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up σε λειτουργία, :down εκτός λειτουργίας",
     "Api key": "API key",
-    "Connected: :count monitor(s)": "Συνδέθηκε: :count monitor",
+    "Connected: :count monitor|Connected: :count monitors": "Συνδέθηκε: :count monitor|Συνδέθηκε: :count monitors",
     "Connection": "Σύνδεση",
     "Could not reach UptimeRobot: :error": "Δεν ήταν δυνατή η σύνδεση με το UptimeRobot: :error",
     "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Συμπλήρωσε το API key του UptimeRobot στις Ρυθμίσεις → UptimeRobot.",

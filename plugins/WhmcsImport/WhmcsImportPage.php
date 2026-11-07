@@ -153,7 +153,7 @@ class WhmcsImportPage extends Page implements HasTable, SettingsCard
                     EmbeddedTable::make(),
                     $this->report['problems'] === []
                         ? Callout::make(__('No problems found'))->success()
-                        : Callout::make(__(':count problem(s)', ['count' => count($this->report['problems'], COUNT_RECURSIVE) - count($this->report['problems'])]))
+                        : Callout::make(trans_choice(':count problem|:count problems', count($this->report['problems'], COUNT_RECURSIVE) - count($this->report['problems'])))
                             ->description(__('Check these after importing; the rest is imported as described.'))
                             ->warning(),
                     ...collect($this->report['problems'])->map(fn (array $problems, string $group) => Section::make(__(WhmcsImportReport::GROUPS[$group] ?? $group).' ('.count($problems).')')

@@ -1,6 +1,6 @@
 {
-    ":count listing(s) found": ":count inscription(s) trouvée(s)",
-    ":ips IP address(es) of :servers server(s) checked.": ":ips adresse(s) IP de :servers serveur(s) vérifiée(s).",
+    ":count listing found|:count listings found": ":count inscription trouvée|:count inscriptions trouvées",
+    "IP addresses checked: :ips (servers: :servers).": "Adresses IP vérifiées : :ips (serveurs : :servers).",
     ":server (:ip) on :zone since :date": ":server (:ip) sur :zone depuis le :date",
     "Blacklists": "Listes noires",
     "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Vérifie chaque heure les adresses IP de vos serveurs dans les listes noires anti-spam et vous avertit dans la cloche quand l'une est listée, avant que les clients ne trouvent leurs emails dans les spams.",

@@ -233,7 +233,7 @@ class AdminAlerts
                 $log->properties['url'] ?? null,
             ],
             'tld.selling_at_loss' => [
-                __(':count TLD(s) now sell at a loss', ['count' => $log->properties['count'] ?? '']),
+                trans_choice(':count TLD now sells at a loss|:count TLDs now sell at a loss', (int) ($log->properties['count'] ?? 0)),
                 __('The registrar now charges more than your price for :tlds.', ['tlds' => implode(', ', $log->properties['tlds'] ?? [])]),
                 'heroicon-o-exclamation-triangle', 'danger',
                 TldResource::getUrl(panel: 'admin'),
@@ -245,7 +245,7 @@ class AdminAlerts
                 TldResource::getUrl(panel: 'admin'),
             ],
             'site.problems' => [
-                __(':count new site problem(s)', ['count' => $log->properties['count'] ?? '']),
+                trans_choice(':count new site problem|:count new site problems', (int) ($log->properties['count'] ?? 0)),
                 Str::limit(implode('; ', $log->properties['items'] ?? []), 160),
                 'heroicon-o-shield-exclamation', 'warning',
                 $log->properties['url'] ?? null,
@@ -268,7 +268,7 @@ class AdminAlerts
                 ServerResource::getUrl(panel: 'admin'),
             ],
             'server.accounts_differ' => [
-                __(':name: :count new difference(s) with GaiaCP', ['name' => self::serverName($log), 'count' => $log->properties['count'] ?? '']),
+                trans_choice(':name: :count new difference with GaiaCP|:name: :count new differences with GaiaCP', (int) ($log->properties['count'] ?? 0), ['name' => self::serverName($log)]),
                 Str::limit(implode('; ', $log->properties['items'] ?? []), 160),
                 'heroicon-o-arrows-right-left', 'warning',
                 isset($log->properties['server_id']) && Server::query()->whereKey($log->properties['server_id'])->exists()

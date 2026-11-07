@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up en ligne, :down hors ligne",
     "Api key": "Clé API",
-    "Connected: :count monitor(s)": "Connecté : :count sonde(s)",
+    "Connected: :count monitor|Connected: :count monitors": "Connecté : :count sonde|Connecté : :count sondes",
     "Connection": "Connexion",
     "Could not reach UptimeRobot: :error": "Impossible de joindre UptimeRobot : :error",
     "Fill in the UptimeRobot API key under Settings → UptimeRobot.": "Renseignez la clé API UptimeRobot dans Paramètres → UptimeRobot.",

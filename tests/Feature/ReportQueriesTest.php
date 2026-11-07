@@ -197,8 +197,27 @@ class ReportQueriesTest extends TestCase
         $this->assertSame(1200, $months[4]['types'][ServiceType::Hosting->value], 'February 2027: the new price');
         $this->assertSame(['count' => 1, 'cents' => 3000], $forecast->overdue());
         $this->assertSame(
-            (int) $dues->filter(fn (array $d) => $d['service']->server_id === $server->id)->sum('cents'),
+            (int) $dues->filter(fn (array $d) => $d['server_id'] === $server->id)->sum('cents'),
             $forecast->byServer(12)->firstWhere('server', 'pl1')['forecast_cents'],
         );
+    }
+
+    /** The forecast reads plain rows: as many queries for 40 services as for 4, and one TLD lookup per ending. */
+    public function test_the_forecast_reads_the_same_queries_whatever_the_number_of_services(): void
+    {
+        Tld::query()->create(['tld' => '.gr', 'costs' => ['renew_1y_cents' => 800]]);
+        $server = Server::factory()->create();
+        $make = fn (int $n) => Service::factory()->count($n)->sequence(
+            fn ($s) => $s->index % 2 ? ['server_id' => $server->id, 'billing_cycle' => BillingCycle::Monthly] : ['type' => ServiceType::Domain, 'server_id' => null, 'domain' => "d{$s->index}.gr"],
+        )->create();
+
+        $make(4);
+        (new IncomeForecast)->byTld(); // the TLD list is read once and kept
+        $few = $this->queries(fn () => (new IncomeForecast)->monthly(12) && (new IncomeForecast)->byServer(12) && (new IncomeForecast)->byTld());
+        $make(36);
+        $many = $this->queries(fn () => (new IncomeForecast)->monthly(12) && (new IncomeForecast)->byServer(12) && (new IncomeForecast)->byTld());
+
+        $this->assertSame($few, $many);
+        $this->assertSame(20 * 800, (new IncomeForecast)->byTld()->firstWhere('tld', '.gr')['yearly_cost_cents']);
     }
 }

@@ -27,7 +27,7 @@
     "No overdue payment notices.": "Gecikmiş ödeme bildirimi yok.",
     "No ticket is waiting for an answer.": "Yanıt bekleyen destek talebi yok.",
     "Open in GaiaCP": "GaiaCP'de aç",
-    "Overdue: :count payment notice(s), :total": "Gecikmiş: :count ödeme bildirimi, :total",
+    "Overdue: :count payment notice, :total|Overdue: :count payment notices, :total": "Gecikmiş: :count ödeme bildirimi, :total",
     "Payments: :count, :total": "Ödemeler: :count, :total",
     "Save to use it.": "Kullanmak için kaydedin.",
     "Send /start to the bot: it answers with the chat's ID.": "Bota /start gönderin: sohbetin kimliğiyle yanıt verir.",

@@ -143,7 +143,7 @@ class BetterStackMonitoringTest extends TestCase
             ->assertFormSet(['better_stack.api_token' => null])
             ->fillForm(['better_stack' => ['api_token' => 'bs-typed']])
             ->callAction('testConnection')
-            ->assertNotified('Connected: 3 monitor(s)')
+            ->assertNotified('Connected: 3 monitors')
             ->call('save')
             ->assertHasNoFormErrors()
             ->assertSet('data.better_stack.api_token', null);

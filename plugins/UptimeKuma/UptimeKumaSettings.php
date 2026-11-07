@@ -89,7 +89,7 @@ class UptimeKumaSettings extends SettingsFormPage
                     }
 
                     Notification::make()->success()
-                        ->title(__('Connected: :count monitor(s)', ['count' => $monitors->count()]))
+                        ->title(trans_choice('Connected: :count monitor|Connected: :count monitors', $monitors->count()))
                         ->body(__(':up up, :down down', [
                             'up' => $monitors->where('status', MonitorStatus::Up)->count(),
                             'down' => $monitors->where('status', MonitorStatus::Down)->count(),

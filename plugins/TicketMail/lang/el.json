@@ -2,7 +2,7 @@
     "A mailbox only for support, e.g. support@ on your mail server. GaiaCP reads its unread emails every minute over IMAP. Put its address under Settings → Support → Replies to ticket emails go to, so clients' answers come back here.": "Ένα γραμματοκιβώτιο μόνο για υποστήριξη, π.χ. support@ στον mail server σου. Το GaiaCP διαβάζει τα αδιάβαστα email του κάθε λεπτό μέσω IMAP. Βάλε τη διεύθυνσή του στις Ρυθμίσεις → Υποστήριξη → Οι απαντήσεις στα email των tickets πηγαίνουν στο, ώστε οι απαντήσεις των πελατών να έρχονται εδώ.",
     "After": "Μετά",
     "Anyone can write a client's address as the sender. The mail server that receives it checks it (DMARC, DKIM, SPF): confirmed is safer, but email from a client whose domain has no such records then opens a ticket without a client.": "Ο καθένας μπορεί να γράψει τη διεύθυνση ενός πελάτη ως αποστολέα. Ο mail server που το λαμβάνει την ελέγχει (DMARC, DKIM, SPF): το «επιβεβαίωσε» είναι ασφαλέστερο, αλλά τότε ένα email από πελάτη χωρίς τέτοιες εγγραφές στο domain του ανοίγει ticket χωρίς πελάτη.",
-    "Connected: :count unread email(s)": "Συνδέθηκε: :count αδιάβαστα email",
+    "Connected: :count unread email|Connected: :count unread emails": "Συνδέθηκε: :count αδιάβαστο email|Συνδέθηκε: :count αδιάβαστα email",
     "Copy it to your mail provider now; it is not shown again: :url": "Αντίγραψέ τη τώρα στον πάροχο email· δεν θα ξαναδειχτεί: :url",
     "Delete from the mailbox": "Διαγραφή από το γραμματοκιβώτιο",
     "Email counts as from the client": "Το email θεωρείται του πελάτη",

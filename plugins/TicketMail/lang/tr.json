@@ -2,7 +2,7 @@
     "A mailbox only for support, e.g. support@ on your mail server. GaiaCP reads its unread emails every minute over IMAP. Put its address under Settings → Support → Replies to ticket emails go to, so clients' answers come back here.": "Yalnızca destek için bir posta kutusu, ör. e-posta sunucunuzda support@. GaiaCP okunmamış e-postalarını her dakika IMAP üzerinden okur. Müşterilerin yanıtlarının buraya dönmesi için adresini Ayarlar → Destek → Destek talebi e-postalarının yanıtları şuraya gider altına girin.",
     "After": "Sonra",
     "Anyone can write a client's address as the sender. The mail server that receives it checks it (DMARC, DKIM, SPF): confirmed is safer, but email from a client whose domain has no such records then opens a ticket without a client.": "Herkes bir müşterinin adresini gönderen olarak yazabilir. E-postayı alan posta sunucusu bunu denetler (DMARC, DKIM, SPF): doğrulanmış daha güvenlidir, ancak alan adında bu kayıtlar olmayan bir müşterinin e-postası o zaman müşterisiz bir talep açar.",
-    "Connected: :count unread email(s)": "Bağlandı: :count okunmamış e-posta",
+    "Connected: :count unread email|Connected: :count unread emails": "Bağlandı: :count okunmamış e-posta",
     "Copy it to your mail provider now; it is not shown again: :url": "Bunu şimdi e-posta sağlayıcınıza kopyalayın; yeniden gösterilmez: :url",
     "Delete from the mailbox": "Posta kutusundan sil",
     "Email counts as from the client": "E-posta müşteriden sayılır",

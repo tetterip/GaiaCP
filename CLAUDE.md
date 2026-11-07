@@ -218,7 +218,8 @@ Read the file for the area you are changing before you change it; don't read the
 ## Conventions
 
 - Every text in the panel goes through `__()` with the English text as the key; values go in as `:placeholders`
-  (`__('Sent to :email', ['email' => $to])`), never by joining pieces. Filament labels (`->label()`, and the ones
+  (`__('Sent to :email', ['email' => $to])`), never by joining pieces; a count
+  uses `trans_choice(':count server|:count servers', $n)`, never "server(s)". Filament labels (`->label()`, and the ones
   it makes from field names) are translated already (`translateLabel()` in `AppServiceProvider`); static titles and
   menu labels need `App\Filament\Concerns\Translates*` on the class. `LocalesTest` fails on untranslated text in
   `app/Filament` and on any text missing from `lang/el.json` (add new ones with `gaiacp:translations el --write`, then

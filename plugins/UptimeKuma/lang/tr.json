@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up çalışıyor, :down kapalı",
     "API key / password": "API anahtarı / parola",
-    "Connected: :count monitor(s)": "Bağlandı: :count monitör",
+    "Connected: :count monitor|Connected: :count monitors": "Bağlandı: :count monitör",
     "Connection": "Bağlantı",
     "Could not reach Uptime Kuma: :error": "Uptime Kuma'ya ulaşılamadı: :error",
     "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Ayarlar → Uptime Kuma altında Uptime Kuma adresini doldurun.",

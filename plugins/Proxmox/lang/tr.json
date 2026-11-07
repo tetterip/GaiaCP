@@ -1,5 +1,5 @@
 {
-    ":count address(es) added": ":count adres eklendi",
+    ":count address added|:count addresses added": ":count adres eklendi",
     "A new VPS takes the first free address of its server, and gives it back when it is terminated. A server with no addresses here gives its VPS an address by DHCP.": "Yeni bir VPS sunucusunun ilk boş adresini alır ve sonlandırıldığında geri verir. Burada adresi olmayan bir sunucu VPS'ine DHCP ile adres verir.",
     "Add addresses": "Adres ekle",
     "Add the Proxmox server under Settings → Servers with the type <strong>Proxmox VE</strong>. Each product's package is the name of a KVM template with cloud-init: the VPS is a full clone of it, with its CPU, memory and disk, on the template's node.": "Proxmox sunucusunu Ayarlar → Sunucular altında <strong>Proxmox VE</strong> türüyle ekleyin. Her ürünün paketi, cloud-init içeren bir KVM şablonunun adıdır: VPS, CPU'su, belleği ve diskiyle, şablonun düğümünde onun tam bir klonudur.",

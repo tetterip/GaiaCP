@@ -92,7 +92,7 @@ class ProxmoxAddressesPage extends Page implements HasTable
                         )->wasRecentlyCreated ? 1 : 0;
                     }
 
-                    $notification = Notification::make()->title(__(':count address(es) added', ['count' => $added]));
+                    $notification = Notification::make()->title(trans_choice(':count address added|:count addresses added', $added));
 
                     $invalid === []
                         ? $notification->success()->send()

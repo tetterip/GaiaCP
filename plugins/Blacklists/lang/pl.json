@@ -1,6 +1,6 @@
 {
-    ":count listing(s) found": "Znalezione wpisy: :count",
-    ":ips IP address(es) of :servers server(s) checked.": "Sprawdzono adresy IP (:ips) serwerów (:servers).",
+    ":count listing found|:count listings found": "Znalezione wpisy: :count",
+    "IP addresses checked: :ips (servers: :servers).": "Sprawdzone adresy IP: :ips (serwery: :servers).",
     ":server (:ip) on :zone since :date": ":server (:ip) na :zone od :date",
     "Blacklists": "Czarne listy",
     "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Co godzinę sprawdza adresy IP Twoich serwerów na czarnych listach spamu i powiadamia dzwonkiem, gdy któryś się na nich znajdzie, zanim klienci znajdą swoje e-maile w spamie.",

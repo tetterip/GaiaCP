@@ -147,6 +147,9 @@ You need PHP 8.3 or later, a MySQL or MariaDB database and a cron job. No SSH, C
 Updates are one button under Settings → System → Updates (a backup is made first). Document root, nginx, SSH
 installs and the settings: [docs/installation.md](docs/installation.md).
 
+To try it on your own machine instead: `docker compose up -d --build`, then open http://localhost:8080/admin
+([docs/docker.md](docs/docker.md)).
+
 ## Documentation
 
 | For | Read |
@@ -156,6 +159,7 @@ installs and the settings: [docs/installation.md](docs/installation.md).
 | How billing, panels, registrars and the WHMCS import work | [docs/reference.md](docs/reference.md) |
 | Writing a plugin | [Tutorial](docs/plugin-tutorial.md), [reference](docs/writing-plugins.md), [plugin API](docs/plugin-api.md), [plugin catalogue](docs/plugin-catalogue.md) |
 | Scripts and other sites | [REST API](docs/using-the-api.md) |
+| Trying it with Docker | [docs/docker.md](docs/docker.md) |
 | Your own demo | [docs/demo-site.md](docs/demo-site.md) |
 | Releases | [docs/releases.md](docs/releases.md), [CHANGELOG.md](CHANGELOG.md) |
 

@@ -38,21 +38,29 @@ class IncomeForecast extends IncomeReportPage
         return 'filament.reports.horizon';
     }
 
+    /** One forecast for the note and the table: it reads every billable service. */
+    private ?Forecast $forecast = null;
+
+    private function forecast(): Forecast
+    {
+        return $this->forecast ??= new Forecast;
+    }
+
     public function note(): ?string
     {
-        $forecast = new Forecast;
+        $forecast = $this->forecast();
+        $months = $forecast->monthly(in_array($this->months, [6, 12, 24, 36], true) ? $this->months : 12);
         $overdue = $forecast->overdue();
 
-        $note = __('At the services\' prices (before tax when tax is added on top). Services set to auto-terminate are left out. Overdue now and not in the table: :amount for :count renewal(s).', [
+        $note = trans_choice('At the services\' prices (before tax when tax is added on top). Services set to auto-terminate are left out. Overdue now and not in the table: :amount for :count renewal.|At the services\' prices (before tax when tax is added on top). Services set to auto-terminate are left out. Overdue now and not in the table: :amount for :count renewals.', $overdue['count'], [
             'amount' => static::money($overdue['cents']),
-            'count' => $overdue['count'],
         ]);
 
         if ($forecast->serverCosts() > 0) {
             $note .= ' '.__('Profit = the month\'s renewals minus :cost, what the active servers cost a month.', ['cost' => static::money($forecast->serverCosts())]);
         }
 
-        return array_sum(array_column($forecast->monthly($this->months), 'domain_costs')) > 0
+        return array_sum(array_column($months, 'domain_costs')) > 0
             ? $note.' '.__('Domain costs = what the registrars charge to renew the month\'s domains (Settings → Domain pricing → Registrar cost); they are taken off the profit too.')
             : $note;
     }
@@ -64,7 +72,7 @@ class IncomeForecast extends IncomeReportPage
 
     public function report(): array
     {
-        $forecast = new Forecast;
+        $forecast = $this->forecast();
         $months = $forecast->monthly(in_array($this->months, [6, 12, 24, 36], true) ? $this->months : 12);
         // Profit once a server has a Monthly cost: each month's renewals minus what the active servers cost.
         $cost = $forecast->serverCosts();

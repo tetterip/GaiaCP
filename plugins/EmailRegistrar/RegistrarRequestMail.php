@@ -30,9 +30,9 @@ class RegistrarRequestMail extends Mailable
         $years = $this->details['years'] ?? 1;
 
         return match ($this->request) {
-            self::REGISTER => __('Register :domain for :years year(s)', ['domain' => $this->domain, 'years' => $years]),
+            self::REGISTER => trans_choice('Register :domain for :count year|Register :domain for :count years', $years, ['domain' => $this->domain]),
             self::TRANSFER => __('Transfer :domain in', ['domain' => $this->domain]),
-            self::RENEW => __('Renew :domain for :years year(s)', ['domain' => $this->domain, 'years' => $years]),
+            self::RENEW => trans_choice('Renew :domain for :count year|Renew :domain for :count years', $years, ['domain' => $this->domain]),
             self::NAMESERVERS => __('Change the nameservers of :domain', ['domain' => $this->domain]),
             default => __('Send the EPP code of :domain to the client', ['domain' => $this->domain]),
         };

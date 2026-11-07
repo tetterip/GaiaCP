@@ -1,7 +1,7 @@
 {
     ":up up, :down down": ":up online, :down offline",
     "API key / password": "API-sleutel / wachtwoord",
-    "Connected: :count monitor(s)": "Verbonden: :count monitor(s)",
+    "Connected: :count monitor|Connected: :count monitors": "Verbonden: :count monitor|Verbonden: :count monitors",
     "Connection": "Verbinding",
     "Could not reach Uptime Kuma: :error": "Kon Uptime Kuma niet bereiken: :error",
     "Fill in the Uptime Kuma address under Settings → Uptime Kuma.": "Vul het adres van Uptime Kuma in onder Instellingen → Uptime Kuma.",

@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.1] - 2026-11-07
+
+- Test connection says "1 unread email" or "3 unread emails" in every language, instead of "email(s)"
+
 ## [1.3.0] - 2026-11-04
 
 - **Email counts as from the client** starts on "Only when the mail server confirmed the sender": anyone can write a

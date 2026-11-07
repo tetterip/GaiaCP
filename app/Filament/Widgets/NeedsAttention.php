@@ -96,7 +96,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-server-stack',
                 'tone' => 'bad',
-                'title' => __(':count server(s) down', ['count' => $servers->count()]),
+                'title' => trans_choice(':count server down|:count servers down', $servers->count()),
                 'sub' => $servers->pluck('name')->join(', ').' · '.__('Since :time', ['time' => $servers->first()->monitor_status_since?->diffForHumans() ?? '?']),
                 'url' => $servers->count() === 1 ? ServerResource::getUrl('edit', ['record' => $servers->first()]) : ServerResource::getUrl(),
             ];
@@ -106,7 +106,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-shopping-cart',
                 'tone' => 'warn',
-                'title' => __(':count order(s) waiting for Complete order', ['count' => (clone $pending)->count()]),
+                'title' => trans_choice(':count order waiting for Complete order|:count orders waiting for Complete order', (clone $pending)->count()),
                 'sub' => __('Oldest :time', ['time' => (clone $pending)->oldest()->value('created_at')?->diffForHumans()]),
                 'url' => OrderResource::getUrl(parameters: ['filters' => ['status' => ['value' => OrderStatus::Pending->value]]]),
             ];
@@ -116,7 +116,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-x-circle',
                 'tone' => 'warn',
-                'title' => __(':count cancellation request(s) to answer', ['count' => (clone $cancellations)->count()]),
+                'title' => trans_choice(':count cancellation request to answer|:count cancellation requests to answer', (clone $cancellations)->count()),
                 'sub' => __('Oldest :time', ['time' => (clone $cancellations)->oldest()->value('created_at')?->diffForHumans()]),
                 'url' => CancellationRequestResource::getUrl(),
             ];
@@ -126,7 +126,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-arrows-up-down',
                 'tone' => 'warn',
-                'title' => __(':count upgrade / downgrade request(s) to answer', ['count' => (clone $upgrades)->count()]),
+                'title' => trans_choice(':count upgrade / downgrade request to answer|:count upgrade / downgrade requests to answer', (clone $upgrades)->count()),
                 'sub' => __('Oldest :time', ['time' => (clone $upgrades)->oldest()->value('created_at')?->diffForHumans()]),
                 'url' => UpgradeRequestResource::getUrl(),
             ];
@@ -138,7 +138,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-user',
                 'tone' => 'info',
-                'title' => __(':count client change request(s)', ['count' => $count]),
+                'title' => trans_choice(':count client change request|:count client change requests', $count),
                 'sub' => $latest?->client ? $latest->client->name.' · '.$latest->created_at?->diffForHumans() : null,
                 'url' => $count === 1 && $latest?->client ? ClientResource::getUrl('edit', ['record' => $latest->client]) : ClientResource::getUrl(),
             ];
@@ -148,7 +148,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-chat-bubble-left-right',
                 'tone' => 'warn',
-                'title' => __(':count ticket(s) waiting for a reply over :hours hours', ['count' => (clone $tickets)->count(), 'hours' => self::TICKET_HOURS]),
+                'title' => trans_choice(':count ticket waiting for a reply over :hours hours|:count tickets waiting for a reply over :hours hours', (clone $tickets)->count(), ['hours' => self::TICKET_HOURS]),
                 'sub' => __('Oldest :time', ['time' => StoredTime::parse((clone $tickets)->min('last_reply_at'))?->diffForHumans()]),
                 'url' => TicketResource::getUrl(parameters: ['activeTab' => 'waiting']),
             ];
@@ -160,7 +160,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-phone',
                 'tone' => 'info',
-                'title' => __(':count lead(s) to contact today', ['count' => $count]),
+                'title' => trans_choice(':count lead to contact today|:count leads to contact today', $count),
                 'sub' => $first->map(fn (Lead $lead) => $lead->displayName())->join(', ').($count > 3 ? '…' : ''),
                 'url' => $count === 1 ? LeadResource::getUrl('edit', ['record' => $first->first()]) : LeadResource::getUrl(parameters: ['activeTab' => 'to_contact']),
             ];
@@ -170,7 +170,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-document-text',
                 'tone' => 'bad',
-                'title' => __(':count overdue payment notice(s)', ['count' => (clone $overdue)->count()]),
+                'title' => trans_choice(':count overdue payment notice|:count overdue payment notices', (clone $overdue)->count()),
                 'sub' => Money::format(Currencies::sumToBase($overdue, 'total_cents'), Currencies::base()),
                 'url' => InvoiceResource::getUrl(parameters: ['filters' => ['overdue' => ['isActive' => true]]]),
             ];
@@ -180,7 +180,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-calendar',
                 'tone' => 'info',
-                'title' => __(':count payment notice(s) due today', ['count' => (clone $dueToday)->count()]),
+                'title' => trans_choice(':count payment notice due today|:count payment notices due today', (clone $dueToday)->count()),
                 'sub' => Money::format(Currencies::sumToBase($dueToday, 'total_cents'), Currencies::base()),
                 'url' => ($first = (clone $dueToday)->value('id')) && (clone $dueToday)->count() === 1
                     ? InvoiceResource::getUrl('view', ['record' => $first])
@@ -192,7 +192,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-globe-alt',
                 'tone' => 'warn',
-                'title' => __(':count domain(s) to check at the registrar', ['count' => $domains->count()]),
+                'title' => trans_choice(':count domain to check at the registrar|:count domains to check at the registrar', $domains->count()),
                 'sub' => $domains->take(3)->pluck('domain')->join(', ').($domains->count() > 3 ? '…' : ''),
                 'url' => $domains->count() === 1
                     ? ServiceResource::getUrl('edit', ['record' => $domains->first()])
@@ -204,7 +204,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-document-check',
                 'tone' => 'info',
-                'title' => __(':count quote(s) ending within :days days', ['count' => (clone $quotes)->count(), 'days' => self::QUOTE_DAYS]),
+                'title' => trans_choice(':count quote ending within :days days|:count quotes ending within :days days', (clone $quotes)->count(), ['days' => self::QUOTE_DAYS]),
                 'sub' => (clone $quotes)->orderBy('valid_until')->limit(3)->pluck('number')->join(', '),
                 'url' => QuoteResource::getUrl(parameters: ['activeTab' => 'open']),
             ];
@@ -214,7 +214,7 @@ class NeedsAttention extends Widget
             $items[] = [
                 'icon' => 'heroicon-o-arrow-path',
                 'tone' => 'bad',
-                'title' => __(':count failed action(s) in the module queue', ['count' => (clone $queue)->count()]),
+                'title' => trans_choice(':count failed action in the module queue|:count failed actions in the module queue', (clone $queue)->count()),
                 'sub' => __('Last failed :time', ['time' => StoredTime::parse((clone $queue)->max('last_attempt_at'))?->diffForHumans()]),
                 'url' => ModuleQueueItemResource::getUrl(),
             ];

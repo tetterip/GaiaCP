@@ -2,7 +2,7 @@
     "API password": "Κωδικός API",
     "API username": "Όνομα χρήστη API",
     "Account balance: :balance": "Υπόλοιπο λογαριασμού: :balance",
-    "Connected: :count certificate(s) for sale": "Συνδέθηκε: :count πιστοποιητικά προς πώληση",
+    "Connected: :count certificate for sale|Connected: :count certificates for sale": "Συνδέθηκε: :count πιστοποιητικό προς πώληση|Συνδέθηκε: :count πιστοποιητικά προς πώληση",
     "Connection": "Σύνδεση",
     "Dcv method": "Τρόπος επιβεβαίωσης",
     "GoGetSSL": "GoGetSSL",

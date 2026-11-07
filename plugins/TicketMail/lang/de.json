@@ -2,7 +2,7 @@
     "A mailbox only for support, e.g. support@ on your mail server. GaiaCP reads its unread emails every minute over IMAP. Put its address under Settings → Support → Replies to ticket emails go to, so clients' answers come back here.": "Ein Postfach nur für den Support, z. B. support@ auf Ihrem Mailserver. GaiaCP liest jede Minute dessen ungelesene E-Mails per IMAP. Tragen Sie seine Adresse unter Einstellungen → Support → Antworten auf Ticket-E-Mails gehen an ein, damit Antworten der Kunden hierher zurückkommen.",
     "After": "Danach",
     "Anyone can write a client's address as the sender. The mail server that receives it checks it (DMARC, DKIM, SPF): confirmed is safer, but email from a client whose domain has no such records then opens a ticket without a client.": "Jeder kann die Adresse eines Kunden als Absender angeben. Der empfangende Mailserver prüft sie (DMARC, DKIM, SPF): Bestätigt ist sicherer, aber eine E-Mail eines Kunden, dessen Domain keine solchen Einträge hat, öffnet dann ein Ticket ohne Kunde.",
-    "Connected: :count unread email(s)": "Verbunden: :count ungelesene E-Mail(s)",
+    "Connected: :count unread email|Connected: :count unread emails": "Verbunden: :count ungelesene E-Mail|Verbunden: :count ungelesene E-Mails",
     "Copy it to your mail provider now; it is not shown again: :url": "Kopieren Sie sie jetzt zu Ihrem Mail-Anbieter; sie wird nicht erneut angezeigt: :url",
     "Delete from the mailbox": "Aus dem Postfach löschen",
     "Email counts as from the client": "E-Mail zählt als vom Kunden",

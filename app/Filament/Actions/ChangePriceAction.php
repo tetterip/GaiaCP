@@ -74,7 +74,7 @@ class ChangePriceAction
             ->label('Change its services\' price')
             ->icon(Heroicon::OutlinedCurrencyEuro)
             ->color('gray')
-            ->modalDescription(fn (Product $record) => __('Its :count active service(s) get the product\'s price for their billing cycle as it is now. Edit the product\'s prices first.', ['count' => $record->services()->billable()->count()])
+            ->modalDescription(fn (Product $record) => trans_choice('Its :count active service gets the product\'s price for its billing cycle as it is now. Edit the product\'s prices first.|Its :count active services get the product\'s price for their billing cycle as it is now. Edit the product\'s prices first.', $record->services()->billable()->count())
                 .' '.self::explained())
             ->schema(self::schema(modes: false))
             ->action(fn (Product $record, array $data) => self::run($record->services()->billable()->get(), ['mode' => 'catalog'] + $data));
@@ -86,7 +86,7 @@ class ChangePriceAction
             ->label('Change its domains\' price')
             ->icon(Heroicon::OutlinedCurrencyEuro)
             ->color('gray')
-            ->modalDescription(fn (Tld $record) => __('Its :count active domain(s) get its renewal price for their term as it is now. Edit its prices first. Domains only tracked here are left out.', ['count' => self::domainsOf($record)->count()])
+            ->modalDescription(fn (Tld $record) => trans_choice('Its :count active domain gets its renewal price for its term as it is now. Edit its prices first. Domains only tracked here are left out.|Its :count active domains get its renewal price for their term as it is now. Edit its prices first. Domains only tracked here are left out.', self::domainsOf($record)->count())
                 .' '.self::explained())
             ->schema(self::schema(modes: false))
             ->action(fn (Tld $record, array $data) => self::run(self::domainsOf($record), ['mode' => 'catalog'] + $data));
@@ -144,10 +144,10 @@ class ChangePriceAction
 
         Notification::make()
             ->{$summary['scheduled'] > 0 ? 'success' : 'warning'}()
-            ->title(__(':count service(s) get the new price from :date', ['count' => $summary['scheduled'], 'date' => CarbonImmutable::parse($data['from'])->format(AppServiceProvider::dateFormat())]))
+            ->title(trans_choice(':count service gets the new price from :date|:count services get the new price from :date', $summary['scheduled'], ['date' => CarbonImmutable::parse($data['from'])->format(AppServiceProvider::dateFormat())]))
             ->body(collect([
                 $summary['skipped'] ? __(':count left as they are (same price, no price for their cycle, or ending).', ['count' => $summary['skipped']]) : null,
-                $data['email'] ? __(':count client(s) emailed.', ['count' => $summary['emailed']]) : null,
+                $data['email'] ? trans_choice(':count client emailed.|:count clients emailed.', $summary['emailed']) : null,
             ])->filter()->join(' ') ?: null)
             ->send();
     }

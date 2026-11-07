@@ -99,7 +99,7 @@ class BlacklistCheckTest extends TestCase
         Livewire::test(BlacklistsSettings::class)
             ->assertSee('No server is listed.')
             ->callAction('checkNow')
-            ->assertNotified('1 listing(s) found');
+            ->assertNotified('1 listing found');
 
         Livewire::test(BlacklistsSettings::class)->assertSee('nl1 (93.184.216.34) on bl.spamcop.net');
         $this->artisan('gaiacp:check-blacklists')->assertSuccessful();

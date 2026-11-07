@@ -324,7 +324,7 @@ class ServerMonitoringTest extends TestCase
         Livewire::test(UptimeKumaSettings::class)
             ->fillForm(['uptime_kuma' => ['url' => 'https://kuma.other.com/', 'password' => 'uk2_new']])
             ->callAction('testConnection')
-            ->assertNotified('Connected: 2 monitor(s)');
+            ->assertNotified('Connected: 2 monitors');
 
         Http::assertSent(fn (Request $request) => $request->header('Authorization')[0] === 'Basic '.base64_encode(':uk2_new'));
     }

@@ -24,3 +24,7 @@
 .styleci.yml export-ignore
 /docs/screenshots export-ignore
 /bin/release-key export-ignore
+/Dockerfile export-ignore
+/.dockerignore export-ignore
+/docker-compose.yml export-ignore
+/docker export-ignore

@@ -1,6 +1,6 @@
 {
-    ":count listing(s) found": "Βρέθηκαν :count καταχωρίσεις",
-    ":ips IP address(es) of :servers server(s) checked.": "Ελέγχθηκαν :ips διευθύνσεις IP σε :servers servers.",
+    ":count listing found|:count listings found": "Βρέθηκε :count καταχώριση|Βρέθηκαν :count καταχωρίσεις",
+    "IP addresses checked: :ips (servers: :servers).": "Διευθύνσεις IP που ελέγχθηκαν: :ips (servers: :servers).",
     ":server (:ip) on :zone since :date": ":server (:ip) στη λίστα :zone από :date",
     "Blacklists": "Blacklists",
     "Checks your servers' IP addresses against spam blacklists every hour and tells you in the bell when one is listed, before clients find their emails in spam.": "Ελέγχει κάθε ώρα τις διευθύνσεις IP των servers σου σε blacklists spam και σε ειδοποιεί στο καμπανάκι όταν κάποια μπει σε λίστα, πριν βρουν οι πελάτες τα email τους στα spam.",

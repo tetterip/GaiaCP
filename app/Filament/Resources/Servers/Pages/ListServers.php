@@ -47,7 +47,7 @@ class ListServers extends ListRecords
                     $result = $monitoring->check();
 
                     $result['failed'] === []
-                        ? Notification::make()->success()->title(__('Checked :count server(s)', ['count' => $result['servers']]))->send()
+                        ? Notification::make()->success()->title(trans_choice('Checked :count server|Checked :count servers', $result['servers']))->send()
                         : Notification::make()->danger()->title(__('Could not read the monitoring service'))->body(implode("\n", $result['failed']))->persistent()->send();
                 }),
             CreateAction::make(),

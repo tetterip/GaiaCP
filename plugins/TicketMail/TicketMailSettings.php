@@ -86,7 +86,7 @@ class TicketMailSettings extends SettingsFormPage
                         return;
                     }
 
-                    Notification::make()->success()->title(__('Connected: :count unread email(s)', ['count' => $unread]))->send();
+                    Notification::make()->success()->title(trans_choice('Connected: :count unread email|Connected: :count unread emails', $unread))->send();
                 }),
         ];
     }

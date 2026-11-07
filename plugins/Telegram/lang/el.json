@@ -27,7 +27,7 @@
     "No overdue payment notices.": "Καμία ληξιπρόθεσμη ειδοποίηση πληρωμής.",
     "No ticket is waiting for an answer.": "Κανένα ticket δεν περιμένει απάντηση.",
     "Open in GaiaCP": "Άνοιγμα στο GaiaCP",
-    "Overdue: :count payment notice(s), :total": "Ληξιπρόθεσμες: :count ειδοποιήσεις πληρωμής, :total",
+    "Overdue: :count payment notice, :total|Overdue: :count payment notices, :total": "Ληξιπρόθεσμη: :count ειδοποίηση πληρωμής, :total|Ληξιπρόθεσμες: :count ειδοποιήσεις πληρωμής, :total",
     "Payments: :count, :total": "Πληρωμές: :count, :total",
     "Save to use it.": "Αποθήκευσε για να το χρησιμοποιήσεις.",
     "Send /start to the bot: it answers with the chat's ID.": "Στείλε /start στο bot: απαντά με το ID της συνομιλίας.",

@@ -1,5 +1,5 @@
 {
-    ":sites site(s) checked, :problems with a problem": "Ελέγχθηκαν :sites sites, :problems με πρόβλημα",
+    ":count site checked, :problems with a problem|:count sites checked, :problems with a problem": "Ελέγχθηκε :count site, :problems με πρόβλημα|Ελέγχθηκαν :count sites, :problems με πρόβλημα",
     "Behind Cloudflare": "Πίσω από Cloudflare",
     "Check all now": "Έλεγχος όλων τώρα",
     "Checked": "Έλεγχος",

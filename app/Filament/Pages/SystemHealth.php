@@ -126,8 +126,8 @@ class SystemHealth extends Page implements HasTable, SettingsCard
 
         return $schema->components([
             match (true) {
-                $errors > 0 => Callout::make(__(':count problem(s) need attention', ['count' => $errors]))->danger(),
-                $warnings > 0 => Callout::make(__(':count warning(s), nothing broken', ['count' => $warnings]))->warning(),
+                $errors > 0 => Callout::make(trans_choice(':count problem needs attention|:count problems need attention', $errors))->danger(),
+                $warnings > 0 => Callout::make(trans_choice(':count warning, nothing broken|:count warnings, nothing broken', $warnings))->warning(),
                 default => Callout::make(__('Everything looks fine'))->success(),
             },
             EmbeddedTable::make(),

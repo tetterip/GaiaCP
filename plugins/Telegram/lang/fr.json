@@ -27,7 +27,7 @@
     "No overdue payment notices.": "Aucun avis de paiement en retard.",
     "No ticket is waiting for an answer.": "Aucun ticket n'attend de réponse.",
     "Open in GaiaCP": "Ouvrir dans GaiaCP",
-    "Overdue: :count payment notice(s), :total": "En retard : :count avis de paiement, :total",
+    "Overdue: :count payment notice, :total|Overdue: :count payment notices, :total": "En retard : :count avis de paiement, :total|En retard : :count avis de paiement, :total",
     "Payments: :count, :total": "Paiements : :count, :total",
     "Save to use it.": "Enregistrez pour l'utiliser.",
     "Send /start to the bot: it answers with the chat's ID.": "Envoyez /start au bot : il répond avec l'ID de la conversation.",

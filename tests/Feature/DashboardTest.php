@@ -80,9 +80,9 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->create());
         Livewire::test(BillingOverview::class)
             ->assertSee('€195.00')
-            ->assertSee('in 2 unpaid payment notice(s)')
+            ->assertSee('in 2 unpaid payment notices')
             ->assertSee('€150.00')
-            ->assertSee('1 notice(s)');
+            ->assertSee('1 notice');
     }
 
     public function test_the_chart_counts_orders_and_income_per_day_and_compares_the_period_before(): void
@@ -202,15 +202,15 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->create());
         $titles = array_column(NeedsAttention::items(), 'title');
         $this->assertSame([
-            '1 order(s) waiting for Complete order',
-            '1 overdue payment notice(s)',
+            '1 order waiting for Complete order',
+            '1 overdue payment notice',
             'Backup failed',
         ], $titles);
 
         // Billing only: the notice, not the order or the activity log
         User::factory()->create();
         $this->actingAs(User::factory()->limitedTo([AdminArea::Billing])->create());
-        $this->assertSame(['1 overdue payment notice(s)'], array_column(NeedsAttention::items(), 'title'));
+        $this->assertSame(['1 overdue payment notice'], array_column(NeedsAttention::items(), 'title'));
         $this->assertFalse(ServerCapacity::canView());
         $this->assertTrue(ActivityChart::canView());
     }
@@ -256,21 +256,21 @@ class DashboardTest extends TestCase
         $items = collect(NeedsAttention::items())->keyBy('title');
 
         $this->assertSame([
-            '1 server(s) down',
-            '1 cancellation request(s) to answer',
-            '1 upgrade / downgrade request(s) to answer',
-            '1 ticket(s) waiting for a reply over 24 hours',
-            '1 payment notice(s) due today',
-            '2 domain(s) to check at the registrar',
-            '1 quote(s) ending within 3 days',
+            '1 server down',
+            '1 cancellation request to answer',
+            '1 upgrade / downgrade request to answer',
+            '1 ticket waiting for a reply over 24 hours',
+            '1 payment notice due today',
+            '2 domains to check at the registrar',
+            '1 quote ending within 3 days',
         ], $items->keys()->all());
-        $this->assertStringStartsWith('nl1 · ', $items['1 server(s) down']['sub']);
-        $this->assertSame('soon.gr, paid-ahead.gr', $items['2 domain(s) to check at the registrar']['sub']);
+        $this->assertStringStartsWith('nl1 · ', $items['1 server down']['sub']);
+        $this->assertSame('soon.gr, paid-ahead.gr', $items['2 domains to check at the registrar']['sub']);
         $this->assertFalse(NeedsAttention::isEmpty());
-        $this->get(Dashboard::getUrl())->assertOk()->assertSee('gx-slot-NeedsAttention', false)->assertSee('1 server(s) down');
+        $this->get(Dashboard::getUrl())->assertOk()->assertSee('gx-slot-NeedsAttention', false)->assertSee('1 server down');
 
         // Support only: the tickets, nothing else
         $this->actingAs(User::factory()->limitedTo([AdminArea::Support])->create());
-        $this->assertSame(['1 ticket(s) waiting for a reply over 24 hours'], array_column(NeedsAttention::items(), 'title'));
+        $this->assertSame(['1 ticket waiting for a reply over 24 hours'], array_column(NeedsAttention::items(), 'title'));
     }
 }
