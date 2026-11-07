@@ -1,6 +1,6 @@
 <?php
 
-// Texts Filament's own Greek file lacks; merged over it by Laravel.
+// Texts Filament's own Greek file lacks or leaves in English; merged over it by Laravel.
 return [
     'column_manager' => [
         'position' => 'Θέση :position από :count.',
@@ -51,6 +51,9 @@ return [
         'toggle_record_content' => [
             'label' => 'Ανάπτυξη/σύμπτυξη στοιχείου :key',
         ],
+        'column_manager' => [
+            'label' => 'Διαχείριση στηλών',
+        ],
     ],
     'loading' => 'Φόρτωση...',
     'reordering' => [
@@ -58,4 +61,16 @@ return [
         'moved' => ':label: μετακινήθηκε στη θέση :position από :count.',
     ],
     'result_count' => '{0} Κανένα αποτέλεσμα|{1} :count αποτέλεσμα|[2,*] :count αποτελέσματα',
+    'grouping' => [
+        'fields' => [
+            'direction' => [
+                'label' => 'Σειρά ομάδων',
+            ],
+        ],
+    ],
+    'summary' => [
+        'subheadings' => [
+            'page' => 'Αυτή η σελίδα',
+        ],
+    ],
 ];

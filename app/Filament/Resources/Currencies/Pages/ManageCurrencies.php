@@ -58,6 +58,7 @@ class ManageCurrencies extends ManageRecords
                 }),
             CreateAction::make()
                 ->label('Add currency')
+                ->createAnother(false)
                 ->after(fn (Currency $record) => ActivityLog::record('currency.created', "Currency {$record->code} added (rate {$record->rate})")),
         ];
     }

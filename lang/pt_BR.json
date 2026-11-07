@@ -3904,5 +3904,7 @@
     "Send client emails in the background": "Enviar os e-mails aos clientes em segundo plano",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Uma página que envia um e-mail a um cliente continua na hora; o e-mail segue em até um minuto, pelo agendador. Um e-mail recusado pelo servidor de e-mail é tentado três vezes e depois aparece no registro de e-mails e em Configurações → Tarefas com falha. Desligado: é enviado antes de a página continuar, então um servidor de e-mail lento a faz esperar.",
     "Background": "Segundo plano",
+    "Take the tax off": "Remover o imposto",
+    "Put the tax back": "Reaplicar o imposto",
     "This item no longer exists. It may have been deleted.": "Este item não existe mais. Ele pode ter sido excluído."
 }

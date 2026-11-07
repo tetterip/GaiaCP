@@ -1,6 +1,6 @@
 <?php
 
-// Texts Filament's own Greek file lacks; merged over it by Laravel.
+// Texts Filament's own Greek file lacks or leaves in English; merged over it by Laravel.
 return [
     'form' => [
         'or_groups' => [
@@ -83,5 +83,103 @@ return [
                 ],
             ],
         ],
+        'boolean' => [
+            'is_true' => [
+                'label' => [
+                    'direct' => 'Είναι αληθές',
+                    'inverse' => 'Είναι ψευδές',
+                ],
+                'summary' => [
+                    'direct' => ':attribute είναι αληθές',
+                    'inverse' => ':attribute είναι ψευδές',
+                ],
+            ],
+        ],
+        'is_filled' => [
+            'label' => [
+                'direct' => 'Είναι συμπληρωμένο',
+                'inverse' => 'Είναι κενό',
+            ],
+            'summary' => [
+                'direct' => ':attribute είναι συμπληρωμένο',
+                'inverse' => ':attribute είναι κενό',
+            ],
+        ],
+        'number' => [
+            'aggregates' => [
+                'average' => [
+                    'summary' => 'Μέσος όρος :attribute',
+                ],
+                'max' => [
+                    'summary' => 'Μέγιστο :attribute',
+                ],
+                'min' => [
+                    'summary' => 'Ελάχιστο :attribute',
+                ],
+                'sum' => [
+                    'summary' => 'Άθροισμα :attribute',
+                ],
+            ],
+            'form' => [
+                'aggregate' => [
+                    'label' => 'Συνάθροιση',
+                ],
+            ],
+            'is_max' => [
+                'label' => [
+                    'direct' => 'Είναι το πολύ',
+                ],
+                'summary' => [
+                    'direct' => ':attribute είναι το πολύ :number',
+                ],
+            ],
+            'is_min' => [
+                'label' => [
+                    'direct' => 'Είναι τουλάχιστον',
+                ],
+                'summary' => [
+                    'direct' => ':attribute είναι τουλάχιστον :number',
+                ],
+            ],
+        ],
+        'relationship' => [
+            'has_max' => [
+                'label' => [
+                    'direct' => 'Έχει το πολύ',
+                ],
+                'summary' => [
+                    'direct' => 'Έχει το πολύ :count :relationship',
+                ],
+            ],
+            'has_min' => [
+                'label' => [
+                    'direct' => 'Έχει τουλάχιστον',
+                ],
+                'summary' => [
+                    'direct' => 'Έχει τουλάχιστον :count :relationship',
+                ],
+            ],
+            'is_related_to' => [
+                'summary' => [
+                    'values_glue' => [
+                        'final' => ' ή ',
+                    ],
+                ],
+            ],
+        ],
+        'select' => [
+            'is' => [
+                'summary' => [
+                    'values_glue' => [
+                        'final' => ' ή ',
+                    ],
+                ],
+            ],
+        ],
     ],
+    'item_separators' => [
+        'and' => 'ΚΑΙ',
+        'or' => 'Ή',
+    ],
+    'label' => 'Δημιουργία ερωτήματος',
 ];

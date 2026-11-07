@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateRegistrar extends CreateRecord
 {
     protected static string $resource = RegistrarResource::class;
+
+    protected static bool $canCreateAnother = false;
 }

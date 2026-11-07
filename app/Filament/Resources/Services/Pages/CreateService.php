@@ -16,6 +16,8 @@ class CreateService extends CreateRecord
 {
     protected static string $resource = ServiceResource::class;
 
+    protected static bool $canCreateAnother = false;
+
     /** Came from Compare with the server: back there once saved. */
     public ?int $fromServer = null;
 

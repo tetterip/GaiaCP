@@ -3904,5 +3904,7 @@
     "Send client emails in the background": "Wysyłaj e-maile do klientów w tle",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Strona, która wysyła e-mail do klienta, działa dalej od razu; e-mail wychodzi w ciągu minuty, z harmonogramu. E-mail odrzucony przez serwer poczty jest próbowany trzy razy, a potem widać go w dzienniku e-maili i w Ustawienia → Nieudane zadania. Wyłączone: wysyłany przed przejściem strony dalej, więc wolny serwer poczty każe jej czekać.",
     "Background": "Tło",
+    "Take the tax off": "Usuń podatek",
+    "Put the tax back": "Przywróć podatek",
     "This item no longer exists. It may have been deleted.": "Ten element już nie istnieje. Mógł zostać usunięty."
 }
