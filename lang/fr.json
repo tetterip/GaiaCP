@@ -3903,5 +3903,6 @@
     "Switch logging on": "Activer la journalisation",
     "Send client emails in the background": "Envoyer les e-mails aux clients en arrière-plan",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Une page qui envoie un e-mail à un client continue aussitôt ; l'e-mail part dans la minute, via le planificateur. Un e-mail refusé par le serveur de messagerie est essayé trois fois, puis apparaît dans le journal des e-mails et dans Paramètres → Tâches échouées. Désactivé : il est envoyé avant que la page continue, donc un serveur de messagerie lent la fait attendre.",
-    "Background": "Arrière-plan"
+    "Background": "Arrière-plan",
+    "This item no longer exists. It may have been deleted.": "Cet élément n'existe plus. Il a peut-être été supprimé."
 }

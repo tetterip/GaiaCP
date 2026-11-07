@@ -78,8 +78,8 @@ class ClientAreaPagesTest extends TestCase
         $this->get("/services/{$hosting->id}")->assertOk()->assertSee('maria.gr');
         $this->get("/services/{$maintenance->id}")->assertOk()->assertSee('Website care')
             ->assertDontSee('Change password')->assertDontSee('Log in to');
-        $this->get("/services/{$hidden->id}")->assertNotFound();
-        $this->get("/services/{$others->id}")->assertNotFound();
+        $this->get("/services/{$hidden->id}")->assertRedirect('/services'); // not theirs: the list, as for a deleted one
+        $this->get("/services/{$others->id}")->assertRedirect('/services'); // not theirs: the list, as for a deleted one
     }
 
     public function test_domains_show_expiry_and_nameservers(): void
@@ -96,7 +96,7 @@ class ClientAreaPagesTest extends TestCase
             ->assertDontSee('Business hosting');
 
         $this->get("/domains/{$domain->id}")->assertOk()->assertSee('ns1.acme.gr')->assertSee('ns2.acme.gr');
-        $this->get("/domains/{$others->id}")->assertNotFound();
+        $this->get("/domains/{$others->id}")->assertRedirect('/domains'); // not theirs: the list, as for a deleted one
     }
 
     public function test_a_payment_notice_shows_its_lines_how_to_pay_and_that_it_is_not_an_invoice(): void
@@ -118,8 +118,8 @@ class ClientAreaPagesTest extends TestCase
             ->assertSee('This is a payment notice, not a tax invoice.')
             ->assertSee('Print or save as PDF');
 
-        $this->get("/payment-notices/{$others->id}")->assertNotFound();
-        $this->get("/payment-notices/{$cancelled->id}")->assertNotFound();
+        $this->get("/payment-notices/{$others->id}")->assertRedirect('/payment-notices'); // not theirs: the list, as for a deleted one
+        $this->get("/payment-notices/{$cancelled->id}")->assertRedirect('/payment-notices'); // not theirs: the list, as for a deleted one
     }
 
     public function test_a_paid_notice_leaves_out_how_to_pay(): void

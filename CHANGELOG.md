@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The page of a record that no longer exists (Back after Delete, an old link from an email or the bell) opens that
+  list with "This item no longer exists" instead of a bare 404, in the admin panel and the client area.
+
 ## [0.8.0] - 2026-11-07
 
 - Security (audit before this release): client emails waiting on the queue (welcome emails with a password, sign-in

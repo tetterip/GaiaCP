@@ -267,7 +267,8 @@ class TicketsTest extends TestCase
         $ticket = $this->ticket();
         $other = User::factory()->create(['role' => UserRole::Client, 'client_id' => Client::factory()->create()->id]);
 
-        $this->actingAs($other, 'client')->get(ClientTicketResource::getUrl('view', ['record' => $ticket], panel: 'client'))->assertNotFound();
+        $this->actingAs($other, 'client')->get(ClientTicketResource::getUrl('view', ['record' => $ticket], panel: 'client'))
+            ->assertRedirect(ClientTicketResource::getUrl(panel: 'client')); // not theirs: the list, as for a deleted one
         $this->actingAs($this->user, 'client')->get(ClientTicketResource::getUrl('view', ['record' => $ticket], panel: 'client'))->assertOk()->assertSee('Email not working');
 
         config(['gaiacp.support.client_tickets' => false]);

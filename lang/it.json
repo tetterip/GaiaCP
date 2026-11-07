@@ -3903,5 +3903,6 @@
     "Switch logging on": "Attiva la registrazione",
     "Send client emails in the background": "Invia le email ai clienti in background",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Una pagina che invia un'email a un cliente prosegue subito; l'email parte entro un minuto, dallo scheduler. Se il server di posta la rifiuta, viene ritentata tre volte e poi compare nel registro email e in Impostazioni → Job non riusciti. Disattivato: viene inviata prima che la pagina prosegua, quindi un server di posta lento la fa attendere.",
-    "Background": "Background"
+    "Background": "Background",
+    "This item no longer exists. It may have been deleted.": "Questo elemento non esiste più. Potrebbe essere stato eliminato."
 }

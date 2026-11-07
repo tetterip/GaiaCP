@@ -3903,5 +3903,6 @@
     "Switch logging on": "Ενεργοποίηση καταγραφής",
     "Send client emails in the background": "Αποστολή των email πελατών στο παρασκήνιο",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Μια σελίδα που στέλνει email σε πελάτη συνεχίζει αμέσως· το email ακολουθεί μέσα σε ένα λεπτό, από τον προγραμματιστή εργασιών. Αν ο mail server το αρνηθεί, δοκιμάζεται τρεις φορές και μετά εμφανίζεται στο αρχείο email και στις Ρυθμίσεις → Αποτυχημένες εργασίες. Κλειστό: στέλνεται πριν συνεχίσει η σελίδα, οπότε ένας αργός mail server την καθυστερεί.",
-    "Background": "Παρασκήνιο"
+    "Background": "Παρασκήνιο",
+    "This item no longer exists. It may have been deleted.": "Αυτό το στοιχείο δεν υπάρχει πια. Ίσως διαγράφηκε."
 }
