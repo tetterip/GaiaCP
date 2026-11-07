@@ -3905,5 +3905,6 @@
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Eine Seite, die einem Kunden eine E-Mail sendet, geht sofort weiter; die E-Mail folgt innerhalb einer Minute über den Scheduler. Eine vom Mailserver abgelehnte E-Mail wird dreimal versucht und erscheint dann im E-Mail-Protokoll und unter Einstellungen → Fehlgeschlagene Jobs. Aus: Sie wird gesendet, bevor die Seite weitergeht, sodass ein langsamer Mailserver sie warten lässt.",
     "Background": "Hintergrund",
     "Take the tax off": "Steuer entfernen",
-    "Put the tax back": "Steuer wieder hinzufügen"
+    "Put the tax back": "Steuer wieder hinzufügen",
+    "This item no longer exists. It may have been deleted.": "Dieser Eintrag existiert nicht mehr. Möglicherweise wurde er gelöscht."
 }

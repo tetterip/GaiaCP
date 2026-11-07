@@ -11,6 +11,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - The create pages (clients, services, products, option groups, servers, registrars, admins, announcements, messages
   to clients, knowledge base articles, leads) and Add currency no longer show "Create & create another"; the small
   windows under Settings (TLDs, coupons, tags, departments and the like) keep it.
+- The page of a record that no longer exists (Back after Delete, an old link from an email or the bell) opens that
+  list with "This item no longer exists" instead of a bare 404, in the admin panel and the client area.
 
 ## [0.8.0] - 2026-11-07
 

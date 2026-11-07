@@ -6,6 +6,7 @@ use App\Http\Middleware\PrepareInstaller;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
+use App\Support\MissingRecord;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,6 +14,7 @@ use Illuminate\Http\Middleware\TrustProxies as LaravelTrustProxies;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -40,4 +42,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+        // A deleted record's page (Back after Delete, an old link): its list with a notice, not a bare 404
+        $exceptions->render(fn (NotFoundHttpException $e, Request $request) => MissingRecord::redirect($e, $request));
     })->create();
