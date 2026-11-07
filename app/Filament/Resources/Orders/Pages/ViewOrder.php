@@ -119,6 +119,7 @@ class ViewOrder extends ViewRecord
                     'total' => Money::format($unpaid->sum(fn (Service $s) => RecordOrderPayment::amount($s)), $record->currency()),
                 ]);
             })
+            ->modalSubmitActionLabel(__('Record payment'))
             ->schema([
                 DatePicker::make('paid_on')
                     ->required()
@@ -170,6 +171,7 @@ class ViewOrder extends ViewRecord
             ->modalDescription(fn (Order $record) => $notice($record)?->tax_rate
                 ? __('Takes the tax off payment notice :number, so the order is owed without it. Renewals are taxed as usual unless the client is tax exempt.', ['number' => $notice($record)->number])
                 : __('Puts the client\'s tax rule back on payment notice :number.', ['number' => $notice($record)?->number]))
+            ->modalSubmitActionLabel(fn (Order $record) => $notice($record)?->tax_rate ? __('Take the tax off') : __('Put the tax back'))
             ->schema(fn (Order $record) => $notice($record)?->tax_rate && ! $record->client->tax_exempt ? [
                 Toggle::make('client_exempt')
                     ->label('Make the client tax exempt from now on'),

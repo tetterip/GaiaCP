@@ -10,6 +10,8 @@ class CreateClientMessage extends CreateRecord
 {
     protected static string $resource = ClientMessageResource::class;
 
+    protected static bool $canCreateAnother = false;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         return $data + ['created_by' => auth()->id()];
