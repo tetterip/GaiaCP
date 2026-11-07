@@ -81,8 +81,13 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Registrar actions: register, renew, transfer, nameservers, expiry-date sync; contact details, private nameservers
   (ns1.the-domain) and the registrar lock where the registrar offers them (easy.gr: contacts and private nameservers;
   Enom: all three), for admins and, each behind a switch, clients
-- Backups: a zipped (optionally password-protected) SQL dump of the database, daily or weekly, copied to FTP/FTPS
-  and/or emailed
+- Backups: a zip of the database (SQL) and the uploaded files (optionally AES-256 with a password, which also carries
+  the APP_KEY), daily or weekly, copied to FTP/FTPS and/or emailed; `gaiacp:restore` puts one back. An update that fails
+  while migrating puts the old code and the database from its backup back
+- Heartbeat (Settings → Automation → Ping URL): a GET every 5 minutes to an outside monitor (Uptime Kuma push,
+  Healthchecks.io, Better Stack, Cronitor), or to a failure URL when a daily job or the last backup failed, so a stopped
+  cron is noticed
+- Docker: `docker compose up` runs GaiaCP with MariaDB and the scheduler for trying it on your own machine ([docker.md](docker.md))
 - Import from WHMCS (Settings → System, or `gaiacp:import-whmcs`): servers, products and prices, clients (ΑΦΜ, Δ.Ο.Υ.,
   profession, other custom fields as client fields), hosting accounts with their passwords, domains and unpaid invoices, with a dry run first; safe to re-run
 - System health (Settings → System): PHP version and extensions, configuration, database, storage, cron and the daily jobs,
@@ -138,7 +143,8 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   (only its hash is kept), its last use is noted and it can be revoked at once. Calls go through the same actions as
   the panel (place / complete / cancel an order, record or reverse a payment, pay or email a payment notice, suspend /
   unsuspend / terminate a service), so they send the same emails, are in the activity log under the key's name and
-  raise the same webhooks. 120 calls a minute per key (`GAIACP_API_PER_MINUTE`). Settings → API keys → Documentation
+  raise the same webhooks. A POST sent again with the same `Idempotency-Key` header gets the first answer back and
+  does nothing twice. 120 calls a minute per key (`GAIACP_API_PER_MINUTE`). Settings → API keys → Documentation
   lists every call, with `openapi.json` for Postman or a code generator; how to use it, with examples:
   [using-the-api.md](using-the-api.md)
 - Slack and Discord (plugins, off until switched on under Settings → Slack / Discord, super admins): the events you
