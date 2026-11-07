@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Greek: a window's submit button reads Υποβολή instead of Submit (Filament's own Greek left it in English), and the
+  other Filament texts left in English (exports, the column manager, the query builder) are translated; on an order,
+  Record payment and Without tax have buttons named after what they do.
 - The create pages (clients, services, products, option groups, servers, registrars, admins, announcements, messages
   to clients, knowledge base articles, leads) and Add currency no longer show "Create & create another"; the small
   windows under Settings (TLDs, coupons, tags, departments and the like) keep it.

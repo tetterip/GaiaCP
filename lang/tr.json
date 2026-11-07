@@ -3903,5 +3903,7 @@
     "Switch logging on": "Kaydı aç",
     "Send client emails in the background": "Müşteri e-postalarını arka planda gönder",
     "A page that emails a client goes on at once; the email follows within a minute, from the scheduler. One the mail server refuses is tried three times, then shows in the email log and Settings → Failed jobs. Off: sent before the page goes on, as a slow mail server makes it wait.": "Bir müşteriye e-posta gönderen sayfa hemen devam eder; e-posta bir dakika içinde zamanlayıcıdan gider. Posta sunucusunun reddettiği bir e-posta üç kez denenir, sonra e-posta kaydında ve Ayarlar → Başarısız işler altında görünür. Kapalı: sayfa devam etmeden önce gönderilir, bu yüzden yavaş bir posta sunucusu onu bekletir.",
-    "Background": "Arka plan"
+    "Background": "Arka plan",
+    "Take the tax off": "Vergiyi kaldır",
+    "Put the tax back": "Vergiyi geri ekle"
 }

@@ -323,6 +323,34 @@ class LocalesTest extends TestCase
     }
 
     /**
+     * Some of Filament's own Greek files keep the English text (the modal's "Submit" button did): those texts are
+     * overridden in lang/vendor/<namespace>/el/<file>.php too. Names, units and file names may stay as they are.
+     */
+    public function test_no_package_text_is_left_in_english_in_greek(): void
+    {
+        $keep = ['URL', 'GitHub', 'ltr', 'deg', 'px'];
+        $english = [];
+
+        foreach (app('translator')->getLoader()->namespaces() as $namespace => $path) {
+            foreach (File::allFiles($path.'/en') as $file) {
+                $group = str_replace('\\', '/', substr($file->getRelativePathname(), 0, -4));
+
+                foreach (Arr::dot(require $file->getPathname()) as $key => $line) {
+                    $id = "{$namespace}::{$group}.{$key}";
+
+                    if (is_string($line) && ! str_ends_with($key, 'file_name') && ! in_array($line, $keep, true)
+                        && preg_match('/\pL{2}/u', preg_replace('/:\w+/', '', $line)) && __($id, locale: 'el') === __($id, locale: 'en')) {
+                        $english[] = "lang/vendor/{$namespace}/el/{$group}.php: {$key}";
+                    }
+                }
+            }
+        }
+
+        $this->assertSame([], $english);
+        $this->assertSame('Υποβολή', __('filament-actions::modal.actions.submit.label', locale: 'el'));
+    }
+
+    /**
      * Text in the panel goes through __() (labels are translated by Filament itself, see
      * AppServiceProvider). A sentence built from pieces can't be translated: use :placeholders.
      */
