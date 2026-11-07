@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Greek: a window's submit button reads Υποβολή instead of Submit (Filament's own Greek left it in English), and the
+  other Filament texts left in English (exports, the column manager, the query builder) are translated; on an order,
+  Record payment and Without tax have buttons named after what they do.
+
 ## [0.8.0] - 2026-11-07
 
 - Security (audit before this release): client emails waiting on the queue (welcome emails with a password, sign-in
