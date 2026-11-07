@@ -3906,5 +3906,13 @@
     "Background": "Hintergrund",
     "Take the tax off": "Steuer entfernen",
     "Put the tax back": "Steuer wieder hinzufügen",
-    "This item no longer exists. It may have been deleted.": "Dieser Eintrag existiert nicht mehr. Möglicherweise wurde er gelöscht."
+    "This item no longer exists. It may have been deleted.": "Dieser Eintrag existiert nicht mehr. Möglicherweise wurde er gelöscht.",
+    ":amount went into the client's balance.": ":amount wurden dem Guthaben des Kunden gutgeschrieben.",
+    "Difference": "Differenz",
+    "Give the difference as a discount on this cycle": "Die Differenz als Rabatt auf diesen Zeitraum gewähren",
+    "Pay the cycle and put the rest in the client's balance": "Den Zeitraum bezahlen und den Rest dem Guthaben des Kunden gutschreiben",
+    "Put in the client's balance": "Dem Guthaben des Kunden gutgeschrieben",
+    "Put it in the client's balance; the notice still asks for the cycle": "Dem Guthaben des Kunden gutschreiben; die Zahlungsaufforderung verlangt den Zeitraum weiterhin",
+    "Record the whole amount for the cycle": "Den ganzen Betrag für den Zeitraum erfassen",
+    "The payment notice asks for :amount. The difference:": "Die Zahlungsaufforderung verlangt :amount. Die Differenz:"
 }

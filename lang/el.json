@@ -3906,5 +3906,13 @@
     "Background": "Παρασκήνιο",
     "Take the tax off": "Αφαίρεση φόρου",
     "Put the tax back": "Επαναφορά φόρου",
-    "This item no longer exists. It may have been deleted.": "Αυτό το στοιχείο δεν υπάρχει πια. Ίσως διαγράφηκε."
+    "This item no longer exists. It may have been deleted.": "Αυτό το στοιχείο δεν υπάρχει πια. Ίσως διαγράφηκε.",
+    ":amount went into the client's balance.": "Τα :amount μπήκαν στο υπόλοιπο του πελάτη.",
+    "Difference": "Διαφορά",
+    "Give the difference as a discount on this cycle": "Η διαφορά δίνεται ως έκπτωση σε αυτόν τον κύκλο",
+    "Pay the cycle and put the rest in the client's balance": "Εξοφλείται ο κύκλος και τα υπόλοιπα μπαίνουν στο υπόλοιπο του πελάτη",
+    "Put in the client's balance": "Μπήκαν στο υπόλοιπο του πελάτη",
+    "Put it in the client's balance; the notice still asks for the cycle": "Μπαίνουν στο υπόλοιπο του πελάτη και η ειδοποίηση συνεχίζει να ζητάει τον κύκλο",
+    "Record the whole amount for the cycle": "Καταχωρείται όλο το ποσό για τον κύκλο",
+    "The payment notice asks for :amount. The difference:": "Η ειδοποίηση πληρωμής ζητάει :amount. Η διαφορά:"
 }

@@ -14,7 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * `period_end`. `payment_id` is the payment that paid that cycle. A line with a `fee` ("grace" or
  * "redemption") is a domain's late renewal fee for that cycle: it is paid with the cycle's line. An "upgrade" line is the
  * difference of a change of product (App\Actions\ChangeProduct) from `due_date` to `period_end` (the service's due date):
- * paid on its own, without moving the due date. A `credit` line has no
+ * paid on its own, without moving the due date. A "discount" line takes off what a payment of less than the cycle
+ * asked did not pay (App\Actions\RecordServicePayment); it is paid with the cycle's line, like a late fee. A `credit` line has no
  * service: it is an "Add funds" amount, paid into the client's balance (`credit_transaction_id`).
  *
  * @property CarbonImmutable $due_date
@@ -26,6 +27,9 @@ class InvoiceItem extends Model
     use StoresTimesInUtc;
 
     public const UPGRADE = 'upgrade';
+
+    /** A discount on a cycle paid with less than it asked (App\Actions\RecordServicePayment): a negative line, paid with it. */
+    public const DISCOUNT = 'discount';
 
     public $timestamps = false;
 

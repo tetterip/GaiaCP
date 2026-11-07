@@ -18,8 +18,9 @@ Order Confirmation email, if it is on). Nothing is called on a server or registr
 
 ## Payment and setup
 
-**Record payment** on the order records the first payment of every item that has none, moving each due date forward
-one cycle as usual.
+**Record payment** on the order records the first payment of every item that has none, for what its payment notice
+asks (with tax), moving each due date forward one cycle as usual. Deleting an item that is not paid takes it off the
+order's notice.
 
 **Complete order** sets everything up: it registers or transfers the domains, creates the hosting accounts, then
 activates the rest. Its window lets you pick each domain's registrar and each hosting account's server and package

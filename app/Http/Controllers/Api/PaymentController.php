@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\RecordPayment;
+use App\Actions\RecordServicePayment;
 use App\Actions\ReversePayment;
 use App\Enums\ServiceStatus;
 use App\Http\Requests\Api\StorePaymentRequest;
@@ -44,7 +44,7 @@ class PaymentController extends ApiController
         return new PaymentResource($payment);
     }
 
-    public function store(StorePaymentRequest $request, RecordPayment $recorder): JsonResponse
+    public function store(StorePaymentRequest $request, RecordServicePayment $recorder): JsonResponse
     {
         $service = Service::query()->with('client')->findOrFail($request->validated('service_id'));
 
@@ -54,22 +54,33 @@ class PaymentController extends ApiController
             return $this->conflict('Payments are recorded for active or suspended services, and for a pending one not paid yet.');
         }
 
+        // Without an amount: what its payment notice asks for the cycle, with tax. Another amount says what the difference is.
+        $amount = (int) ($request->validated('amount_cents') ?? RecordServicePayment::suggested($service));
+        $options = RecordServicePayment::options($service, $amount);
+        $difference = $request->validated('difference');
+
+        if ($options !== [] && ! array_key_exists((string) $difference, $options)) {
+            return response()->json([
+                'message' => sprintf('The payment notice asks for %d cents for this cycle. Send difference: %s.', RecordServicePayment::expected($service), implode(' or ', array_keys($options))),
+                'errors' => ['difference' => ['Required when amount_cents differs from the payment notice, one of: '.implode(', ', array_keys($options)).'.']],
+            ], 422);
+        }
+
         $payment = $recorder->handle(
             $service,
-            (int) ($request->validated('amount_cents') ?? $service->price_cents),
+            $amount,
             CarbonImmutable::parse($request->validated('paid_on', today()->toDateString())),
             $request->validated('method') ?? PaymentMethods::defaultFor($service->client),
             $request->validated('reference'),
             $request->validated('notes'),
+            $options !== [] ? $difference : null,
         );
 
-        return (new PaymentResource($payment))
-            ->additional(array_filter([
-                'renewal_error' => $recorder->renewalError,
-                'setup_error' => $recorder->setupError,
-            ]))
-            ->response()
-            ->setStatusCode(201);
+        return response()->json(['data' => $payment ? (new PaymentResource($payment))->resolve($request) : null] + array_filter([
+            'credited_cents' => $recorder->credited ?: null,
+            'renewal_error' => $recorder->recorder->renewalError,
+            'setup_error' => $recorder->recorder->setupError,
+        ], fn ($value) => $value !== null), 201);
     }
 
     /** DELETE /payments/{id}: reverses it (only a service's latest payment, while its due date is still the one it set). */

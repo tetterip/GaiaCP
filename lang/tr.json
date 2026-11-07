@@ -3906,5 +3906,13 @@
     "Background": "Arka plan",
     "Take the tax off": "Vergiyi kaldır",
     "Put the tax back": "Vergiyi geri ekle",
-    "This item no longer exists. It may have been deleted.": "Bu öğe artık mevcut değil. Silinmiş olabilir."
+    "This item no longer exists. It may have been deleted.": "Bu öğe artık mevcut değil. Silinmiş olabilir.",
+    ":amount went into the client's balance.": ":amount müşterinin bakiyesine eklendi.",
+    "Difference": "Fark",
+    "Give the difference as a discount on this cycle": "Farkı bu dönem için indirim olarak ver",
+    "Pay the cycle and put the rest in the client's balance": "Dönemi öde ve kalanı müşterinin bakiyesine ekle",
+    "Put in the client's balance": "Müşterinin bakiyesine eklendi",
+    "Put it in the client's balance; the notice still asks for the cycle": "Müşterinin bakiyesine ekle; bildirim dönemi istemeye devam eder",
+    "Record the whole amount for the cycle": "Tutarın tamamını dönem için kaydet",
+    "The payment notice asks for :amount. The difference:": "Ödeme bildirimi :amount istiyor. Fark:"
 }

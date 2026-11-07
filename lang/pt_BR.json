@@ -3906,5 +3906,13 @@
     "Background": "Segundo plano",
     "Take the tax off": "Remover o imposto",
     "Put the tax back": "Reaplicar o imposto",
-    "This item no longer exists. It may have been deleted.": "Este item não existe mais. Ele pode ter sido excluído."
+    "This item no longer exists. It may have been deleted.": "Este item não existe mais. Ele pode ter sido excluído.",
+    ":amount went into the client's balance.": ":amount foram para o saldo do cliente.",
+    "Difference": "Diferença",
+    "Give the difference as a discount on this cycle": "Dar a diferença como desconto neste ciclo",
+    "Pay the cycle and put the rest in the client's balance": "Pagar o ciclo e colocar o restante no saldo do cliente",
+    "Put in the client's balance": "Colocado no saldo do cliente",
+    "Put it in the client's balance; the notice still asks for the cycle": "Colocar no saldo do cliente; o aviso continua pedindo o ciclo",
+    "Record the whole amount for the cycle": "Registrar o valor inteiro para o ciclo",
+    "The payment notice asks for :amount. The difference:": "O aviso de pagamento pede :amount. A diferença:"
 }

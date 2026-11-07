@@ -3906,5 +3906,13 @@
     "Background": "Achtergrond",
     "Take the tax off": "Belasting verwijderen",
     "Put the tax back": "Belasting terugzetten",
-    "This item no longer exists. It may have been deleted.": "Dit item bestaat niet meer. Het is mogelijk verwijderd."
+    "This item no longer exists. It may have been deleted.": "Dit item bestaat niet meer. Het is mogelijk verwijderd.",
+    ":amount went into the client's balance.": ":amount is bijgeschreven op het tegoed van de klant.",
+    "Difference": "Verschil",
+    "Give the difference as a discount on this cycle": "Het verschil als korting op deze periode geven",
+    "Pay the cycle and put the rest in the client's balance": "De periode betalen en de rest op het tegoed van de klant zetten",
+    "Put in the client's balance": "Op het tegoed van de klant gezet",
+    "Put it in the client's balance; the notice still asks for the cycle": "Op het tegoed van de klant zetten; de betalingsherinnering vraagt nog steeds om de periode",
+    "Record the whole amount for the cycle": "Het hele bedrag voor de periode registreren",
+    "The payment notice asks for :amount. The difference:": "De betalingsherinnering vraagt om :amount. Het verschil:"
 }

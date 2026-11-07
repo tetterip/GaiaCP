@@ -137,7 +137,9 @@ class CancelOrder
         $service->update(['next_due_date' => $payment->due_date_before]);
 
         // Its notice owes the line again (and is cancelled with the order); an issued invoice gets a credit note
-        // for the lines of the order's items.
+        // for the lines of the order's items. A discount it was given comes off with it.
+        RecordServicePayment::dropDiscounts($payment);
+
         foreach (InvoiceItem::query()->where('payment_id', $payment->id)->with('invoice.taxInvoice')->get() as $item) {
             $item->update(['payment_id' => null]);
             $invoice = $item->invoice;
