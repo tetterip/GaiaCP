@@ -249,7 +249,7 @@ class ProductLimitsTest extends TestCase
     public function test_the_api_holds_to_both_limits(): void
     {
         $trial = $this->product(['name' => 'Free trial', 'client_limit' => 1, 'stock' => 5]);
-        [, $token] = ApiKey::generate(['name' => 'Website', 'permissions' => OpenApi::permissions()]);
+        [, $token] = ApiKey::generate(['name' => 'Website', 'user_id' => auth()->id() ?? User::factory()->create()->id, 'permissions' => OpenApi::permissions()]);
         $call = fn () => $this->withHeaders(['Authorization' => "Bearer {$token}", 'Accept' => 'application/json'])
             ->postJson('/api/v1/orders', ['client_id' => $this->client->id, 'items' => [['product_id' => $trial->id]]]);
 

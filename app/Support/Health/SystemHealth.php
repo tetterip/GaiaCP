@@ -18,6 +18,7 @@ use Illuminate\Database\Connection;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -154,7 +155,7 @@ class SystemHealth
             new Check('Application', 'Cached config / routes', Status::Info,
                 (app()->configurationIsCached() ? 'config cached' : 'config not cached').', '.(app()->routesAreCached() ? 'routes cached' : 'routes not cached')),
             ...$this->proxy(),
-            $this->privateFiles(app()->runningInConsole() ? $url : request()->root()),
+            app()->runningInConsole() ? $this->privateFiles($url) : $this->privateFilesOf(request()),
             ...$this->security($production),
         ];
     }
@@ -164,10 +165,10 @@ class SystemHealth
      * document root is GaiaCP's own folder without its .htaccess (nginx, or Apache without mod_rewrite). Asked of
      * the site itself, so it says nothing when the site can't reach its own address.
      */
-    public function privateFiles(string $root): Check
+    public function privateFiles(string $root, array $options = []): Check
     {
         $root = rtrim($root, '/');
-        $client = fn (Pool $pool, string $name) => $pool->as($name)->timeout(4)->withoutRedirecting()->withOptions(['verify' => false]);
+        $client = fn (Pool $pool, string $name) => $pool->as($name)->timeout(4)->withoutRedirecting()->withOptions(['verify' => false] + $options);
 
         try {
             $responses = Http::pool(fn (Pool $pool) => [
@@ -191,6 +192,36 @@ class SystemHealth
             ? new Check('Application', 'Private files', Status::Ok, 'Not served')
             : new Check('Application', 'Private files', Status::Error, 'Served to anyone: '.$readable->join(', '),
                 'The site shows GaiaCP\'s own folder. Point the document root at public/, or on Apache keep the .htaccess that comes with GaiaCP (mod_rewrite on, AllowOverride All). On nginx, see docs/installation.md → Document root.');
+    }
+
+    /**
+     * privateFiles() asked during a web request: at the address the visitor used (host and subfolder), but connected
+     * only to this server, on the address and port the request came in on. The Host header is the visitor's to
+     * choose (before install no trusted host is known), so it must never send the check to another machine or port.
+     * Apache takes SERVER_PORT from that header too, so only the web ports are asked.
+     */
+    public function privateFilesOf(Request $request): Check
+    {
+        $https = ! in_array(strtolower((string) $request->server('HTTPS')), ['', 'off'], true);
+        $port = (int) $request->server('SERVER_PORT') ?: ($https ? 443 : 80);
+
+        if (! in_array($port, [80, 443], true)) {
+            return new Check('Application', 'Private files', Status::Info, 'Not checked', "The site is on port {$port}, so it could not check that .env is not served.");
+        }
+        $address = (string) $request->server('SERVER_ADDR');
+
+        if (! filter_var($address, FILTER_VALIDATE_IP) || in_array($address, ['0.0.0.0', '::'], true)) {
+            $address = '127.0.0.1';
+        }
+        $address = str_contains($address, ':') ? "[{$address}]" : $address;
+
+        // An address typed as the host is not resolved, so it can't be pinned: this server's own one is used instead
+        $host = $request->getHost();
+        $pinned = ! filter_var(trim($host, '[]'), FILTER_VALIDATE_IP);
+        $host = $pinned ? $host : $address;
+
+        return $this->privateFiles(($https ? 'https' : 'http')."://{$host}:{$port}".$request->getBaseUrl(),
+            $pinned ? ['curl' => [CURLOPT_RESOLVE => ["{$host}:{$port}:{$address}"]]] : []);
     }
 
     /**

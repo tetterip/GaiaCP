@@ -221,6 +221,23 @@ class BackupRestoreTest extends TestCase
         $this->assertFileDoesNotExist($this->dir.'/.env');
     }
 
+    public function test_an_app_key_that_would_add_lines_to_env_is_refused_before_anything_changes(): void
+    {
+        $path = $this->backup();
+        $zip = new ZipArchive;
+        $zip->open($path);
+        $zip->addFromString(RunBackup::KEY_ENTRY, "base64:aGVsbG8=\nAPP_DEBUG=true\n");
+        $zip->close();
+        File::put($this->dir.'/.env', "APP_KEY=base64:other\n");
+
+        $this->artisan('gaiacp:restore', ['file' => $path, '--force' => true])
+            ->expectsOutputToContain('does not hold an application key')
+            ->assertFailed();
+
+        $this->assertSame("APP_KEY=base64:other\n", File::get($this->dir.'/.env'));
+        $this->assertDatabaseMissing('activity_logs', ['event' => 'backup.restored']);
+    }
+
     public function test_the_updaters_backup_keeps_the_logs_and_restores_only_the_database(): void
     {
         ModuleLog::create(['module' => 'cpanel', 'action' => 'createacct', 'url' => 'POST x', 'response' => 'ok', 'created_at' => now()]);

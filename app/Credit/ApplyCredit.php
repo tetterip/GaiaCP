@@ -2,6 +2,7 @@
 
 namespace App\Credit;
 
+use App\Actions\AlreadyPaid;
 use App\Actions\RecordInvoicePayment;
 use App\Actions\RecordPayment;
 use App\Enums\CreditType;
@@ -80,9 +81,14 @@ class ApplyCredit
             try {
                 $payment = $item->fee === InvoiceItem::UPGRADE
                     ? $this->invoicePayments->payUpgrade($item, $amount, $today, ClientCredit::METHOD, notes: "Payment notice {$invoice->number}")
-                    : $this->payments->handle($item->service, $amount, $today, ClientCredit::METHOD, notes: "Payment notice {$invoice->number}");
+                    : $this->payments->handle($item->service, $amount, $today, ClientCredit::METHOD, notes: "Payment notice {$invoice->number}", forDueDate: $item->due_date);
             } catch (Throwable $e) {
                 $this->credit->record($client, CreditType::Refund, $amount, "Payment failed: {$item->description}, payment notice {$invoice->number}", ['invoice_id' => $invoice->id]);
+
+                // Paid a moment ago by another payment: the credit is back and nothing is owed on this line
+                if ($e instanceof AlreadyPaid) {
+                    continue;
+                }
 
                 throw $e;
             }

@@ -67,7 +67,9 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   in full (a cycle line with its late fees, stale lines skipped, notices in another currency or "Add funds" ones never)
   through `RecordPayment` with method `credit` (`ClientCredit::METHOD`, "Account credit", not offered when recording
   by hand); `ReversePayment` returns it. Auto (Settings → Client credit → `credit.auto_apply`): daily before the notice
-  emails, in `InvoiceOrder` before the order's email, and after a deposit. `InvoiceItem::scopeUnpaid()` = a service line
+  emails, in `InvoiceOrder` before the order's email, and after a deposit. Two payments of one notice at once:
+  `RecordPayment`'s `forDueDate` re-checks the line's cycle under the service's row lock and throws `AlreadyPaid`
+  (skipped by `RecordInvoicePayment` / `ApplyCredit`), and `payUpgrade()` locks its line. `InvoiceItem::scopeUnpaid()` = a service line
   or a credit line not paid yet (`Invoice::settle()` and `RecordInvoicePayment::unpaid()` use it). Admin: Settings →
   Client credit, the client page's Credit menu / tab / summary box, "Pay with credit" on a notice; client area:
   `Client\Pages\Credit` (balance, Add funds, history) and "Pay with credit" on a notice
@@ -172,7 +174,8 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   opens a Checkout Session (`StripeApi`, plain HTTP + `ModuleLogger`, no SDK) for `RecordInvoicePayment::unpaid()` and
   keeps a `stripe_checkouts` row. `complete()` records it through `RecordInvoicePayment` (method `stripe`, reference =
   PaymentIntent) once Stripe says paid: from the signed webhook (`Plugin::webhookRoutes()` → `routes/webhooks.php`,
-  `/webhooks/stripe`, no web middleware, `WebhookSignature`) or Stripe's API on the client's return
+  `/webhooks/stripe`, no web middleware, `WebhookSignature` with the secret of the event's own `livemode`; a checkout
+  is settled only by an event of its own mode) or Stripe's API on the client's return
   (`filament.client.stripe.return`), never from the visit itself. A row is claimed open → processing once, so a repeat
   report records nothing; a payment that no longer fits its notice becomes `unmatched` (`payment.online_unmatched`,
   listed in the daily summary). Settings → Stripe (super admins): mode test / live, each with its secret key and

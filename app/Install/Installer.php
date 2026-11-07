@@ -13,6 +13,7 @@ use App\Support\Region;
 use App\Support\Settings;
 use App\Support\Version;
 use Illuminate\Encryption\Encrypter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -76,6 +77,7 @@ class Installer
             if (@file_put_contents($file, $code.PHP_EOL) === false) {
                 throw new RuntimeException("Could not write {$file}.");
             }
+            @chmod($file, 0600); // readable by the web user only, not by other accounts on a shared server
         }
 
         return $code;
@@ -108,9 +110,10 @@ class Installer
     /**
      * What the server must have before installing. The database's own PHP driver is checked when it is chosen.
      *
+     * @param  Request|null  $request  the installer page's request; null from the command line (gaiacp:install)
      * @return list<Check>
      */
-    public function requirements(): array
+    public function requirements(?Request $request = null): array
     {
         $root = base_path();
         // .env may be a link to a file not made yet (the Docker image links it into the storage volume)
@@ -135,7 +138,8 @@ class Installer
         ]);
 
         // Through the site itself: the settings about to be saved in .env must not be readable by anyone
-        $checks[] = $this->health->privateFiles(request()->root());
+        // From the web: never at another machine, the Host header is anyone's to set; from the command line: at APP_URL
+        $checks[] = $request ? $this->health->privateFilesOf($request) : $this->health->privateFiles((string) config('app.url'));
 
         $checks[] = $envWritable
             ? new Check('Storage', '.env file', Status::Ok, 'Writable')
@@ -144,9 +148,9 @@ class Installer
         return $checks;
     }
 
-    public function meetsRequirements(): bool
+    public function meetsRequirements(?Request $request = null): bool
     {
-        return collect($this->requirements())->every(fn (Check $check) => $check->status !== Status::Error);
+        return collect($this->requirements($request))->every(fn (Check $check) => $check->status !== Status::Error);
     }
 
     /** @return array<string, string> driver => label, for the drivers this PHP has */

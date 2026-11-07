@@ -94,10 +94,10 @@ class StripePaymentsTest extends TestCase
     }
 
     /** Stripe posting an event, signed with $secret. */
-    private function webhook(string $type, array $session = [], string $secret = self::SECRET, ?int $time = null): TestResponse
+    private function webhook(string $type, array $session = [], string $secret = self::SECRET, ?int $time = null, bool $live = false): TestResponse
     {
-        $payload = json_encode(['id' => 'evt_1', 'type' => $type, 'data' => ['object' => $session + [
-            'id' => 'cs_test_1', 'object' => 'checkout.session', 'payment_status' => 'paid', 'amount_total' => 6000, 'currency' => 'eur', 'payment_intent' => 'pi_1',
+        $payload = json_encode(['id' => 'evt_1', 'livemode' => $live, 'type' => $type, 'data' => ['object' => $session + [
+            'id' => 'cs_test_1', 'object' => 'checkout.session', 'livemode' => $live, 'payment_status' => 'paid', 'amount_total' => 6000, 'currency' => 'eur', 'payment_intent' => 'pi_1',
         ]]]);
         $time ??= time();
         $signature = 't='.$time.',v1='.hash_hmac('sha256', $time.'.'.$payload, $secret);
@@ -202,6 +202,25 @@ class StripePaymentsTest extends TestCase
 
         $this->assertSame(0, Payment::count());
         $this->assertSame(InvoiceStatus::Unpaid, $this->notice->fresh()->status);
+    }
+
+    public function test_a_test_mode_secret_can_not_settle_a_live_checkout(): void
+    {
+        config(['gaiacp.stripe.mode' => 'live', 'gaiacp.stripe.live_secret_key' => 'sk_live_123', 'gaiacp.stripe.live_webhook_secret' => 'whsec_live']);
+        $this->startCheckout();
+        StripeCheckout::query()->update(['livemode' => true]);
+
+        // Claiming to be live, but signed with the test secret: refused
+        $this->webhook('checkout.session.completed', live: true)->assertStatus(400);
+        // Honestly a test event: taken, but a test event never settles a live checkout
+        $this->webhook('checkout.session.completed')->assertOk();
+
+        $this->assertSame(0, Payment::count());
+        $this->assertSame(StripeCheckout::OPEN, StripeCheckout::sole()->status);
+
+        // The live secret on a live event records it
+        $this->webhook('checkout.session.completed', secret: 'whsec_live', live: true)->assertOk();
+        $this->assertSame(1, Payment::count());
     }
 
     public function test_the_webhook_needs_no_session_or_csrf_token_and_ignores_other_sessions(): void

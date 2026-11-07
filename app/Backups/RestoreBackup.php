@@ -78,6 +78,12 @@ class RestoreBackup
                 : 'The SQL dump in the zip cannot be read.');
         }
 
+        // Written into .env as one line: anything but a key Laravel makes (a newline would add settings of its own) is refused
+        $key = $this->zip->locateName(RunBackup::KEY_ENTRY) === false ? '' : trim((string) $this->zip->getFromName(RunBackup::KEY_ENTRY));
+        if ($key !== '' && ! self::looksLikeKey($key)) {
+            throw new RuntimeException('The backup\'s '.RunBackup::KEY_ENTRY.' does not hold an application key; nothing was restored.');
+        }
+
         preg_match('/^-- Database: .* \((\w+)\)$/m', $head, $driver);
         preg_match('/^-- Created: (\S+)$/m', $head, $created);
 
@@ -220,6 +226,12 @@ class RestoreBackup
         return count($entries);
     }
 
+    /** An application key as `key:generate` writes it, on one line. */
+    private static function looksLikeKey(string $key): bool
+    {
+        return preg_match('/\Abase64:[A-Za-z0-9+\/]+={0,2}\z/', $key) === 1;
+    }
+
     private function restoreKey(): string
     {
         $key = $this->zip->locateName(RunBackup::KEY_ENTRY) === false ? null : trim((string) $this->zip->getFromName(RunBackup::KEY_ENTRY));
@@ -230,6 +242,10 @@ class RestoreBackup
 
         if ($key === config('app.key')) {
             return 'same';
+        }
+
+        if (! self::looksLikeKey($key)) {
+            throw new RuntimeException('The backup\'s '.RunBackup::KEY_ENTRY.' does not hold an application key.');
         }
 
         $env = app()->environmentFilePath();

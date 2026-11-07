@@ -47,7 +47,7 @@ class ApiTest extends TestCase
     /** @param  list<string>|null  $permissions  null = all of them */
     private function key(?array $permissions = null, array $attributes = []): string
     {
-        [, $token] = ApiKey::generate($attributes + ['name' => 'Website', 'permissions' => $permissions ?? OpenApi::permissions()]);
+        [, $token] = ApiKey::generate($attributes + ['name' => 'Website', 'user_id' => auth()->id() ?? User::factory()->create()->id, 'permissions' => $permissions ?? OpenApi::permissions()]);
 
         return $token;
     }
@@ -126,6 +126,16 @@ class ApiTest extends TestCase
         // Deleted: their keys are revoked, not left without an admin
         $admin->delete();
         $this->assertTrue(ApiKey::query()->sole()->revoked());
+        $this->api($token)->getJson('/api/v1/clients')->assertUnauthorized();
+    }
+
+    public function test_a_key_left_without_an_admin_does_not_work(): void
+    {
+        $token = $this->key();
+
+        // As when the admin is deleted straight in the database, which skips revoking their keys
+        ApiKey::query()->update(['user_id' => null]);
+
         $this->api($token)->getJson('/api/v1/clients')->assertUnauthorized();
     }
 

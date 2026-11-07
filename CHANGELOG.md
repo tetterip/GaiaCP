@@ -13,6 +13,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   the secret Ping URL; `docker-compose.yml` opens port 8080 on this machine only, so the panel with its example
   passwords is not reachable from the network (docs/docker.md: your own passwords in `docker-compose.override.yml`,
   HTTPS with Caddy, backups).
+- Security (second audit before this release): two payments of the same payment notice landing at the same moment
+  (two API calls, or Record payment and an API call) no longer move the due date twice: each line is checked again
+  under the service's lock and a line paid meanwhile is skipped. Stripe checks a webhook event with the signing secret
+  of its own mode and a test event never settles a live checkout. The installer's "Private files" check connects
+  only to this server, on port 80 or 443, whatever host the visitor sends. `gaiacp:restore` refuses a backup whose
+  APP_KEY is not a single key line, before anything changes. An API key left without its admin no longer works. The
+  installer's setup code file is readable by the web user only.
 - Development: `bin/composer-cache-from-git` also caches a package published only as a zip (phpstan/phpstan), so a
   cloud session's `composer install` no longer stops at it.
 - **Docker**: `docker compose up -d --build` runs GaiaCP with MariaDB and the scheduler on your own machine, installed

@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.8] - 2026-11-07
+
+- A webhook event is checked with the signing secret of its own mode (`livemode`), and a test-mode event never settles a live checkout (or the other way round), so a leaked test secret can't mark a live payment notice paid
+
 ## [1.0.7] - 2026-11-06
 
 - Its times are stored in UTC like GaiaCP's (StoresTimesInUtc); the GaiaCP update converts the ones already kept

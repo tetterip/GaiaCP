@@ -124,6 +124,11 @@ class StripeCheckouts
             return $checkout;
         }
 
+        // A test-mode event never settles a live checkout (nor the other way round)
+        if ((bool) ($session['livemode'] ?? false) !== $checkout->livemode) {
+            return $checkout;
+        }
+
         $paymentIntent = is_array($session['payment_intent'] ?? null) ? ($session['payment_intent']['id'] ?? null) : ($session['payment_intent'] ?? null);
 
         // Whoever turns it from open to processing records it; a second report finds it taken.
