@@ -11,6 +11,8 @@ class CreateLead extends CreateRecord
 {
     protected static string $resource = LeadResource::class;
 
+    protected static bool $canCreateAnother = false;
+
     protected function handleRecordCreation(array $data): Model
     {
         return app(Leads::class)->create($data);

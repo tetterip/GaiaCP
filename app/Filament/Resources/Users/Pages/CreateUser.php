@@ -12,6 +12,8 @@ class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
+    protected static bool $canCreateAnother = false;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         return [...$data, 'role' => UserRole::Admin, 'admin_areas' => ($data['super_admin'] ?? false) ? null : ($data['admin_areas'] ?? [])];

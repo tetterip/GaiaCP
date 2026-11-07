@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProductOptionGroup extends CreateRecord
 {
     protected static string $resource = ProductOptionGroupResource::class;
+
+    protected static bool $canCreateAnother = false;
 }
