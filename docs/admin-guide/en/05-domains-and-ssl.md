@@ -91,7 +91,7 @@ registrar, so keep them complete.
 **Recording a payment on an active or suspended domain renews it** at its registrar for one billing cycle. The payment
 stands even if the renewal fails: you get a notice and the error is in the Activity log, so renew it by hand once the
 problem is fixed. A domain's first payment after registering doesn't renew it again (registering covers the first
-term), and reversing a payment doesn't undo a renewal.
+term). Reversing or refunding a payment doesn't undo a renewal: the Reverse window says so for a domain.
 
 Every night at 04:00 GaiaCP reads every domain's expiry date and nameservers. The sync never moves the due date: if a
 domain was renewed elsewhere, change the due date yourself. The admins' daily summary lists syncs that changed

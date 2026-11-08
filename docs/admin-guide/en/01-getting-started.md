@@ -10,7 +10,8 @@ here.
 
 ## Install
 
-GaiaCP needs PHP 8.3 or newer and a MySQL or MariaDB database.
+GaiaCP needs PHP 8.3 or newer and a MySQL or MariaDB database (SQLite is enough for a small install: the installer
+offers both).
 
 1. Create an empty database and a user for it.
 2. Upload and unzip the release zip (GitHub → Releases → `gaiacp-<version>.zip`) at the site's root or in a subfolder
@@ -27,7 +28,8 @@ GaiaCP needs PHP 8.3 or newer and a MySQL or MariaDB database.
    * * * * * cd /path/to/gaiacp && php artisan schedule:run >> /dev/null 2>&1
    ```
 
-From SSH, `php artisan gaiacp:install` asks the same questions in the terminal.
+From SSH, `php artisan gaiacp:install` asks the same questions in the terminal. To run it in Docker instead, see
+[Docker](../../docker.md).
 
 ## The setup guide
 

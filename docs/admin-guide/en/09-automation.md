@@ -36,7 +36,7 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 |---|---|
 | Every minute | Queued messages to clients, webhooks, Slack / Discord / Telegram messages, the support mailbox |
 | Every 15 minutes | Failed set ups, unsuspends and suspensions in the module queue tried again |
-| Every 5 minutes | Server status from the monitoring service |
+| Every 5 minutes | Server status from the monitoring service; the heartbeat ping (Settings → Automation → Ping URL) |
 | Hourly | SSL certificates, IP blacklists |
 | 00:20 | Quotes past their date marked Expired |
 | 03:30 | Old module and email log rows deleted (Settings → Logs → Logging) |
@@ -44,9 +44,13 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 | 04:15 | Registrar costs of the TLDs, when Settings → Domains → Update registrar costs daily is on |
 | 04:30 | Servers compared with GaiaCP (when switched on) |
 | 05:00 | Site checks |
+| 05:40 | New versions of installed plugins in the plugin catalogue, in the bell |
+| 05:50 | A new GaiaCP release, in the bell |
 | 06:00 | Hosting usage warnings |
 | 07:00 | Support tickets waiting on the client closed |
 | 08:00 | Lead follow-ups in the bell |
+| 17:00 | Exchange rates, when Settings → Automation → Update exchange rates daily is on |
+| Settings → Backups | The backup, daily or weekly, when backups are on |
 
 Backups run at the time set under Settings → System → Backups.
 
