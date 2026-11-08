@@ -3981,5 +3981,15 @@
     "linked to an admin login": "collegato a un accesso amministratore",
     "no client area login that is turned on": "nessun accesso attivo all’area clienti",
     ":count link sent|:count links sent": ":count link inviato|:count link inviati",
-    ":count client deleted|:count clients deleted": ":count cliente eliminato|:count clienti eliminati"
+    ":count client deleted|:count clients deleted": ":count cliente eliminato|:count clienti eliminati",
+    "Disable plugins": "Disattiva plugin",
+    "Disable them": "Disattivali",
+    "Enable plugins": "Attiva plugin",
+    "Enable them": "Attivali",
+    "Their servers, accounts and settings stay. Nothing new can use them, and automation that reaches them stops with an error in the activity log until you enable them again.": "Server, account e impostazioni restano. Niente di nuovo può usarli, e l’automazione che li raggiunge si ferma con un errore nel registro attività finché non li riattivi.",
+    "already enabled": "già attivo",
+    "not enabled": "non attivo",
+    "the demo needs it": "serve alla demo",
+    ":count plugin enabled|:count plugins enabled": ":count plugin attivato|:count plugin attivati",
+    ":count plugin disabled|:count plugins disabled": ":count plugin disattivato|:count plugin disattivati"
 }

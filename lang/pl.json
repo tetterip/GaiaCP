@@ -3981,5 +3981,15 @@
     "linked to an admin login": "powiązany z loginem administratora",
     "no client area login that is turned on": "brak aktywnego loginu do strefy klienta",
     ":count link sent|:count links sent": ":count link wysłany|:count linki wysłane|:count linków wysłanych",
-    ":count client deleted|:count clients deleted": ":count klient usunięty|:count klienci usunięci|:count klientów usuniętych"
+    ":count client deleted|:count clients deleted": ":count klient usunięty|:count klienci usunięci|:count klientów usuniętych",
+    "Disable plugins": "Wyłącz wtyczki",
+    "Disable them": "Wyłącz je",
+    "Enable plugins": "Włącz wtyczki",
+    "Enable them": "Włącz je",
+    "Their servers, accounts and settings stay. Nothing new can use them, and automation that reaches them stops with an error in the activity log until you enable them again.": "Ich serwery, konta i ustawienia zostają. Nic nowego nie może z nich korzystać, a automatyzacja, która do nich trafia, kończy się błędem w dzienniku aktywności, dopóki ich ponownie nie włączysz.",
+    "already enabled": "już włączona",
+    "not enabled": "nie jest włączona",
+    "the demo needs it": "potrzebuje jej demo",
+    ":count plugin enabled|:count plugins enabled": ":count wtyczka włączona|:count wtyczki włączone|:count wtyczek włączonych",
+    ":count plugin disabled|:count plugins disabled": ":count wtyczka wyłączona|:count wtyczki wyłączone|:count wtyczek wyłączonych"
 }

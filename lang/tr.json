@@ -3981,5 +3981,15 @@
     "linked to an admin login": "bir yönetici girişine bağlı",
     "no client area login that is turned on": "açık bir müşteri alanı girişi yok",
     ":count link sent|:count links sent": ":count bağlantı gönderildi|:count bağlantı gönderildi",
-    ":count client deleted|:count clients deleted": ":count müşteri silindi|:count müşteri silindi"
+    ":count client deleted|:count clients deleted": ":count müşteri silindi|:count müşteri silindi",
+    "Disable plugins": "Eklentileri devre dışı bırak",
+    "Disable them": "Devre dışı bırak",
+    "Enable plugins": "Eklentileri etkinleştir",
+    "Enable them": "Etkinleştir",
+    "Their servers, accounts and settings stay. Nothing new can use them, and automation that reaches them stops with an error in the activity log until you enable them again.": "Sunucuları, hesapları ve ayarları kalır. Yeni hiçbir şey onları kullanamaz ve onlara ulaşan otomasyon, siz yeniden etkinleştirene kadar etkinlik günlüğünde bir hatayla durur.",
+    "already enabled": "zaten etkin",
+    "not enabled": "etkin değil",
+    "the demo needs it": "demo buna ihtiyaç duyuyor",
+    ":count plugin enabled|:count plugins enabled": ":count eklenti etkinleştirildi|:count eklenti etkinleştirildi",
+    ":count plugin disabled|:count plugins disabled": ":count eklenti devre dışı bırakıldı|:count eklenti devre dışı bırakıldı"
 }

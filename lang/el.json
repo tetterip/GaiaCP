@@ -3981,5 +3981,15 @@
     "linked to an admin login": "συνδέεται με λογαριασμό διαχειριστή",
     "no client area login that is turned on": "χωρίς ενεργή σύνδεση στην περιοχή πελατών",
     ":count link sent|:count links sent": "Στάλθηκε :count σύνδεσμος|Στάλθηκαν :count σύνδεσμοι",
-    ":count client deleted|:count clients deleted": "Διαγράφηκε :count πελάτης|Διαγράφηκαν :count πελάτες"
+    ":count client deleted|:count clients deleted": "Διαγράφηκε :count πελάτης|Διαγράφηκαν :count πελάτες",
+    "Disable plugins": "Απενεργοποίηση πρόσθετων",
+    "Disable them": "Απενεργοποίησέ τα",
+    "Enable plugins": "Ενεργοποίηση πρόσθετων",
+    "Enable them": "Ενεργοποίησέ τα",
+    "Their servers, accounts and settings stay. Nothing new can use them, and automation that reaches them stops with an error in the activity log until you enable them again.": "Οι servers, οι λογαριασμοί και οι ρυθμίσεις τους μένουν. Τίποτα νέο δεν μπορεί να τα χρησιμοποιήσει, και ο αυτοματισμός που φτάνει σε αυτά σταματά με σφάλμα στο ιστορικό ενεργειών μέχρι να τα ενεργοποιήσεις ξανά.",
+    "already enabled": "ήδη ενεργό",
+    "not enabled": "δεν είναι ενεργό",
+    "the demo needs it": "το χρειάζεται το demo",
+    ":count plugin enabled|:count plugins enabled": "Ενεργοποιήθηκε :count πρόσθετο|Ενεργοποιήθηκαν :count πρόσθετα",
+    ":count plugin disabled|:count plugins disabled": "Απενεργοποιήθηκε :count πρόσθετο|Απενεργοποιήθηκαν :count πρόσθετα"
 }

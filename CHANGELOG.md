@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Settings → Plugins: tick plugins to enable or disable them together; the ones it can't switch are named.
 - Clients: mass actions. Tick clients in the list (up to 100) to email them (a message under Clients → Messages to
   clients), send each one with a client area login a password reset link, or delete those with no history (after
   typing DELETE; never a client whose login is an admin's).

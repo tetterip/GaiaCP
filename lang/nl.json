@@ -3981,5 +3981,15 @@
     "linked to an admin login": "gekoppeld aan een beheerderslogin",
     "no client area login that is turned on": "geen actieve klantportaal-login",
     ":count link sent|:count links sent": ":count link verzonden|:count links verzonden",
-    ":count client deleted|:count clients deleted": ":count klant verwijderd|:count klanten verwijderd"
+    ":count client deleted|:count clients deleted": ":count klant verwijderd|:count klanten verwijderd",
+    "Disable plugins": "Plugins uitschakelen",
+    "Disable them": "Uitschakelen",
+    "Enable plugins": "Plugins inschakelen",
+    "Enable them": "Inschakelen",
+    "Their servers, accounts and settings stay. Nothing new can use them, and automation that reaches them stops with an error in the activity log until you enable them again.": "Hun servers, accounts en instellingen blijven. Niets nieuws kan ze gebruiken, en automatisering die ze bereikt stopt met een fout in het activiteitenlogboek tot je ze weer inschakelt.",
+    "already enabled": "al ingeschakeld",
+    "not enabled": "niet ingeschakeld",
+    "the demo needs it": "de demo heeft het nodig",
+    ":count plugin enabled|:count plugins enabled": ":count plugin ingeschakeld|:count plugins ingeschakeld",
+    ":count plugin disabled|:count plugins disabled": ":count plugin uitgeschakeld|:count plugins uitgeschakeld"
 }
