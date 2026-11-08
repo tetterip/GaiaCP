@@ -3971,5 +3971,15 @@
     "paid, invoiced, or an item has add-ons from another order": "pago, faturado, ou um item tem adicionais de outro pedido",
     ":count order completed|:count orders completed": ":count pedido concluído|:count pedidos concluídos",
     ":count order cancelled|:count orders cancelled": ":count pedido cancelado|:count pedidos cancelados",
-    ":count order deleted|:count orders deleted": ":count pedido excluído|:count pedidos excluídos"
+    ":count order deleted|:count orders deleted": ":count pedido excluído|:count pedidos excluídos",
+    "Delete clients": "Excluir clientes",
+    "Each client gets the same link as \"Forgot password?\" on the login page. Their password stays as it is until they use it.": "Cada cliente recebe o mesmo link de “Esqueceu a senha?” na página de login. A senha continua a mesma até que ele o use.",
+    "Only clients with no services, orders, payment notices, payments or invoices are deleted, with their client area login. This cannot be undone.": "Só são excluídos clientes sem serviços, pedidos, avisos de pagamento, pagamentos ou faturas, junto com o login da área do cliente. Não pode ser desfeito.",
+    "Type DELETE to confirm": "Digite DELETE para confirmar",
+    "Type DELETE to confirm.": "Digite DELETE para confirmar.",
+    "has services, orders, payment notices, payments or invoices": "tem serviços, pedidos, avisos de pagamento, pagamentos ou faturas",
+    "linked to an admin login": "vinculado a um login de administrador",
+    "no client area login that is turned on": "sem login ativo na área do cliente",
+    ":count link sent|:count links sent": ":count link enviado|:count links enviados",
+    ":count client deleted|:count clients deleted": ":count cliente excluído|:count clientes excluídos"
 }

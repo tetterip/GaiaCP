@@ -65,6 +65,8 @@ class ClientsTable
             ])
             ->recordActions([
                 EditAction::make(),
-            ]);
+            ])
+            ->toolbarActions([ClientBulkActions::group()])
+            ->maxSelectableRecords(ClientBulkActions::MAX);
     }
 }

@@ -3971,5 +3971,15 @@
     "paid, invoiced, or an item has add-ons from another order": "ödendi, faturalandı veya bir kalemin başka bir siparişten eklentileri var",
     ":count order completed|:count orders completed": ":count sipariş tamamlandı|:count sipariş tamamlandı",
     ":count order cancelled|:count orders cancelled": ":count sipariş iptal edildi|:count sipariş iptal edildi",
-    ":count order deleted|:count orders deleted": ":count sipariş silindi|:count sipariş silindi"
+    ":count order deleted|:count orders deleted": ":count sipariş silindi|:count sipariş silindi",
+    "Delete clients": "Müşterileri sil",
+    "Each client gets the same link as \"Forgot password?\" on the login page. Their password stays as it is until they use it.": "Her müşteri, giriş sayfasındaki “Şifrenizi mi unuttunuz?” ile aynı bağlantıyı alır. Şifresi, bağlantıyı kullanana kadar değişmez.",
+    "Only clients with no services, orders, payment notices, payments or invoices are deleted, with their client area login. This cannot be undone.": "Yalnızca hizmeti, siparişi, ödeme bildirimi, ödemesi veya faturası olmayan müşteriler, müşteri alanı girişleriyle birlikte silinir. Geri alınamaz.",
+    "Type DELETE to confirm": "Onaylamak için DELETE yazın",
+    "Type DELETE to confirm.": "Onaylamak için DELETE yazın.",
+    "has services, orders, payment notices, payments or invoices": "hizmetleri, siparişleri, ödeme bildirimleri, ödemeleri veya faturaları var",
+    "linked to an admin login": "bir yönetici girişine bağlı",
+    "no client area login that is turned on": "açık bir müşteri alanı girişi yok",
+    ":count link sent|:count links sent": ":count bağlantı gönderildi|:count bağlantı gönderildi",
+    ":count client deleted|:count clients deleted": ":count müşteri silindi|:count müşteri silindi"
 }

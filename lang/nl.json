@@ -3971,5 +3971,15 @@
     "paid, invoiced, or an item has add-ons from another order": "betaald, gefactureerd, of een item heeft add-ons uit een andere bestelling",
     ":count order completed|:count orders completed": ":count bestelling afgerond|:count bestellingen afgerond",
     ":count order cancelled|:count orders cancelled": ":count bestelling geannuleerd|:count bestellingen geannuleerd",
-    ":count order deleted|:count orders deleted": ":count bestelling verwijderd|:count bestellingen verwijderd"
+    ":count order deleted|:count orders deleted": ":count bestelling verwijderd|:count bestellingen verwijderd",
+    "Delete clients": "Klanten verwijderen",
+    "Each client gets the same link as \"Forgot password?\" on the login page. Their password stays as it is until they use it.": "Elke klant krijgt dezelfde link als „Wachtwoord vergeten?” op de inlogpagina. Het wachtwoord blijft hetzelfde tot de klant de link gebruikt.",
+    "Only clients with no services, orders, payment notices, payments or invoices are deleted, with their client area login. This cannot be undone.": "Alleen klanten zonder diensten, bestellingen, betalingsberichten, betalingen of facturen worden verwijderd, met hun klantportaal-login. Dit kan niet ongedaan worden gemaakt.",
+    "Type DELETE to confirm": "Typ DELETE om te bevestigen",
+    "Type DELETE to confirm.": "Typ DELETE om te bevestigen.",
+    "has services, orders, payment notices, payments or invoices": "heeft diensten, bestellingen, betalingsberichten, betalingen of facturen",
+    "linked to an admin login": "gekoppeld aan een beheerderslogin",
+    "no client area login that is turned on": "geen actieve klantportaal-login",
+    ":count link sent|:count links sent": ":count link verzonden|:count links verzonden",
+    ":count client deleted|:count clients deleted": ":count klant verwijderd|:count klanten verwijderd"
 }

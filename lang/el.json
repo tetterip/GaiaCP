@@ -3971,5 +3971,15 @@
     "paid, invoiced, or an item has add-ons from another order": "πληρωμένη, τιμολογημένη, ή ένα item έχει πρόσθετα από άλλη παραγγελία",
     ":count order completed|:count orders completed": ":count παραγγελία ολοκληρώθηκε|:count παραγγελίες ολοκληρώθηκαν",
     ":count order cancelled|:count orders cancelled": ":count παραγγελία ακυρώθηκε|:count παραγγελίες ακυρώθηκαν",
-    ":count order deleted|:count orders deleted": ":count παραγγελία διαγράφηκε|:count παραγγελίες διαγράφηκαν"
+    ":count order deleted|:count orders deleted": ":count παραγγελία διαγράφηκε|:count παραγγελίες διαγράφηκαν",
+    "Delete clients": "Διαγραφή πελατών",
+    "Each client gets the same link as \"Forgot password?\" on the login page. Their password stays as it is until they use it.": "Κάθε πελάτης λαμβάνει τον ίδιο σύνδεσμο με το «Ξεχάσατε τον κωδικό;» της σελίδας σύνδεσης. Ο κωδικός του μένει ίδιος μέχρι να τον χρησιμοποιήσει.",
+    "Only clients with no services, orders, payment notices, payments or invoices are deleted, with their client area login. This cannot be undone.": "Διαγράφονται μόνο πελάτες χωρίς υπηρεσίες, παραγγελίες, ειδοποιήσεις πληρωμής, πληρωμές ή τιμολόγια, μαζί με τη σύνδεσή τους στην περιοχή πελατών. Δεν αναιρείται.",
+    "Type DELETE to confirm": "Γράψτε DELETE για επιβεβαίωση",
+    "Type DELETE to confirm.": "Γράψτε DELETE για επιβεβαίωση.",
+    "has services, orders, payment notices, payments or invoices": "έχει υπηρεσίες, παραγγελίες, ειδοποιήσεις πληρωμής, πληρωμές ή τιμολόγια",
+    "linked to an admin login": "συνδέεται με λογαριασμό διαχειριστή",
+    "no client area login that is turned on": "χωρίς ενεργή σύνδεση στην περιοχή πελατών",
+    ":count link sent|:count links sent": "Στάλθηκε :count σύνδεσμος|Στάλθηκαν :count σύνδεσμοι",
+    ":count client deleted|:count clients deleted": "Διαγράφηκε :count πελάτης|Διαγράφηκαν :count πελάτες"
 }
