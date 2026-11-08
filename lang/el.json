@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Μπήκαν στο υπόλοιπο του πελάτη",
     "Put it in the client's balance; the notice still asks for the cycle": "Μπαίνουν στο υπόλοιπο του πελάτη και η ειδοποίηση συνεχίζει να ζητάει τον κύκλο",
     "Record the whole amount for the cycle": "Καταχωρείται όλο το ποσό για τον κύκλο",
-    "The payment notice asks for :amount. The difference:": "Η ειδοποίηση πληρωμής ζητάει :amount. Η διαφορά:"
+    "The payment notice asks for :amount. The difference:": "Η ειδοποίηση πληρωμής ζητάει :amount. Η διαφορά:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Η ανανέωση που έκανε στον registrar μένει: δεν ζητείται από τον registrar να την αναιρέσει.",
+    "Back into the client's balance": "Πίσω στο υπόλοιπο του πελάτη",
+    "Into the client's balance": "Στο υπόλοιπο του πελάτη",
+    "Paid back outside GaiaCP": "Επιστράφηκαν εκτός GaiaCP",
+    "Payment refunded": "Η πληρωμή επιστράφηκε",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Καταγράφει ότι τα :amount της :date επιστράφηκαν, την ημέρα που διαλέγεις, και εκδίδει πιστωτικό αν είχε βγει τιμολόγιο. Δεν στέλνεται τίποτα στο Stripe, στο PayPal ή στην τράπεζα: κάνε εκεί την επιστροφή μόνος σου. Η λήξη και η υπηρεσία μένουν όπως είναι: ακύρωσε ή τερμάτισε την υπηρεσία αν τελειώνει.",
+    "Refund": "Επιστροφή",
+    "Refund payment": "Επιστροφή πληρωμής",
+    "Refunded": "Επιστράφηκε",
+    "Refunded on": "Ημερομηνία επιστροφής",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Κάποιες γραμμές της είναι πληρωμένες: φεύγουν μόνο οι απλήρωτες και η ειδοποίηση κλείνει ως πληρωμένη για τις υπόλοιπες.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Οι απλήρωτες γραμμές αφαιρέθηκαν· η ειδοποίηση είναι πληρωμένη για τις υπόλοιπες",
+    "Where the money goes": "Πού πάνε τα χρήματα"
 }

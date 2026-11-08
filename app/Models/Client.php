@@ -77,6 +77,17 @@ class Client extends Model implements HasLocalePreference
             || $this->creditTransactions()->exists();
     }
 
+    /**
+     * Whether it keeps a billing history, so it is not deleted (close it instead): services, orders, payment notices,
+     * invoices, payments or credit.
+     */
+    public function keepsHistory(): bool
+    {
+        return $this->hasBilling() || $this->payments()->exists()
+            || Order::query()->where('client_id', $this->id)->exists()
+            || TaxInvoice::query()->where('client_id', $this->id)->exists();
+    }
+
     /** @return HasMany<CreditTransaction, $this> the credit ledger, newest last */
     public function creditTransactions(): HasMany
     {

@@ -10,7 +10,6 @@ use App\Http\Requests\Api\StorePaymentRequest;
 use App\Http\Resources\Api\InvoiceResource;
 use App\Http\Resources\Api\PaymentResource;
 use App\Invoices\SendInvoiceEmails;
-use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Payments\PaymentMethods;
 use Carbon\CarbonImmutable;
@@ -74,8 +73,8 @@ class InvoiceController extends ApiController
             return $this->conflict('Only an unpaid payment notice can be cancelled.');
         }
 
-        $invoice->update(['status' => InvoiceStatus::Cancelled]);
-        ActivityLog::record('invoice.cancelled', "Payment notice {$invoice->number} cancelled", client: $invoice->client, properties: ['invoice_id' => $invoice->id]);
+        // Partly paid: the unpaid lines come off and it is paid for the rest
+        $invoice->cancel();
 
         return new InvoiceResource($invoice->refresh()->load('items'));
     }

@@ -5,6 +5,15 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- **Refund** on any payment (the service's Payments tab, `POST /api/v1/payments/{id}/refund`): records the money given
+  back as a payment of minus that amount on its day, into the client's balance or paid back outside GaiaCP, with a
+  credit note for its invoice; the due date stays. Before, only the latest payment could be reversed.
+- Moving a service's due date by hand takes its line for the old date off its unpaid notice, which could no longer be
+  paid (the daily run issues one for the new date). Cancelling a partly paid notice takes off only its unpaid lines and
+  closes it as paid for the rest, so the paid part gets its invoice. Reversing the payment of a one-time service makes
+  it owed again; reversing a domain's payment says the registrar renewal stays. A client with orders or payment notices
+  (and no services) no longer shows a Delete that failed.
+
 - Payments that don't add up: the order's **Record payment** recorded each item's price without tax, so the payments
   came to less than the payment notice and its invoice; it now records what the notice asks for each item. The
   service's Record payment starts on the notice's amount with tax, and a different amount asks what happens to the

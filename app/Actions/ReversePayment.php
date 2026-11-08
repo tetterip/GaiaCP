@@ -3,8 +3,10 @@
 namespace App\Actions;
 
 use App\Credit\ClientCredit;
+use App\Enums\BillingCycle;
 use App\Enums\CreditType;
 use App\Enums\InvoiceStatus;
+use App\Enums\ServiceStatus;
 use App\Invoicing\IssueCreditNote;
 use App\Models\ActivityLog;
 use App\Models\CreditTransaction;
@@ -31,7 +33,11 @@ class ReversePayment
                 throw new RuntimeException('Only the latest payment can be reversed, and only while the due date is unchanged since.');
             }
 
-            $service->update(['next_due_date' => $payment->due_date_before]);
+            // A one-time service this payment completed owes its payment again.
+            $service->update(array_filter([
+                'next_due_date' => $payment->due_date_before,
+                'status' => $service->status === ServiceStatus::Completed && $service->billing_cycle === BillingCycle::OneTime ? ServiceStatus::Active : null,
+            ]));
 
             // A discount it was given comes off again; what it paid into the balance beyond the notice comes out of it.
             RecordServicePayment::dropDiscounts($payment);
@@ -75,7 +81,8 @@ class ReversePayment
 
         $latestId = $service->payments()->latest('id')->value('id');
 
-        return $latestId === $payment->id
+        // A refund (RefundPayment) is not undone here, nor is a payment it gave back.
+        return $latestId === $payment->id && $payment->refund_of === null
             && $service->next_due_date->equalTo($payment->due_date_after);
     }
 }

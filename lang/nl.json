@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Op het tegoed van de klant gezet",
     "Put it in the client's balance; the notice still asks for the cycle": "Op het tegoed van de klant zetten; de betalingsherinnering vraagt nog steeds om de periode",
     "Record the whole amount for the cycle": "Het hele bedrag voor de periode registreren",
-    "The payment notice asks for :amount. The difference:": "De betalingsherinnering vraagt om :amount. Het verschil:"
+    "The payment notice asks for :amount. The difference:": "De betalingsherinnering vraagt om :amount. Het verschil:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Een verlenging bij de registrar blijft: de registrar wordt niet gevraagd die ongedaan te maken.",
+    "Back into the client's balance": "Terug op het tegoed van de klant",
+    "Into the client's balance": "Op het tegoed van de klant",
+    "Paid back outside GaiaCP": "Buiten GaiaCP terugbetaald",
+    "Payment refunded": "Betaling terugbetaald",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Legt vast dat :amount van :date is teruggegeven, op de dag die je kiest, en maakt een creditnota als er een factuur voor is uitgegeven. Er wordt niets naar Stripe, PayPal of de bank gestuurd: betaal het daar zelf terug. De vervaldatum en de dienst blijven zoals ze zijn: annuleer of beëindig de dienst als die stopt.",
+    "Refund": "Terugbetaling",
+    "Refund payment": "Betaling terugbetalen",
+    "Refunded": "Terugbetaald",
+    "Refunded on": "Terugbetaald op",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Sommige regels zijn betaald: alleen de onbetaalde gaan eraf, en de betalingsherinnering wordt voor de rest als betaald afgesloten.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Onbetaalde regels eraf gehaald; de betalingsherinnering is betaald voor de rest",
+    "Where the money goes": "Waar het geld heen gaat"
 }

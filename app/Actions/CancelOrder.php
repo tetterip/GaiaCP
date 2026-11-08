@@ -10,6 +10,7 @@ use App\Enums\ServiceStatus;
 use App\Invoicing\IssueCreditNote;
 use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Order;
 use App\Models\Payment;
@@ -61,7 +62,8 @@ class CancelOrder
     /** @return Builder<Payment> */
     public static function payments(Order $order)
     {
-        return Payment::query()->whereIn('service_id', $order->services()->select('id'));
+        // Not a payment given back already (RefundPayment), nor its refund
+        return Payment::query()->whereIn('service_id', $order->services()->select('id'))->whereNull('refund_of')->whereDoesntHave('refunds');
     }
 
     /** What was paid for the order's items, per currency, e.g. "€120.00". */
@@ -107,7 +109,8 @@ class CancelOrder
                 ->each(fn (int $count, int $product) => Product::query()->whereKey($product)->whereNotNull('stock')->increment('stock', $count));
             $order->services()->update(['status' => ServiceStatus::Cancelled]);
             $order->update(['status' => OrderStatus::Cancelled]);
-            $order->invoices()->unpaid()->update(['status' => InvoiceStatus::Cancelled]);
+            // A notice paid in part (payments kept) is closed for what was paid, so that part keeps its invoice
+            $order->invoices()->unpaid()->get()->each(fn (Invoice $invoice) => $invoice->cancel("order #{$order->id} cancelled"));
 
             return $returned;
         });

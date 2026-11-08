@@ -21,6 +21,9 @@ class IssueCreditNote
     /** The reason CancelOrder gives when it undoes a paid order's payments. */
     public const ORDER_CANCELLED = 'Order cancelled';
 
+    /** The reason RefundPayment gives when it gives a payment back. */
+    public const PAYMENT_REFUNDED = 'Payment refunded';
+
     /**
      * @param  list<int>|null  $itemIds  the invoice lines to credit; null for every line not credited yet
      *

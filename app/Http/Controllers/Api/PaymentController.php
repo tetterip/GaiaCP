@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Actions\RecordServicePayment;
+use App\Actions\RefundPayment;
 use App\Actions\ReversePayment;
+use App\Credit\ClientCredit;
 use App\Enums\ServiceStatus;
 use App\Http\Requests\Api\StorePaymentRequest;
 use App\Http\Resources\Api\PaymentResource;
@@ -14,6 +16,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Validation\Rule;
 use RuntimeException;
 
 /**
@@ -81,6 +84,28 @@ class PaymentController extends ApiController
             'renewal_error' => $recorder->recorder->renewalError,
             'setup_error' => $recorder->recorder->setupError,
         ], fn ($value) => $value !== null), 201);
+    }
+
+    /** POST /payments/{id}/refund: gives it back (RefundPayment), any payment not refunded yet; the due date stays. */
+    public function refund(Request $request, Payment $payment, RefundPayment $refunds): JsonResponse
+    {
+        $data = $request->validate([
+            'to' => ['required', Rule::in([RefundPayment::TO_CREDIT, RefundPayment::ELSEWHERE])],
+            'refunded_on' => ['sometimes', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'notes' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        if (! RefundPayment::canRefund($payment)) {
+            return $this->conflict('Only a payment that was not refunded yet can be refunded.');
+        }
+
+        if ($data['to'] === RefundPayment::TO_CREDIT && ! ClientCredit::enabled() && $payment->method !== ClientCredit::METHOD) {
+            return $this->conflict('Client credit is off (Settings → Billing → Client credit): refund it with "to": "elsewhere".');
+        }
+
+        $refund = $refunds->handle($payment, $data['to'], CarbonImmutable::parse($data['refunded_on'] ?? today()->toDateString()), $data['notes'] ?? null);
+
+        return (new PaymentResource($refund))->response()->setStatusCode(201);
     }
 
     /** DELETE /payments/{id}: reverses it (only a service's latest payment, while its due date is still the one it set). */

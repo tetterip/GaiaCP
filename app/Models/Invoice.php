@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -178,6 +179,24 @@ class Invoice extends Model
             ->when(! $overdueToo, fn (Builder $q) => $q->whereOnDate('due_date', '>=', today())->forCycle())
             ->whereHas('invoice', fn (Builder $q) => $q->unpaid())->with('invoice')->get();
 
+        self::takeOff($items, $service, $reason);
+    }
+
+    /**
+     * Its due date moved by hand: the unpaid lines (with late fees) of the cycle it was due on come off its unpaid
+     * notices, which could no longer be paid; the daily run issues the notice for the new due date.
+     */
+    public static function withdrawDueDate(Service $service, CarbonInterface $was): void
+    {
+        $items = InvoiceItem::query()->where('service_id', $service->id)->whereNull('payment_id')->forCycle()
+            ->whereOnDate('due_date', $was)->whereHas('invoice', fn (Builder $q) => $q->where('status', InvoiceStatus::Unpaid))->with('invoice')->get();
+
+        self::takeOff($items, $service, 'its due date was changed');
+    }
+
+    /** @param  EloquentCollection<int, InvoiceItem>  $items */
+    private static function takeOff(EloquentCollection $items, Service $service, string $reason): void
+    {
         foreach ($items->groupBy('invoice_id') as $lines) {
             $invoice = $lines->first()->invoice;
             InvoiceItem::query()->whereKey($lines->modelKeys())->delete();
@@ -223,6 +242,40 @@ class Invoice extends Model
             'tax_cents' => $items->sum('tax_cents'),
             'total_cents' => $items->sum('total_cents'),
         ]);
+    }
+
+    /**
+     * Cancel on an unpaid notice (by hand, the API, a cancelled order). One partly paid keeps what was paid: its unpaid
+     * lines come off and it is closed as paid for the rest, so the paid part gets its invoice; otherwise it is cancelled.
+     *
+     * @return bool true when it was cancelled, false when it was closed as paid for its paid lines
+     */
+    public function cancel(string $why = ''): bool
+    {
+        $paid = $this->items()->where(fn (Builder $q) => $q->whereNotNull('payment_id')->orWhereNotNull('credit_transaction_id'))->exists();
+
+        if (! $paid) {
+            $this->update(['status' => InvoiceStatus::Cancelled]);
+            ActivityLog::record('invoice.cancelled', "Payment notice {$this->number} cancelled".($why !== '' ? ": {$why}" : ''), client: $this->client, properties: ['invoice_id' => $this->id]);
+
+            return true;
+        }
+
+        $this->items()->unpaid()->delete();
+        $this->items()->whereNull('service_id')->where('credit', false)->delete(); // lines of deleted services
+        $rest = $this->items()->get();
+
+        $this->update([
+            'subtotal_cents' => $rest->sum('total_cents') - $rest->sum('tax_cents'),
+            'tax_cents' => $rest->sum('tax_cents'),
+            'total_cents' => $rest->sum('total_cents'),
+        ]);
+        ActivityLog::record('invoice.unpaid_lines_removed', "Payment notice {$this->number}: its unpaid lines were taken off and it is closed for what was paid".($why !== '' ? ": {$why}" : ''), client: $this->client, properties: ['invoice_id' => $this->id]);
+
+        $paidOn = Payment::query()->whereIn('id', $rest->pluck('payment_id')->filter())->max('paid_on');
+        $this->settle(CarbonImmutable::parse($paidOn ?? today()));
+
+        return false;
     }
 
     /** Mark paid once every item is; called after an item's payment was set. */

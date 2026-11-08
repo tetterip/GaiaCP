@@ -44,7 +44,7 @@ class OpenApi
             ['method' => 'post', 'path' => '/clients', 'area' => 'clients', 'permission' => 'clients.create', 'summary' => 'Create a client', 'description' => 'first_name, last_name and email are required. The country defaults to Settings → General → Region, the currency to the base one. No email is sent and no client area login is made.', 'body' => 'ClientInput', 'response' => 'Client', 'status' => 201],
             ['method' => 'get', 'path' => '/clients/{id}', 'area' => 'clients', 'permission' => 'clients.read', 'summary' => 'Get a client', 'response' => 'Client'],
             ['method' => 'patch', 'path' => '/clients/{id}', 'area' => 'clients', 'permission' => 'clients.update', 'summary' => 'Change a client', 'description' => 'Only the fields sent change. The currency stays as it is once the client has services or payment notices.', 'body' => 'ClientInput', 'response' => 'Client'],
-            ['method' => 'delete', 'path' => '/clients/{id}', 'area' => 'clients', 'permission' => 'clients.delete', 'summary' => 'Delete a client', 'description' => 'Only a client with no services, payments or credit (409 otherwise): close the others with "status": "closed".', 'response' => null, 'status' => 204],
+            ['method' => 'delete', 'path' => '/clients/{id}', 'area' => 'clients', 'permission' => 'clients.delete', 'summary' => 'Delete a client', 'description' => 'Only a client with no services, orders, payment notices, payments or credit (409 otherwise): close the others with "status": "closed".', 'response' => null, 'status' => 204],
 
             ['method' => 'get', 'path' => '/services', 'area' => 'services', 'permission' => 'services.read', 'summary' => 'List services', 'description' => 'Hosting accounts, domains, maintenance and other services. No passwords or EPP codes.', 'query' => ['client_id', 'order_id', 'type', 'status', 'domain', 'product_id', 'server_id', 'parent_service_id', ...$list], 'response' => 'Service[]'],
             ['method' => 'get', 'path' => '/services/{id}', 'area' => 'services', 'permission' => 'services.read', 'summary' => 'Get a service', 'response' => 'Service'],
@@ -68,6 +68,7 @@ class OpenApi
             ['method' => 'get', 'path' => '/payments', 'area' => 'payments', 'permission' => 'payments.read', 'summary' => 'List payments', 'query' => ['client_id', 'service_id', 'method', 'reference', 'paid_from', 'paid_to', ...$list], 'response' => 'Payment[]'],
             ['method' => 'post', 'path' => '/payments', 'area' => 'payments', 'permission' => 'payments.create', 'summary' => 'Record a payment for a service', 'description' => 'One billing cycle: the due date moves on one cycle, its payment notice line is marked paid, a service suspended for non-payment is unsuspended and a domain is renewed at its registrar (renewal_error when that failed; the payment stays). amount_cents defaults to what its payment notice asks for the cycle, with tax and late fees. A different amount needs difference (422 otherwise): less = credit (into the client\'s balance, the cycle stays owed; data is null unless the balance then paid it) or discount (a Discount line on the notice, the cycle is paid); more = credit (the rest into the balance, credited_cents) or keep.', 'body' => 'PaymentInput', 'response' => 'Payment', 'status' => 201],
             ['method' => 'get', 'path' => '/payments/{id}', 'area' => 'payments', 'permission' => 'payments.read', 'summary' => 'Get a payment', 'response' => 'Payment'],
+            ['method' => 'post', 'path' => '/payments/{id}/refund', 'area' => 'payments', 'permission' => 'payments.create', 'summary' => 'Refund a payment', 'description' => 'Records that a payment (any, not refunded yet) was given back: a payment of minus its amount on refunded_on, to = credit (into the client\'s balance) or elsewhere (paid back outside GaiaCP; nothing is sent to Stripe, PayPal or a bank). An invoice issued for it gets a credit note. The due date stays.', 'body' => 'RefundInput', 'response' => 'Payment', 'status' => 201],
             ['method' => 'delete', 'path' => '/payments/{id}', 'area' => 'payments', 'permission' => 'payments.delete', 'summary' => 'Reverse a payment', 'description' => 'Only the latest payment of a service, while its due date is still the one that payment set.', 'response' => null, 'status' => 204],
 
             ['method' => 'get', 'path' => '/products', 'area' => 'products', 'permission' => 'products.read', 'summary' => 'List products', 'query' => ['type', 'addon', 'hidden', 'retired', ...$list], 'response' => 'Product[]'],
@@ -331,7 +332,7 @@ class OpenApi
             'Payment' => ['type' => 'object', 'properties' => [
                 'id' => $int, 'service_id' => $int, 'client_id' => $int, 'amount_cents' => $int, 'currency' => $string,
                 'paid_on' => $date, 'method' => $string, 'reference' => $nullableString,
-                'due_date_before' => $date, 'due_date_after' => $date, 'notes' => $nullableString, 'created_at' => $time,
+                'due_date_before' => $date, 'due_date_after' => $date, 'notes' => $nullableString, 'refund_of' => $nullableInt, 'created_at' => $time,
             ]],
             'PaymentInput' => ['type' => 'object', 'required' => ['service_id'], 'properties' => [
                 'service_id' => $int,
@@ -340,6 +341,11 @@ class OpenApi
                 'paid_on' => ['type' => 'string', 'format' => 'date', 'description' => 'Today when left out'],
                 'method' => ['type' => 'string', 'description' => 'The client\'s default when left out'],
                 'reference' => $nullableString, 'notes' => $nullableString,
+            ]],
+            'RefundInput' => ['type' => 'object', 'required' => ['to'], 'properties' => [
+                'to' => ['type' => 'string', 'enum' => ['credit', 'elsewhere']],
+                'refunded_on' => ['type' => 'string', 'format' => 'date', 'description' => 'Today when left out'],
+                'notes' => $nullableString,
             ]],
             'Product' => ['type' => 'object', 'properties' => [
                 'id' => $int, 'name' => $string, 'type' => self::enum(ServiceType::class), 'addon' => $bool, 'description' => $nullableString,

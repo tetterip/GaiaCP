@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Dem Guthaben des Kunden gutgeschrieben",
     "Put it in the client's balance; the notice still asks for the cycle": "Dem Guthaben des Kunden gutschreiben; die Zahlungsaufforderung verlangt den Zeitraum weiterhin",
     "Record the whole amount for the cycle": "Den ganzen Betrag für den Zeitraum erfassen",
-    "The payment notice asks for :amount. The difference:": "Die Zahlungsaufforderung verlangt :amount. Die Differenz:"
+    "The payment notice asks for :amount. The difference:": "Die Zahlungsaufforderung verlangt :amount. Die Differenz:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Eine Verlängerung beim Registrar bleibt bestehen: der Registrar wird nicht gebeten, sie rückgängig zu machen.",
+    "Back into the client's balance": "Zurück in das Guthaben des Kunden",
+    "Into the client's balance": "In das Guthaben des Kunden",
+    "Paid back outside GaiaCP": "Außerhalb von GaiaCP zurückgezahlt",
+    "Payment refunded": "Zahlung erstattet",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Erfasst, dass :amount vom :date am gewählten Tag zurückgegeben wurden, und stellt eine Gutschrift aus, falls eine Rechnung dafür ausgestellt wurde. Nichts wird an Stripe, PayPal oder die Bank gesendet: erstatte es dort selbst. Fälligkeitsdatum und Dienst bleiben, wie sie sind: kündige oder beende den Dienst, wenn er endet.",
+    "Refund": "Erstattung",
+    "Refund payment": "Zahlung erstatten",
+    "Refunded": "Erstattet",
+    "Refunded on": "Erstattet am",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Einige Positionen sind bezahlt: nur die unbezahlten werden entfernt, und die Zahlungsaufforderung wird für den Rest als bezahlt abgeschlossen.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Unbezahlte Positionen entfernt; die Zahlungsaufforderung ist für den Rest bezahlt",
+    "Where the money goes": "Wohin das Geld geht"
 }

@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Aggiunto al saldo del cliente",
     "Put it in the client's balance; the notice still asks for the cycle": "Aggiungerlo al saldo del cliente; l'avviso chiede ancora il ciclo",
     "Record the whole amount for the cycle": "Registrare l'intero importo per il ciclo",
-    "The payment notice asks for :amount. The difference:": "L'avviso di pagamento chiede :amount. La differenza:"
+    "The payment notice asks for :amount. The difference:": "L'avviso di pagamento chiede :amount. La differenza:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Un rinnovo fatto presso il registrar resta: al registrar non viene chiesto di annullarlo.",
+    "Back into the client's balance": "Di nuovo nel saldo del cliente",
+    "Into the client's balance": "Nel saldo del cliente",
+    "Paid back outside GaiaCP": "Restituito fuori da GaiaCP",
+    "Payment refunded": "Pagamento rimborsato",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Registra che :amount del :date sono stati restituiti, nel giorno che scegli, ed emette una nota di credito se è stata emessa una fattura. Non viene inviato nulla a Stripe, PayPal o alla banca: rimborsa lì tu stesso. La scadenza e il servizio restano come sono: annulla o termina il servizio se finisce.",
+    "Refund": "Rimborso",
+    "Refund payment": "Rimborsa pagamento",
+    "Refunded": "Rimborsato",
+    "Refunded on": "Rimborsato il",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Alcune righe sono pagate: vengono tolte solo quelle non pagate e l'avviso viene chiuso come pagato per il resto.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Righe non pagate tolte; l'avviso è pagato per il resto",
+    "Where the money goes": "Dove vanno i soldi"
 }

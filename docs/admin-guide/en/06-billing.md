@@ -39,7 +39,10 @@ On a notice you can:
   this takes the current ones, while it is unpaid.
 - **Cancel** it.
 
-Ending a service (Terminate or Cancel) takes it off its open notices; a notice left empty is cancelled.
+Ending a service (Terminate or Cancel) takes it off its open notices; a notice left empty is cancelled. So does
+deleting a service that was never paid, or moving its due date by hand: the notice for the old date could no longer be
+paid, and the daily run issues one for the new date. Cancelling a notice that is partly paid takes off only its unpaid
+lines and closes it as paid for the rest, so that part keeps its invoice.
 
 ## Invoices
 
@@ -103,7 +106,14 @@ the due date back, takes off a discount it gave and takes out of the balance wha
 domain renewal.
 
 Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe or PayPal are recorded by
-themselves once the provider confirms them. Refunds are made there, not in GaiaCP.
+themselves once the provider confirms them.
+
+Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`)
+records it as a payment of minus that amount on the day you choose, so income reports count it then, and issues a
+credit note if an invoice was issued for it. Choose whether the money went back outside GaiaCP or into the client's
+balance (a payment made from credit always goes back there). GaiaCP sends nothing to Stripe, PayPal or the bank:
+refund it there yourself. The due date and the service stay as they are, so cancel or terminate the service if it
+ends. A one-time service whose payment you reverse is owed again.
 
 ## Billing cycles and due dates
 

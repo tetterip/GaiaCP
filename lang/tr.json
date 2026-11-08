@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Müşterinin bakiyesine eklendi",
     "Put it in the client's balance; the notice still asks for the cycle": "Müşterinin bakiyesine ekle; bildirim dönemi istemeye devam eder",
     "Record the whole amount for the cycle": "Tutarın tamamını dönem için kaydet",
-    "The payment notice asks for :amount. The difference:": "Ödeme bildirimi :amount istiyor. Fark:"
+    "The payment notice asks for :amount. The difference:": "Ödeme bildirimi :amount istiyor. Fark:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Kayıt kuruluşunda yapılan yenileme kalır: kayıt kuruluşundan bunu geri alması istenmez.",
+    "Back into the client's balance": "Müşterinin bakiyesine geri",
+    "Into the client's balance": "Müşterinin bakiyesine",
+    "Paid back outside GaiaCP": "GaiaCP dışında geri ödendi",
+    "Payment refunded": "Ödeme iade edildi",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": ":date tarihli :amount tutarın seçtiğiniz günde geri verildiğini kaydeder ve fatura kesildiyse bir iade faturası düzenler. Stripe, PayPal veya bankaya hiçbir şey gönderilmez: iadeyi orada kendiniz yapın. Vade tarihi ve hizmet olduğu gibi kalır: hizmet sona eriyorsa iptal edin veya sonlandırın.",
+    "Refund": "İade",
+    "Refund payment": "Ödemeyi iade et",
+    "Refunded": "İade edildi",
+    "Refunded on": "İade tarihi",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Bazı satırlar ödendi: yalnızca ödenmemiş olanlar kaldırılır ve bildirim kalan kısım için ödenmiş olarak kapatılır.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Ödenmemiş satırlar kaldırıldı; bildirim kalan kısım için ödendi",
+    "Where the money goes": "Para nereye gidiyor"
 }

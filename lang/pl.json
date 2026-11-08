@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Dodano do salda klienta",
     "Put it in the client's balance; the notice still asks for the cycle": "Dodać do salda klienta; zawiadomienie nadal żąda zapłaty za okres",
     "Record the whole amount for the cycle": "Zapisać całą kwotę za okres",
-    "The payment notice asks for :amount. The difference:": "Zawiadomienie o płatności żąda :amount. Różnica:"
+    "The payment notice asks for :amount. The difference:": "Zawiadomienie o płatności żąda :amount. Różnica:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Odnowienie u rejestratora pozostaje: rejestrator nie jest proszony o jego cofnięcie.",
+    "Back into the client's balance": "Z powrotem na saldo klienta",
+    "Into the client's balance": "Na saldo klienta",
+    "Paid back outside GaiaCP": "Zwrócono poza GaiaCP",
+    "Payment refunded": "Płatność zwrócona",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Zapisuje, że :amount z :date zostało zwrócone w wybranym dniu, i wystawia fakturę korygującą, jeśli wystawiono fakturę. Nic nie jest wysyłane do Stripe, PayPal ani banku: zwróć to tam samodzielnie. Termin płatności i usługa pozostają bez zmian: anuluj lub zakończ usługę, jeśli się kończy.",
+    "Refund": "Zwrot",
+    "Refund payment": "Zwróć płatność",
+    "Refunded": "Zwrócono",
+    "Refunded on": "Data zwrotu",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Niektóre pozycje są opłacone: usuwane są tylko nieopłacone, a zawiadomienie zostaje zamknięte jako opłacone za resztę.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Nieopłacone pozycje usunięte; zawiadomienie jest opłacone za resztę",
+    "Where the money goes": "Dokąd idą pieniądze"
 }
