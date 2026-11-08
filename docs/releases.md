@@ -7,9 +7,17 @@ is: `beta` now (it was `alpha` until 0.7.0), shown as a badge next to the versio
 set it to `null` once it is stable. It stays out of `VERSION`, so plugins' `requires` and updates keep
 comparing plain numbers. To release:
 
-1. Set `VERSION` to the new number and move the `## [Unreleased]` notes in `CHANGELOG.md` under
+1. Before it, three checks of everything merged since the last release tag (`git log v<last>..main`):
+   - a **security audit** of the changed code; its fixes go into the release, the rest is reported;
+   - the **guides**: the admin guide (`docs/admin-guide/en/` and every translated chapter) and the client guide
+     (`resources/docs/client-area/<locale>.md`, every language) describe what changed, with nothing left that is no
+     longer true;
+   - the **website** (gaiacp.digital, repository `tetterip/gaiacp-website`, English and Greek pages in step): a pull
+     request with the release's notable features, merged when the release is published. The version number itself
+     comes from GitHub, so it needs no edit.
+2. Set `VERSION` to the new number and move the `## [Unreleased]` notes in `CHANGELOG.md` under
    `## [<version>] - <date>`; merge that to `main`.
-2. On GitHub: Releases → Draft a new release → a new tag `v<version>` (or `<version>`) on `main` → Publish. Pushing the
+3. On GitHub: Releases → Draft a new release → a new tag `v<version>` (or `<version>`) on `main` → Publish. Pushing the
    tag from Git (`git tag v0.2.0 && git push origin v0.2.0`) works too.
 
 The Release workflow (`.github/workflows/release.yml`) then runs the tests, checks the tag matches `VERSION`, builds

@@ -84,4 +84,16 @@ class ServiceBulkActionsTest extends TestCase
             ->callTableBulkAction('syncDomains', [$first])
             ->assertNotified('0 domains synced');
     }
+
+    public function test_send_message_needs_the_clients_area(): void
+    {
+        Service::factory()->maintenance()->create();
+        $this->actingAs(User::factory()->create(['super_admin' => false, 'admin_areas' => ['services']]));
+
+        $this->list()->assertTableBulkActionHidden('sendMessage');
+
+        $this->actingAs(User::factory()->create(['super_admin' => false, 'admin_areas' => ['services', 'clients']]));
+
+        $this->list()->assertTableBulkActionVisible('sendMessage');
+    }
 }

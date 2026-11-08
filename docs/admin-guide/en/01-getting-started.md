@@ -92,6 +92,9 @@ row by row, so one failure never stops the others.
   **Knowledge base**: Publish, Unpublish, Delete.
 - **Banned IP addresses**: Lift ban. **Plugins**: Enable, Disable. **Webhook deliveries**: Resend.
 
+**Send message** (on services, orders and clients) is shown only to admins who can open Clients, since it makes a
+message under Clients → Messages to clients.
+
 ## Your profile
 
 Your user menu → Profile is yours alone:
