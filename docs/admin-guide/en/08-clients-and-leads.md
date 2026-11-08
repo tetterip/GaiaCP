@@ -49,8 +49,8 @@ Email.
 
 ### Records with history
 
-GaiaCP doesn't delete what has history. A client with services, a server with services and a service with payments have
-no Delete: terminate or cancel the services instead.
+GaiaCP doesn't delete what has history. A client with services, orders, payment notices, invoices or payments, a server
+with services and a service with payments have no Delete: terminate or cancel the services instead.
 
 A service's client is fixed once it is set up. To give a service to someone else (a website sold, a business renamed),
 use **Move to another client** on the service: its unpaid lines leave the old client's notices, and past payments stay

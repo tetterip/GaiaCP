@@ -71,7 +71,8 @@ notice's due date, the **Payments** of its notice and its credit notes, each wit
 An invoice can only be undone by a **credit note**. On an invoice's page, **Issue credit note** credits the lines you
 tick (all of them at first) with an optional reason; each line can be credited once. Reversing the payment of an
 invoiced notice issues a credit note for the whole invoice by itself, and once the notice is paid again it gets a new
-invoice. A credit note records no refund: give the money back and record it as usual.
+invoice. A credit note by itself records no refund: when you give money back, use **Refund** on the payment (see
+Recording payments), which records the refund and issues the credit note for you.
 
 Credit notes are listed with the invoices (filter **Type**), their totals negative, and have a PDF like an invoice; the
 client sees them under Billing → **Invoices**. **Export CSV** on the Invoices list gives your accountant one row per
