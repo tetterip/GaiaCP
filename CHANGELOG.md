@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Leads, quotes and coupons: mass actions. Leads: assign, mark as lost, reopen, delete (not those that became clients).
+  Quotes: send, mark as declined, delete (not accepted ones). Coupons: activate, deactivate, delete (only unused ones).
 - The orders list has a **Payment** column: the status of the order's payment notice (paid, unpaid, cancelled), or No
   payment due.
 - Settings → Plugins: tick plugins to enable or disable them together; the ones it can't switch are named.

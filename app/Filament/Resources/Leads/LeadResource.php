@@ -12,6 +12,7 @@ use App\Filament\Resources\Leads\Pages\CreateLead;
 use App\Filament\Resources\Leads\Pages\EditLead;
 use App\Filament\Resources\Leads\Pages\ListLeads;
 use App\Filament\Resources\Leads\RelationManagers\NotesRelationManager;
+use App\Filament\Resources\Leads\Tables\LeadBulkActions;
 use App\Models\Lead;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
@@ -198,6 +199,8 @@ class LeadResource extends Resource
                     ->label('Assigned to')
                     ->relationship('assignee', 'name'),
             ])
+            ->toolbarActions([LeadBulkActions::group()])
+            ->maxSelectableRecords(LeadBulkActions::MAX)
             ->recordActions([
                 EditAction::make(),
             ])

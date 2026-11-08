@@ -8,6 +8,7 @@ use App\Enums\ServiceType;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesResourceLabels;
 use App\Filament\Resources\Coupons\Pages\ManageCoupons;
+use App\Filament\Resources\Coupons\Tables\CouponBulkActions;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Tld;
@@ -188,6 +189,8 @@ class CouponResource extends Resource
             ->filters([
                 TernaryFilter::make('active'),
             ])
+            ->toolbarActions([CouponBulkActions::group()])
+            ->maxSelectableRecords(CouponBulkActions::MAX)
             ->recordActions([
                 EditAction::make()->modalWidth('3xl'),
                 DeleteAction::make()
