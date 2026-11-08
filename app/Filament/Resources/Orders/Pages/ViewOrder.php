@@ -70,7 +70,9 @@ class ViewOrder extends ViewRecord
             ->modalHeading(__('Complete order'))
             ->modalDescription(fn (Order $record) => self::pending($record)
                 ->map(fn (Service $service) => self::plan($service))
-                ->join(' ').' '.__('Registrations and transfers charge your registrar account.'))
+                ->join(' ').(self::pending($record)->contains(fn (Service $service) => $service->type === ServiceType::Domain)
+                    ? ' '.__('Registrations and transfers charge your registrar account.')
+                    : ''))
             // The registrar of each domain and the server of each hosting account, changeable here.
             ->schema(fn (Order $record) => self::pending($record)->filter(fn (Service $service) => self::choosable($service))
                 ->map(fn (Service $service) => self::choiceFields($service))->values()->all())

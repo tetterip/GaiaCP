@@ -25,6 +25,7 @@ use App\Models\Server;
 use App\Models\User;
 use App\Provisioning\ProvisioningException;
 use Carbon\CarbonImmutable;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Notifications\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -163,6 +164,21 @@ class OrdersTest extends TestCase
 
         $this->assertSame('2', collect($this->easyCalls)->firstWhere(0, EasyRegistrar::REGISTER)[1]['years']);
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
+    }
+
+    public function test_complete_order_mentions_the_registrar_only_for_domains(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $note = __('Registrations and transfers charge your registrar account.');
+
+        Livewire::test(ViewOrder::class, ['record' => $this->place()->id])
+            ->assertActionExists('completeOrder', fn (Action $action) => str_contains((string) $action->getModalDescription(), $note));
+
+        $other = app(PlaceOrder::class)->handle($this->client, [
+            ['type' => 'other', 'label' => 'Website set-up', 'price_cents' => 9000, 'billing_cycle' => BillingCycle::OneTime],
+        ]);
+        Livewire::test(ViewOrder::class, ['record' => $other->id])
+            ->assertActionExists('completeOrder', fn (Action $action) => ! str_contains((string) $action->getModalDescription(), $note));
     }
 
     public function test_complete_order_failure_ends_each_error_before_the_hint(): void
