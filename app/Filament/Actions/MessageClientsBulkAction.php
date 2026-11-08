@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * "Send message" on the clients or orders picked in a list: a Clients → Messages to clients message to exactly those
  * clients (each once), sent by the cron a few a minute like any other, so it stays in that list with its recipients.
+ * Only for admins who may open Messages to clients (its area), whatever list it is on.
  */
 class MessageClientsBulkAction
 {
@@ -29,6 +30,7 @@ class MessageClientsBulkAction
         return BulkAction::make('sendMessage')
             ->label('Send message')
             ->icon(Heroicon::OutlinedChatBubbleLeftEllipsis)
+            ->authorize(fn () => ClientMessageResource::canAccess())
             ->modalHeading(__('Send message'))
             ->modalDescription(fn (Collection $records) => trans_choice('Emailed to :count client, each once, :rate a minute. It stays under Clients → Messages to clients.|Emailed to :count clients, each once, :rate a minute. It stays under Clients → Messages to clients.', count(array_unique($clientIds($records))), [
                 'rate' => (int) config('gaiacp.automation.client_messages_per_minute', 30),

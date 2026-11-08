@@ -57,7 +57,7 @@ Route::prefix('v1')->name('api.v1.')->middleware(['api.key', 'throttle:gaiacp-ap
         Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     });
     Route::post('payments', [PaymentController::class, 'store'])->middleware('api.key:payments.create')->name('payments.store');
-    Route::post('payments/{payment}/refund', [PaymentController::class, 'refund'])->middleware('api.key:payments.create')->name('payments.refund');
+    Route::post('payments/{payment}/refund', [PaymentController::class, 'refund'])->middleware('api.key:payments.delete')->name('payments.refund');
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->middleware('api.key:payments.delete')->name('payments.destroy');
 
     Route::middleware('api.key:products.read')->group(function () {

@@ -183,6 +183,17 @@ class BillingGapsTest extends TestCase
         $api()->postJson("/api/v1/payments/{$payment->id}/refund", ['to' => 'elsewhere'])->assertConflict();
     }
 
+    public function test_a_refund_through_the_api_needs_the_payments_delete_permission(): void
+    {
+        $service = Service::factory()->create(['client_id' => $this->client->id, 'type' => 'other', 'server_id' => null, 'price_cents' => 5000, 'start_date' => '2025-10-15', 'next_due_date' => '2026-10-15']);
+        $payment = $this->pay($service, 5000);
+        [, $token] = ApiKey::generate(['name' => 'Bank', 'user_id' => auth()->id(), 'permissions' => ['payments.read', 'payments.create']]);
+
+        $this->withHeaders(['Authorization' => "Bearer {$token}", 'Accept' => 'application/json'])
+            ->postJson("/api/v1/payments/{$payment->id}/refund", ['to' => 'elsewhere'])->assertForbidden();
+        $this->assertSame(0, Payment::query()->whereNotNull('refund_of')->count());
+    }
+
     public function test_a_client_with_only_orders_or_notices_keeps_them(): void
     {
         $order = $this->order();
