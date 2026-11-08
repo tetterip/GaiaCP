@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Filament\Pages\PluginCatalogue;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Filament\Resources\ModuleQueue\ModuleQueueItemResource;
 use App\Filament\Resources\Services\ServiceResource;
@@ -33,6 +34,7 @@ class DailySummaryMail extends Mailable
             'serviceUrl' => fn ($service) => $service ? ServiceResource::getUrl('edit', ['record' => $service]) : null,
             'describe' => $this->describeChanges(...),
             'queueUrl' => ModuleQueueItemResource::getUrl(panel: 'admin'),
+            'catalogueUrl' => PluginCatalogue::getUrl(panel: 'admin'),
         ]);
     }
 

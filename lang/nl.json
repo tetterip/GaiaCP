@@ -3992,5 +3992,18 @@
     "the demo needs it": "de demo heeft het nodig",
     ":count plugin enabled|:count plugins enabled": ":count plugin ingeschakeld|:count plugins ingeschakeld",
     ":count plugin disabled|:count plugins disabled": ":count plugin uitgeschakeld|:count plugins uitgeschakeld",
-    "No payment due": "Geen betaling verschuldigd"
+    "No payment due": "Geen betaling verschuldigd",
+    ":plugin rolled back to :version": ":plugin teruggezet naar :version",
+    ":version is in the plugin catalogue but needs :needs": ":version staat in de plugincatalogus, maar heeft :needs nodig",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Hier geïnstalleerd: :version. Ze heeft :needs of nieuwer nodig: werk dat eerst bij en daarna de plugin vanuit de plugincatalogus.",
+    "Installed; :version needs :needs": "Geïnstalleerd; :version heeft :needs nodig",
+    "Its database changes could not be undone: :error": "De databasewijzigingen konden niet ongedaan worden gemaakt: :error",
+    "No earlier version of :plugin is kept here.": "Er is hier geen eerdere versie van :plugin bewaard.",
+    "Plugin updates": "Plugin-updates",
+    "Roll :plugin back to :version?": ":plugin terugzetten naar :version?",
+    "Roll back": "Terugzetten",
+    "Roll back to :version": "Terugzetten naar :version",
+    "Rolled back from :version on :date": "Teruggezet van :version op :date",
+    "The plugin was not rolled back": "De plugin is niet teruggezet",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "De versie van vóór de update wordt teruggezet; de schakelaar en instellingen blijven. Wat de nieuwere versie aan de database toevoegde, wordt verwijderd, met alles wat daar is opgeslagen."
 }

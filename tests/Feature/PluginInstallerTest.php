@@ -202,6 +202,62 @@ class PluginInstallerTest extends TestCase
         $this->assertSame('Plugin Demo plugin 1.1.0 uploaded over 1.0.0', ActivityLog::query()->where('event', 'plugin.installed')->latest('id')->value('description'));
     }
 
+    public function test_an_update_rolls_back_to_the_version_it_replaced(): void
+    {
+        $installer = app(PluginInstaller::class);
+        $plugin = $installer->install($this->zip($this->pluginFiles(), $this->name));
+        $this->plugins()->enable($plugin);
+        $this->assertNull($installer->previousVersion($plugin), 'nothing to roll back to before an update');
+
+        $files = $this->pluginFiles('1.1.0');
+        $files['database/migrations/2026_10_19_000001_add_name.php'] = str_replace(
+            ["Schema::create('{$this->table()}', fn (Blueprint \$table) => \$table->id())", "Schema::dropIfExists('{$this->table()}')"],
+            ["Schema::table('{$this->table()}', fn (Blueprint \$table) => \$table->string('name')->nullable())", "Schema::table('{$this->table()}', fn (Blueprint \$table) => \$table->dropColumn('name'))"],
+            $files['database/migrations/2026_10_18_000001_create_items.php'],
+        );
+        $installer->install($this->zip($files, $this->name));
+        $this->assertTrue(Schema::hasColumn($this->table(), 'name'));
+        $this->assertSame('1.0.0', $installer->previousVersion($plugin)['version']);
+
+        Livewire::test(Plugins::class)
+            ->assertTableActionVisible('roll_back', $this->id())
+            ->callTableAction('roll_back', $this->id(), ['password' => 'wrong'])
+            ->assertHasTableActionErrors(['password']);
+        $this->assertSame('1.1.0', $plugin->version());
+
+        Livewire::test(Plugins::class)
+            ->callTableAction('roll_back', $this->id(), ['password' => 'secret-password'])
+            ->assertHasNoTableActionErrors()
+            ->assertNotified('Demo plugin rolled back to 1.0.0')
+            ->assertSee('Rolled back from 1.1.0');
+
+        $this->assertSame('1.0.0', $plugin->version());
+        $this->assertStringContainsString('"version":"1.0.0"', File::get("{$this->directory}/{$this->name}/plugin.json"));
+        $this->assertFileDoesNotExist("{$this->directory}/{$this->name}/database/migrations/2026_10_19_000001_add_name.php");
+        $this->assertTrue(Schema::hasTable($this->table()), 'the older version\'s tables stay');
+        $this->assertFalse(Schema::hasColumn($this->table(), 'name'), 'what only the newer version added is undone');
+        $this->assertTrue($this->plugins()->enabled($plugin), 'the switch stays');
+        $this->assertSame(['1.0.0', '1.1.0'], [$this->plugins()->installed($plugin)->version, $this->plugins()->installed($plugin)->previous]);
+        $this->assertSame('Plugin Demo plugin rolled back from 1.1.0 to 1.0.0', ActivityLog::query()->where('event', 'plugin.rolled_back')->value('description'));
+
+        // Nothing older is kept now; the newer version is, so installing it again is an ordinary update
+        $this->assertNull($installer->previousVersion($plugin));
+        Livewire::test(Plugins::class)->assertTableActionHidden('roll_back', $this->id());
+        $installer->install($this->zip($files, $this->name));
+        $this->assertSame('1.1.0', $plugin->version());
+        $this->assertTrue(Schema::hasColumn($this->table(), 'name'));
+    }
+
+    public function test_bundled_plugins_have_nothing_to_roll_back(): void
+    {
+        $plesk = $this->plugins()->find('plesk');
+
+        $this->assertNull(app(PluginInstaller::class)->previousVersion($plesk));
+        Livewire::test(Plugins::class)->assertTableActionHidden('roll_back', 'plesk');
+        $this->expectExceptionMessage('This is a plugin bundled with GaiaCP: it updates together with GaiaCP.');
+        app(PluginInstaller::class)->rollBack($plesk);
+    }
+
     public function test_failed_migrations_leave_nothing_installed(): void
     {
         $files = $this->pluginFiles();

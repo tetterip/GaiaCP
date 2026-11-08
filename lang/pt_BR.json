@@ -3992,5 +3992,18 @@
     "the demo needs it": "a demo precisa dele",
     ":count plugin enabled|:count plugins enabled": ":count plugin ativado|:count plugins ativados",
     ":count plugin disabled|:count plugins disabled": ":count plugin desativado|:count plugins desativados",
-    "No payment due": "Nenhum pagamento devido"
+    "No payment due": "Nenhum pagamento devido",
+    ":plugin rolled back to :version": ":plugin voltou para a versão :version",
+    ":version is in the plugin catalogue but needs :needs": ":version está no catálogo de plugins, mas precisa de :needs",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Instalada aqui: :version. Ela precisa de :needs ou mais recente: atualize isso primeiro e depois o plugin pelo catálogo de plugins.",
+    "Installed; :version needs :needs": "Instalado; :version precisa de :needs",
+    "Its database changes could not be undone: :error": "Não foi possível desfazer as alterações no banco de dados: :error",
+    "No earlier version of :plugin is kept here.": "Nenhuma versão anterior de :plugin está guardada aqui.",
+    "Plugin updates": "Atualizações de plugins",
+    "Roll :plugin back to :version?": "Voltar :plugin para a versão :version?",
+    "Roll back": "Voltar versão",
+    "Roll back to :version": "Voltar para :version",
+    "Rolled back from :version on :date": "Voltou da :version em :date",
+    "The plugin was not rolled back": "O plugin não voltou de versão",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "A versão anterior à atualização é reposta; o interruptor e as configurações ficam. O que a versão mais nova adicionou ao banco de dados é removido, junto com o que foi guardado ali."
 }

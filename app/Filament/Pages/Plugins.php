@@ -9,6 +9,7 @@ use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Plugins\Catalogue\Catalogue;
 use App\Plugins\Catalogue\CatalogueInstaller;
+use App\Plugins\Catalogue\ListingVersion;
 use App\Plugins\Plugin;
 use App\Plugins\PluginInstaller;
 use App\Plugins\PluginInstallException;
@@ -48,7 +49,7 @@ use UnitEnum;
  * switched on or off. Off keeps its servers, accounts and settings; the bundled plugins can't be uninstalled.
  * Each shows its version (plugin.json), since when it is installed here and its CHANGELOG.md. Upload plugin installs
  * or updates one from a zip (PluginInstaller, your password asked: it is code with full access); those, unlike the
- * bundled ones, can be uninstalled once disabled.
+ * bundled ones, can be rolled back to the version an update replaced, and uninstalled once disabled.
  */
 class Plugins extends Page implements HasTable, SettingsCard
 {
@@ -239,6 +240,39 @@ class Plugins extends Page implements HasTable, SettingsCard
                         $this->flushCachedTableRecords();
                         Notification::make()->success()->title(__(':plugin enabled', ['plugin' => $record['name']]))->send();
                     }),
+                // Only uploaded plugins that were updated here: the update kept the folder it replaced
+                Action::make('roll_back')
+                    ->iconButton()
+                    ->tooltip(fn (array $record) => __('Roll back to :version', ['version' => $this->previousVersion($record)]))
+                    ->icon(Heroicon::OutlinedArrowUturnLeft)
+                    ->color('gray')
+                    ->visible(fn (array $record) => ! $record['bundled'] && PluginInstaller::uploadsAllowed() && $this->previousVersion($record) !== null)
+                    ->modalHeading(fn (array $record) => __('Roll :plugin back to :version?', ['plugin' => $record['name'], 'version' => $this->previousVersion($record)]))
+                    ->modalDescription(__('The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.'))
+                    ->schema([
+                        TextInput::make('password')
+                            ->label('Your password')
+                            ->password()
+                            ->autocomplete('current-password')
+                            ->required()
+                            ->currentPassword(),
+                    ])
+                    ->modalSubmitActionLabel(__('Roll back'))
+                    ->action(function (array $record, Action $action) {
+                        abort_unless(static::canAccess(), 403); // puts code back: checked again on the request that does it
+
+                        try {
+                            $plugin = app(PluginInstaller::class)->rollBack($this->plugin($record));
+                        } catch (PluginInstallException $e) {
+                            Notification::make()->danger()->persistent()->title(__('The plugin was not rolled back'))->body($e->getMessage())->send();
+                            $action->halt();
+
+                            return;
+                        }
+
+                        $this->flushCachedTableRecords();
+                        Notification::make()->success()->title(__(':plugin rolled back to :version', ['plugin' => $plugin->name(), 'version' => $plugin->version()]))->send();
+                    }),
                 // Only uploaded plugins, once disabled: the bundled ones can't be uninstalled (project rule)
                 Action::make('uninstall')
                     ->iconButton()
@@ -349,11 +383,16 @@ class Plugins extends Page implements HasTable, SettingsCard
             return __(':version is in the plugin catalogue', ['version' => $update]);
         }
 
+        if ($waiting = $this->catalogueWaiting()[$plugin->id()] ?? null) {
+            return __(':version is in the plugin catalogue but needs :needs', ['version' => $waiting->version, 'needs' => $waiting->missing()]);
+        }
+
         $installed = $this->plugins()->installed($plugin);
         $date = $installed?->changedAt?->timezone(config('app.timezone'))->format(AppServiceProvider::dateFormat());
 
         return match (true) {
             $date === null => null,
+            filled($installed->previous) && version_compare($installed->previous, $installed->version, '>') => __('Rolled back from :version on :date', ['version' => $installed->previous, 'date' => $date]),
             filled($installed->previous) => __('Updated from :version on :date', ['version' => $installed->previous, 'date' => $date]),
             default => __('Installed on :date', ['date' => $date]),
         };
@@ -380,6 +419,27 @@ class Plugins extends Page implements HasTable, SettingsCard
         return $this->catalogueUpdates ??= collect(app(CatalogueInstaller::class)->updates($catalogue))
             ->mapWithKeys(fn (array $update) => [$update['plugin']->id() => $update['version']->version])
             ->all();
+    }
+
+    /** @var array<string, ListingVersion>|null this request's catalogueWaiting() */
+    private ?array $catalogueWaiting = null;
+
+    /** @return array<string, ListingVersion> plugin id => its newest version in the last catalogue read, which needs a newer GaiaCP or PHP */
+    private function catalogueWaiting(): array
+    {
+        if (! Catalogue::enabled() || ! ($catalogue = app(Catalogue::class)->stored())) {
+            return $this->catalogueWaiting = [];
+        }
+
+        return $this->catalogueWaiting ??= collect(app(CatalogueInstaller::class)->waiting($catalogue))
+            ->mapWithKeys(fn (array $waiting) => [$waiting['plugin']->id() => $waiting['version']])
+            ->all();
+    }
+
+    /** The version Roll back would put back, or null. */
+    private function previousVersion(array $record): ?string
+    {
+        return app(PluginInstaller::class)->previousVersion($this->plugin($record))['version'] ?? null;
     }
 
     private function plugin(array $record): Plugin
