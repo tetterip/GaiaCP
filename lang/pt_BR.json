@@ -625,6 +625,7 @@
     "It is kept on the server and on the FTP server.": "É guardado no servidor e no servidor FTP.",
     "It is kept on the server.": "É guardado no servidor.",
     "It is taken off its products; the products stay.": "Ela é removida dos seus produtos; os produtos ficam.",
+    "It is taken off its unpaid payment notices. This cannot be undone.": "Ele é retirado dos avisos de pagamento não pagos. Isso não pode ser desfeito.",
     "It is updated by deploying from Git (git pull, composer install, migrate), so there is no Update button here.": "É atualizado por deploy a partir do Git (git pull, composer install, migrate), por isso não há botão Atualizar aqui.",
     "Item": "Item",
     "Items": "Itens",

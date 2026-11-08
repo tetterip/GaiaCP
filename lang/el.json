@@ -625,6 +625,7 @@
     "It is kept on the server and on the FTP server.": "Κρατιέται στον server και στον FTP server.",
     "It is kept on the server.": "Κρατιέται στον server.",
     "It is taken off its products; the products stay.": "Αφαιρείται από τα προϊόντα της· τα προϊόντα μένουν.",
+    "It is taken off its unpaid payment notices. This cannot be undone.": "Αφαιρείται από τις απλήρωτες ειδοποιήσεις πληρωμής του. Δεν αναιρείται.",
     "It is updated by deploying from Git (git pull, composer install, migrate), so there is no Update button here.": "Ενημερώνεται με deploy από το Git (git pull, composer install, migrate), γι' αυτό εδώ δεν υπάρχει κουμπί Ενημέρωσης.",
     "Item": "Στοιχείο",
     "Items": "Στοιχεία",

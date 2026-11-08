@@ -625,6 +625,7 @@
     "It is kept on the server and on the FTP server.": "Het wordt bewaard op de server en op de FTP-server.",
     "It is kept on the server.": "Het wordt bewaard op de server.",
     "It is taken off its products; the products stay.": "Hij wordt van zijn producten gehaald; de producten blijven.",
+    "It is taken off its unpaid payment notices. This cannot be undone.": "Het wordt van de onbetaalde betalingsberichten gehaald. Dit kan niet ongedaan worden gemaakt.",
     "It is updated by deploying from Git (git pull, composer install, migrate), so there is no Update button here.": "Het wordt bijgewerkt door te deployen vanuit Git (git pull, composer install, migrate), dus hier is geen knop Bijwerken.",
     "Item": "Item",
     "Items": "Items",

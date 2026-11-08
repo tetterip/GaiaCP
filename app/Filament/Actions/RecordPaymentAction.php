@@ -74,7 +74,7 @@ class RecordPaymentAction
     }
 
     /** It has a payment (payments_exists when the table loaded it). */
-    private static function paid(Service $record): bool
+    public static function paid(Service $record): bool
     {
         return array_key_exists('payments_exists', $record->getAttributes())
             ? (bool) $record->getAttribute('payments_exists')

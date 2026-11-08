@@ -625,6 +625,7 @@
     "It is kept on the server and on the FTP server.": "Sunucuda ve FTP sunucusunda saklanır.",
     "It is kept on the server.": "Sunucuda saklanır.",
     "It is taken off its products; the products stay.": "Ürünlerinden kaldırılır; ürünler kalır.",
+    "It is taken off its unpaid payment notices. This cannot be undone.": "Ödenmemiş ödeme bildirimlerinden çıkarılır. Bu geri alınamaz.",
     "It is updated by deploying from Git (git pull, composer install, migrate), so there is no Update button here.": "Git'ten dağıtılarak güncellenir (git pull, composer install, migrate), bu yüzden burada Güncelle düğmesi yok.",
     "Item": "Kalem",
     "Items": "Kalemler",
