@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use App\Enums\InvoiceStatus;
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Models\Order;
@@ -39,6 +40,16 @@ class OrdersTable
                     ->description(fn (Order $record) => ($totals = $record->totals())['rule']
                         ? __(':net + :tax :tax_amount', ['net' => Money::format($totals['net'], $record->currency()), 'tax' => $totals['rule']['name'].' '.Tax::formatRate($totals['rule']['rate']), 'tax_amount' => Money::format($totals['tax'], $record->currency())])
                         : null),
+                // As the order page's Payment notice: the latest notice's status, or none when nothing is owed
+                TextColumn::make('payment')
+                    ->label('Payment')
+                    ->state(fn (Order $record) => $record->invoices->sortByDesc('id')->first()?->status->getLabel() ?? __('No payment due'))
+                    ->color(fn (Order $record) => match ($record->invoices->sortByDesc('id')->first()?->status) {
+                        InvoiceStatus::Unpaid => 'danger',
+                        InvoiceStatus::Paid => 'success',
+                        default => 'gray',
+                    })
+                    ->badge(),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('created_at')
@@ -53,6 +64,8 @@ class OrdersTable
             ])
             // The chips (Orders\Concerns\HasStatusChips) set the filter and show which one is on, so no filter button
             ->filtersLayout(FiltersLayout::Hidden)
-            ->recordUrl(fn (Order $record) => OrderResource::getUrl('view', ['record' => $record]));
+            ->recordUrl(fn (Order $record) => OrderResource::getUrl('view', ['record' => $record]))
+            ->toolbarActions([OrderBulkActions::group()])
+            ->maxSelectableRecords(OrderBulkActions::MAX);
     }
 }
