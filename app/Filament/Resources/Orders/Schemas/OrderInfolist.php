@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Coupons\CouponResource;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Models\Order;
@@ -23,7 +24,8 @@ class OrderInfolist
                     ->schema([
                         TextEntry::make('client.last_name')
                             ->label('Client')
-                            ->state(fn (Order $record) => $record->client->displayName()),
+                            ->state(fn (Order $record) => $record->client->displayName())
+                            ->url(fn (Order $record) => ClientResource::getUrl('edit', ['record' => $record->client_id])),
                         TextEntry::make('status')
                             ->badge(),
                         TextEntry::make('total')

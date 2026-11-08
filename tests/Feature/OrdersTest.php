@@ -11,6 +11,7 @@ use App\Enums\DomainRegistrationType;
 use App\Enums\OrderStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Orders\Pages\CreateOrder;
 use App\Filament\Resources\Orders\Pages\ViewOrder;
 use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
@@ -542,7 +543,8 @@ class OrdersTest extends TestCase
 
         $this->get('/admin/orders')->assertOk()->assertSee('Hosting Basic');
         $this->get('/admin/orders/create')->assertOk();
-        $this->get("/admin/orders/{$order->id}")->assertOk()->assertSee('Complete order');
+        $this->get("/admin/orders/{$order->id}")->assertOk()->assertSee('Complete order')
+            ->assertSee(ClientResource::getUrl('edit', ['record' => $this->client->id]), false);
         $this->get("/admin/clients/{$this->client->id}/edit")->assertOk()->assertSee('New order');
     }
 
