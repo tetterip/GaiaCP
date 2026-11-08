@@ -22,8 +22,8 @@ At the time set in Settings → Billing → **Automation** → Daily run at (09:
    of the service) gets no more notices and is terminated on its next due date. For a domain this switch is shown as
    Auto renew off;
 7. **cancels unpaid orders** after Cancel unpaid orders after days (empty = never);
-8. emails the admins a **daily summary**: new and overdue payment notices, domain syncs that changed or failed, and
-   what is still in the module queue. Nothing to report, no email.
+8. emails the admins a **daily summary**: new and overdue payment notices, domain syncs that changed or failed,
+   what is still in the module queue, and new versions of GaiaCP and of your plugins. Nothing to report, no email.
 
 The same page has **BCC every client email to** (a copy of each client email for your records), the **Price change
 notice** days, the **Usage warning** share (hosting accounts near their disk or bandwidth limit get an email
@@ -44,7 +44,7 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 | 04:15 | Registrar costs of the TLDs, when Settings → Domains → Update registrar costs daily is on |
 | 04:30 | Servers compared with GaiaCP (when switched on) |
 | 05:00 | Site checks |
-| 05:40 | New versions of installed plugins in the plugin catalogue, in the bell |
+| 05:40 | New versions of installed plugins in the plugin catalogue (also ones that need a newer GaiaCP), in the bell and the next daily summary |
 | 05:50 | A new GaiaCP release, in the bell |
 | 06:00 | Hosting usage warnings |
 | 07:00 | Support tickets waiting on the client closed |

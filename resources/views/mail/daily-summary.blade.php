@@ -33,6 +33,16 @@
 @endforeach
 
 @endif
+@if ($summary->pluginUpdates->isNotEmpty())
+## [{{ __('Plugin updates') }}]({{ $catalogueUrl }}) ({{ $summary->pluginUpdates->count() }})
+
+@foreach ($summary->pluginUpdates as $log)
+- **{{ __(':plugin :version is out', ['plugin' => $log->properties['name'] ?? '', 'version' => $log->properties['version'] ?? '']) }}** {{ $log->event === 'plugin.update_waiting'
+    ? \App\Notifications\AdminAlerts::pluginWaiting($log->properties ?? [])
+    : __('Installed here: :version. Update it from the plugin catalogue.', ['version' => $log->properties['installed'] ?? '']) }}
+@endforeach
+
+@endif
 ## {{ __('New payment notices') }} ({{ $summary->newNotices->count() }})
 
 @if ($summary->newNotices->isEmpty())

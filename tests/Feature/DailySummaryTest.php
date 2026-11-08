@@ -174,6 +174,27 @@ class DailySummaryTest extends TestCase
         $this->assertFalse($admin->refresh()->system_emails);
     }
 
+    public function test_it_lists_plugin_updates(): void
+    {
+        User::factory()->create();
+        ActivityLog::record('plugin.update_available', 'Plugin Tickets plus 1.2.0 is in the catalogue (installed: 1.1.0)', properties: [
+            'plugin' => 'tickets-plus', 'name' => 'Tickets plus', 'version' => '1.2.0', 'installed' => '1.1.0',
+        ]);
+        ActivityLog::record('plugin.update_waiting', 'Plugin Backups plus 3.0.0 is in the catalogue but needs GaiaCP 9.0.0 (installed: 2.0.0)', properties: [
+            'plugin' => 'backups-plus', 'name' => 'Backups plus', 'version' => '3.0.0', 'installed' => '2.0.0', 'needs' => 'GaiaCP 9.0.0', 'gaiacp' => true,
+        ]);
+
+        $this->artisan('gaiacp:daily-summary')->assertSuccessful();
+
+        $mail = Mail::sent(DailySummaryMail::class)->first();
+        $this->assertCount(2, $mail->summary->pluginUpdates);
+        $html = $mail->render();
+        $this->assertStringContainsString('Plugin updates', $html);
+        $this->assertStringContainsString('Tickets plus 1.2.0 is out', $html);
+        $this->assertStringContainsString('Installed here: 1.1.0. Update it from the plugin catalogue.', $html);
+        $this->assertStringContainsString('It needs GaiaCP 9.0.0 or later', $html);
+    }
+
     public function test_the_mail_renders_in_greek(): void
     {
         User::factory()->create(['locale' => 'el']);

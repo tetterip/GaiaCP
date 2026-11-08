@@ -203,6 +203,7 @@ class PluginCatalogue extends Page implements HasTable
         [$key, $status] = match (true) {
             $installed !== null && app(PluginManager::class)->bundled($installed) => ['bundled', __('Bundled')],
             $update !== null => ['update', __('Update to :version', ['version' => $update->version])],
+            $installed !== null && ($waiting = $this->installer()->waitingFor($listing)) !== null => ['installed', __('Installed; :version needs :needs', ['version' => $waiting->version, 'needs' => $waiting->missing()])],
             $installed !== null => ['installed', __('Installed')],
             $best === null => ['incompatible', __('Needs GaiaCP :version', ['version' => $listing->latest()->requires])],
             default => ['available', __('Not installed')],

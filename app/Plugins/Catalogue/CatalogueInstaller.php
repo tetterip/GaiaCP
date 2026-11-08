@@ -62,6 +62,36 @@ class CatalogueInstaller
         return version_compare($best->version, $installed->version(), '>') ? $best : null;
     }
 
+    /**
+     * The newest version of this installed, uploaded plugin when it is newer than the one here and than any update
+     * offered, but needs a newer GaiaCP or PHP (ListingVersion::missing()); null otherwise.
+     */
+    public function waitingFor(Listing $listing): ?ListingVersion
+    {
+        $installed = $this->installed($listing);
+        $latest = $listing->latest();
+
+        if ($installed === null || $this->plugins->bundled($installed) || $latest->runsHere()) {
+            return null;
+        }
+
+        return version_compare($latest->version, $installed->version(), '>') ? $latest : null;
+    }
+
+    /** @return list<array{plugin: Plugin, listing: Listing, version: ListingVersion}> the installed plugins whose newest version needs a newer GaiaCP or PHP */
+    public function waiting(CatalogueData $catalogue): array
+    {
+        $waiting = [];
+
+        foreach ($catalogue->plugins as $listing) {
+            if ($version = $this->waitingFor($listing)) {
+                $waiting[] = ['plugin' => $this->installed($listing), 'listing' => $listing, 'version' => $version];
+            }
+        }
+
+        return $waiting;
+    }
+
     /** @return list<array{plugin: Plugin, listing: Listing, version: ListingVersion}> the installed plugins with an update */
     public function updates(CatalogueData $catalogue): array
     {

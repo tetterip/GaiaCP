@@ -22,9 +22,15 @@ the GaiaCP project before it is listed. **Official** ones are made by GaiaCP, **
 by name, open **Details** for its changelog, author and licence, and **Install** it (your password is asked). It is
 added disabled, like an uploaded zip: enable it on the Plugins page. Only versions that run on your GaiaCP are offered.
 
-GaiaCP reads the catalogue once a day (and when you press **Refresh**). When an installed plugin has a newer version,
-the bell rings once and the Plugins page shows it; **Update** on the catalogue page installs it, keeping the old
-version to put back if the update fails. The catalogue is signed: GaiaCP refuses a catalogue or a zip that was changed
+GaiaCP reads the catalogue once a day (and when you press **Refresh**). Nothing is updated by itself. When an
+installed plugin has a newer version, the bell rings once, the next daily summary lists it and the Plugins page shows
+it; **Update** on the catalogue page installs it, keeping the old version to put back if the update fails. When the
+newer version needs a newer GaiaCP (or PHP) than yours, you are told the same way, with what it needs: update GaiaCP
+first, then the plugin.
+
+After an update (from the catalogue or a zip), **Roll back** (the arrow on the Plugins page, your password is asked)
+puts back the version it replaced, if the new one gives you trouble. Its switch and settings stay; what the newer
+version added to the database is removed, with whatever was stored there. The catalogue is signed: GaiaCP refuses a catalogue or a zip that was changed
 on the way, so even someone who broke into plugins.gaiacp.digital could not hand you a different plugin.
 
 ### Installing other plugins
