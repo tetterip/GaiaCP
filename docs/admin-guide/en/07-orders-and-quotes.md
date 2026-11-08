@@ -50,7 +50,8 @@ To act on several orders at once, tick them in the list (up to 100) and open **B
 - **Delete**: deletes cancelled orders nothing was paid for (and that have no invoice), with their items and payment
   notices. Other orders are left out; this cannot be undone.
 
-The window says how many of the picked orders it applies to and why the others are left out.
+The window says how many of the picked orders it applies to and why the others are left out. The list's **Payment**
+column shows each order's payment notice (paid, unpaid, cancelled) or No payment due.
 
 ## Orders from clients
 

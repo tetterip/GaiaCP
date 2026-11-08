@@ -124,7 +124,7 @@ domain renewal.
 Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe or PayPal are recorded by
 themselves once the provider confirms them.
 
-Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`)
+Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`, with an API key that has `payments.delete`)
 records it as a payment of minus that amount on the day you choose, so income reports count it then, and issues a
 credit note if an invoice was issued for it. Choose whether the money went back outside GaiaCP or into the client's
 balance (a payment made from credit always goes back there). GaiaCP sends nothing to Stripe, PayPal or the bank:
