@@ -14,6 +14,7 @@ use App\Enums\ServiceStatus;
 use App\Filament\Resources\Orders\Pages\ViewOrder;
 use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Services\Pages\EditService;
+use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ApiKey;
 use App\Models\Client;
 use App\Models\Invoice;
@@ -276,6 +277,20 @@ class PaymentAmountTest extends TestCase
         $other->services()->orderBy('id')->first()->delete();
         Livewire::test(ItemsRelationManager::class, ['ownerRecord' => $other, 'pageClass' => ViewOrder::class])
             ->assertActionHidden(TestAction::make(DeleteAction::class)->table($other->services()->sole())); // the last item: cancel the order instead
+    }
+
+    public function test_deleting_a_service_returns_to_the_clients_tab(): void
+    {
+        $this->actingAs(User::factory()->create());
+        [$a] = $this->order()->services()->orderBy('id')->get()->all();
+        $back = ServiceResource::clientUrl($a);
+
+        Livewire::test(EditService::class, ['record' => $a->id])
+            ->callAction(DeleteAction::class)
+            ->assertRedirect($back);
+
+        $this->assertModelMissing($a);
+        $this->assertStringContainsString('/clients/'.$a->client_id, (string) $back);
     }
 
     public function test_the_migration_takes_old_lines_of_deleted_services_off(): void
