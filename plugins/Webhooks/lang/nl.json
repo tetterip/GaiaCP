@@ -32,5 +32,8 @@
     "Webhook endpoint id": "Webhook-endpoint-ID",
     "Webhooks": "Webhooks",
     ":count tries": ":count pogingen",
-    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Webhooks worden niet naar dit adres verzonden: het ligt op een lokaal of privénetwerk, of de host kan niet worden gevonden."
+    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Webhooks worden niet naar dit adres verzonden: het ligt op een lokaal of privénetwerk, of de host kan niet worden gevonden.",
+    "Each delivery that is not waiting already is sent again now to its endpoint, if the endpoint is still active.": "Elke levering die niet al wacht, wordt nu opnieuw naar het endpoint verzonden, als dat nog actief is.",
+    "The others were waiting already, their endpoint is off, or they failed and are tried again later.": "De andere wachtten al, hun endpoint staat uit, of ze mislukten en worden later opnieuw geprobeerd.",
+    ":count delivery sent|:count deliveries sent": ":count levering verzonden|:count leveringen verzonden"
 }

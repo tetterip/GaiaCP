@@ -10,6 +10,8 @@ use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedTable;
@@ -20,6 +22,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Livewire\Attributes\Url;
 use UnitEnum;
@@ -117,6 +120,31 @@ class WebhookDeliveriesPage extends Page implements HasTable
                             : Notification::make()->warning()->title(__('Not delivered, tried again later'))->body($delivery->error)->send();
                     }),
             ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    BulkAction::make('resendMany')
+                        ->label('Resend')
+                        ->icon(Heroicon::OutlinedArrowPath)
+                        ->requiresConfirmation()
+                        ->modalDescription(__('Each delivery that is not waiting already is sent again now to its endpoint, if the endpoint is still active.'))
+                        ->visible(fn () => app(PluginManager::class)->enabled('webhooks'))
+                        ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            $sender = app(WebhookSender::class);
+                            $sent = $records->filter(fn ($delivery) => $delivery instanceof WebhookDelivery
+                                && $delivery->getAttribute('status') !== DeliveryStatus::Pending
+                                && $delivery->endpoint?->getAttribute('active')
+                                && $sender->resend($delivery)->getAttribute('status') === DeliveryStatus::Sent)->count();
+
+                            Notification::make()
+                                ->title(trans_choice(':count delivery sent|:count deliveries sent', $sent))
+                                ->body($sent < $records->count() ? __('The others were waiting already, their endpoint is off, or they failed and are tried again later.') : null)
+                                ->{$sent < $records->count() ? 'warning' : 'success'}()
+                                ->send();
+                        }),
+                ]),
+            ])
+            ->maxSelectableRecords(100)
             ->emptyStateHeading(__('Nothing sent yet'));
     }
 

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Announcements;
 
 use App\Enums\AdminArea;
 use App\Filament\Actions\AiTextActions;
+use App\Filament\Actions\PublishBulkActions;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesResourceLabels;
 use App\Filament\Resources\Announcements\Pages\CreateAnnouncement;
@@ -137,6 +138,8 @@ class AnnouncementResource extends Resource
                     ->boolean(),
             ])
             ->defaultSort(fn ($query) => $query->orderByRaw('published_at is null desc')->orderByDesc('published_at')->orderByDesc('id'))
+            ->toolbarActions([PublishBulkActions::announcements()])
+            ->maxSelectableRecords(PublishBulkActions::MAX)
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),

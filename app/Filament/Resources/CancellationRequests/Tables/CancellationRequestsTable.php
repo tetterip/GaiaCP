@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CancellationRequests\Tables;
 use App\Actions\CancellationRequests;
 use App\Enums\CancellationType;
 use App\Enums\ChangeRequestStatus;
+use App\Filament\Actions\ChangeRequestBulkActions;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\CancellationRequest;
 use App\Providers\AppServiceProvider;
@@ -57,6 +58,8 @@ class CancellationRequestsTable
                         : null),
             ])
             ->defaultSort('created_at', 'desc')
+            ->toolbarActions([ChangeRequestBulkActions::cancellations()])
+            ->maxSelectableRecords(ChangeRequestBulkActions::MAX)
             ->recordActions([
                 Action::make('approve')
                     ->label('Approve')

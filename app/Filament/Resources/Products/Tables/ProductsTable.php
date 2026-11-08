@@ -81,6 +81,8 @@ class ProductsTable
                     ->query(fn (Builder $query, array $data) => $query->when($data['values'] ?? [], fn (Builder $query, array $tags) => $query
                         ->whereHas('tags', fn (Builder $q) => $q->whereKey($tags)))),
             ])
+            ->toolbarActions([ProductBulkActions::group()])
+            ->maxSelectableRecords(ProductBulkActions::MAX)
             ->recordActions([
                 ActionGroup::make([
                     EditAction::make(),

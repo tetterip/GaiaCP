@@ -73,6 +73,25 @@ The version number at the foot of every page (or the user menu → **About GaiaC
 what it runs on (PHP, Laravel, Filament), the licence and links to this guide, Updates and GitHub. Handy when you report a
 problem.
 
+## Mass actions
+
+Most lists have checkboxes: tick rows (up to 100), or the box in the header for the whole page, and open the menu
+that appears above the list. Before anything runs, the window says how many of the picked rows it applies to and why
+the rest are left out, and one message afterwards sums up what was done and names any that failed. Each action does
+what the same button on a single record does (the same checks, server or registrar calls, emails and activity log),
+row by row, so one failure never stops the others.
+
+- **Payment notices**, **Orders**, **Clients**, **Leads**, **Quotes**, **Coupons**: see their chapters.
+- **Services** (Hosting, Domains, Other services): Change price, Suspend (one reason for all), Unsuspend, Send
+  message to their clients, End at the end of the cycle or Keep renewing (for a domain, Auto renew off or on), and
+  Sync domains.
+- **Tickets**: Close, Assign to, Change priority, Move to department.
+- **Module queue**: Retry (never a termination, which asks for your password one at a time) and Mark resolved.
+- **Cancellation requests**: Approve or Decline. **Upgrade requests**: Decline (each approval asks for its own price).
+- **Products**: Hide, Unhide, Retire, Bring back. **Announcements**: Publish now, Unpublish, Delete.
+  **Knowledge base**: Publish, Unpublish, Delete.
+- **Banned IP addresses**: Lift ban. **Plugins**: Enable, Disable. **Webhook deliveries**: Resend.
+
 ## Your profile
 
 Your user menu → Profile is yours alone:

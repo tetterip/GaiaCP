@@ -6,6 +6,7 @@ use App\Actions\ChangeProduct;
 use App\Actions\UpgradeRequests;
 use App\Enums\ChangeRequestStatus;
 use App\Filament\Actions\ChangeProductAction;
+use App\Filament\Actions\ChangeRequestBulkActions;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\UpgradeRequest;
 use App\Providers\AppServiceProvider;
@@ -60,6 +61,8 @@ class UpgradeRequestsTable
                         : null),
             ])
             ->defaultSort('created_at', 'desc')
+            ->toolbarActions([ChangeRequestBulkActions::upgrades()])
+            ->maxSelectableRecords(ChangeRequestBulkActions::MAX)
             ->recordActions([
                 Action::make('approve')
                     ->label('Approve')

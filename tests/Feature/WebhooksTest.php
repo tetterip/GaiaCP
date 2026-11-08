@@ -307,6 +307,22 @@ class WebhooksTest extends TestCase
         $this->get(WebhookDeliveriesPage::getUrl(['endpoint' => $endpoint->id]))->assertOk()->assertSee(WebhookSender::TEST_EVENT);
     }
 
+    public function test_several_deliveries_are_resent_together(): void
+    {
+        $this->actingAs(User::factory()->create());
+        Http::fake([self::URL => Http::response('', 204)]);
+        $endpoint = $this->endpoint();
+
+        Livewire::test(WebhooksPage::class)->callAction(TestAction::make('test')->table($endpoint));
+        Livewire::test(WebhooksPage::class)->callAction(TestAction::make('test')->table($endpoint));
+        $deliveries = WebhookDelivery::query()->get();
+
+        Livewire::test(WebhookDeliveriesPage::class)
+            ->callTableBulkAction('resendMany', $deliveries)
+            ->assertNotified('2 deliveries sent');
+        Http::assertSentCount(4);
+    }
+
     public function test_local_and_private_addresses_are_refused_when_saved_and_when_sent(): void
     {
         $this->actingAs(User::factory()->create());

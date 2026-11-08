@@ -55,6 +55,8 @@ class TicketsTable
                     ->label('Department')
                     ->options(fn () => TicketDepartment::query()->ordered()->pluck('name', 'id')),
             ])
+            ->toolbarActions([TicketBulkActions::group()])
+            ->maxSelectableRecords(TicketBulkActions::MAX)
             ->emptyStateHeading(__('No tickets'));
     }
 }

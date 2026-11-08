@@ -32,5 +32,8 @@
     "Webhook endpoint id": "Webhook",
     "Webhooks": "Webhooks",
     ":count tries": ":count προσπάθειες",
-    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Δεν στέλνονται webhooks σε αυτή τη διεύθυνση: είναι σε τοπικό ή ιδιωτικό δίκτυο, ή ο host της δεν βρίσκεται."
+    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Δεν στέλνονται webhooks σε αυτή τη διεύθυνση: είναι σε τοπικό ή ιδιωτικό δίκτυο, ή ο host της δεν βρίσκεται.",
+    "Each delivery that is not waiting already is sent again now to its endpoint, if the endpoint is still active.": "Κάθε αποστολή που δεν περιμένει ήδη στέλνεται ξανά τώρα στο endpoint της, αν το endpoint είναι ακόμη ενεργό.",
+    "The others were waiting already, their endpoint is off, or they failed and are tried again later.": "Οι υπόλοιπες περίμεναν ήδη, το endpoint τους είναι κλειστό, ή απέτυχαν και θα δοκιμαστούν ξανά αργότερα.",
+    ":count delivery sent|:count deliveries sent": "Στάλθηκε :count αποστολή|Στάλθηκαν :count αποστολές"
 }
