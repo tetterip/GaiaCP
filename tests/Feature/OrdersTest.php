@@ -8,6 +8,7 @@ use App\Actions\RecordInvoicePayment;
 use App\Actions\RecordOrderPayment;
 use App\Enums\BillingCycle;
 use App\Enums\DomainRegistrationType;
+use App\Enums\InvoiceStatus;
 use App\Enums\OrderStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
@@ -164,6 +165,18 @@ class OrdersTest extends TestCase
 
         $this->assertSame('2', collect($this->easyCalls)->firstWhere(0, EasyRegistrar::REGISTER)[1]['years']);
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
+    }
+
+    public function test_the_order_shows_an_unpaid_notice_in_red(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $order = $this->place();
+        $entry = fn () => Livewire::test(ViewOrder::class, ['record' => $order->id]);
+
+        $entry()->assertSee('fi-font-bold fi-color fi-color-danger', false);
+
+        $order->invoices()->update(['status' => InvoiceStatus::Paid]);
+        $entry()->assertDontSee('fi-font-bold fi-color fi-color-danger', false)->assertSee('fi-color-success', false);
     }
 
     public function test_complete_order_mentions_the_registrar_only_for_domains(): void
