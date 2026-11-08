@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Leads, quotes and coupons: mass actions. Leads: assign, mark as lost, reopen, delete (not those that became clients).
+  Quotes: send, mark as declined, delete (not accepted ones). Coupons: activate, deactivate, delete (only unused ones).
 - Plugin updates: a new version of an installed plugin is also in the admins' daily summary (it was only in the bell).
   When the newest version needs a newer GaiaCP or PHP, the bell, the daily summary, the Plugins page and the plugin
   catalogue say so, with what it needs (before, nothing was said until GaiaCP was updated). **Roll back** on the

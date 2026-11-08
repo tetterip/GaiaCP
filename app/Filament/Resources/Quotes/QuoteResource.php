@@ -15,6 +15,7 @@ use App\Filament\Resources\Orders\Schemas\OrderForm;
 use App\Filament\Resources\Quotes\Pages\CreateQuote;
 use App\Filament\Resources\Quotes\Pages\EditQuote;
 use App\Filament\Resources\Quotes\Pages\ListQuotes;
+use App\Filament\Resources\Quotes\Tables\QuoteBulkActions;
 use App\Models\Client;
 use App\Models\Lead;
 use App\Models\Product;
@@ -279,6 +280,8 @@ class QuoteResource extends Resource
                     ->toggleable(),
             ])
             ->defaultSort('id', 'desc')
+            ->toolbarActions([QuoteBulkActions::group()])
+            ->maxSelectableRecords(QuoteBulkActions::MAX)
             ->recordActions([
                 EditAction::make()
                     ->label(fn (Quote $record) => $record->status->isOpen() ? __('Edit') : __('View')),

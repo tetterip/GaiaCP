@@ -77,6 +77,9 @@ for them. On **New order** pick it in **Coupon**; the REST API takes a `coupon` 
 coupon and what it took off, and the notice line names it. When a coupon leaves nothing to pay, the order's notice is
 recorded as paid at once. The list shows how many times each coupon was used; a used coupon can't be deleted.
 
+Tick coupons in the list to **Activate** or **Deactivate** them together, or **Delete** the ones no order used
+(deactivate those instead).
+
 Orders are listed under Main → **Orders**, with buttons for the pending, completed and cancelled ones. The dashboard's
 Needs attention lists pending orders.
 
@@ -94,5 +97,8 @@ a website, which are billed once. Set how long it is valid (Settings → Sales s
 - **Accept for the client** and **Mark as declined** are there for answers given by phone or email.
 
 Clients also find their quotes in the client area under Billing → Quotes.
+
+Tick quotes in the list to **Send** the drafts and sent ones (each as its own Send would), **Mark as declined** the sent
+ones with one reason, or **Delete** any that was not accepted. The window says which are left out and why.
 
 Next: [Clients and leads](08-clients-and-leads.md).

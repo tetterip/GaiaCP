@@ -96,4 +96,7 @@ lists the leads to contact today.
 
 Your website's contact form can add leads through the [REST API](../../using-the-api.md).
 
+Tick leads in the list to **Assign to** an admin (or nobody), **Mark as lost** with one reason, **Reopen** lost ones
+or **Delete** the ones that did not become clients.
+
 Next: [Automation](09-automation.md).
