@@ -13,9 +13,11 @@ use App\Filament\Actions\TransferServiceAction;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Invoices\RepriceIssuedNotice;
+use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Service;
 use App\Support\ProductOptions;
+use Carbon\CarbonImmutable;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
@@ -60,9 +62,25 @@ class EditService extends EditRecord
         return $data;
     }
 
+    /** The due date before this save, so a notice for it can be withdrawn once it moved. */
+    private ?CarbonImmutable $dueBefore = null;
+
+    protected function beforeSave(): void
+    {
+        $this->dueBefore = $this->getRecord()->getOriginal('next_due_date');
+    }
+
     /** An unpaid notice already issued for its next due date (its order's, say) bills the new amount. */
     protected function afterSave(): void
     {
+        /** @var Service $service */
+        $service = $this->getRecord();
+
+        // Its due date moved by hand: the notice for the old one could no longer be paid.
+        if ($this->dueBefore !== null && ! $service->next_due_date->isSameDay($this->dueBefore)) {
+            Invoice::withdrawDueDate($service, $this->dueBefore);
+        }
+
         if (app(RepriceIssuedNotice::class)->handle($this->getRecord()->refresh()) !== null) {
             Notification::make()->success()->title(__('The unpaid payment notice was updated to the new amount.'))->send();
         }

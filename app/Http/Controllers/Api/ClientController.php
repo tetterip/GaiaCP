@@ -59,11 +59,11 @@ class ClientController extends ApiController
         return new ClientResource($client->refresh());
     }
 
-    /** Only a client with no services, payments or credit (the panel hides Delete then too). */
+    /** Only a client with no billing history (Client::keepsHistory(); the panel hides Delete then too). */
     public function destroy(Client $client): JsonResponse
     {
-        if ($client->services()->exists() || $client->payments()->exists() || $client->creditTransactions()->exists()) {
-            return $this->conflict('A client with services, payments or credit is not deleted; set its status to closed instead.');
+        if ($client->keepsHistory()) {
+            return $this->conflict('A client with services, orders, payment notices, payments or credit is not deleted; set its status to closed instead.');
         }
 
         ActivityLog::record('client.deleted', "Client {$client->name} deleted through the API");

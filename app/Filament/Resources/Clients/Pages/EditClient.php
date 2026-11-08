@@ -44,9 +44,9 @@ class EditClient extends EditRecord
                 ->label('New order')
                 ->icon(Heroicon::OutlinedShoppingCart)
                 ->url(fn (Client $record) => OrderResource::getUrl('create', ['client' => $record->getKey()])),
-            // A client with services or credit keeps its history; terminate the services instead.
+            // A client with services, orders, notices or credit keeps its history; terminate the services instead.
             DeleteAction::make()
-                ->hidden(fn (Client $record) => $record->services()->exists() || $record->payments()->exists() || $record->creditTransactions()->exists()),
+                ->hidden(fn (Client $record) => $record->keepsHistory()),
         ];
     }
 

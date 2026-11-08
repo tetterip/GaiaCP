@@ -24,6 +24,7 @@ class PaymentResource extends JsonResource
             'due_date_before' => $this->due_date_before?->toDateString(),
             'due_date_after' => $this->due_date_after?->toDateString(),
             'notes' => $this->notes,
+            'refund_of' => $this->refund_of, // a refund (minus the amount): the payment it gave back
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

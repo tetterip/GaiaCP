@@ -24,7 +24,7 @@ who made it is deactivated or no longer a super admin (the call gets a 401), and
 
 | Area | read | create | update | delete |
 |---|---|---|---|---|
-| Clients | list, get | create | change | delete (only without services, payments or credit) |
+| Clients | list, get | create | change | delete (only without services, orders, notices, payments or credit) |
 | Services | list, get | (made by orders) | change, suspend, unsuspend | terminate |
 | Orders | list, get | place an order | complete | cancel |
 | Payment notices | list, get | (made by orders and the daily run) | email to the client | cancel |

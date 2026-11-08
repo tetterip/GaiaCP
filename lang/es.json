@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Añadido al saldo del cliente",
     "Put it in the client's balance; the notice still asks for the cycle": "Añadirlo al saldo del cliente; el aviso sigue pidiendo el ciclo",
     "Record the whole amount for the cycle": "Registrar el importe completo para el ciclo",
-    "The payment notice asks for :amount. The difference:": "El aviso de pago pide :amount. La diferencia:"
+    "The payment notice asks for :amount. The difference:": "El aviso de pago pide :amount. La diferencia:",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "La renovación hecha en el registrador se mantiene: no se pide al registrador que la deshaga.",
+    "Back into the client's balance": "De vuelta al saldo del cliente",
+    "Into the client's balance": "Al saldo del cliente",
+    "Paid back outside GaiaCP": "Devuelto fuera de GaiaCP",
+    "Payment refunded": "Pago reembolsado",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Registra que :amount del :date se devolvieron, en el día que elijas, y emite una nota de crédito si se emitió una factura. No se envía nada a Stripe, PayPal ni al banco: haz allí el reembolso tú mismo. La fecha de vencimiento y el servicio quedan como están: cancela o termina el servicio si finaliza.",
+    "Refund": "Reembolso",
+    "Refund payment": "Reembolsar pago",
+    "Refunded": "Reembolsado",
+    "Refunded on": "Reembolsado el",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Algunas líneas están pagadas: solo se quitan las impagadas y el aviso se cierra como pagado por el resto.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Líneas impagadas quitadas; el aviso está pagado por el resto",
+    "Where the money goes": "A dónde va el dinero"
 }

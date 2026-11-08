@@ -3914,5 +3914,18 @@
     "Put in the client's balance": "Ajouté au solde du client",
     "Put it in the client's balance; the notice still asks for the cycle": "L'ajouter au solde du client ; l'avis demande toujours le cycle",
     "Record the whole amount for the cycle": "Enregistrer le montant entier pour le cycle",
-    "The payment notice asks for :amount. The difference:": "L'avis de paiement demande :amount. La différence :"
+    "The payment notice asks for :amount. The difference:": "L'avis de paiement demande :amount. La différence :",
+    "A renewal it made at the registrar stays: the registrar is not asked to undo it.": "Un renouvellement fait chez le registrar reste : il n'est pas demandé au registrar de l'annuler.",
+    "Back into the client's balance": "De retour sur le solde du client",
+    "Into the client's balance": "Sur le solde du client",
+    "Paid back outside GaiaCP": "Remboursé hors de GaiaCP",
+    "Payment refunded": "Paiement remboursé",
+    "Records that :amount of :date was given back, on the day you choose, and issues a credit note if an invoice was issued for it. Nothing is sent to Stripe, PayPal or the bank: refund it there yourself. The due date and the service stay as they are: cancel or terminate the service if it ends.": "Enregistre que :amount du :date ont été rendus, le jour que vous choisissez, et émet un avoir si une facture a été émise. Rien n'est envoyé à Stripe, PayPal ou la banque : remboursez-le là-bas vous-même. L'échéance et le service restent tels quels : annulez ou résiliez le service s'il prend fin.",
+    "Refund": "Remboursement",
+    "Refund payment": "Rembourser le paiement",
+    "Refunded": "Remboursé",
+    "Refunded on": "Remboursé le",
+    "Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.": "Certaines lignes sont payées : seules les impayées sont retirées, et l'avis est clôturé comme payé pour le reste.",
+    "Unpaid lines taken off; the notice is paid for the rest": "Lignes impayées retirées ; l'avis est payé pour le reste",
+    "Where the money goes": "Où va l'argent"
 }

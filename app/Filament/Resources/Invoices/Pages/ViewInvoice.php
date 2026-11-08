@@ -14,7 +14,6 @@ use App\Filament\Resources\Invoices\Schemas\InvoiceInfolist;
 use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Invoices\SendInvoiceEmails;
 use App\Invoicing\IssueInvoice;
-use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Payments\PaymentMethods;
 use App\Support\MailTemplates;
@@ -311,12 +310,12 @@ class ViewInvoice extends ViewRecord
             ->visible(fn (Invoice $record) => $record->status === InvoiceStatus::Unpaid)
             ->requiresConfirmation()
             ->modalHeading(__('Cancel payment notice'))
-            ->modalDescription(__('No more emails are sent for it. While a service on it stays active and due, the next daily run creates a new notice for it (e.g. after you changed its price); terminate or cancel the service if it will not renew.'))
+            ->modalDescription(fn (Invoice $record) => __('No more emails are sent for it. While a service on it stays active and due, the next daily run creates a new notice for it (e.g. after you changed its price); terminate or cancel the service if it will not renew.')
+                .($record->items()->whereNotNull('payment_id')->exists() ? ' '.__('Some of its lines are paid: only the unpaid ones come off, and the notice is closed as paid for the rest.') : ''))
             ->action(function (Invoice $record) {
-                $record->update(['status' => InvoiceStatus::Cancelled]);
-                ActivityLog::record('invoice.cancelled', "Payment notice {$record->number} cancelled", client: $record->client, properties: ['invoice_id' => $record->id]);
+                $cancelled = $record->cancel();
 
-                Notification::make()->title(__('Payment notice cancelled'))->success()->send();
+                Notification::make()->title($cancelled ? __('Payment notice cancelled') : __('Unpaid lines taken off; the notice is paid for the rest'))->success()->send();
                 $this->refreshFormData(['status']);
             });
     }
