@@ -19,8 +19,8 @@ use ZipArchive;
  * absolute or ../ paths, no symlinks), size and file count limits, a plugin.json with an x.y.z version and a class
  * in Plugins\<Folder>, every PHP file parses, it runs on this GaiaCP and isn't a bundled plugin. It is unpacked in
  * storage/ first, then moved into plugins/<Folder> and its database/migrations run. An update needs a newer version
- * and keeps the folder it replaces in storage/app/private/plugins/previous, put back if the migrations fail. A new
- * plugin starts disabled. Bundled plugins are never replaced or removed here.
+ * and keeps the folder it replaces in storage/app/private/plugins/previous, put back if the migrations fail; rollBack()
+ * later puts the newest of those back. A new plugin starts disabled. Bundled plugins are never replaced or removed here.
  */
 class PluginInstaller
 {
@@ -74,7 +74,7 @@ class PluginInstaller
             $previous = null;
             $from = $existing?->version();
             if ($existing !== null) {
-                $previous = storage_path('app/private/plugins/previous/'.$folder.'-'.$existing->version().'-'.now()->format('YmdHis'));
+                $previous = self::previousDirectory().'/'.$folder.'-'.$existing->version().'-'.now()->format('YmdHis');
                 File::ensureDirectoryExists(dirname($previous));
                 $this->move($target, $previous);
             }
@@ -116,6 +116,125 @@ class PluginInstaller
             ]);
 
         return $plugin;
+    }
+
+    /** Where an update keeps the folder of the version it replaced: <Folder>-<version>-<YmdHis>. */
+    public static function previousDirectory(): string
+    {
+        return storage_path('app/private/plugins/previous');
+    }
+
+    /**
+     * The kept copy rollBack() would put back: the newest older version of this uploaded plugin, or null.
+     *
+     * @return array{path: string, version: string}|null
+     */
+    public function previousVersion(Plugin $plugin): ?array
+    {
+        if ($this->plugins->bundled($plugin) || ! is_dir(self::previousDirectory())) {
+            return null;
+        }
+
+        $pattern = '/^'.preg_quote(basename($plugin->path()), '/').'-(\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)-(\d{14})$/';
+        $best = null;
+
+        foreach (File::directories(self::previousDirectory()) as $path) {
+            if (! preg_match($pattern, basename($path), $match) || ! version_compare($match[1], $plugin->version(), '<')) {
+                continue;
+            }
+
+            $manifest = json_decode((string) @file_get_contents($path.'/plugin.json'), true);
+            if (! is_array($manifest) || ($manifest['version'] ?? null) !== $match[1] || ($manifest['class'] ?? null) !== $plugin::class) {
+                continue;
+            }
+
+            if ($best === null || version_compare($match[1], $best['version'], '>') || ($match[1] === $best['version'] && $match[2] > $best['at'])) {
+                $best = ['path' => $path, 'version' => $match[1], 'at' => $match[2]];
+            }
+        }
+
+        return $best === null ? null : ['path' => $best['path'], 'version' => $best['version']];
+    }
+
+    /**
+     * Puts back the version an update replaced (previousVersion()): the migrations only the newer version has are
+     * rolled back first (so what they stored is lost), then the folders swap; the newer one is kept in turn, so
+     * installing it again works as any update. The on / off switch and settings stay.
+     *
+     * @throws PluginInstallException
+     */
+    public function rollBack(Plugin $plugin): Plugin
+    {
+        if (! self::uploadsAllowed()) {
+            throw new PluginInstallException(__('Plugin uploads are turned off on this installation (GAIACP_PLUGIN_UPLOADS).'));
+        }
+
+        if ($this->plugins->bundled($plugin)) {
+            throw new PluginInstallException(__('This is a plugin bundled with GaiaCP: it updates together with GaiaCP.'));
+        }
+
+        $previous = $this->previousVersion($plugin);
+        if ($previous === null) {
+            throw new PluginInstallException(__('No earlier version of :plugin is kept here.', ['plugin' => $plugin->name()]));
+        }
+
+        $target = $plugin->path();
+        if (! is_writable(dirname($target))) {
+            throw new PluginInstallException(__('GaiaCP can\'t write to :path. Give the web server write access to it, or copy the plugin there by hand.', ['path' => dirname($target)]));
+        }
+
+        $this->checkRequires(json_decode((string) file_get_contents($previous['path'].'/plugin.json'), true)['requires'] ?? null);
+
+        $from = $plugin->version();
+        $this->rollBackNewMigrations($plugin->migrationPath(), $previous['path'].'/database/migrations');
+
+        $kept = self::previousDirectory().'/'.basename($target).'-'.$from.'-'.now()->format('YmdHis');
+        $this->move($target, $kept);
+
+        try {
+            $this->move($previous['path'], $target);
+        } catch (Throwable $e) {
+            File::deleteDirectory($target);
+            $this->move($kept, $target);
+
+            throw $e;
+        }
+
+        $plugin->refreshManifest();
+        $this->plugins->recordVersions();
+        $this->refreshCaches();
+
+        ActivityLog::record('plugin.rolled_back', "Plugin {$plugin->name()} rolled back from {$from} to {$plugin->version()}", properties: [
+            'plugin' => $plugin->id(),
+            'version' => $plugin->version(),
+            'previous' => $from,
+        ]);
+
+        return $plugin;
+    }
+
+    /** Rolls back the migrations in $current that $older doesn't have (only those: migrate:reset runs the files it is given). */
+    private function rollBackNewMigrations(string $current, string $older): void
+    {
+        $new = collect(is_dir($current) ? File::files($current) : [])
+            ->filter(fn ($file) => $file->getExtension() === 'php' && ! is_file($older.'/'.$file->getFilename()));
+
+        if ($new->isEmpty()) {
+            return;
+        }
+
+        $work = storage_path('app/private/plugins/'.Str::random(16));
+        File::ensureDirectoryExists($work);
+
+        try {
+            $new->each(fn ($file) => File::copy($file->getPathname(), $work.'/'.$file->getFilename()));
+
+            if (Artisan::call('migrate:reset', ['--path' => $work, '--realpath' => true, '--force' => true]) !== 0) {
+                throw new PluginInstallException(__('Its database changes could not be undone: :error', ['error' => trim(Artisan::output())]));
+            }
+        } finally {
+            File::deleteDirectory($work);
+        }
     }
 
     /**

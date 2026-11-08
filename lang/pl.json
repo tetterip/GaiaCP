@@ -3951,5 +3951,18 @@
     ":count payment notice marked paid|:count payment notices marked paid": ":count wezwanie oznaczone jako opłacone|:count wezwania oznaczone jako opłacone|:count wezwań oznaczonych jako opłacone",
     ":count email sent|:count emails sent": ":count e-mail wysłany|:count e-maile wysłane|:count e-maili wysłanych",
     ":count payment notice marked unpaid|:count payment notices marked unpaid": ":count wezwanie oznaczone jako nieopłacone|:count wezwania oznaczone jako nieopłacone|:count wezwań oznaczonych jako nieopłacone",
-    ":count payment notice cancelled|:count payment notices cancelled": ":count wezwanie anulowane|:count wezwania anulowane|:count wezwań anulowanych"
+    ":count payment notice cancelled|:count payment notices cancelled": ":count wezwanie anulowane|:count wezwania anulowane|:count wezwań anulowanych",
+    ":plugin rolled back to :version": ":plugin przywrócono do wersji :version",
+    ":version is in the plugin catalogue but needs :needs": ":version jest w katalogu wtyczek, ale wymaga :needs",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Zainstalowana tutaj: :version. Wymaga :needs lub nowszego: najpierw zaktualizuj to, potem wtyczkę z katalogu wtyczek.",
+    "Installed; :version needs :needs": "Zainstalowano; :version wymaga :needs",
+    "Its database changes could not be undone: :error": "Nie udało się cofnąć zmian w bazie danych: :error",
+    "No earlier version of :plugin is kept here.": "Nie przechowuje się tu wcześniejszej wersji :plugin.",
+    "Plugin updates": "Aktualizacje wtyczek",
+    "Roll :plugin back to :version?": "Przywrócić :plugin do wersji :version?",
+    "Roll back": "Przywróć poprzednią wersję",
+    "Roll back to :version": "Przywróć do :version",
+    "Rolled back from :version on :date": "Przywrócono z :version dnia :date",
+    "The plugin was not rolled back": "Wtyczki nie przywrócono",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "Wraca wersja sprzed aktualizacji; przełącznik i ustawienia zostają. To, co nowsza wersja dodała do bazy danych, zostaje usunięte razem z zapisanymi tam danymi."
 }

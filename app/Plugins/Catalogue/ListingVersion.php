@@ -22,6 +22,16 @@ final readonly class ListingVersion
     /** Runs on this GaiaCP and this PHP. */
     public function runsHere(): bool
     {
-        return PluginManager::runsOn($this->requires) && ($this->php === null || version_compare(PHP_VERSION, $this->php, '>='));
+        return $this->missing() === null;
+    }
+
+    /** What this install lacks to run it, e.g. "GaiaCP 0.9.0" or "PHP 8.4"; null when it runs here. */
+    public function missing(): ?string
+    {
+        return match (true) {
+            ! PluginManager::runsOn($this->requires) => 'GaiaCP '.$this->requires,
+            $this->php !== null && version_compare(PHP_VERSION, $this->php, '<') => 'PHP '.$this->php,
+            default => null,
+        };
     }
 }

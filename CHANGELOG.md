@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Plugin updates: a new version of an installed plugin is also in the admins' daily summary (it was only in the bell).
+  When the newest version needs a newer GaiaCP or PHP, the bell, the daily summary, the Plugins page and the plugin
+  catalogue say so, with what it needs (before, nothing was said until GaiaCP was updated). **Roll back** on the
+  Plugins page (password asked) puts back the version an update replaced, undoing the database changes only the newer
+  version made.
 - Payment notices: mass actions. Tick notices in the list (up to 100) to mark them paid (one date and method for all),
   send a reminder (the payment reminder, or the first overdue email once past due), mark paid ones unpaid (their
   payments reversed, only where Reverse would allow it) or cancel them. The window says how many it applies to and why

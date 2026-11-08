@@ -3951,5 +3951,18 @@
     ":count payment notice marked paid|:count payment notices marked paid": ":count avis de paiement marqué payé|:count avis de paiement marqués payés",
     ":count email sent|:count emails sent": ":count email envoyé|:count emails envoyés",
     ":count payment notice marked unpaid|:count payment notices marked unpaid": ":count avis de paiement marqué impayé|:count avis de paiement marqués impayés",
-    ":count payment notice cancelled|:count payment notices cancelled": ":count avis de paiement annulé|:count avis de paiement annulés"
+    ":count payment notice cancelled|:count payment notices cancelled": ":count avis de paiement annulé|:count avis de paiement annulés",
+    ":plugin rolled back to :version": ":plugin revenu à la version :version",
+    ":version is in the plugin catalogue but needs :needs": ":version est dans le catalogue de plugins, mais nécessite :needs",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Installée ici : :version. Elle nécessite :needs ou plus récent : mettez-le à jour d'abord, puis le plugin depuis le catalogue de plugins.",
+    "Installed; :version needs :needs": "Installé ; :version nécessite :needs",
+    "Its database changes could not be undone: :error": "Ses modifications de la base de données n'ont pas pu être annulées : :error",
+    "No earlier version of :plugin is kept here.": "Aucune version antérieure de :plugin n'est conservée ici.",
+    "Plugin updates": "Mises à jour des plugins",
+    "Roll :plugin back to :version?": "Revenir à :plugin :version ?",
+    "Roll back": "Revenir en arrière",
+    "Roll back to :version": "Revenir à :version",
+    "Rolled back from :version on :date": "Revenu de :version le :date",
+    "The plugin was not rolled back": "Le plugin n'est pas revenu en arrière",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "La version d'avant la mise à jour est remise en place ; son interrupteur et ses réglages restent. Ce que la nouvelle version a ajouté à la base de données est supprimé, avec ce qui y était stocké."
 }

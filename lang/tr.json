@@ -3951,5 +3951,18 @@
     ":count payment notice marked paid|:count payment notices marked paid": ":count ödeme bildirimi ödendi olarak işaretlendi|:count ödeme bildirimi ödendi olarak işaretlendi",
     ":count email sent|:count emails sent": ":count e-posta gönderildi|:count e-posta gönderildi",
     ":count payment notice marked unpaid|:count payment notices marked unpaid": ":count ödeme bildirimi ödenmedi olarak işaretlendi|:count ödeme bildirimi ödenmedi olarak işaretlendi",
-    ":count payment notice cancelled|:count payment notices cancelled": ":count ödeme bildirimi iptal edildi|:count ödeme bildirimi iptal edildi"
+    ":count payment notice cancelled|:count payment notices cancelled": ":count ödeme bildirimi iptal edildi|:count ödeme bildirimi iptal edildi",
+    ":plugin rolled back to :version": ":plugin :version sürümüne geri alındı",
+    ":version is in the plugin catalogue but needs :needs": ":version eklenti kataloğunda, ancak :needs gerektiriyor",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Burada kurulu: :version. :needs veya daha yenisini gerektiriyor: önce onu, sonra eklentiyi eklenti kataloğundan güncelleyin.",
+    "Installed; :version needs :needs": "Kurulu; :version :needs gerektiriyor",
+    "Its database changes could not be undone: :error": "Veritabanı değişiklikleri geri alınamadı: :error",
+    "No earlier version of :plugin is kept here.": "Burada :plugin eklentisinin önceki bir sürümü saklanmıyor.",
+    "Plugin updates": "Eklenti güncellemeleri",
+    "Roll :plugin back to :version?": ":plugin :version sürümüne geri alınsın mı?",
+    "Roll back": "Geri al",
+    "Roll back to :version": ":version sürümüne geri al",
+    "Rolled back from :version on :date": ":date tarihinde :version sürümünden geri alındı",
+    "The plugin was not rolled back": "Eklenti geri alınmadı",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "Güncellemeden önceki sürüm geri konur; açma/kapama düğmesi ve ayarları kalır. Yeni sürümün veritabanına eklediği her şey, orada saklananlarla birlikte silinir."
 }

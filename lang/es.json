@@ -3951,5 +3951,18 @@
     ":count payment notice marked paid|:count payment notices marked paid": ":count aviso de pago marcado como pagado|:count avisos de pago marcados como pagados",
     ":count email sent|:count emails sent": ":count email enviado|:count emails enviados",
     ":count payment notice marked unpaid|:count payment notices marked unpaid": ":count aviso de pago marcado como no pagado|:count avisos de pago marcados como no pagados",
-    ":count payment notice cancelled|:count payment notices cancelled": ":count aviso de pago cancelado|:count avisos de pago cancelados"
+    ":count payment notice cancelled|:count payment notices cancelled": ":count aviso de pago cancelado|:count avisos de pago cancelados",
+    ":plugin rolled back to :version": ":plugin restaurado a :version",
+    ":version is in the plugin catalogue but needs :needs": ":version está en el catálogo de plugins, pero necesita :needs",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Instalada aquí: :version. Necesita :needs o posterior: actualice eso primero y luego el plugin desde el catálogo de plugins.",
+    "Installed; :version needs :needs": "Instalado; :version necesita :needs",
+    "Its database changes could not be undone: :error": "No se pudieron deshacer sus cambios en la base de datos: :error",
+    "No earlier version of :plugin is kept here.": "Aquí no se guarda ninguna versión anterior de :plugin.",
+    "Plugin updates": "Actualizaciones de plugins",
+    "Roll :plugin back to :version?": "¿Restaurar :plugin a :version?",
+    "Roll back": "Restaurar versión anterior",
+    "Roll back to :version": "Restaurar a :version",
+    "Rolled back from :version on :date": "Restaurado desde :version el :date",
+    "The plugin was not rolled back": "El plugin no se restauró",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "Se recupera la versión desde la que se actualizó; su interruptor y ajustes se mantienen. Lo que la versión nueva añadió a la base de datos se elimina, junto con lo guardado allí."
 }

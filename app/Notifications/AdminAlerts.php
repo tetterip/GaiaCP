@@ -81,6 +81,7 @@ class AdminAlerts
         'backup.failed' => null,
         'update.failed' => null,
         'plugin.update_available' => null,
+        'plugin.update_waiting' => null,
         'gaiacp.update_available' => null,
         'webhook.failing' => null,
         'webhook.disabled' => null,
@@ -309,6 +310,12 @@ class AdminAlerts
                 'heroicon-o-puzzle-piece', 'info',
                 PluginCatalogue::getUrl(panel: 'admin'),
             ],
+            'plugin.update_waiting' => [
+                __(':plugin :version is out', ['plugin' => $log->properties['name'] ?? '', 'version' => $log->properties['version'] ?? '']),
+                self::pluginWaiting($log->properties ?? []),
+                'heroicon-o-puzzle-piece', 'info',
+                ($log->properties['gaiacp'] ?? false) ? Updates::getUrl(panel: 'admin') : PluginCatalogue::getUrl(panel: 'admin'),
+            ],
             'gaiacp.update_available' => [
                 __('GaiaCP :version is out', ['version' => $log->properties['version'] ?? '']),
                 ($log->properties['git'] ?? false)
@@ -355,6 +362,15 @@ class AdminAlerts
      *
      * @return array{0: ?string, 1: ?string, 2: string, 3: string, 4: ?string}
      */
+    /** @param  array<string, mixed>  $properties  of a plugin.update_waiting log (also in the daily summary) */
+    public static function pluginWaiting(array $properties): string
+    {
+        return __('Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.', [
+            'version' => $properties['installed'] ?? '',
+            'needs' => $properties['needs'] ?? '',
+        ]);
+    }
+
     private static function created(ActivityLog $log): array
     {
         $invoice = isset($log->properties['invoice_id']) ? Invoice::query()->find($log->properties['invoice_id']) : null;

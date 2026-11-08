@@ -185,6 +185,31 @@ class PluginCataloguePageTest extends TestCase
             ->assertTableActionHidden('install', $this->name);
     }
 
+    public function test_a_newer_version_for_a_newer_gaiacp_is_told_once_and_shown(): void
+    {
+        $other = User::factory()->create(['super_admin' => true]);
+        $this->publish('1.0.0');
+        Livewire::test(PluginCatalogue::class)->callTableAction('install', $this->name, ['password' => 'secret-password']);
+
+        $this->publish('2.0.0', requires: '99.0.0');
+        $me = auth()->user();
+        auth()->logout();
+        $this->artisan('gaiacp:check-plugin-catalogue')->expectsOutputToContain('2.0.0 needs GaiaCP 99.0.0')->assertSuccessful();
+        $this->artisan('gaiacp:check-plugin-catalogue')->expectsOutputToContain('told before')->assertSuccessful();
+
+        $this->assertSame(0, ActivityLog::query()->where('event', 'plugin.update_available')->count());
+        $this->assertSame(1, ActivityLog::query()->where('event', 'plugin.update_waiting')->count());
+        $bell = $other->notifications()->sole()->data;
+        $this->assertSame('Catalogue plugin 2.0.0 is out', $bell['title']);
+        $this->assertStringContainsString('It needs GaiaCP 99.0.0 or later', $bell['body']);
+        $this->actingAs($me);
+
+        Livewire::test(Plugins::class)->assertSee('2.0.0 is in the plugin catalogue but needs GaiaCP 99.0.0');
+        Livewire::test(PluginCatalogue::class)
+            ->assertSee('Installed; 2.0.0 needs GaiaCP 99.0.0')
+            ->assertTableActionHidden('update', $this->name);
+    }
+
     public function test_off_without_a_key_and_while_uploads_are_off(): void
     {
         $this->publish('1.0.0', official: true);

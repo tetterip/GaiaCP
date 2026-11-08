@@ -3951,5 +3951,18 @@
     ":count payment notice marked paid|:count payment notices marked paid": ":count aviso de pagamento marcado como pago|:count avisos de pagamento marcados como pagos",
     ":count email sent|:count emails sent": ":count e-mail enviado|:count e-mails enviados",
     ":count payment notice marked unpaid|:count payment notices marked unpaid": ":count aviso de pagamento marcado como não pago|:count avisos de pagamento marcados como não pagos",
-    ":count payment notice cancelled|:count payment notices cancelled": ":count aviso de pagamento cancelado|:count avisos de pagamento cancelados"
+    ":count payment notice cancelled|:count payment notices cancelled": ":count aviso de pagamento cancelado|:count avisos de pagamento cancelados",
+    ":plugin rolled back to :version": ":plugin voltou para a versão :version",
+    ":version is in the plugin catalogue but needs :needs": ":version está no catálogo de plugins, mas precisa de :needs",
+    "Installed here: :version. It needs :needs or later: update that first, then the plugin from the plugin catalogue.": "Instalada aqui: :version. Ela precisa de :needs ou mais recente: atualize isso primeiro e depois o plugin pelo catálogo de plugins.",
+    "Installed; :version needs :needs": "Instalado; :version precisa de :needs",
+    "Its database changes could not be undone: :error": "Não foi possível desfazer as alterações no banco de dados: :error",
+    "No earlier version of :plugin is kept here.": "Nenhuma versão anterior de :plugin está guardada aqui.",
+    "Plugin updates": "Atualizações de plugins",
+    "Roll :plugin back to :version?": "Voltar :plugin para a versão :version?",
+    "Roll back": "Voltar versão",
+    "Roll back to :version": "Voltar para :version",
+    "Rolled back from :version on :date": "Voltou da :version em :date",
+    "The plugin was not rolled back": "O plugin não voltou de versão",
+    "The version it was updated from is put back; its switch and settings stay. What the newer version added to the database is removed, with anything stored there.": "A versão anterior à atualização é reposta; o interruptor e as configurações ficam. O que a versão mais nova adicionou ao banco de dados é removido, junto com o que foi guardado ali."
 }

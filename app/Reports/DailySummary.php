@@ -23,6 +23,7 @@ final readonly class DailySummary
      * @param  Collection<int, ActivityLog>  $domainFailures  failed domain syncs
      * @param  Collection<int, ActivityLog>  $unmatchedPayments  online payments received but not recorded (payment.online_unmatched)
      * @param  Collection<int, ActivityLog>  $updates  new GaiaCP releases found (gaiacp.update_available)
+     * @param  Collection<int, ActivityLog>  $pluginUpdates  new versions of uploaded plugins in the catalogue (plugin.update_available, plugin.update_waiting)
      * @param  Collection<int, ModuleQueueItem>  $moduleQueue  failed panel / registrar actions still open at its end
      */
     public function __construct(
@@ -36,6 +37,7 @@ final readonly class DailySummary
         public Collection $unmatchedPayments = new Collection,
         public Collection $updates = new Collection,
         public Collection $moduleQueue = new Collection,
+        public Collection $pluginUpdates = new Collection,
     ) {}
 
     public static function between(CarbonImmutable $since, CarbonImmutable $until): self
@@ -61,7 +63,7 @@ final readonly class DailySummary
             ->with(['service', 'client'])
             ->where('created_at', '>', $since)
             ->where('created_at', '<=', $until)
-            ->whereIn('event', ['domain.synced', 'provisioning.failed', 'payment.online_unmatched', 'gaiacp.update_available'])
+            ->whereIn('event', ['domain.synced', 'provisioning.failed', 'payment.online_unmatched', 'gaiacp.update_available', 'plugin.update_available', 'plugin.update_waiting'])
             ->orderBy('id')
             ->get();
 
@@ -84,15 +86,17 @@ final readonly class DailySummary
             unmatchedPayments: $logs->where('event', 'payment.online_unmatched')->values(),
             updates: $logs->where('event', 'gaiacp.update_available')->values(),
             moduleQueue: ModuleQueueItem::query()->open()->with('service.client')->orderBy('id')->get(),
+            pluginUpdates: $logs->whereIn('event', ['plugin.update_available', 'plugin.update_waiting'])->values(),
         );
     }
 
-    /** Nothing new, nothing overdue, no domain changed or failed, no online payment to check, nothing in the module queue and no new release: no email. */
+    /** Nothing new, nothing overdue, no domain changed or failed, no online payment to check, nothing in the module queue and no new release of GaiaCP or a plugin: no email. */
     public function isEmpty(): bool
     {
         return $this->unmatchedPayments->isEmpty()
             && $this->moduleQueue->isEmpty()
             && $this->updates->isEmpty()
+            && $this->pluginUpdates->isEmpty()
             && $this->newNotices->isEmpty()
             && $this->overdueNotices->isEmpty()
             && $this->domainChanges->isEmpty()

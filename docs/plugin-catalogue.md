@@ -66,7 +66,12 @@ index.html             the public page
   `download()` → `PluginInstaller::install()`), so the plugin starts disabled and is uninstalled like an uploaded one.
   Both are hidden while `GAIACP_PLUGIN_UPLOADS=false`; the page is closed in the demo.
 - `gaiacp:check-plugin-catalogue` (daily 05:40) reads it and logs `plugin.update_available` once per plugin and version,
-  which rings the super admins' bell; the Plugins page shows the update from the stored copy without a request.
+  which rings the super admins' bell; a newest version that needs a newer GaiaCP or PHP (`ListingVersion::missing()`,
+  `CatalogueInstaller::waiting()`) logs `plugin.update_waiting` the same way. Both are in the next daily summary; the
+  Plugins page shows them from the stored copy without a request.
+- Nothing is installed by itself. After an update, `PluginInstaller::rollBack()` (Plugins page → Roll back, password
+  asked) puts back the newest older copy kept in `storage/app/private/plugins/previous/<Folder>-<version>-<time>`,
+  first rolling back the migrations only the newer version has.
 - Off with `GAIACP_PLUGIN_CATALOGUE=false`, or while no key is set. Another catalogue: `GAIACP_PLUGIN_CATALOGUE_URL`
   and its public key in `GAIACP_PLUGIN_CATALOGUE_KEYS`.
 
