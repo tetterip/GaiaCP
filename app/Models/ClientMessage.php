@@ -21,10 +21,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * Filters (all optional, combined): servers, products, tags (of the service's product, Settings → Product tags), tlds
  * and types narrow to clients with an active or suspended service matching every one given; locales to clients with
- * that email language.
+ * that email language. clients (a list of ids, from a mass action on the clients or orders list) sends to exactly those,
+ * whatever their status.
  *
  * @property array<string, array{subject: ?string, body: ?string}> $texts
- * @property array{servers?: list<int>, products?: list<int>, tags?: list<int>, tlds?: list<string>, types?: list<string>, locales?: list<string>}|null $filters
+ * @property array{clients?: list<int>, servers?: list<int>, products?: list<int>, tags?: list<int>, tlds?: list<string>, types?: list<string>, locales?: list<string>}|null $filters
  * @property CarbonImmutable|null $queued_at
  * @property CarbonImmutable|null $finished_at
  */
@@ -87,7 +88,7 @@ class ClientMessage extends Model
         return $this->text(Locales::default())['subject'];
     }
 
-    /** @return Builder<Client> the active clients the filters match */
+    /** @return Builder<Client> the active clients the filters match (or the clients picked) */
     public function clients(): Builder
     {
         $filters = $this->filters ?? [];
@@ -97,6 +98,10 @@ class ClientMessage extends Model
         $tlds = array_values(array_filter(array_map(fn ($tld) => '.'.ltrim(mb_strtolower(trim((string) $tld)), '.'), (array) ($filters['tlds'] ?? [])), fn ($tld) => $tld !== '.'));
         $types = array_filter((array) ($filters['types'] ?? []));
         $locales = array_filter((array) ($filters['locales'] ?? []));
+
+        if (array_key_exists('clients', $filters)) {
+            return Client::query()->whereKey(array_map('intval', (array) $filters['clients']));
+        }
 
         return Client::query()
             ->where('status', ClientStatus::Active)

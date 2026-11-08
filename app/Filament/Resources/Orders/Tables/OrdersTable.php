@@ -53,6 +53,8 @@ class OrdersTable
             ])
             // The chips (Orders\Concerns\HasStatusChips) set the filter and show which one is on, so no filter button
             ->filtersLayout(FiltersLayout::Hidden)
-            ->recordUrl(fn (Order $record) => OrderResource::getUrl('view', ['record' => $record]));
+            ->recordUrl(fn (Order $record) => OrderResource::getUrl('view', ['record' => $record]))
+            ->toolbarActions([OrderBulkActions::group()])
+            ->maxSelectableRecords(OrderBulkActions::MAX);
     }
 }

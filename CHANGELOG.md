@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Orders: mass actions. Tick orders in the list (up to 100) to complete them (each item on the registrar and server it
+  would get by itself), cancel them (one choice for the money of those paid), email their clients (a message under
+  Clients → Messages to clients, each client once) or delete cancelled orders nothing was paid for.
 - Payment notices: mass actions. Tick notices in the list (up to 100) to mark them paid (one date and method for all),
   send a reminder (the payment reminder, or the first overdue email once past due), mark paid ones unpaid (their
   payments reversed, only where Reverse would allow it) or cancel them. The window says how many it applies to and why

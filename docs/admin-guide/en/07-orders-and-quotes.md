@@ -40,6 +40,18 @@ payment made from credit always goes back to credit. With Settings →
 Automation → **Cancel unpaid orders after** set, the daily run does it for orders that are still unpaid after that
 many days; an order with a payment or an item already set up is never cancelled.
 
+To act on several orders at once, tick them in the list (up to 100) and open **Bulk actions**:
+
+- **Complete order**: completes each pending order, with the registrar and server each item would get by itself (no
+  picker). An item that fails stays pending and the message names it with its error.
+- **Cancel order**: cancels each order that can be cancelled. When some of them were paid, one question decides what
+  happens to all their payments, with the same three choices as above.
+- **Send message**: emails the orders' clients, each once, as a message under Clients → Messages to clients.
+- **Delete**: deletes cancelled orders nothing was paid for (and that have no invoice), with their items and payment
+  notices. Other orders are left out; this cannot be undone.
+
+The window says how many of the picked orders it applies to and why the others are left out.
+
 ## Orders from clients
 
 With Settings → Client area → orders on, clients order from the client area: they add products (with their domain,
