@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Actions\BulkOutcome;
 use App\Filament\Clusters\Settings\SettingsCard;
 use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Concerns\LimitedToAdminArea;
@@ -20,6 +21,8 @@ use App\Support\Translations;
 use App\Support\Version;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
@@ -34,6 +37,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
@@ -298,7 +302,45 @@ class Plugins extends Page implements HasTable, SettingsCard
                         $this->flushCachedTableRecords();
                         Notification::make()->success()->title(__(':plugin uninstalled', ['plugin' => $record['name']]))->send();
                     }),
-            ]);
+            ])
+            ->toolbarActions([BulkActionGroup::make([$this->bulkSwitch(true), $this->bulkSwitch(false)])]);
+    }
+
+    /** Enable or Disable on each picked plugin it applies to, as its own button would; the others are named. */
+    private function bulkSwitch(bool $enable): BulkAction
+    {
+        $skip = function (array $record) use ($enable): ?string {
+            $state = $this->plugins()->state($this->plugin($record));
+
+            return match (true) {
+                $enable && $state === PluginState::Enabled => __('already enabled'),
+                $enable && $state !== PluginState::Disabled => $state->getLabel(),
+                ! $enable && $state !== PluginState::Enabled => __('not enabled'),
+                ! $enable && $record['id'] === 'demo' => __('the demo needs it'),
+                default => null,
+            };
+        };
+
+        return BulkAction::make($enable ? 'enableMany' : 'disableMany')
+            ->label($enable ? 'Enable' : 'Disable')
+            ->icon($enable ? Heroicon::OutlinedPlay : Heroicon::OutlinedPause)
+            ->color($enable ? 'success' : 'warning')
+            ->requiresConfirmation()
+            ->modalHeading($enable ? __('Enable plugins') : __('Disable plugins'))
+            ->modalDescription(fn (Collection $records) => BulkOutcome::preview($records, $skip).($enable ? '' : ' '
+                .__('Their servers, accounts and settings stay. Nothing new can use them, and automation that reaches them stops with an error in the activity log until you enable them again.')))
+            ->modalSubmitActionLabel($enable ? __('Enable them') : __('Disable them'))
+            ->deselectRecordsAfterCompletion()
+            ->action(function (Collection $records) use ($enable, $skip) {
+                BulkOutcome::run(
+                    $records,
+                    $skip,
+                    fn (array $record) => $enable ? $this->plugins()->enable($this->plugin($record)) : $this->plugins()->disable($this->plugin($record)),
+                    fn (array $record) => $record['name'],
+                )->notify($enable ? ':count plugin enabled|:count plugins enabled' : ':count plugin disabled|:count plugins disabled');
+
+                $this->flushCachedTableRecords();
+            });
     }
 
     public static function categoryLabel(string $category): string

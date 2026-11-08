@@ -97,6 +97,26 @@ class PluginsTest extends TestCase
         $this->assertSame(['plugin.disabled', 'plugin.enabled'], ActivityLog::query()->orderBy('id')->pluck('event')->all());
     }
 
+    public function test_mass_disable_and_enable_switch_the_picked_plugins(): void
+    {
+        $this->plugins()->disable($this->plugins()->find('hestia'));
+
+        Livewire::test(Plugins::class)
+            ->callTableBulkAction('disableMany', ['plesk', 'cpanel', 'hestia'])
+            ->assertNotified('2 plugins disabled');
+
+        $this->assertFalse($this->plugins()->enabled('plesk'));
+        $this->assertFalse($this->plugins()->enabled('cpanel'));
+        $this->assertTrue($this->plugins()->enabled('stripe'));
+
+        Livewire::test(Plugins::class)
+            ->callTableBulkAction('enableMany', ['plesk', 'stripe'])
+            ->assertNotified('1 plugin enabled');
+
+        $this->assertTrue($this->plugins()->enabled('plesk'));
+        $this->assertFalse($this->plugins()->enabled('cpanel'));
+    }
+
     public function test_a_disabled_server_plugin_stops_provisioning_and_keeps_the_service(): void
     {
         $this->fakeWhm();

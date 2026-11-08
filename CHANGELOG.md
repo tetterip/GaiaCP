@@ -10,6 +10,15 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   catalogue say so, with what it needs (before, nothing was said until GaiaCP was updated). **Roll back** on the
   Plugins page (password asked) puts back the version an update replaced, undoing the database changes only the newer
   version made.
+- The orders list has a **Payment** column: the status of the order's payment notice (paid, unpaid, cancelled), or No
+  payment due.
+- Settings → Plugins: tick plugins to enable or disable them together; the ones it can't switch are named.
+- Clients: mass actions. Tick clients in the list (up to 100) to email them (a message under Clients → Messages to
+  clients), send each one with a client area login a password reset link, or delete those with no history (after
+  typing DELETE; never a client whose login is an admin's).
+- Orders: mass actions. Tick orders in the list (up to 100) to complete them (each item on the registrar and server it
+  would get by itself), cancel them (one choice for the money of those paid), email their clients (a message under
+  Clients → Messages to clients, each client once) or delete cancelled orders nothing was paid for.
 - Payment notices: mass actions. Tick notices in the list (up to 100) to mark them paid (one date and method for all),
   send a reminder (the payment reminder, or the first overdue email once past due), mark paid ones unpaid (their
   payments reversed, only where Reverse would allow it) or cancel them. The window says how many it applies to and why

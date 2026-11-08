@@ -10,7 +10,7 @@ Settings → System → **Plugins** (super admins) lists every plugin with its v
 installed or updated.
 
 - **Disable** a plugin you don't use: its pages and options disappear, but its servers, accounts and settings stay, so
-  enabling it again brings everything back.
+  enabling it again brings everything back. Tick several and use the mass actions to enable or disable them together.
 - Plugins bundled with GaiaCP can't be uninstalled, only disabled. Most start enabled; easy.gr, ΑΑΔΕ, VIES VAT check
   and GoGetSSL start off.
 - A plugin that needs a newer GaiaCP stays off until you update GaiaCP.

@@ -47,6 +47,14 @@ phone changes are saved at once.
 A new client can get a client area password straight away (tick **Email the login details**), or the Client Signup
 Email.
 
+### Mass actions
+
+Tick clients in the list (up to 100) and open the **mass actions**: **Send message** emails them a message under
+Clients → Messages to clients (each client once, a few a minute), **Send password reset link** sends each client whose
+own client area login is on the same link as "Forgot password?", and **Delete** removes the clients with no history
+(below) after you type DELETE, with their client area login. A client whose login is an admin's is never deleted this
+way. The window says how many each applies to and why the rest are left out.
+
 ### Records with history
 
 GaiaCP doesn't delete what has history. A client with services, orders, payment notices, invoices or payments, a server
