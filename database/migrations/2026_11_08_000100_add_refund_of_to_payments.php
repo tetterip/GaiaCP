@@ -17,7 +17,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('refund_of');
+            $table->dropForeign(['refund_of']);
+            $table->dropIndex(['refund_of']);
+            $table->dropColumn('refund_of');
         });
     }
 };
