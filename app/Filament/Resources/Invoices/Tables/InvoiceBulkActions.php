@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Collection as Records;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -71,7 +72,7 @@ class InvoiceBulkActions
             ])
             ->modalSubmitActionLabel(__('Mark as paid'))
             ->deselectRecordsAfterCompletion()
-            ->action(function (Collection $records, array $data) use ($skip) {
+            ->action(function (Records $records, array $data) use ($skip) {
                 $renewals = [];
 
                 BulkOutcome::run(
@@ -115,7 +116,7 @@ class InvoiceBulkActions
             ])
             ->modalSubmitActionLabel(__('Send'))
             ->deselectRecordsAfterCompletion()
-            ->action(fn (Collection $records, array $data) => BulkOutcome::run(
+            ->action(fn (Records $records, array $data) => BulkOutcome::run(
                 $records->load('client', 'items'),
                 $skip,
                 function (Invoice $invoice) use ($data) {
@@ -153,7 +154,7 @@ class InvoiceBulkActions
                 .__('Their payments are reversed: each service\'s due date goes back to where it was, a payment from credit goes back to the balance and an issued invoice gets a credit note. Nothing is refunded or changed on a server or registrar.'))
             ->modalSubmitActionLabel(__('Mark as unpaid'))
             ->deselectRecordsAfterCompletion()
-            ->action(fn (Collection $records) => BulkOutcome::run(
+            ->action(fn (Records $records) => BulkOutcome::run(
                 $records->load('items'),
                 $skip,
                 fn (Invoice $invoice) => DB::transaction(function () use ($invoice) {
@@ -180,7 +181,7 @@ class InvoiceBulkActions
                 .__('No more emails are sent for them. A partly paid one loses only its unpaid lines and is closed as paid. While a service on them stays active and due, the next daily run creates a new notice for it.'))
             ->modalSubmitActionLabel(__('Cancel them'))
             ->deselectRecordsAfterCompletion()
-            ->action(fn (Collection $records) => BulkOutcome::run(
+            ->action(fn (Records $records) => BulkOutcome::run(
                 $records->load('client'),
                 $skip,
                 fn (Invoice $invoice) => $invoice->cancel('mass action'),

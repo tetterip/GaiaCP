@@ -25,7 +25,7 @@ class BulkOutcome
      *
      * @param  iterable<mixed>  $records
      * @param  callable(mixed): ?string  $skip
-     * @param  callable(mixed): void  $apply
+     * @param  callable(mixed): mixed  $apply
      * @param  callable(mixed): string  $label
      */
     public static function run(iterable $records, callable $skip, callable $apply, callable $label): self
