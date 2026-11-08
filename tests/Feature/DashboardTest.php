@@ -40,9 +40,9 @@ class DashboardTest extends TestCase
     {
         static $number = 0;
 
-        return Invoice::create([
+        $notice = Invoice::create([
             'number' => 'PF-2026-'.str_pad((string) ++$number, 4, '0', STR_PAD_LEFT),
-            'client_id' => Client::factory()->create()->id,
+            'client_id' => ($client = Client::factory()->create())->id,
             'date' => today()->subDays(20)->toDateString(),
             'due_date' => $due,
             'currency' => 'EUR',
@@ -50,6 +50,13 @@ class DashboardTest extends TestCase
             'tax_cents' => 0,
             'total_cents' => $cents,
         ]);
+        $notice->items()->create([
+            'service_id' => Service::factory()->for($client)->create(['next_due_date' => $due])->id,
+            'description' => 'Hosting', 'due_date' => $due, 'period_end' => $due,
+            'amount_cents' => $cents, 'tax_cents' => 0, 'total_cents' => $cents,
+        ]);
+
+        return $notice;
     }
 
     public function test_it_greets_the_admin_and_shows_the_cards(): void

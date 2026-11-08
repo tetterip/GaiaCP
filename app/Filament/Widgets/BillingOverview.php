@@ -40,9 +40,9 @@ class BillingOverview extends Widget
         $week = Service::query()->billable()->whereOnDate('next_due_date', '>=', today())->whereOnDate('next_due_date', '<=', today()->addDays(7));
 
         return [
-            'balance' => Money::format(Currencies::sumToBase(Invoice::query()->unpaid(), 'total_cents'), $currency),
+            'balance' => Money::format(Invoice::owedInBase(Invoice::query()->unpaid()), $currency),
             'notices' => Invoice::query()->unpaid()->count(),
-            'overdue' => Money::format(Currencies::sumToBase($overdue, 'total_cents'), $currency),
+            'overdue' => Money::format(Invoice::owedInBase($overdue), $currency),
             'overdueCount' => (clone $overdue)->count(),
             'week' => Money::format(Currencies::sumToBase($week, 'price_cents'), $currency),
             'weekCount' => (clone $week)->count(),

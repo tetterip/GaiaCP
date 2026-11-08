@@ -171,7 +171,7 @@ class NeedsAttention extends Widget
                 'icon' => 'heroicon-o-document-text',
                 'tone' => 'bad',
                 'title' => trans_choice(':count overdue payment notice|:count overdue payment notices', (clone $overdue)->count()),
-                'sub' => Money::format(Currencies::sumToBase($overdue, 'total_cents'), Currencies::base()),
+                'sub' => Money::format(Invoice::owedInBase($overdue), Currencies::base()),
                 'url' => InvoiceResource::getUrl(parameters: ['filters' => ['overdue' => ['isActive' => true]]]),
             ];
         }

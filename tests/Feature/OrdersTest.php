@@ -8,9 +8,11 @@ use App\Actions\RecordInvoicePayment;
 use App\Actions\RecordOrderPayment;
 use App\Enums\BillingCycle;
 use App\Enums\DomainRegistrationType;
+use App\Enums\InvoiceStatus;
 use App\Enums\OrderStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Orders\Pages\CreateOrder;
 use App\Filament\Resources\Orders\Pages\ViewOrder;
 use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
@@ -24,6 +26,7 @@ use App\Models\Server;
 use App\Models\User;
 use App\Provisioning\ProvisioningException;
 use Carbon\CarbonImmutable;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Notifications\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -162,6 +165,33 @@ class OrdersTest extends TestCase
 
         $this->assertSame('2', collect($this->easyCalls)->firstWhere(0, EasyRegistrar::REGISTER)[1]['years']);
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
+    }
+
+    public function test_the_order_shows_an_unpaid_notice_in_red(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $order = $this->place();
+        $entry = fn () => Livewire::test(ViewOrder::class, ['record' => $order->id]);
+
+        $entry()->assertSee('fi-font-bold fi-color fi-color-danger', false);
+
+        $order->invoices()->update(['status' => InvoiceStatus::Paid]);
+        $entry()->assertDontSee('fi-font-bold fi-color fi-color-danger', false)->assertSee('fi-color-success', false);
+    }
+
+    public function test_complete_order_mentions_the_registrar_only_for_domains(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $note = __('Registrations and transfers charge your registrar account.');
+
+        Livewire::test(ViewOrder::class, ['record' => $this->place()->id])
+            ->assertActionExists('completeOrder', fn (Action $action) => str_contains((string) $action->getModalDescription(), $note));
+
+        $other = app(PlaceOrder::class)->handle($this->client, [
+            ['type' => 'other', 'label' => 'Website set-up', 'price_cents' => 9000, 'billing_cycle' => BillingCycle::OneTime],
+        ]);
+        Livewire::test(ViewOrder::class, ['record' => $other->id])
+            ->assertActionExists('completeOrder', fn (Action $action) => ! str_contains((string) $action->getModalDescription(), $note));
     }
 
     public function test_complete_order_failure_ends_each_error_before_the_hint(): void
@@ -542,7 +572,8 @@ class OrdersTest extends TestCase
 
         $this->get('/admin/orders')->assertOk()->assertSee('Hosting Basic');
         $this->get('/admin/orders/create')->assertOk();
-        $this->get("/admin/orders/{$order->id}")->assertOk()->assertSee('Complete order');
+        $this->get("/admin/orders/{$order->id}")->assertOk()->assertSee('Complete order')
+            ->assertSee(ClientResource::getUrl('edit', ['record' => $this->client->id]), false);
         $this->get("/admin/clients/{$this->client->id}/edit")->assertOk()->assertSee('New order');
     }
 

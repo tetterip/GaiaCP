@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Enums\InvoiceStatus;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Coupons\CouponResource;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Models\Order;
@@ -10,6 +12,7 @@ use App\Support\TermsOfService;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 
 class OrderInfolist
 {
@@ -23,7 +26,8 @@ class OrderInfolist
                     ->schema([
                         TextEntry::make('client.last_name')
                             ->label('Client')
-                            ->state(fn (Order $record) => $record->client->displayName()),
+                            ->state(fn (Order $record) => $record->client->displayName())
+                            ->url(fn (Order $record) => ClientResource::getUrl('edit', ['record' => $record->client_id])),
                         TextEntry::make('status')
                             ->badge(),
                         TextEntry::make('total')
@@ -36,6 +40,13 @@ class OrderInfolist
                             ->label('Payment notice')
                             ->state(fn (Order $record) => ($notice = $record->invoices()->latest('id')->first()) ? "{$notice->number} ({$notice->status->getLabel()})" : null)
                             ->url(fn (Order $record) => ($id = $record->invoices()->latest('id')->value('id')) ? InvoiceResource::getUrl('view', ['record' => $id]) : null)
+                            // Unpaid in red and bold, so an order still owed (a payment reversed, say) stands out.
+                            ->color(fn (Order $record) => match ($record->invoices()->latest('id')->value('status')) {
+                                InvoiceStatus::Unpaid => 'danger',
+                                InvoiceStatus::Paid => 'success',
+                                default => 'gray',
+                            })
+                            ->weight(fn (Order $record) => $record->invoices()->latest('id')->value('status') === InvoiceStatus::Unpaid ? FontWeight::Bold : null)
                             ->placeholder('—'),
                         TextEntry::make('coupon')
                             ->label('Coupon')

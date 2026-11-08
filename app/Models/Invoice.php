@@ -6,6 +6,7 @@ use App\Enums\InvoiceStatus;
 use App\Invoicing\IssueInvoice;
 use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\ClientFields;
+use App\Support\Currencies;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 use Throwable;
 
 /**
@@ -142,6 +144,47 @@ class Invoice extends Model
     public function scopeUnpaid(Builder $query): void
     {
         $query->where('status', InvoiceStatus::Unpaid);
+    }
+
+    /**
+     * Adds owed_cents: what the notice still asks, the total of its lines not paid yet (0 once nothing is owed).
+     *
+     * @param  Builder<Invoice>  $query
+     */
+    public function scopeWithOwed(Builder $query): void
+    {
+        $query->withSum(['items as owed_cents' => fn ($q) => $q->unpaid()], 'total_cents');
+    }
+
+    /**
+     * What these notices still ask, one sum per currency: their lines not paid yet, so a notice paid in part counts only
+     * the rest (its total_cents is the whole notice). Give it unpaid() notices.
+     *
+     * @param  Builder<Invoice>|HasMany<Invoice, covariant Model>  $notices
+     * @return Collection<string, int> currency => cents
+     */
+    public static function owedByCurrency(Builder|HasMany $notices): Collection
+    {
+        /** @var Collection<string, int> $owed */
+        $owed = $notices->clone()
+            ->select(['invoices.id', 'invoices.currency'])
+            ->withOwed()
+            ->get()
+            ->groupBy('currency')
+            ->map(fn (EloquentCollection $group) => (int) $group->sum('owed_cents'))
+            ->filter();
+
+        return $owed;
+    }
+
+    /**
+     * owedByCurrency() in the base currency.
+     *
+     * @param  Builder<Invoice>|HasMany<Invoice, covariant Model>  $notices
+     */
+    public static function owedInBase(Builder|HasMany $notices): int
+    {
+        return (int) self::owedByCurrency($notices)->map(fn (int $cents, string $currency) => Currencies::toBase($cents, $currency))->sum();
     }
 
     public function isOverdue(?CarbonInterface $today = null): bool

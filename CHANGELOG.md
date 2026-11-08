@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- What clients owe counts only what is still unpaid: a payment notice paid in part (one item of an order, say) added
+  its whole total to the client page's Open balance, the dashboard's balance and overdue cards, the ticket's client
+  details, the daily summary and the client area's home. The clients list's **Active services** column counts only
+  active services (it counted every service, ended ones included), and an order's client name opens the client An unpaid service can be deleted from the ⋮ menu of the
+  services lists and an order's items (not an order's last item).
 - **Refund** on any payment (the service's Payments tab, `POST /api/v1/payments/{id}/refund`): records the money given
   back as a payment of minus that amount on its day, into the client's balance or paid back outside GaiaCP, with a
   credit note for its invoice; the due date stays. Before, only the latest payment could be reversed.

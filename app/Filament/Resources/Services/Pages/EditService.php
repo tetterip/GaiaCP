@@ -127,7 +127,9 @@ class EditService extends EditRecord
             ])->label(__('Price'))->icon(Heroicon::OutlinedCurrencyEuro)->button()->color('gray'),
             // Services with payments keep their history; set them to Terminated or Cancelled instead.
             DeleteAction::make()
-                ->hidden(fn (Service $record) => $record->payments()->exists()),
+                ->hidden(fn (Service $record) => $record->payments()->exists())
+                // Read while the service is still there, then back to the client's tab that listed it.
+                ->before(fn (DeleteAction $action, Service $record) => $action->successRedirectUrl(ServiceResource::clientUrl($record) ?? ServiceResource::getUrl('index'))),
         ];
     }
 }

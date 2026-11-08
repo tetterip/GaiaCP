@@ -6,6 +6,7 @@ use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Filament\Actions\ChangePriceAction;
 use App\Filament\Actions\RecordPaymentAction;
+use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ProductTag;
@@ -15,6 +16,7 @@ use App\Providers\AppServiceProvider;
 use App\Support\Money;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -120,6 +122,12 @@ class ServicesTable
                     RecordPaymentAction::make(),
                     EditAction::make()
                         ->url(fn (Service $record) => ServiceResource::getUrl('edit', ['record' => $record])),
+                    // As on the service's page: services with payments keep their history. An order's last item stays
+                    // (Cancel order instead); a deleted item comes off its payment notice.
+                    DeleteAction::make()
+                        ->modalDescription(__('It is taken off its unpaid payment notices. This cannot be undone.'))
+                        ->hidden(fn (Service $record, $livewire) => RecordPaymentAction::paid($record)
+                            || ($livewire instanceof ItemsRelationManager && Service::query()->where('order_id', $record->order_id)->count() === 1)),
                 ]),
             ])
             ->toolbarActions([

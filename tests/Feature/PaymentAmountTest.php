@@ -11,7 +11,10 @@ use App\Api\OpenApi;
 use App\Enums\BillingCycle;
 use App\Enums\InvoiceStatus;
 use App\Enums\ServiceStatus;
+use App\Filament\Resources\Orders\Pages\ViewOrder;
+use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Services\Pages\EditService;
+use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ApiKey;
 use App\Models\Client;
 use App\Models\Invoice;
@@ -22,6 +25,8 @@ use App\Models\Service;
 use App\Models\TaxInvoice;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -252,6 +257,40 @@ class PaymentAmountTest extends TestCase
         $other = $this->order();
         $other->services->each->delete();
         $this->assertSame(InvoiceStatus::Cancelled, $other->invoices()->sole()->status);
+    }
+
+    public function test_an_unpaid_item_can_be_deleted_from_the_order_page(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $order = $this->order();
+        [$a, $b] = $order->services()->orderBy('id')->get()->all();
+        $page = fn () => Livewire::test(ItemsRelationManager::class, ['ownerRecord' => $order, 'pageClass' => ViewOrder::class]);
+
+        app(RecordServicePayment::class)->handle($a->fresh(), 12400, CarbonImmutable::today(), 'cash');
+        $page()->assertActionHidden(TestAction::make(DeleteAction::class)->table($a)) // paid: it keeps its history
+            ->callAction(TestAction::make(DeleteAction::class)->table($b));
+
+        $this->assertModelMissing($b);
+        $this->assertSame(InvoiceStatus::Paid, Invoice::sole()->status, 'its line came off, the rest was paid');
+
+        $other = $this->order();
+        $other->services()->orderBy('id')->first()->delete();
+        Livewire::test(ItemsRelationManager::class, ['ownerRecord' => $other, 'pageClass' => ViewOrder::class])
+            ->assertActionHidden(TestAction::make(DeleteAction::class)->table($other->services()->sole())); // the last item: cancel the order instead
+    }
+
+    public function test_deleting_a_service_returns_to_the_clients_tab(): void
+    {
+        $this->actingAs(User::factory()->create());
+        [$a] = $this->order()->services()->orderBy('id')->get()->all();
+        $back = ServiceResource::clientUrl($a);
+
+        Livewire::test(EditService::class, ['record' => $a->id])
+            ->callAction(DeleteAction::class)
+            ->assertRedirect($back);
+
+        $this->assertModelMissing($a);
+        $this->assertStringContainsString('/clients/'.$a->client_id, (string) $back);
     }
 
     public function test_the_migration_takes_old_lines_of_deleted_services_off(): void

@@ -11,8 +11,10 @@ use App\Enums\BillingCycle;
 use App\Enums\InvoiceStatus;
 use App\Enums\ServiceStatus;
 use App\Filament\Resources\Clients\Pages\EditClient;
+use App\Filament\Resources\Clients\Widgets\ClientSummary;
 use App\Filament\Resources\Services\Pages\EditService;
 use App\Filament\Resources\Services\RelationManagers\PaymentsRelationManager;
+use App\Filament\Widgets\BillingOverview;
 use App\Invoices\GenerateInvoices;
 use App\Models\ApiKey;
 use App\Models\Client;
@@ -103,6 +105,20 @@ class BillingGapsTest extends TestCase
         $other = $this->order()->invoices()->sole();
         $this->assertTrue($other->cancel());
         $this->assertSame(InvoiceStatus::Cancelled, $other->refresh()->status);
+    }
+
+    public function test_a_partly_paid_notice_counts_only_what_is_still_owed(): void
+    {
+        $order = $this->order();
+        [$a] = $order->services()->orderBy('id')->get()->all();
+        $this->pay($a, 12400);
+
+        $this->assertSame(18600, Invoice::sole()->total_cents, 'the notice stays whole');
+        $this->assertSame(['EUR' => 6200], Invoice::owedByCurrency(Invoice::query()->unpaid())->all());
+        $this->assertSame(6200, Invoice::owedInBase(Invoice::query()->unpaid()));
+
+        Livewire::test(ClientSummary::class, ['record' => $this->client])->assertSee('€62.00')->assertDontSee('€186.00');
+        Livewire::test(BillingOverview::class)->assertSee('€62.00')->assertDontSee('€186.00');
     }
 
     public function test_reversing_the_payment_of_a_one_time_service_makes_it_owed_again(): void
