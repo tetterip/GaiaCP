@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Clients\Tables;
 
 use App\Enums\ClientAreaLogin;
 use App\Enums\ClientStatus;
+use App\Enums\ServiceStatus;
 use App\Models\Client;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -35,9 +36,9 @@ class ClientsTable
                     ->placeholder('—') // the row's link in an empty cell still needs a text (WCAG 2.4.4)
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('services_count')
-                    ->counts('services')
-                    ->label('Services')
+                TextColumn::make('active_services_count')
+                    ->counts(['services as active_services_count' => fn (Builder $query) => $query->where('status', ServiceStatus::Active)])
+                    ->label('Active services')
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge(),

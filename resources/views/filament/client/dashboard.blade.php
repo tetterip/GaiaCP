@@ -12,7 +12,7 @@
         // Notices in more than one currency show one amount per currency.
         $sum = fn ($notices) => $notices->isEmpty()
             ? \App\Support\Money::format(0, \App\Support\Currencies::forClient($client))
-            : $notices->groupBy('currency')->map(fn ($group, $currency) => \App\Support\Money::format($group->sum('total_cents'), $currency))->join(' + ');
+            : $notices->groupBy('currency')->map(fn ($group, $currency) => \App\Support\Money::format((int) $group->sum('owed_cents'), $currency))->join(' + ');
         $noticeUrl = fn ($notice) => \App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource::getUrl('view', ['record' => $notice]);
     @endphp
 

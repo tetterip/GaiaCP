@@ -89,7 +89,7 @@ class Dashboard extends Page
     /** @return Collection<int, Invoice> unpaid payment notices, the oldest due first */
     public function unpaidNotices(): Collection
     {
-        return PaymentNoticeResource::getEloquentQuery()->unpaid()->orderBy('due_date')->get();
+        return PaymentNoticeResource::getEloquentQuery()->unpaid()->withOwed()->orderBy('due_date')->get();
     }
 
     /** Active services and domains shown in the client area. */

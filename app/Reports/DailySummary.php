@@ -51,6 +51,7 @@ final readonly class DailySummary
         $overdueNotices = Invoice::query()
             ->with('client')
             ->unpaid()
+            ->withOwed()
             ->where('due_date', '<', $until->startOfDay()->toDateString())
             ->orderBy('due_date')
             ->orderBy('number')

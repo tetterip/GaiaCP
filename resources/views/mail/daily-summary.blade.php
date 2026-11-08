@@ -56,11 +56,11 @@
 | {{ __('Number') }} | {{ __('Client') }} | {{ __('Due date') }} | {{ __('Days overdue') }} | {{ __('Total') }} |
 | :-- | :-- | :-- | --: | --: |
 @foreach ($summary->overdueNotices as $invoice)
-| [{{ $invoice->number }}]({{ $invoiceUrl($invoice) }}) | {{ $invoice->client?->name }} | {{ $invoice->due_date->format(\App\Providers\AppServiceProvider::dateFormat()) }} | {{ (int) $invoice->due_date->diffInDays($today) }} | {{ Money::format($invoice->total_cents, $invoice->currency) }} |
+| [{{ $invoice->number }}]({{ $invoiceUrl($invoice) }}) | {{ $invoice->client?->name }} | {{ $invoice->due_date->format(\App\Providers\AppServiceProvider::dateFormat()) }} | {{ (int) $invoice->due_date->diffInDays($today) }} | {{ Money::format((int) $invoice->owed_cents, $invoice->currency) }} |
 @endforeach
 </x-mail::table>
 
-**{{ __('Total overdue: :amount', ['amount' => Money::format($summary->overdueNotices->sum(fn ($invoice) => \App\Support\Currencies::toBase($invoice->total_cents, $invoice->currency)))]) }}**
+**{{ __('Total overdue: :amount', ['amount' => Money::format($summary->overdueNotices->sum(fn ($invoice) => \App\Support\Currencies::toBase((int) $invoice->owed_cents, $invoice->currency)))]) }}**
 @endif
 
 ## {{ __('Domain sync') }}

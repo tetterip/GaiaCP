@@ -7,6 +7,7 @@ use App\Enums\ServiceStatus;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\Client;
+use App\Models\Invoice;
 use App\Models\Service;
 use App\Reports\ClientHealth;
 use App\Support\Currencies;
@@ -45,20 +46,20 @@ class ClientSummary extends Widget
     /** @return array{credit: ?string, owed: string, count: int, overdue: string, overdueCount: int} */
     private function billing(Client $client): array
     {
-        $unpaid = $client->invoices()->unpaid()->get(['currency', 'total_cents', 'due_date']);
-        $overdue = $unpaid->filter(fn ($notice) => $notice->due_date->lessThan(today()));
-        // Notices in more than one currency show one amount per currency.
-        $sum = fn ($notices) => $notices->isEmpty()
+        $unpaid = $client->invoices()->unpaid();
+        $overdue = $client->invoices()->unpaid()->whereOnDate('due_date', '<', today());
+        // What is still owed (a notice paid in part counts the rest); notices in more than one currency show one amount per currency.
+        $sum = fn ($notices) => ($owed = Invoice::owedByCurrency($notices))->isEmpty()
             ? Money::format(0, Currencies::forClient($client))
-            : $notices->groupBy('currency')->map(fn ($group, $currency) => Money::format($group->sum('total_cents'), $currency))->join(' + ');
+            : $owed->map(fn (int $cents, string $currency) => Money::format($cents, $currency))->join(' + ');
 
         return [
             // Shown once credit is on, or the client has some.
             'credit' => ClientCredit::enabled() || $client->credit_cents !== 0 ? Money::format((int) $client->credit_cents, $client->currencyCode()) : null,
             'owed' => $sum($unpaid),
-            'count' => $unpaid->count(),
+            'count' => (clone $unpaid)->count(),
             'overdue' => $sum($overdue),
-            'overdueCount' => $overdue->count(),
+            'overdueCount' => (clone $overdue)->count(),
         ];
     }
 

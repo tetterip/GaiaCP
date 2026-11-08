@@ -36,10 +36,13 @@ class ClientPageTabsTest extends TestCase
     public function test_the_page_shows_the_summary_and_a_tab_per_part(): void
     {
         $this->actingAs(User::factory()->create());
-        Service::factory()->for($this->client)->create(['domain' => 'shop.gr', 'next_due_date' => today()->addDays(20)]);
+        $service = Service::factory()->for($this->client)->create(['domain' => 'shop.gr', 'next_due_date' => today()->addDays(20)]);
         Invoice::create([
             'number' => 'PF-2026-0001', 'client_id' => $this->client->id, 'date' => today()->subDays(20), 'due_date' => today()->subDays(5),
             'currency' => 'EUR', 'subtotal_cents' => 6000, 'tax_cents' => 0, 'total_cents' => 6000,
+        ])->items()->create([
+            'service_id' => $service->id, 'description' => 'Hosting', 'due_date' => today()->subDays(5), 'period_end' => today()->addDays(20),
+            'amount_cents' => 6000, 'tax_cents' => 0, 'total_cents' => 6000,
         ]);
 
         $this->get(ClientResource::getUrl('edit', ['record' => $this->client]))

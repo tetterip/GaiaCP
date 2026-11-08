@@ -11,6 +11,7 @@ use App\Filament\Resources\Tickets\Pages\CreateTicket;
 use App\Filament\Resources\Tickets\Pages\ListTickets;
 use App\Filament\Resources\Tickets\Pages\ViewTicket;
 use App\Filament\Resources\Tickets\Tables\TicketsTable;
+use App\Models\Invoice;
 use App\Models\Ticket;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
@@ -136,10 +137,10 @@ class TicketResource extends Resource
     /** What the client owes on unpaid payment notices, one amount per currency. */
     private static function owed(Ticket $record): ?string
     {
-        $unpaid = $record->client?->invoices()->unpaid()->get(['currency', 'total_cents']);
+        $owed = $record->client ? Invoice::owedByCurrency($record->client->invoices()->unpaid()) : collect();
 
-        return $unpaid?->isNotEmpty()
-            ? $unpaid->groupBy('currency')->map(fn ($group, $currency) => Money::format($group->sum('total_cents'), $currency))->join(' + ')
+        return $owed->isNotEmpty()
+            ? $owed->map(fn (int $cents, string $currency) => Money::format($cents, $currency))->join(' + ')
             : null;
     }
 
