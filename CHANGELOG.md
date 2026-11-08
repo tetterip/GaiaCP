@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Payment notices: mass actions. Tick notices in the list (up to 100) to mark them paid (one date and method for all),
+  send a reminder (the payment reminder, or the first overdue email once past due), mark paid ones unpaid (their
+  payments reversed, only where Reverse would allow it) or cancel them. The window says how many it applies to and why
+  the rest are left out; one message sums up what was done.
 - What clients owe counts only what is still unpaid: a payment notice paid in part (one item of an order, say) added
   its whole total to the client page's Open balance, the dashboard's balance and overdue cards, the ticket's client
   details, the daily summary and the client area's home. The clients list's **Active services** column counts only

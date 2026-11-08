@@ -69,6 +69,8 @@ class InvoicesTable
             // The chips set these filters and show which one is on, so no filter button or indicator row
             ->filtersLayout(FiltersLayout::Hidden)
             ->hiddenFilterIndicators()
-            ->recordUrl(fn (Invoice $record) => InvoiceResource::getUrl('view', ['record' => $record]));
+            ->recordUrl(fn (Invoice $record) => InvoiceResource::getUrl('view', ['record' => $record]))
+            ->toolbarActions([InvoiceBulkActions::group()])
+            ->maxSelectableRecords(InvoiceBulkActions::MAX);
     }
 }

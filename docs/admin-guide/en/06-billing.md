@@ -39,6 +39,21 @@ On a notice you can:
   this takes the current ones, while it is unpaid.
 - **Cancel** it.
 
+To do one of these to several notices at once, tick them in the list (up to 100) and open **Bulk actions**:
+
+- **Mark as paid**: records each unpaid notice as its Record payment would, with one date, method and (optional)
+  reference for all of them.
+- **Send reminder**: emails each unpaid notice now, with the email you pick; the default sends the payment reminder,
+  or the first overdue email once the notice is past due.
+- **Mark as unpaid**: reverses the payments of paid notices, as Reverse on the service's payment does: due dates go
+  back, a payment from credit returns to the balance and an issued invoice gets a credit note. Only where every payment
+  of the notice is still its service's latest and the due date is still the one it set; "Add funds" notices are left out.
+- **Cancel**: cancels each unpaid notice, as Cancel does.
+
+Before it runs, the window says how many of the picked notices it applies to and why the others are left out (for
+example "not unpaid"); afterwards one message says how many were done, which were left out and any that failed with
+their error. One failure never stops the others.
+
 Ending a service (Terminate or Cancel) takes it off its open notices; a notice left empty is cancelled. So does
 deleting a service that was never paid, or moving its due date by hand: the notice for the old date could no longer be
 paid, and the daily run issues one for the new date. Cancelling a notice that is partly paid takes off only its unpaid
