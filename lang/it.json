@@ -3991,5 +3991,6 @@
     "not enabled": "non attivo",
     "the demo needs it": "serve alla demo",
     ":count plugin enabled|:count plugins enabled": ":count plugin attivato|:count plugin attivati",
-    ":count plugin disabled|:count plugins disabled": ":count plugin disattivato|:count plugin disattivati"
+    ":count plugin disabled|:count plugins disabled": ":count plugin disattivato|:count plugin disattivati",
+    "No payment due": "Nessun pagamento dovuto"
 }

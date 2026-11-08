@@ -110,4 +110,15 @@ class OrderBulkActionsTest extends TestCase
         $this->assertEqualsCanonicalizing([$client->id, $other->client_id], $message->recipients()->pluck('client_id')->all());
         $this->assertSame('Maintenance tonight', $message->subject());
     }
+
+    public function test_the_list_shows_each_orders_payment_status(): void
+    {
+        $paid = $this->order();
+        app(RecordOrderPayment::class)->handle($paid, CarbonImmutable::today(), 'bank_transfer');
+        $unpaid = $this->order();
+
+        Livewire::test(ListOrders::class)
+            ->assertTableColumnStateSet('payment', 'Paid', $paid)
+            ->assertTableColumnStateSet('payment', 'Unpaid', $unpaid);
+    }
 }

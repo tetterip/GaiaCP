@@ -3991,5 +3991,6 @@
     "not enabled": "etkin değil",
     "the demo needs it": "demo buna ihtiyaç duyuyor",
     ":count plugin enabled|:count plugins enabled": ":count eklenti etkinleştirildi|:count eklenti etkinleştirildi",
-    ":count plugin disabled|:count plugins disabled": ":count eklenti devre dışı bırakıldı|:count eklenti devre dışı bırakıldı"
+    ":count plugin disabled|:count plugins disabled": ":count eklenti devre dışı bırakıldı|:count eklenti devre dışı bırakıldı",
+    "No payment due": "Ödeme yok"
 }

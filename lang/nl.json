@@ -3991,5 +3991,6 @@
     "not enabled": "niet ingeschakeld",
     "the demo needs it": "de demo heeft het nodig",
     ":count plugin enabled|:count plugins enabled": ":count plugin ingeschakeld|:count plugins ingeschakeld",
-    ":count plugin disabled|:count plugins disabled": ":count plugin uitgeschakeld|:count plugins uitgeschakeld"
+    ":count plugin disabled|:count plugins disabled": ":count plugin uitgeschakeld|:count plugins uitgeschakeld",
+    "No payment due": "Geen betaling verschuldigd"
 }

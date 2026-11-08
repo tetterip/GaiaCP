@@ -3991,5 +3991,6 @@
     "not enabled": "nie jest włączona",
     "the demo needs it": "potrzebuje jej demo",
     ":count plugin enabled|:count plugins enabled": ":count wtyczka włączona|:count wtyczki włączone|:count wtyczek włączonych",
-    ":count plugin disabled|:count plugins disabled": ":count wtyczka wyłączona|:count wtyczki wyłączone|:count wtyczek wyłączonych"
+    ":count plugin disabled|:count plugins disabled": ":count wtyczka wyłączona|:count wtyczki wyłączone|:count wtyczek wyłączonych",
+    "No payment due": "Brak należnej płatności"
 }

@@ -3991,5 +3991,6 @@
     "not enabled": "δεν είναι ενεργό",
     "the demo needs it": "το χρειάζεται το demo",
     ":count plugin enabled|:count plugins enabled": "Ενεργοποιήθηκε :count πρόσθετο|Ενεργοποιήθηκαν :count πρόσθετα",
-    ":count plugin disabled|:count plugins disabled": "Απενεργοποιήθηκε :count πρόσθετο|Απενεργοποιήθηκαν :count πρόσθετα"
+    ":count plugin disabled|:count plugins disabled": "Απενεργοποιήθηκε :count πρόσθετο|Απενεργοποιήθηκαν :count πρόσθετα",
+    "No payment due": "Δεν οφείλεται πληρωμή"
 }
