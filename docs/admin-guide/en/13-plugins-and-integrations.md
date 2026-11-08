@@ -177,6 +177,8 @@ with its permissions per area (read, create, update, delete) and the IP addresse
 leaks. A key works only while the admin who made it is an active super admin: deactivating them (or taking away
 super admin) stops their keys, and deleting them revokes the keys. Calls go through the same actions as the panel, so they send the same emails and are in
 the activity log under the key's name. **Documentation** on that page lists every call, with `openapi.json` to
-download. Examples: [using the API](../../using-the-api.md).
+download. A script that may send a call again (after a timeout, say) adds an `Idempotency-Key` header: the same key
+within 24 hours gets the first answer back instead of recording a payment twice. Examples:
+[using the API](../../using-the-api.md).
 
 Next: [Keeping GaiaCP healthy](14-maintenance.md).
