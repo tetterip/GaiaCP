@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Services\Tables;
 
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
-use App\Filament\Actions\ChangePriceAction;
 use App\Filament\Actions\RecordPaymentAction;
 use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Services\Pages\ListServices;
@@ -15,7 +14,6 @@ use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
 use Filament\Actions\ActionGroup;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -130,11 +128,8 @@ class ServicesTable
                             || ($livewire instanceof ItemsRelationManager && Service::query()->where('order_id', $record->order_id)->count() === 1)),
                 ]),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    ChangePriceAction::bulk(),
-                ]),
-            ]);
+            ->toolbarActions([ServiceBulkActions::group()])
+            ->maxSelectableRecords(ServiceBulkActions::MAX);
     }
 
     /** The line under the service: a hosting account's username, else the label when the domain is the title. */

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\KbArticles;
 
 use App\Enums\AdminArea;
 use App\Filament\Actions\AiTextActions;
+use App\Filament\Actions\PublishBulkActions;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesResourceLabels;
 use App\Filament\Resources\KbArticles\Pages\CreateKbArticle;
@@ -169,6 +170,8 @@ class KbArticleResource extends Resource
                     ->options(fn () => KbCategory::query()->ordered()->get()->mapWithKeys(fn (KbCategory $category) => [$category->id => $category->name()])),
                 TernaryFilter::make('published'),
             ])
+            ->toolbarActions([PublishBulkActions::articles()])
+            ->maxSelectableRecords(PublishBulkActions::MAX)
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),

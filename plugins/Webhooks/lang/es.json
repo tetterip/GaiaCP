@@ -32,5 +32,8 @@
     "Webhook endpoint id": "ID del endpoint del webhook",
     "Webhooks": "Webhooks",
     ":count tries": ":count intentos",
-    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "No se envían webhooks a esta dirección: está en una red local o privada, o no se encuentra su host."
+    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "No se envían webhooks a esta dirección: está en una red local o privada, o no se encuentra su host.",
+    "Each delivery that is not waiting already is sent again now to its endpoint, if the endpoint is still active.": "Cada envío que no esté ya en espera se envía de nuevo ahora a su endpoint, si sigue activo.",
+    "The others were waiting already, their endpoint is off, or they failed and are tried again later.": "Los demás ya estaban en espera, su endpoint está desactivado o fallaron y se reintentarán más tarde.",
+    ":count delivery sent|:count deliveries sent": ":count envío enviado|:count envíos enviados"
 }

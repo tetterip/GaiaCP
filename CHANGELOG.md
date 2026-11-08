@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- More mass actions (admin guide → Getting started → Mass actions): services (suspend, unsuspend, message their
+  clients, end at the end of the cycle or keep renewing, sync domains), tickets (close, assign, priority, department),
+  module queue (retry, mark resolved), cancellation and upgrade requests (approve, decline), products (hide, retire),
+  announcements and knowledge base articles (publish, unpublish, delete), banned IP addresses (lift) and webhook
+  deliveries (resend).
 - Leads, quotes and coupons: mass actions. Leads: assign, mark as lost, reopen, delete (not those that became clients).
   Quotes: send, mark as declined, delete (not accepted ones). Coupons: activate, deactivate, delete (only unused ones).
 - Plugin updates: a new version of an installed plugin is also in the admins' daily summary (it was only in the bell).

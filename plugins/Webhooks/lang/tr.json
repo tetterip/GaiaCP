@@ -32,5 +32,8 @@
     "Webhook endpoint id": "Webhook uç noktası no",
     "Webhooks": "Webhook'lar",
     ":count tries": ":count deneme",
-    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Webhook'lar bu adrese gönderilmez: yerel veya özel bir ağda ya da ana bilgisayarı bulunamıyor."
+    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Webhook'lar bu adrese gönderilmez: yerel veya özel bir ağda ya da ana bilgisayarı bulunamıyor.",
+    "Each delivery that is not waiting already is sent again now to its endpoint, if the endpoint is still active.": "Zaten beklemede olmayan her gönderim, uç noktası hâlâ etkinse şimdi yeniden gönderilir.",
+    "The others were waiting already, their endpoint is off, or they failed and are tried again later.": "Diğerleri zaten bekliyordu, uç noktaları kapalı ya da başarısız oldular ve daha sonra yeniden denenecek.",
+    ":count delivery sent|:count deliveries sent": ":count gönderim yapıldı|:count gönderim yapıldı"
 }

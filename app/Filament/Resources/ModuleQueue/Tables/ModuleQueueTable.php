@@ -56,6 +56,8 @@ class ModuleQueueTable
             ->emptyState(fn ($livewire) => ($livewire->activeTab ?? 'open') === 'resolved' ? null : view('filament.services.module-queue-empty'))
             ->emptyStateHeading(__('Nothing resolved yet'))
             ->emptyStateDescription(__('A panel or registrar action that fails (set up, suspend, unsuspend, terminate, domain renewal) waits here to be retried.'))
+            ->toolbarActions([ModuleQueueBulkActions::group()])
+            ->maxSelectableRecords(ModuleQueueBulkActions::MAX)
             ->recordActions([
                 Action::make('retry')
                     ->label('Retry')

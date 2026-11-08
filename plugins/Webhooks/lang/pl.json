@@ -32,5 +32,8 @@
     "Webhook endpoint id": "ID punktu końcowego webhooka",
     "Webhooks": "Webhooki",
     ":count tries": "Próby: :count",
-    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Webhooki nie są wysyłane na ten adres: jest w sieci lokalnej lub prywatnej albo nie można znaleźć jego hosta."
+    "Webhooks are not sent to this address: it is on a local or private network, or its host cannot be found.": "Webhooki nie są wysyłane na ten adres: jest w sieci lokalnej lub prywatnej albo nie można znaleźć jego hosta.",
+    "Each delivery that is not waiting already is sent again now to its endpoint, if the endpoint is still active.": "Każda dostawa, która jeszcze nie czeka, jest teraz wysyłana ponownie do swojego endpointu, jeśli jest on nadal aktywny.",
+    "The others were waiting already, their endpoint is off, or they failed and are tried again later.": "Pozostałe już czekały, ich endpoint jest wyłączony albo się nie udały i zostaną ponowione później.",
+    ":count delivery sent|:count deliveries sent": ":count dostawa wysłana|:count dostawy wysłane|:count dostaw wysłanych"
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\IpBans;
 
+use App\Filament\Actions\SimpleBulkAction;
 use App\Filament\Clusters\Settings\SettingsCard;
 use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Concerns\LimitedToAdminArea;
@@ -11,6 +12,7 @@ use App\Models\IpBan;
 use App\Support\LoginSecurity;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
@@ -82,6 +84,16 @@ class IpBanResource extends Resource implements SettingsCard
                     ->query(fn (Builder $query) => $query->active()),
             ])
             ->emptyStateHeading(__('No banned IP addresses'))
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    SimpleBulkAction::make('lift', 'Lift ban', Heroicon::OutlinedLockOpen,
+                        fn () => null,
+                        fn (IpBan $ban) => LoginSecurity::lift($ban),
+                        fn (IpBan $ban) => $ban->ip,
+                        ':count ban lifted|:count bans lifted'),
+                ]),
+            ])
+            ->maxSelectableRecords(100)
             ->recordActions([
                 Action::make('lift')
                     ->label('Lift ban')

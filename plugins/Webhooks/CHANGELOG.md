@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.7] - 2026-11-08
+
+- Deliveries: tick several and Resend them together
+
 ## [1.0.6] - 2026-11-06
 
 - Its times are stored in UTC like GaiaCP's (StoresTimesInUtc); the GaiaCP update converts the ones already kept
