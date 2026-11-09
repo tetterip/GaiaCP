@@ -114,6 +114,25 @@ class InvoicesTest extends TestCase
         $this->assertSame('PF-2027-0001', Invoice::nextNumber(CarbonImmutable::parse('2027-01-02')));
     }
 
+    public function test_numbers_continue_from_the_highest_as_a_number_and_skip_one_in_use(): void
+    {
+        $client = Client::factory()->create();
+        $notice = fn (string $number) => Invoice::create([
+            'number' => $number, 'client_id' => $client->id, 'date' => '2026-10-01', 'due_date' => '2026-10-15', 'status' => InvoiceStatus::Unpaid,
+            'currency' => 'EUR', 'subtotal_cents' => 6000, 'tax_cents' => 0, 'total_cents' => 6000,
+        ]);
+        $notice('PF-2026-9999');
+        $notice('PF-2026-10000'); // sorted as text it comes before 9999: the next number must still be 10001
+
+        $date = CarbonImmutable::parse('2026-11-01');
+        $this->assertSame('PF-2026-10001', Invoice::nextNumber($date));
+
+        // A number already in use (typed in, or imported) is skipped; each call takes a new one.
+        $notice('PF-2026-10002');
+        $this->assertSame('PF-2026-10003', Invoice::nextNumber($date));
+        $this->assertSame('PF-2026-10004', Invoice::nextNumber($date));
+    }
+
     public function test_rerun_creates_nothing_twice_and_a_paid_cycle_gets_the_next_notice(): void
     {
         $service = $this->service('2026-10-10');

@@ -8,6 +8,7 @@ use App\Enums\QuoteStatus;
 use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
 use App\Support\Money;
+use App\Support\NumberSeries;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -63,11 +64,7 @@ class Quote extends Model
 
     public static function nextNumber(CarbonInterface $date): string
     {
-        $prefix = self::NUMBER_PREFIX.'-'.$date->year.'-';
-
-        $last = self::query()->where('number', 'like', $prefix.'%')->orderByDesc('number')->value('number');
-
-        return $prefix.str_pad((string) ((int) substr((string) $last, strlen($prefix)) + 1), 4, '0', STR_PAD_LEFT);
+        return NumberSeries::next(self::class, self::NUMBER_PREFIX, $date->year);
     }
 
     /** @param Builder<self> $query */
