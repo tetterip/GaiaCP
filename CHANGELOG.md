@@ -10,6 +10,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Security (audit before this release): **Send message** on the services list made a Clients → Messages to clients
   message for admins who can't open Clients; it is now shown only to those who can (on every list). Refunding a
   payment through the API needs the `payments.delete` permission, as reversing one does, instead of `payments.create`.
+- Payment notice and quote numbers are taken under a lock (as tax invoice numbers already were): two orders placed at
+  the same moment, or one during the daily run, could get the same PF number, and the second then failed after the
+  order was saved, leaving it without a payment notice or email. A year's numbers also continue past 9999 (PF-2026-10000
+  was followed by 10000 again, which failed).
 - More mass actions (admin guide → Getting started → Mass actions): services (suspend, unsuspend, message their
   clients, end at the end of the cycle or keep renewing, sync domains), tickets (close, assign, priority, department),
   module queue (retry, mark resolved), cancellation and upgrade requests (approve, decline), products (hide, retire),

@@ -7,6 +7,7 @@ use App\Invoicing\IssueInvoice;
 use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\ClientFields;
 use App\Support\Currencies;
+use App\Support\NumberSeries;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -196,11 +197,7 @@ class Invoice extends Model
     /** The next free number for this year: PF-2026-0001. */
     public static function nextNumber(CarbonInterface $date): string
     {
-        $prefix = self::NUMBER_PREFIX.'-'.$date->year.'-';
-
-        $last = self::query()->where('number', 'like', $prefix.'%')->orderByDesc('number')->value('number');
-
-        return $prefix.str_pad((string) ((int) substr((string) $last, strlen($prefix)) + 1), 4, '0', STR_PAD_LEFT);
+        return NumberSeries::next(self::class, self::NUMBER_PREFIX, $date->year);
     }
 
     /** "ΦΠΑ 17%", or null without tax. */
