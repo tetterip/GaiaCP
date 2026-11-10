@@ -11,6 +11,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   already has an account gets the new **Sign Up With an Existing Address** email instead (Email templates → General,
   at most once an hour per address) with how to log in, or, for a client without a login, to ask you for one; an
   admin's address gets nothing.
+- Domain prices names the term on every price, one year too ("€22.00 for 1 year"), so the list no longer needs its
+  "Prices are per year" note; on a phone the term goes on a line under the price.
 
 ## [0.9.0] - 2026-11-08
 
