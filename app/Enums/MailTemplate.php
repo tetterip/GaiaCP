@@ -16,6 +16,7 @@ enum MailTemplate: string
     case ClientAreaInvite = 'client_area_invite';
     case ClientAreaLogin = 'client_area_login';
     case EmailVerification = 'email_verification';
+    case SignupExistingAccount = 'signup_existing_account';
 
     case RenewalReminder = 'renewal_reminder';
     case OverdueNotice = 'overdue_notice';
@@ -67,6 +68,7 @@ enum MailTemplate: string
             self::ClientAreaInvite => 'Client Area Invitation',
             self::ClientAreaLogin => 'Client Area Login Details',
             self::EmailVerification => 'Email Address Verification',
+            self::SignupExistingAccount => 'Sign Up With an Existing Address',
             self::RenewalReminder => 'Upcoming Renewal Notice',
             self::OverdueNotice => 'Overdue Notice',
             self::InvoiceCreated => 'Payment Notice Created',
@@ -105,7 +107,7 @@ enum MailTemplate: string
     public function group(): string
     {
         return __(match ($this) {
-            self::ClientSignup, self::OrderConfirmation, self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification => 'General',
+            self::ClientSignup, self::OrderConfirmation, self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::SignupExistingAccount => 'General',
             self::RenewalReminder, self::OverdueNotice, self::InvoiceCreated, self::InvoicePaymentReminder,
             self::InvoiceFirstOverdue, self::InvoiceSecondOverdue, self::InvoiceModified, self::InvoiceIssued, self::PriceChange, self::Quote => 'Billing',
             self::HostingWelcome, self::VpsWelcome, self::ServiceSuspension, self::ServiceUnsuspension,
@@ -125,6 +127,7 @@ enum MailTemplate: string
             self::ClientAreaInvite => 'When you press "Invite to client area" on a client.',
             self::ClientAreaLogin => 'When you add a client with a client area password and "Email the login details" ticked.',
             self::EmailVerification => 'When someone signs up in the client area, and when they ask for the link again. Always sent: they can\'t log in without it.',
+            self::SignupExistingAccount => 'When someone signs up in the client area with an email address that already has an account here. The sign up page says "check your email" either way, so it never tells who has an account; this email tells the owner how to log in. Always sent, at most once an hour for each address.',
             self::RenewalReminder, self::OverdueNotice => 'No longer sent: payment notices took its place.',
             self::InvoiceCreated => 'When the daily run creates a payment notice (proforma, not an official invoice), Settings → General days before the due date.',
             self::InvoicePaymentReminder => 'On the "days before the due date" (Settings → Automation) that come after the notice was emailed, while it is unpaid.',
@@ -160,7 +163,7 @@ enum MailTemplate: string
     /** Whether the email ends with a "View in the client area" button (ClientAreaLinks); the login emails have their own link. */
     public function linksToClientArea(): bool
     {
-        return ! in_array($this, [self::ClientSignup, self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::Quote], true);
+        return ! in_array($this, [self::ClientSignup, self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::SignupExistingAccount, self::Quote], true);
     }
 
     /**
@@ -176,7 +179,7 @@ enum MailTemplate: string
     public function enabledByDefault(): bool
     {
         return in_array($this, [
-            self::RenewalReminder, self::OverdueNotice, self::DomainRenewalNotice, self::ClientAreaLogin, self::EmailVerification,
+            self::RenewalReminder, self::OverdueNotice, self::DomainRenewalNotice, self::ClientAreaLogin, self::EmailVerification, self::SignupExistingAccount,
             self::InvoiceCreated, self::InvoicePaymentReminder, self::InvoiceFirstOverdue, self::InvoiceSecondOverdue,
             self::InvoiceIssued, // only sent while invoices are on
             self::CancellationApproved, self::CancellationRejected, self::UpgradeApproved, self::UpgradeRejected, // the client asked and waits for the answer
@@ -258,6 +261,9 @@ enum MailTemplate: string
             ],
             self::EmailVerification => [
                 'verification_url' => 'Link that confirms the email address (works for 60 minutes)',
+            ],
+            self::SignupExistingAccount => [
+                'how_to_log_in' => 'How they get in: links to the login page and to "Forgot password?", or, for a client with no login yet, to ask you for one',
             ],
             self::OrderConfirmation => [
                 'order_number' => 'Order number',
@@ -356,6 +362,7 @@ enum MailTemplate: string
             'invoice_number' => 'PF-2026-0042', 'invoice_date' => now()->format(AppServiceProvider::dateFormat()), 'invoice_due_date' => now()->addDays(7)->format(AppServiceProvider::dateFormat()),
             'client_area_url' => 'https://clients.example.gr/login', 'set_password_url' => 'https://clients.example.gr/password-reset/reset?token=…',
             'verification_url' => 'https://clients.example.gr/email-verification/verify/7/…',
+            'how_to_log_in' => '[Log in](https://clients.example.gr/login) with your email address and password. If you forgot your password, [choose a new one](https://clients.example.gr/password-reset/request).',
             'effective_date' => now()->addDays(30)->format(AppServiceProvider::dateFormat()), 'new_product' => 'Business (10GB)', 'new_price' => '€120.00', 'transfer_price' => '€12.00', 'renewal_price' => '€25.00',
             'ticket_number' => 'T-000042', 'ticket_subject' => 'Email not working', 'ticket_department' => 'Technical support',
             'ticket_message' => 'Hello, I cannot send email from my phone since this morning.', 'admin_name' => 'Maria',
@@ -400,6 +407,7 @@ enum MailTemplate: string
             self::ClientAreaInvite => 'Your {$company_name} client area',
             self::ClientAreaLogin => 'Your {$company_name} client area login',
             self::EmailVerification => 'Confirm your email address for {$company_name}',
+            self::SignupExistingAccount => 'You already have an account with {$company_name}',
             self::RenewalReminder => 'Upcoming renewal of your services',
             self::OverdueNotice => 'Overdue: services awaiting payment',
             self::InvoiceCreated => 'Payment notice {$invoice_number}',
@@ -457,6 +465,9 @@ enum MailTemplate: string
             self::EmailVerification => "Thank you for signing up with {\$company_name}. Please confirm your email address to finish:\n\n"
                 ."[Confirm my email address]({\$verification_url})\n\n"
                 .'The link works for 60 minutes; after that, log in and ask for a new one. If you did not sign up, please ignore this email.',
+            self::SignupExistingAccount => 'Someone, perhaps you, tried to sign up with {$company_name} using this email address, {$client_email}. '
+                ."It already has an account here, so no new account was made.\n\n{\$how_to_log_in}\n\n"
+                .'If it was not you, please ignore this email: nothing has changed in your account.',
             self::OrderConfirmation => "We have received your order #{\$order_number} of {\$order_date}.\n\n{\$order_items}\n\nTotal: **{\$order_total}**\n\n{\$payment_instructions}",
             self::RenewalReminder => "The following services are coming up for renewal.\n\n{\$services}\n\n{\$payment_instructions}\n\nIf you have already paid, please ignore this message.",
             self::OverdueNotice => "The following services are past their due date. Please arrange payment to avoid suspension.\n\n{\$services}\n\n{\$payment_instructions}\n\nIf you have already paid, please ignore this message.",

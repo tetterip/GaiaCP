@@ -4110,5 +4110,12 @@
     ":count announcement unpublished|:count announcements unpublished": ":count anuncio despublicado|:count anuncios despublicados",
     ":count article published|:count articles published": ":count artículo publicado|:count artículos publicados",
     ":count article unpublished|:count articles unpublished": ":count artículo despublicado|:count artículos despublicados",
-    ":count ban lifted|:count bans lifted": ":count bloqueo levantado|:count bloqueos levantados"
+    ":count ban lifted|:count bans lifted": ":count bloqueo levantado|:count bloqueos levantados",
+    "Go to the login page": "Ir a la página de acceso",
+    "How they get in: links to the login page and to \"Forgot password?\", or, for a client with no login yet, to ask you for one": "Cómo entran: enlaces a la página de acceso y a «¿Olvidó su contraseña?» o, para un cliente sin acceso todavía, que le pida uno",
+    "Sign Up With an Existing Address": "Registro con una dirección existente",
+    "We sent an email to :email with what to do next. If it does not arrive in a few minutes, look in your spam folder.": "Hemos enviado un email a :email con los siguientes pasos. Si no llega en unos minutos, revise la carpeta de spam.",
+    "When someone signs up in the client area with an email address that already has an account here. The sign up page says \"check your email\" either way, so it never tells who has an account; this email tells the owner how to log in. Always sent, at most once an hour for each address.": "Cuando alguien se registra en el área de clientes con una dirección de email que ya tiene una cuenta aquí. La página de registro dice «Revise su email» en ambos casos, para no revelar quién tiene cuenta; este email indica al titular cómo acceder. Se envía siempre, como máximo una vez por hora por dirección.",
+    "You do not have a client area login yet. Reply to this email and we will send you an invitation.": "Todavía no tiene acceso al área de clientes. Responda a este email y le enviaremos una invitación.",
+    "[Log in](:login_url) with your email address and password. If you forgot your password, [choose a new one](:reset_url).": "[Acceda](:login_url) con su dirección de email y su contraseña. Si olvidó su contraseña, [elija una nueva](:reset_url)."
 }

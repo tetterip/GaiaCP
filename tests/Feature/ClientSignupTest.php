@@ -63,7 +63,8 @@ class ClientSignupTest extends TestCase
         User::factory()->create(['email' => 'nomail@example.com', 'system_emails' => false]);
         User::factory()->limitedTo([AdminArea::Billing])->create(['email' => 'billing@example.com']);
 
-        $this->signUp()->assertHasNoFormErrors();
+        $this->signUp()->assertHasNoFormErrors()->assertSet('sentTo', 'maria@example.gr')->assertSee(__('Check your email'));
+        $this->assertGuest('client'); // signing up logs nobody in, so a taken address looks the same
 
         $client = Client::query()->sole();
         $this->assertSame(['Maria', 'Papa', 'maria@example.gr', 'Ermou 1', '10563'], [$client->first_name, $client->last_name, $client->email, $client->address1, $client->postcode]);
@@ -79,7 +80,8 @@ class ClientSignupTest extends TestCase
         Mail::assertSent(NewClientMail::class, 1);
         Mail::assertSent(NewClientMail::class, fn (NewClientMail $mail) => $mail->hasTo($admin->email) && str_contains($mail->render(), 'Maria Papa'));
 
-        // Nothing opens until the address is confirmed.
+        // The link asks them to log in first, then confirms; nothing opens until the address is confirmed.
+        $this->get(Filament::getPanel('client')->getVerifyEmailUrl($user))->assertRedirect(Filament::getPanel('client')->getLoginUrl());
         $this->actingAs($user, 'client')->get('/dashboard')->assertRedirect(Filament::getPanel('client')->getEmailVerificationPromptUrl());
 
         $this->get(Filament::getPanel('client')->getVerifyEmailUrl($user))->assertRedirect();
@@ -99,15 +101,37 @@ class ClientSignupTest extends TestCase
         Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::EmailVerification, 2);
     }
 
-    public function test_an_address_already_here_cant_sign_up_again(): void
+    public function test_an_address_already_here_cant_sign_up_again_and_the_page_does_not_say_so(): void
     {
-        Client::factory()->create(['email' => 'maria@example.gr']);
-        $this->signUp()->assertHasFormErrors(['email']);
+        $client = Client::factory()->create(['email' => 'maria@example.gr']);
+        $login = app(ClientAreaAccess::class)->createLogin($client, 'Welcome2026x', false);
+
+        // The same answer as a new address; the owner hears how to log in, once an hour at most.
+        $this->signUp()->assertHasNoFormErrors()->assertSet('sentTo', 'maria@example.gr')->assertSee(__('Check your email'));
+        Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::SignupExistingAccount && $mail->hasTo('maria@example.gr')
+            && str_contains($mail->render(), Filament::getPanel('client')->getRequestPasswordResetUrl()));
+        Mail::assertNotSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::EmailVerification);
+        Mail::assertNotSent(NewClientMail::class);
+        $this->assertDatabaseHas('activity_logs', ['event' => 'client.signup_existing', 'client_id' => $client->id]);
+        $this->assertTrue(Hash::check('Welcome2026x', $login->fresh()->password));
+
+        $this->travel(5)->minutes();
+        $this->signUp(['email' => 'MARIA@example.gr'])->assertHasNoFormErrors()->assertSet('sentTo', 'maria@example.gr');
+        Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::SignupExistingAccount, 1);
+
+        // A client without a login is told to ask for one; an admin's address gets nothing, the page answers the same.
+        $nikos = Client::factory()->create(['email' => 'nikos@example.gr']);
+        $this->signUp(['email' => 'nikos@example.gr'])->assertHasNoFormErrors()->assertSee(__('Check your email'));
+        Mail::assertSent(ClientMail::class, fn (ClientMail $mail) => $mail->template() === MailTemplate::SignupExistingAccount && $mail->hasTo('nikos@example.gr')
+            && str_contains($mail->render(), 'send you an invitation'));
 
         User::factory()->create(['email' => 'admin@example.gr']);
-        $this->signUp(['email' => 'ADMIN@example.gr'])->assertHasFormErrors(['email']);
+        $this->travel(5)->minutes(); // Filament allows two sign ups a minute from one address
+        $this->signUp(['email' => 'ADMIN@example.gr'])->assertHasNoFormErrors()->assertSet('sentTo', 'admin@example.gr')->assertSee(__('Check your email'));
+        Mail::assertNotSent(ClientMail::class, fn (ClientMail $mail) => $mail->hasTo('admin@example.gr'));
 
-        $this->assertSame(1, Client::count());
+        $this->assertSame(2, Client::count());
+        $this->assertNull($nikos->fresh()->user);
     }
 
     public function test_the_details_an_order_needs_are_required(): void

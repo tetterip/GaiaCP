@@ -5,6 +5,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security: client area sign up no longer says whether an email address already has an account (it told anyone who is
+  a client here, and which addresses belong to admins). Every sign up with a password now ends on "Check your email"
+  without logging in; the confirmation link asks the new client to log in, then opens the account. An address that
+  already has an account gets the new **Sign Up With an Existing Address** email instead (Email templates → General,
+  at most once an hour per address) with how to log in, or, for a client without a login, to ask you for one; an
+  admin's address gets nothing.
+
 ## [0.9.0] - 2026-11-08
 
 - Security (audit before this release): **Send message** on the services list made a Clients → Messages to clients
