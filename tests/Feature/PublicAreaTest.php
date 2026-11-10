@@ -148,12 +148,13 @@ class PublicAreaTest extends TestCase
         $this->get('/')->assertOk()->assertSeeInOrder([__('Home'), __('Order'), __('Domain search'), __('Domain prices'), __('Your account'), __('Log in')]);
     }
 
-    public function test_domain_prices_lists_each_tld_for_its_shortest_term(): void
+    public function test_domain_prices_lists_each_tld_for_its_shortest_term_named_even_for_one_year(): void
     {
         config(['gaiacp.public_area.domain_prices' => true]);
 
         $this->get('/domain-prices')->assertOk()
-            ->assertSeeInOrder(['.com', '€15.00', '.com.gr', '.gr', '€24.00 for 2 years', __('Free'), '€24.00 for 2 years']);
+            ->assertSeeInOrder(['.com', "€15.00 for\u{00A0}1\u{00A0}year", '.com.gr', '.gr', "€24.00 for\u{00A0}2\u{00A0}years", "Free for\u{00A0}2\u{00A0}years", "€24.00 for\u{00A0}2\u{00A0}years"])
+            ->assertDontSee('Prices are per year');
 
         // Signed-in clients see it too
         $this->actingAs($this->user, 'client')->get('/domain-prices')->assertOk()->assertSee('.com.gr');

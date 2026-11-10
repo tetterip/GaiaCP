@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Domain prices names the term on every price, one year too ("€22.00 for 1 year"), so the list no longer needs its
+  "Prices are per year" note; on a phone the term goes on a line under the price.
+
 ## [0.9.0] - 2026-11-08
 
 - Security (audit before this release): **Send message** on the services list made a Clients → Messages to clients
