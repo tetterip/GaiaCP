@@ -23,7 +23,9 @@ At the time set in Settings → Billing → **Automation** → Daily run at (09:
    Auto renew off;
 7. **cancels unpaid orders** after Cancel unpaid orders after days (empty = never);
 8. emails the admins a **daily summary**: new and overdue payment notices, domain syncs that changed or failed,
-   what is still in the module queue, and new versions of GaiaCP and of your plugins. Nothing to report, no email.
+   what is still in the module queue, and new versions of GaiaCP and of your plugins. On top it says whether anything
+   needs you, with three figures (overdue, received yesterday, due in the next 7 days), a bar chart of the last 14
+   days' payments and how old the overdue amount is. Nothing to report, no email.
 
 The same page has **BCC every client email to** (a copy of each client email for your records), the **Price change
 notice** days, the **Usage warning** share (hosting accounts near their disk or bandwidth limit get an email

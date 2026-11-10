@@ -28,13 +28,14 @@ class DailySummaryMail extends Mailable
 
     public function content(): Content
     {
-        return new Content(markdown: 'mail.daily-summary', with: [
+        return new Content(view: 'mail.daily-summary', text: 'mail.daily-summary-text', with: [
             'summary' => $this->summary,
             'invoiceUrl' => fn ($invoice) => InvoiceResource::getUrl('view', ['record' => $invoice]),
             'serviceUrl' => fn ($service) => $service ? ServiceResource::getUrl('edit', ['record' => $service]) : null,
             'describe' => $this->describeChanges(...),
             'queueUrl' => ModuleQueueItemResource::getUrl(panel: 'admin'),
             'catalogueUrl' => PluginCatalogue::getUrl(panel: 'admin'),
+            'overdueUrl' => InvoiceResource::getUrl(parameters: ['filters' => ['overdue' => ['isActive' => true]]], panel: 'admin'),
         ]);
     }
 

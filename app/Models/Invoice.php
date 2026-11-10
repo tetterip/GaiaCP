@@ -30,6 +30,7 @@ use Throwable;
  * @property CarbonImmutable $due_date
  * @property CarbonImmutable|null $paid_on
  * @property CarbonImmutable|null $emailed_at
+ * @property-read int|string|null $owed_cents only after withOwed()
  */
 #[Fillable([
     'number', 'client_id', 'bill_to', 'order_id', 'status', 'date', 'due_date', 'currency',

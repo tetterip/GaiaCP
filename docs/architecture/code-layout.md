@@ -77,7 +77,11 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   the admins' daily email, on/off under Settings → Automation (`gaiacp.automation.daily_summary`), to active admins with
   `users.system_emails` on (Admin users → Receive system emails, the switch for every admin-bound email): payment notices created since
   the last one (`admin_summary.sent` in the activity log, once a day), every overdue notice, and domain syncs that
-  changed something (`changes` on `domain.synced`) or failed plus a count of the rest. Nothing to report = no email
+  changed something (`changes` on `domain.synced`) or failed plus a count of the rest; also the base currency received
+  per day for `CHART_DAYS` up to yesterday (`IncomeReport::perDay()`), the unpaid notices due in the next `UPCOMING_DAYS`
+  and the overdue amount by age (`AGES`). `mail.daily-summary` is hand-written HTML (tiles, bar chart and age bar are
+  table cells with background colours, inline styles, so Gmail and Outlook draw them), `mail.daily-summary-text` its
+  plain-text part. Nothing to report = no email
 - Date filters: `whereOnDate()` / `orWhereOnDate()` (`App\Support\DateQueries`, a query builder macro) take the same
   arguments as `whereDate()` and give the same rows, as a plain range (`<= d` becomes `< d + 1`), so the `due_date` /
   `next_due_date` indexes are used; `whereDate()` wraps the column in a function and reads every row. Use it in the app

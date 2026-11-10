@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The admins' daily summary email has a new look: a line on top says whether anything needs you, three figures
+  (overdue, received yesterday, due in the next 7 days), a bar chart of the last 14 days' payments, how old the overdue
+  amount is, and each overdue notice with a coloured days chip and a button to the list. Drawn with plain HTML, so
+  Gmail and Outlook show it without loading images. The days overdue no longer run into the amount ("4 117,00 €").
+
 ## [0.9.0] - 2026-11-08
 
 - Security (audit before this release): **Send message** on the services list made a Clients → Messages to clients
