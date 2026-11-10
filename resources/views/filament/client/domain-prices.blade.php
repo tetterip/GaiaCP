@@ -39,11 +39,8 @@
                 </table>
             </div>
         </x-filament::section>
-        <p class="gcp-home-note">
-            {{ __('Prices are per year unless a longer term is shown.') }}
-            @if (config('gaiacp.tax.enabled') && ! \App\Support\Tax::inclusive())
-                {{ __('Tax is added where it applies.') }}
-            @endif
-        </p>
+        @if (config('gaiacp.tax.enabled') && ! \App\Support\Tax::inclusive())
+            <p class="gcp-home-note">{{ __('Tax is added where it applies.') }}</p>
+        @endif
     </div>
 </x-filament-panels::page>
