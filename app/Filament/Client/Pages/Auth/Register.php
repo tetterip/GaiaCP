@@ -9,19 +9,24 @@ use App\Models\User;
 use App\Support\ClientFields;
 use App\Support\Region;
 use App\Support\TermsOfService;
-use Closure;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Actions\Action;
 use Filament\Auth\Http\Responses\Contracts\RegistrationResponse;
 use Filament\Auth\Pages\Register as BaseRegister;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use SensitiveParameter;
 use Symfony\Component\Intl\Countries;
@@ -31,7 +36,10 @@ use Symfony\Component\Intl\Countries;
  * link on the login page): the client's details (the registrant contact for domains, so the address is asked for)
  * and a password. ClientSignup makes the client and its login, and the email address must be confirmed before
  * anything opens. Coming from a sign-in provider (ClientSignup::pending()), the confirmed address is fixed and no
- * password is asked. The captcha Settings → General picks shows below the password, just before the terms of service to
+ * password is asked. With a password, the page never says whether the address already has an account (that would tell
+ * anyone who is a client here): every sign up ends on "Check your email", and the owner of a taken address gets an email
+ * on how to log in (ClientSignup::existingAccount()). So nobody is logged in by signing up: the confirmation link asks
+ * them to log in first, then confirms. The captcha Settings → General picks shows below the password, just before the terms of service to
  * accept (TermsOfService) at the end.
  */
 class Register extends BaseRegister
@@ -40,6 +48,9 @@ class Register extends BaseRegister
     use HasCaptcha;
 
     protected Width|string|null $maxWidth = Width::TwoExtraLarge;
+
+    /** The address a sign up with a password was sent to: the page then shows only "Check your email". */
+    public ?string $sentTo = null;
 
     public function mount(): void
     {
@@ -162,7 +173,61 @@ class Register extends BaseRegister
             return null;
         }
 
-        return $this->withCaptcha(fn () => parent::register());
+        return $this->withCaptcha(fn () => ClientSignup::pending() !== null ? parent::register() : $this->registerWithPassword());
+    }
+
+    /**
+     * Filament's register() without its login: the same answer whether or not the address is taken. A new address gets
+     * its client and login (and the confirmation email), a taken one the email to its owner.
+     */
+    private function registerWithPassword(): null
+    {
+        try {
+            $this->rateLimit(2);
+        } catch (TooManyRequestsException $exception) {
+            $this->getRateLimitedNotification($exception)?->send();
+
+            return null;
+        }
+
+        if ($this->isRegisterRateLimited($this->data['email'] ?? '')) {
+            return null;
+        }
+
+        $data = $this->mutateFormDataBeforeRegister($this->form->getState());
+        $email = Str::lower(trim((string) $data['email']));
+
+        if (ClientSignup::emailTaken($email)) {
+            app(ClientSignup::class)->existingAccount($email);
+        } else {
+            $user = $this->wrapInDatabaseTransaction(fn (): Model => $this->handleRegistration($data));
+            event(new Registered($user));
+            $this->sendEmailVerificationNotification($user);
+        }
+
+        $this->sentTo = $email;
+        unset($this->cachedSchemas['content']); // built already for this request, with the form
+
+        return null;
+    }
+
+    public function content(Schema $schema): Schema
+    {
+        if ($this->sentTo === null) {
+            return parent::content($schema);
+        }
+
+        return $schema->components([
+            Callout::make(__('Check your email'))
+                ->description(__('We sent an email to :email with what to do next. If it does not arrive in a few minutes, look in your spam folder.', ['email' => $this->sentTo]))
+                ->icon(Heroicon::OutlinedEnvelope)
+                ->success(),
+            Actions::make([
+                Action::make('goToLogin')
+                    ->label(__('Go to the login page'))
+                    ->url(filament()->getLoginUrl()),
+            ])->fullWidth(),
+        ]);
     }
 
     protected function getEmailFormComponent(): Component
@@ -173,12 +238,7 @@ class Register extends BaseRegister
             ->required()
             ->maxLength(255)
             // From a sign-in provider the address it confirmed is used (from the session, never from the form)
-            ->disabled(fn () => ClientSignup::pending() !== null)
-            ->rule(fn () => function (string $attribute, mixed $value, Closure $fail): void {
-                if (ClientSignup::emailTaken((string) $value)) {
-                    $fail(__('This email address already has an account here. Log in, use "Forgot password?" or contact us.'));
-                }
-            });
+            ->disabled(fn () => ClientSignup::pending() !== null);
     }
 
     protected function getPasswordFormComponent(): Component

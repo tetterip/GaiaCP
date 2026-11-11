@@ -14,6 +14,7 @@ use App\Support\ClientFields;
 use App\Support\Locales;
 use App\Support\TermsOfService;
 use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -26,7 +27,9 @@ use Throwable;
  * Sign up in the client area (Settings → Client area → New clients can sign up): a new client with its own login.
  * With a password, the login must confirm its email address (Email Address Verification) before it opens anything;
  * through a sign-in provider such as Google, which has confirmed the address already, it is confirmed at once.
- * The admins get the New client email. An address that is already a client or a login here can't sign up.
+ * The admins get the New client email. An address that is already a client or a login here can't sign up, but the
+ * page never says so (it would tell anyone who has an account): the sign up form answers "check your email" for every
+ * address, and existingAccount() emails the owner of a taken one how to log in instead.
  */
 class ClientSignup
 {
@@ -116,6 +119,34 @@ class ClientSignup
         $this->notifyAdmins($user->client, $provider);
 
         return $user;
+    }
+
+    /**
+     * Someone signed up with an address that already has an account: no account is made, and its client gets the Sign
+     * Up With an Existing Address email (at most once an hour for each address, so the form can't flood a mailbox). An
+     * address that belongs only to an admin gets nothing: admins don't log in to the client area.
+     */
+    public function existingAccount(string $email): void
+    {
+        $email = Str::lower(trim($email));
+        $user = User::query()->whereRaw('lower(email) = ?', [$email])->first();
+        $client = $user->client ?? Client::query()->whereRaw('lower(email) = ?', [$email])->first();
+
+        ActivityLog::record('client.signup_existing', 'Someone signed up in the client area with an address that already has an account', client: $client, properties: ['admin' => $client === null]);
+
+        if ($client === null || ! Cache::add('client_signup.existing.'.hash('sha256', $email), true, now()->addHour())) {
+            return;
+        }
+
+        $login = $user ?? $client->user;
+        $panel = Filament::getPanel('client');
+        $to = (clone $client)->forceFill(['email' => $email]); // the address they typed, even when the login's differs from the client's
+
+        $this->mailer->send(MailTemplate::SignupExistingAccount, $to, fn () => [
+            'how_to_log_in' => $login !== null
+                ? __('[Log in](:login_url) with your email address and password. If you forgot your password, [choose a new one](:reset_url).', ['login_url' => $panel->getLoginUrl(), 'reset_url' => $panel->getRequestPasswordResetUrl()])
+                : __('You do not have a client area login yet. Reply to this email and we will send you an invitation.'),
+        ], evenIfOff: true);
     }
 
     /** The Email Address Verification email with a signed link of the client area (Filament's verify route). */

@@ -32,6 +32,12 @@ return [
             ."[E-Mail-Adresse bestätigen]({\$verification_url})\n\n"
             .'Der Link ist 60 Minuten gültig; danach melden Sie sich an und fordern einen neuen an. Wenn Sie sich nicht registriert haben, ignorieren Sie diese E-Mail.',
     ],
+    'signup_existing_account' => [
+        'subject' => 'Sie haben bereits ein Konto bei {$company_name}',
+        'body' => 'Jemand, vielleicht Sie, hat versucht, sich bei {$company_name} mit dieser E-Mail-Adresse zu registrieren: {$client_email}. '
+            ."Sie hat hier bereits ein Konto, daher wurde kein neues Konto angelegt.\n\n{\$how_to_log_in}\n\n"
+            .'Wenn Sie es nicht waren, ignorieren Sie diese E-Mail: An Ihrem Konto hat sich nichts geändert.',
+    ],
     'order_confirmation' => [
         'subject' => 'Bestellbestätigung #{$order_number}',
         'body' => "Wir haben Ihre Bestellung #{\$order_number} vom {\$order_date} erhalten.\n\n{\$order_items}\n\nGesamt: **{\$order_total}**\n\n{\$payment_instructions}",

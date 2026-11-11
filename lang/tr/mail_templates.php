@@ -32,6 +32,12 @@ return [
             ."[E-posta adresimi doğrula]({\$verification_url})\n\n"
             .'Bağlantı 60 dakika çalışır; sonrasında giriş yapıp yenisini isteyin. Kayıt olan siz değilseniz lütfen bu e-postayı yok sayın.',
     ],
+    'signup_existing_account' => [
+        'subject' => '{$company_name} sitesinde zaten bir hesabınız var',
+        'body' => 'Biri, belki siz, bu e-posta adresiyle ({$client_email}) {$company_name} sitesine kaydolmaya çalıştı. '
+            ."Bu adresin burada zaten bir hesabı var, bu yüzden yeni hesap oluşturulmadı.\n\n{\$how_to_log_in}\n\n"
+            .'Siz değilseniz bu e-postayı dikkate almayın: hesabınızda hiçbir şey değişmedi.',
+    ],
     'order_confirmation' => [
         'subject' => 'Sipariş onayı #{$order_number}',
         'body' => "{\$order_date} tarihli #{\$order_number} numaralı siparişinizi aldık.\n\n{\$order_items}\n\nToplam: **{\$order_total}**\n\n{\$payment_instructions}",

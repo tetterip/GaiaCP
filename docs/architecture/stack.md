@@ -225,8 +225,11 @@ How the admin and client panels, users, access, security, branding, themes and l
   `resources/views/client-area/maintenance.blade.php` (503) or redirects off-site; active admins signed in to /admin
   (`App\Support\ClientAreaMaintenance::lets()`) pass with a banner. Webhooks and /admin are outside the panel
   Sign up (`Client/Pages/Auth/Register`, `/signup`, 404 and no login link while `gaiacp.client_area.signup` is off, the
-  default) → `App\Actions\ClientSignup` (client + client user, refuses an address any client or user has, logs
-  `client.signed_up`, `NewClientMail` to admins with Clients access, Settings → Automation → New client email). The client
+  default) → `App\Actions\ClientSignup` (client + client user, logs
+  `client.signed_up`; an address any client or user has gets no account and no error: Register ends every password sign up
+  on "Check your email" without logging in, and `ClientSignup::existingAccount()` sends its client the
+  `signup_existing_account` template, once an hour per address, nothing for admin-only addresses, logs
+  `client.signup_existing`; `NewClientMail` to admins with Clients access, Settings → Automation → New client email). The client
   panel requires email verification: `User` is `MustVerifyEmail`, but `hasVerifiedEmail()` is true for every non-client role
   and logins made by `ClientAreaAccess` are created verified, so only self-signups confirm, through the
   `email_verification` template sent at once (`User::sendEmailVerificationNotification()`, also from
