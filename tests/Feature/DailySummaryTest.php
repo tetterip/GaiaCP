@@ -10,9 +10,12 @@ use App\Mail\DailySummaryMail;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
+use App\Reports\DailySummary;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Mail\MailManager;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Tests\FakesEasy;
@@ -44,6 +47,15 @@ class DailySummaryTest extends TestCase
             'total_cents' => 12000,
             ...$attributes,
         ]);
+    }
+
+    /** A notice with one unpaid line, so it owes its total. */
+    private function owingNotice(string $number, string $due, array $attributes = []): Invoice
+    {
+        $notice = $this->notice($number, $due, $attributes);
+        $notice->items()->create(['service_id' => Service::factory()->create(['client_id' => $notice->client_id])->id, 'description' => 'Hosting', 'due_date' => $due, 'period_end' => $due, 'amount_cents' => 12000, 'tax_cents' => 0, 'total_cents' => 12000]);
+
+        return $notice;
     }
 
     private function domain(string $name, array $details = []): Service
@@ -98,7 +110,7 @@ class DailySummaryTest extends TestCase
         $this->assertStringContainsString('renewed.gr', $html);
         $this->assertStringContainsString('expiry 05/11/2026 → 05/11/2027', $html);
         $this->assertStringContainsString('broken.gr', $html);
-        $this->assertStringContainsString('Domains in sync, nothing changed: 1', $html);
+        $this->assertStringContainsString('1 in sync, nothing changed', $html);
         $this->assertStringNotContainsString('same.gr', $html);
 
         $this->assertTrue(ActivityLog::where('event', 'admin_summary.sent')->exists());
@@ -193,6 +205,76 @@ class DailySummaryTest extends TestCase
         $this->assertStringContainsString('Tickets plus 1.2.0 is out', $html);
         $this->assertStringContainsString('Installed here: 1.1.0. Update it from the plugin catalogue.', $html);
         $this->assertStringContainsString('It needs GaiaCP 9.0.0 or later', $html);
+    }
+
+    public function test_it_charts_what_came_in_and_what_is_coming(): void
+    {
+        $paid = Payment::factory()->create(['amount_cents' => 10000, 'paid_on' => '2026-10-09']);
+        Payment::factory()->create(['amount_cents' => 5000, 'paid_on' => '2026-10-09']);
+        Payment::factory()->create(['amount_cents' => -5000, 'paid_on' => '2026-10-09', 'refund_of' => $paid->id]);
+        Payment::factory()->create(['amount_cents' => 2500, 'paid_on' => '2026-09-27']);
+        Payment::factory()->create(['amount_cents' => 9900, 'paid_on' => '2026-09-25']); // before the chart
+        Payment::factory()->create(['amount_cents' => 7700, 'paid_on' => '2026-10-10']); // today: tomorrow's yesterday
+
+        $this->owingNotice('PF-2026-0001', '2026-10-10');  // due today: coming
+        $this->owingNotice('PF-2026-0002', '2026-10-16');  // last day of the seven
+        $this->owingNotice('PF-2026-0003', '2026-10-17');  // after them
+        $this->owingNotice('PF-2026-0004', '2026-10-12', ['status' => InvoiceStatus::Paid]);
+        $this->owingNotice('PF-2026-0005', '2026-10-05');  // 5 days overdue
+        $this->owingNotice('PF-2026-0006', '2026-09-20');  // 20 days
+        $this->owingNotice('PF-2026-0007', '2026-08-01');  // 70 days
+
+        $summary = DailySummary::between(now()->toImmutable()->subDay(), now()->toImmutable());
+
+        $this->assertCount(14, $summary->collections);
+        $this->assertSame('2026-09-26', array_key_first($summary->collections));
+        $this->assertSame('2026-10-09', array_key_last($summary->collections));
+        $this->assertSame(10000, $summary->collectedYesterday());
+        $this->assertSame(2, $summary->paymentsYesterday);
+        $this->assertSame(12500, $summary->collectedInChart());
+
+        $this->assertSame(['PF-2026-0001', 'PF-2026-0002'], $summary->upcomingNotices->pluck('number')->all());
+        $this->assertSame(24000, $summary->upcomingTotal());
+
+        $this->assertSame(36000, $summary->overdueTotal());
+        $this->assertSame([[1, 7, 1, 12000], [8, 30, 1, 12000], [31, null, 1, 12000]], array_map(fn (array $g) => [$g['from'], $g['to'], $g['count'], $g['cents']], $summary->overdueByAge()));
+        $this->assertTrue($summary->needsAttention());
+
+        $mail = (new DailySummaryMail($summary))->locale('en');
+        $html = $mail->render();
+        $this->assertStringContainsString('3 overdue payment notices', $html);
+        $this->assertStringContainsString('Received in the last 14 days', $html);
+        $this->assertStringContainsString('Due in the next 7 days', $html);
+        $this->assertStringContainsString('70 days', $html);
+        $this->assertStringContainsString('over 30 days', $html);
+        $this->assertStringContainsString('filters[overdue][isActive]=1', urldecode($html));
+
+        $text = view('mail.daily-summary-text', $mail->content()->with + ['summary' => $summary])->render();
+        $this->assertStringContainsString('PF-2026-0007, Maria Papadopoulou, due 01/08/2026, 70 days', $text);
+        $this->assertStringNotContainsString('<table', $text);
+    }
+
+    public function test_a_quiet_day_says_all_is_well(): void
+    {
+        $this->notice('PF-2026-0001', '2026-10-24');
+
+        $summary = DailySummary::between(now()->toImmutable()->subDay(), now()->toImmutable());
+
+        $this->assertFalse($summary->needsAttention());
+        $this->assertStringContainsString('All is well, nothing needs you today', (new DailySummaryMail($summary))->locale('en')->render());
+    }
+
+    public function test_a_sent_summary_embeds_the_logo_and_has_a_plain_text_part(): void
+    {
+        $summary = DailySummary::between(now()->toImmutable()->subDay(), now()->toImmutable());
+
+        $mailer = (new MailManager(app()))->mailer('array'); // a real mailer, past Mail::fake()
+        $mailer->to('admin@example.com')->send((new DailySummaryMail($summary))->locale('en'));
+
+        $email = $mailer->getSymfonyTransport()->messages()->sole()->getOriginalMessage();
+        $this->assertStringContainsString('src="cid:', $email->getHtmlBody());
+        $this->assertStringContainsString('Received in the last 14 days', $email->getTextBody());
+        $this->assertStringNotContainsString('<', $email->getTextBody());
     }
 
     public function test_the_mail_renders_in_greek(): void

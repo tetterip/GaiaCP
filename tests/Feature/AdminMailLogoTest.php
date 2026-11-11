@@ -40,11 +40,13 @@ class AdminMailLogoTest extends TestCase
     public function test_every_admin_email_view_uses_the_admin_layout(): void
     {
         foreach (glob(resource_path('views/mail/*.blade.php')) as $view) {
-            if (basename($view) === 'template.blade.php') {
-                continue; // client emails: MailLayout, with the company's logo
+            if (basename($view) === 'template.blade.php' || str_ends_with($view, '-text.blade.php')) {
+                continue; // client emails: MailLayout, with the company's logo; plain-text parts show no logo
             }
 
-            $this->assertStringContainsString('<x-admin-mail', (string) file_get_contents($view), basename($view));
+            // The daily summary is hand-written HTML (its charts are tables): it puts the same logo in itself.
+            $source = (string) file_get_contents($view);
+            $this->assertTrue(str_contains($source, '<x-admin-mail') || str_contains($source, 'MailLayout::gaiacpLogo('), basename($view));
             $this->assertStringNotContainsString('<x-mail::message>', (string) file_get_contents($view), basename($view));
         }
     }
