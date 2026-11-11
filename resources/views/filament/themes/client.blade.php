@@ -1511,6 +1511,18 @@
         padding-inline-start: 1rem;
     }
 
+    /* On a phone a price cell wraps between the price and its term ("€22.00" / "for 1 year"), not across the page */
+    @media (max-width: 640px) {
+        .gcp-price-table td.gcp-end {
+            white-space: normal;
+        }
+
+        .gcp-price-table td + td,
+        .gcp-price-table th + th {
+            padding-inline-start: .5rem;
+        }
+    }
+
     .gcp-price-tld {
         font-weight: 600;
         color: var(--gcp-ink);

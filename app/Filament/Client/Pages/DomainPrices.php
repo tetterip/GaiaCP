@@ -48,8 +48,8 @@ class DomainPrices extends Page
     }
 
     /**
-     * "€12.00" (or "Free"), "€24.00 for 2 years" when the shortest term is longer than a year; on sale the normal price
-     * struck through before it. Null when not offered.
+     * "€12.00 for 1 year" (or "Free for 2 years"): the price for the shortest term, which is always named; on sale the
+     * normal price struck through before it. Null when not offered.
      */
     private function price(Tld $tld, string $kind, string $currency): string|HtmlString|null
     {
@@ -61,10 +61,22 @@ class DomainPrices extends Page
 
         $cents = (int) $tld->orderPriceCents($kind, $years, $currency);
         $price = $cents === 0 ? __('Free') : Money::format($cents, $currency);
-        $price = $years === 1 ? $price : __(':price for :term', ['price' => $price, 'term' => Tld::termLabel($years)]);
+        $price = self::withTerm($price, Tld::termLabel($years));
 
         return $tld->salePriceCents($kind, $years, $currency) === null
             ? $price
             : new HtmlString('<s class="gcp-was">'.e(Money::format((int) $tld->priceCents($kind, $years, $currency), $currency)).'</s> '.e($price));
+    }
+
+    /**
+     * ":price for :term" with two unbroken pieces, the price and the rest ("€22.00" and "for 1 year"; "1 yıl için" and
+     * "€22.00" in Turkish), so a narrow cell puts the term on a line of its own.
+     */
+    private static function withTerm(string $price, string $term): string
+    {
+        [$before, $after] = explode("\0", __(':price for :term', ['price' => "\0", 'term' => $term]), 2) + [1 => ''];
+        $unbroken = fn (string $text) => str_replace(' ', "\u{00A0}", trim($text));
+
+        return trim($unbroken($before).' '.$unbroken($price).' '.$unbroken($after));
     }
 }
