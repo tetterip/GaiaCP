@@ -32,6 +32,12 @@ return [
             ."[E-mailadres bevestigen]({\$verification_url})\n\n"
             .'De link werkt 60 minuten; log daarna in en vraag een nieuwe aan. Hebt u zich niet zelf geregistreerd, negeer deze e-mail dan.',
     ],
+    'signup_existing_account' => [
+        'subject' => 'U hebt al een account bij {$company_name}',
+        'body' => 'Iemand, misschien u, probeerde zich bij {$company_name} aan te melden met dit e-mailadres, {$client_email}. '
+            ."Het heeft hier al een account, dus er is geen nieuw account aangemaakt.\n\n{\$how_to_log_in}\n\n"
+            .'Was u het niet, negeer deze e-mail dan: er is niets veranderd aan uw account.',
+    ],
     'order_confirmation' => [
         'subject' => 'Bevestiging van bestelling #{$order_number}',
         'body' => "We hebben uw bestelling #{\$order_number} van {\$order_date} ontvangen.\n\n{\$order_items}\n\nTotaal: **{\$order_total}**\n\n{\$payment_instructions}",

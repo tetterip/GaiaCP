@@ -249,7 +249,7 @@
     "Check now": "Έλεγχος τώρα",
     "Check status now": "Έλεγχος κατάστασης τώρα",
     "Check what you chose and place the order.": "Ελέγξτε τι επιλέξατε και υποβάλετε την παραγγελία.",
-    "Check your email": "Έλεγξε το email σου",
+    "Check your email": "Ελέγξτε το email σας",
     "Checked :count server|Checked :count servers": "Ελέγχθηκε :count server|Ελέγχθηκαν :count servers",
     "Choose a billing cycle.": "Επιλέξτε κύκλο χρέωσης.",
     "Choose something to order.": "Επιλέξτε τι θέλετε να παραγγείλετε.",
@@ -4109,5 +4109,12 @@
     ":count announcement unpublished|:count announcements unpublished": "Αποσύρθηκε :count ανακοίνωση|Αποσύρθηκαν :count ανακοινώσεις",
     ":count article published|:count articles published": "Δημοσιεύτηκε :count άρθρο|Δημοσιεύτηκαν :count άρθρα",
     ":count article unpublished|:count articles unpublished": "Αποσύρθηκε :count άρθρο|Αποσύρθηκαν :count άρθρα",
-    ":count ban lifted|:count bans lifted": "Άρθηκε :count αποκλεισμός|Άρθηκαν :count αποκλεισμοί"
+    ":count ban lifted|:count bans lifted": "Άρθηκε :count αποκλεισμός|Άρθηκαν :count αποκλεισμοί",
+    "Go to the login page": "Μετάβαση στη σύνδεση",
+    "How they get in: links to the login page and to \"Forgot password?\", or, for a client with no login yet, to ask you for one": "Πώς θα μπουν: σύνδεσμοι προς τη σελίδα σύνδεσης και το «Ξεχάσατε τον κωδικό;» ή, για πελάτη χωρίς σύνδεση ακόμα, να σας ζητήσει μία",
+    "Sign Up With an Existing Address": "Εγγραφή με διεύθυνση που υπάρχει ήδη",
+    "We sent an email to :email with what to do next. If it does not arrive in a few minutes, look in your spam folder.": "Στείλαμε email στη διεύθυνση :email με τα επόμενα βήματα. Αν δεν έρθει σε λίγα λεπτά, κοιτάξτε και στα ανεπιθύμητα.",
+    "When someone signs up in the client area with an email address that already has an account here. The sign up page says \"check your email\" either way, so it never tells who has an account; this email tells the owner how to log in. Always sent, at most once an hour for each address.": "Όταν κάποιος κάνει εγγραφή στο client area με διεύθυνση email που έχει ήδη λογαριασμό εδώ. Η σελίδα εγγραφής λέει «ελέγξτε το email σας» σε κάθε περίπτωση, ώστε να μη φαίνεται ποιος έχει λογαριασμό· αυτό το email λέει στον κάτοχο πώς να συνδεθεί. Στέλνεται πάντα, το πολύ μία φορά την ώρα για κάθε διεύθυνση.",
+    "You do not have a client area login yet. Reply to this email and we will send you an invitation.": "Δεν έχετε ακόμα σύνδεση στο client area. Απαντήστε σε αυτό το email και θα σας στείλουμε πρόσκληση.",
+    "[Log in](:login_url) with your email address and password. If you forgot your password, [choose a new one](:reset_url).": "[Συνδεθείτε](:login_url) με τη διεύθυνση email και τον κωδικό σας. Αν ξεχάσατε τον κωδικό, [ορίστε νέο](:reset_url)."
 }

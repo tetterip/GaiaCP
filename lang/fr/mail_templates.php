@@ -32,6 +32,12 @@ return [
             ."[Confirmer mon adresse email]({\$verification_url})\n\n"
             .'Le lien fonctionne pendant 60 minutes ; ensuite, connectez-vous et demandez-en un nouveau. Si vous ne vous êtes pas inscrit, veuillez ignorer cet email.',
     ],
+    'signup_existing_account' => [
+        'subject' => 'Vous avez déjà un compte chez {$company_name}',
+        'body' => 'Quelqu\'un, peut-être vous, a essayé de s\'inscrire chez {$company_name} avec cette adresse email, {$client_email}. '
+            ."Elle a déjà un compte ici, aucun nouveau compte n'a donc été créé.\n\n{\$how_to_log_in}\n\n"
+            .'Si ce n\'était pas vous, ignorez cet email : rien n\'a changé dans votre compte.',
+    ],
     'order_confirmation' => [
         'subject' => 'Confirmation de la commande n° {$order_number}',
         'body' => "Nous avons bien reçu votre commande n° {\$order_number} du {\$order_date}.\n\n{\$order_items}\n\nTotal : **{\$order_total}**\n\n{\$payment_instructions}",

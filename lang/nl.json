@@ -4109,5 +4109,12 @@
     ":count announcement unpublished|:count announcements unpublished": ":count aankondiging ingetrokken|:count aankondigingen ingetrokken",
     ":count article published|:count articles published": ":count artikel gepubliceerd|:count artikelen gepubliceerd",
     ":count article unpublished|:count articles unpublished": ":count artikel ingetrokken|:count artikelen ingetrokken",
-    ":count ban lifted|:count bans lifted": ":count blokkade opgeheven|:count blokkades opgeheven"
+    ":count ban lifted|:count bans lifted": ":count blokkade opgeheven|:count blokkades opgeheven",
+    "Go to the login page": "Naar de inlogpagina",
+    "How they get in: links to the login page and to \"Forgot password?\", or, for a client with no login yet, to ask you for one": "Hoe ze binnenkomen: links naar de inlogpagina en naar „Wachtwoord vergeten?”, of, voor een klant zonder login, het verzoek u om een login te vragen",
+    "Sign Up With an Existing Address": "Aanmelden met een bestaand adres",
+    "We sent an email to :email with what to do next. If it does not arrive in a few minutes, look in your spam folder.": "We hebben een e-mail naar :email gestuurd met de volgende stappen. Komt die niet binnen een paar minuten, kijk dan in uw spammap.",
+    "When someone signs up in the client area with an email address that already has an account here. The sign up page says \"check your email\" either way, so it never tells who has an account; this email tells the owner how to log in. Always sent, at most once an hour for each address.": "Wanneer iemand zich in de klantomgeving aanmeldt met een e-mailadres dat hier al een account heeft. De aanmeldpagina zegt in beide gevallen „Controleer uw e-mail”, zodat nooit zichtbaar is wie een account heeft; deze e-mail vertelt de eigenaar hoe hij inlogt. Altijd verzonden, hoogstens één keer per uur per adres.",
+    "You do not have a client area login yet. Reply to this email and we will send you an invitation.": "U hebt nog geen login voor de klantomgeving. Beantwoord deze e-mail en we sturen u een uitnodiging.",
+    "[Log in](:login_url) with your email address and password. If you forgot your password, [choose a new one](:reset_url).": "[Log in](:login_url) met uw e-mailadres en wachtwoord. Wachtwoord vergeten? [Kies een nieuw](:reset_url)."
 }
