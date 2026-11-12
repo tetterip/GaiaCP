@@ -173,6 +173,8 @@ class ClientMailer
                 Money::format($s->firstPaymentCents(), $s->currency),
             ])),
             'order_total' => $order->describeTotal(),
+            // The order's payment notice, when it has one to pay: Bank transfer names it as the reference.
+            'payment_instructions' => MailTemplates::instructions(($notices = $order->invoices()->unpaid()->get())->count() === 1 ? $notices->first() : null),
         ]);
     }
 

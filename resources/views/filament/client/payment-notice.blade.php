@@ -10,7 +10,7 @@
     $money = fn (int $cents) => \App\Support\Money::format($cents, $notice->currency);
     $date = fn ($value) => $value?->format(\App\Providers\AppServiceProvider::dateFormat());
     $hasTax = $notice->tax_cents > 0 || $notice->items->contains(fn ($item) => $item->tax_cents > 0);
-    $instructions = $notice->status === \App\Enums\InvoiceStatus::Unpaid ? \App\Payments\PaymentMethods::instructions() : '';
+    $instructions = $notice->status === \App\Enums\InvoiceStatus::Unpaid ? \App\Payments\PaymentMethods::instructions($notice) : '';
 @endphp
 
 

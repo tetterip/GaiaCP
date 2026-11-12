@@ -29,6 +29,7 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
+use App\Payments\PaymentMethods;
 use App\Support\MailTemplates;
 use App\Support\Tax;
 use Carbon\CarbonImmutable;
@@ -461,6 +462,26 @@ class InvoicesTest extends TestCase
 
         $this->assertNull(Invoice::sole()->emailed_at);
         $this->assertDatabaseHas('activity_logs', ['event' => 'email.failed']);
+    }
+
+    public function test_the_bank_details_name_the_notice_as_the_reference_for_the_transfer(): void
+    {
+        config(['gaiacp.payment_instructions' => "Eurobank\nGR00 0000 0000"]);
+        $this->service('2026-10-20');
+        $this->generate('2026-10-08');
+        $invoice = Invoice::sole()->load('client', 'items');
+        $reference = "Reference for the transfer: {$invoice->number}";
+
+        $this->assertSame("Eurobank\nGR00 0000 0000\n{$reference}", PaymentMethods::instructions($invoice));
+        $this->assertStringNotContainsString('Reference', PaymentMethods::instructions(), 'not in emails about no one notice');
+
+        // The notice's own value wins over the general one in its email.
+        $html = (new ClientMail(MailTemplate::InvoiceCreated, $invoice->client, SendInvoiceEmails::values($invoice)))->render();
+        $this->assertStringContainsString($reference, $html);
+
+        // Without bank details there is nothing to add it to.
+        config(['gaiacp.payment_instructions' => '']);
+        $this->assertSame('', PaymentMethods::instructions($invoice));
     }
 
     public function test_email_shows_lines_tax_and_total(): void

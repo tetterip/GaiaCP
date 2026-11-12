@@ -147,6 +147,7 @@ class SendInvoiceEmails
             'invoice_tax' => $tax,
             'invoice_total' => $money($invoice->total_cents),
             'days_overdue' => (string) max(0, (int) $invoice->due_date->diffInDays($today, false)),
+            'payment_instructions' => MailTemplates::instructions($invoice),
         ];
     }
 }

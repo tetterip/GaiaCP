@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Bank transfer 1.0.4: under the bank details, a payment notice's page and emails (and the order confirmation, for the
+  order's notice) say "Reference for the transfer: PF-2026-0001", so you can tell which notice a transfer pays.
+- Plugin API: a payment module may give `instructionsFor(Invoice $invoice)` for one payment notice (optional).
 - **Cancel order** on a paid order no longer deletes its payments: each one stays on the day it was made and a refund
   is recorded on the day of the cancel, so a past month's income stays as it was.
 - CSV exports put a `'` before a text that a spreadsheet would run as a formula (one starting with `=`, `+`, `-`, `@`).

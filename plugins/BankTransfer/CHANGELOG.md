@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.4] - 2026-11-12
+
+- A payment notice's page and emails (and an order's confirmation, for its notice) add "Reference for the transfer:
+  PF-2026-0001" under the bank details, so transfers can be matched to their notice
+
 ## [1.0.3] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)
