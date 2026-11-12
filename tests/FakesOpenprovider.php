@@ -77,7 +77,7 @@ trait FakesOpenprovider
             }
 
             if ($method === 'GET' && $path === 'domains') {
-                $name = $body['domain_name_pattern'].'.'.$body['extension'];
+                $name = $body['full_name'];
 
                 return $this->openproviderReply(['results' => isset($this->openproviderDomains[$name]) ? [$record($name)] : [], 'total' => (int) isset($this->openproviderDomains[$name])]);
             }
@@ -97,7 +97,11 @@ trait FakesOpenprovider
                 return $this->openproviderReply(['id' => 1, 'status' => $path === 'domains' ? 'ACT' : 'REQ']);
             }
 
-            if (preg_match('#^domains/(\d+)(/renew|/authcode)?$#', $path, $m)) {
+            if (preg_match('#^domains/(\d+)/authcode/reset$#', $path, $m)) {
+                return $this->openproviderReply(['auth_code' => 'Op#New7']);
+            }
+
+            if (preg_match('#^domains/(\d+)(/renew)?$#', $path, $m)) {
                 $name = $byId((int) $m[1]);
 
                 if ($name === null) {
@@ -110,8 +114,8 @@ trait FakesOpenprovider
                     return $this->openproviderReply(['status' => 'ACT']);
                 }
 
-                if (($m[2] ?? '') === '/authcode') {
-                    return $this->openproviderReply(['auth_code' => 'Op#Code9', 'type' => 'internal']);
+                if ($method === 'GET' && ($m[2] ?? '') === '') {
+                    return $this->openproviderReply($record($name));
                 }
 
                 unset($body['domain']);
@@ -146,12 +150,10 @@ trait FakesOpenprovider
                 return $this->openproviderReply(['success' => true]);
             }
 
-            if ($method === 'GET' && str_starts_with($path, 'tlds/')) {
-                $prices = $this->openproviderPrices[substr($path, 5)] ?? null;
-
-                return $prices === null
-                    ? $this->openproviderError(1003, 'TLD not found', 404)
-                    : $this->openproviderReply(['name' => substr($path, 5), 'prices' => array_map(fn (float $p) => ['product' => ['price' => $p * 2, 'currency' => 'USD'], 'reseller' => ['price' => $p, 'currency' => 'EUR']], $prices)]);
+            if ($method === 'GET' && $path === 'tlds') {
+                return $this->openproviderReply(['results' => array_map(fn (string $tld, array $prices) => ['name' => $tld, 'prices' => array_map(
+                    fn (float $p) => ['product' => ['price' => $p * 2, 'currency' => 'USD'], 'reseller' => ['price' => $p, 'currency' => 'EUR']], $prices,
+                )], array_keys($this->openproviderPrices), $this->openproviderPrices), 'total' => count($this->openproviderPrices)]);
             }
 
             return $this->openproviderError(404, "Unknown call {$method} {$path}", 404);

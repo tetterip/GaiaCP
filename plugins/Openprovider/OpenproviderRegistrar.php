@@ -20,7 +20,8 @@ use Throwable;
  * Openprovider's REST calls: POST /domains/check, POST /domains, POST /domains/transfer, POST /domains/{id}/renew,
  * GET /domains (found by name and extension), PUT /domains/{id} (nameservers, lock, contact handles),
  * GET /domains/{id}/authcode, POST / GET /customers (contacts are customer handles a domain points to),
- * POST / PUT / DELETE /dns/nameservers, and GET /tlds/{tld}?with_price=true for the costs.
+ * POST / PUT / DELETE /dns/nameservers, and GET /tlds?with_price=true for the costs. Checked against Openprovider's
+ * Blesta module (search by full_name, auth_code on the domain record with authcode reset as fallback, the TLD list).
  */
 class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPrices, ManagesChildNameservers, ManagesDomainContacts, ManagesRegistrarLock
 {
@@ -29,9 +30,6 @@ class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, List
 
     /** Openprovider's own nameservers, used when a domain is registered without any. */
     public const DEFAULT_NS_GROUP = 'dns-openprovider';
-
-    /** TLDs read in one go: one call each. */
-    public const MAX_PRICED_TLDS = 50;
 
     /** @var array<string, array<string, mixed>> domains read in this run, by name */
     private array $domains = [];
@@ -60,39 +58,26 @@ class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, List
         return $result['status'] === 'free' && ! ($result['is_premium'] ?? false);
     }
 
-    /** Openprovider is asked about the TLDs given, one call each. */
+    /** GET /tlds?with_price=true lists every TLD with its prices, as Openprovider's Blesta module reads them. */
     public function listsAllTlds(): bool
     {
-        return false;
+        return true;
     }
 
     public function tldPrices(?array $tlds = null): array
     {
-        $tlds = array_values(array_unique(array_map(fn (string $tld) => ltrim(mb_strtolower(trim($tld)), '.'), $tlds ?? [])));
-
-        if ($tlds === []) {
-            throw new ProvisioningException('Name the TLDs to read from Openprovider.');
-        }
-
-        if (count($tlds) > self::MAX_PRICED_TLDS) {
-            throw new ProvisioningException('Openprovider is asked about at most '.self::MAX_PRICED_TLDS.' TLDs at a time.');
-        }
-
+        $wanted = $tlds === null ? null : array_map(fn (string $tld) => ltrim(mb_strtolower(trim($tld)), '.'), $tlds);
         $list = [];
-        $failed = null;
 
-        foreach ($tlds as $tld) {
-            try {
-                $prices = $this->client->call('GET', 'tlds/'.rawurlencode($tld), ['with_price' => 'true'], timeout: 30)['prices'] ?? [];
-            } catch (ProvisioningException $e) {
-                // A TLD Openprovider does not sell; the error stands only when no TLD could be read.
-                $failed = $e;
+        foreach ($this->client->call('GET', 'tlds', ['with_price' => 'true'], timeout: 120)['results'] ?? [] as $details) {
+            $tld = strtolower(trim((string) ($details['name'] ?? ''), '.'));
+            $prices = is_array($details['prices'] ?? null) ? $details['prices'] : [];
 
+            if ($tld === '' || ($wanted !== null && ! in_array($tld, $wanted, true))) {
                 continue;
             }
 
             $price = fn (string $kind) => TldPrice::cents($prices[$kind]['reseller']['price'] ?? $prices[$kind]['product']['price'] ?? null);
-            $currency = strtoupper((string) ($prices['create_price']['reseller']['currency'] ?? $prices['create_price']['product']['currency'] ?? 'EUR'));
 
             if ($price('create_price') === null && $price('renew_price') === null && $price('transfer_price') === null) {
                 continue;
@@ -101,16 +86,12 @@ class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, List
             $list[] = new TldPrice(
                 tld: '.'.$tld,
                 years: 1,
-                currency: $currency,
+                currency: strtoupper((string) ($prices['create_price']['reseller']['currency'] ?? $prices['create_price']['product']['currency'] ?? 'EUR')),
                 registerCents: $price('create_price'),
                 renewCents: $price('renew_price'),
                 transferCents: $price('transfer_price'),
                 redemptionCents: $price('restore_price'),
             );
-        }
-
-        if ($list === [] && $failed !== null) {
-            throw $failed;
         }
 
         return $list;
@@ -174,9 +155,15 @@ class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, List
         $this->update($domain, $this->nameserverBody($nameservers));
     }
 
+    /** The domain's own auth_code (GET /domains/{id}), else a new one (authcode reset), as the Blesta module does. */
     public function eppCode(string $domain): string
     {
-        $code = $this->client->call('GET', 'domains/'.$this->id($domain).'/authcode')['auth_code'] ?? null;
+        $id = $this->id($domain);
+        $code = $this->client->call('GET', "domains/{$id}")['auth_code'] ?? null;
+
+        if (! is_string($code) || $code === '') {
+            $code = $this->client->call('POST', "domains/{$id}/authcode/reset")['auth_code'] ?? null;
+        }
 
         if (! is_string($code) || $code === '') {
             throw new ProvisioningException("Openprovider returned no EPP code for {$domain}.");
@@ -295,8 +282,7 @@ class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, List
             return $this->domains[$name];
         }
 
-        ['name' => $sld, 'extension' => $extension] = self::split($name);
-        $results = $this->client->call('GET', 'domains', ['domain_name_pattern' => $sld, 'extension' => $extension, 'limit' => 10])['results'] ?? [];
+        $results = $this->client->call('GET', 'domains', ['full_name' => $name, 'limit' => 10])['results'] ?? [];
 
         foreach ($results as $record) {
             if (is_array($record) && strtolower(($record['domain']['name'] ?? '').'.'.($record['domain']['extension'] ?? '')) === $name) {
@@ -315,7 +301,7 @@ class OpenproviderRegistrar implements ChecksAvailability, DomainRegistrar, List
     /** @param  array<string, mixed>  $changes */
     private function update(string $domain, array $changes): void
     {
-        $this->client->call('PUT', 'domains/'.$this->id($domain), ['domain' => self::split($domain), ...$changes]);
+        $this->client->call('PUT', 'domains/'.$this->id($domain), $changes);
         unset($this->domains[self::normal($domain)]);
     }
 

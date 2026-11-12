@@ -169,9 +169,15 @@ class OpenproviderRegistrarTest extends TestCase
         $this->holds();
 
         $this->registrar()->setNameservers('acme.com', ['a.ns.gr', 'b.ns.gr']);
-        $this->assertSame(['PUT domains/9', ['domain' => ['name' => 'acme', 'extension' => 'com'], 'name_servers' => [['name' => 'a.ns.gr', 'seq_nr' => 1], ['name' => 'b.ns.gr', 'seq_nr' => 2]]]], $this->openproviderCalls[1]);
+        $this->assertSame(['PUT domains/9', ['name_servers' => [['name' => 'a.ns.gr', 'seq_nr' => 1], ['name' => 'b.ns.gr', 'seq_nr' => 2]]]], $this->openproviderCalls[1]);
+        $this->assertSame(['GET domains', ['full_name' => 'acme.com', 'limit' => 10]], $this->openproviderCalls[0]);
 
+        $this->openproviderDomains['acme.com']['auth_code'] = 'Op#Code9';
         $this->assertSame('Op#Code9', $this->registrar()->eppCode('acme.com'));
+
+        // Without one on the record, a new code is made.
+        unset($this->openproviderDomains['acme.com']['auth_code']);
+        $this->assertSame('Op#New7', $this->registrar()->eppCode('acme.com'));
     }
 
     public function test_availability_and_premium_names(): void
@@ -185,10 +191,13 @@ class OpenproviderRegistrarTest extends TestCase
         $this->assertSame(['domains' => [['name' => 'free', 'extension' => 'com']], 'with_price' => false], $this->openproviderCalls[0][1]);
     }
 
-    public function test_tld_prices_are_the_reseller_prices_of_the_tlds_named(): void
+    public function test_tld_prices_are_the_reseller_prices_of_every_tld(): void
     {
         $this->fakeOpenprovider();
-        $this->openproviderPrices = ['com' => ['create_price' => 8.5, 'renew_price' => 9.25, 'transfer_price' => 8.5, 'restore_price' => 75]];
+        $this->openproviderPrices = ['com' => ['create_price' => 8.5, 'renew_price' => 9.25, 'transfer_price' => 8.5, 'restore_price' => 75], 'net' => ['create_price' => 10.0]];
+
+        $this->assertCount(2, $this->registrar()->tldPrices());
+        $this->assertSame(['GET tlds', ['with_price' => 'true']], $this->openproviderCalls[0]);
 
         $prices = $this->registrar()->tldPrices(['.COM', '.xyz']);
 

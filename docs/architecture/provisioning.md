@@ -180,12 +180,12 @@ never calls a panel API directly.
 - **Openprovider** (`plugins/Openprovider`, module `openprovider`; credentials `username`, `password`, `sandbox`): REST
   `https://api.openprovider.eu/v1beta` (sandbox `api.sandbox.openprovider.nl:8480`), `POST /auth/login` for a bearer
   token kept per client object; replies `{code: 0, data}` or a code with `desc`. A domain is found with `GET /domains`
-  (`domain_name_pattern` + `extension`) for its `id`; then `POST /domains/{id}/renew`, `PUT /domains/{id}`
-  (nameservers, `is_locked`, contact handles), `GET /domains/{id}/authcode`. Registering or transferring first makes
+  (`full_name`) for its `id`; then `POST /domains/{id}/renew`, `PUT /domains/{id}`
+  (nameservers, `is_locked`, contact handles), `GET /domains/{id}` for its `auth_code` (else `POST /domains/{id}/authcode/reset`). Registering or transferring first makes
   the client a customer (`POST /customers`: street and number apart, phone as +CC / 3-digit area / number) used for all
   four handles; `autorenew` off; no nameservers = `ns_group` dns-openprovider. Saving contacts makes new handles.
-  `POST` / `PUT` / `DELETE /dns/nameservers` for private nameservers, `GET /tlds/{tld}?with_price=true` (reseller
-  price, else product price; asked per TLD, at most 50) for costs. Token, password and EPP code are masked in the log.
+  `POST` / `PUT` / `DELETE /dns/nameservers` for private nameservers, `GET /tlds?with_price=true` (every TLD;
+  reseller price, else product price) for costs. Token, password and EPP code are masked in the log.
 - **GoDaddy** (`plugins/GoDaddy`, module `godaddy`; credentials `api_key`, `api_secret`, `shopper_id`, `test_mode`): v1
   REST at `https://api.godaddy.com` (`api.ote-godaddy.com`) with `Authorization: sso-key KEY:SECRET` and `X-Shopper-Id`
   when set; errors `{code, message, fields}`. `GET /v1/domains/available`, `GET /v1/domains/agreements` (keys for the

@@ -43,8 +43,8 @@ Each TLD can also keep:
 **Import from registrar** (top of Domain pricing) reads what a registrar charges for each TLD, like WHMCS's TLD
 import. It shows only for registrars whose plugin can tell its prices: easy.gr lists every TLD it sells (each for its
 shortest term, e.g. 2 years for .gr); Enom is asked about the TLDs you name (at most 50) or else the ones it is the
-preferred registrar of, and gives 1-year prices in USD, so USD must be under Settings → Currencies. Namecheap and
-NameSilo list every TLD (1 year, USD); Openprovider is asked like Enom and gives 1-year prices in your account's currency.
+preferred registrar of, and gives 1-year prices in USD, so USD must be under Settings → Currencies. Namecheap,
+NameSilo and Openprovider list every TLD at 1-year prices (USD; Openprovider in your account's currency).
 
 1. Pick the registrar and the **markup**: a percentage, plus a fixed amount, rounded up to the cent, to a whole amount
    or to .99. Choose whether TLDs already on the list get only the new **cost** (the default) or a new price from it
