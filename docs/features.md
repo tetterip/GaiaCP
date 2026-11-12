@@ -46,7 +46,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   service's page (another package clients can order); you approve or decline under Services → Upgrade requests
 - Admin orders: one order per client with several items (domain, hosting, maintenance); completing it registers
   the domain, creates the hosting account and activates the rest
-- Services: hosting accounts on **cPanel/WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel** and **Enhance** servers, VPS on **Proxmox VE** (cloned from a template, IP pool, start / stop for admin and client), **domains** at one or more registrars (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub),
+- Services: hosting accounts on **cPanel/WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel**, **Virtualmin** and **Enhance** servers, VPS on **Proxmox VE** (cloned from a template, IP pool, start / stop for admin and client), **domains** at one or more registrars (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub),
   and plain recurring services such as yearly **maintenance**. A hosting account shows its disk space and this month's
   bandwidth against its limits, read from the panel, to you and (unless switched off) to the client. An account that
   reaches 85% (Settings → Automation → Usage warning) of either gets a Usage Warning email suggesting a bigger package,
@@ -120,7 +120,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   before sending, and shows when it was last sent
 - Client page "Payment record": income from the client, their average payment delay over 12 months (rated Pays on time
   up to 3 days, Watch up to 14, Pays late beyond), late payments and suspensions
-- Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance, Proxmox VE (all three off by default), easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
+- Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Enhance, Proxmox VE (the last four off by default), easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
 Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), IRIS (off by default, Settings → IRIS), Google sign-in ("Continue with Google"

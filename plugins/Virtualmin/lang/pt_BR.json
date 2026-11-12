@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting accounts on Virtualmin servers.": "Cria, suspende e remove contas de hospedagem em servidores Virtualmin.",
+    "Virtualmin's master administrator (usually root): its remote API is open only to it.": "O administrador principal do Virtualmin (geralmente root): a API remota só está aberta para ele.",
+    "Virtualmin: the master administrator's password (the remote API takes no other key). Stored encrypted.": "Virtualmin: a senha do administrador principal (a API remota não aceita outra chave). Armazenada criptografada."
+}

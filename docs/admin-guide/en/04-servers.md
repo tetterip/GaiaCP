@@ -1,7 +1,7 @@
 # Servers
 
 Hosting accounts are created on your servers through their panel's API. GaiaCP works with **cPanel / WHM**, **Plesk**,
-**HestiaCP**, **DirectAdmin**, **CyberPanel** and **Enhance**, and with **Proxmox VE** for VPS. Each panel is a plugin
+**HestiaCP**, **DirectAdmin**, **CyberPanel**, **Virtualmin** and **Enhance**, and with **Proxmox VE** for VPS. Each panel is a plugin
 under Settings → Plugins: the first four are on from the start, the others are off until you switch them on, and you
 can switch off the ones you don't use. Servers are under Settings → Products & domains → **Servers** (super admins only).
 
@@ -18,6 +18,7 @@ it found.
 | HestiaCP | 8083 | an empty login and an access key as `ACCESS_KEY:SECRET_KEY` (allow the API and GaiaCP's IP first) |
 | DirectAdmin | 2222 | the admin or a reseller, with a login key that may use the API |
 | CyberPanel | 8090 | `admin` and its password, with API access on (Users → API Access) and two-factor authentication off |
+| Virtualmin | 10000 | `root` (the master administrator) and its password |
 | Enhance | 443 | your organisation's ID as the username, with an access token (Settings → Access tokens) |
 | Proxmox VE | 8006 | the API token ID (`root@pam!gaiacp`) and its secret (Datacenter → Permissions → API Tokens, Privilege Separation unticked) |
 
@@ -43,7 +44,7 @@ password.
   `v-suspend-user`, `v-unsuspend-user`, `v-change-user-password`, `v-change-user-package` and `v-delete-user`.
 - **Enhance**: an access token takes a role; pick the smallest that may manage customers and subscriptions.
 - **Proxmox VE**: the token needs to create VMs, users and permissions, which is close to full access to the node.
-- **Plesk** and **CyberPanel**: their APIs need the administrator, so there is nothing smaller to give. Limiting the API
+- **Plesk**, **CyberPanel** and **Virtualmin**: their APIs need the administrator, so there is nothing smaller to give. Limiting the API
   to GaiaCP's IP address matters most here (in Plesk, the secret key above is already tied to one address).
 
 See [Keeping GaiaCP safe](12-admins-and-security.md#keeping-gaiacp-safe) for the rest.
@@ -55,7 +56,7 @@ The optional **Capacity and costs** fields help you run the servers:
 - **IP address**: used for new accounts where the panel needs one, by Site checks and by the IP blacklist check.
 - **Status page URL**: opened from the Servers list.
 
-**Log in** on the Servers list opens the panel already signed in (on HestiaCP, CyberPanel and Enhance, its login page; on
+**Log in** on the Servers list opens the panel already signed in (on HestiaCP, CyberPanel, Virtualmin and Enhance, its login page; on
 DirectAdmin too when the server signs in with a login key instead of a password). A client's **Log in** on a DirectAdmin account opens it already
 signed in, and falls back to the login page on an older DirectAdmin.
 
@@ -66,6 +67,11 @@ login too, while on their other services it changes only the subscription's FTP 
 On CyberPanel a hosting account is a **website** (the service's domain) owned by a CyberPanel user with the service's
 username; the password is that user's CyberPanel login. Packages read like `Default` (the built-in one) or `admin_Pro` (one an admin added). New websites start on the
 PHP version picked under Settings → Integrations → **CyberPanel** (PHP 8.2 unless you change it).
+
+On Virtualmin (off until you switch it on under Settings → Plugins) a hosting account is a top-level **virtual server**
+for the service's domain, owned by a user with the service's username, on a Virtualmin **plan** (the product's package)
+with the plan's features. The password is that user's Virtualmin / Usermin login, FTP and SSH password. Suspend
+disables the virtual server; terminate deletes it with its files, mail and databases.
 
 ### Enhance
 

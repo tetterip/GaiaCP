@@ -249,7 +249,7 @@ class WhmcsImportTest extends TestCase
             ['id' => 1, 'name' => 'cp1', 'hostname' => 'cp1.example.com', 'ipaddress' => '10.0.0.1', 'type' => 'cpanel', 'username' => 'root', 'password' => '', 'accesshash' => "TOKEN123\n", 'port' => null],
             ['id' => 2, 'name' => 'pl1', 'hostname' => 'pl1.example.com', 'ipaddress' => '10.0.0.2', 'type' => 'plesk', 'username' => 'admin', 'password' => $crypt->encrypt('plesk-secret'), 'accesshash' => '', 'port' => 8443],
             ['id' => 3, 'name' => 'da1', 'hostname' => 'da1.example.com', 'ipaddress' => '', 'type' => 'directadmin', 'username' => 'admin', 'password' => $crypt->encrypt('da-secret'), 'accesshash' => '', 'port' => null],
-            ['id' => 4, 'name' => 'vm1', 'hostname' => 'vm1.example.com', 'ipaddress' => '', 'type' => 'virtualmin', 'username' => '', 'password' => '', 'accesshash' => '', 'port' => null],
+            ['id' => 4, 'name' => 'iw1', 'hostname' => 'iw1.example.com', 'ipaddress' => '', 'type' => 'interworx', 'username' => '', 'password' => '', 'accesshash' => '', 'port' => null],
         ]);
 
         $db->table('tblproductgroups')->insert(['id' => 1, 'name' => 'Shared Hosting', 'headline' => 'Fast <b>SSD</b> hosting', 'order' => 2]);
@@ -346,7 +346,7 @@ class WhmcsImportTest extends TestCase
         $this->assertSame('bank_transfer', $client->default_payment_method);
         $this->assertSame('2019-03-04', $client->created_at->toDateString());
 
-        // Servers: cPanel with its API token, Plesk and DirectAdmin with the decrypted password; Virtualmin skipped.
+        // Servers: cPanel with its API token, Plesk and DirectAdmin with the decrypted password; InterWorx (no plugin) skipped.
         $cp = Server::where('hostname', 'cp1.example.com')->sole();
         $this->assertSame('cpanel', $cp->type);
         $this->assertSame('TOKEN123', $cp->api_token);
