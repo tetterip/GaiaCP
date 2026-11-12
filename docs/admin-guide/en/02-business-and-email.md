@@ -88,14 +88,27 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
   page, for notices in euro (Piraeus Bank also takes a few other currencies, and IRIS). The client's email, address,
   city, postcode and country must be filled in, since the bank needs them for 3-D Secure. Alpha Bank and Eurobank go
   through Cardlink: fill in the merchant ID and shared secret from the bank's set-up email, and choose Test or Live
-  (these are Cardlink accounts; merchants who signed with Alpha Bank after Nexi took over get Nexi XPay instead, which is
-  a different system). Piraeus Bank takes the merchant ID, acquirer ID, POS ID, username and password, and its page
+  (these are Cardlink accounts; merchants who signed with Alpha Bank after Nexi took over get Nexi XPay instead, a
+  different system with its own plugin below). Piraeus Bank takes the merchant ID, acquirer ID, POS ID, username and password, and its page
   lists the addresses and the server's outgoing IP address to send the bank when you ask for an account. A payment is
   recorded only when the bank's answer is signed (with the shared secret, or for Piraeus with that payment's own
   ticket) and names the amount asked for. The banks have no way to be asked later: a payment the bank never answered
   (the client closed the page) is closed after two hours and named in the activity log, so check the bank's back office
   if a client says they paid. A Piraeus IRIS transfer the bank has not confirmed yet is listed in the daily summary for
   you to check and record by hand.
+- **Nexi XPay** (off until you switch it on): card payments on Nexi's own page, through the Nexi Payment Gateway API.
+  It is for Alpha Bank merchants who signed after Nexi took over (mid-2022) and other Nexi customers. Create an API key
+  in Nexi's back office and fill it in for Test or Live; nothing else needs setting up at Nexi, since each payment
+  tells Nexi where to send its result. Have Nexi capture payments at once (immediate accounting). GaiaCP records a
+  payment only after reading the order back from Nexi with your key, and asks Nexi every hour about payments still
+  waiting; one the client never finished closes after a day and is named in the activity log.
+- **Mastercard Gateway** (off until you switch it on): card payments on the payment page of Mastercard Gateway (MPGS),
+  which many banks give their merchants. Choose the gateway your bank's account is on (Europe, Asia Pacific, North
+  America, or Custom for a bank's own address), fill in the test merchant ID (it starts with TEST) and its API password
+  from the gateway's Merchant Administration, then the live ones once the bank switches the account on. "Name shown to
+  clients" goes on the button, "Pay by card (name)": your bank's name, say. GaiaCP records a payment only after reading
+  the order back from the gateway, and looks every hour for clients who closed the page; one never finished closes after
+  a day.
 - **IRIS** (off until you switch it on): payments by IRIS, Greece's instant bank payments, from the client's bank app.
   Fill in the payee, the IRIS number or alias your bank linked (VAT number, mobile or alias) and upload the fixed QR
   code your bank gave you. Unpaid notices in the client area get **Pay with IRIS**, which shows the QR code, the

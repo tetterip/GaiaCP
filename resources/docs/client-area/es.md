@@ -130,7 +130,7 @@ Para pagar con PayPal, abra un aviso de pago sin pagar y pulse **Pagar con PayPa
 <!-- endif -->
 
 <!-- if:pay_bank -->
-Para pagar con tarjeta a través de nuestro banco, abra un aviso de pago impagado y pulse **Pagar con tarjeta** con el nombre del banco. Paga en la página segura del banco (nunca vemos los datos de su tarjeta) y el aviso aparece como pagado en cuanto el banco confirma el pago. Su dirección, ciudad, código postal y país deben estar rellenados en su perfil, porque el banco los necesita para comprobar la tarjeta.
+Para pagar con tarjeta a través de nuestro banco, abra un aviso de pago impagado y pulse **Pagar con tarjeta** con el nombre del banco. Paga en la página segura del banco (nunca vemos los datos de su tarjeta) y el aviso aparece como pagado en cuanto el banco confirma el pago. Algunos bancos necesitan además su dirección, ciudad, código postal y país rellenados en su perfil para comprobar la tarjeta.
 <!-- endif -->
 
 <!-- if:pay_iris -->

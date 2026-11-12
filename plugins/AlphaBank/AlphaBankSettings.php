@@ -62,7 +62,7 @@ class AlphaBankSettings extends SettingsFormPage
                             ->inline(),
                     ]),
                 Section::make(__('Merchant account'))
-                    ->description(__('From the bank\'s set-up email for Alpha e-Commerce (Cardlink). Merchants who signed with Alpha Bank after Nexi took over its card payments (mid-2022) get Nexi XPay details instead, which do not work here.'))
+                    ->description(__('From the bank\'s set-up email for Alpha e-Commerce (Cardlink). Merchants who signed with Alpha Bank after Nexi took over its card payments (mid-2022) get Nexi XPay details instead: use the Nexi XPay plugin for those.'))
                     ->columns(2)
                     ->schema([
                         TextInput::make('alphabank.merchant_id')

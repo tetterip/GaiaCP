@@ -60,7 +60,7 @@ class Demo
     ];
 
     /** @var array<string, string> plugin id => folder, of the plugins that stay off in the demo (pages closed too): they open connections of their own or charge cards */
-    public const PLUGINS_OFF = ['ticket-mail' => 'TicketMail', 'whmcs-import' => 'WhmcsImport', 'stripe' => 'Stripe', 'paypal' => 'PayPal', 'alphabank' => 'AlphaBank', 'eurobank' => 'Eurobank', 'piraeusbank' => 'PiraeusBank', 'site-checks' => 'SiteChecks', 'blacklists' => 'Blacklists'];
+    public const PLUGINS_OFF = ['ticket-mail' => 'TicketMail', 'whmcs-import' => 'WhmcsImport', 'stripe' => 'Stripe', 'paypal' => 'PayPal', 'alphabank' => 'AlphaBank', 'eurobank' => 'Eurobank', 'piraeusbank' => 'PiraeusBank', 'nexi-xpay' => 'NexiXpay', 'mastercard' => 'MastercardGateway', 'site-checks' => 'SiteChecks', 'blacklists' => 'Blacklists'];
 
     /** @var list<string> the columns the demo accounts keep whatever is saved */
     private const LOCKED_COLUMNS = ['email', 'password', 'app_authentication_secret', 'app_authentication_recovery_codes', 'role', 'client_id', 'active'];

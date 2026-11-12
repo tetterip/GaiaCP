@@ -130,7 +130,7 @@ Om met PayPal te betalen, opent u een onbetaald betalingsverzoek en drukt u op *
 <!-- endif -->
 
 <!-- if:pay_bank -->
-Om met een kaart via onze bank te betalen, opent u een onbetaald betalingsbericht en klikt u op **Betalen met kaart** met de naam van de bank. U betaalt op de beveiligde pagina van de bank (wij zien uw kaartgegevens nooit) en het bericht staat op betaald zodra de bank de betaling bevestigt. Uw adres, plaats, postcode en land moeten in uw profiel zijn ingevuld, omdat de bank ze nodig heeft om de kaart te controleren.
+Om met een kaart via onze bank te betalen, opent u een onbetaald betalingsbericht en klikt u op **Betalen met kaart** met de naam van de bank. U betaalt op de beveiligde pagina van de bank (wij zien uw kaartgegevens nooit) en het bericht staat op betaald zodra de bank de betaling bevestigt. Sommige banken hebben ook uw adres, plaats, postcode en land in uw profiel nodig om de kaart te controleren.
 <!-- endif -->
 
 <!-- if:pay_iris -->

@@ -130,7 +130,7 @@ Aby zapłacić przez PayPal, prosimy otworzyć nieopłacone wezwanie do zapłaty
 <!-- endif -->
 
 <!-- if:pay_bank -->
-Aby zapłacić kartą przez nasz bank, otwórz nieopłacone powiadomienie o płatności i kliknij **Zapłać kartą** z nazwą banku. Płacisz na bezpiecznej stronie banku (nigdy nie widzimy danych twojej karty), a powiadomienie pokazuje się jako opłacone, gdy tylko bank potwierdzi płatność. Adres, miasto, kod pocztowy i kraj muszą być uzupełnione w profilu, ponieważ bank potrzebuje ich do sprawdzenia karty.
+Aby zapłacić kartą przez nasz bank, otwórz nieopłacone powiadomienie o płatności i kliknij **Zapłać kartą** z nazwą banku. Płacisz na bezpiecznej stronie banku (nigdy nie widzimy danych twojej karty), a powiadomienie pokazuje się jako opłacone, gdy tylko bank potwierdzi płatność. Niektóre banki potrzebują też adresu, miasta, kodu pocztowego i kraju w profilu do sprawdzenia karty.
 <!-- endif -->
 
 <!-- if:pay_iris -->

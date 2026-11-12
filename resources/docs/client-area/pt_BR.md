@@ -130,7 +130,7 @@ Para pagar com PayPal, abra um aviso de pagamento não pago e clique em **Pagar 
 <!-- endif -->
 
 <!-- if:pay_bank -->
-Para pagar com cartão através do nosso banco, abra um aviso de pagamento em aberto e clique em **Pagar com cartão** com o nome do banco. Você paga na página segura do próprio banco (nunca vemos os dados do seu cartão) e o aviso aparece como pago assim que o banco confirma o pagamento. Seu endereço, cidade, CEP e país precisam estar preenchidos no seu perfil, porque o banco precisa deles para verificar o cartão.
+Para pagar com cartão através do nosso banco, abra um aviso de pagamento em aberto e clique em **Pagar com cartão** com o nome do banco. Você paga na página segura do próprio banco (nunca vemos os dados do seu cartão) e o aviso aparece como pago assim que o banco confirma o pagamento. Alguns bancos também precisam do seu endereço, cidade, CEP e país preenchidos no seu perfil para verificar o cartão.
 <!-- endif -->
 
 <!-- if:pay_iris -->

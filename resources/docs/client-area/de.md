@@ -130,7 +130,7 @@ Um mit PayPal zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und 
 <!-- endif -->
 
 <!-- if:pay_bank -->
-Um per Karte über unsere Bank zu zahlen, öffnen Sie einen unbezahlten Zahlungshinweis und klicken Sie auf **Mit Karte zahlen** mit dem Namen der Bank. Sie zahlen auf der sicheren Seite der Bank (wir sehen Ihre Kartendaten nie), und der Hinweis wird als bezahlt angezeigt, sobald die Bank die Zahlung bestätigt. Adresse, Ort, Postleitzahl und Land müssen in Ihrem Profil ausgefüllt sein, da die Bank sie zur Prüfung der Karte braucht.
+Um per Karte über unsere Bank zu zahlen, öffnen Sie einen unbezahlten Zahlungshinweis und klicken Sie auf **Mit Karte zahlen** mit dem Namen der Bank. Sie zahlen auf der sicheren Seite der Bank (wir sehen Ihre Kartendaten nie), und der Hinweis wird als bezahlt angezeigt, sobald die Bank die Zahlung bestätigt. Manche Banken brauchen zur Prüfung der Karte außerdem Adresse, Ort, Postleitzahl und Land in Ihrem Profil.
 <!-- endif -->
 
 <!-- if:pay_iris -->
