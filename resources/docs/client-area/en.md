@@ -129,6 +129,10 @@ To pay by card, open an unpaid payment notice and press **Pay by card**. You pay
 To pay with PayPal, open an unpaid payment notice and press **Pay with PayPal**. You approve the payment on PayPal's own page, with your PayPal balance or a card, and the notice shows as paid as soon as PayPal confirms it.
 <!-- endif -->
 
+<!-- if:pay_iris -->
+To pay by IRIS, open an unpaid payment notice and press **Pay with IRIS**. It shows our QR code and IRIS number with the amount: in your bank's app choose IRIS, scan the code or enter the number, and write the notice number as the reason. The notice shows as paid once we see the payment in our account.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Quotes
 

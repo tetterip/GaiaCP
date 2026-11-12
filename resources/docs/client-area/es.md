@@ -129,6 +129,10 @@ Para pagar con tarjeta, abra un aviso de pago sin pagar y pulse **Pagar con tarj
 Para pagar con PayPal, abra un aviso de pago sin pagar y pulse **Pagar con PayPal**. Aprueba el pago en la página de PayPal, con su saldo de PayPal o con una tarjeta, y el aviso aparece como pagado en cuanto PayPal lo confirma.
 <!-- endif -->
 
+<!-- if:pay_iris -->
+Para pagar con IRIS, abra un aviso de pago sin pagar y pulse **Pagar con IRIS**. Muestra nuestro código QR y nuestro número IRIS con el importe: en la app de su banco elija IRIS, escanee el código o introduzca el número, y escriba el número del aviso como concepto. El aviso aparece como pagado en cuanto veamos el pago en nuestra cuenta.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Presupuestos
 

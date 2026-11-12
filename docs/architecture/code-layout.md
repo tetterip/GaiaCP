@@ -192,6 +192,10 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `PayPal-Request-Id` `capture-<order>` (a retry never takes twice; a failed call goes back to open); a completed
   capture is recorded through `RecordInvoicePayment` (method `paypal`, reference = capture id), a pending one waits as
   `pending` for `PAYMENT.CAPTURE.COMPLETED`; taken but no longer fitting → `unmatched` (`payment.online_unmatched`)
+- `plugins/Iris/` (off by default): "Pay with IRIS" on unpaid notices (`IrisPlugin::clientPaymentNoticeActions()`, a modal
+  with the bank's fixed QR code as a data: URI, the payee, the IRIS number, the amount due and the notice number as the
+  reason); the QR code is a private file (`local` disk, `iris/`, PNG/JPG/WebP). No API: payments recorded by hand
+  (method `iris`); `Iris::instructions()` feeds "How to pay" and `{$payment_instructions}`
 - `app/Support/Money.php`: cents ↔ display/form conversion; `format()` writes a currency as Settings → Currencies says
 - Currencies: `currencies` (`Currency`: code, prefix, suffix, `CurrencyFormat`, `rate` = units per 1 base) read once per
   request by `App\Support\Currencies` (base = `gaiacp.currency`, rate 1, never deleted; `fromBase()` / `toBase()` /

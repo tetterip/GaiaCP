@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- New **IRIS** plugin (bundled, off by default) for Greece's instant bank payments: Settings → IRIS takes the payee, the
+  IRIS number or alias and the fixed QR code your bank gave you. Unpaid payment notices in the client area get **Pay
+  with IRIS**, showing the QR code, the number, the amount and the notice number to write as the reason; the details
+  go into "How to pay" and the notice emails too. IRIS has no connection for shops, so payments are recorded by hand
+  with the new IRIS method.
 - DirectAdmin 1.2.0: **Log in** opens DirectAdmin already signed in (a one-time link, else its login page as before);
   suspend and unsuspend name the action (`dosuspend` / `dounsuspend`) instead of the field DirectAdmin reads as a toggle.
 - Enhance 1.1.0: **Change password** uses Enhance's password route (the older call stays as a fallback) and also sets

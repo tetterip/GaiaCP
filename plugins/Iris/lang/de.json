@@ -1,0 +1,22 @@
+{
+    "Clients pay their payment notices by IRIS from their bank's app: your IRIS number and your bank's QR code are shown on unpaid notices. You record the payments by hand.": "Kunden bezahlen ihre Zahlungsaufforderungen per IRIS in der App ihrer Bank: Ihre IRIS-Nummer und der QR-Code Ihrer Bank erscheinen auf offenen Zahlungsaufforderungen. Die Zahlungen erfassen Sie selbst.",
+    "Clients see \"Pay with IRIS\" on their unpaid payment notices in the client area once there is an IRIS number or a QR code. It shows them the amount, these details and the notice number to write as the reason. IRIS has no connection for shops, so you record each payment by hand (method IRIS) when it reaches your account.": "Kunden sehen „Mit IRIS bezahlen“ auf ihren offenen Zahlungsaufforderungen im Kundenbereich, sobald eine IRIS-Nummer oder ein QR-Code vorhanden ist. Es zeigt den Betrag, diese Angaben und die Nummer der Zahlungsaufforderung als Verwendungszweck. IRIS bietet keine Anbindung für Shops, daher erfassen Sie jede Zahlung selbst (Methode IRIS), sobald sie auf Ihrem Konto eingeht.",
+    "IRIS": "IRIS",
+    "IRIS QR code": "IRIS-QR-Code",
+    "IRIS number": "IRIS-Nummer",
+    "IRIS number or alias": "IRIS-Nummer oder Alias",
+    "IRIS number: :number": "IRIS-Nummer: :number",
+    "IRIS number: :number (:payee)": "IRIS-Nummer: :number (:payee)",
+    "IRIS: pay from your bank's app with IRIS.": "IRIS: Zahlen Sie in der App Ihrer Bank mit IRIS.",
+    "In your bank's app choose IRIS, scan the QR code or enter the IRIS number, and write :number as the reason. The notice shows as paid once we see the payment in our account.": "Wählen Sie in der App Ihrer Bank IRIS, scannen Sie den QR-Code oder geben Sie die IRIS-Nummer ein und schreiben Sie :number als Verwendungszweck. Die Zahlungsaufforderung wird als bezahlt angezeigt, sobald wir die Zahlung auf unserem Konto sehen.",
+    "Note for clients": "Hinweis für Kunden",
+    "Optional, shown under the details, e.g. which banks the QR code works with.": "Optional, erscheint unter den Angaben, z. B. mit welchen Banken der QR-Code funktioniert.",
+    "Pay with IRIS": "Mit IRIS bezahlen",
+    "Payee": "Empfänger",
+    "Payments by IRIS from the client's bank app: your IRIS number and your bank's QR code on unpaid payment notices.": "Zahlungen per IRIS aus der Banking-App des Kunden: Ihre IRIS-Nummer und der QR-Code Ihrer Bank auf offenen Zahlungsaufforderungen.",
+    "Please write the payment notice number as the reason.": "Bitte geben Sie die Nummer der Zahlungsaufforderung als Verwendungszweck an.",
+    "The QR code is under Pay with IRIS on the payment notice in our client area.": "Den QR-Code finden Sie unter „Mit IRIS bezahlen“ auf der Zahlungsaufforderung in unserem Kundenbereich.",
+    "The VAT number, mobile number or alias your bank linked to IRIS.": "Die Steuernummer, Handynummer oder der Alias, den Ihre Bank mit IRIS verknüpft hat.",
+    "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Der feste QR-Code, den Ihnen Ihre Bank für IRIS-Zahlungen gegeben hat (PNG, JPG oder WebP, bis 1 MB).",
+    "The name clients see in their bank's app. Empty: your company name.": "Der Name, den Kunden in der App ihrer Bank sehen. Leer: Ihr Firmenname."
+}

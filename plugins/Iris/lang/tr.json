@@ -1,0 +1,22 @@
+{
+    "Clients pay their payment notices by IRIS from their bank's app: your IRIS number and your bank's QR code are shown on unpaid notices. You record the payments by hand.": "Müşteriler ödeme bildirimlerini bankalarının uygulamasından IRIS ile öder: IRIS numaranız ve bankanızın QR kodu ödenmemiş bildirimlerde görünür. Ödemeleri elle kaydedersiniz.",
+    "Clients see \"Pay with IRIS\" on their unpaid payment notices in the client area once there is an IRIS number or a QR code. It shows them the amount, these details and the notice number to write as the reason. IRIS has no connection for shops, so you record each payment by hand (method IRIS) when it reaches your account.": "Bir IRIS numarası veya QR kodu olduğunda müşteriler, müşteri alanındaki ödenmemiş bildirimlerinde “IRIS ile öde” düğmesini görür. Tutarı, bu bilgileri ve açıklama olarak bildirim numarasını gösterir. IRIS'in mağazalar için bağlantısı yoktur; her ödemeyi hesabınıza geldiğinde elle (IRIS yöntemiyle) kaydedersiniz.",
+    "IRIS": "IRIS",
+    "IRIS QR code": "IRIS QR kodu",
+    "IRIS number": "IRIS numarası",
+    "IRIS number or alias": "IRIS numarası veya takma adı",
+    "IRIS number: :number": "IRIS numarası: :number",
+    "IRIS number: :number (:payee)": "IRIS numarası: :number (:payee)",
+    "IRIS: pay from your bank's app with IRIS.": "IRIS: bankanızın uygulamasından IRIS ile ödeyin.",
+    "In your bank's app choose IRIS, scan the QR code or enter the IRIS number, and write :number as the reason. The notice shows as paid once we see the payment in our account.": "Bankanızın uygulamasında IRIS'i seçin, QR kodu tarayın veya IRIS numarasını girin ve açıklamaya :number yazın. Ödemeyi hesabımızda gördüğümüzde bildirim ödendi olarak görünür.",
+    "Note for clients": "Müşterilere not",
+    "Optional, shown under the details, e.g. which banks the QR code works with.": "İsteğe bağlı, bilgilerin altında görünür; ör. QR kodun hangi bankalarla çalıştığı.",
+    "Pay with IRIS": "IRIS ile öde",
+    "Payee": "Alıcı",
+    "Payments by IRIS from the client's bank app: your IRIS number and your bank's QR code on unpaid payment notices.": "Müşterinin banka uygulamasından IRIS ile ödemeler: ödenmemiş bildirimlerde IRIS numaranız ve bankanızın QR kodu.",
+    "Please write the payment notice number as the reason.": "Lütfen açıklamaya ödeme bildirimi numarasını yazın.",
+    "The QR code is under Pay with IRIS on the payment notice in our client area.": "QR kod, müşteri alanımızdaki ödeme bildiriminde IRIS ile öde altında.",
+    "The VAT number, mobile number or alias your bank linked to IRIS.": "Bankanızın IRIS'e bağladığı vergi numarası, cep telefonu veya takma ad.",
+    "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Bankanızın IRIS ödemeleri için verdiği sabit QR kod (PNG, JPG veya WebP, en fazla 1 MB).",
+    "The name clients see in their bank's app. Empty: your company name.": "Müşterilerin banka uygulamasında gördüğü ad. Boş: şirketinizin adı."
+}

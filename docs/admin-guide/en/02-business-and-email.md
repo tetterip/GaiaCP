@@ -84,6 +84,11 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
   ID and secret, and add a webhook there with the address shown on Settings → PayPal. When the client approves, GaiaCP
   takes the money only if the notice still asks for that amount, and records it once PayPal confirms it. GaiaCP also
   asks PayPal every hour about the payments it is still waiting on, in case the webhook doesn't come.
+- **IRIS** (off until you switch it on): payments by IRIS, Greece's instant bank payments, from the client's bank app.
+  Fill in the payee, the IRIS number or alias your bank linked (VAT number, mobile or alias) and upload the fixed QR
+  code your bank gave you. Unpaid notices in the client area get **Pay with IRIS**, which shows the QR code, the
+  number, the amount and the notice number to write as the reason. IRIS has no connection for shops, so record each
+  payment by hand with the IRIS method when it reaches your account.
 
 Payments you record by hand can also be **Cash** or **Other**. Each client has a default payment method on their form.
 
