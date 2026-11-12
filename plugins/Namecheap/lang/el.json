@@ -1,0 +1,13 @@
+{
+    "API key": "Κλειδί API",
+    "Api key": "Κλειδί API",
+    "Client ip": "Διεύθυνση IP",
+    "Leave empty to keep the current key. Stored encrypted. Turn on API access under Profile → Tools → API Access in your Namecheap account.": "Άφησέ το κενό για να μείνει το τρέχον κλειδί. Αποθηκεύεται κρυπτογραφημένο. Ενεργοποίησε την πρόσβαση API στο Profile → Tools → API Access του λογαριασμού σου στη Namecheap.",
+    "Namecheap username": "Όνομα χρήστη Namecheap",
+    "Registers, renews, transfers and syncs domains through a Namecheap account with API access.": "Καταχωρεί, ανανεώνει, μεταφέρει και συγχρονίζει domains μέσω λογαριασμού Namecheap με πρόσβαση API.",
+    "Sandbox": "Sandbox",
+    "Sends every call to Namecheap's sandbox (api.sandbox.namecheap.com), with a sandbox account's login.": "Στέλνει κάθε κλήση στο sandbox της Namecheap (api.sandbox.namecheap.com), με τα στοιχεία σύνδεσης ενός λογαριασμού sandbox.",
+    "Stored encrypted. Turn on API access under Profile → Tools → API Access in your Namecheap account.": "Αποθηκεύεται κρυπτογραφημένο. Ενεργοποίησε την πρόσβαση API στο Profile → Tools → API Access του λογαριασμού σου στη Namecheap.",
+    "The public IPv4 address GaiaCP calls Namecheap from. Add it to the whitelisted IPs on the same API Access page.": "Η δημόσια διεύθυνση IPv4 από την οποία το GaiaCP καλεί τη Namecheap. Πρόσθεσέ τη στις επιτρεπόμενες IP στην ίδια σελίδα API Access.",
+    "This server's IP address": "Διεύθυνση IP αυτού του server"
+}

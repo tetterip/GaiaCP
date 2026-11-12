@@ -1,0 +1,13 @@
+{
+    "API key": "Chave de API",
+    "Api key": "Chave de API",
+    "Client ip": "Endereço IP",
+    "Leave empty to keep the current key. Stored encrypted. Turn on API access under Profile → Tools → API Access in your Namecheap account.": "Deixe em branco para manter a chave atual. Armazenada criptografada. Ative o acesso à API em Profile → Tools → API Access na sua conta Namecheap.",
+    "Namecheap username": "Usuário da Namecheap",
+    "Registers, renews, transfers and syncs domains through a Namecheap account with API access.": "Registra, renova, transfere e sincroniza domínios por meio de uma conta Namecheap com acesso à API.",
+    "Sandbox": "Sandbox",
+    "Sends every call to Namecheap's sandbox (api.sandbox.namecheap.com), with a sandbox account's login.": "Envia cada chamada ao sandbox da Namecheap (api.sandbox.namecheap.com), com o login de uma conta sandbox.",
+    "Stored encrypted. Turn on API access under Profile → Tools → API Access in your Namecheap account.": "Armazenada criptografada. Ative o acesso à API em Profile → Tools → API Access na sua conta Namecheap.",
+    "The public IPv4 address GaiaCP calls Namecheap from. Add it to the whitelisted IPs on the same API Access page.": "O endereço IPv4 público de onde o GaiaCP chama a Namecheap. Adicione-o aos IPs permitidos na mesma página API Access.",
+    "This server's IP address": "Endereço IP deste servidor"
+}

@@ -1,0 +1,9 @@
+{
+    "API key": "Κλειδί API",
+    "Api key": "Κλειδί API",
+    "Leave empty to keep the current key. Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Άφησέ το κενό για να μείνει το τρέχον κλειδί. Αποθηκεύεται κρυπτογραφημένο. Φτιάξ' το στο Account → API Manager της NameSilo και περιόρισέ το εκεί στη διεύθυνση IP αυτού του server.",
+    "Registers, renews, transfers and syncs domains through a NameSilo account with an API key.": "Καταχωρεί, ανανεώνει, μεταφέρει και συγχρονίζει domains μέσω λογαριασμού NameSilo με κλειδί API.",
+    "Sandbox": "Sandbox",
+    "Sends every call to NameSilo's sandbox (sandbox.namesilo.com), with a sandbox account's API key.": "Στέλνει κάθε κλήση στο sandbox της NameSilo (sandbox.namesilo.com), με το κλειδί API ενός λογαριασμού sandbox.",
+    "Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Αποθηκεύεται κρυπτογραφημένο. Φτιάξ' το στο Account → API Manager της NameSilo και περιόρισέ το εκεί στη διεύθυνση IP αυτού του server."
+}

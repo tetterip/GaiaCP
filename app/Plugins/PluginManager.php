@@ -51,6 +51,8 @@ use Plugins\GoogleLogin\GoogleLoginPlugin;
 use Plugins\Hestia\HestiaPlugin;
 use Plugins\HetrixTools\HetrixToolsPlugin;
 use Plugins\Kimi\KimiPlugin;
+use Plugins\Namecheap\NamecheapPlugin;
+use Plugins\NameSilo\NameSiloPlugin;
 use Plugins\Ollama\OllamaPlugin;
 use Plugins\OpenAi\OpenAiPlugin;
 use Plugins\PayPal\PayPalPlugin;
@@ -81,7 +83,7 @@ use Throwable;
 class PluginManager
 {
     /** @var list<class-string<Plugin>> shipped with GaiaCP */
-    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, EnhancePlugin::class, ProxmoxPlugin::class, EasyGrPlugin::class, EnomPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, AadePlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, HetrixToolsPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, KimiPlugin::class, OpenAiPlugin::class, OllamaPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
+    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, EnhancePlugin::class, ProxmoxPlugin::class, EasyGrPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, AadePlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, HetrixToolsPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, KimiPlugin::class, OpenAiPlugin::class, OllamaPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
 
     /** @var array<string, Plugin> */
     private array $plugins = [];
