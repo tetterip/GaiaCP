@@ -1,0 +1,14 @@
+{
+    "API key": "API-sleutel",
+    "API secret": "API-geheim",
+    "Leave empty to keep the current key. Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Laat leeg om de huidige sleutel te houden. Versleuteld opgeslagen. Maak een productiesleutel aan op developer.godaddy.com → API Keys (een OTE-sleutel voor de testomgeving).",
+    "Leave empty to keep the current one. Stored encrypted.": "Laat leeg om de huidige te houden. Versleuteld opgeslagen.",
+    "Only for a reseller sub-account: the customer number whose domains these are. Leave empty for your own account.": "Alleen voor een reseller-subaccount: het klantnummer van wie deze domeinen zijn. Laat leeg voor uw eigen account.",
+    "Registers, renews, transfers and syncs domains through a GoDaddy account with an API key.": "Registreert, verlengt, verhuist en synchroniseert domeinen via een GoDaddy-account met een API-sleutel.",
+    "Sends every call to GoDaddy's test environment (api.ote-godaddy.com), with an OTE key.": "Stuurt elke aanroep naar de testomgeving van GoDaddy (api.ote-godaddy.com), met een OTE-sleutel.",
+    "Shopper ID": "Shopper-ID",
+    "Shopper id": "Shopper-ID",
+    "Stored encrypted.": "Versleuteld opgeslagen.",
+    "Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Versleuteld opgeslagen. Maak een productiesleutel aan op developer.godaddy.com → API Keys (een OTE-sleutel voor de testomgeving).",
+    "Test mode": "Testmodus"
+}
