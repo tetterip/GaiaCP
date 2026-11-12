@@ -112,7 +112,7 @@ trait FakesNameSilo
                         .implode('', array_map(fn (string $k, string $v) => "<{$k}>".htmlspecialchars($v, ENT_XML1)."</{$k}>", array_keys($c), $c)).'</contact>');
                 case 'contactAdd':
                     $id = (string) (count($this->namesiloContacts) + 100);
-                    $this->namesiloContacts[$id] = ['first_name' => $params['fn'], 'last_name' => $params['ln'], 'company' => $params['nn'] ?? '', 'address' => $params['ad'],
+                    $this->namesiloContacts[$id] = ['first_name' => $params['fn'], 'last_name' => $params['ln'], 'company' => $params['cp'] ?? '', 'address' => $params['ad'],
                         'city' => $params['cy'], 'state' => $params['st'], 'zip' => $params['zp'], 'country' => $params['ct'], 'email' => $params['em'], 'phone' => $params['ph']];
 
                     return $this->namesiloReply($operation, "<contact_id>{$id}</contact_id>");

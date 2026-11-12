@@ -9,8 +9,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   Registrars). Each registers, transfers, renews and syncs domains, changes nameservers, contact details and the registrar
   lock, and answers the client area's domain search; all but GoDaddy also manage private nameservers, and Namecheap,
   NameSilo and Openprovider tell their TLD prices for Import from registrar. Each has a sandbox or test switch.
-  Written without the registrars' documentation at hand and not yet tried against real accounts: try Test with a domain
-  in a sandbox account first.
+  Written without the registrars' documentation at hand, then checked against their WHMCS and Blesta modules where
+  readable (Namecheap, NameSilo, Openprovider); not yet tried against real accounts: try Test with a domain in a
+  sandbox account first.
+- Enom 1.4.0: TLD costs now come from PE_GetProductPrice (the account's own cost), and renewing a domain that has
+  already expired brings it back with UpdateExpiredDomains, as Enom's Blesta module does.
 - Security: client area sign up no longer says whether an email address already has an account (it told anyone who is
   a client here, and which addresses belong to admins). Every sign up with a password now ends on "Check your email"
   without logging in; the confirmation link asks the new client to log in, then opens the account. An address that

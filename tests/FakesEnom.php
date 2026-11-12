@@ -30,7 +30,7 @@ trait FakesEnom
     /** @var array<string, string> private nameserver host => IP */
     protected array $enomHosts = [];
 
-    /** @var array<string, array{register?: string, renew?: string, transfer?: string}> PE_GetResellerPrice by TLD ("com"); missing = not sold */
+    /** @var array<string, array{register?: string, renew?: string, transfer?: string}> PE_GetProductPrice by TLD ("com"); missing = not sold */
     protected array $enomPrices = [];
 
     protected function fakeEnom(): void
@@ -83,6 +83,14 @@ trait FakesEnom
                     $this->enomDomains[$domain]['expires'] = now()->parse($this->enomDomains[$domain]['expires'])->addYears((int) $params['NumYears'])->toDateString();
 
                     return $this->enomReply($command, '<Extension>successful</Extension>');
+                case 'UpdateExpiredDomains':
+                    $name = strtolower((string) $params['DomainName']);
+                    if (! isset($this->enomDomains[$name])) {
+                        return $this->enomReply($command, '', ['Domain name not found']);
+                    }
+                    $this->enomDomains[$name]['expires'] = now()->addYears((int) $params['NumYears'])->toDateString();
+
+                    return $this->enomReply($command, '<ReactivateDomainName>'.$name.'</ReactivateDomainName>');
                 case 'GetDNS':
                     return isset($this->enomDomains[$domain])
                         ? $this->enomReply($command, implode('', array_map(fn (string $n) => "<dns>{$n}</dns>", $this->enomDomains[$domain]['ns'] ?? [])).'<UseDNS>custom</UseDNS>')
@@ -126,7 +134,7 @@ trait FakesEnom
                     $this->enomDomains[$domain]['locked'] = (int) $params['UnlockRegistrar'] === 0;
 
                     return $this->enomReply($command, '<RRPCode>200</RRPCode>');
-                case 'PE_GetResellerPrice':
+                case 'PE_GetProductPrice':
                     $kind = array_search((int) $params['ProductType'], EnomRegistrar::PRODUCT_TYPES, true);
                     $price = $this->enomPrices[$params['tld']][$kind] ?? null;
 

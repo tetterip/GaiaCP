@@ -136,7 +136,7 @@ never calls a panel API directly.
   `DomainRegistrar` from the account's module (`PluginManager::enabledRegistrarModule()`). Only `DomainLifecycle` calls a registrar; `RecordPayment` renews an
   active/suspended yearly domain through it, outside the transaction (a failure keeps the payment).
 - **TLD import and cost sync** (`App\Actions\ImportTldPrices`): a `DomainRegistrar` implementing `ListsTldPrices`
-  returns `TldPrice`s (easy.gr action 33 for every TLD at its shortest term, EUR; Enom `PE_GetResellerPrice` per TLD
+  returns `TldPrice`s (easy.gr action 33 for every TLD at its shortest term, EUR; Enom `PE_GetProductPrice` per TLD
   and ProductType 10/16/19, 1 year, USD). Settings → Domain pricing → Import from registrar (`ImportTldPricesAction`,
   a two-step wizard; replies cached 15 minutes as plain arrays) stores costs and, for new TLDs (or when asked), prices
   = cost + % + fixed, rounded; `gaiacp:sync-tld-costs` (04:15, `domains.sync_costs`) only updates costs of each
@@ -157,9 +157,11 @@ never calls a panel API directly.
   `responsetype=xml`; replies `<interface-response>` with `ErrCount` 0, or the errors in `<errors><Err1>…`. A domain
   goes as `SLD` (first label) + `TLD` (the rest). Commands: `Purchase` (NS1..NS12 or `UseDNS=default`, contacts with
   the prefixes Registrant / Admin / Tech / AuxBilling; a company adds OrganizationName, JobTitle "N/A" and Fax),
-  `Extend`, `TP_CreateOrder` (Autoverification, `AuthInfo1`, `UseContacts=0`), `GetDomainInfo` (status/expiration,
+  `Extend` (an expired domain: `UpdateExpiredDomains` with `DomainName`, as Enom's Blesta module), `TP_CreateOrder`
+  (Autoverification, `AuthInfo1`, `UseContacts=0`), `GetDomainInfo` (status/expiration,
   US date order), `GetDNS` / `ModifyNS`, `SynchAuthInfo` (EmailEPP). Built from open-source Enom modules, since
-  Enom's docs were unreachable; not tried against Enom yet. `pw` and the EPP code are masked in the module log.
+  Enom's docs were unreachable, and checked against Enom's Blesta module (which sends GET; POST is kept); not tried
+  against Enom yet. `pw` and the EPP code are masked in the module log.
 - **Namecheap** (`plugins/Namecheap`, module `namecheap`; credentials `username`, `api_key`, `client_ip`, `sandbox`):
   form POST to `https://api.namecheap.com/xml.response` (`api.sandbox.namecheap.com`) with `ApiUser` = `UserName`,
   `ApiKey`, `ClientIp` (optional; else 10.11.12.13, as Namecheap's WHMCS module) and `Command`; the EPP code as
@@ -167,12 +169,14 @@ never calls a panel API directly.
   `<Errors><Error>`. Commands `namecheap.domains.check` (a premium name counts as taken), `create` (four contact
   prefixes as Enom's, free WhoisGuard added, off), `transfer.create`, `renew`, `getInfo` (`DomainDetails/ExpiredDate`,
   m/d/Y), `dns.getList` / `setCustom` / `setDefault` (SLD + TLD), `getContacts` / `setContacts` (all four at once),
-  `ns.create` / `update` / `delete`, `getRegistrarLock` / `setRegistrarLock`, `users.getPricing` (REGISTER / RENEW /
-  TRANSFER, the 1-year `YourPrice`, every TLD). No EPP code command: `eppCode()` throws with where to find it.
+  `ns.create` / `update` / `delete`, `getRegistrarLock` / `setRegistrarLock`, `users.getPricing` (one call,
+  `ProductCategory=DOMAINS`, its register / renew / transfer categories, the 1-year `YourPrice`, every TLD, as
+  Namecheap's Blesta module). No EPP code command: `eppCode()` throws with where to find it.
 - **NameSilo** (`plugins/NameSilo`, module `namesilo`; credentials `api_key`, `sandbox`): GET
-  `https://www.namesilo.com/api/<operation>` (`sandbox.namesilo.com`) with `version=1`, `type=xml`, `key`; reply
+  `https://www.namesilo.com/api/<operation>` (`ote.namesilo.com`) with `version=1`, `type=xml`, `key`; reply
   `<namesilo><reply><code>` 300-302 = done, else the error in `detail`. Operations `checkRegisterAvailability`,
-  `registerDomain` / `transferDomain` (fn, ln, ad, cy, st, zp, ct, em, ph as digits with the calling code, nn = company;
+  `registerDomain` / `transferDomain` (fn, ln, ad, cy, st, zp, ct, em, cp = company, ph = the national number in
+  digits, the last ten for US / CA, as NameSilo's Blesta module;
   `private=1`, `auto_renew=0`), `renewDomain`, `getDomainInfo` (expires Y-m-d, nameservers, lock, contact_ids),
   `changeNameServers` (ns1..ns13), `retrieveAuthCode` (emailed: `EmailsEppCode`), `contactList` / `contactAdd` +
   `contactDomainAssociate` (a changed contact is a new record, as one may serve other domains), `add` / `modify` /

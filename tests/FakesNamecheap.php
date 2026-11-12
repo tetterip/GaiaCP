@@ -122,16 +122,19 @@ trait FakesNamecheap
 
                     return $this->namecheapReply($command, '<DomainSetRegistrarLockResult Domain="'.$domain.'" IsSuccess="true" />');
                 case 'namecheap.users.getPricing':
-                    $kind = strtolower($params['ProductCategory']);
-                    $products = '';
-                    foreach ($this->namecheapPrices as $tld => $prices) {
-                        if (isset($prices[$kind])) {
-                            $products .= '<Product Name="'.$tld.'"><Price Duration="1" DurationType="YEAR" Price="'.$prices[$kind].'" YourPrice="'.$prices[$kind].'" Currency="USD" />'
-                                .'<Price Duration="2" DurationType="YEAR" Price="99" YourPrice="99" Currency="USD" /></Product>';
+                    $categories = '';
+                    foreach (['register', 'renew', 'transfer', 'restore'] as $kind) {
+                        $products = '';
+                        foreach ($this->namecheapPrices as $tld => $prices) {
+                            if (isset($prices[$kind])) {
+                                $products .= '<Product Name="'.$tld.'"><Price Duration="1" DurationType="YEAR" Price="'.$prices[$kind].'" YourPrice="'.$prices[$kind].'" Currency="USD" />'
+                                    .'<Price Duration="2" DurationType="YEAR" Price="99" YourPrice="99" Currency="USD" /></Product>';
+                            }
                         }
+                        $categories .= '<ProductCategory Name="'.$kind.'">'.$products.'</ProductCategory>';
                     }
 
-                    return $this->namecheapReply($command, '<UserGetPricingResult><ProductType Name="domains"><ProductCategory Name="'.$kind.'">'.$products.'</ProductCategory></ProductType></UserGetPricingResult>');
+                    return $this->namecheapReply($command, '<UserGetPricingResult><ProductType Name="domains">'.$categories.'</ProductType></UserGetPricingResult>');
             }
 
             return $this->namecheapReply($command, '', "Unknown command {$command}");

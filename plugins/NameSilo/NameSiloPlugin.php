@@ -68,7 +68,7 @@ class NameSiloPlugin extends Plugin implements RegistrarModule
                     : __('Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server\'s IP address there.')),
             Toggle::make('credentials.sandbox')
                 ->label('Sandbox')
-                ->helperText(__('Sends every call to NameSilo\'s sandbox (sandbox.namesilo.com), with a sandbox account\'s API key.')),
+                ->helperText(__('Sends every call to NameSilo\'s sandbox (ote.namesilo.com), with a sandbox account\'s API key.')),
         ];
     }
 }

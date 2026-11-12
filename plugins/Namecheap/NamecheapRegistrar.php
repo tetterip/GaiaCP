@@ -30,8 +30,8 @@ class NamecheapRegistrar implements ChecksAvailability, DomainRegistrar, ListsTl
     /** Namecheap's contact prefix for each of GaiaCP's roles (DomainContact::ROLES). */
     public const ROLES = ['registrant' => 'Registrant', 'admin' => 'Admin', 'tech' => 'Tech', 'billing' => 'AuxBilling'];
 
-    /** users.getPricing's ProductCategory for each kind of price. */
-    public const CATEGORIES = ['register' => 'REGISTER', 'renew' => 'RENEW', 'transfer' => 'TRANSFER'];
+    /** The ProductCategory names in users.getPricing's reply that GaiaCP reads. */
+    public const CATEGORIES = ['register', 'renew', 'transfer'];
 
     public function __construct(private NamecheapClient $client) {}
 
@@ -58,7 +58,7 @@ class NamecheapRegistrar implements ChecksAvailability, DomainRegistrar, ListsTl
         return $available === 'true' && strtolower((string) ($result['IsPremiumName'] ?? 'false')) !== 'true';
     }
 
-    /** users.getPricing lists every TLD of a category in one reply. */
+    /** users.getPricing lists every TLD in one reply. */
     public function listsAllTlds(): bool
     {
         return true;
@@ -69,11 +69,18 @@ class NamecheapRegistrar implements ChecksAvailability, DomainRegistrar, ListsTl
         $wanted = $tlds === null ? null : array_map(fn (string $tld) => ltrim(mb_strtolower(trim($tld)), '.'), $tlds);
         $prices = [];
 
-        foreach (self::CATEGORIES as $kind => $category) {
-            $products = $this->client->call('namecheap.users.getPricing', ['ProductType' => 'DOMAIN', 'ProductCategory' => $category], timeout: 120)
-                ->xpath("//*[local-name()='Product']") ?: [];
+        // One call for every category, as Namecheap's Blesta module does: each ProductCategory is named register, renew, …
+        $categories = $this->client->call('namecheap.users.getPricing', ['ProductType' => 'DOMAIN', 'ProductCategory' => 'DOMAINS'], timeout: 120)
+            ->xpath("//*[local-name()='ProductCategory']") ?: [];
 
-            foreach ($products as $product) {
+        foreach ($categories as $category) {
+            $kind = strtolower(trim((string) $category['Name']));
+
+            if (! in_array($kind, self::CATEGORIES, true)) {
+                continue;
+            }
+
+            foreach ($category->children() as $product) {
                 $tld = strtolower(trim((string) $product['Name']));
 
                 if ($tld === '' || ($wanted !== null && ! in_array($tld, $wanted, true))) {

@@ -339,7 +339,8 @@ class NameSiloRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEp
     }
 
     /**
-     * contactAdd's and registerDomain's fields. NameSilo takes the phone as digits only, with the calling code.
+     * contactAdd's and registerDomain's fields, as NameSilo's Blesta module sends them: the company is `cp`, the
+     * phone is the national number in digits only (the last ten for the US and Canada).
      *
      * @return array<string, string>
      */
@@ -354,7 +355,7 @@ class NameSiloRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEp
             'zp' => $contact->postcode,
             'ct' => $contact->country,
             'em' => $contact->email,
-            'ph' => preg_replace('/\D/', '', EppPhone::format($contact->phone, $contact->country)),
+            'ph' => self::phone($contact),
         ];
 
         if ($contact->address2 !== '') {
@@ -362,9 +363,17 @@ class NameSiloRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEp
         }
 
         if ($contact->company !== '') {
-            $fields['nn'] = $contact->company;
+            $fields['cp'] = $contact->company;
         }
 
         return $fields;
+    }
+
+    private static function phone(DomainContact $contact): string
+    {
+        $parts = explode('.', EppPhone::format($contact->phone, $contact->country), 2);
+        $digits = (string) preg_replace('/\D/', '', $parts[1] ?? $parts[0]);
+
+        return in_array(strtoupper($contact->country), ['US', 'CA'], true) ? substr($digits, -10) : $digits;
     }
 }

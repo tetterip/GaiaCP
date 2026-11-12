@@ -18,7 +18,7 @@ class NameSiloClient
 {
     public const LIVE_URL = 'https://www.namesilo.com/api/';
 
-    public const SANDBOX_URL = 'https://sandbox.namesilo.com/api/';
+    public const SANDBOX_URL = 'https://ote.namesilo.com/api/';
 
     /** Reply codes that mean the operation was done. */
     public const SUCCESS = ['300', '301', '302'];

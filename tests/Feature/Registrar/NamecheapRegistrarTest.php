@@ -194,7 +194,8 @@ class NamecheapRegistrarTest extends TestCase
         $this->assertSame(['.com', '.net'], $prices->keys()->all());
         $this->assertSame([958, 1398, 958, 'USD', 1], [$prices['.com']->registerCents, $prices['.com']->renewCents, $prices['.com']->transferCents, $prices['.com']->currency, $prices['.com']->years]);
         $this->assertNull($prices['.net']->transferCents);
-        $this->assertSame(['namecheap.users.getPricing', ['ProductType' => 'DOMAIN', 'ProductCategory' => 'REGISTER']], $this->namecheapCalls[0]);
+        $this->assertSame(['namecheap.users.getPricing', ['ProductType' => 'DOMAIN', 'ProductCategory' => 'DOMAINS']], $this->namecheapCalls[0]);
+        $this->assertCount(1, $this->namecheapCalls);
 
         $this->assertSame(['.net'], array_column(array_map(fn ($p) => $p->toArray(), $this->registrar()->tldPrices(['NET'])), 'tld'));
     }

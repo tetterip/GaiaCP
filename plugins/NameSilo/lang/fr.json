@@ -4,6 +4,6 @@
     "Leave empty to keep the current key. Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Laissez vide pour garder la clé actuelle. Stockée chiffrée. Créez-la dans Account → API Manager chez NameSilo et limitez-la là à l'adresse IP de ce serveur.",
     "Registers, renews, transfers and syncs domains through a NameSilo account with an API key.": "Enregistre, renouvelle, transfère et synchronise des domaines via un compte NameSilo avec une clé API.",
     "Sandbox": "Sandbox",
-    "Sends every call to NameSilo's sandbox (sandbox.namesilo.com), with a sandbox account's API key.": "Envoie chaque appel au sandbox de NameSilo (sandbox.namesilo.com), avec la clé API d'un compte sandbox.",
+    "Sends every call to NameSilo's sandbox (ote.namesilo.com), with a sandbox account's API key.": "Envoie chaque appel au sandbox de NameSilo (ote.namesilo.com), avec la clé API d'un compte sandbox.",
     "Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Stockée chiffrée. Créez-la dans Account → API Manager chez NameSilo et limitez-la là à l'adresse IP de ce serveur."
 }

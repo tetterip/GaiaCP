@@ -88,7 +88,7 @@ class NameSiloRegistrarTest extends TestCase
         $this->assertSame([
             'domain' => 'acme.com', 'years' => '2', 'private' => '1', 'auto_renew' => '0', 'ns1' => 'ns1.host.gr', 'ns2' => 'ns2.host.gr',
             'fn' => 'Νίκος', 'ln' => 'Παπαδόπουλος', 'ad' => 'Ερμού 1', 'cy' => 'Αθήνα', 'st' => 'Αττική', 'zp' => '10563', 'ct' => 'GR',
-            'em' => 'nikos@example.gr', 'ph' => '302101234567', 'nn' => 'Acme ΙΚΕ',
+            'em' => 'nikos@example.gr', 'ph' => '2101234567', 'cp' => 'Acme ΙΚΕ',
         ], $params);
     }
 
