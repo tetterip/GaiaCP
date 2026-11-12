@@ -14,7 +14,7 @@ class MenuButtonsTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const CHEVRON = '.fi-dropdown-trigger > .fi-btn:not(.gcp-public-theme-btn)::after';
+    private const CHEVRON = '.fi-dropdown:not(.fi-page-sub-navigation-dropdown) > .fi-dropdown-trigger > .fi-btn:not(.gcp-public-theme-btn)::after';
 
     private const FIT = 'min-width: max-content';
 
@@ -27,6 +27,16 @@ class MenuButtonsTest extends TestCase
             ->assertSee('fi-dropdown-trigger', false)
             ->assertSee(self::CHEVRON, false)
             ->assertSee(self::FIT, false);
+    }
+
+    public function test_a_settings_page_menu_on_a_phone_keeps_only_filaments_own_chevron(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        // The page menu Filament shows on a phone is a dropdown button that already ends with a chevron icon
+        $this->get('/admin/settings/registrars')->assertOk()
+            ->assertSee('fi-page-sub-navigation-dropdown', false)
+            ->assertSee(self::CHEVRON, false);
     }
 
     public function test_the_client_area_has_the_same_style(): void

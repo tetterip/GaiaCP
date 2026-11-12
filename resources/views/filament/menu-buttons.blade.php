@@ -2,11 +2,12 @@
     A small chevron after the label of every button that opens a menu (an ActionGroup shown as a button or a link,
     e.g. a client's Client area / Credit / Suggestions, a service's Account and Price, the visitors' language), so it
     reads as "has more choices" rather than doing something at once. Icon buttons, the ⋮ menus and the visitors'
-    icon-only theme button are left alone. Menus also grow to fit their longest choice. Both panels,
+    icon-only theme button are left alone, and so is a cluster's page menu on a phone (e.g. Settings → Registrars),
+    which has Filament's own chevron at its end. Menus also grow to fit their longest choice. Both panels,
     PanelsRenderHook::HEAD_END.
 --}}
 <style>
-    .fi-dropdown-trigger > .fi-btn:not(.gcp-public-theme-btn)::after,
+    .fi-dropdown:not(.fi-page-sub-navigation-dropdown) > .fi-dropdown-trigger > .fi-btn:not(.gcp-public-theme-btn)::after,
     .fi-dropdown-trigger > .fi-link::after {
         content: '';
         flex: none;
