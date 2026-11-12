@@ -5,6 +5,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- DirectAdmin 1.2.0: **Log in** opens DirectAdmin already signed in (a one-time link, else its login page as before);
+  suspend and unsuspend name the action (`dosuspend` / `dounsuspend`) instead of the field DirectAdmin reads as a toggle.
+- Enhance 1.1.0: **Change password** uses Enhance's password route (the older call stays as a fallback) and also sets
+  each website's SSH / SFTP password, which a new account now gets too.
+- Plesk 1.6.1: a hosting account's bandwidth now includes its subscription's other domains (it counted only the main
+  one), and **Change password** on the service that made the client's Plesk login changes that login too, as WHMCS's
+  Plesk module does (before, only the FTP / SSH user changed, so the client's Plesk password stayed the old one).
 - Five new registrar plugins: **Namecheap**, **NameSilo**, **Openprovider**, **GoDaddy** and **ResellerClub** (Settings →
   Registrars). Each registers, transfers, renews and syncs domains, changes nameservers, contact details and the registrar
   lock, and answers the client area's domain search; all but GoDaddy also manage private nameservers, and Namecheap,

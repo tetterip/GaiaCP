@@ -119,6 +119,23 @@ class HostingUsageTest extends TestCase
         $this->assertSame(['gen_info', 'limits', 'stat', 'disk_usage'], $datasets);
     }
 
+    public function test_plesk_bandwidth_adds_the_subscriptions_other_domains(): void
+    {
+        $this->fakePlesk();
+        $this->hosting->update(['server_id' => Server::factory()->plesk()->create()->id]);
+        $this->pleskWebspaces['maria.gr'] = ['owner' => 12, 'status' => 0, 'plan' => 'Starter', 'ftp_login' => 'maria', 'ip' => '203.0.113.5', 'traffic' => 1_000];
+        $this->pleskSites['maria.gr'] = [200, 30];
+
+        $this->assertSame(1_230, $this->lifecycle()->usage($this->hosting->fresh())->bandwidthUsed);
+
+        $site = collect($this->pleskCalls)->firstWhere(0, 'site.get')[1];
+        $this->assertSame('maria.gr', (string) $site->filter->{'parent-name'});
+
+        // Plesk refusing the domains' traffic keeps the subscription's own.
+        $this->pleskFailures['site.get'] = [1006, 'Permission denied.'];
+        $this->assertSame(1_000, $this->lifecycle()->usage($this->hosting->fresh(), fresh: true)->bandwidthUsed);
+    }
+
     public function test_a_reading_is_kept_until_read_again(): void
     {
         $this->fakeWhm();

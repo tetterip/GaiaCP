@@ -60,6 +60,17 @@ class EnhanceClient
     }
 
     /**
+     * A PUT; false when Enhance has no such route (HTTP 404 or 405), e.g. on an older version.
+     *
+     * @param  array<string, mixed>  $body
+     * @param  list<string>  $secrets
+     */
+    public function put(string $path, array $body, array $secrets = [], int $timeout = 60): bool
+    {
+        return $this->send('PUT', $path, [], $body, $secrets, $timeout, missingStatuses: [404, 405]) !== false;
+    }
+
+    /**
      * Deletes; a 404 counts as done (already gone).
      *
      * @param  array<string, scalar>  $query
@@ -73,9 +84,10 @@ class EnhanceClient
      * @param  array<string, scalar>  $query
      * @param  array<string, mixed>  $body
      * @param  list<string>  $secrets
-     * @return array<mixed>|string|null
+     * @param  list<int>  $missingStatuses  statuses answered with false instead of an error
+     * @return array<mixed>|string|false|null
      */
-    private function send(string $method, string $path, array $query, array $body, array $secrets, int $timeout, bool $missingIsNull = false): array|string|null
+    private function send(string $method, string $path, array $query, array $body, array $secrets, int $timeout, bool $missingIsNull = false, array $missingStatuses = []): array|string|false|null
     {
         $token = (string) $this->server->api_token;
         $url = $this->baseUrl().'/api'.$path.($query ? '?'.http_build_query($query) : '');
@@ -92,6 +104,7 @@ class EnhanceClient
                 'GET' => $request->get($url),
                 'DELETE' => $request->delete($url),
                 'PATCH' => $request->patch($url, $body),
+                'PUT' => $request->put($url, $body),
                 default => $request->post($url, $body),
             };
         } catch (ConnectionException $e) {
@@ -102,6 +115,10 @@ class EnhanceClient
 
         if ($missingIsNull && $response->status() === 404) {
             return null;
+        }
+
+        if (in_array($response->status(), $missingStatuses, true)) {
+            return false;
         }
 
         if ($response->status() === 401 || $response->status() === 403) {

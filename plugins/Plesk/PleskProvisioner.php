@@ -170,9 +170,26 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
         ]);
     }
 
-    /** The subscription's system user (FTP / SSH). The client's Plesk login is the customer's and is left alone. */
+    /**
+     * The subscription's system user (FTP / SSH), and the client's Plesk login too when this service made that login
+     * (its username is the customer's login), as WHMCS's Plesk module does for the main service. A client's other
+     * subscriptions on the server change only their system user.
+     */
     public function changePassword(Service $service, string $password): void
     {
+        $webspace = $this->findWebspace($service)
+            ?? throw new ProvisioningException("There is no subscription {$service->domain} on {$this->server->name}.");
+        $customerId = (int) $webspace->data->gen_info->{'owner-id'};
+        $customer = $this->plesk->call('customer', 'get', ['filter' => ['id' => $customerId], 'dataset' => ['gen_info' => []]], allowNotFound: true)[0] ?? null;
+
+        // First, since Plesk's password rules are usually stricter for a login: a refusal changes nothing.
+        if ($customer !== null && strcasecmp((string) $customer->data->gen_info->login, (string) $service->username) === 0) {
+            $this->plesk->call('customer', 'set', [
+                'filter' => ['id' => $customerId],
+                'values' => ['gen_info' => ['passwd' => $password]],
+            ]);
+        }
+
         // As api-php-lib's Webspace::setProperties().
         $this->plesk->call('webspace', 'set', [
             'filter' => ['name' => $this->domain($service)],
@@ -252,8 +269,8 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
     ];
 
     /**
-     * The subscription's disk use (gen_info real_size), this month's traffic and counts (stat), its plan's limits
-     * (-1 = unlimited) and its databases' size (disk_usage dbases), sizes in bytes. Datasets in the schema's order.
+     * The subscription's disk use (gen_info real_size), this month's traffic (stat, plus its other domains') and counts,
+     * its plan's limits     * (-1 = unlimited) and its databases' size (disk_usage dbases), sizes in bytes. Datasets in the schema's order.
      */
     public function usage(Service $service): AccountUsage
     {
@@ -280,13 +297,30 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
             $counts['database_disk'] = [$number($webspace->data->disk_usage->dbases), null];
         }
 
+        $traffic = $number($webspace->data->stat->traffic ?? null);
+
         return new AccountUsage(
             diskUsed: $number($webspace->data->gen_info->real_size ?? null),
             diskLimit: $limit('disk_space', bytes: true),
-            bandwidthUsed: $number($webspace->data->stat->traffic ?? null),
+            bandwidthUsed: $traffic === null ? null : $traffic + $this->additionalSitesTraffic($this->domain($service)),
             bandwidthLimit: $limit('max_traffic', bytes: true),
             counts: $counts,
         );
+    }
+
+    /**
+     * This month's traffic of the subscription's other domains (`site get` by parent-name): the subscription's own stat
+     * counts only its main domain, so WHMCS's Plesk module adds these too. 0 when there are none or Plesk refuses.
+     */
+    private function additionalSitesTraffic(string $domain): int
+    {
+        try {
+            $sites = $this->plesk->call('site', 'get', ['filter' => ['parent-name' => $domain], 'dataset' => ['stat' => []]], allowNotFound: true);
+        } catch (ProvisioningException) {
+            return 0;
+        }
+
+        return array_sum(array_map(fn (SimpleXMLElement $site) => is_numeric((string) ($site->data->stat->traffic ?? '')) ? (int) (string) $site->data->stat->traffic : 0, $sites));
     }
 
     /**

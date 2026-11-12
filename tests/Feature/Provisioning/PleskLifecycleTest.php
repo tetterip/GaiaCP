@@ -178,7 +178,41 @@ class PleskLifecycleTest extends TestCase
         $this->lifecycle->changePassword($service->refresh(), 'NewSecret123');
 
         $this->assertSame('NewSecret123', $this->pleskWebspaces['bakery.gr']['ftp_password']);
+        // This service made the client's Plesk login, so that password changes too.
+        $this->assertSame('NewSecret123', collect($this->pleskCustomers)->firstWhere('login', $service->username)['passwd']);
         $this->assertSame('NewSecret123', $service->refresh()->password);
         $this->assertDatabaseMissing('activity_logs', ['description' => 'NewSecret123']);
+    }
+
+    public function test_change_password_of_a_second_subscription_leaves_the_plesk_login_alone(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $id = array_key_first($this->pleskCustomers);
+        $this->pleskCustomers[$id]['login'] = 'firstservice';
+
+        $this->lifecycle->changePassword($service->refresh(), 'NewSecret123');
+
+        $this->assertSame('NewSecret123', $this->pleskWebspaces['bakery.gr']['ftp_password']);
+        $this->assertArrayNotHasKey('passwd', $this->pleskCustomers[$id]);
+        $this->assertNotContains('customer.set', $this->pleskOperations());
+    }
+
+    public function test_a_refused_plesk_login_password_changes_nothing(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $old = $service->refresh()->password;
+        $this->pleskFailures['customer.set'] = [1019, 'The password is too simple.'];
+
+        try {
+            $this->lifecycle->changePassword($service, 'NewSecret123');
+            $this->fail('expected an exception');
+        } catch (ProvisioningException $e) {
+            $this->assertStringContainsString('too simple', $e->getMessage());
+        }
+
+        $this->assertArrayNotHasKey('ftp_password', $this->pleskWebspaces['bakery.gr']);
+        $this->assertSame($old, $service->refresh()->password);
     }
 }

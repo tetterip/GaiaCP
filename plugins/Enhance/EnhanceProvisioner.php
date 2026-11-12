@@ -98,6 +98,20 @@ class EnhanceProvisioner implements HostingProvisioner, ListsAccounts
         }
 
         $this->remember($service, $orgId, $subscriptionId, self::id($website));
+
+        if (filled(self::id($website))) {
+            // A client sharing a customer took its login's password (customerOrg()).
+            $this->setSshPassword($orgId, (string) self::id($website), (string) ($service->password ?: $password));
+        }
+    }
+
+    /**
+     * The website's SSH / SFTP password, the same as the login's (as Blesta's Enhance module does). Best effort: the
+     * website works without it and a refusal is only in the module log.
+     */
+    private function setSshPassword(string $orgId, string $websiteId, string $password): void
+    {
+        rescue(fn () => $this->api->post("/orgs/{$orgId}/websites/{$websiteId}/ssh/password", ['newPassword' => $password], secrets: [$password]), report: false);
     }
 
     /** Enhance's own suspension of the subscription; its reason stays in GaiaCP. */
@@ -147,7 +161,14 @@ class EnhanceProvisioner implements HostingProvisioner, ListsAccounts
             throw new ProvisioningException('Enhance did not say which login owns this customer.');
         }
 
-        $this->api->patch("/logins/{$loginId}", ['password' => $password], secrets: [$password]);
+        // As Blesta's Enhance module; an Enhance without that route takes the older PATCH.
+        if (! $this->api->put("/v2/logins/{$loginId}/password", ['newPassword' => $password], secrets: [$password])) {
+            $this->api->patch("/logins/{$loginId}", ['password' => $password], secrets: [$password]);
+        }
+
+        foreach ($this->websites($account->org_id) as $website) {
+            $this->setSshPassword($account->org_id, $website['id'], $password);
+        }
 
         $this->siblings($service, $account->org_id)->each(fn (Service $other) => $other->update(['password' => $password]));
     }

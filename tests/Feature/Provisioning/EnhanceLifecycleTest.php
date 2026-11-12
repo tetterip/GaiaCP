@@ -41,6 +41,12 @@ class EnhanceLifecycleTest extends TestCase
     /** @var array<string, array{email: string, password: string}> */
     private array $logins = [];
 
+    /** @var array<string, string> website id => SSH password */
+    private array $sshPasswords = [];
+
+    /** An Enhance without PUT /v2/logins/{id}/password. */
+    private bool $oldEnhance = false;
+
     /** @var list<array{0: string, 1: string, 2: array<mixed>}> method, path, body */
     private array $calls = [];
 
@@ -87,6 +93,9 @@ class EnhanceLifecycleTest extends TestCase
                     : $this->created('logins', ['email' => $body['email'], 'password' => $body['password']], uuid: true),
                 $request->method() === 'GET' && $path === '/logins' => Http::response(['items' => collect($this->logins)->map(fn ($l, $id) => ['id' => $id, 'email' => $l['email']])->values()->all()]),
                 $request->method() === 'PATCH' && preg_match('#^/logins/([^/]+)$#', $path, $x) === 1 => $this->patchLogin($x[1], $body),
+                $request->method() === 'PUT' && preg_match('#^/v2/logins/([^/]+)/password$#', $path, $x) === 1 => $this->oldEnhance
+                    ? Http::response(['code' => 'not_found'], 404)
+                    : $this->patchLogin($x[1], ['password' => $body['newPassword']]),
                 default => $this->orgRoute($request->method(), $path, $query, $body),
             };
         });
@@ -132,6 +141,12 @@ class EnhanceLifecycleTest extends TestCase
                 ->where('orgId', $x[1])
                 ->filter(fn ($w) => ! isset($query['subscriptionId']) || (string) $w['subscriptionId'] === $query['subscriptionId'])
                 ->map(fn ($w, $id) => ['id' => $id, 'domain' => ['domain' => $w['domain']], 'subscriptionId' => $w['subscriptionId']])->values()->all()]);
+        }
+
+        if ($method === 'POST' && preg_match('#^/orgs/[^/]+/websites/([^/]+)/ssh/password$#', $path, $x)) {
+            $this->sshPasswords[$x[1]] = $body['newPassword'];
+
+            return Http::response(null, 204);
         }
 
         if ($method === 'DELETE' && preg_match('#^/orgs/[^/]+/websites/([^/]+)$#', $path, $x)) {
@@ -231,10 +246,28 @@ class EnhanceLifecycleTest extends TestCase
         $this->assertCount(2, $this->subscriptions);
         $this->assertSame($first->refresh()->password, $second->refresh()->password);
 
+        // Each website's SSH password is the login's.
+        $this->assertSame([$first->password, $first->password], array_values($this->sshPasswords));
+
         $this->lifecycle->changePassword($second, 'NewPassword123');
 
         $this->assertSame('NewPassword123', collect($this->logins)->first()['password']);
         $this->assertSame('NewPassword123', $first->refresh()->password);
+        $this->assertSame(['NewPassword123', 'NewPassword123'], array_values($this->sshPasswords));
+        $this->assertContains(['PUT', '/v2/logins/'.array_key_first($this->logins).'/password', ['newPassword' => 'NewPassword123']], $this->calls);
+        $this->assertNotContains('PATCH', array_column(array_filter($this->calls, fn ($c) => str_starts_with($c[1], '/logins/')), 0));
+    }
+
+    public function test_an_older_enhance_changes_the_password_with_patch(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $this->oldEnhance = true;
+
+        $this->lifecycle->changePassword($service->refresh(), 'NewPassword123');
+
+        $this->assertSame('NewPassword123', collect($this->logins)->first()['password']);
+        $this->assertSame('NewPassword123', $service->refresh()->password);
     }
 
     public function test_a_failed_website_removes_the_subscription_again(): void

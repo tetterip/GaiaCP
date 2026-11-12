@@ -40,6 +40,33 @@ class DirectAdminClient
     }
 
     /**
+     * A one-time sign-in link for a login (DirectAdmin's JSON API, `POST /api/login` → `loginURL`), or null when
+     * DirectAdmin gives none (an older version, a wrong password, two-step login).
+     */
+    public function loginUrl(string $username, string $password): ?string
+    {
+        if ($username === '' || $password === '') {
+            return null;
+        }
+
+        try {
+            $response = Http::withOptions(['verify' => $this->server->verify_tls])
+                ->withMiddleware(ModuleLogger::middleware('directadmin', 'api/login', [$password], ['loginURL']))
+                ->acceptJson()
+                ->asJson()
+                ->connectTimeout(5)
+                ->timeout(15)
+                ->post(sprintf('https://%s:%d/api/login', $this->server->hostname, $this->server->port), ['username' => $username, 'password' => $password]);
+        } catch (ConnectionException) {
+            return null;
+        }
+
+        $url = $response->successful() ? $response->json('loginURL') : null;
+
+        return is_string($url) && preg_match('#^https?://#', $url) === 1 ? $url : null;
+    }
+
+    /**
      * @param  array<string, scalar>  $params
      * @param  list<string>  $secrets
      * @return array<string, mixed>

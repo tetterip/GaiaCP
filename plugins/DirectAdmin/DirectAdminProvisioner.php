@@ -99,12 +99,13 @@ class DirectAdminProvisioner implements HostingProvisioner, ListsAccounts
     public function suspendAccount(Service $service, string $reason): void
     {
         // DirectAdmin's legacy API takes no reason; it stays in GaiaCP.
-        $this->da->post('SELECT_USERS', ['suspend' => 'Suspend', 'select0' => $this->username($service)], timeout: 120);
+        // dosuspend / dounsuspend say what to do; the older `suspend` is read as a toggle (as Blesta's DirectAdmin module).
+        $this->da->post('SELECT_USERS', ['dosuspend' => 'Suspend', 'location' => 'CMD_SELECT_USERS', 'select0' => $this->username($service)], timeout: 120);
     }
 
     public function unsuspendAccount(Service $service): void
     {
-        $this->da->post('SELECT_USERS', ['suspend' => 'Unsuspend', 'select0' => $this->username($service)], timeout: 120);
+        $this->da->post('SELECT_USERS', ['dounsuspend' => 'Unsuspend', 'location' => 'CMD_SELECT_USERS', 'select0' => $this->username($service)], timeout: 120);
     }
 
     public function terminateAccount(Service $service): void
@@ -131,17 +132,21 @@ class DirectAdminProvisioner implements HostingProvisioner, ListsAccounts
         ], secrets: [$password]);
     }
 
-    /** DirectAdmin's login page: the client signs in with their username and password. */
+    /**
+     * A one-time sign-in link from DirectAdmin's JSON API (`POST /api/login` with the user's own login, as Blesta's
+     * DirectAdmin module does), else the login page: an older DirectAdmin, two-step login or a changed password.
+     */
     public function loginUrl(Service $service, string $clientIp): string
     {
-        $this->username($service);
+        $username = $this->username($service);
 
-        return $this->panelUrl();
+        return (filled($service->password) ? $this->da->loginUrl($username, (string) $service->password) : null) ?? $this->panelUrl();
     }
 
+    /** The same for the server's own login, when it is a password (a login key can't sign in). */
     public function adminLoginUrl(string $clientIp): string
     {
-        return $this->panelUrl();
+        return $this->da->loginUrl((string) $this->server->username, (string) $this->server->api_token) ?? $this->panelUrl();
     }
 
     /**

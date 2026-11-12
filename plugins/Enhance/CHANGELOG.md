@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.0] - 2026-11-12
+
+- Change password uses `PUT /v2/logins/{id}/password` (as Blesta's Enhance module), with the older `PATCH /logins/{id}` when Enhance has no such route
+- Each website's SSH / SFTP password is set to the client's login password, after create and on Change password (best effort)
+
 ## [1.0.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)
