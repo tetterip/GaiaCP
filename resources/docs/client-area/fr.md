@@ -129,6 +129,10 @@ Pour payer par carte, ouvrez un avis de paiement impayé et cliquez sur **Payer 
 Pour payer avec PayPal, ouvrez un avis de paiement impayé et cliquez sur **Payer avec PayPal**. Vous approuvez le paiement sur la page de PayPal, avec votre solde PayPal ou une carte, et l'avis apparaît comme payé dès que PayPal le confirme.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Pour payer par carte via notre banque, ouvrez un avis de paiement impayé et cliquez sur **Payer par carte** suivi du nom de la banque. Vous payez sur la page sécurisée de la banque (nous ne voyons jamais les données de votre carte) et l’avis apparaît comme payé dès que la banque confirme le paiement. Votre adresse, ville, code postal et pays doivent être renseignés dans votre profil, car la banque en a besoin pour vérifier la carte.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Devis
 

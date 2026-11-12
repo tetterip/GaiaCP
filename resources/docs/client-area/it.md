@@ -129,6 +129,10 @@ Per pagare con carta, apra un avviso di pagamento non pagato e prema **Paga con 
 Per pagare con PayPal, apra un avviso di pagamento non pagato e prema **Paga con PayPal**. Approva il pagamento sulla pagina di PayPal, con il Suo saldo PayPal o con una carta, e l'avviso risulta pagato appena PayPal lo conferma.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Per pagare con carta tramite la nostra banca, apri un avviso di pagamento non pagato e premi **Paga con carta** con il nome della banca. Paghi sulla pagina sicura della banca (non vediamo mai i dati della tua carta) e l’avviso risulta pagato non appena la banca conferma il pagamento. Indirizzo, città, CAP e paese devono essere compilati nel tuo profilo, perché la banca li richiede per verificare la carta.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Preventivi
 

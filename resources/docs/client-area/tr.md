@@ -129,6 +129,10 @@ Kartla ödemek için ödenmemiş bir ödeme bildirimini açın ve **Kartla öde*
 PayPal ile ödemek için ödenmemiş bir ödeme bildirimini açın ve **PayPal ile öde**'ye basın. Ödemeyi PayPal'ın kendi sayfasında, PayPal bakiyenizle veya bir kartla onaylarsınız ve PayPal onaylar onaylamaz bildirim ödendi olarak görünür.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Bankamız üzerinden kartla ödemek için ödenmemiş bir ödeme bildirimini açın ve bankanın adıyla birlikte **Kartla öde** düğmesine basın. Ödemeyi bankanın güvenli sayfasında yaparsınız (kart bilgilerinizi asla görmeyiz) ve banka ödemeyi onaylar onaylamaz bildirim ödenmiş olarak görünür. Banka kartı doğrulamak için bunlara ihtiyaç duyduğundan adresiniz, şehriniz, posta kodunuz ve ülkeniz profilinizde dolu olmalıdır.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Teklifler
 

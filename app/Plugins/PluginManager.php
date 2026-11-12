@@ -30,6 +30,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Translation\Translator;
 use Plugins\Aade\AadePlugin;
+use Plugins\AlphaBank\AlphaBankPlugin;
 use Plugins\BankTransfer\BankTransferPlugin;
 use Plugins\BetterStack\BetterStackPlugin;
 use Plugins\Blacklists\BlacklistsPlugin;
@@ -43,6 +44,7 @@ use Plugins\EasyGr\EasyGrPlugin;
 use Plugins\EmailRegistrar\EmailRegistrarPlugin;
 use Plugins\Enhance\EnhancePlugin;
 use Plugins\Enom\EnomPlugin;
+use Plugins\Eurobank\EurobankPlugin;
 use Plugins\FlatTheme\FlatThemePlugin;
 use Plugins\GaiaTheme\GaiaThemePlugin;
 use Plugins\GlassTheme\GlassThemePlugin;
@@ -58,6 +60,7 @@ use Plugins\Ollama\OllamaPlugin;
 use Plugins\OpenAi\OpenAiPlugin;
 use Plugins\Openprovider\OpenproviderPlugin;
 use Plugins\PayPal\PayPalPlugin;
+use Plugins\PiraeusBank\PiraeusBankPlugin;
 use Plugins\Plesk\PleskPlugin;
 use Plugins\Proxmox\ProxmoxPlugin;
 use Plugins\Recaptcha\RecaptchaPlugin;
@@ -86,7 +89,7 @@ use Throwable;
 class PluginManager
 {
     /** @var list<class-string<Plugin>> shipped with GaiaCP */
-    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, EnhancePlugin::class, ProxmoxPlugin::class, EasyGrPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, OpenproviderPlugin::class, GoDaddyPlugin::class, ResellerClubPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, AadePlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, HetrixToolsPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, KimiPlugin::class, OpenAiPlugin::class, OllamaPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
+    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, EnhancePlugin::class, ProxmoxPlugin::class, EasyGrPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, OpenproviderPlugin::class, GoDaddyPlugin::class, ResellerClubPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, AadePlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, AlphaBankPlugin::class, EurobankPlugin::class, PiraeusBankPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, HetrixToolsPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, KimiPlugin::class, OpenAiPlugin::class, OllamaPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
 
     /** @var array<string, Plugin> */
     private array $plugins = [];

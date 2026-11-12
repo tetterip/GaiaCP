@@ -123,7 +123,7 @@ What is deleted is gone for good, but backups made before still have it.
 - **A server or registrar call failed**: it waits in Services → Module queue (see
   [Automation](09-automation.md)), and the error is on the service's Activity tab. Switch on the module log, Retry,
   and read what the panel answered.
-- **A client says they paid**: look under Billing → Payments and on the payment notice. A Stripe or PayPal payment that
+- **A client says they paid**: look under Billing → Payments and on the payment notice. A Stripe, PayPal or bank card payment that
   didn't fit its notice any more is listed in the daily summary.
 - **The client area must close for a while**: Settings → Client area → Maintenance mode.
 

@@ -74,6 +74,9 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   bundled plugin): "Pay by card" on the client's unpaid payment notices opens Stripe Checkout, and the payment is
   recorded the same way once Stripe confirms it. PayPal the same way (a bundled plugin, off by default): "Pay with
   PayPal" opens PayPal's page, and GaiaCP takes the money only if the notice still asks for that amount
+  - Card payments through Greek banks (bundled plugins, off by default): Alpha Bank and Eurobank (Cardlink, signed
+    with the shared secret) and Piraeus Bank (paycenter ticket, answer signed with the ticket; also IRIS). Recorded
+    only from the bank's signed answer; unanswered payments close after two hours. No installments or refunds yet
 - Daily automation: payment notices and their reminders, domain renewal notices, optional auto-suspend after a grace period,
   and a daily summary email to the admins (new and overdue payment notices, domains whose sync changed or failed;
   on/off under Settings → Automation, and per admin with Receive system emails under Settings → Admin users)

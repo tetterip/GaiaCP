@@ -129,6 +129,10 @@ To pay by card, open an unpaid payment notice and press **Pay by card**. You pay
 To pay with PayPal, open an unpaid payment notice and press **Pay with PayPal**. You approve the payment on PayPal's own page, with your PayPal balance or a card, and the notice shows as paid as soon as PayPal confirms it.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+To pay by card through our bank, open an unpaid payment notice and press **Pay by card** with the bank's name. You pay on the bank's own secure page (we never see your card details) and the notice shows as paid as soon as the bank confirms the payment. Your address, city, postcode and country must be filled in under your profile, because the bank needs them to check the card.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Quotes
 

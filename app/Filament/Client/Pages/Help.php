@@ -95,6 +95,7 @@ class Help extends Page
             'domain_prices' => DomainPrices::canAccess(),
             'pay_card' => $payOnline->contains('payByCard'),
             'pay_paypal' => $payOnline->contains('payWithPaypal'),
+            'pay_bank' => $payOnline->intersect(['payWithAlphaBank', 'payWithEurobank', 'payWithPiraeusBank'])->isNotEmpty(),
             'invoices' => IssueInvoice::enabled(),
             'credit' => ClientCredit::enabled(),
             'credit_auto' => ClientCredit::autoApply(),

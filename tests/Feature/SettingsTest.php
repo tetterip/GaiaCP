@@ -48,6 +48,7 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Plugins\Aade\AadeSettings;
+use Plugins\AlphaBank\AlphaBankSettings;
 use Plugins\BankTransfer\BankTransferSettings;
 use Plugins\BetterStack\BetterStackSettings;
 use Plugins\Blacklists\BlacklistsSettings;
@@ -55,6 +56,7 @@ use Plugins\Claude\ClaudeSettings;
 use Plugins\CyberPanel\CyberPanelSettings;
 use Plugins\DeepSeek\DeepSeekSettings;
 use Plugins\Discord\DiscordSettings;
+use Plugins\Eurobank\EurobankSettings;
 use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\HetrixTools\HetrixToolsSettings;
@@ -62,6 +64,7 @@ use Plugins\Kimi\KimiSettings;
 use Plugins\Ollama\OllamaSettings;
 use Plugins\OpenAi\OpenAiSettings;
 use Plugins\PayPal\PayPalSettings;
+use Plugins\PiraeusBank\PiraeusBankSettings;
 use Plugins\Proxmox\ProxmoxSettings;
 use Plugins\Recaptcha\RecaptchaSettings;
 use Plugins\SiteChecks\SiteChecksSettings;
@@ -92,7 +95,7 @@ class SettingsTest extends TestCase
     ];
 
     /** Listed on Settings → Payment methods and under it in the menu, without a card of their own. */
-    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class];
+    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, AlphaBankSettings::class, EurobankSettings::class, PiraeusBankSettings::class];
 
     public function test_settings_shows_a_card_per_page_and_each_page_has_the_sub_navigation(): void
     {

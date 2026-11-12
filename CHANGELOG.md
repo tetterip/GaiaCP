@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Three new payment plugins for Greek banks, each off until switched on under Settings → Payment methods: **Alpha Bank**
+  and **Eurobank** (card payments through Cardlink) and **Piraeus Bank** (cards and IRIS through its paycenter). The
+  client presses "Pay by card (bank)" on an unpaid payment notice and pays on the bank's own page; the payment is
+  recorded only from the bank's signed answer (the shared secret, or for Piraeus that payment's own ticket), once.
+  Ported from Papaki's WooCommerce plugins (GPL-3.0-or-later). Not yet tried against the banks' test environments.
+- The module log also masks secret XML elements in a response (Piraeus Bank's transaction ticket).
 - DirectAdmin 1.2.0: **Log in** opens DirectAdmin already signed in (a one-time link, else its login page as before);
   suspend and unsuspend name the action (`dosuspend` / `dounsuspend`) instead of the field DirectAdmin reads as a toggle.
 - Enhance 1.1.0: **Change password** uses Enhance's password route (the older call stays as a fallback) and also sets
