@@ -5,10 +5,14 @@ registrar side (expiry date, nameservers, EPP code) that GaiaCP reads and change
 
 ## Registrars
 
-Settings → Products & domains → **Registrars** holds your registrar accounts (super admins only). **easy.gr** and
-**Enom** are bundled plugins; others can be added as plugins. Add the account with its login (stored encrypted) and
+Settings → Products & domains → **Registrars** holds your registrar accounts (super admins only). **easy.gr**,
+**Enom**, **Namecheap**, **NameSilo** and **Openprovider** are bundled plugins; others can be added as plugins. Add the account with its login (stored encrypted) and
 press **Test with a domain**: it reads one domain's expiry and nameservers without changing anything. From SSH,
 `php artisan gaiacp:registrar-check example.com` does the same.
+
+Namecheap also asks for this server's public IPv4 address, which must be on the whitelist under Profile → Tools → API
+Access there; NameSilo and Openprovider answer only the IP addresses you allow in their API settings. Each of the three
+has a **Sandbox** switch for the registrar's test environment.
 
 Most registrars answer only the IP addresses you allow on your reseller account: allow your GaiaCP server's.
 
@@ -38,7 +42,8 @@ Each TLD can also keep:
 **Import from registrar** (top of Domain pricing) reads what a registrar charges for each TLD, like WHMCS's TLD
 import. It shows only for registrars whose plugin can tell its prices: easy.gr lists every TLD it sells (each for its
 shortest term, e.g. 2 years for .gr); Enom is asked about the TLDs you name (at most 50) or else the ones it is the
-preferred registrar of, and gives 1-year prices in USD, so USD must be under Settings → Currencies.
+preferred registrar of, and gives 1-year prices in USD, so USD must be under Settings → Currencies. Namecheap and
+NameSilo list every TLD (1 year, USD); Openprovider is asked like Enom and gives 1-year prices in your account's currency.
 
 1. Pick the registrar and the **markup**: a percentage, plus a fixed amount, rounded up to the cent, to a whole amount
    or to .99. Choose whether TLDs already on the list get only the new **cost** (the default) or a new price from it
@@ -79,7 +84,8 @@ when it falls before the due date. On a domain's page:
   **Registered elsewhere (track only)** for a domain at a registrar GaiaCP doesn't manage, which is billed but never
   renewed or synced. Once active, Register reads as "At the registrar".
 - The **Registrar** menu registers or transfers a pending domain, **syncs** the expiry and nameservers, **changes
-  nameservers** and gets the **EPP code** (Enom emails it to the domain owner instead). Where the registrar offers
+  nameservers** and gets the **EPP code** (Enom and NameSilo email it to the domain owner instead; Namecheap's API gives none, so get
+  it in your Namecheap account). Where the registrar offers
   them it also edits the **contact details**, **private nameservers** (ns1.the-domain) and the **registrar lock**.
 - **Auto renew** is in the Automation section.
 

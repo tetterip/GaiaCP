@@ -273,11 +273,11 @@ class NameSiloRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEp
     /** @return array<string, string> contact record ID by role */
     private function contactIds(string $domain): array
     {
-        $node = $this->info($domain)->contact_ids ?? null;
+        $node = $this->info($domain)->contact_ids;
         $ids = [];
 
         foreach (self::ROLES as $role => $name) {
-            $id = trim((string) ($node?->{$name} ?? ''));
+            $id = trim((string) ($node->{$name} ?? ''));
 
             if ($id !== '') {
                 $ids[$role] = $id;

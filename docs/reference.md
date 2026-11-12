@@ -152,7 +152,7 @@ unchanged. Domains, maintenance and other services have no server: the same acti
 ## Registrars and domains
 
 1. Open **Settings → Registrars** and add the easy.gr account with
-   its username and password, or the Enom account with its login ID and API token (both stored encrypted). **Email Notifications** is there from the start, with nothing to
+   its username and password, the Enom account with its login ID and API token, or a Namecheap, NameSilo or Openprovider account (all stored encrypted). **Email Notifications** is there from the start, with nothing to
    set up: like WHMCS's module of that name, it is for TLDs that have no integrated registrar. It books nothing;
    registering, transferring, renewing, changing nameservers and EPP code requests each email the admins (active,
    Receive system emails on, with access to services) what to do by hand. Its domains are never synced: enter their
@@ -196,6 +196,12 @@ unchanged. Domains, maintenance and other services have no server: the same acti
    (resellertest.enom.com), which needs its own test account. Enom does not hand out EPP codes: **Get EPP code**
    (admin and client area) asks Enom to email it to the domain owner's address. Not yet tried against a real Enom
    account.
+9. **Namecheap** needs API access turned on (Profile → Tools → API Access), the account's username, the API key and
+   the server's public IPv4 address, which must also be on the whitelist there. Namecheap's API gives out no EPP code:
+   get it in the Namecheap account. **NameSilo** needs an API key (Account → API Manager); it emails the EPP code to
+   the domain's administrative contact. **Openprovider** takes the reseller username and password (allow the server's
+   IP in its API settings); contacts there are customer handles, so a changed contact becomes a new handle. Each has
+   a **Sandbox** switch for the registrar's test environment. None has been tried against a real account yet.
 
 ## SSL certificates
 

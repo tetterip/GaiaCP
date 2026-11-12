@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Three new registrar plugins: **Namecheap**, **NameSilo** and **Openprovider** (Settings → Registrars). Each registers,
+  transfers, renews and syncs domains, changes nameservers, contact details, private nameservers and the registrar lock,
+  answers the client area's domain search and tells its TLD prices for Import from registrar; each has a Sandbox switch.
+  Written without the registrars' documentation at hand and not yet tried against real accounts: try Test with a domain
+  in a sandbox account first.
 - Security: client area sign up no longer says whether an email address already has an account (it told anyone who is
   a client here, and which addresses belong to admins). Every sign up with a password now ends on "Check your email"
   without logging in; the confirmation link asks the new client to log in, then opens the account. An address that

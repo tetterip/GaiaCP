@@ -1,0 +1,9 @@
+{
+    "Leave empty to keep the current password. Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Déjelo vacío para conservar la contraseña actual. Se guarda cifrada. Openprovider solo responde a las direcciones IP que permita en los ajustes de API de su cuenta.",
+    "Openprovider username": "Usuario de Openprovider",
+    "Password": "Contraseña",
+    "Registers, renews, transfers and syncs domains through an Openprovider reseller account.": "Registra, renueva, transfiere y sincroniza dominios mediante una cuenta de revendedor de Openprovider.",
+    "Sandbox": "Sandbox",
+    "Sends every call to Openprovider's sandbox (api.sandbox.openprovider.nl), with a sandbox account's login.": "Envía cada llamada al sandbox de Openprovider (api.sandbox.openprovider.nl), con los datos de acceso de una cuenta sandbox.",
+    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Se guarda cifrada. Openprovider solo responde a las direcciones IP que permita en los ajustes de API de su cuenta."
+}

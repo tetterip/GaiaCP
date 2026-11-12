@@ -1,8 +1,8 @@
 # Provisioning modules
 
-How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
+How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
 
-Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`) behind the interfaces in
+Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`) behind the interfaces in
 `app/Provisioning/` (`ServerModule` → `HostingProvisioner`, `RegistrarModule` → `DomainRegistrar`) so the rest of the app
 never calls a panel API directly.
 
@@ -160,6 +160,32 @@ never calls a panel API directly.
   `Extend`, `TP_CreateOrder` (Autoverification, `AuthInfo1`, `UseContacts=0`), `GetDomainInfo` (status/expiration,
   US date order), `GetDNS` / `ModifyNS`, `SynchAuthInfo` (EmailEPP). Built from open-source Enom modules, since
   Enom's docs were unreachable; not tried against Enom yet. `pw` and the EPP code are masked in the module log.
+- **Namecheap** (`plugins/Namecheap`, module `namecheap`; credentials `username`, `api_key`, `client_ip`, `sandbox`):
+  form POST to `https://api.namecheap.com/xml.response` (`api.sandbox.namecheap.com`) with `ApiUser` = `UserName`,
+  `ApiKey`, `ClientIp` and `Command`; replies `<ApiResponse Status="OK">` with `<CommandResponse>`, or `ERROR` with
+  `<Errors><Error>`. Commands `namecheap.domains.check` (a premium name counts as taken), `create` (four contact
+  prefixes as Enom's, free WhoisGuard added, off), `transfer.create`, `renew`, `getInfo` (`DomainDetails/ExpiredDate`,
+  m/d/Y), `dns.getList` / `setCustom` / `setDefault` (SLD + TLD), `getContacts` / `setContacts` (all four at once),
+  `ns.create` / `update` / `delete`, `getRegistrarLock` / `setRegistrarLock`, `users.getPricing` (REGISTER / RENEW /
+  TRANSFER, the 1-year `YourPrice`, every TLD). No EPP code command: `eppCode()` throws with where to find it.
+- **NameSilo** (`plugins/NameSilo`, module `namesilo`; credentials `api_key`, `sandbox`): GET
+  `https://www.namesilo.com/api/<operation>` (`sandbox.namesilo.com`) with `version=1`, `type=xml`, `key`; reply
+  `<namesilo><reply><code>` 300-302 = done, else the error in `detail`. Operations `checkRegisterAvailability`,
+  `registerDomain` / `transferDomain` (fn, ln, ad, cy, st, zp, ct, em, ph as digits with the calling code, nn = company;
+  `private=1`, `auto_renew=0`), `renewDomain`, `getDomainInfo` (expires Y-m-d, nameservers, lock, contact_ids),
+  `changeNameServers` (ns1..ns13), `retrieveAuthCode` (emailed: `EmailsEppCode`), `contactList` / `contactAdd` +
+  `contactDomainAssociate` (a changed contact is a new record, as one may serve other domains), `add` / `modify` /
+  `deleteRegisteredNameServer` (host label without the domain), `domainLock` / `domainUnlock`, `getPrices` (every TLD).
+- **Openprovider** (`plugins/Openprovider`, module `openprovider`; credentials `username`, `password`, `sandbox`): REST
+  `https://api.openprovider.eu/v1beta` (sandbox `api.sandbox.openprovider.nl:8480`), `POST /auth/login` for a bearer
+  token kept per client object; replies `{code: 0, data}` or a code with `desc`. A domain is found with `GET /domains`
+  (`domain_name_pattern` + `extension`) for its `id`; then `POST /domains/{id}/renew`, `PUT /domains/{id}`
+  (nameservers, `is_locked`, contact handles), `GET /domains/{id}/authcode`. Registering or transferring first makes
+  the client a customer (`POST /customers`: street and number apart, phone as +CC / 3-digit area / number) used for all
+  four handles; `autorenew` off; no nameservers = `ns_group` dns-openprovider. Saving contacts makes new handles.
+  `POST` / `PUT` / `DELETE /dns/nameservers` for private nameservers, `GET /tlds/{tld}?with_price=true` (reseller
+  price, else product price; asked per TLD, at most 50) for costs. Token, password and EPP code are masked in the log.
+  The three were written from memory of each API (docs unreachable from the cloud) and are untested against real accounts.
 - **SSL certificates** (type `ssl`): providers are plugins implementing `App\Certificates\CertificateModule`
   (`PluginManager::certificateModules()`, keyed by `certificateKey()`); only `App\Actions\CertificateLifecycle` calls
   them. A service's `package` is `<key>:<product code>` (`CertificateLifecycle::package()`, products cached an hour as
