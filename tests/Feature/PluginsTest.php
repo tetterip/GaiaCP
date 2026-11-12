@@ -97,6 +97,26 @@ class PluginsTest extends TestCase
         $this->assertSame(['plugin.disabled', 'plugin.enabled'], ActivityLog::query()->orderBy('id')->pluck('event')->all());
     }
 
+    public function test_the_list_filters_by_type_status_and_search(): void
+    {
+        $this->plugins()->disable($this->plugins()->find('hestia'));
+
+        Livewire::test(Plugins::class)
+            ->assertCanSeeTableRecords(['plesk', 'easygr', 'stripe'])
+            ->filterTable('type', ['Servers'])
+            ->assertCanSeeTableRecords(['plesk', 'cpanel', 'hestia'])
+            ->assertCanNotSeeTableRecords(['easygr', 'stripe'])
+            ->filterTable('status', 'disabled')
+            ->assertCanSeeTableRecords(['hestia'])
+            ->assertCanNotSeeTableRecords(['plesk', 'cpanel'])
+            ->resetTableFilters()
+            ->searchTable('easy')
+            ->assertCanSeeTableRecords(['easygr'])
+            ->assertCanNotSeeTableRecords(['plesk', 'stripe'])
+            ->searchTable('no such plugin')
+            ->assertSee('No plugins to show');
+    }
+
     public function test_mass_disable_and_enable_switch_the_picked_plugins(): void
     {
         $this->plugins()->disable($this->plugins()->find('hestia'));

@@ -3033,6 +3033,7 @@
     "Licence": "Licenza",
     "Needs": "Richiede",
     "Needs GaiaCP :version": "Richiede GaiaCP :version",
+    "No plugin matches the search or the filters.": "Nessun plugin corrisponde alla ricerca o ai filtri.",
     "No plugins to show": "Nessun plugin da mostrare",
     "No version of :plugin runs on this GaiaCP yet.": "Nessuna versione di :plugin funziona ancora con questo GaiaCP.",
     "Not installed": "Non installato",

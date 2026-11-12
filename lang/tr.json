@@ -3033,6 +3033,7 @@
     "Licence": "Lisans",
     "Needs": "Gerektirir",
     "Needs GaiaCP :version": "GaiaCP :version gerektirir",
+    "No plugin matches the search or the filters.": "Aramaya veya filtrelere uyan eklenti yok.",
     "No plugins to show": "Gösterilecek eklenti yok",
     "No version of :plugin runs on this GaiaCP yet.": ":plugin eklentisinin henüz bu GaiaCP'de çalışan bir sürümü yok.",
     "Not installed": "Kurulu değil",
