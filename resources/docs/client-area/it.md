@@ -129,6 +129,10 @@ Per pagare con carta, apra un avviso di pagamento non pagato e prema **Paga con 
 Per pagare con PayPal, apra un avviso di pagamento non pagato e prema **Paga con PayPal**. Approva il pagamento sulla pagina di PayPal, con il Suo saldo PayPal o con una carta, e l'avviso risulta pagato appena PayPal lo conferma.
 <!-- endif -->
 
+<!-- if:pay_iris -->
+Per pagare con IRIS, apra un avviso di pagamento non pagato e prema **Paga con IRIS**. Mostra il nostro QR code e il nostro numero IRIS con l'importo: nell'app della sua banca scelga IRIS, scansioni il codice o inserisca il numero, e scriva il numero dell'avviso come causale. L'avviso risulta pagato appena vediamo il pagamento sul nostro conto.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Preventivi
 

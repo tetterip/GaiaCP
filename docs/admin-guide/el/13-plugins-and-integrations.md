@@ -56,7 +56,7 @@ plugins.gaiacp.digital δεν θα μπορούσε να σου δώσει άλ�
 |---|---|---|
 | Panels servers | cPanel / WHM, Plesk, HestiaCP, DirectAdmin· CyberPanel, Enhance, Proxmox VE (κλειστά μέχρι να τα ανοίξεις) | Ρυθμίσεις → Servers |
 | Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Ρυθμίσεις → Registrars |
-| Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe, PayPal | Ρυθμίσεις → Τρόποι πληρωμής |
+| Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe, PayPal, IRIS | Ρυθμίσεις → Τρόποι πληρωμής |
 | Πιστοποιητικά SSL | GoGetSSL | Ρυθμίσεις → GoGetSSL |
 | Παρακολούθηση | Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, Έλεγχος IP σε blacklists, Έλεγχος sites | Ρυθμίσεις → Διασυνδέσεις |
 | Σύνδεση και ασφάλεια πελατών | Σύνδεση με Google, Google reCAPTCHA, Cloudflare Turnstile | Ρυθμίσεις → Περιοχή πελατών |

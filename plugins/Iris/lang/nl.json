@@ -1,0 +1,22 @@
+{
+    "Clients pay their payment notices by IRIS from their bank's app: your IRIS number and your bank's QR code are shown on unpaid notices. You record the payments by hand.": "Klanten betalen hun betaalverzoeken met IRIS vanuit de app van hun bank: je IRIS-nummer en de QR-code van je bank staan op onbetaalde betaalverzoeken. De betalingen registreer je zelf.",
+    "Clients see \"Pay with IRIS\" on their unpaid payment notices in the client area once there is an IRIS number or a QR code. It shows them the amount, these details and the notice number to write as the reason. IRIS has no connection for shops, so you record each payment by hand (method IRIS) when it reaches your account.": "Klanten zien ‘Betalen met IRIS’ op hun onbetaalde betaalverzoeken in de klantomgeving zodra er een IRIS-nummer of QR-code is. Het toont het bedrag, deze gegevens en het nummer van het verzoek als omschrijving. IRIS heeft geen koppeling voor winkels, dus je registreert elke betaling zelf (methode IRIS) zodra die op je rekening staat.",
+    "IRIS": "IRIS",
+    "IRIS QR code": "IRIS-QR-code",
+    "IRIS number": "IRIS-nummer",
+    "IRIS number or alias": "IRIS-nummer of alias",
+    "IRIS number: :number": "IRIS-nummer: :number",
+    "IRIS number: :number (:payee)": "IRIS-nummer: :number (:payee)",
+    "IRIS: pay from your bank's app with IRIS.": "IRIS: betaal vanuit de app van uw bank met IRIS.",
+    "In your bank's app choose IRIS, scan the QR code or enter the IRIS number, and write :number as the reason. The notice shows as paid once we see the payment in our account.": "Kies in de app van uw bank IRIS, scan de QR-code of vul het IRIS-nummer in, en zet :number als omschrijving. Het verzoek staat op betaald zodra wij de betaling op onze rekening zien.",
+    "Note for clients": "Opmerking voor klanten",
+    "Optional, shown under the details, e.g. which banks the QR code works with.": "Optioneel, staat onder de gegevens, bijv. met welke banken de QR-code werkt.",
+    "Pay with IRIS": "Betalen met IRIS",
+    "Payee": "Begunstigde",
+    "Payments by IRIS from the client's bank app: your IRIS number and your bank's QR code on unpaid payment notices.": "Betalingen met IRIS vanuit de bankapp van de klant: je IRIS-nummer en de QR-code van je bank op onbetaalde betaalverzoeken.",
+    "Please write the payment notice number as the reason.": "Vermeld het nummer van het betaalverzoek als omschrijving.",
+    "The QR code is under Pay with IRIS on the payment notice in our client area.": "De QR-code staat onder Betalen met IRIS op het betaalverzoek in onze klantomgeving.",
+    "The VAT number, mobile number or alias your bank linked to IRIS.": "Het btw-nummer, mobiele nummer of de alias die je bank aan IRIS heeft gekoppeld.",
+    "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "De vaste QR-code die je bank je gaf voor IRIS-betalingen (PNG, JPG of WebP, tot 1 MB).",
+    "The name clients see in their bank's app. Empty: your company name.": "De naam die klanten in de app van hun bank zien. Leeg: je bedrijfsnaam."
+}
