@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Plesk 1.6.1: a hosting account's bandwidth now includes its subscription's other domains (it counted only the main
+  one), and **Change password** on the service that made the client's Plesk login changes that login too, as WHMCS's
+  Plesk module does (before, only the FTP / SSH user changed, so the client's Plesk password stayed the old one).
 - Security: client area sign up no longer says whether an email address already has an account (it told anyone who is
   a client here, and which addresses belong to admins). Every sign up with a password now ends on "Check your email"
   without logging in; the confirmation link asks the new client to log in, then opens the account. An address that

@@ -13,11 +13,14 @@ use SimpleXMLElement;
  */
 trait FakesPlesk
 {
-    /** @var array<int, array{login: string, external_id: ?string}> */
+    /** @var array<int, array{login: string, external_id: ?string, passwd?: string}> */
     protected array $pleskCustomers = [];
 
     /** @var array<string, array{owner: int, status: int, plan: string, ftp_login: string, ip: string, ftp_password?: string, real_size?: int, traffic?: int, disk_space?: int, max_traffic?: int, box?: int, max_box?: int, db?: int, dbases?: int}> */
     protected array $pleskWebspaces = [];
+
+    /** @var array<string, list<int>> subscription domain => traffic of each of its other domains (sites) */
+    protected array $pleskSites = [];
 
     /** @var array<string, string> plan name => guid */
     protected array $pleskPlans = ['Starter' => 'guid-starter', 'Business' => 'guid-business'];
@@ -107,6 +110,20 @@ trait FakesPlesk
                 $this->pleskCustomers[$id] = ['login' => $login, 'external_id' => (string) $op->gen_info->{'external-id'} ?: null];
 
                 return ["{$ok}<id>{$id}</id><guid>c-{$id}</guid>"];
+
+            case 'customer.set':
+                $id = (int) $op->filter->id;
+                if (! isset($this->pleskCustomers[$id])) {
+                    return $notFound;
+                }
+                $this->pleskCustomers[$id]['passwd'] = (string) $op->values->gen_info->passwd;
+
+                return [$ok."<id>{$id}</id>"];
+
+            case 'site.get':
+                $sites = $this->pleskSites[(string) $op->filter->{'parent-name'}] ?? [];
+
+                return array_map(fn (int $traffic) => "{$ok}<id>2</id><data><stat><traffic>{$traffic}</traffic><traffic_prevday>0</traffic_prevday></stat></data>", $sites) ?: $notFound;
 
             case 'server.create_session':
                 return ["{$ok}<id>sess-".base64_decode((string) $op->data->user_ip)."-{$op->login}</id>"];

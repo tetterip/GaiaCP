@@ -13,7 +13,10 @@ never calls a panel API directly.
   lacks them). Auth: `HTTP_AUTH_LOGIN`/`HTTP_AUTH_PASSWD`, or `KEY` (secret key) when the server's username
   is empty. One Plesk customer per client (external-id `gaiacp-client-<id>`), one subscription per hosting
   service keyed by its domain; `package` holds the service plan name. Change password sets the subscription's
-  system user (`ftp_password`), not the customer login. Usage is `webspace get` with `gen_info` / `limits` / `stat` / `disk_usage`.
+  system user (`ftp_password`), and first the customer login (`customer set` `passwd`) when the customer's login is
+  the service's username (the service that made it, as WHMCS's module does for the main service). Usage is
+  `webspace get` with `gen_info` / `limits` / `stat` / `disk_usage`, plus `site get` (`parent-name`, `stat`) traffic
+  of the subscription's other domains, which the subscription's own `stat` leaves out.
   **The schema is order-sensitive**: `PleskClient` takes ordered arrays. Request shapes follow the official
   `plesk/api-php-lib` (its integration tests run against real Plesk); keep to them when adding calls.
 - **HestiaCP** (`plugins/Hestia`): form POST to `/api/` (port 8083) with `cmd` = a `v-*` command and `arg1`…

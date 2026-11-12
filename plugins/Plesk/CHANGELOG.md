@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.6.1] - 2026-11-12
+
+- Usage: this month's bandwidth adds the traffic of the subscription's other domains (`site get`), which Plesk counts apart from its main domain, as WHMCS's Plesk module does
+- Change password on the service that made the client's Plesk login changes that login's password too, not only the subscription's FTP / SSH user
+
 ## [1.6.0] - 2026-10-27
 
 - SSL certificates on the client's own hosting: the validation CNAME goes into the subscription's DNS zone (`dns add_rec`; Plesk's XML API can't write files) and the issued certificate is installed in the subscription and used for its hosting (`certificate install`, then `certificate_name`) (`InstallsCertificates`; not yet tried on a real server)
