@@ -139,10 +139,14 @@ class NamecheapRegistrar implements ChecksAvailability, DomainRegistrar, ListsTl
         }
     }
 
-    /** Namecheap takes the contacts from the domain's current registrar, then they can be changed under Contact details. */
+    /**
+     * Namecheap takes the contacts from the domain's current registrar, then they can be changed under Contact details.
+     * The EPP code goes base64 encoded with a "base64:" prefix, as Namecheap's module sends it (codes with symbols).
+     */
     public function transfer(string $domain, string $eppCode, Client $registrant): void
     {
-        $result = $this->client->call('namecheap.domains.transfer.create', ['DomainName' => self::normal($domain), 'Years' => 1, 'EPPCode' => $eppCode], secrets: [$eppCode], timeout: 120)
+        $encoded = 'base64:'.base64_encode($eppCode);
+        $result = $this->client->call('namecheap.domains.transfer.create', ['DomainName' => self::normal($domain), 'Years' => 1, 'EPPCode' => $encoded], secrets: [$eppCode, $encoded], timeout: 120)
             ->DomainTransferCreateResult ?? null;
 
         if (strtolower((string) ($result['Transfer'] ?? '')) !== 'true') {

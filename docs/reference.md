@@ -196,8 +196,8 @@ unchanged. Domains, maintenance and other services have no server: the same acti
    (resellertest.enom.com), which needs its own test account. Enom does not hand out EPP codes: **Get EPP code**
    (admin and client area) asks Enom to email it to the domain owner's address. Not yet tried against a real Enom
    account.
-9. **Namecheap** needs API access turned on (Profile → Tools → API Access), the account's username, the API key and
-   the server's public IPv4 address, which must also be on the whitelist there. Namecheap's API gives out no EPP code:
+9. **Namecheap** needs API access turned on (Profile → Tools → API Access), the account's username and the API key;
+   the server's public IPv4 address must be on the whitelist there (and can be entered too). Namecheap's API gives out no EPP code:
    get it in the Namecheap account. **NameSilo** needs an API key (Account → API Manager); it emails the EPP code to
    the domain's administrative contact. **Openprovider** takes the reseller username and password (allow the server's
    IP in its API settings); contacts there are customer handles, so a changed contact becomes a new handle. Each has

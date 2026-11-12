@@ -10,7 +10,7 @@ Settings → Products & domains → **Registrars** holds your registrar accounts
 press **Test with a domain**: it reads one domain's expiry and nameservers without changing anything. From SSH,
 `php artisan gaiacp:registrar-check example.com` does the same.
 
-Namecheap also asks for this server's public IPv4 address, which must be on the whitelist under Profile → Tools → API
+Namecheap answers only this server's public IPv4 address once it is on the whitelist under Profile → Tools → API
 Access there; NameSilo and Openprovider answer only the IP addresses you allow in their API settings. Each of the three
 has a **Sandbox** switch for the registrar's test environment.
 

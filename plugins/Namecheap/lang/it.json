@@ -8,6 +8,6 @@
     "Sandbox": "Sandbox",
     "Sends every call to Namecheap's sandbox (api.sandbox.namecheap.com), with a sandbox account's login.": "Invia ogni chiamata alla sandbox di Namecheap (api.sandbox.namecheap.com), con le credenziali di un account sandbox.",
     "Stored encrypted. Turn on API access under Profile → Tools → API Access in your Namecheap account.": "Salvata cifrata. Attiva l'accesso API in Profile → Tools → API Access del tuo account Namecheap.",
-    "The public IPv4 address GaiaCP calls Namecheap from. Add it to the whitelisted IPs on the same API Access page.": "L'indirizzo IPv4 pubblico da cui GaiaCP chiama Namecheap. Aggiungilo agli IP consentiti nella stessa pagina API Access.",
+    "The public IPv4 address GaiaCP calls Namecheap from, sent with each call (optional). Namecheap answers only the IPs whitelisted on the same API Access page.": "L'indirizzo IPv4 pubblico da cui GaiaCP chiama Namecheap, inviato a ogni chiamata (facoltativo). Namecheap risponde solo agli IP consentiti nella stessa pagina API Access.",
     "This server's IP address": "Indirizzo IP di questo server"
 }

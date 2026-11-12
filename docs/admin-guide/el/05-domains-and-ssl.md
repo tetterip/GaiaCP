@@ -12,7 +12,7 @@ API του registrar.
 διαβάζει τη λήξη και τους nameservers ενός domain χωρίς να αλλάξει τίποτα. Από SSH, το
 `php artisan gaiacp:registrar-check example.com` κάνει το ίδιο.
 
-Το Namecheap ζητά επίσης τη δημόσια διεύθυνση IPv4 αυτού του server, που πρέπει να είναι στη λίστα επιτρεπόμενων στο
+Το Namecheap απαντά μόνο στη δημόσια διεύθυνση IPv4 αυτού του server, αφού μπει στη λίστα επιτρεπόμενων στο
 Profile → Tools → API Access εκεί· τα NameSilo και Openprovider απαντούν μόνο στις διευθύνσεις IP που επιτρέπεις στις
 ρυθμίσεις API τους. Και τα τρία έχουν διακόπτη **Sandbox** για το δοκιμαστικό περιβάλλον του registrar.
 

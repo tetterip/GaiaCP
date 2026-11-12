@@ -162,7 +162,8 @@ never calls a panel API directly.
   Enom's docs were unreachable; not tried against Enom yet. `pw` and the EPP code are masked in the module log.
 - **Namecheap** (`plugins/Namecheap`, module `namecheap`; credentials `username`, `api_key`, `client_ip`, `sandbox`):
   form POST to `https://api.namecheap.com/xml.response` (`api.sandbox.namecheap.com`) with `ApiUser` = `UserName`,
-  `ApiKey`, `ClientIp` and `Command`; replies `<ApiResponse Status="OK">` with `<CommandResponse>`, or `ERROR` with
+  `ApiKey`, `ClientIp` (optional; else 10.11.12.13, as Namecheap's WHMCS module) and `Command`; the EPP code as
+  `base64:` + base64, as that module sends it; replies `<ApiResponse Status="OK">` with `<CommandResponse>`, or `ERROR` with
   `<Errors><Error>`. Commands `namecheap.domains.check` (a premium name counts as taken), `create` (four contact
   prefixes as Enom's, free WhoisGuard added, off), `transfer.create`, `renew`, `getInfo` (`DomainDetails/ExpiredDate`,
   m/d/Y), `dns.getList` / `setCustom` / `setDefault` (SLD + TLD), `getContacts` / `setContacts` (all four at once),

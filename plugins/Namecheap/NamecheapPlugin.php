@@ -73,9 +73,8 @@ class NamecheapPlugin extends Plugin implements RegistrarModule
                     : __('Stored encrypted. Turn on API access under Profile → Tools → API Access in your Namecheap account.')),
             TextInput::make('credentials.client_ip')
                 ->label('This server\'s IP address')
-                ->required()
-                ->ip()
-                ->helperText(__('The public IPv4 address GaiaCP calls Namecheap from. Add it to the whitelisted IPs on the same API Access page.')),
+                ->ipv4()
+                ->helperText(__('The public IPv4 address GaiaCP calls Namecheap from, sent with each call (optional). Namecheap answers only the IPs whitelisted on the same API Access page.')),
             Toggle::make('credentials.sandbox')
                 ->label('Sandbox')
                 ->helperText(__('Sends every call to Namecheap\'s sandbox (api.sandbox.namecheap.com), with a sandbox account\'s login.')),

@@ -73,6 +73,16 @@ class NamecheapRegistrarTest extends TestCase
         Http::assertSent(fn (Request $request) => $request->url() === NamecheapClient::SANDBOX_URL);
     }
 
+    public function test_without_an_ip_address_it_sends_the_one_namecheaps_module_sends(): void
+    {
+        $this->fakeNamecheap();
+        $this->namecheapDomains['acme.com'] = ['expires' => '2027-03-15'];
+
+        $this->registrar(['client_ip' => null])->expiryDate('acme.com');
+
+        Http::assertSent(fn (Request $request) => $request['ClientIp'] === NamecheapClient::FALLBACK_CLIENT_IP);
+    }
+
     public function test_a_second_level_tld_is_split_after_the_first_label(): void
     {
         $this->assertSame(['SLD' => 'acme', 'TLD' => 'co.uk'], NamecheapRegistrar::split('Acme.co.uk.'));
@@ -126,11 +136,12 @@ class NamecheapRegistrarTest extends TestCase
 
         $this->registrar()->transfer('acme.com', 'Auth&Xq9z', Client::factory()->create());
 
-        $this->assertSame(['namecheap.domains.transfer.create', ['DomainName' => 'acme.com', 'Years' => '1', 'EPPCode' => 'Auth&Xq9z']], $this->namecheapCalls[0]);
+        $this->assertSame(['namecheap.domains.transfer.create', ['DomainName' => 'acme.com', 'Years' => '1', 'EPPCode' => 'base64:'.base64_encode('Auth&Xq9z')]], $this->namecheapCalls[0]);
 
         $log = ModuleLog::query()->where('module', 'namecheap')->sole();
         $this->assertSame('namecheap.domains.transfer.create', $log->action);
         $this->assertStringNotContainsString('Xq9z', $log->request);
+        $this->assertStringNotContainsString(base64_encode('Auth&Xq9z'), $log->request);
         $this->assertStringNotContainsString('secret', $log->request.$log->url);
     }
 
@@ -207,7 +218,7 @@ class NamecheapRegistrarTest extends TestCase
 
     public function test_missing_credentials_never_call_the_api(): void
     {
-        $registrar = $this->registrar(['client_ip' => '']);
+        $registrar = $this->registrar(['api_key' => '']);
 
         $this->assertFalse($registrar->configured());
 
