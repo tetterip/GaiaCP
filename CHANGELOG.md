@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- New **Virtualmin** server plugin (bundled, off until switched on under Settings → Plugins): hosting accounts as
+  top-level virtual servers on a Virtualmin plan, created, suspended, deleted, moved to another plan and given a new
+  password through Virtualmin's remote API as `root`; account state, usage and Compare with the server from
+  `list-domains`. The WHMCS import now brings
+  WHMCS's Virtualmin servers along too. Built from Blesta's Virtualmin module; not yet tried on a real Virtualmin server.
 - Bank transfer 1.0.4: under the bank details, a payment notice's page and emails (and the order confirmation, for the
   order's notice) say "Reference for the transfer: PF-2026-0001", so you can tell which notice a transfer pays.
 - Plugin API: a payment module may give `instructionsFor(Invoice $invoice)` for one payment notice (optional).

@@ -1,8 +1,8 @@
 # Provisioning modules
 
-How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
+How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
 
-Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`, `plugins/GoDaddy`, `plugins/ResellerClub`) behind the interfaces in
+Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/Virtualmin`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`, `plugins/GoDaddy`, `plugins/ResellerClub`) behind the interfaces in
 `app/Provisioning/` (`ServerModule` → `HostingProvisioner`, `RegistrarModule` → `DomainRegistrar`) so the rest of the app
 never calls a panel API directly.
 
@@ -74,6 +74,17 @@ never calls a panel API directly.
   (ten a page, `data` is a JSON string; `admin` = owner, `state` Active / Suspended); usage = cloud `fetchWebsiteData`
   (MB, a limit of 0 = unlimited). No one-time login: `cloudAPI/access` would put the owner's lasting token in a link,
   so `loginUrl()` is the login page
+- **Virtualmin** (`plugins/Virtualmin`, off by default): the remote API `https://<host>:10000/virtual-server/remote.cgi`
+  as the master administrator (basic auth; 401 / 403 = login refused), a form POST of `program`, `json=1` and the
+  command's options (a flag such as `multiline` sent empty; passwords stay out of the URL, unlike Blesta's module, which
+  sends a GET), answering `{status: success|failure, error, output | data}`. Calls as in Blesta's `module-virtualmin`
+  (MIT): `create-domain` (domain, user, pass, plan, `features-from-plan`, email, desc), `disable-domain` (`why`),
+  `enable-domain`, `delete-domain`, `modify-domain` (`apply-plan` / `pass`), `list-plans`. State, the domain to act on
+  and usage = `list-domains --user <username> --toplevel --multiline` (fields lower case with underscores, each a list:
+  `username`, `plan`, `disabled` only when disabled, `server_byte_quota_used` / `server_quota`, `bandwidth_byte_usage` /
+  `bandwidth_byte_limit`, `databases_count` / `maximum_databases`, `databases_size`; sizes read as bytes or "1.5 GB",
+  "Unlimited" = no limit; field names partly from memory, so missing ones give no number); `accounts()` =
+  `list-domains --toplevel --multiline`. No one-time login: `loginUrl()` is the login page
 - **Enhance** (`plugins/Enhance`, off by default): REST JSON to `https://<host>/api/…` with `Authorization: Bearer`
   <access token>; the server's username is the master organisation id. Lists are `{items: […]}`, new things `{id}`,
   errors `{code, detail}`. Each client = a customer org (`POST /orgs/{master}/customers` {name}, then `POST /logins?orgId=`
@@ -95,7 +106,7 @@ never calls a panel API directly.
   `PanelAccount` (username, domain, package, suspended). cPanel `listaccts` with no search; Plesk `webspace get` with an
   empty filter (`gen_info`, `hosting` for the FTP login, `subscriptions` for the plan guid, named from `service-plan
   get`); HestiaCP `v-list-users` (the `system` package left out) and each user's first web domain; DirectAdmin
-  `SHOW_USERS` and each one's `SHOW_USER_CONFIG`; CyberPanel one per website (an owner with two shows twice). Servers → Compare with the server (`CompareServerAccounts`,
+  `SHOW_USERS` and each one's `SHOW_USER_CONFIG`; CyberPanel one per website (an owner with two shows twice); Virtualmin one per top-level virtual server. Servers → Compare with the server (`CompareServerAccounts`,
   `Servers\Pages\CompareServer`) matches them to the server's hosting services by username, else by domain, and lists
   the ones only on the server (with the terminated / cancelled service they were, if any), the services missing there,
   and the differences (suspended on one side only, package, domain); pending services are left out. Reading changes
@@ -130,7 +141,7 @@ never calls a panel API directly.
   `/smb/database/list`, `/smb/statistics/details`, `/smb/user/list`. Names and paths follow WHMCS's modules, not yet
   tried on real panels. The client opens one through `services/{service}/panel-login?to=<key>` (an unknown key is a
   404 before any panel call); `ServiceLifecycle::loginUrl($service, $ip, $shortcut)` logs `account.panel_login` with
-  "(shortcut: key)". HestiaCP, DirectAdmin and CyberPanel have no one-time login, so no shortcuts
+  "(shortcut: key)". HestiaCP, DirectAdmin, CyberPanel and Virtualmin have no one-time login, so no shortcuts
 - **Registrars:** `registrars` rows (module, encrypted `credentials`, active, `is_default` = pre-selected for a new
   TLD), edited under Settings → Registrars (default nameservers under Settings → Domains). Prices are per TLD, not per
   registrar: `tlds` (`Tld`, Settings → Domain pricing, `TldResource`: register / transfer / renew cents for each of

@@ -105,6 +105,23 @@ Off until you switch it on under Settings → Plugins. Built from CyberPanel's o
    databases and mailboxes keep their own). Usage is the website's disk, bandwidth and databases against its package.
 5. The client area's "Log in to CyberPanel" opens the login page (no one-time login is used).
 
+## Virtualmin
+
+Off until you switch it on under Settings → Plugins. The calls follow Blesta's Virtualmin module; not yet tried on a
+real server.
+
+1. Virtualmin's remote API (`/virtual-server/remote.cgi`) is open only to the master administrator, so the server login
+   is `root` (or the Webmin user that is master administrator) and its password, on port 10000. Allow GaiaCP's IP
+   address under Webmin → Webmin Configuration → IP Access Control if you limit it.
+2. Add the server with type Virtualmin. **Test connection** counts the plans; the Package list is the Virtualmin plans
+   (System Settings → Account Plans).
+3. **Create on server** makes a top-level virtual server for the service's domain (`create-domain`), on its plan with
+   the plan's features, owned by a new user with the service's username and password and the client's email.
+4. Suspend / unsuspend disable and enable the virtual server; terminate deletes it with its sub-servers, files, mail and
+   databases. Change package applies another plan; change password changes the user's login (Virtualmin / Usermin,
+   FTP, SSH). Usage is the server's disk and bandwidth against its quota, and its databases.
+5. The client area's "Log in to Virtualmin" opens the login page (no one-time login is used).
+
 ## Enhance
 
 Not tried on a real Enhance server yet: Enhance's API reference could not be reached, so the calls follow the

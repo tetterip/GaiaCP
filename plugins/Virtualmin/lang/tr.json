@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting accounts on Virtualmin servers.": "Virtualmin sunucularında barındırma hesapları oluşturur, askıya alır ve kaldırır.",
+    "Virtualmin's master administrator (usually root): its remote API is open only to it.": "Virtualmin'in ana yöneticisi (genellikle root): uzak API yalnızca ona açıktır.",
+    "Virtualmin: the master administrator's password (the remote API takes no other key). Stored encrypted.": "Virtualmin: ana yöneticinin parolası (uzak API başka anahtar kabul etmez). Şifrelenmiş olarak saklanır."
+}

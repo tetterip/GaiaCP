@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting accounts on Virtualmin servers.": "Δημιουργεί, αναστέλλει και διαγράφει λογαριασμούς φιλοξενίας σε servers Virtualmin.",
+    "Virtualmin's master administrator (usually root): its remote API is open only to it.": "Ο κύριος διαχειριστής του Virtualmin (συνήθως root): το remote API του είναι ανοιχτό μόνο σε αυτόν.",
+    "Virtualmin: the master administrator's password (the remote API takes no other key). Stored encrypted.": "Virtualmin: ο κωδικός του κύριου διαχειριστή (το remote API δεν δέχεται άλλο κλειδί). Αποθηκεύεται κρυπτογραφημένος."
+}

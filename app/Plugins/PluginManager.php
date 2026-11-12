@@ -74,6 +74,7 @@ use Plugins\Turnstile\TurnstilePlugin;
 use Plugins\UptimeKuma\UptimeKumaPlugin;
 use Plugins\UptimeRobot\UptimeRobotPlugin;
 use Plugins\Vies\ViesPlugin;
+use Plugins\Virtualmin\VirtualminPlugin;
 use Plugins\WhmcsImport\WhmcsImportPlugin;
 use Throwable;
 
@@ -92,7 +93,7 @@ use Throwable;
 class PluginManager
 {
     /** @var list<class-string<Plugin>> shipped with GaiaCP */
-    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, EnhancePlugin::class, ProxmoxPlugin::class, EasyGrPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, OpenproviderPlugin::class, GoDaddyPlugin::class, ResellerClubPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, AadePlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, AlphaBankPlugin::class, EurobankPlugin::class, PiraeusBankPlugin::class, NexiXpayPlugin::class, MastercardGatewayPlugin::class, IrisPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, HetrixToolsPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, KimiPlugin::class, OpenAiPlugin::class, OllamaPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
+    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, VirtualminPlugin::class, EnhancePlugin::class, ProxmoxPlugin::class, EasyGrPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, OpenproviderPlugin::class, GoDaddyPlugin::class, ResellerClubPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, AadePlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, AlphaBankPlugin::class, EurobankPlugin::class, PiraeusBankPlugin::class, NexiXpayPlugin::class, MastercardGatewayPlugin::class, IrisPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, HetrixToolsPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, KimiPlugin::class, OpenAiPlugin::class, OllamaPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
 
     /** @var array<string, Plugin> */
     private array $plugins = [];

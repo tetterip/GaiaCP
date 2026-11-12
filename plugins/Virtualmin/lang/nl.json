@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting accounts on Virtualmin servers.": "Maakt, schorst en verwijdert hostingaccounts op Virtualmin-servers.",
+    "Virtualmin's master administrator (usually root): its remote API is open only to it.": "De hoofdbeheerder van Virtualmin (meestal root): alleen die mag de remote API gebruiken.",
+    "Virtualmin: the master administrator's password (the remote API takes no other key). Stored encrypted.": "Virtualmin: het wachtwoord van de hoofdbeheerder (de remote API kent geen andere sleutel). Versleuteld opgeslagen."
+}

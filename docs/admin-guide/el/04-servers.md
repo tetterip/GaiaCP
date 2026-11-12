@@ -1,7 +1,7 @@
 # Servers
 
 Οι λογαριασμοί φιλοξενίας δημιουργούνται στους servers σου μέσω του API του panel τους. Το GaiaCP δουλεύει με
-**cPanel / WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel** και **Enhance**, και με το **Proxmox VE**
+**cPanel / WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel**, **Virtualmin** και **Enhance**, και με το **Proxmox VE**
 για VPS. Κάθε panel είναι πρόσθετο στις Ρυθμίσεις → Πρόσθετα: τα τέσσερα πρώτα είναι ανοιχτά από την αρχή, τα υπόλοιπα
 κλειστά μέχρι να τα ανοίξεις, και μπορείς να κλείσεις όσα δεν χρησιμοποιείς. Οι servers είναι στις Ρυθμίσεις → Προϊόντα
 και domains → **Servers** (μόνο για υπερδιαχειριστές).
@@ -19,6 +19,7 @@
 | HestiaCP | 8083 | κενό login και access key ως `ACCESS_KEY:SECRET_KEY` (επίτρεψε πρώτα το API και την IP του GaiaCP) |
 | DirectAdmin | 2222 | ο admin ή reseller, με login key που επιτρέπεται να χρησιμοποιεί το API |
 | CyberPanel | 8090 | ο `admin` και ο κωδικός του, με ενεργή πρόσβαση API (Users → API Access) και κλειστή επαλήθευση δύο βημάτων |
+| Virtualmin | 10000 | ο `root` (ο κύριος διαχειριστής) και ο κωδικός του |
 | Enhance | 443 | το ID του οργανισμού σου ως username, με access token (Settings → Access tokens) |
 | Proxmox VE | 8006 | το ID του API token (`root@pam!gaiacp`) και το secret του (Datacenter → Permissions → API Tokens, χωρίς Privilege Separation) |
 
@@ -46,7 +47,7 @@ email, και η αντικατάσταση ενός αποθηκευμένου 
   `v-delete-user`.
 - **Enhance**: ένα access token παίρνει ρόλο· διάλεξε τον μικρότερο που διαχειρίζεται πελάτες και συνδρομές.
 - **Proxmox VE**: το token πρέπει να φτιάχνει VMs, χρήστες και δικαιώματα, που είναι σχεδόν πλήρης πρόσβαση στο node.
-- **Plesk** και **CyberPanel**: τα API τους θέλουν τον διαχειριστή, οπότε δεν υπάρχει κάτι μικρότερο να δώσεις. Εδώ
+- **Plesk**, **CyberPanel** και **Virtualmin**: τα API τους θέλουν τον διαχειριστή, οπότε δεν υπάρχει κάτι μικρότερο να δώσεις. Εδώ
   μετρά περισσότερο να ανοίγει το API μόνο για την IP του GaiaCP (στο Plesk, το secret key παραπάνω είναι ήδη δεμένο σε
   μία διεύθυνση).
 
@@ -61,7 +62,7 @@ email, και η αντικατάσταση ενός αποθηκευμένου 
   blacklists.
 - **URL σελίδας κατάστασης**: ανοίγει από τη λίστα Servers.
 
-Η **Σύνδεση** στη λίστα Servers ανοίγει το panel ήδη συνδεδεμένο (σε HestiaCP, CyberPanel και Enhance, τη σελίδα
+Η **Σύνδεση** στη λίστα Servers ανοίγει το panel ήδη συνδεδεμένο (σε HestiaCP, CyberPanel, Virtualmin και Enhance, τη σελίδα
 σύνδεσής του· και στο DirectAdmin, όταν ο server συνδέεται με login key αντί για κωδικό). Η **Σύνδεση** του πελάτη σε λογαριασμό
 DirectAdmin τον ανοίγει ήδη συνδεδεμένο, και σε παλαιότερο DirectAdmin τη σελίδα σύνδεσης.
 
@@ -73,6 +74,12 @@ plan. Η σύνδεση του πελάτη στο Plesk είναι το usernam
 CyberPanel με το username της υπηρεσίας· ο κωδικός είναι η σύνδεση αυτού του χρήστη στο CyberPanel. Τα πακέτα
 φαίνονται σαν `Default` (το ενσωματωμένο) ή `admin_Pro` (ένα που πρόσθεσε ο admin). Τα νέα websites ξεκινούν με την έκδοση PHP που διαλέγεις στις Ρυθμίσεις → Ενσωματώσεις →
 **CyberPanel** (PHP 8.2 αν δεν την αλλάξεις).
+
+Στο Virtualmin (κλειστό μέχρι να το ανοίξεις στις Ρυθμίσεις → Plugins) ένας λογαριασμός φιλοξενίας είναι ένας
+**virtual server** πρώτου επιπέδου για το domain της υπηρεσίας, που ανήκει σε χρήστη με το username της υπηρεσίας, σε
+ένα **plan** του Virtualmin (το πακέτο του προϊόντος) με τις λειτουργίες του plan. Ο κωδικός είναι η σύνδεση αυτού του
+χρήστη στο Virtualmin / Usermin, στο FTP και στο SSH. Η αναστολή απενεργοποιεί τον virtual server· ο τερματισμός τον
+διαγράφει μαζί με τα αρχεία, τα email και τις βάσεις του.
 
 ### Enhance
 

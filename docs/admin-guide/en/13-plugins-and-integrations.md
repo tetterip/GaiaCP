@@ -49,7 +49,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 
 | Kind | Plugins | Where you set them up |
 |---|---|---|
-| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
+| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Virtualmin, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
 | Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Settings → Registrars |
 | Payment methods | Bank transfer, Stripe, PayPal, Alpha Bank, Eurobank, Piraeus Bank, Nexi XPay, Mastercard Gateway, IRIS | Settings → Payment methods |
 | SSL certificates | GoGetSSL | Settings → GoGetSSL |
