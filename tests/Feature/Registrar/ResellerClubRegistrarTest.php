@@ -15,6 +15,8 @@ use App\Models\User;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarFactory;
+use App\Support\Region;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -38,7 +40,7 @@ class ResellerClubRegistrarTest extends TestCase
     {
         $this->resellerclubContacts['77'] = ['name' => 'John Smith', 'company' => 'Acme Inc', 'email' => 'john@acme.com', 'address-line-1' => '1 Main St', 'city' => 'Boston',
             'state' => 'MA', 'zipcode' => '02101', 'country' => 'US', 'phone-cc' => '1', 'phone' => '6175551234'];
-        $this->resellerclubDomains[$domain] = ['orderid' => 4321, 'customerid' => '55', 'endtime' => (string) strtotime('2027-03-15 12:00:00 UTC'),
+        $this->resellerclubDomains[$domain] = ['orderid' => 4321, 'customerid' => '55', 'endtime' => (string) CarbonImmutable::parse('2027-03-15 12:00', Region::timezone())->timestamp,
             'ns' => ['NS1.Host.gr', 'ns2.host.gr'], 'domsecret' => 'Rc#Code1', 'orderstatus' => ['transferlock'], 'cns' => [],
             'registrantcontactid' => '77', 'admincontactid' => '77', 'techcontactid' => '77', 'billingcontactid' => '77'];
     }
@@ -119,7 +121,7 @@ class ResellerClubRegistrarTest extends TestCase
 
         $registrar->renew('acme.com', 2);
 
-        $this->assertSame(['4321', '2', (string) strtotime('2027-03-15 12:00:00 UTC'), 'NoInvoice'], array_values($this->resellerclubCalls[1][1]));
+        $this->assertSame(['4321', '2', (string) CarbonImmutable::parse('2027-03-15 12:00', Region::timezone())->timestamp, 'NoInvoice'], array_values($this->resellerclubCalls[1][1]));
         $this->assertSame('2029-03-15', $registrar->expiryDate('acme.com')->toDateString());
     }
 

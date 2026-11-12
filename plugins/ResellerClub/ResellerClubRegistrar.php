@@ -11,6 +11,7 @@ use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ManagesRegistrarLock;
 use App\Provisioning\ProvisioningException;
 use App\Support\EppPhone;
+use App\Support\Region;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
 
@@ -66,8 +67,8 @@ class ResellerClubRegistrar implements ChecksAvailability, DomainRegistrar, Mana
             throw new ProvisioningException("ResellerClub returned no expiry date for {$domain}.");
         }
 
-        // A Unix time; the day in UTC, as ResellerClub shows it.
-        return CarbonImmutable::createFromTimestampUTC((int) $end)->startOfDay();
+        // A Unix time: its calendar day in GaiaCP's timezone (Settings → General → Region).
+        return CarbonImmutable::parse(CarbonImmutable::createFromTimestamp((int) $end, Region::timezone())->toDateString());
     }
 
     public function register(string $domain, int $years, Client $registrant, array $nameservers): void
