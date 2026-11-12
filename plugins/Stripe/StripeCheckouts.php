@@ -32,13 +32,28 @@ class StripeCheckouts
         return (int) $this->payments->unpaid($invoice)->sum('total_cents');
     }
 
-    /** Whether the client can pay it by card now: Stripe set up, the notice unpaid and every line still due. */
     /**
      * Stripe takes these in whole units, not hundredths, while amounts here are always in hundredths, so a notice in
      * one of them is not offered for card payment.
      */
     public const ZERO_DECIMAL_CURRENCIES = ['BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF'];
 
+    /** Stripe takes these in thousandths (5.120 KWD = 5120), so an amount in hundredths is sent ten times larger. */
+    public const THREE_DECIMAL_CURRENCIES = ['BHD', 'JOD', 'KWD', 'OMR', 'TND'];
+
+    /** The languages Stripe's payment page has of the ones GaiaCP ships (GaiaCP's code => Stripe's); others: 'auto'. */
+    public const LOCALES = ['en' => 'en', 'el' => 'el', 'de' => 'de', 'es' => 'es', 'fr' => 'fr', 'it' => 'it', 'nl' => 'nl', 'pl' => 'pl', 'pt_BR' => 'pt-BR', 'tr' => 'tr'];
+
+    /** How long a checkout still being paid (a bank debit clearing) is looked up at Stripe by recheck(). */
+    public const RECHECK_DAYS = 14;
+
+    /** An amount in hundredths as Stripe takes it in this currency (thousandths for the three-decimal ones). */
+    public static function stripeAmount(int $cents, string $currency): int
+    {
+        return in_array(strtoupper($currency), self::THREE_DECIMAL_CURRENCIES, true) ? $cents * 10 : $cents;
+    }
+
+    /** Whether the client can pay it by card now: Stripe set up, the notice unpaid and every line still due. */
     public function canPay(Invoice $invoice): bool
     {
         if (! app(PluginManager::class)->enabled('stripe') || ! StripeApi::configured() || $invoice->status !== InvoiceStatus::Unpaid
@@ -75,13 +90,13 @@ class StripeCheckouts
                 'quantity' => 1,
                 'price_data' => [
                     'currency' => $currency,
-                    'unit_amount' => $amount,
+                    'unit_amount' => self::stripeAmount($amount, $invoice->currency),
                     'product_data' => ['name' => __('Payment notice :number', ['number' => $invoice->number], $locale)],
                 ],
             ]],
             'client_reference_id' => (string) $invoice->id,
             'customer_email' => $invoice->client->email,
-            'locale' => in_array($locale, ['el', 'en'], true) ? $locale : 'auto',
+            'locale' => self::LOCALES[$locale] ?? 'auto',
             'metadata' => ['invoice_id' => $invoice->id, 'invoice_number' => $invoice->number],
             'payment_intent_data' => [
                 'description' => __('Payment notice :number', ['number' => $invoice->number], $locale),
@@ -181,6 +196,40 @@ class StripeCheckouts
         return $stuck->count();
     }
 
+    /**
+     * Looks up at Stripe the checkouts still open, in case its webhook never came (not set up, or blocked) and the
+     * client closed the page before coming back: a paid one is recorded, an expired one closed. What is recorded is
+     * what Stripe's API says, as when the client comes back. Hourly.
+     */
+    public function recheck(): int
+    {
+        $open = StripeCheckout::query()->where('status', StripeCheckout::OPEN)
+            ->where('created_at', '<', now()->subMinutes(self::EXPIRES_MINUTES + 5))
+            ->where('created_at', '>', now()->subDays(self::RECHECK_DAYS))
+            ->get();
+
+        foreach ($open as $checkout) {
+            // Each against the key of its own mode only: the mode in use now
+            if ($checkout->livemode !== (StripeApi::mode() === 'live')) {
+                continue;
+            }
+
+            try {
+                $session = $this->stripe->checkoutSession($checkout->session_id);
+            } catch (StripeException) {
+                continue; // tried again next hour
+            }
+
+            if (($session['status'] ?? null) === 'expired') {
+                $this->close($session, StripeCheckout::EXPIRED);
+            } else {
+                $this->complete($session);
+            }
+        }
+
+        return $open->count();
+    }
+
     /** Stripe closed the page unpaid (expired) or the bank refused a delayed payment (failed). */
     public function close(array $session, string $status): void
     {
@@ -192,7 +241,7 @@ class StripeCheckouts
     {
         $invoice = $checkout->invoice;
 
-        if ((int) ($session['amount_total'] ?? -1) !== $checkout->amount_cents || strtoupper((string) ($session['currency'] ?? '')) !== strtoupper($checkout->currency)) {
+        if ((int) ($session['amount_total'] ?? -1) !== self::stripeAmount($checkout->amount_cents, $checkout->currency) || strtoupper((string) ($session['currency'] ?? '')) !== strtoupper($checkout->currency)) {
             return 'Stripe charged a different amount than the payment page asked for';
         }
 

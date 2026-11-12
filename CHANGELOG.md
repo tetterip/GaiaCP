@@ -14,6 +14,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   sandbox account first.
 - Enom 1.4.0: TLD costs now come from PE_GetProductPrice (the account's own cost), and renewing a domain that has
   already expired brings it back with UpdateExpiredDomains, as Enom's Blesta module does.
+- Stripe and PayPal payments no longer depend on the webhook alone: every hour GaiaCP asks Stripe about the checkouts
+  still open and PayPal about the orders still waiting, so a payment whose client closed the page before coming back
+  is recorded (PayPal's money is taken only if the notice still asks for that amount). Payment notices in a
+  three-decimal currency (BHD, JOD, KWD, OMR, TND) were charged a tenth of their amount by Stripe and recorded as paid;
+  they are now sent in thousandths. Stripe's payment page opens in every language GaiaCP ships.
 - Security: client area sign up no longer says whether an email address already has an account (it told anyone who is
   a client here, and which addresses belong to admins). Every sign up with a password now ends on "Check your email"
   without logging in; the confirmation link asks the new client to log in, then opens the account. An address that

@@ -29,6 +29,9 @@ class PayPalPayments
      */
     public const CURRENCIES = ['AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'ILS', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'SEK', 'SGD', 'THB', 'USD'];
 
+    /** How long an order whose payment is still clearing (an eCheck, for example) is looked up by recheck(). */
+    public const PENDING_DAYS = 30;
+
     public function __construct(private PayPalApi $paypal, private RecordInvoicePayment $payments) {}
 
     /** What paying the notice now records: its unpaid lines, with the late fees. */
@@ -138,6 +141,35 @@ class PayPalPayments
         $stuck->each(fn (PayPalOrder $order) => $this->unmatched($order, 'Taking or recording the payment stopped part way; check the order at PayPal and which lines of the notice are paid'));
 
         return $stuck->count();
+    }
+
+    /**
+     * Looks up at PayPal the orders GaiaCP is still waiting on, in case PayPal's webhook never came (not set up, or
+     * blocked): one the client approved but never came back from is taken (sync() checks the notice first), one whose
+     * payment was still clearing is recorded once completed. An open order is looked up for a day (PayPal drops
+     * unapproved ones before that), a pending one for PENDING_DAYS. Hourly.
+     */
+    public function recheck(): int
+    {
+        $waiting = PayPalOrder::query()
+            ->where('live', PayPalApi::mode() === 'live') // each read with the keys of its own mode only
+            ->where(fn ($query) => $query
+                ->where(fn ($open) => $open->where('status', PayPalOrder::OPEN)
+                    ->where('created_at', '<', now()->subMinutes(15))
+                    ->where('created_at', '>', now()->subDay()))
+                ->orWhere(fn ($pending) => $pending->where('status', PayPalOrder::PENDING)
+                    ->where('created_at', '>', now()->subDays(self::PENDING_DAYS))))
+            ->get();
+
+        foreach ($waiting as $order) {
+            try {
+                $this->sync($order);
+            } catch (PayPalException) {
+                // tried again next hour
+            }
+        }
+
+        return $waiting->count();
     }
 
     /** An amount in hundredths as PayPal writes it ("60.00"), with no floats on the way. */
