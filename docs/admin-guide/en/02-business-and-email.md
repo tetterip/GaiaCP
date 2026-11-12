@@ -77,11 +77,13 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
 - **Bank transfer**: your bank details, printed on every payment notice.
 - **Stripe**: card payments on Stripe's own Checkout page, from the client's unpaid payment notice. Fill in the test
   or live secret key and the webhook signing secret, and add the webhook address shown there in your Stripe dashboard.
-  The payment is recorded once Stripe confirms it, never from the client's visit alone.
+  The payment is recorded once Stripe confirms it, never from the client's visit alone. If the webhook doesn't come
+  (not set up, or blocked), GaiaCP asks Stripe every hour about the pages still open, so a payment is still recorded.
 - **PayPal** (off until you switch it on): payments on PayPal's own page, with the client's PayPal balance or a card.
   Create an app in PayPal Developer → Apps & Credentials (one in Sandbox to try it, one in Live), fill in its client
   ID and secret, and add a webhook there with the address shown on Settings → PayPal. When the client approves, GaiaCP
-  takes the money only if the notice still asks for that amount, and records it once PayPal confirms it.
+  takes the money only if the notice still asks for that amount, and records it once PayPal confirms it. GaiaCP also
+  asks PayPal every hour about the payments it is still waiting on, in case the webhook doesn't come.
 
 Payments you record by hand can also be **Cash** or **Other**. Each client has a default payment method on their form.
 
