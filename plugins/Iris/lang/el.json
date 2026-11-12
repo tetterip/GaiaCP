@@ -1,0 +1,22 @@
+{
+    "Clients pay their payment notices by IRIS from their bank's app: your IRIS number and your bank's QR code are shown on unpaid notices. You record the payments by hand.": "Οι πελάτες πληρώνουν τις ειδοποιήσεις πληρωμής με IRIS από την εφαρμογή της τράπεζάς τους: ο αριθμός IRIS και το QR code της τράπεζάς σου φαίνονται στις απλήρωτες ειδοποιήσεις. Τις πληρωμές τις καταχωρίζεις εσύ.",
+    "Clients see \"Pay with IRIS\" on their unpaid payment notices in the client area once there is an IRIS number or a QR code. It shows them the amount, these details and the notice number to write as the reason. IRIS has no connection for shops, so you record each payment by hand (method IRIS) when it reaches your account.": "Οι πελάτες βλέπουν «Πληρωμή με IRIS» στις απλήρωτες ειδοποιήσεις πληρωμής του client area μόλις υπάρχει αριθμός IRIS ή QR code. Τους δείχνει το ποσό, αυτά τα στοιχεία και τον αριθμό της ειδοποίησης για αιτιολογία. Το IRIS δεν έχει σύνδεση για καταστήματα, οπότε καταχωρίζεις κάθε πληρωμή εσύ (τρόπος IRIS) όταν φτάσει στον λογαριασμό σου.",
+    "IRIS": "IRIS",
+    "IRIS QR code": "QR code IRIS",
+    "IRIS number": "Αριθμός IRIS",
+    "IRIS number or alias": "Αριθμός ή alias IRIS",
+    "IRIS number: :number": "Αριθμός IRIS: :number",
+    "IRIS number: :number (:payee)": "Αριθμός IRIS: :number (:payee)",
+    "IRIS: pay from your bank's app with IRIS.": "IRIS: πληρώστε από την εφαρμογή της τράπεζάς σας με IRIS.",
+    "In your bank's app choose IRIS, scan the QR code or enter the IRIS number, and write :number as the reason. The notice shows as paid once we see the payment in our account.": "Στην εφαρμογή της τράπεζάς σας επιλέξτε IRIS, σκανάρετε το QR code ή γράψτε τον αριθμό IRIS, και βάλτε αιτιολογία :number. Η ειδοποίηση εμφανίζεται ως πληρωμένη μόλις δούμε την πληρωμή στον λογαριασμό μας.",
+    "Note for clients": "Σημείωση για τους πελάτες",
+    "Optional, shown under the details, e.g. which banks the QR code works with.": "Προαιρετικό, φαίνεται κάτω από τα στοιχεία, π.χ. με ποιες τράπεζες δουλεύει το QR code.",
+    "Pay with IRIS": "Πληρωμή με IRIS",
+    "Payee": "Δικαιούχος",
+    "Payments by IRIS from the client's bank app: your IRIS number and your bank's QR code on unpaid payment notices.": "Πληρωμές με IRIS από την εφαρμογή της τράπεζας του πελάτη: ο αριθμός IRIS και το QR code της τράπεζάς σου στις απλήρωτες ειδοποιήσεις πληρωμής.",
+    "Please write the payment notice number as the reason.": "Παρακαλούμε γράψτε τον αριθμό της ειδοποίησης πληρωμής ως αιτιολογία.",
+    "The QR code is under Pay with IRIS on the payment notice in our client area.": "Το QR code βρίσκεται στο «Πληρωμή με IRIS» της ειδοποίησης πληρωμής στο client area μας.",
+    "The VAT number, mobile number or alias your bank linked to IRIS.": "Ο ΑΦΜ, το κινητό ή το alias που έχει συνδέσει η τράπεζά σου με το IRIS.",
+    "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Το σταθερό QR code που σου έδωσε η τράπεζα για πληρωμές IRIS (PNG, JPG ή WebP, έως 1 MB).",
+    "The name clients see in their bank's app. Empty: your company name.": "Το όνομα που βλέπουν οι πελάτες στην εφαρμογή της τράπεζάς τους. Κενό: το όνομα της εταιρείας σου."
+}

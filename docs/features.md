@@ -73,7 +73,9 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Payments recorded by hand: "mark as paid" moves the due date forward one cycle. Card payments through Stripe (a
   bundled plugin): "Pay by card" on the client's unpaid payment notices opens Stripe Checkout, and the payment is
   recorded the same way once Stripe confirms it. PayPal the same way (a bundled plugin, off by default): "Pay with
-  PayPal" opens PayPal's page, and GaiaCP takes the money only if the notice still asks for that amount
+  PayPal" opens PayPal's page, and GaiaCP takes the money only if the notice still asks for that amount. IRIS (a
+  bundled plugin, off by default): "Pay with IRIS" shows the bank's fixed QR code, the IRIS number and the notice
+  number as the reason; recorded by hand
   - Card payments through Greek banks (bundled plugins, off by default): Alpha Bank and Eurobank (Cardlink, signed
     with the shared secret) and Piraeus Bank (paycenter ticket, answer signed with the ticket; also IRIS). Recorded
     only from the bank's signed answer; unanswered payments close after two hours. No installments or refunds yet
@@ -119,7 +121,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance, Proxmox VE (all three off by default), easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
-Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Google sign-in ("Continue with Google"
+Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), IRIS (off by default, Settings → IRIS), Google sign-in ("Continue with Google"
   in the client area and, when ticked, on /admin, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
   Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot, HetrixTools and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
   the admin panel themes Gaia, Flat and Glass are bundled plugins,

@@ -96,6 +96,11 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
   (the client closed the page) is closed after two hours and named in the activity log, so check the bank's back office
   if a client says they paid. A Piraeus IRIS transfer the bank has not confirmed yet is listed in the daily summary for
   you to check and record by hand.
+- **IRIS** (off until you switch it on): payments by IRIS, Greece's instant bank payments, from the client's bank app.
+  Fill in the payee, the IRIS number or alias your bank linked (VAT number, mobile or alias) and upload the fixed QR
+  code your bank gave you. Unpaid notices in the client area get **Pay with IRIS**, which shows the QR code, the
+  number, the amount and the notice number to write as the reason. IRIS has no connection for shops, so record each
+  payment by hand with the IRIS method when it reaches your account.
 
 Payments you record by hand can also be **Cash** or **Other**. Each client has a default payment method on their form.
 

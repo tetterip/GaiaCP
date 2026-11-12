@@ -133,6 +133,10 @@ To pay with PayPal, open an unpaid payment notice and press **Pay with PayPal**.
 To pay by card through our bank, open an unpaid payment notice and press **Pay by card** with the bank's name. You pay on the bank's own secure page (we never see your card details) and the notice shows as paid as soon as the bank confirms the payment. Your address, city, postcode and country must be filled in under your profile, because the bank needs them to check the card.
 <!-- endif -->
 
+<!-- if:pay_iris -->
+To pay by IRIS, open an unpaid payment notice and press **Pay with IRIS**. It shows our QR code and IRIS number with the amount: in your bank's app choose IRIS, scan the code or enter the number, and write the notice number as the reason. The notice shows as paid once we see the payment in our account.
+<!-- endif -->
+
 <!-- if:credit -->
 ## Quotes
 

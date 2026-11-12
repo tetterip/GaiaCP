@@ -60,6 +60,7 @@ use Plugins\Eurobank\EurobankSettings;
 use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\HetrixTools\HetrixToolsSettings;
+use Plugins\Iris\IrisSettings;
 use Plugins\Kimi\KimiSettings;
 use Plugins\Ollama\OllamaSettings;
 use Plugins\OpenAi\OpenAiSettings;
@@ -95,7 +96,7 @@ class SettingsTest extends TestCase
     ];
 
     /** Listed on Settings → Payment methods and under it in the menu, without a card of their own. */
-    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, AlphaBankSettings::class, EurobankSettings::class, PiraeusBankSettings::class];
+    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, AlphaBankSettings::class, EurobankSettings::class, PiraeusBankSettings::class, IrisSettings::class];
 
     public function test_settings_shows_a_card_per_page_and_each_page_has_the_sub_navigation(): void
     {

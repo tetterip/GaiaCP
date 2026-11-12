@@ -51,7 +51,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 |---|---|---|
 | Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
 | Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Settings → Registrars |
-| Payment methods | Bank transfer, Stripe, PayPal, Alpha Bank, Eurobank, Piraeus Bank | Settings → Payment methods |
+| Payment methods | Bank transfer, Stripe, PayPal, Alpha Bank, Eurobank, Piraeus Bank, IRIS | Settings → Payment methods |
 | SSL certificates | GoGetSSL | Settings → GoGetSSL |
 | Monitoring | Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks | Settings → Integrations |
 | Client sign-in and safety | Google sign-in, Google reCAPTCHA, Cloudflare Turnstile | Settings → Client area |

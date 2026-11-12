@@ -1,0 +1,22 @@
+{
+    "Clients pay their payment notices by IRIS from their bank's app: your IRIS number and your bank's QR code are shown on unpaid notices. You record the payments by hand.": "Klienci opłacają wezwania do zapłaty przez IRIS w aplikacji swojego banku: Twój numer IRIS i kod QR Twojego banku widać na nieopłaconych wezwaniach. Płatności rejestrujesz ręcznie.",
+    "Clients see \"Pay with IRIS\" on their unpaid payment notices in the client area once there is an IRIS number or a QR code. It shows them the amount, these details and the notice number to write as the reason. IRIS has no connection for shops, so you record each payment by hand (method IRIS) when it reaches your account.": "Klienci widzą „Zapłać przez IRIS” na nieopłaconych wezwaniach do zapłaty w panelu klienta, gdy jest numer IRIS lub kod QR. Pokazuje kwotę, te dane i numer wezwania jako tytuł przelewu. IRIS nie ma połączenia dla sklepów, więc każdą płatność rejestrujesz ręcznie (metoda IRIS), gdy wpłynie na Twoje konto.",
+    "IRIS": "IRIS",
+    "IRIS QR code": "Kod QR IRIS",
+    "IRIS number": "Numer IRIS",
+    "IRIS number or alias": "Numer lub alias IRIS",
+    "IRIS number: :number": "Numer IRIS: :number",
+    "IRIS number: :number (:payee)": "Numer IRIS: :number (:payee)",
+    "IRIS: pay from your bank's app with IRIS.": "IRIS: zapłać w aplikacji swojego banku przez IRIS.",
+    "In your bank's app choose IRIS, scan the QR code or enter the IRIS number, and write :number as the reason. The notice shows as paid once we see the payment in our account.": "W aplikacji banku wybierz IRIS, zeskanuj kod QR lub wpisz numer IRIS i podaj :number jako tytuł. Wezwanie będzie oznaczone jako opłacone, gdy zobaczymy płatność na naszym koncie.",
+    "Note for clients": "Uwaga dla klientów",
+    "Optional, shown under the details, e.g. which banks the QR code works with.": "Opcjonalnie, widoczna pod danymi, np. z którymi bankami działa kod QR.",
+    "Pay with IRIS": "Zapłać przez IRIS",
+    "Payee": "Odbiorca",
+    "Payments by IRIS from the client's bank app: your IRIS number and your bank's QR code on unpaid payment notices.": "Płatności przez IRIS z aplikacji bankowej klienta: Twój numer IRIS i kod QR Twojego banku na nieopłaconych wezwaniach do zapłaty.",
+    "Please write the payment notice number as the reason.": "Prosimy podać numer wezwania do zapłaty jako tytuł przelewu.",
+    "The QR code is under Pay with IRIS on the payment notice in our client area.": "Kod QR znajduje się pod Zapłać przez IRIS na wezwaniu do zapłaty w naszym panelu klienta.",
+    "The VAT number, mobile number or alias your bank linked to IRIS.": "NIP, numer telefonu lub alias, który Twój bank powiązał z IRIS.",
+    "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Stały kod QR, który dał Ci bank do płatności IRIS (PNG, JPG lub WebP, do 1 MB).",
+    "The name clients see in their bank's app. Empty: your company name.": "Nazwa, którą klienci widzą w aplikacji banku. Puste: nazwa Twojej firmy."
+}
