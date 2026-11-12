@@ -23,7 +23,8 @@ use Throwable;
  * GetDomainInfo, GetDNS, ModifyNS, SynchAuthInfo, GetContacts, Contacts, RegisterNameServer, UpdateNameServer,
  * DeleteNameServer, GetRegLock, SetRegLock). A domain goes as SLD (the first label) and TLD (the rest).
  * Enom does not hand back EPP codes: it emails them to the registrant (EmailsEppCode). Its costs come from
- * PE_GetResellerPrice, one call per TLD and kind (PRODUCT_TYPES), for 1 year in USD.
+ * PE_GetProductPrice (the account's own cost, as Enom's Blesta module reads it), one call per TLD and kind
+ * (PRODUCT_TYPES), for 1 year in USD.
  */
 class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCode, ListsTldPrices, ManagesChildNameservers, ManagesDomainContacts, ManagesRegistrarLock
 {
@@ -36,7 +37,7 @@ class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCod
     /** Enom's contact prefix for each of GaiaCP's roles (DomainContact::ROLES). */
     public const ROLES = ['registrant' => 'Registrant', 'admin' => 'Admin', 'tech' => 'Tech', 'billing' => 'AuxBilling'];
 
-    /** PE_GetResellerPrice's ProductType for each kind of price. */
+    /** PE_GetProductPrice's ProductType for each kind of price. */
     public const PRODUCT_TYPES = ['register' => 10, 'renew' => 16, 'transfer' => 19];
 
     /** TLDs read in one go: three calls each. */
@@ -97,7 +98,7 @@ class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCod
     /** One price of a TLD (".com" goes as "com"); null when Enom does not sell it. */
     private function resellerPrice(string $tld, int $productType): ?int
     {
-        $xml = $this->client->call('PE_GetResellerPrice', ['tld' => ltrim($tld, '.'), 'ProductType' => $productType], timeout: 30);
+        $xml = $this->client->call('PE_GetProductPrice', ['tld' => ltrim($tld, '.'), 'ProductType' => $productType, 'Years' => 1], timeout: 30);
         $enabled = self::first($xml, 'productenabled');
 
         return $enabled !== null && strtolower($enabled) === 'false' ? null : TldPrice::cents(self::first($xml, 'price'));
@@ -152,9 +153,18 @@ class EnomRegistrar implements ChecksAvailability, DomainRegistrar, EmailsEppCod
         $this->client->call('TP_CreateOrder', $params, secrets: [$eppCode], timeout: 120);
     }
 
+    /** Extend; when Enom refuses because the domain has expired, UpdateExpiredDomains brings it back for those years. */
     public function renew(string $domain, int $years): void
     {
-        $this->client->call('Extend', [...self::split($domain), 'NumYears' => $years], timeout: 120);
+        try {
+            $this->client->call('Extend', [...self::split($domain), 'NumYears' => $years], timeout: 120);
+        } catch (ProvisioningException $extend) {
+            try {
+                $this->client->call('UpdateExpiredDomains', ['DomainName' => implode('.', self::split($domain)), 'NumYears' => $years], timeout: 120);
+            } catch (ProvisioningException) {
+                throw $extend;
+            }
+        }
     }
 
     public function nameservers(string $domain): array

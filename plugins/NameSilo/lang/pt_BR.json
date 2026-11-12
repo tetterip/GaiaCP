@@ -1,0 +1,9 @@
+{
+    "API key": "Chave de API",
+    "Api key": "Chave de API",
+    "Leave empty to keep the current key. Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Deixe em branco para manter a chave atual. Armazenada criptografada. Crie-a em Account → API Manager na NameSilo e limite-a lá ao endereço IP deste servidor.",
+    "Registers, renews, transfers and syncs domains through a NameSilo account with an API key.": "Registra, renova, transfere e sincroniza domínios por meio de uma conta NameSilo com chave de API.",
+    "Sandbox": "Sandbox",
+    "Sends every call to NameSilo's sandbox (ote.namesilo.com), with a sandbox account's API key.": "Envia cada chamada ao sandbox da NameSilo (ote.namesilo.com), com a chave de API de uma conta sandbox.",
+    "Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Armazenada criptografada. Crie-a em Account → API Manager na NameSilo e limite-a lá ao endereço IP deste servidor."
+}

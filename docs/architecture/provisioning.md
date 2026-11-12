@@ -1,8 +1,8 @@
 # Provisioning modules
 
-How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
+How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
 
-Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`) behind the interfaces in
+Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`, `plugins/GoDaddy`, `plugins/ResellerClub`) behind the interfaces in
 `app/Provisioning/` (`ServerModule` → `HostingProvisioner`, `RegistrarModule` → `DomainRegistrar`) so the rest of the app
 never calls a panel API directly.
 
@@ -142,7 +142,7 @@ never calls a panel API directly.
   `DomainRegistrar` from the account's module (`PluginManager::enabledRegistrarModule()`). Only `DomainLifecycle` calls a registrar; `RecordPayment` renews an
   active/suspended yearly domain through it, outside the transaction (a failure keeps the payment).
 - **TLD import and cost sync** (`App\Actions\ImportTldPrices`): a `DomainRegistrar` implementing `ListsTldPrices`
-  returns `TldPrice`s (easy.gr action 33 for every TLD at its shortest term, EUR; Enom `PE_GetResellerPrice` per TLD
+  returns `TldPrice`s (easy.gr action 33 for every TLD at its shortest term, EUR; Enom `PE_GetProductPrice` per TLD
   and ProductType 10/16/19, 1 year, USD). Settings → Domain pricing → Import from registrar (`ImportTldPricesAction`,
   a two-step wizard; replies cached 15 minutes as plain arrays) stores costs and, for new TLDs (or when asked), prices
   = cost + % + fixed, rounded; `gaiacp:sync-tld-costs` (04:15, `domains.sync_costs`) only updates costs of each
@@ -163,9 +163,56 @@ never calls a panel API directly.
   `responsetype=xml`; replies `<interface-response>` with `ErrCount` 0, or the errors in `<errors><Err1>…`. A domain
   goes as `SLD` (first label) + `TLD` (the rest). Commands: `Purchase` (NS1..NS12 or `UseDNS=default`, contacts with
   the prefixes Registrant / Admin / Tech / AuxBilling; a company adds OrganizationName, JobTitle "N/A" and Fax),
-  `Extend`, `TP_CreateOrder` (Autoverification, `AuthInfo1`, `UseContacts=0`), `GetDomainInfo` (status/expiration,
+  `Extend` (an expired domain: `UpdateExpiredDomains` with `DomainName`, as Enom's Blesta module), `TP_CreateOrder`
+  (Autoverification, `AuthInfo1`, `UseContacts=0`), `GetDomainInfo` (status/expiration,
   US date order), `GetDNS` / `ModifyNS`, `SynchAuthInfo` (EmailEPP). Built from open-source Enom modules, since
-  Enom's docs were unreachable; not tried against Enom yet. `pw` and the EPP code are masked in the module log.
+  Enom's docs were unreachable, and checked against Enom's Blesta module (which sends GET; POST is kept); not tried
+  against Enom yet. `pw` and the EPP code are masked in the module log.
+- **Namecheap** (`plugins/Namecheap`, module `namecheap`; credentials `username`, `api_key`, `client_ip`, `sandbox`):
+  form POST to `https://api.namecheap.com/xml.response` (`api.sandbox.namecheap.com`) with `ApiUser` = `UserName`,
+  `ApiKey`, `ClientIp` (optional; else 10.11.12.13, as Namecheap's WHMCS module) and `Command`; the EPP code as
+  `base64:` + base64, as that module sends it; replies `<ApiResponse Status="OK">` with `<CommandResponse>`, or `ERROR` with
+  `<Errors><Error>`. Commands `namecheap.domains.check` (a premium name counts as taken), `create` (four contact
+  prefixes as Enom's, free WhoisGuard added, off), `transfer.create`, `renew`, `getInfo` (`DomainDetails/ExpiredDate`,
+  m/d/Y), `dns.getList` / `setCustom` / `setDefault` (SLD + TLD), `getContacts` / `setContacts` (all four at once),
+  `ns.create` / `update` / `delete`, `getRegistrarLock` / `setRegistrarLock`, `users.getPricing` (one call,
+  `ProductCategory=DOMAINS`, its register / renew / transfer categories, the 1-year `YourPrice`, every TLD, as
+  Namecheap's Blesta module). No EPP code command: `eppCode()` throws with where to find it.
+- **NameSilo** (`plugins/NameSilo`, module `namesilo`; credentials `api_key`, `sandbox`): GET
+  `https://www.namesilo.com/api/<operation>` (`ote.namesilo.com`) with `version=1`, `type=xml`, `key`; reply
+  `<namesilo><reply><code>` 300-302 = done, else the error in `detail`. Operations `checkRegisterAvailability`,
+  `registerDomain` / `transferDomain` (fn, ln, ad, cy, st, zp, ct, em, cp = company, ph = the national number in
+  digits, the last ten for US / CA, as NameSilo's Blesta module;
+  `private=1`, `auto_renew=0`), `renewDomain`, `getDomainInfo` (expires Y-m-d, nameservers, lock, contact_ids),
+  `changeNameServers` (ns1..ns13), `retrieveAuthCode` (emailed: `EmailsEppCode`), `contactList` / `contactAdd` +
+  `contactDomainAssociate` (a changed contact is a new record, as one may serve other domains), `add` / `modify` /
+  `deleteRegisteredNameServer` (host label without the domain), `domainLock` / `domainUnlock`, `getPrices` (every TLD).
+- **Openprovider** (`plugins/Openprovider`, module `openprovider`; credentials `username`, `password`, `sandbox`): REST
+  `https://api.openprovider.eu/v1beta` (sandbox `api.sandbox.openprovider.nl:8480`), `POST /auth/login` for a bearer
+  token kept per client object; replies `{code: 0, data}` or a code with `desc`. A domain is found with `GET /domains`
+  (`full_name`) for its `id`; then `POST /domains/{id}/renew`, `PUT /domains/{id}`
+  (nameservers, `is_locked`, contact handles), `GET /domains/{id}` for its `auth_code` (else `POST /domains/{id}/authcode/reset`). Registering or transferring first makes
+  the client a customer (`POST /customers`: street and number apart, phone as +CC / 3-digit area / number) used for all
+  four handles; `autorenew` off; no nameservers = `ns_group` dns-openprovider. Saving contacts makes new handles.
+  `POST` / `PUT` / `DELETE /dns/nameservers` for private nameservers, `GET /tlds?with_price=true` (every TLD;
+  reseller price, else product price) for costs. Token, password and EPP code are masked in the log.
+- **GoDaddy** (`plugins/GoDaddy`, module `godaddy`; credentials `api_key`, `api_secret`, `shopper_id`, `test_mode`): v1
+  REST at `https://api.godaddy.com` (`api.ote-godaddy.com`) with `Authorization: sso-key KEY:SECRET` and `X-Shopper-Id`
+  when set; errors `{code, message, fields}`. `GET /v1/domains/available`, `GET /v1/domains/agreements` (keys for the
+  `consent` block: agreedBy = request IP, agreedAt = now UTC), `POST /v1/domains/purchase` (four `contact*` with
+  `addressMailing`, privacy and renewAuto off), `POST /v1/domains/{domain}/transfer` and `/renew`, `GET /v1/domains/{domain}`
+  (expires, nameServers, locked, authCode, contacts), `PATCH /v1/domains/{domain}` and `/contacts`. No private
+  nameservers (v2 customer API) and no price list.
+- **ResellerClub** (`plugins/ResellerClub`, module `resellerclub`; credentials `reseller_id`, `api_key`, `test_mode`):
+  `https://httpapi.com/api/<call>.json` (`test.httpapi.com`) with `auth-userid` + `api-key`, GET for reads and form POST
+  for changes, lists as the same name repeated (`ResellerClubClient::encode()`). `domains/details-by-name` (options=All:
+  endtime, ns1.., domsecret, orderstatus transferlock, contacts and their ids, cns) gives the order id the other calls take;
+  `register` / `transfer` (customer by email via `customers/details`, else `customers/v2/signup`, plus a `contacts/add`
+  of type Contact; NoInvoice), `renew` (with `exp-date` = endtime, so a repeat can't renew twice), `modify-ns`,
+  `modify-contact`, `add-cns` / `modify-cns-ip` / `delete-cns-ip`, `enable-` / `disable-theft-protection`. TLDs that need
+  their own contact type (.eu, .uk, .ca, …) are not handled yet.
+  These five were written from memory of each API (docs unreachable from the cloud; the WHMCS modules he uploaded are
+  ionCube-encoded except Namecheap's API client, which confirmed its calls) and are untested against real accounts.
 - **SSL certificates** (type `ssl`): providers are plugins implementing `App\Certificates\CertificateModule`
   (`PluginManager::certificateModules()`, keyed by `certificateKey()`); only `App\Actions\CertificateLifecycle` calls
   them. A service's `package` is `<key>:<product code>` (`CertificateLifecycle::package()`, products cached an hour as

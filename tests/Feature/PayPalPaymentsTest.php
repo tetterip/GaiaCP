@@ -445,4 +445,44 @@ class PayPalPaymentsTest extends TestCase
 
         $this->get(PayPalSettings::getUrl(panel: 'admin'))->assertForbidden();
     }
+
+    public function test_the_hourly_recheck_takes_an_approved_order_whose_client_never_came_back(): void
+    {
+        $this->start();
+        $this->approve(); // no return visit, no webhook
+
+        $this->assertSame(0, app(PayPalPayments::class)->recheck()); // too new: the client may still be coming back
+
+        $this->travel(20)->minutes();
+        $this->assertSame(1, app(PayPalPayments::class)->recheck());
+        $this->assertSame(1, Payment::count());
+        $this->assertSame(PayPalOrder::PAID, PayPalOrder::sole()->status);
+        $this->assertSame(1, $this->captures);
+
+        $this->assertSame(0, app(PayPalPayments::class)->recheck()); // done with it
+    }
+
+    public function test_the_hourly_recheck_records_a_cleared_payment_and_skips_old_or_other_mode_orders(): void
+    {
+        $this->start();
+        $this->approve();
+        $this->capture['status'] = 'PENDING';
+        $this->get('/paypal/return?token=ORDER1');
+        $this->assertSame(PayPalOrder::PENDING, PayPalOrder::sole()->status);
+
+        // An order never approved, left from yesterday, and one of the live mode: not looked up
+        PayPalOrder::create(['invoice_id' => $this->notice->id, 'order_id' => 'OLD1', 'live' => false, 'amount_cents' => 6000, 'currency' => 'EUR'])
+            ->forceFill(['created_at' => now()->subDays(2)])->save();
+        PayPalOrder::create(['invoice_id' => $this->notice->id, 'order_id' => 'LIVE1', 'live' => true, 'amount_cents' => 6000, 'currency' => 'EUR'])
+            ->forceFill(['created_at' => now()->subHour()])->save();
+
+        $this->travel(3)->days();
+        $this->capture['status'] = 'COMPLETED';
+        $this->remote = ['status' => 'COMPLETED', 'purchase_units' => [['payments' => ['captures' => [$this->capture]]]]];
+
+        $this->assertSame(1, app(PayPalPayments::class)->recheck());
+        $this->assertSame(1, Payment::count());
+        $this->assertSame(PayPalOrder::PAID, PayPalOrder::query()->where('order_id', 'ORDER1')->sole()->status);
+        Http::assertNotSent(fn (Request $request) => str_contains($request->url(), 'OLD1') || str_contains($request->url(), 'LIVE1'));
+    }
 }

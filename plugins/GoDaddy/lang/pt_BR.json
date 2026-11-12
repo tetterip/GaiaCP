@@ -1,0 +1,14 @@
+{
+    "API key": "Chave de API",
+    "API secret": "Segredo de API",
+    "Leave empty to keep the current key. Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Deixe em branco para manter a chave atual. Armazenada criptografada. Crie uma chave de produção em developer.godaddy.com → API Keys (uma chave OTE para o ambiente de teste).",
+    "Leave empty to keep the current one. Stored encrypted.": "Deixe em branco para manter o atual. Armazenado criptografado.",
+    "Only for a reseller sub-account: the customer number whose domains these are. Leave empty for your own account.": "Só para uma subconta de revenda: o número do cliente dono destes domínios. Deixe em branco para a sua própria conta.",
+    "Registers, renews, transfers and syncs domains through a GoDaddy account with an API key.": "Registra, renova, transfere e sincroniza domínios por meio de uma conta GoDaddy com chave de API.",
+    "Sends every call to GoDaddy's test environment (api.ote-godaddy.com), with an OTE key.": "Envia cada chamada ao ambiente de teste da GoDaddy (api.ote-godaddy.com), com uma chave OTE.",
+    "Shopper ID": "ID do shopper",
+    "Shopper id": "ID do shopper",
+    "Stored encrypted.": "Armazenado criptografado.",
+    "Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Armazenada criptografada. Crie uma chave de produção em developer.godaddy.com → API Keys (uma chave OTE para o ambiente de teste).",
+    "Test mode": "Modo de teste"
+}
