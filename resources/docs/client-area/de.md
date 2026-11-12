@@ -129,6 +129,10 @@ Um per Karte zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und k
 Um mit PayPal zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken Sie auf **Mit PayPal bezahlen**. Sie bestätigen die Zahlung auf der Seite von PayPal, mit Ihrem PayPal-Guthaben oder einer Karte, und die Aufforderung wird als bezahlt angezeigt, sobald PayPal die Zahlung bestätigt.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Um per Karte über unsere Bank zu zahlen, öffnen Sie einen unbezahlten Zahlungshinweis und klicken Sie auf **Mit Karte zahlen** mit dem Namen der Bank. Sie zahlen auf der sicheren Seite der Bank (wir sehen Ihre Kartendaten nie), und der Hinweis wird als bezahlt angezeigt, sobald die Bank die Zahlung bestätigt. Manche Banken brauchen zur Prüfung der Karte außerdem Adresse, Ort, Postleitzahl und Land in Ihrem Profil.
+<!-- endif -->
+
 <!-- if:pay_iris -->
 Um mit IRIS zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken Sie auf **Mit IRIS bezahlen**. Dort sehen Sie unseren QR-Code und unsere IRIS-Nummer mit dem Betrag: Wählen Sie in der App Ihrer Bank IRIS, scannen Sie den Code oder geben Sie die Nummer ein und schreiben Sie die Nummer der Zahlungsaufforderung als Verwendungszweck. Die Zahlungsaufforderung wird als bezahlt angezeigt, sobald wir die Zahlung auf unserem Konto sehen.
 <!-- endif -->

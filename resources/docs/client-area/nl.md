@@ -129,6 +129,10 @@ Om met een kaart te betalen, opent u een onbetaald betalingsverzoek en drukt u o
 Om met PayPal te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met PayPal**. U keurt de betaling goed op de pagina van PayPal, met uw PayPal-saldo of een kaart, en het verzoek wordt als betaald getoond zodra PayPal het bevestigt.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Om met een kaart via onze bank te betalen, opent u een onbetaald betalingsbericht en klikt u op **Betalen met kaart** met de naam van de bank. U betaalt op de beveiligde pagina van de bank (wij zien uw kaartgegevens nooit) en het bericht staat op betaald zodra de bank de betaling bevestigt. Sommige banken hebben ook uw adres, plaats, postcode en land in uw profiel nodig om de kaart te controleren.
+<!-- endif -->
+
 <!-- if:pay_iris -->
 Om met IRIS te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met IRIS**. Het toont onze QR-code en ons IRIS-nummer met het bedrag: kies in de app van uw bank IRIS, scan de code of vul het nummer in, en zet het nummer van het verzoek als omschrijving. Het verzoek staat op betaald zodra wij de betaling op onze rekening zien.
 <!-- endif -->

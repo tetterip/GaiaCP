@@ -129,6 +129,10 @@ Aby zapłacić kartą, prosimy otworzyć nieopłacone wezwanie do zapłaty i kli
 Aby zapłacić przez PayPal, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć **Zapłać przez PayPal**. Płatność zatwierdza się na stronie PayPal, środkami z konta PayPal lub kartą, a wezwanie jest widoczne jako opłacone, gdy tylko PayPal ją potwierdzi.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Aby zapłacić kartą przez nasz bank, otwórz nieopłacone powiadomienie o płatności i kliknij **Zapłać kartą** z nazwą banku. Płacisz na bezpiecznej stronie banku (nigdy nie widzimy danych twojej karty), a powiadomienie pokazuje się jako opłacone, gdy tylko bank potwierdzi płatność. Niektóre banki potrzebują też adresu, miasta, kodu pocztowego i kraju w profilu do sprawdzenia karty.
+<!-- endif -->
+
 <!-- if:pay_iris -->
 Aby zapłacić przez IRIS, prosimy otworzyć nieopłacone wezwanie do zapłaty i nacisnąć **Zapłać przez IRIS**. Pokazuje ono nasz kod QR i numer IRIS z kwotą: w aplikacji banku prosimy wybrać IRIS, zeskanować kod lub wpisać numer i podać numer wezwania jako tytuł. Wezwanie będzie oznaczone jako opłacone, gdy zobaczymy płatność na naszym koncie.
 <!-- endif -->

@@ -129,6 +129,10 @@ Kartla ödemek için ödenmemiş bir ödeme bildirimini açın ve **Kartla öde*
 PayPal ile ödemek için ödenmemiş bir ödeme bildirimini açın ve **PayPal ile öde**'ye basın. Ödemeyi PayPal'ın kendi sayfasında, PayPal bakiyenizle veya bir kartla onaylarsınız ve PayPal onaylar onaylamaz bildirim ödendi olarak görünür.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Bankamız üzerinden kartla ödemek için ödenmemiş bir ödeme bildirimini açın ve bankanın adıyla birlikte **Kartla öde** düğmesine basın. Ödemeyi bankanın güvenli sayfasında yaparsınız (kart bilgilerinizi asla görmeyiz) ve banka ödemeyi onaylar onaylamaz bildirim ödenmiş olarak görünür. Bazı bankalar kartı doğrulamak için profilinizde adresinizin, şehrinizin, posta kodunuzun ve ülkenizin dolu olmasını da ister.
+<!-- endif -->
+
 <!-- if:pay_iris -->
 IRIS ile ödemek için ödenmemiş bir ödeme bildirimini açın ve **IRIS ile öde** düğmesine basın. QR kodumuzu ve IRIS numaramızı tutarla birlikte gösterir: bankanızın uygulamasında IRIS'i seçin, kodu tarayın veya numarayı girin ve açıklamaya bildirim numarasını yazın. Ödemeyi hesabımızda gördüğümüzde bildirim ödendi olarak görünür.
 <!-- endif -->

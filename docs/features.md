@@ -76,6 +76,11 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   PayPal" opens PayPal's page, and GaiaCP takes the money only if the notice still asks for that amount. IRIS (a
   bundled plugin, off by default): "Pay with IRIS" shows the bank's fixed QR code, the IRIS number and the notice
   number as the reason; recorded by hand
+  - Card payments through Greek banks (bundled plugins, off by default): Alpha Bank and Eurobank (Cardlink, signed
+    with the shared secret) and Piraeus Bank (paycenter ticket, answer signed with the ticket; also IRIS). Recorded
+    only from the bank's signed answer; unanswered payments close after two hours. No installments or refunds yet
+  - Nexi XPay and Mastercard Gateway (bundled plugins, off by default): hosted payment pages; recorded only from the
+    order read back from the provider's API, which is also asked every hour about payments still waiting
 - Daily automation: payment notices and their reminders, domain renewal notices, optional auto-suspend after a grace period,
   and a daily summary email to the admins (new and overdue payment notices, domains whose sync changed or failed;
   on/off under Settings → Automation, and per admin with Receive system emails under Settings → Admin users)

@@ -5,6 +5,17 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Three new payment plugins for Greek banks, each off until switched on under Settings → Payment methods: **Alpha Bank**
+  and **Eurobank** (card payments through Cardlink) and **Piraeus Bank** (cards and IRIS through its paycenter). The
+  client presses "Pay by card (bank)" on an unpaid payment notice and pays on the bank's own page; the payment is
+  recorded only from the bank's signed answer (the shared secret, or for Piraeus that payment's own ticket), once.
+  Ported from Papaki's WooCommerce plugins (GPL-3.0-or-later). Not yet tried against the banks' test environments.
+- The module log also masks secret XML elements in a response (Piraeus Bank's transaction ticket).
+- Two more card payment plugins, off until switched on: **Nexi XPay** (Nexi's hosted page, for Alpha Bank merchants since
+  mid-2022 and other Nexi customers) and **Mastercard Gateway** (MPGS hosted checkout, which many banks give their
+  merchants; the gateway address and the name on the button are set per install). Both record a payment only after
+  reading the order back from the provider's API, and ask every hour about payments still waiting. Not yet tried
+  against the providers' test environments.
 - New **IRIS** plugin (bundled, off by default) for Greece's instant bank payments: Settings → IRIS takes the payee, the
   IRIS number or alias and the fixed QR code your bank gave you. Unpaid payment notices in the client area get **Pay
   with IRIS**, showing the QR code, the number, the amount and the notice number to write as the reason; the details

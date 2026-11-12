@@ -39,7 +39,7 @@ class ModuleLogger
     /**
      * @param  string  $module  a ModuleLog::modules() key (from the plugin's moduleLogs())
      * @param  list<string|null>  $secrets  values to mask wherever they appear
-     * @param  list<string>  $secretResponseKeys  JSON keys of the response to mask too (e.g. easy.gr's EPP reply)
+     * @param  list<string>  $secretResponseKeys  JSON keys or XML elements of the response to mask too (e.g. easy.gr's EPP reply)
      */
     public static function middleware(string $module, string $action, array $secrets = [], array $secretResponseKeys = []): callable
     {
@@ -195,6 +195,9 @@ class ModuleLogger
     {
         $names = implode('|', array_map(fn (string $k) => preg_quote($k, '/'), $keys));
 
-        return preg_replace('/("(?:'.$names.')"\s*:\s*)("(?:[^"\\\\]|\\\\.)*"|[^,}\]\s]+)/', '$1"'.self::MASK.'"', $text);
+        $text = preg_replace('/("(?:'.$names.')"\s*:\s*)("(?:[^"\\\\]|\\\\.)*"|[^,}\]\s]+)/', '$1"'.self::MASK.'"', $text);
+
+        // XML elements: <TranTicket>…</TranTicket>, with or without a prefix
+        return preg_replace('/(<((?:[\w-]+:)?(?:'.$names.'))(?:\s[^>]*)?>)[^<]*(<\/\2>)/', '$1'.self::MASK.'$3', $text);
     }
 }

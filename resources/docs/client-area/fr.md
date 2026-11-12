@@ -129,6 +129,10 @@ Pour payer par carte, ouvrez un avis de paiement impayé et cliquez sur **Payer 
 Pour payer avec PayPal, ouvrez un avis de paiement impayé et cliquez sur **Payer avec PayPal**. Vous approuvez le paiement sur la page de PayPal, avec votre solde PayPal ou une carte, et l'avis apparaît comme payé dès que PayPal le confirme.
 <!-- endif -->
 
+<!-- if:pay_bank -->
+Pour payer par carte via notre banque, ouvrez un avis de paiement impayé et cliquez sur **Payer par carte** suivi du nom de la banque. Vous payez sur la page sécurisée de la banque (nous ne voyons jamais les données de votre carte) et l’avis apparaît comme payé dès que la banque confirme le paiement. Certaines banques ont aussi besoin de votre adresse, ville, code postal et pays renseignés dans votre profil pour vérifier la carte.
+<!-- endif -->
+
 <!-- if:pay_iris -->
 Pour payer par IRIS, ouvrez un avis de paiement impayé et cliquez sur **Payer avec IRIS**. Il affiche notre QR code et notre numéro IRIS avec le montant : dans l'application de votre banque, choisissez IRIS, scannez le code ou saisissez le numéro, et indiquez le numéro de l'avis comme motif. L'avis apparaît comme payé dès que nous voyons le paiement sur notre compte.
 <!-- endif -->

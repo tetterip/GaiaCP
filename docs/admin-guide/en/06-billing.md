@@ -121,7 +121,7 @@ Entered one by mistake? The service's **Payments** tab has **Reverse** on the la
 the due date back, takes off a discount it gave and takes out of the balance what it put in. Reversing never undoes a
 domain renewal.
 
-Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe or PayPal are recorded by
+Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe, PayPal or a bank's card page are recorded by
 themselves once the provider confirms them.
 
 Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`, with an API key that has `payments.delete`)
