@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- On a phone, the menu at the top of a Settings or Reports page shows one arrow at its right end instead of two.
 - New **Virtualmin** server plugin (bundled, off until switched on under Settings → Plugins): hosting accounts as
   top-level virtual servers on a Virtualmin plan, created, suspended, deleted, moved to another plan and given a new
   password through Virtualmin's remote API as `root`; account state, usage and Compare with the server from
