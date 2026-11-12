@@ -87,6 +87,12 @@ class StripePlugin extends Plugin implements PaymentModule
             ->hourly()
             ->withoutOverlapping(55)
             ->onOneServer();
+
+        $schedule->call(fn () => StripeApi::configured() ? app(StripeCheckouts::class)->recheck() : 0)
+            ->name('stripe:recheck-checkouts')
+            ->hourlyAt(20)
+            ->withoutOverlapping(55)
+            ->onOneServer();
     }
 
     public function clientRoutes(): void

@@ -2,6 +2,12 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.9] - 2026-11-12
+
+- Every hour it asks Stripe about the checkouts still open, so a payment is recorded even when the webhook never came and the client closed the page before coming back; an expired one is closed
+- Notices in a three-decimal currency (BHD, JOD, KWD, OMR, TND) are sent to Stripe in thousandths: before, Stripe charged a tenth of the amount and the notice was recorded as paid
+- Stripe's payment page opens in the client's language for every language GaiaCP ships (German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese, Turkish too)
+
 ## [1.0.8] - 2026-11-07
 
 - A webhook event is checked with the signing secret of its own mode (`livemode`), and a test-mode event never settles a live checkout (or the other way round), so a leaked test secret can't mark a live payment notice paid

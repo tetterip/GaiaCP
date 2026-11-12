@@ -384,4 +384,63 @@ class StripePaymentsTest extends TestCase
 
         $this->get(StripeSettings::getUrl(panel: 'admin'))->assertForbidden();
     }
+
+    public function test_a_three_decimal_currency_is_sent_and_checked_in_thousandths(): void
+    {
+        $this->notice->update(['currency' => 'KWD']);
+        $this->startCheckout(['amount_total' => 60000, 'currency' => 'kwd']);
+
+        Http::assertSent(fn (Request $request) => $request->url() === StripeApi::BASE_URL.'/checkout/sessions'
+            && $request['line_items'][0]['price_data']['unit_amount'] == 60000
+            && $request['line_items'][0]['price_data']['currency'] === 'kwd');
+        $this->assertSame(6000, StripeCheckout::sole()->amount_cents);
+
+        // A tenth of it (what an amount in hundredths would have charged) is not recorded as paid
+        $this->webhook('checkout.session.completed', ['amount_total' => 6000, 'currency' => 'kwd'])->assertOk();
+        $this->assertSame(0, Payment::count());
+        $this->assertSame(StripeCheckout::UNMATCHED, StripeCheckout::sole()->status);
+    }
+
+    public function test_a_three_decimal_currency_payment_is_recorded(): void
+    {
+        $this->notice->update(['currency' => 'KWD']);
+        $this->startCheckout(['amount_total' => 60000, 'currency' => 'kwd']);
+
+        $this->webhook('checkout.session.completed', ['amount_total' => 60000, 'currency' => 'kwd'])->assertOk();
+        $this->assertSame(1, Payment::count());
+    }
+
+    public function test_stripes_page_is_in_the_clients_language(): void
+    {
+        $this->client->update(['locale' => 'pt_BR']);
+        $this->startCheckout();
+
+        Http::assertSent(fn (Request $request) => $request->url() === StripeApi::BASE_URL.'/checkout/sessions' && $request['locale'] === 'pt-BR');
+    }
+
+    public function test_the_hourly_recheck_records_a_paid_checkout_whose_webhook_never_came(): void
+    {
+        $this->startCheckout(); // the client closed the page after paying: no return, no webhook
+
+        $this->assertSame(0, app(StripeCheckouts::class)->recheck()); // Stripe's page may still be open
+        $this->assertSame(0, Payment::count());
+
+        $this->travel(41)->minutes();
+        $this->assertSame(1, app(StripeCheckouts::class)->recheck());
+        $this->assertSame(1, Payment::count());
+        $this->assertSame(StripeCheckout::PAID, StripeCheckout::sole()->status);
+
+        $this->assertSame(0, app(StripeCheckouts::class)->recheck()); // done with it
+    }
+
+    public function test_the_hourly_recheck_closes_an_expired_checkout(): void
+    {
+        $this->startCheckout(['status' => 'expired', 'payment_status' => 'unpaid', 'payment_intent' => null]);
+        $this->travel(41)->minutes();
+
+        app(StripeCheckouts::class)->recheck();
+
+        $this->assertSame(StripeCheckout::EXPIRED, StripeCheckout::sole()->status);
+        $this->assertSame(0, Payment::count());
+    }
 }
