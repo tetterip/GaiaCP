@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Settings → Plugins has a search box and filters by type, by enabled or disabled and (once a plugin was uploaded)
+  by bundled or uploaded, so a plugin is quick to find among the fifty or so.
 - On a phone, the menu at the top of a Settings or Reports page shows one arrow at its right end instead of two.
 - New **Virtualmin** server plugin (bundled, off until switched on under Settings → Plugins): hosting accounts as
   top-level virtual servers on a Virtualmin plan, created, suspended, deleted, moved to another plan and given a new

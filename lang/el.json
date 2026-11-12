@@ -3033,6 +3033,7 @@
     "Licence": "Άδεια",
     "Needs": "Χρειάζεται",
     "Needs GaiaCP :version": "Χρειάζεται GaiaCP :version",
+    "No plugin matches the search or the filters.": "Κανένα πρόσθετο δεν ταιριάζει με την αναζήτηση ή τα φίλτρα.",
     "No plugins to show": "Δεν υπάρχουν πρόσθετα",
     "No version of :plugin runs on this GaiaCP yet.": "Καμία έκδοση του :plugin δεν τρέχει ακόμα σε αυτό το GaiaCP.",
     "Not installed": "Δεν είναι εγκατεστημένο",

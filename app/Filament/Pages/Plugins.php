@@ -35,6 +35,7 @@ use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
@@ -167,19 +168,36 @@ class Plugins extends Page implements HasTable, SettingsCard
     public function table(Table $table): Table
     {
         return $table
-            ->records(fn () => $this->plugins()->all()
-                ->map(fn (Plugin $plugin) => [
-                    'id' => $plugin->id(),
-                    'name' => $plugin->name(),
-                    'description' => $plugin->description(),
-                    'category' => self::categoryLabel($plugin->category()),
-                    'version' => $plugin->version(),
-                    'version_note' => $this->versionNote($plugin),
-                    'state' => $this->plugins()->state($plugin),
-                    'bundled' => $this->plugins()->bundled($plugin),
-                ])
-                ->sortBy(fn (array $row, string $id) => array_search($this->plugins()->find($id)->category(), ['Servers', 'Registrars', 'Monitoring', 'Payments', 'Integrations', 'AI', 'Themes'], true))
-                ->all())
+            ->records(fn (?array $filters, ?string $search) => $this->rows($filters ?? [], $search))
+            ->searchable()
+            ->filters([
+                SelectFilter::make('type')
+                    ->label('Type')
+                    ->multiple()
+                    ->options(fn () => collect(self::CATEGORIES)
+                        ->filter(fn (string $category) => $this->plugins()->all()->contains(fn (Plugin $plugin) => $plugin->category() === $category))
+                        ->mapWithKeys(fn (string $category) => [$category => self::categoryLabel($category)])
+                        ->all()),
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'enabled' => __('Enabled'),
+                        'disabled' => __('Disabled'),
+                    ]),
+                // Only once a plugin was uploaded: until then every plugin is bundled
+                SelectFilter::make('source')
+                    ->label('Source')
+                    ->options([
+                        'bundled' => __('Bundled'),
+                        'uploaded' => __('Uploaded'),
+                    ])
+                    ->visible(fn () => $this->plugins()->all()->contains(fn (Plugin $plugin) => ! $this->plugins()->bundled($plugin))),
+            ])
+            ->deferFilters(false)
+            ->persistFiltersInSession()
+            ->persistSearchInSession()
+            ->emptyStateHeading(__('No plugins to show'))
+            ->emptyStateDescription(__('No plugin matches the search or the filters.'))
             // Side by side from md; on a phone the name, version and description take the full width, the status under them
             ->columns([
                 Split::make([
@@ -341,6 +359,48 @@ class Plugins extends Page implements HasTable, SettingsCard
 
                 $this->flushCachedTableRecords();
             });
+    }
+
+    /** The order of the types on the page; a plugin with another category sorts last. */
+    private const CATEGORIES = ['Servers', 'Registrars', 'Monitoring', 'Payments', 'Integrations', 'AI', 'Themes'];
+
+    /**
+     * The table rows, narrowed by the Type / Status / Source filters and the search (name, description, type or folder).
+     * "Disabled" is every plugin that is not running: switched off, off in the demo or needing a newer GaiaCP.
+     *
+     * @param  array<string, array<string, mixed>>  $filters
+     * @return array<string, array<string, mixed>>
+     */
+    private function rows(array $filters, ?string $search): array
+    {
+        $types = array_filter((array) ($filters['type']['values'] ?? []));
+        $status = $filters['status']['value'] ?? null;
+        $source = $filters['source']['value'] ?? null;
+        $search = Str::lower(trim((string) $search));
+
+        return $this->plugins()->all()
+            ->filter(fn (Plugin $plugin) => $types === [] || in_array($plugin->category(), $types, true))
+            ->filter(fn (Plugin $plugin) => blank($status) || ($status === 'enabled') === ($this->plugins()->state($plugin) === PluginState::Enabled))
+            ->filter(fn (Plugin $plugin) => blank($source) || ($source === 'bundled') === $this->plugins()->bundled($plugin))
+            ->filter(fn (Plugin $plugin) => $search === '' || Str::contains(
+                Str::lower(implode(' ', [$plugin->name(), $plugin->description(), $plugin->id(), self::categoryLabel($plugin->category())])),
+                $search))
+            ->map(fn (Plugin $plugin) => [
+                'id' => $plugin->id(),
+                'name' => $plugin->name(),
+                'description' => $plugin->description(),
+                'category' => self::categoryLabel($plugin->category()),
+                'version' => $plugin->version(),
+                'version_note' => $this->versionNote($plugin),
+                'state' => $this->plugins()->state($plugin),
+                'bundled' => $this->plugins()->bundled($plugin),
+            ])
+            ->sortBy(function (array $row, string $id) {
+                $position = array_search($this->plugins()->find($id)->category(), self::CATEGORIES, true);
+
+                return $position === false ? count(self::CATEGORIES) : $position;
+            })
+            ->all();
     }
 
     public static function categoryLabel(string $category): string

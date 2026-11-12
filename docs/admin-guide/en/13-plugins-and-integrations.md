@@ -7,7 +7,10 @@ need.
 ## The Plugins page
 
 Settings → System → **Plugins** (super admins) lists every plugin with its version, what changed in it and when it was
-installed or updated.
+installed or updated, grouped by type. To find one, type part of its name in the search box, or open the filter
+button to show only some types (server panels, registrars, payment methods...), only the enabled or disabled ones, or,
+once you have uploaded one, only the bundled or uploaded ones. The page remembers the search and filters until you
+sign out.
 
 - **Disable** a plugin you don't use: its pages and options disappear, but its servers, accounts and settings stay, so
   enabling it again brings everything back. Tick several and use the mass actions to enable or disable them together.
