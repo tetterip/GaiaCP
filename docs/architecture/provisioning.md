@@ -1,8 +1,8 @@
 # Provisioning modules
 
-How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
+How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
 
-Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`) behind the interfaces in
+Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`, `plugins/GoDaddy`, `plugins/ResellerClub`) behind the interfaces in
 `app/Provisioning/` (`ServerModule` → `HostingProvisioner`, `RegistrarModule` → `DomainRegistrar`) so the rest of the app
 never calls a panel API directly.
 
@@ -186,7 +186,23 @@ never calls a panel API directly.
   four handles; `autorenew` off; no nameservers = `ns_group` dns-openprovider. Saving contacts makes new handles.
   `POST` / `PUT` / `DELETE /dns/nameservers` for private nameservers, `GET /tlds/{tld}?with_price=true` (reseller
   price, else product price; asked per TLD, at most 50) for costs. Token, password and EPP code are masked in the log.
-  The three were written from memory of each API (docs unreachable from the cloud) and are untested against real accounts.
+- **GoDaddy** (`plugins/GoDaddy`, module `godaddy`; credentials `api_key`, `api_secret`, `shopper_id`, `test_mode`): v1
+  REST at `https://api.godaddy.com` (`api.ote-godaddy.com`) with `Authorization: sso-key KEY:SECRET` and `X-Shopper-Id`
+  when set; errors `{code, message, fields}`. `GET /v1/domains/available`, `GET /v1/domains/agreements` (keys for the
+  `consent` block: agreedBy = request IP, agreedAt = now UTC), `POST /v1/domains/purchase` (four `contact*` with
+  `addressMailing`, privacy and renewAuto off), `POST /v1/domains/{domain}/transfer` and `/renew`, `GET /v1/domains/{domain}`
+  (expires, nameServers, locked, authCode, contacts), `PATCH /v1/domains/{domain}` and `/contacts`. No private
+  nameservers (v2 customer API) and no price list.
+- **ResellerClub** (`plugins/ResellerClub`, module `resellerclub`; credentials `reseller_id`, `api_key`, `test_mode`):
+  `https://httpapi.com/api/<call>.json` (`test.httpapi.com`) with `auth-userid` + `api-key`, GET for reads and form POST
+  for changes, lists as the same name repeated (`ResellerClubClient::encode()`). `domains/details-by-name` (options=All:
+  endtime, ns1.., domsecret, orderstatus transferlock, contacts and their ids, cns) gives the order id the other calls take;
+  `register` / `transfer` (customer by email via `customers/details`, else `customers/v2/signup`, plus a `contacts/add`
+  of type Contact; NoInvoice), `renew` (with `exp-date` = endtime, so a repeat can't renew twice), `modify-ns`,
+  `modify-contact`, `add-cns` / `modify-cns-ip` / `delete-cns-ip`, `enable-` / `disable-theft-protection`. TLDs that need
+  their own contact type (.eu, .uk, .ca, …) are not handled yet.
+  These five were written from memory of each API (docs unreachable from the cloud; the WHMCS modules he uploaded are
+  ionCube-encoded except Namecheap's API client, which confirmed its calls) and are untested against real accounts.
 - **SSL certificates** (type `ssl`): providers are plugins implementing `App\Certificates\CertificateModule`
   (`PluginManager::certificateModules()`, keyed by `certificateKey()`); only `App\Actions\CertificateLifecycle` calls
   them. A service's `package` is `<key>:<product code>` (`CertificateLifecycle::package()`, products cached an hour as

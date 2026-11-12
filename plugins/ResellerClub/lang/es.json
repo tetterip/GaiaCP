@@ -1,0 +1,11 @@
+{
+    "API key": "Clave API",
+    "Api key": "Clave API",
+    "Leave empty to keep the current key. Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Déjelo vacío para conservar la clave actual. Se guarda cifrada. Está en Settings → API del panel de ResellerClub; permita allí también la dirección IP de este servidor.",
+    "Registers, renews, transfers and syncs domains through a ResellerClub reseller account.": "Registra, renueva, transfiere y sincroniza dominios mediante una cuenta de revendedor de ResellerClub.",
+    "Reseller ID": "ID de revendedor",
+    "Reseller id": "ID de revendedor",
+    "Sends every call to ResellerClub's test environment (test.httpapi.com), with a demo reseller account.": "Envía cada llamada al entorno de pruebas de ResellerClub (test.httpapi.com), con una cuenta de revendedor de demostración.",
+    "Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Se guarda cifrada. Está en Settings → API del panel de ResellerClub; permita allí también la dirección IP de este servidor.",
+    "Test mode": "Modo de prueba"
+}

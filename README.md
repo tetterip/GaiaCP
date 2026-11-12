@@ -60,7 +60,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 
 **Hosting, domains and SSL**
 - Accounts created, suspended and ended on **cPanel / WHM**, **Plesk**, **DirectAdmin**, **HestiaCP**, **CyberPanel** and **Enhance**, and VPS on **Proxmox VE**
-- Domains registered, transferred, renewed and synced at **easy.gr**, **Enom**, **Namecheap**, **NameSilo** and **Openprovider**, or by email for any other registrar;
+- Domains registered, transferred, renewed and synced at **easy.gr**, **Enom**, **Namecheap**, **NameSilo**, **Openprovider**, **GoDaddy** and **ResellerClub**, or by email for any other registrar;
   domain endings and their costs imported from the registrar, with a warning when one sells at a loss
 - A module queue: a set up, suspension or renewal that fails on a server or at a registrar waits there and is retried
 - SSL certificates sold and reissued through **GoGetSSL**, validated and installed on your own cPanel / Plesk hosting

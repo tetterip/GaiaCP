@@ -1,0 +1,11 @@
+{
+    "API key": "Κλειδί API",
+    "Api key": "Κλειδί API",
+    "Leave empty to keep the current key. Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Άφησέ το κενό για να μείνει το τρέχον κλειδί. Αποθηκεύεται κρυπτογραφημένο. Θα το βρεις στο Settings → API του πάνελ της ResellerClub, όπου επιτρέπεις και τη διεύθυνση IP αυτού του server.",
+    "Registers, renews, transfers and syncs domains through a ResellerClub reseller account.": "Καταχωρεί, ανανεώνει, μεταφέρει και συγχρονίζει domains μέσω λογαριασμού μεταπωλητή ResellerClub.",
+    "Reseller ID": "Reseller ID",
+    "Reseller id": "Reseller ID",
+    "Sends every call to ResellerClub's test environment (test.httpapi.com), with a demo reseller account.": "Στέλνει κάθε κλήση στο δοκιμαστικό περιβάλλον της ResellerClub (test.httpapi.com), με δοκιμαστικό λογαριασμό μεταπωλητή.",
+    "Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Αποθηκεύεται κρυπτογραφημένο. Θα το βρεις στο Settings → API του πάνελ της ResellerClub, όπου επιτρέπεις και τη διεύθυνση IP αυτού του server.",
+    "Test mode": "Δοκιμαστική λειτουργία"
+}

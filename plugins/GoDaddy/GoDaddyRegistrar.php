@@ -77,7 +77,7 @@ class GoDaddyRegistrar implements ChecksAvailability, DomainRegistrar, ManagesDo
         ];
 
         if ($nameservers !== []) {
-            $body['nameServers'] = array_values($nameservers);
+            $body['nameServers'] = $nameservers;
         }
 
         $this->client->call('POST', 'v1/domains/purchase', $body, timeout: 120);
@@ -112,7 +112,7 @@ class GoDaddyRegistrar implements ChecksAvailability, DomainRegistrar, ManagesDo
             throw new ProvisioningException('GoDaddy needs at least two nameservers.');
         }
 
-        $this->update($domain, ['nameServers' => array_values($nameservers)]);
+        $this->update($domain, ['nameServers' => $nameservers]);
     }
 
     public function eppCode(string $domain): string

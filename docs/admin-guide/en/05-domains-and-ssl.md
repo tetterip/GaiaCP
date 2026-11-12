@@ -6,13 +6,14 @@ registrar side (expiry date, nameservers, EPP code) that GaiaCP reads and change
 ## Registrars
 
 Settings → Products & domains → **Registrars** holds your registrar accounts (super admins only). **easy.gr**,
-**Enom**, **Namecheap**, **NameSilo** and **Openprovider** are bundled plugins; others can be added as plugins. Add the account with its login (stored encrypted) and
+**Enom**, **Namecheap**, **NameSilo**, **Openprovider**, **GoDaddy** and **ResellerClub** are bundled plugins; others can be added as plugins. Add the account with its login (stored encrypted) and
 press **Test with a domain**: it reads one domain's expiry and nameservers without changing anything. From SSH,
 `php artisan gaiacp:registrar-check example.com` does the same.
 
 Namecheap answers only this server's public IPv4 address once it is on the whitelist under Profile → Tools → API
-Access there; NameSilo and Openprovider answer only the IP addresses you allow in their API settings. Each of the three
-has a **Sandbox** switch for the registrar's test environment.
+Access there; NameSilo, Openprovider and ResellerClub answer only the IP addresses you allow in their API settings. GoDaddy gives API
+access only to some accounts: check yours has it. Each has a **Sandbox** or **Test mode** switch for the registrar's test
+environment.
 
 Most registrars answer only the IP addresses you allow on your reseller account: allow your GaiaCP server's.
 

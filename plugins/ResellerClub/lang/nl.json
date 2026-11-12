@@ -1,0 +1,11 @@
+{
+    "API key": "API-sleutel",
+    "Api key": "API-sleutel",
+    "Leave empty to keep the current key. Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Laat leeg om de huidige sleutel te houden. Versleuteld opgeslagen. U vindt hem onder Settings → API in het ResellerClub-panel; sta daar ook het IP-adres van deze server toe.",
+    "Registers, renews, transfers and syncs domains through a ResellerClub reseller account.": "Registreert, verlengt, verhuist en synchroniseert domeinen via een ResellerClub-resellersaccount.",
+    "Reseller ID": "Reseller-ID",
+    "Reseller id": "Reseller-ID",
+    "Sends every call to ResellerClub's test environment (test.httpapi.com), with a demo reseller account.": "Stuurt elke aanroep naar de testomgeving van ResellerClub (test.httpapi.com), met een demo-resellersaccount.",
+    "Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Versleuteld opgeslagen. U vindt hem onder Settings → API in het ResellerClub-panel; sta daar ook het IP-adres van deze server toe.",
+    "Test mode": "Testmodus"
+}

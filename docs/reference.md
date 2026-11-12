@@ -201,7 +201,11 @@ unchanged. Domains, maintenance and other services have no server: the same acti
    get it in the Namecheap account. **NameSilo** needs an API key (Account → API Manager); it emails the EPP code to
    the domain's administrative contact. **Openprovider** takes the reseller username and password (allow the server's
    IP in its API settings); contacts there are customer handles, so a changed contact becomes a new handle. Each has
-   a **Sandbox** switch for the registrar's test environment. None has been tried against a real account yet.
+   a **Sandbox** switch for the registrar's test environment. **GoDaddy** takes an API key and secret from
+   developer.godaddy.com (and a Shopper ID only for a reseller sub-account); GoDaddy gives API access only to some
+   accounts, so check yours has it. It has no private nameservers here. **ResellerClub** takes the reseller ID and API
+   key (allow the server's IP under Settings → API there); each client becomes a ResellerClub customer, found by email.
+   None has been tried against a real account yet.
 
 ## SSL certificates
 
