@@ -55,8 +55,9 @@ The optional **Capacity and costs** fields help you run the servers:
 - **IP address**: used for new accounts where the panel needs one, by Site checks and by the IP blacklist check.
 - **Status page URL**: opened from the Servers list.
 
-**Log in** on the Servers list opens the panel already signed in (on HestiaCP, DirectAdmin, CyberPanel and Enhance, its login
-page).
+**Log in** on the Servers list opens the panel already signed in (on HestiaCP, CyberPanel and Enhance, its login page; on
+DirectAdmin too when the server signs in with a login key instead of a password). A client's **Log in** on a DirectAdmin account opens it already
+signed in, and falls back to the login page on an older DirectAdmin.
 
 On Plesk each client is one Plesk customer, and each hosting service a subscription to the service plan. The client's
 Plesk login is the username and password of their first service there; **Change password** on that service changes the

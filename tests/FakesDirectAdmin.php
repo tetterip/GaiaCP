@@ -31,6 +31,9 @@ trait FakesDirectAdmin
     /** @var array<string, string> command => error text */
     protected array $daFailures = [];
 
+    /** Whether /api/login (DirectAdmin's JSON API) answers; an older DirectAdmin has none. */
+    protected bool $daJsonLogin = true;
+
     /** Answered to every request instead (e.g. a rejected login or a web page). */
     protected ?PromiseInterface $daRawResponse = null;
 
@@ -38,6 +41,15 @@ trait FakesDirectAdmin
     {
         Http::fake(function (Request $request) {
             $path = (string) parse_url($request->url(), PHP_URL_PATH);
+
+            if ($path === '/api/login') {
+                $this->daCalls[] = ['api/login', $request->method(), $request->data()];
+                $user = $this->daUsers[$request->data()['username'] ?? ''] ?? null;
+
+                return $this->daJsonLogin && $user !== null && ($user['password'] ?? null) === ($request->data()['password'] ?? null)
+                    ? Http::response(['loginURL' => 'https://da.test:2222/api/login/url?key=ONETIME'])
+                    : Http::response(['error' => 'Not found'], 404);
+            }
 
             if (! str_starts_with($path, '/CMD_API_')) {
                 return null;
@@ -101,8 +113,8 @@ trait FakesDirectAdmin
                 }
                 if (($params['delete'] ?? null) === 'yes' && ($params['confirmed'] ?? null) === 'Confirm') {
                     unset($this->daUsers[$user]);
-                } elseif (in_array($params['suspend'] ?? null, ['Suspend', 'Unsuspend'], true)) {
-                    $this->daUsers[$user]['suspended'] = $params['suspend'] === 'Suspend' ? 'yes' : 'no';
+                } elseif (isset($params['dosuspend']) || isset($params['dounsuspend'])) {
+                    $this->daUsers[$user]['suspended'] = isset($params['dosuspend']) ? 'yes' : 'no';
                 } else {
                     return $this->daError('Error with selection', 'Nothing to do');
                 }

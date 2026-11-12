@@ -30,11 +30,12 @@ never calls a panel API directly.
   admin or a reseller, login key or password); POST forms for changes, GET for reads; replies URL-encoded
   (`list[]=…`, `error=1&text=…&details=…`; a `text/html` reply = wrong port or no API access). One DirectAdmin user per
   service: `ACCOUNT_USER` (`action=create`, `notify=no`, `ip` = the server's `shared_ip` else the login's first
-  `SHOW_RESELLER_IPS`), `SELECT_USERS` (`suspend=Suspend|Unsuspend`, delete = `confirmed=Confirm&delete=yes`, `select0`),
+  `SHOW_RESELLER_IPS`), `SELECT_USERS` (`dosuspend` / `dounsuspend`, as Blesta's module: the older `suspend` is a toggle; delete = `confirmed=Confirm&delete=yes`, `select0`),
   `MODIFY_USER` (`action=package`), `USER_PASSWD`, `PACKAGES_USER`; state = `SHOW_USERS` membership + `SHOW_USER_CONFIG`
   (`suspended`, `domain`); usage = `SHOW_USER_USAGE` against the config's limits (MB, "unlimited"). Request shapes
-  follow DirectAdmin's example scripts and `omines/directadmin` / `mvdgeijn/directadmin`. No one-time login: the
-  login page. The plugin implements `LimitsUsernameLength` (10), which `UsernameGenerator::maxLength()` and the
+  follow DirectAdmin's example scripts, `omines/directadmin` / `mvdgeijn/directadmin` and Blesta's module. Log in =
+  a one-time link from the JSON API (`POST /api/login` {username, password} → `loginURL`, the service's own login;
+  the admin's when the server's token is a password), else the login page. The plugin implements `LimitsUsernameLength` (10), which `UsernameGenerator::maxLength()` and the
   service form honour
 - **Proxmox VE** (`plugins/Proxmox`, off by default; VPS): REST API `https://host:8006/api2/json` with an API token
   (`Authorization: PVEAPIToken=<server username = token id>=<api_token = secret>`), form fields, answers `{"data": …}`,
@@ -82,11 +83,13 @@ never calls a panel API directly.
   plan name, `GET /orgs/{master}/plans`) + `POST /orgs/{org}/websites` {domain, subscriptionId} (the subscription is
   deleted again if this fails), kept in `enhance_accounts` (service → org, subscription, website; one made elsewhere is
   found by its website's domain). `PATCH /orgs/{org}/subscriptions/{id}` {isSuspended} / {planId}; terminate deletes the
-  subscription's websites, then `DELETE …/subscriptions/{id}?force=true`. Password = `PATCH /logins/{loginId}`
-  {password} of the Owner member (shared by the client's services there, whose stored passwords follow). Client login
+  subscription's websites, then `DELETE …/subscriptions/{id}?force=true`. Password = `PUT /v2/logins/{loginId}/password`
+  {newPassword} of the Owner member (as Blesta's module; `PATCH /logins/{loginId}` {password} on a 404 / 405), shared by
+  the client's services there, whose stored passwords follow; each website's SSH password is set to it too (`POST
+  /orgs/{org}/websites/{id}/ssh/password` {newPassword}, best effort, also after create). Client login
   = `GET /orgs/{org}/members/{memberId}/sso` (a JSON string). Usage = the subscription's `resources` (name, usage,
   total), read leniently. Paths follow the open-source WHMCS module (webdighost/enhance-whmcs) and Paymenter's
-  extension, since apidocs.enhance.com was unreachable; the password and usage calls are guesses. Untested on a real
+  extension and Blesta's Enhance module, since apidocs.enhance.com was unreachable; the usage call is a guess. Untested on a real
   server
 - **Account list** (`App\Provisioning\ListsAccounts`, every panel): `accounts()` gives every hosting account as a
   `PanelAccount` (username, domain, package, suspended). cPanel `listaccts` with no search; Plesk `webspace get` with an

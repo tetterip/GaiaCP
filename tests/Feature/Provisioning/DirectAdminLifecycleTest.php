@@ -128,7 +128,7 @@ class DirectAdminLifecycleTest extends TestCase
 
         $this->lifecycle->suspend($service, Service::SUSPENDED_OVERDUE);
         $this->assertSame('yes', $this->daUsers[$username]['suspended']);
-        $this->assertSame(['suspend' => 'Suspend', 'select0' => $username], last($this->daCalls)[2]);
+        $this->assertSame(['dosuspend' => 'Suspend', 'location' => 'CMD_SELECT_USERS', 'select0' => $username], last($this->daCalls)[2]);
         $this->assertSame(ServiceStatus::Suspended, $service->fresh()->status);
 
         $this->lifecycle->unsuspend($service->fresh());
@@ -196,12 +196,30 @@ class DirectAdminLifecycleTest extends TestCase
         $this->assertSame(['email_accounts' => [3, 10], 'databases' => [1, null], 'sites' => [1, 1], 'parked_domains' => [0, 0], 'subdomains' => [2, null]], $usage->counts);
     }
 
-    public function test_panel_login_is_the_login_page(): void
+    public function test_panel_login_is_a_one_time_link_from_the_users_own_login(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $service->refresh();
+
+        $this->assertSame('https://da.test:2222/api/login/url?key=ONETIME', $this->lifecycle->loginUrl($service, '203.0.113.9'));
+        $this->assertSame(['api/login', 'POST', ['username' => $service->username, 'password' => $service->password]], last($this->daCalls));
+    }
+
+    public function test_panel_login_falls_back_to_the_login_page(): void
     {
         $service = $this->pending(['username' => 'bakery', 'status' => ServiceStatus::Active]);
 
-        $this->assertSame('https://da.test:2222/', $this->lifecycle->loginUrl($service, '203.0.113.9'));
+        // No password stored: no call at all.
+        $service->forceFill(['password' => null])->save();
+        $this->assertSame('https://da.test:2222/', $this->lifecycle->loginUrl($service->fresh(), '203.0.113.9'));
         $this->assertSame([], $this->daCalls);
+
+        // An older DirectAdmin without the JSON API.
+        $this->daJsonLogin = false;
+        $this->daUsers['bakery'] = ['domain' => 'bakery-shop.gr', 'suspended' => 'no', 'password' => 'Secret123'];
+        $service->forceFill(['password' => 'Secret123'])->save();
+        $this->assertSame('https://da.test:2222/', $this->lifecycle->loginUrl($service->fresh(), '203.0.113.9'));
     }
 
     public function test_the_module_log_masks_passwords_and_the_login_key(): void

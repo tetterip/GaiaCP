@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.0] - 2026-11-12
+
+- Log in opens DirectAdmin already signed in: a one-time link from its JSON API (`POST /api/login`), else the login page as before
+- Suspend and unsuspend send `dosuspend` / `dounsuspend` (as Blesta's DirectAdmin module), since the older `suspend` field is read as a toggle
+
 ## [1.1.1] - 2026-10-26
 
 - Translated into German, Spanish, French, Italian, Dutch, Polish, Brazilian Portuguese and Turkish (machine translated)
