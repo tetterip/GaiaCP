@@ -18,6 +18,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\Tld;
 use App\Support\Coupons;
 use App\Support\DomainName;
 use App\Support\ProductOptions;
@@ -67,6 +68,11 @@ class PlaceOrder
 
         $order = DB::transaction(function () use ($client, $items, $notes, $domains, $terms, $coupon, $inStockOnly) {
             $discount = null;
+
+            if ($inStockOnly) {
+                self::claimDomains($domains->all());
+            }
+
             self::takeStock($items, $inStockOnly, $client);
 
             if ($coupon !== null) {
@@ -190,6 +196,30 @@ class PlaceOrder
             }
 
             Product::query()->whereKey($product->id)->update(['stock' => max(0, $product->stock - $count)]);
+        }
+    }
+
+    /**
+     * For an order from the client: refuses a domain another order already has (not cancelled or terminated), checked
+     * again inside the order's transaction under a lock on its TLD's row, so two checkouts of the same domain at the
+     * same moment (ClientOrder checks it before, outside any lock) can't both get it.
+     *
+     * @param  array<int, string>  $domains
+     *
+     * @throws ValidationException under `domain`
+     */
+    private static function claimDomains(array $domains): void
+    {
+        foreach (array_unique($domains) as $domain) {
+            if ($tld = Tld::match($domain)) {
+                Tld::query()->whereKey($tld->id)->lockForUpdate()->first();
+            }
+
+            // A locking read: it sees an order committed a moment ago, whatever the transaction read before.
+            if (Service::query()->where('type', ServiceType::Domain)->where('domain', $domain)
+                ->whereNotIn('status', [ServiceStatus::Cancelled, ServiceStatus::Terminated])->lockForUpdate()->exists()) {
+                throw ValidationException::withMessages(['domain' => __('This domain is already with us. Contact us if it is yours.')]);
+            }
         }
     }
 

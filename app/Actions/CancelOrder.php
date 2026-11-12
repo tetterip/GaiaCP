@@ -9,6 +9,7 @@ use App\Enums\OrderStatus;
 use App\Enums\ServiceStatus;
 use App\Invoicing\IssueCreditNote;
 use App\Models\ActivityLog;
+use App\Models\ApiKey;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -17,6 +18,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Support\Currencies;
 use App\Support\Money;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -28,8 +30,10 @@ use InvalidArgumentException;
  * after). What its items took of their products' Quantity available goes back (PlaceOrder).
  *
  * An order can be paid and still pending (set up on Complete order, or an automatic set up that failed). Its payments
- * are then dealt with as $payments says: REFUND_TO_CREDIT and REFUNDED_ELSEWHERE undo them (deleted, the notice owes
- * the lines again and is cancelled with the order, a credit note undoes an issued invoice's lines of these items);
+ * are then dealt with as $payments says: REFUND_TO_CREDIT and REFUNDED_ELSEWHERE undo them (the notice owes the lines
+ * again and is cancelled with the order, a credit note undoes an issued invoice's lines of these items). The payment
+ * stays on the day it was made and a refund of minus its amount is recorded today (`refund_of`, as RefundPayment
+ * does), so the income of the month it was paid in never changes afterwards;
  * REFUND_TO_CREDIT puts the money in the client's balance, REFUNDED_ELSEWHERE records that it was paid back outside
  * GaiaCP (nothing is sent to Stripe or a bank). A payment made from credit always goes back to credit. KEEP leaves
  * them as they were.
@@ -162,21 +166,36 @@ class CancelOrder
             }
         }
 
-        $payment->delete();
-
         $toCredit = $option === self::REFUND_TO_CREDIT || $payment->method === ClientCredit::METHOD;
         $client = $payment->client ?? $order->client;
 
+        // Kept on its day, with its refund today: what was taken in a past month stays in that month's income.
+        $refund = Payment::create([
+            'service_id' => $service->id,
+            'client_id' => $payment->client_id,
+            'refund_of' => $payment->id,
+            'amount_cents' => -$payment->amount_cents,
+            'currency' => $payment->currency,
+            'paid_on' => CarbonImmutable::today(),
+            'method' => $toCredit ? ClientCredit::METHOD : $payment->method,
+            'reference' => $payment->reference,
+            'due_date_before' => $service->next_due_date,
+            'due_date_after' => $service->next_due_date,
+            'recorded_by' => ApiKey::actingUserId(),
+            'notes' => "Order #{$order->id} cancelled",
+        ]);
+
         if ($toCredit && $client) {
-            $this->credit->record($client, CreditType::Refund, self::inClientCurrency($payment, $client), "Order #{$order->id} cancelled: {$service->label}");
+            $this->credit->record($client, CreditType::Refund, self::inClientCurrency($payment, $client), "Order #{$order->id} cancelled: {$service->label}", ['payment_id' => $refund->id]);
         }
 
         ActivityLog::record('payment.reversed', sprintf(
-            'Payment of %s undone, order #%d cancelled; %s',
+            'Payment of %s of %s refunded, order #%d cancelled; %s',
             Money::format($payment->amount_cents, $payment->currency),
+            $payment->paid_on->toDateString(),
             $order->id,
             $toCredit ? 'returned to credit' : 'refunded outside GaiaCP',
-        ), $service, properties: ['payment_id' => $payment->id, 'order_id' => $order->id]);
+        ), $service, properties: ['payment_id' => $payment->id, 'refund_id' => $refund->id, 'order_id' => $order->id]);
 
         return $toCredit ? 'credit' : 'elsewhere';
     }

@@ -36,7 +36,8 @@ were paid for but not set up yet (set up on Complete order, or an automatic set 
 was paid and asks what happens to that money: **return it to the client's credit** (the default while credit is on),
 **I paid it back outside GaiaCP** (GaiaCP sends nothing to Stripe or the bank: make the refund yourself) or **keep it**.
 The first two undo the payments, so the payment notice is cancelled too and an issued invoice gets a credit note; a
-payment made from credit always goes back to credit. With Settings →
+payment made from credit always goes back to credit. Each payment stays on the day it was made and a refund is recorded
+on the day of the cancel, so the income of a past month never changes. With Settings →
 Automation → **Cancel unpaid orders after** set, the daily run does it for orders that are still unpaid after that
 many days; an order with a payment or an item already set up is never cancelled.
 

@@ -111,7 +111,8 @@ class ClientMail extends Mailable
     /** @return array<string, string|HtmlString|null> */
     public function placeholders(): array
     {
-        return MailTemplates::common($this->client) + $this->values;
+        // The mail's own values first: a payment notice's {$payment_instructions} names that notice.
+        return array_merge(MailTemplates::common($this->client), $this->values);
     }
 
     /** @return array{subject: string, body: string} */

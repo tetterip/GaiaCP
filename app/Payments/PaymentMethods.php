@@ -5,6 +5,7 @@ namespace App\Payments;
 use App\Credit\ClientCredit;
 use App\Enums\PaymentMethod;
 use App\Models\Client;
+use App\Models\Invoice;
 use App\Plugins\Plugin;
 use App\Plugins\PluginManager;
 
@@ -74,11 +75,15 @@ class PaymentMethods
         return array_key_exists($method, self::options()) ? $method : self::default();
     }
 
-    /** How to pay: the instructions of every enabled payment module, for {$payment_instructions} in emails. */
-    public static function instructions(): string
+    /**
+     * How to pay: the instructions of every enabled payment module, for {$payment_instructions} in emails. For one
+     * payment notice, a module with an optional `instructionsFor(Invoice $invoice): ?string` gives those instead
+     * (Bank transfer adds the notice number as the reference for the transfer).
+     */
+    public static function instructions(?Invoice $invoice = null): string
     {
         return self::plugins()->paymentModules()
-            ->map(fn (PaymentModule $module) => trim((string) $module->instructions()))
+            ->map(fn (PaymentModule $module) => trim((string) ($invoice !== null && method_exists($module, 'instructionsFor') ? $module->instructionsFor($invoice) : $module->instructions())))
             ->filter()
             ->implode("\n\n");
     }

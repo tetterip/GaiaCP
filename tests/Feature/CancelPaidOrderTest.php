@@ -67,12 +67,28 @@ class CancelPaidOrderTest extends TestCase
 
         $this->assertSame(OrderStatus::Cancelled, $order->refresh()->status);
         $this->assertTrue($order->services()->get()->every(fn ($s) => $s->status === ServiceStatus::Cancelled));
-        $this->assertSame(0, Payment::count());
+        $this->assertSame(0, (int) Payment::query()->sum('amount_cents'), 'each payment has its refund');
         $this->assertSame(InvoiceStatus::Cancelled, Invoice::sole()->status);
         $this->assertSame(12000 + 7000, $this->client->refresh()->credit_cents);
         $this->assertSame(2, CreditTransaction::query()->where('type', CreditType::Refund)->count());
         $this->assertNotEquals($dueBefore->all(), $order->services()->pluck('next_due_date', 'id')->all(), 'due dates go back');
         $this->assertDatabaseHas('activity_logs', ['event' => 'order.cancelled', 'description' => "Order #{$order->id} cancelled; payments returned to credit"]);
+    }
+
+    public function test_the_payments_stay_in_their_month_and_the_refunds_go_in_the_month_of_the_cancel(): void
+    {
+        $order = $this->paidOrder();
+        $this->travelTo('2026-11-03 10:00');
+
+        app(CancelOrder::class)->handle($order, payments: CancelOrder::REFUNDED_ELSEWHERE);
+
+        $payments = Payment::query()->whereNull('refund_of')->get();
+        $this->assertCount(2, $payments);
+        $this->assertTrue($payments->every(fn (Payment $p) => $p->paid_on->toDateString() === '2026-10-09'), 'payments keep their day');
+        $this->assertSame(12000 + 7000, (int) Payment::query()->whereBetween('paid_on', ['2026-10-01', '2026-10-31'])->sum('amount_cents'), 'October income unchanged');
+        $this->assertSame(-(12000 + 7000), (int) Payment::query()->whereBetween('paid_on', ['2026-11-01', '2026-11-30'])->sum('amount_cents'));
+        $this->assertTrue($payments->every(fn (Payment $p) => $p->refunds()->sole()->method === 'bank_transfer'));
+        $this->assertFalse(CancelOrder::hasPayments($order->refresh()));
     }
 
     public function test_refunded_elsewhere_undoes_the_payments_without_credit(): void
@@ -81,7 +97,7 @@ class CancelPaidOrderTest extends TestCase
 
         app(CancelOrder::class)->handle($order, payments: CancelOrder::REFUNDED_ELSEWHERE);
 
-        $this->assertSame(0, Payment::count());
+        $this->assertSame(0, (int) Payment::query()->sum('amount_cents'), 'each payment has its refund');
         $this->assertSame(InvoiceStatus::Cancelled, Invoice::sole()->status);
         $this->assertSame(0, (int) $this->client->refresh()->credit_cents);
     }
@@ -127,7 +143,7 @@ class CancelPaidOrderTest extends TestCase
         $order = $this->paidOrder();
         app(CancelOrder::class)->handle($order);
 
-        $this->assertSame(0, Payment::count());
+        $this->assertSame(0, (int) Payment::query()->sum('amount_cents'), 'each payment has its refund');
         $this->assertSame(0, (int) $this->client->refresh()->credit_cents);
     }
 
@@ -155,7 +171,7 @@ class CancelPaidOrderTest extends TestCase
         $this->withToken($token)->postJson("/api/v1/orders/{$order->id}/cancel", ['payments' => 'nonsense'])->assertUnprocessable();
         $this->withToken($token)->postJson("/api/v1/orders/{$order->id}/cancel", ['payments' => 'refunded'])->assertOk();
 
-        $this->assertSame(0, Payment::count());
+        $this->assertSame(0, (int) Payment::query()->sum('amount_cents'), 'each payment has its refund');
         $this->assertSame(0, (int) $this->client->refresh()->credit_cents);
     }
 }

@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Bank transfer 1.0.4: under the bank details, a payment notice's page and emails (and the order confirmation, for the
+  order's notice) say "Reference for the transfer: PF-2026-0001", so you can tell which notice a transfer pays.
+- Plugin API: a payment module may give `instructionsFor(Invoice $invoice)` for one payment notice (optional).
+- **Cancel order** on a paid order no longer deletes its payments: each one stays on the day it was made and a refund
+  is recorded on the day of the cancel, so a past month's income stays as it was.
+- CSV exports put a `'` before a text that a spreadsheet would run as a formula (one starting with `=`, `+`, `-`, `@`).
+- Two checkouts of the same domain at the same moment can no longer both go through: the client area and API check it
+  again inside the order's transaction.
 - Three new payment plugins for Greek banks, each off until switched on under Settings → Payment methods: **Alpha Bank**
   and **Eurobank** (card payments through Cardlink) and **Piraeus Bank** (cards and IRIS through its paycenter). The
   client presses "Pay by card (bank)" on an unpaid payment notice and pays on the bank's own page; the payment is

@@ -70,7 +70,7 @@ class OrderBulkActionsTest extends TestCase
 
         $this->assertSame(OrderStatus::Cancelled, $paid->fresh()->status);
         $this->assertSame(OrderStatus::Cancelled, $unpaid->fresh()->status);
-        $this->assertSame(0, $paid->services()->first()->payments()->count());
+        $this->assertSame(0, (int) $paid->services()->first()->payments()->sum('amount_cents'), 'refunded, not deleted');
     }
 
     public function test_delete_removes_only_cancelled_orders_nothing_was_paid_for(): void

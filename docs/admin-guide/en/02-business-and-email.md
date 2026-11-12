@@ -74,7 +74,8 @@ for everyone.
 
 Settings → **Payment methods** lists how clients can pay. Each method is a plugin with its own page:
 
-- **Bank transfer**: your bank details, printed on every payment notice.
+- **Bank transfer**: your bank details, printed on every payment notice with its number as the reference for the
+  transfer ("Reference for the transfer: PF-2026-0001"), so you can tell which notice a transfer pays.
 - **Stripe**: card payments on Stripe's own Checkout page, from the client's unpaid payment notice. Fill in the test
   or live secret key and the webhook signing secret, and add the webhook address shown there in your Stripe dashboard.
   The payment is recorded once Stripe confirms it, never from the client's visit alone. If the webhook doesn't come

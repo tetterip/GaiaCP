@@ -2,6 +2,7 @@
 
 namespace Plugins\BankTransfer;
 
+use App\Models\Invoice;
 use App\Payments\PaymentModule;
 use App\Plugins\Plugin;
 
@@ -43,6 +44,14 @@ class BankTransferPlugin extends Plugin implements PaymentModule
         $instructions = config('gaiacp.payment_instructions');
 
         return filled($instructions) ? (string) $instructions : null;
+    }
+
+    /** The bank details for one payment notice, with its number as the reference to write on the transfer. */
+    public function instructionsFor(Invoice $invoice): ?string
+    {
+        $instructions = $this->instructions();
+
+        return $instructions === null ? null : $instructions."\n".__('Reference for the transfer: :number', ['number' => $invoice->number]);
     }
 
     public function settingsPage(): ?string

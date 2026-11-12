@@ -6,6 +6,7 @@ use App\Enums\MailTemplate;
 use App\Models\Client;
 use App\Models\EmailTemplate;
 use App\Models\EmailTemplateTranslation;
+use App\Models\Invoice;
 use App\Payments\PaymentMethods;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
@@ -164,7 +165,6 @@ class MailTemplates
     public static function common(Client $client): array
     {
         $company = config('gaiacp.company');
-        $instructions = PaymentMethods::instructions();
 
         return [
             'client_first_name' => $client->first_name,
@@ -178,8 +178,16 @@ class MailTemplates
             'company_website' => $company['website'] ?? null,
             'signature' => new HtmlString(collect([$company['name'] ?? null, $company['phone'] ?? null, $company['email'] ?? null, $company['website'] ?? null])
                 ->filter()->map(fn ($line) => e($line))->join("<br>\n")),
-            'payment_instructions' => new HtmlString($instructions ? nl2br(e($instructions), false) : ''),
+            'payment_instructions' => self::instructions(),
         ];
+    }
+
+    /** {$payment_instructions}: how to pay, for one payment notice when it is given (Bank transfer adds its number). */
+    public static function instructions(?Invoice $invoice = null): HtmlString
+    {
+        $instructions = PaymentMethods::instructions($invoice);
+
+        return new HtmlString($instructions ? nl2br(e($instructions), false) : '');
     }
 
     /**

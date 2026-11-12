@@ -61,6 +61,8 @@ can be added.
 
 - `App\Payments\PaymentModule`; record what the gateway confirmed with `App\Actions\RecordInvoicePayment`, and send the
   client back to `App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource::getUrl('view', …, panel: 'client')`.
+  Optional: a public `instructionsFor(App\Models\Invoice $invoice): ?string` gives the instructions for one payment
+  notice (its page and emails) in place of `instructions()`, e.g. Bank transfer adds the notice number as the reference.
 - `App\Captcha\CaptchaModule`.
 - `App\Monitoring\MonitoringModule`, `App\Monitoring\ServerMonitoring`, `App\Monitoring\Monitor`,
   `App\Monitoring\MonitorStatus`, `App\Monitoring\MonitoringException`.

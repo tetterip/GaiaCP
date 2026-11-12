@@ -26,6 +26,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
 use Plugins\EasyGr\EasyRegistrar;
 use Tests\FakesEasy;
@@ -83,6 +84,21 @@ class DomainOptionsTest extends TestCase
         $this->assertFalse($services['acme.gr']->auto_renew);
         $this->assertTrue($services['kept.gr']->auto_renew);
         $this->assertFalse($services['Maintenance']->auto_terminate);
+    }
+
+    public function test_a_client_order_for_a_domain_another_order_has_is_refused_inside_the_transaction(): void
+    {
+        $client = Client::factory()->create();
+        Service::factory()->create(['type' => ServiceType::Domain, 'domain' => 'acme.gr', 'status' => ServiceStatus::Pending]);
+        $item = ['type' => 'domain', 'domain' => 'acme.gr', 'price_cents' => 1500, 'billing_cycle' => BillingCycle::Annually];
+
+        // As a second checkout that passed ClientOrder's check a moment before the first one was saved.
+        $this->assertThrows(fn () => app(PlaceOrder::class)->handle($client, [$item], inStockOnly: true), ValidationException::class);
+        $this->assertSame(0, Order::query()->count());
+
+        // The admin's New order is not refused (it may move a domain it already has).
+        app(PlaceOrder::class)->handle($client, [$item]);
+        $this->assertSame(1, Order::query()->count());
     }
 
     public function test_auto_renew_is_auto_terminate_the_other_way_round(): void
