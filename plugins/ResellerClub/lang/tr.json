@@ -1,0 +1,11 @@
+{
+    "API key": "API anahtarı",
+    "Api key": "API anahtarı",
+    "Leave empty to keep the current key. Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Mevcut anahtarı korumak için boş bırakın. Şifreli saklanır. ResellerClub panelinde Settings → API altında bulunur; orada bu sunucunun IP adresine de izin verin.",
+    "Registers, renews, transfers and syncs domains through a ResellerClub reseller account.": "Alan adlarını bir ResellerClub bayi hesabı üzerinden kaydeder, yeniler, transfer eder ve eşitler.",
+    "Reseller ID": "Bayi ID",
+    "Reseller id": "Bayi ID",
+    "Sends every call to ResellerClub's test environment (test.httpapi.com), with a demo reseller account.": "Her çağrıyı bir demo bayi hesabıyla ResellerClub'ın test ortamına (test.httpapi.com) gönderir.",
+    "Stored encrypted. Find it under Settings → API in the ResellerClub panel, and allow this server's IP address there.": "Şifreli saklanır. ResellerClub panelinde Settings → API altında bulunur; orada bu sunucunun IP adresine de izin verin.",
+    "Test mode": "Test modu"
+}

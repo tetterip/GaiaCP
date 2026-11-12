@@ -75,7 +75,8 @@ class RegistrarSettingsTest extends TestCase
             ->assertSchemaStateSet(['credentials.username' => $registrar->credentials['username'], 'credentials.password' => null]);
 
         // The password never reaches the page.
-        $this->assertStringNotContainsString($registrar->credentials['password'], json_encode($page->snapshot));
+        // As a value: a field name such as api_secret may contain the same word.
+        $this->assertStringNotContainsString(json_encode($registrar->credentials['password']), json_encode($page->snapshot));
 
         $page->call('save')
             ->assertHasNoFormErrors();

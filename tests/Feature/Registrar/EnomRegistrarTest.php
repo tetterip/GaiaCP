@@ -150,6 +150,28 @@ class EnomRegistrarTest extends TestCase
         $this->assertSame('2029-03-15', $this->registrar()->expiryDate('acme.com')->toDateString());
     }
 
+    public function test_an_expired_domain_is_brought_back_with_update_expired_domains(): void
+    {
+        $this->fakeEnom();
+        $this->enomDomains['acme.com'] = ['expires' => '2026-01-10'];
+        $this->enomFailures['Extend'] = 'Domain is expired';
+
+        $this->registrar()->renew('acme.com', 1);
+
+        $this->assertSame(['UpdateExpiredDomains', ['DomainName' => 'acme.com', 'NumYears' => '1']], $this->enomCalls[1]);
+        $this->assertSame(now()->addYear()->toDateString(), $this->enomDomains['acme.com']['expires']);
+    }
+
+    public function test_when_both_renewals_fail_extends_error_is_shown(): void
+    {
+        $this->fakeEnom();
+        $this->enomFailures['Extend'] = 'Domain is locked by the registry';
+        $this->enomFailures['UpdateExpiredDomains'] = 'Domain is not expired';
+
+        $this->expectExceptionMessage('Domain is locked by the registry');
+        $this->registrar()->renew('acme.com', 1);
+    }
+
     public function test_reads_and_saves_nameservers(): void
     {
         $this->fakeEnom();

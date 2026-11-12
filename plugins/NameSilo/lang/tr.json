@@ -1,0 +1,9 @@
+{
+    "API key": "API anahtarı",
+    "Api key": "API anahtarı",
+    "Leave empty to keep the current key. Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Mevcut anahtarı korumak için boş bırakın. Şifreli saklanır. NameSilo'da Account → API Manager altında oluşturun ve orada bu sunucunun IP adresiyle sınırlayın.",
+    "Registers, renews, transfers and syncs domains through a NameSilo account with an API key.": "Alan adlarını API anahtarlı bir NameSilo hesabı üzerinden kaydeder, yeniler, transfer eder ve eşitler.",
+    "Sandbox": "Sandbox",
+    "Sends every call to NameSilo's sandbox (ote.namesilo.com), with a sandbox account's API key.": "Her çağrıyı bir sandbox hesabının API anahtarıyla NameSilo'nun sandbox ortamına (ote.namesilo.com) gönderir.",
+    "Stored encrypted. Make it under Account → API Manager at NameSilo, and limit it to this server's IP address there.": "Şifreli saklanır. NameSilo'da Account → API Manager altında oluşturun ve orada bu sunucunun IP adresiyle sınırlayın."
+}

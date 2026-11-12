@@ -46,7 +46,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   service's page (another package clients can order); you approve or decline under Services → Upgrade requests
 - Admin orders: one order per client with several items (domain, hosting, maintenance); completing it registers
   the domain, creates the hosting account and activates the rest
-- Services: hosting accounts on **cPanel/WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel** and **Enhance** servers, VPS on **Proxmox VE** (cloned from a template, IP pool, start / stop for admin and client), **domains** at one or more registrars (easy.gr, Enom),
+- Services: hosting accounts on **cPanel/WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel** and **Enhance** servers, VPS on **Proxmox VE** (cloned from a template, IP pool, start / stop for admin and client), **domains** at one or more registrars (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub),
   and plain recurring services such as yearly **maintenance**. A hosting account shows its disk space and this month's
   bandwidth against its limits, read from the panel, to you and (unless switched off) to the client. An account that
   reaches 85% (Settings → Automation → Usage warning) of either gets a Usage Warning email suggesting a bigger package,
@@ -80,7 +80,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Panel actions: create, suspend, unsuspend, terminate, change package
 - Registrar actions: register, renew, transfer, nameservers, expiry-date sync; contact details, private nameservers
   (ns1.the-domain) and the registrar lock where the registrar offers them (easy.gr: contacts and private nameservers;
-  Enom: all three), for admins and, each behind a switch, clients
+  Enom, Namecheap, NameSilo, Openprovider, ResellerClub: all three; GoDaddy: contacts and lock), for admins and, each behind a switch, clients
 - Backups: a zip of the database (SQL) and the uploaded files (optionally AES-256 with a password, which also carries
   the APP_KEY), daily or weekly, copied to FTP/FTPS and/or emailed; `gaiacp:restore` puts one back. An update that fails
   while migrating puts the old code and the database from its backup back
@@ -96,7 +96,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   suspend, unsuspend, terminate and domain renewals wait with their error to Retry, Retry all or Mark resolved; set ups,
   unsuspends and suspensions for non-payment are retried by themselves every 15 minutes (Settings → Automation), then
   the bell rings once; open items are in the daily summary
-- Debugging (Settings → Logs): a WHMCS-style module log of every request to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, Proxmox VE, easy.gr, Enom and ΑΑΔΕ
+- Debugging (Settings → Logs): a WHMCS-style module log of every request to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, Proxmox VE, easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub and ΑΑΔΕ
   with the reply (passwords, tokens and EPP codes masked; off until switched on), an email log of every email sent or
   failed, and a viewer for Laravel's error log
 - Reports (sidebar → Reports): annual income (month by month against the year before), monthly transactions, income
@@ -113,7 +113,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   before sending, and shows when it was last sent
 - Client page "Payment record": income from the client, their average payment delay over 12 months (rated Pays on time
   up to 3 days, Watch up to 14, Pays late beyond), late payments and suspensions
-- Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance, Proxmox VE (all three off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
+- Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Enhance, Proxmox VE (all three off by default), easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
 Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Google sign-in ("Continue with Google"
@@ -245,8 +245,8 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
 - Domain costs: each TLD can keep what the registrar charges per term (Settings → Domain pricing → Registrar cost).
   The list shows the renewal margin, red when a term sells at a loss; Income forecast takes the month's domain
   renewal costs off the profit, and Reports → Domain profit shows revenue, cost, profit and margin per TLD
-- TLD import and pricing sync (WHMCS-style): Domain pricing → Import from registrar reads each TLD's cost from easy.gr
-  or Enom and adds or updates TLDs with cost + markup (percent, fixed, rounding); an optional nightly run keeps the costs
+- TLD import and pricing sync (WHMCS-style): Domain pricing → Import from registrar reads each TLD's cost from easy.gr,
+  Enom, Namecheap, NameSilo or Openprovider and adds or updates TLDs with cost + markup (percent, fixed, rounding); an optional nightly run keeps the costs
   current and rings the bell when a TLD starts to sell at a loss (selling prices never change by themselves)
 - Themes: Gaia (GaiaCP's own look, light and dark: neutral greys, the logo's teal, rounded cards,
   Commissioner and Literata from Bunny Fonts, quiet motion) Flat (the same layout in the logo's green and Filament's grey, flat: no shadows or motion) and Glass (frosted, see-through

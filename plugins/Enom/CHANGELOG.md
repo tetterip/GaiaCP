@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.4.0] - 2026-11-12
+
+- TLD prices come from PE_GetProductPrice (the account's own cost, 1 year), as Enom's Blesta module reads them, instead of PE_GetResellerPrice
+- Renewing a domain that has already expired: when Extend refuses, UpdateExpiredDomains brings it back for the years paid
+
 ## [1.3.0] - 2026-11-03
 
 - Tells its TLD prices (PE_GetResellerPrice, 1 year, USD) for Settings → Domain pricing → Import from registrar and the daily cost update

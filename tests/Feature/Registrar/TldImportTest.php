@@ -122,7 +122,7 @@ class TldImportTest extends TestCase
         $this->assertSame(['tld' => '.com', 'years' => 1, 'register' => 800, 'renew' => 1000, 'transfer' => 800, 'redemption' => null], $rows['.com']);
         $this->assertSame(1200, $rows['.net']['register']);
         $this->assertNull($rows['.net']['renew']);
-        $this->assertSame(6, collect($this->enomCalls)->where(0, 'PE_GetResellerPrice')->count());
+        $this->assertSame(6, collect($this->enomCalls)->where(0, 'PE_GetProductPrice')->count());
     }
 
     public function test_a_currency_without_a_rate_is_refused(): void
