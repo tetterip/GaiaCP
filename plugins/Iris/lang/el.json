@@ -18,5 +18,10 @@
     "The QR code is under Pay with IRIS on the payment notice in our client area.": "Το QR code βρίσκεται στο «Πληρωμή με IRIS» της ειδοποίησης πληρωμής στο client area μας.",
     "The VAT number, mobile number or alias your bank linked to IRIS.": "Ο ΑΦΜ, το κινητό ή το alias που έχει συνδέσει η τράπεζά σου με το IRIS.",
     "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Το σταθερό QR code που σου έδωσε η τράπεζα για πληρωμές IRIS (PNG, JPG ή WebP, έως 1 MB).",
-    "The name clients see in their bank's app. Empty: your company name.": "Το όνομα που βλέπουν οι πελάτες στην εφαρμογή της τράπεζάς τους. Κενό: το όνομα της εταιρείας σου."
+    "The name clients see in their bank's app. Empty: your company name.": "Το όνομα που βλέπουν οι πελάτες στην εφαρμογή της τράπεζάς τους. Κενό: το όνομα της εταιρείας σου.",
+    "I've paid": "Το πλήρωσα",
+    "Once you have paid, press I've paid so we know to look for it.": "Μόλις πληρώσετε, πατήστε «Το πλήρωσα» για να ξέρουμε να την αναζητήσουμε.",
+    "Thank you, we will check for your payment": "Ευχαριστούμε, θα ελέγξουμε για την πληρωμή σας",
+    "The notice shows as paid once we see the payment in our account.": "Η ειδοποίηση εμφανίζεται ως πληρωμένη μόλις δούμε την πληρωμή στον λογαριασμό μας.",
+    "You told us on :date that you paid. We are checking for it.": "Μας δηλώσατε στις :date ότι πληρώσατε. Την ελέγχουμε."
 }

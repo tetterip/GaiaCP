@@ -134,7 +134,11 @@ Aby zapłacić kartą przez nasz bank, otwórz nieopłacone powiadomienie o pła
 <!-- endif -->
 
 <!-- if:pay_iris -->
-Aby zapłacić przez IRIS, prosimy otworzyć nieopłacone wezwanie do zapłaty i nacisnąć **Zapłać przez IRIS**. Pokazuje ono nasz kod QR i numer IRIS z kwotą: w aplikacji banku prosimy wybrać IRIS, zeskanować kod lub wpisać numer i podać numer wezwania jako tytuł. Wezwanie będzie oznaczone jako opłacone, gdy zobaczymy płatność na naszym koncie.
+Aby zapłacić przez IRIS, prosimy otworzyć nieopłacone wezwanie do zapłaty i nacisnąć **Zapłać przez IRIS**. Pokazuje ono nasz kod QR i numer IRIS z kwotą: w aplikacji banku prosimy wybrać IRIS, zeskanować kod lub wpisać numer i podać numer wezwania jako tytuł. Wezwanie będzie oznaczone jako opłacone, gdy zobaczymy płatność na naszym koncie. Po zapłacie kliknij **Zapłaciłem** w tym samym oknie, abyśmy wiedzieli, że trzeba jej szukać; wezwanie pokaże wtedy, kiedy nas o tym poinformowano.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+Gdy wezwanie można opłacić na więcej niż jeden sposób, ma jeden przycisk **Zapłać online**: kliknij go i wybierz sposób płatności z menu.
 <!-- endif -->
 
 <!-- if:credit -->

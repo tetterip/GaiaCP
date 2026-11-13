@@ -2,13 +2,16 @@
 
 namespace Plugins\Iris;
 
+use App\Actions\PaymentClaims;
 use App\Actions\RecordInvoicePayment;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
 use App\Payments\PaymentModule;
 use App\Plugins\Plugin;
+use App\Providers\AppServiceProvider;
 use App\Support\Money;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 
@@ -89,8 +92,21 @@ class IrisPlugin extends Plugin implements PaymentModule
                 ->modalHeading(__('Pay with IRIS'))
                 ->modalWidth('md')
                 ->modalContent(fn (Invoice $record) => self::details($record))
-                ->modalSubmitAction(false)
-                ->modalCancelActionLabel(__('Close')),
+                // "I've paid": tells us to look for the transfer (PaymentClaims); the notice stays unpaid until we record it
+                ->modalSubmitActionLabel(__('I\'ve paid'))
+                ->modalSubmitAction(fn (Action $action, Invoice $record) => PaymentClaims::canClaim($record) ? $action : false)
+                ->modalCancelActionLabel(__('Close'))
+                ->action(function (Invoice $record) {
+                    if (! PaymentClaims::canClaim($record)) {
+                        return;
+                    }
+
+                    app(PaymentClaims::class)->claim($record, $this->key());
+                    Notification::make()->success()
+                        ->title(__('Thank you, we will check for your payment'))
+                        ->body(__('The notice shows as paid once we see the payment in our account.'))
+                        ->send();
+                }),
         ];
     }
 
@@ -127,6 +143,10 @@ class IrisPlugin extends Plugin implements PaymentModule
         if (filled(Iris::note())) {
             $html .= '<p style="font-size:0.875rem">'.nl2br(e(Iris::note())).'</p>';
         }
+
+        $html .= PaymentClaims::waiting($invoice)
+            ? '<p style="font-size:0.875rem;font-weight:600">'.e(__('You told us on :date that you paid. We are checking for it.', ['date' => $invoice->payment_claimed_at->format(AppServiceProvider::dateFormat().' H:i')])).'</p>'
+            : '<p style="font-size:0.875rem">'.e(__('Once you have paid, press I\'ve paid so we know to look for it.')).'</p>';
 
         return new HtmlString($html.'</div>');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Invoices\Pages;
 
+use App\Actions\PaymentClaims;
 use App\Actions\RecordInvoicePayment;
 use App\Ai\AiException;
 use App\Ai\Assistant;
@@ -55,6 +56,7 @@ class ViewInvoice extends ViewRecord
         return [
             $this->payWithCredit(),
             $this->recordPayment(),
+            $this->rejectClaim(),
             $this->sendEmail(),
             $this->aiReminder(),
             $this->updateBillTo(),
@@ -106,7 +108,7 @@ class ViewInvoice extends ViewRecord
                     ->maxDate(now()),
                 Select::make('method')
                     ->options(fn () => PaymentMethods::options())
-                    ->default(fn (Invoice $record) => array_key_exists((string) $record->client->default_payment_method, PaymentMethods::options()) ? $record->client->default_payment_method : PaymentMethods::default())
+                    ->default(fn (Invoice $record) => self::defaultMethod($record))
                     ->required(),
                 TextInput::make('reference')
                     ->maxLength(255)
@@ -140,6 +142,38 @@ class ViewInvoice extends ViewRecord
                 }
 
                 $this->refreshFormData(['status', 'paid_on']);
+            });
+    }
+
+    /** The way the client said they paid (PaymentClaims), else the client's default, else the first enabled one. */
+    private static function defaultMethod(Invoice $record): string
+    {
+        $options = PaymentMethods::options();
+
+        foreach ([PaymentClaims::waiting($record) ? $record->payment_claim_method : null, $record->client->default_payment_method] as $method) {
+            if (filled($method) && array_key_exists($method, $options)) {
+                return $method;
+            }
+        }
+
+        return PaymentMethods::default();
+    }
+
+    /** The client said they paid (PaymentClaims), but the money is not there: back to unpaid, and they may say so again. */
+    private function rejectClaim(): Action
+    {
+        return Action::make('rejectPaymentClaim')
+            ->label('Reject claim')
+            ->icon(Heroicon::OutlinedXCircle)
+            ->color('gray')
+            ->visible(fn (Invoice $record) => PaymentClaims::waiting($record))
+            ->requiresConfirmation()
+            ->modalDescription(__('The client said they paid this notice, but you did not find the payment. The note goes away and the client can press I\'ve paid again. Nothing else changes.'))
+            ->action(function (Invoice $record) {
+                app(PaymentClaims::class)->reject($record);
+
+                Notification::make()->title(__('Claim rejected'))->success()->send();
+                $this->refreshFormData(['payment_claimed_at']);
             });
     }
 

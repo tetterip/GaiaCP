@@ -134,7 +134,11 @@ Um per Karte über unsere Bank zu zahlen, öffnen Sie einen unbezahlten Zahlungs
 <!-- endif -->
 
 <!-- if:pay_iris -->
-Um mit IRIS zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken Sie auf **Mit IRIS bezahlen**. Dort sehen Sie unseren QR-Code und unsere IRIS-Nummer mit dem Betrag: Wählen Sie in der App Ihrer Bank IRIS, scannen Sie den Code oder geben Sie die Nummer ein und schreiben Sie die Nummer der Zahlungsaufforderung als Verwendungszweck. Die Zahlungsaufforderung wird als bezahlt angezeigt, sobald wir die Zahlung auf unserem Konto sehen.
+Um mit IRIS zu bezahlen, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken Sie auf **Mit IRIS bezahlen**. Dort sehen Sie unseren QR-Code und unsere IRIS-Nummer mit dem Betrag: Wählen Sie in der App Ihrer Bank IRIS, scannen Sie den Code oder geben Sie die Nummer ein und schreiben Sie die Nummer der Zahlungsaufforderung als Verwendungszweck. Die Zahlungsaufforderung wird als bezahlt angezeigt, sobald wir die Zahlung auf unserem Konto sehen. Wenn Sie bezahlt haben, klicken Sie im selben Fenster auf **Ich habe bezahlt**, damit wir danach suchen; die Zahlungsaufforderung zeigt dann, wann Sie es uns mitgeteilt haben.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+Wenn eine Zahlungsaufforderung auf mehr als eine Art bezahlt werden kann, hat sie eine Schaltfläche **Online bezahlen**: Klicken Sie darauf und wählen Sie die Zahlungsart aus dem Menü.
 <!-- endif -->
 
 <!-- if:credit -->

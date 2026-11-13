@@ -134,7 +134,11 @@ To pay by card through our bank, open an unpaid payment notice and press **Pay b
 <!-- endif -->
 
 <!-- if:pay_iris -->
-To pay by IRIS, open an unpaid payment notice and press **Pay with IRIS**. It shows our QR code and IRIS number with the amount: in your bank's app choose IRIS, scan the code or enter the number, and write the notice number as the reason. The notice shows as paid once we see the payment in our account.
+To pay by IRIS, open an unpaid payment notice and press **Pay with IRIS**. It shows our QR code and IRIS number with the amount: in your bank's app choose IRIS, scan the code or enter the number, and write the notice number as the reason. The notice shows as paid once we see the payment in our account. Once you have paid, press **I've paid** in the same window so we know to look for it; the notice then says when you told us.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+When there is more than one way to pay a notice, it has one **Pay online** button: press it and choose how to pay from its menu.
 <!-- endif -->
 
 <!-- if:credit -->

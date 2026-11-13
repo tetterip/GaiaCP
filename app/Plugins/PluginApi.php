@@ -5,6 +5,7 @@ namespace App\Plugins;
 use App\Actions\CertificateLifecycle;
 use App\Actions\ClientAreaAccess;
 use App\Actions\ClientSignup;
+use App\Actions\PaymentClaims;
 use App\Actions\RecordInvoicePayment;
 use App\Actions\Tickets;
 use App\Ai\AiException;
@@ -166,6 +167,7 @@ final class PluginApi
         // Payments, captcha, monitoring, SSL certificates, chat, AI, themes
         PaymentModule::class,
         RecordInvoicePayment::class,
+        PaymentClaims::class,
         PaymentNoticeResource::class,
         CaptchaModule::class,
         MonitoringModule::class,

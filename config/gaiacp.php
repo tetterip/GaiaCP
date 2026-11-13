@@ -151,6 +151,8 @@ return [
         'cancellation_request_email' => (bool) env('GAIACP_CANCELLATION_REQUEST_EMAIL', true),
         // Email the admins when a client asks to change a service's package from the client area
         'upgrade_request_email' => (bool) env('GAIACP_UPGRADE_REQUEST_EMAIL', true),
+        // A client's "I've paid" on a notice (App\Actions\PaymentClaims), to the admins who open billing
+        'payment_claim_email' => (bool) env('GAIACP_PAYMENT_CLAIM_EMAIL', true),
         // Compare every server's accounts with GaiaCP each night (04:30) and ring the bell when something new differs
         'compare_servers' => (bool) env('GAIACP_COMPARE_SERVERS', true),
         // Read every currency's rate from the European Central Bank once a day (Settings → Currencies)

@@ -28,6 +28,7 @@ use App\Models\Quote;
 use App\Models\Server;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Payments\PaymentMethods;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Push\WebPush;
@@ -55,6 +56,7 @@ class AdminAlerts
         'client.change_requested' => AdminArea::Clients,
         'invoice.created' => AdminArea::Billing,
         'invoice.paid' => AdminArea::Billing,
+        'invoice.payment_claimed' => AdminArea::Billing,
         'payment.online_unmatched' => AdminArea::Billing,
         'provisioning.failed' => AdminArea::Services,
         'module_queue.gave_up' => AdminArea::Services,
@@ -172,6 +174,7 @@ class AdminAlerts
             ],
             'invoice.created' => self::created($log),
             'invoice.paid' => self::paid($log),
+            'invoice.payment_claimed' => self::claimed($log),
             'payment.online_unmatched' => [
                 __('Online payment to match by hand'), Str::limit($log->description, 160),
                 'heroicon-o-credit-card', 'danger',
@@ -403,6 +406,25 @@ class AdminAlerts
             __('Payment received: :amount', ['amount' => Money::format($invoice->total_cents, $invoice->currency)]),
             __('Payment notice :number, :client', ['number' => $invoice->number, 'client' => $invoice->client?->name]),
             'heroicon-o-banknotes', 'success',
+            InvoiceResource::getUrl('view', ['record' => $invoice], panel: 'admin'),
+        ];
+    }
+
+    /** @return array{0: ?string, 1: ?string, 2: string, 3: string, 4: ?string} a client's "I've paid" (App\Actions\PaymentClaims) */
+    private static function claimed(ActivityLog $log): array
+    {
+        $invoice = isset($log->properties['invoice_id']) ? Invoice::query()->find($log->properties['invoice_id']) : null;
+        if (! $invoice) {
+            return [null, null, '', '', null];
+        }
+
+        return [
+            __(':client says they paid :number', ['client' => $invoice->client?->name, 'number' => $invoice->number]),
+            __(':amount by :method: check that it arrived, then record it', [
+                'amount' => Money::format((int) ($log->properties['amount_cents'] ?? $invoice->total_cents), $invoice->currency),
+                'method' => PaymentMethods::label($log->properties['method'] ?? null),
+            ]),
+            'heroicon-o-banknotes', 'warning',
             InvoiceResource::getUrl('view', ['record' => $invoice], panel: 'admin'),
         ];
     }

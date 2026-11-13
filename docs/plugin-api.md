@@ -63,6 +63,9 @@ can be added.
   client back to `App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource::getUrl('view', …, panel: 'client')`.
   Optional: a public `instructionsFor(App\Models\Invoice $invoice): ?string` gives the instructions for one payment
   notice (its page and emails) in place of `instructions()`, e.g. Bank transfer adds the notice number as the reference.
+  For a payment GaiaCP can't see (a transfer), `App\Actions\PaymentClaims` takes the client's "I've paid": `canClaim()`,
+  `claim($invoice, $methodKey)` (bell + admins' email, nothing recorded), `waiting()`. When several payment plugins
+  offer a button for a notice, the client area shows them under one **Pay online** menu.
 - `App\Captcha\CaptchaModule`.
 - `App\Monitoring\MonitoringModule`, `App\Monitoring\ServerMonitoring`, `App\Monitoring\Monitor`,
   `App\Monitoring\MonitorStatus`, `App\Monitoring\MonitoringException`.

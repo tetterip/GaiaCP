@@ -30,12 +30,13 @@ use Throwable;
  * @property CarbonImmutable $due_date
  * @property CarbonImmutable|null $paid_on
  * @property CarbonImmutable|null $emailed_at
+ * @property CarbonImmutable|null $payment_claimed_at the client said they paid (App\Actions\PaymentClaims), until it is paid or rejected
  * @property-read int|string|null $owed_cents only after withOwed()
  */
 #[Fillable([
     'number', 'client_id', 'bill_to', 'order_id', 'status', 'date', 'due_date', 'currency',
     'subtotal_cents', 'tax_name', 'tax_rate', 'tax_inclusive', 'tax_cents', 'tax_note', 'total_cents',
-    'paid_on', 'emailed_at', 'notes', 'credit',
+    'paid_on', 'emailed_at', 'payment_claimed_at', 'payment_claim_method', 'notes', 'credit',
 ])]
 class Invoice extends Model
 {
@@ -58,6 +59,7 @@ class Invoice extends Model
             'due_date' => 'immutable_date',
             'paid_on' => 'immutable_date',
             'emailed_at' => 'immutable_datetime',
+            'payment_claimed_at' => 'immutable_datetime',
             'subtotal_cents' => 'integer',
             'tax_rate' => 'float',
             'tax_inclusive' => 'boolean',
@@ -323,7 +325,7 @@ class Invoice extends Model
     public function settle(CarbonInterface $paidOn): void
     {
         if ($this->status === InvoiceStatus::Unpaid && ! $this->items()->unpaid()->exists()) {
-            $this->update(['status' => InvoiceStatus::Paid, 'paid_on' => $paidOn]);
+            $this->update(['status' => InvoiceStatus::Paid, 'paid_on' => $paidOn, 'payment_claimed_at' => null, 'payment_claim_method' => null]);
 
             ActivityLog::record('invoice.paid', "Payment notice {$this->number} paid", client: $this->client, properties: ['invoice_id' => $this->id]);
 

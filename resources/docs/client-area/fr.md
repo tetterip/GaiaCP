@@ -134,7 +134,11 @@ Pour payer par carte via notre banque, ouvrez un avis de paiement impayé et cli
 <!-- endif -->
 
 <!-- if:pay_iris -->
-Pour payer par IRIS, ouvrez un avis de paiement impayé et cliquez sur **Payer avec IRIS**. Il affiche notre QR code et notre numéro IRIS avec le montant : dans l'application de votre banque, choisissez IRIS, scannez le code ou saisissez le numéro, et indiquez le numéro de l'avis comme motif. L'avis apparaît comme payé dès que nous voyons le paiement sur notre compte.
+Pour payer par IRIS, ouvrez un avis de paiement impayé et cliquez sur **Payer avec IRIS**. Il affiche notre QR code et notre numéro IRIS avec le montant : dans l'application de votre banque, choisissez IRIS, scannez le code ou saisissez le numéro, et indiquez le numéro de l'avis comme motif. L'avis apparaît comme payé dès que nous voyons le paiement sur notre compte. Une fois le paiement effectué, cliquez sur **J'ai payé** dans la même fenêtre pour que nous le recherchions ; l'avis indique alors quand vous nous l'avez signalé.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+Quand un avis peut être payé de plusieurs façons, il a un seul bouton **Payer en ligne** : cliquez dessus et choisissez comment payer dans son menu.
 <!-- endif -->
 
 <!-- if:credit -->
