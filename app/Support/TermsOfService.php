@@ -69,7 +69,10 @@ class TermsOfService
         };
     }
 
-    /** The checkbox for a client area form, with a link that opens the terms (their page in a new tab, or their text in a window). */
+    /**
+     * The checkbox for a client area form, with a link under it that opens the terms (their page in a new tab, or their
+     * text in a window). Under, not beside: side by side both wrapped on a narrow order card.
+     */
     public static function checkbox(): Checkbox
     {
         return Checkbox::make('accept_terms')
@@ -78,7 +81,7 @@ class TermsOfService
             ->validationMessages(['accepted' => __('Please accept the Terms of Service to continue.')])
             ->dehydrated()
             ->visible(fn () => self::required())
-            ->hintAction(
+            ->belowContent(
                 Action::make('readTerms')
                     ->label(__('Read the Terms of Service'))
                     ->icon(Heroicon::OutlinedDocumentText)

@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- In the client area (cart, Sign up, accepting a quote) the **Read the Terms of Service** link sits under the "I accept
+  the Terms of Service" checkbox instead of beside it, so neither wraps on a narrow card or a phone.
 - Settings → Plugins shows one select checkbox per type, without a second one alone above the list (once some are
   ticked, **Select all** above the list still picks every plugin).
 - Settings → Plugins has a search box and filters by type, by enabled or disabled and (once a plugin was uploaded)
