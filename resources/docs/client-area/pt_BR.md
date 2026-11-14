@@ -134,7 +134,11 @@ Para pagar com cartão através do nosso banco, abra um aviso de pagamento em ab
 <!-- endif -->
 
 <!-- if:pay_iris -->
-Para pagar por IRIS, abra um aviso de pagamento não pago e clique em **Pagar com IRIS**. Ele mostra nosso QR code e nosso número IRIS com o valor: no app do seu banco escolha IRIS, escaneie o código ou digite o número, e informe o número do aviso como referência. O aviso aparece como pago assim que virmos o pagamento em nossa conta.
+Para pagar por IRIS, abra um aviso de pagamento não pago e clique em **Pagar com IRIS**. Ele mostra nosso QR code e nosso número IRIS com o valor: no app do seu banco escolha IRIS, escaneie o código ou digite o número, e informe o número do aviso como referência. O aviso aparece como pago assim que virmos o pagamento em nossa conta. Depois de pagar, clique em **Já paguei** na mesma janela para sabermos que devemos procurá-lo; o aviso mostra então quando você nos informou.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+Quando um aviso pode ser pago de mais de uma forma, ele tem um único botão **Pagar online**: clique nele e escolha como pagar no menu.
 <!-- endif -->
 
 <!-- if:credit -->

@@ -134,7 +134,11 @@ Bankamız üzerinden kartla ödemek için ödenmemiş bir ödeme bildirimini aç
 <!-- endif -->
 
 <!-- if:pay_iris -->
-IRIS ile ödemek için ödenmemiş bir ödeme bildirimini açın ve **IRIS ile öde** düğmesine basın. QR kodumuzu ve IRIS numaramızı tutarla birlikte gösterir: bankanızın uygulamasında IRIS'i seçin, kodu tarayın veya numarayı girin ve açıklamaya bildirim numarasını yazın. Ödemeyi hesabımızda gördüğümüzde bildirim ödendi olarak görünür.
+IRIS ile ödemek için ödenmemiş bir ödeme bildirimini açın ve **IRIS ile öde** düğmesine basın. QR kodumuzu ve IRIS numaramızı tutarla birlikte gösterir: bankanızın uygulamasında IRIS'i seçin, kodu tarayın veya numarayı girin ve açıklamaya bildirim numarasını yazın. Ödemeyi hesabımızda gördüğümüzde bildirim ödendi olarak görünür. Ödedikten sonra, aramamız gerektiğini bilmemiz için aynı pencerede **Ödedim** düğmesine basın; bildirim, bize ne zaman haber verdiğinizi gösterir.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+Bir bildirim birden fazla yolla ödenebiliyorsa tek bir **Çevrimiçi öde** düğmesi olur: ona basın ve menüsünden nasıl ödeyeceğinizi seçin.
 <!-- endif -->
 
 <!-- if:credit -->

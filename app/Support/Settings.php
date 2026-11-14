@@ -62,6 +62,7 @@ class Settings
         'automation.change_request_email',
         'automation.cancellation_request_email',
         'automation.upgrade_request_email',
+        'automation.payment_claim_email',
         'automation.new_order_email',
         'automation.new_client_email',
         'automation.exchange_rates',

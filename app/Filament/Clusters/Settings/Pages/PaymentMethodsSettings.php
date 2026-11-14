@@ -10,6 +10,7 @@ use App\Filament\Concerns\TranslatesPageLabels;
 use App\Filament\Pages\Plugins;
 use App\Plugins\Plugin;
 use App\Plugins\PluginManager;
+use App\Plugins\PluginState;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
@@ -20,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use ReflectionMethod;
 use UnitEnum;
 
 /**
@@ -59,6 +61,17 @@ class PaymentMethodsSettings extends Page implements HasTable, SettingsCard
         return __('Payments you record by hand can also be Cash or Other. Turn a method on or off with the switch on its page.');
     }
 
+    /**
+     * Whether a method with a button on client notices (clientPaymentNoticeActions()) has what that button needs: the
+     * plugins give no button until their keys or merchant details are saved. Methods without a button count as set up.
+     */
+    private static function setUp(Plugin $plugin): bool
+    {
+        $offersButton = (new ReflectionMethod($plugin, 'clientPaymentNoticeActions'))->getDeclaringClass()->getName() !== Plugin::class;
+
+        return ! $offersButton || filled($plugin->clientPaymentNoticeActions());
+    }
+
     private function plugins(): PluginManager
     {
         return app(PluginManager::class);
@@ -74,6 +87,7 @@ class PaymentMethodsSettings extends Page implements HasTable, SettingsCard
                     'name' => $plugin->name(),
                     'description' => $plugin->description(),
                     'state' => $this->plugins()->state($plugin),
+                    'set_up' => self::setUp($plugin),
                 ])
                 ->all())
             ->columns([
@@ -85,6 +99,10 @@ class PaymentMethodsSettings extends Page implements HasTable, SettingsCard
                 TextColumn::make('state')
                     ->label('Status')
                     ->badge()
+                    ->formatStateUsing(fn (PluginState $state, array $record) => $state === PluginState::Enabled && ! $record['set_up'] ? __('Not set up') : $state->getLabel())
+                    ->color(fn (PluginState $state, array $record) => $state === PluginState::Enabled && ! $record['set_up'] ? 'danger' : $state->getColor())
+                    ->tooltip(fn (PluginState $state, array $record) => $state === PluginState::Enabled && ! $record['set_up']
+                        ? __('On, but its details are not filled in yet, so clients see no button for it. Open its settings.') : null)
                     ->grow(false),
             ])
             ->paginated(false)

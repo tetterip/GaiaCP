@@ -73,6 +73,12 @@ Where each part of the app lives (enums, actions, invoices, reports, plugins, mo
   or a credit line not paid yet (`Invoice::settle()` and `RecordInvoicePayment::unpaid()` use it). Admin: Settings →
   Client credit, the client page's Credit menu / tab / summary box, "Pay with credit" on a notice; client area:
   `Client\Pages\Credit` (balance, Add funds, history) and "Pay with credit" on a notice
+- Paying a notice in the client area: `ViewPaymentNotice::payOnline()` shows the plugins' `clientPaymentNoticeActions()`
+  as they are when one is visible, under one "Pay online" `ActionGroup` when several are. `App\Actions\PaymentClaims`
+  = the client's "I've paid" (IRIS's window): `invoices.payment_claimed_at` / `payment_claim_method`, set once (guarded
+  update), logged `invoice.payment_claimed` (bell, `PaymentClaimMail` under Settings → Automation → Payment claim email),
+  never records anything; cleared by `Invoice::settle()` or the admin's Reject claim (`invoice.payment_claim_rejected`).
+  Settings → Payment methods shows "Not set up" for an enabled plugin that declares notice actions but gives none
 - `app/Reports/DailySummary.php` + `gaiacp:daily-summary` (`DailySummaryMail`, daily right after `gaiacp:send-reminders`):
   the admins' daily email, on/off under Settings → Automation (`gaiacp.automation.daily_summary`), to active admins with
   `users.system_emails` on (Admin users → Receive system emails, the switch for every admin-bound email): payment notices created since

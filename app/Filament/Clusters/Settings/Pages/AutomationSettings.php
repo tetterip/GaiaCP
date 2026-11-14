@@ -41,7 +41,7 @@ class AutomationSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
+        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.payment_claim_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
     }
 
     public function form(Schema $schema): Schema
@@ -134,6 +134,9 @@ class AutomationSettings extends SettingsFormPage
                         Toggle::make('automation.upgrade_request_email')
                             ->label('Upgrade request email')
                             ->helperText(__('When a client asks to move a service to another package in the client area, to the admins with Receive system emails on who open services.')),
+                        Toggle::make('automation.payment_claim_email')
+                            ->label('Payment claim email')
+                            ->helperText(__('When a client presses I\'ve paid on a payment notice (IRIS), to the admins with Receive system emails on who open billing.')),
                         Toggle::make('automation.new_order_email')
                             ->label('New order email')
                             ->helperText(__('When a client places an order in the client area, to the admins with Receive system emails on who open clients and orders.')),

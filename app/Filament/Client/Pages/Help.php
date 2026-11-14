@@ -97,6 +97,7 @@ class Help extends Page
             'pay_paypal' => $payOnline->contains('payWithPaypal'),
             'pay_bank' => $payOnline->intersect(['payWithAlphaBank', 'payWithEurobank', 'payWithPiraeusBank', 'payWithNexiXpay', 'payWithMastercard'])->isNotEmpty(),
             'pay_iris' => $payOnline->contains('payWithIris'),
+            'pay_online_menu' => $payOnline->count() > 1,
             'invoices' => IssueInvoice::enabled(),
             'credit' => ClientCredit::enabled(),
             'credit_auto' => ClientCredit::autoApply(),

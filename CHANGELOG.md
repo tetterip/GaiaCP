@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- A client area payment notice shows one **Pay online** button when several payment methods can take it (Stripe, the
+  banks, PayPal, IRIS…), with the methods in its menu; with only one it is that method's own button, as before.
+  Settings → Payment methods marks a method that is on but can't take payments yet as **Not set up** (its keys or
+  merchant details are missing), which is why its button doesn't show.
+- IRIS 1.1.0: the QR code window has an **I've paid** button. Nothing is recorded: the admins' bell rings, the ones
+  with Receive system emails get an email (Settings → Automation → Payment claim email), and the notice says the client
+  paid on that day until you record the payment (the method is already IRIS) or press **Reject claim** on it.
+- Plugin API: `App\Actions\PaymentClaims` (a client's "I've paid" on a notice); new event `invoice.payment_claimed`.
 - In the client area (cart, Sign up, accepting a quote) the **Read the Terms of Service** link sits under the "I accept
   the Terms of Service" checkbox instead of beside it, so neither wraps on a narrow card or a phone.
 - Settings → Plugins shows one select checkbox per type, without a second one alone above the list (once some are

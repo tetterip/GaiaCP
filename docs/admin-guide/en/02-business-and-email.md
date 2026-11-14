@@ -114,7 +114,15 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
   Fill in the payee, the IRIS number or alias your bank linked (VAT number, mobile or alias) and upload the fixed QR
   code your bank gave you. Unpaid notices in the client area get **Pay with IRIS**, which shows the QR code, the
   number, the amount and the notice number to write as the reason. IRIS has no connection for shops, so record each
-  payment by hand with the IRIS method when it reaches your account.
+  payment by hand with the IRIS method when it reaches your account. Once they have paid, the client can press
+  **I've paid** in that window: nothing is recorded, but your bell rings, the admins with Receive system emails get an
+  email (Settings → Automation → Payment claim email), and the notice shows **Client says paid** with the day. Check
+  your account, then **Record payment** (IRIS is already picked) or **Reject claim**, after which the client can say so
+  again. A claim does not hold off suspension.
+
+When more than one method can take a notice, the client sees one **Pay online** button with the methods in its menu;
+with only one, its own button. A method that is on but has no button yet (its keys or merchant details are missing)
+shows **Not set up** on Settings → Payment methods.
 
 Payments you record by hand can also be **Cash** or **Other**. Each client has a default payment method on their form.
 

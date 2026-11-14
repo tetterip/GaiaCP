@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Invoices\Schemas;
 
+use App\Actions\PaymentClaims;
 use App\Enums\InvoiceStatus;
 use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Filament\Resources\TaxInvoices\TaxInvoiceResource;
 use App\Invoices\NoticeLedger;
 use App\Models\Invoice;
+use App\Payments\PaymentMethods;
 use App\Providers\AppServiceProvider;
 use App\Support\ClientFields;
 use App\Support\Money;
@@ -62,6 +64,18 @@ class InvoiceInfolist
                             ->weight('bold')
                             ->color(fn (Invoice $record) => NoticeLedger::balanceCents($record) > 0 ? 'danger' : 'success')
                             ->hidden(fn (Invoice $record) => $record->status === InvoiceStatus::Cancelled),
+                        // The client's "I've paid" (App\Actions\PaymentClaims), until it is recorded or rejected
+                        TextEntry::make('payment_claimed_at')
+                            ->label('Client says paid')
+                            ->state(fn (Invoice $record) => __(':method, :date', [
+                                'method' => PaymentMethods::label($record->payment_claim_method),
+                                'date' => $record->payment_claimed_at?->format(AppServiceProvider::dateFormat().' H:i'),
+                            ]))
+                            ->badge()
+                            ->color('warning')
+                            ->helperText(__('Check that the money arrived, then record the payment, or reject the claim.'))
+                            ->visible(fn (Invoice $record) => PaymentClaims::waiting($record))
+                            ->columnSpan(2),
                         TextEntry::make('emailed_at')
                             ->label('Emailed')
                             ->dateTime(AppServiceProvider::dateFormat().' H:i')

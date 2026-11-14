@@ -134,7 +134,11 @@ Om met een kaart via onze bank te betalen, opent u een onbetaald betalingsberich
 <!-- endif -->
 
 <!-- if:pay_iris -->
-Om met IRIS te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met IRIS**. Het toont onze QR-code en ons IRIS-nummer met het bedrag: kies in de app van uw bank IRIS, scan de code of vul het nummer in, en zet het nummer van het verzoek als omschrijving. Het verzoek staat op betaald zodra wij de betaling op onze rekening zien.
+Om met IRIS te betalen, opent u een onbetaald betalingsverzoek en drukt u op **Betalen met IRIS**. Het toont onze QR-code en ons IRIS-nummer met het bedrag: kies in de app van uw bank IRIS, scan de code of vul het nummer in, en zet het nummer van het verzoek als omschrijving. Het verzoek staat op betaald zodra wij de betaling op onze rekening zien. Klik na het betalen in hetzelfde venster op **Ik heb betaald**, zodat we ernaar zoeken; het verzoek toont dan wanneer u het ons liet weten.
+<!-- endif -->
+
+<!-- if:pay_online_menu -->
+Als een verzoek op meer dan één manier betaald kan worden, heeft het één knop **Online betalen**: klik erop en kies in het menu hoe u betaalt.
 <!-- endif -->
 
 <!-- if:credit -->

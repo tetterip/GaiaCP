@@ -78,13 +78,20 @@ class PaymentMethods
     /**
      * How to pay: the instructions of every enabled payment module, for {$payment_instructions} in emails. For one
      * payment notice, a module with an optional `instructionsFor(Invoice $invoice): ?string` gives those instead
-     * (Bank transfer adds the notice number as the reference for the transfer).
+     * (Bank transfer adds the notice number as the reference for the transfer). When the client area offers several
+     * ways to pay a notice (one "Pay online" menu), the gateways' "press Pay by card" lines become one line about it.
      */
     public static function instructions(?Invoice $invoice = null): string
     {
+        $several = count(self::plugins()->clientPaymentNoticeActions()) > 1;
+        $online = __('Pay online in our client area: open the payment notice, press Pay online and choose how to pay.');
+
         return self::plugins()->paymentModules()
-            ->map(fn (PaymentModule $module) => trim((string) ($invoice !== null && method_exists($module, 'instructionsFor') ? $module->instructionsFor($invoice) : $module->instructions())))
+            ->map(fn (PaymentModule $module) => $several && $module instanceof Plugin && $module->paysOnline()
+                ? $online
+                : trim((string) ($invoice !== null && method_exists($module, 'instructionsFor') ? $module->instructionsFor($invoice) : $module->instructions())))
             ->filter()
+            ->unique()
             ->implode("\n\n");
     }
 

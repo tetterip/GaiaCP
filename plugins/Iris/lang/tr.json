@@ -18,5 +18,10 @@
     "The QR code is under Pay with IRIS on the payment notice in our client area.": "QR kod, müşteri alanımızdaki ödeme bildiriminde IRIS ile öde altında.",
     "The VAT number, mobile number or alias your bank linked to IRIS.": "Bankanızın IRIS'e bağladığı vergi numarası, cep telefonu veya takma ad.",
     "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Bankanızın IRIS ödemeleri için verdiği sabit QR kod (PNG, JPG veya WebP, en fazla 1 MB).",
-    "The name clients see in their bank's app. Empty: your company name.": "Müşterilerin banka uygulamasında gördüğü ad. Boş: şirketinizin adı."
+    "The name clients see in their bank's app. Empty: your company name.": "Müşterilerin banka uygulamasında gördüğü ad. Boş: şirketinizin adı.",
+    "I've paid": "Ödedim",
+    "Once you have paid, press I've paid so we know to look for it.": "Ödedikten sonra, aramamız gerektiğini bilmemiz için Ödedim düğmesine basın.",
+    "Thank you, we will check for your payment": "Teşekkürler, ödemenizi kontrol edeceğiz",
+    "The notice shows as paid once we see the payment in our account.": "Ödemeyi hesabımızda gördüğümüzde bildirim ödendi olarak görünecek.",
+    "You told us on :date that you paid. We are checking for it.": ":date tarihinde ödediğinizi bildirdiniz. Kontrol ediyoruz."
 }

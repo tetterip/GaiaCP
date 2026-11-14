@@ -18,5 +18,10 @@
     "The QR code is under Pay with IRIS on the payment notice in our client area.": "Il QR code si trova in Paga con IRIS, sull'avviso di pagamento nella nostra area clienti.",
     "The VAT number, mobile number or alias your bank linked to IRIS.": "La partita IVA, il cellulare o l'alias che la tua banca ha collegato a IRIS.",
     "The fixed QR code your bank gave you for IRIS payments (PNG, JPG or WebP, up to 1 MB).": "Il QR code fisso che la tua banca ti ha dato per i pagamenti IRIS (PNG, JPG o WebP, fino a 1 MB).",
-    "The name clients see in their bank's app. Empty: your company name.": "Il nome che i clienti vedono nell'app della loro banca. Vuoto: il nome della tua azienda."
+    "The name clients see in their bank's app. Empty: your company name.": "Il nome che i clienti vedono nell'app della loro banca. Vuoto: il nome della tua azienda.",
+    "I've paid": "Ho pagato",
+    "Once you have paid, press I've paid so we know to look for it.": "Dopo aver pagato, premi Ho pagato così sappiamo di doverlo cercare.",
+    "Thank you, we will check for your payment": "Grazie, verificheremo il tuo pagamento",
+    "The notice shows as paid once we see the payment in our account.": "L'avviso risulterà pagato non appena vedremo il pagamento sul nostro conto.",
+    "You told us on :date that you paid. We are checking for it.": "Ci hai comunicato il :date di aver pagato. Stiamo verificando."
 }
