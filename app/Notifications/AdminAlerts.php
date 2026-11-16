@@ -64,6 +64,7 @@ class AdminAlerts
         'service.upgrade_requested' => AdminArea::Services,
         'service.addon_ordered' => AdminArea::Services,
         'domain.expiring' => AdminArea::Services,
+        'domain.epp_code_requested' => AdminArea::Services,
         'site.problems' => AdminArea::Services,
         'service.usage_high' => AdminArea::Services,
         'tld.selling_at_loss' => AdminArea::ServiceSettings,
@@ -211,6 +212,12 @@ class AdminAlerts
                 __(':client added :addon', ['client' => $client, 'addon' => $log->service?->label]),
                 'heroicon-o-puzzle-piece', 'info',
                 ServiceResource::getUrl('edit', ['record' => $log->properties['parent_service_id'] ?? $log->service_id], panel: 'admin'),
+            ],
+            'domain.epp_code_requested' => [
+                __('EPP code request: :name', ['name' => $log->service?->domain]),
+                __(':client asked for it. Read it at the registrar, then press Send EPP code.', ['client' => $client]),
+                'heroicon-o-key', 'warning',
+                ServiceResource::getUrl('edit', ['record' => $log->service_id], panel: 'admin'),
             ],
             'domain.expiring' => [
                 __('Domain :name expires on :date', [

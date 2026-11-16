@@ -145,6 +145,10 @@ return [
         'subject' => '{$domain} alan adının süresi doldu',
         'body' => "**{\$domain}** alan adının süresi {\$expiry_date} tarihinde doldu. Lütfen en kısa sürede yenileyin, aksi halde herkes tarafından kaydedilebilir hale gelebilir.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => '{$domain} için EPP kodu',
+        'body' => "**{\$domain}** alan adının EPP kodu (transfer kodu):\n\n**{\$epp_code}**\n\nBu kodu yalnızca alan adını taşıdığınız sağlayıcıya verin. Bu kodu siz istemediyseniz lütfen bizimle iletişime geçin.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} paket sınırına yaklaşıyor',

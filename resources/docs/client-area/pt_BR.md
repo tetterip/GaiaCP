@@ -97,7 +97,7 @@ Em um domínio ativo registrado conosco, você pode:
 - **Alterar os nameservers** (de 2 a 4). A alteração vai para o registro na hora; a internet a vê em algumas horas.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Obter o código EPP** de que você precisa para mover o domínio para outro provedor. Para alguns domínios, ele aparece na tela; para outros, é enviado ao endereço de e-mail do titular do domínio.
+- **Obter o código EPP** de que você precisa para mover o domínio para outro provedor. Para alguns domínios, ele aparece na tela; para outros, é enviado ao endereço de e-mail do titular do domínio. Para outros, você o solicita e nós o enviamos por e-mail.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Desativar ou ativar a renovação automática.** Com ela desativada, você não recebe mais avisos de pagamento para o domínio e ele termina no vencimento.

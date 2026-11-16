@@ -29,7 +29,7 @@ class DomainSelfService
     /** @return list<Action> */
     public static function actions(): array
     {
-        return [self::nameservers(), self::eppCode(), self::autoRenew(), ...DomainRegistrarActions::make(forClient: true)];
+        return [self::nameservers(), self::eppCode(), self::requestEppCode(), self::autoRenew(), ...DomainRegistrarActions::make(forClient: true)];
     }
 
     /** Active and at a registrar here: domains registered elsewhere (tracked only) have nothing to call. */
@@ -123,6 +123,27 @@ class DomainSelfService
                 }
 
                 Notification::make()->title(__('EPP code of :domain', ['domain' => $record->domain]))->body($code)->success()->persistent()->send();
+            });
+    }
+
+    /** At a registrar whose API gives no EPP code (Namecheap): the admins are asked, and email it with Send EPP code. */
+    private static function requestEppCode(): Action
+    {
+        return Action::make('requestEppCode')
+            ->label('Request EPP code')
+            ->icon(Heroicon::OutlinedKey)
+            ->color('gray')
+            ->visible(fn (Service $record) => config('gaiacp.client_area.domain_epp') && self::atRegistrar($record) && ! app(DomainLifecycle::class)->givesEppCode($record))
+            ->requiresConfirmation()
+            ->modalIcon(Heroicon::OutlinedKey)
+            ->modalHeading(__('Request EPP code'))
+            ->modalDescription(__('The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.'))
+            ->modalSubmitActionLabel(__('Request the code'))
+            ->action(function (Service $record) {
+                app(DomainLifecycle::class)->requestEppCode($record);
+                Notification::make()->title(__('EPP code requested'))
+                    ->body(__('We will email you the EPP code of :domain.', ['domain' => $record->domain]))
+                    ->success()->persistent()->send();
             });
     }
 

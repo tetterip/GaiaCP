@@ -47,6 +47,7 @@ enum MailTemplate: string
     case DomainTransferCompleted = 'domain_transfer_completed';
     case DomainRenewalNotice = 'domain_renewal_notice';
     case DomainExpired = 'domain_expired';
+    case DomainEppCode = 'domain_epp_code';
     case DomainTransferOffer = 'domain_transfer_offer';
     case DomainWinBack = 'domain_winback';
 
@@ -94,6 +95,7 @@ enum MailTemplate: string
             self::DomainTransferCompleted => 'Domain Transfer Completed',
             self::DomainRenewalNotice => 'Upcoming Domain Renewal Notice',
             self::DomainExpired => 'Expired Domain Notice',
+            self::DomainEppCode => 'Domain EPP Code',
             self::DomainTransferOffer => 'Domain Transfer Offer',
             self::DomainWinBack => 'Expired Domain Win-back',
             self::SslValidation => 'SSL Certificate Validation',
@@ -151,6 +153,7 @@ enum MailTemplate: string
             self::DomainTransferCompleted => 'When the daily domain sync finds that a transfer in has completed.',
             self::DomainRenewalNotice => 'Before the due date of domains ("days before the due date", Settings → Automation). One email per client lists every domain due.',
             self::HostingOffer, self::DomainTransferOffer, self::DomainWinBack => 'When you press Email on a row of Reports → Sales opportunities, after reading and editing the text there.',
+            self::DomainEppCode => 'When you press Send EPP code in a domain\'s Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).',
             self::DomainExpired => 'Once, the day after a domain\'s expiry date at the registrar has passed without a renewal.',
             self::SslValidation => 'When an SSL certificate is ordered, reissued or renewed, and when its validation method changes: what the client does to prove the domain is theirs.',
             self::SslIssued => 'When an SSL certificate is issued (the hourly check finds it ready).',
@@ -172,7 +175,7 @@ enum MailTemplate: string
      */
     public function holdsSecrets(): bool
     {
-        return in_array($this, [self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::HostingWelcome, self::VpsWelcome], true);
+        return in_array($this, [self::ClientAreaInvite, self::ClientAreaLogin, self::EmailVerification, self::HostingWelcome, self::VpsWelcome, self::DomainEppCode], true);
     }
 
     /** Whether it is sent until the admin switches it off: the reminders GaiaCP sends on its own are on. */
@@ -184,6 +187,7 @@ enum MailTemplate: string
             self::InvoiceIssued, // only sent while invoices are on
             self::CancellationApproved, self::CancellationRejected, self::UpgradeApproved, self::UpgradeRejected, // the client asked and waits for the answer
             self::PriceChange, self::UsageWarning,
+            self::DomainEppCode, // sent only when an admin presses Send EPP code
             self::SslValidation, self::SslIssued, // the client has to act, or gets what they paid for
             self::TicketOpened, self::TicketReply, self::TicketClosed,
         ], true);
@@ -319,6 +323,7 @@ enum MailTemplate: string
             ],
             self::DomainRegistration, self::DomainRenewal, self::DomainTransferCompleted => $domain,
             self::DomainExpired => ['domain' => 'Domain name', 'expiry_date' => 'Expiry date at the registrar'],
+            self::DomainEppCode => ['domain' => 'Domain name', 'epp_code' => 'The EPP (transfer) code you entered'],
             self::HostingOffer => ['domain' => 'Domain name'],
             self::UpgradeApproved => $service + [
                 'new_product' => 'The package it moved to',
@@ -369,7 +374,7 @@ enum MailTemplate: string
             'validation_method' => 'DNS record (CNAME)', 'validation' => "Name: `_3f1c2a.example.gr`<br>\nType: `CNAME`<br>\nValue: `9a8b7c.6d5e4f.sectigo.com`",
             'quote_number' => 'QT-2026-0042', 'quote_valid_until' => now()->addDays(30)->format(AppServiceProvider::dateFormat()), 'quote_intro' => 'As we discussed, hosting for your shop with its domain.', 'quote_total' => '€95.00', 'quote_url' => 'https://clients.example.gr/quote/…',
             'tax_invoice_number' => 'INV-2026-0042', 'tax_invoice_date' => now()->format(AppServiceProvider::dateFormat()),
-            'invoice_subtotal' => '€95.00', 'invoice_tax' => '', 'invoice_total' => '€95.00', 'days_overdue' => '7',
+            'invoice_subtotal' => '€95.00', 'invoice_tax' => '', 'invoice_total' => '€95.00', 'days_overdue' => '7', 'epp_code' => 'aB3#kL9$mQ2x',
         ];
     }
 
@@ -429,6 +434,7 @@ enum MailTemplate: string
             self::DomainTransferCompleted => 'Domain transfer completed: {$domain}',
             self::DomainRenewalNotice => 'Upcoming renewal of your domains',
             self::DomainExpired => 'Domain expired: {$domain}',
+            self::DomainEppCode => 'EPP code of {$domain}',
             self::HostingOffer => 'Hosting for {$domain}',
             self::UsageWarning => '{$domain} is close to its package limit',
             self::UpgradeApproved => 'Package changed: {$service}',
@@ -518,6 +524,8 @@ enum MailTemplate: string
             self::DomainWinBack => 'The domain **{$domain}** expired on {$expiry_date} and has not been renewed. You can still renew it for {$renewal_price}. '
                 ."After a few more days it becomes much more expensive to recover, and later anyone can register it.\n\n"
                 .'If you would like to keep it, reply to this email and we will renew it straight away.',
+            self::DomainEppCode => "The EPP code (transfer code) of **{\$domain}** is:\n\n**{\$epp_code}**\n\n"
+                .'Give it only to the provider you are moving the domain to. If you did not ask for it, please contact us.',
             self::DomainExpired => "The domain **{\$domain}** expired on {\$expiry_date}. Renew it soon, or it may become available for anyone to register.\n\n{\$payment_instructions}",
             self::SslValidation => "To issue the SSL certificate for **{\$domain}**, the certificate authority needs proof that the domain is yours. Method: {\$validation_method}.\n\n{\$validation}\n\n"
                 .'You can see this, pick another method or download the certificate once it is issued on the service\'s page in the client area.',

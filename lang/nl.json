@@ -4164,5 +4164,19 @@
     "Also change the :panel login password (username: :login)": "Ook het :panel-wachtwoord wijzigen (gebruikersnaam: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "De klant logt in op :panel met de gebruikersnaam :login, niet :username. Die is dezelfde voor al zijn accounts op deze server.",
     "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "U logt in op :panel met de gebruikersnaam :login, niet :username. Die is dezelfde voor al uw diensten daar.",
-    "Client :client has this email too. Only one of them can log in to the client area with it.": "Klant :client heeft dit e-mailadres ook. Maar één van beiden kan ermee inloggen op de klantomgeving."
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Klant :client heeft dit e-mailadres ook. Maar één van beiden kan ermee inloggen op de klantomgeving.",
+    ":client asked for it. Read it at the registrar, then press Send EPP code.": ":client heeft erom gevraagd. Lees hem uit bij de registrar en klik dan op EPP-code versturen.",
+    ":client asked for the EPP code of :domain": ":client heeft de EPP-code van :domain aangevraagd",
+    ":registrar gives no EPP code through its API. Read it in your :registrar account, then press Send EPP code in the domain's Registrar menu: the client gets it by email.": ":registrar geeft geen EPP-code via zijn API. Lees hem uit in uw :registrar-account en klik dan op EPP-code versturen in het Registrar-menu van het domein: de klant ontvangt hem per e-mail.",
+    "Domain EPP Code": "EPP-code domein",
+    "EPP code emailed to :email": "EPP-code verstuurd naar :email",
+    "EPP code request: :name": "Aanvraag EPP-code: :name",
+    "Emails the code to :email with the Domain EPP Code template. The code is not stored or logged.": "Verstuurt de code naar :email met de sjabloon EPP-code domein. De code wordt niet opgeslagen of gelogd.",
+    "Open the domain": "Domein openen",
+    "Request EPP code": "EPP-code aanvragen",
+    "Send EPP code": "EPP-code versturen",
+    "The EPP (transfer) code you entered": "De EPP-code (verhuiscode) die u invoerde",
+    "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "Met de EPP-code kan een andere provider dit domein overnemen. We e-mailen hem naar u; geef hem alleen aan de provider waarnaar u het domein verhuist.",
+    "The email could not be sent. See Settings → Logs → Email log.": "De e-mail kon niet worden verstuurd. Zie Instellingen → Logs → E-maillog.",
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Wanneer u op EPP-code versturen klikt in het Registrar-menu van een domein, bijv. nadat een klant de code vroeg van een domein bij een registrar waarvan de API er geen geeft (Namecheap)."
 }

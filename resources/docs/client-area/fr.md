@@ -97,7 +97,7 @@ Sur un domaine actif enregistré chez nous, vous pouvez :
 - **Modifier les serveurs de noms** (2 à 4). La modification part immédiatement au registre ; internet la voit en quelques heures.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Obtenir le code EPP** nécessaire pour transférer le domaine vers un autre fournisseur. Pour certains domaines, il s'affiche à l'écran ; pour d'autres, il est envoyé à l'adresse email du titulaire du domaine.
+- **Obtenir le code EPP** nécessaire pour transférer le domaine vers un autre fournisseur. Pour certains domaines, il s'affiche à l'écran ; pour d'autres, il est envoyé à l'adresse email du titulaire du domaine. Pour d'autres, vous le demandez et nous vous l'envoyons par email.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Activer ou désactiver le renouvellement auto.** Désactivé, vous ne recevez plus d'avis de paiement pour le domaine et il prend fin à son échéance.

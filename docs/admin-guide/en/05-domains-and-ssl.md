@@ -86,7 +86,8 @@ when it falls before the due date. On a domain's page:
   renewed or synced. Once active, Register reads as "At the registrar".
 - The **Registrar** menu registers or transfers a pending domain, **syncs** the expiry and nameservers, **changes
   nameservers** and gets the **EPP code** (Enom and NameSilo email it to the domain owner instead; Namecheap's API gives none, so get
-  it in your Namecheap account). Where the registrar offers
+  it in your Namecheap account). **Send EPP code** emails the client a code you read elsewhere, with the Domain EPP
+  Code template; the code is not stored or logged. Where the registrar offers
   them it also edits the **contact details**, **private nameservers** (ns1.the-domain) and the **registrar lock**.
 - **Auto renew** is in the Automation section.
 
@@ -105,7 +106,8 @@ domain was renewed elsewhere, change the due date yourself. The admins' daily su
 something or failed.
 
 Clients can change nameservers, get the EPP code and turn auto renew on or off from their domain page, each behind its
-own switch under Settings → Client area. They also get a **Domain search** that checks names with the registrar (or
+own switch under Settings → Client area. For a domain at Namecheap, whose API gives no code, the client presses **Request EPP
+code** instead: the admins get the bell and an email, and one of them sends it with **Send EPP code**. They also get a **Domain search** that checks names with the registrar (or
 public RDAP / DNS records) before they order.
 
 ## SSL certificates

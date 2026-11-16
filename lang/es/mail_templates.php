@@ -145,6 +145,10 @@ return [
         'subject' => 'El dominio {$domain} ha vencido',
         'body' => "El dominio **{\$domain}** venció el {\$expiry_date}. Renuévelo lo antes posible; de lo contrario, cualquiera podría registrarlo.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'Código EPP de {$domain}',
+        'body' => "El código EPP (código de transferencia) de **{\$domain}** es:\n\n**{\$epp_code}**\n\nDéselo solo al proveedor al que traslada el dominio. Si no lo ha solicitado, póngase en contacto con nosotros.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} se acerca al límite de su paquete',

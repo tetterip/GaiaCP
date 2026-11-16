@@ -97,7 +97,7 @@ Bei einer aktiven, über uns registrierten Domain können Sie:
 - **Die Nameserver ändern** (2 bis 4). Die Änderung geht sofort an die Registry; im Internet ist sie innerhalb weniger Stunden sichtbar.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Den EPP-Code abrufen**, den Sie brauchen, um die Domain zu einem anderen Anbieter umzuziehen. Bei manchen Domains wird er am Bildschirm angezeigt, bei anderen an die E-Mail-Adresse des Domaininhabers gesendet.
+- **Den EPP-Code abrufen**, den Sie brauchen, um die Domain zu einem anderen Anbieter umzuziehen. Bei manchen Domains wird er am Bildschirm angezeigt, bei anderen an die E-Mail-Adresse des Domaininhabers gesendet. Bei anderen fordern Sie ihn an, und wir senden ihn Ihnen per E-Mail.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Die automatische Verlängerung aus- oder einschalten.** Ist sie aus, erhalten Sie keine Zahlungsaufforderungen mehr für die Domain, und sie endet an ihrem Fälligkeitsdatum.

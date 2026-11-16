@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Request EPP code: for a domain at a registrar whose API gives no EPP code (Namecheap), the client area offers "Request
+  EPP code"; the admins get the bell and an email. A domain's Registrar menu has **Send EPP code**, which emails the
+  client a code read elsewhere with the new Domain EPP Code template (not stored or logged).
+- Openprovider 1.0.1: the sandbox's current address (`https://api.sandbox.openprovider.nl`), the API's `/v1` path, and a
+  note to turn on API access for the contact person.
 - Namecheap 1.0.1: the client area hides "Get EPP code" for Namecheap domains (its API gives none), instead of a button
   that always failed.
 - Plugin API: a registrar may implement `App\Provisioning\GivesNoEppCode` (optional) when its API cannot give the EPP code.

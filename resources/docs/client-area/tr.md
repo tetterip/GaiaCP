@@ -97,7 +97,7 @@ Bizim üzerimizden kayıtlı etkin bir alan adında şunları yapabilirsiniz:
 - **Ad sunucularını değiştirin** (2 ila 4). Değişiklik hemen kayıt otoritesine gider; internet bunu birkaç saat içinde görür.
 <!-- endif -->
 <!-- if:domain_epp -->
-- Alan adını başka bir sağlayıcıya taşımak için gereken **EPP kodunu alın**. Bazı alan adlarında ekranda gösterilir; diğerlerinde alan adı sahibinin e-posta adresine gönderilir.
+- Alan adını başka bir sağlayıcıya taşımak için gereken **EPP kodunu alın**. Bazı alan adlarında ekranda gösterilir; diğerlerinde alan adı sahibinin e-posta adresine gönderilir. Diğerlerinde kodu istersiniz, biz de size e-postayla göndeririz.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Otomatik yenilemeyi kapatın veya açın.** Kapalıyken alan adı için artık ödeme bildirimi almazsınız ve vade tarihinde sona erer.

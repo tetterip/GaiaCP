@@ -97,7 +97,7 @@ Su un dominio attivo registrato tramite noi può:
 - **Modificare i nameserver** (da 2 a 4). La modifica arriva subito al registro; internet la vede entro poche ore.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Ottenere il codice EPP** necessario per trasferire il dominio a un altro provider. Per alcuni domini viene mostrato a schermo; per altri viene inviato all'indirizzo email del titolare del dominio.
+- **Ottenere il codice EPP** necessario per trasferire il dominio a un altro provider. Per alcuni domini viene mostrato a schermo; per altri viene inviato all'indirizzo email del titolare del dominio. Per altri lo richiedi e te lo inviamo noi via email.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Disattivare o attivare il rinnovo automatico.** Se disattivato, non riceverà più avvisi di pagamento per il dominio, che terminerà alla scadenza.

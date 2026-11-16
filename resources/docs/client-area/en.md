@@ -97,7 +97,7 @@ On an active domain registered through us you can:
 - **Change the nameservers** (2 to 4). The change goes to the registry at once; the internet sees it within a few hours.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Get the EPP code** you need to move the domain to another provider. For some domains it is shown on screen; for others it is emailed to the domain owner's email address.
+- **Get the EPP code** you need to move the domain to another provider. For some domains it is shown on screen; for others it is emailed to the domain owner's email address. For others you request it, and we email it to you.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Turn auto renew off or on.** With it off, you get no more payment notices for the domain and it ends on its due date.

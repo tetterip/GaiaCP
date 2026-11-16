@@ -2,14 +2,17 @@
 
 namespace App\Actions;
 
+use App\Enums\AdminArea;
 use App\Enums\DomainRegistrationType;
 use App\Enums\MailTemplate;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Mail\ClientMailer;
+use App\Mail\EppCodeRequestMail;
 use App\Models\ActivityLog;
 use App\Models\Registrar;
 use App\Models\Service;
+use App\Models\User;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
@@ -20,8 +23,13 @@ use App\Provisioning\ManagesRegistrarLock;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarFactory;
 use App\Support\DomainName;
+use App\Support\Locales;
 use Carbon\CarbonImmutable;
 use Closure;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\HtmlString;
+use Throwable;
 
 /**
  * Registrar actions on domain services: the only code that calls a registrar.
@@ -203,6 +211,50 @@ class DomainLifecycle
 
         $service->registration()->update(['nameservers' => $nameservers]);
         ActivityLog::record('domain.nameservers_changed', "Nameservers of {$service->domain}: ".implode(', ', $nameservers), $service);
+    }
+
+    /**
+     * A client asks for the EPP code of a domain at a registrar whose API gives none (GivesNoEppCode): the admins who
+     * may open Services get the bell and, with Receive system emails on, an email; one of them then reads the code at
+     * the registrar and sends it with sendEppCode().
+     */
+    public function requestEppCode(Service $service): void
+    {
+        $this->assertDomain($service);
+        $registrar = $service->registration()->registrarAccount()->name ?? '';
+
+        ActivityLog::record('domain.epp_code_requested', "EPP code of {$service->domain} requested by the client; {$registrar} gives none through its API", $service);
+
+        $admins = User::query()->admins()->where('active', true)->where('system_emails', true)->get()
+            ->filter(fn (User $admin) => $admin->canUseArea(AdminArea::Services));
+
+        foreach ($admins as $admin) {
+            try {
+                Mail::to($admin->email)->locale(Locales::normalize($admin->locale))->send(new EppCodeRequestMail($service));
+            } catch (Throwable $e) {
+                Log::error('EPP code request email failed', ['user_id' => $admin->id, 'error' => $e->getMessage()]);
+                ActivityLog::record('email.failed', "EPP code request email to {$admin->email} failed: {$e->getMessage()}", $service);
+            }
+        }
+    }
+
+    /**
+     * Emails the client the EPP code an admin read at the registrar (Domain EPP Code template, sent even while that
+     * template is off, since the admin asked for it). Logged without the code. False when the email could not go.
+     */
+    public function sendEppCode(Service $service, string $code): bool
+    {
+        $this->assertDomain($service);
+        // Each character as an entity, so Markdown in the template never reads a * or _ of the code.
+        $value = new HtmlString(implode('', array_map(fn (string $c) => '&#'.mb_ord($c).';', mb_str_split(trim($code)))));
+
+        $sent = $this->mailer->send(MailTemplate::DomainEppCode, $service->client, fn () => ['domain' => (string) $service->domain, 'epp_code' => $value], $service, evenIfOff: true);
+
+        if ($sent) {
+            ActivityLog::record('domain.epp_code_sent', "EPP code of {$service->domain} emailed to the client", $service);
+        }
+
+        return $sent;
     }
 
     /**

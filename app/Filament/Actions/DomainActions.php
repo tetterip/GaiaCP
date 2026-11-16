@@ -14,6 +14,7 @@ use App\Provisioning\ProvisioningException;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 
@@ -30,6 +31,7 @@ class DomainActions
             self::sync(),
             self::nameservers(),
             self::eppCode(),
+            self::sendEppCode(),
             ...DomainRegistrarActions::make(),
         ])
             ->label('Registrar')
@@ -105,6 +107,34 @@ class DomainActions
                 }
 
                 Notification::make()->title(__('EPP code of :domain', ['domain' => $record->domain]))->body($code)->success()->persistent()->send();
+            });
+    }
+
+    /** Emails the client an EPP code read elsewhere (a registrar whose API gives none, or the client asked by phone). */
+    private static function sendEppCode(): Action
+    {
+        return Action::make('sendEppCode')
+            ->label('Send EPP code')
+            ->icon(Heroicon::OutlinedEnvelope)
+            ->visible(fn (Service $record) => self::isDomain($record) && in_array($record->status, ServiceStatus::billable(), true)
+                && $record->registration()->registration_type !== DomainRegistrationType::External && $record->client?->email)
+            ->modalDescription(fn (Service $record) => __('Emails the code to :email with the Domain EPP Code template. The code is not stored or logged.', ['email' => $record->client->email]))
+            ->schema([
+                TextInput::make('epp_code')
+                    ->label('EPP code')
+                    ->required()
+                    ->maxLength(255)
+                    ->autocomplete('off'),
+            ])
+            ->modalSubmitActionLabel(__('Send'))
+            ->action(function (Service $record, array $data) {
+                if (! app(DomainLifecycle::class)->sendEppCode($record, $data['epp_code'])) {
+                    Notification::make()->title(__('Failed'))->body(__('The email could not be sent. See Settings → Logs → Email log.'))->danger()->persistent()->send();
+
+                    return;
+                }
+
+                Notification::make()->title(__('EPP code emailed to :email', ['email' => $record->client->email]))->success()->send();
             });
     }
 

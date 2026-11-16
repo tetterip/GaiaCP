@@ -4164,5 +4164,19 @@
     "Also change the :panel login password (username: :login)": ":panel giriş şifresini de değiştir (kullanıcı adı: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Müşteri :panel'e :username ile değil, :login kullanıcı adıyla girer. Bu sunucudaki tüm hesapları için aynıdır.",
     "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": ":panel'e :username ile değil, :login kullanıcı adıyla girersiniz. Oradaki tüm hizmetleriniz için aynıdır.",
-    "Client :client has this email too. Only one of them can log in to the client area with it.": ":client müşterisi de bu e-postaya sahip. Müşteri alanına bununla yalnızca biri girebilir."
+    "Client :client has this email too. Only one of them can log in to the client area with it.": ":client müşterisi de bu e-postaya sahip. Müşteri alanına bununla yalnızca biri girebilir.",
+    ":client asked for it. Read it at the registrar, then press Send EPP code.": ":client istedi. Kayıt şirketinden okuyun, ardından EPP kodunu gönder'e basın.",
+    ":client asked for the EPP code of :domain": ":client, :domain için EPP kodunu istedi",
+    ":registrar gives no EPP code through its API. Read it in your :registrar account, then press Send EPP code in the domain's Registrar menu: the client gets it by email.": ":registrar API üzerinden EPP kodu vermiyor. :registrar hesabınızdan okuyun, ardından alan adının Kayıt şirketi menüsünde EPP kodunu gönder'e basın: müşteri kodu e-postayla alır.",
+    "Domain EPP Code": "Alan adı EPP kodu",
+    "EPP code emailed to :email": "EPP kodu :email adresine gönderildi",
+    "EPP code request: :name": "EPP kodu isteği: :name",
+    "Emails the code to :email with the Domain EPP Code template. The code is not stored or logged.": "Kodu Alan adı EPP kodu şablonuyla :email adresine gönderir. Kod saklanmaz ve kaydedilmez.",
+    "Open the domain": "Alan adını aç",
+    "Request EPP code": "EPP kodu iste",
+    "Send EPP code": "EPP kodunu gönder",
+    "The EPP (transfer) code you entered": "Girdiğiniz EPP (transfer) kodu",
+    "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "EPP kodu başka bir sağlayıcının bu alan adını devralmasını sağlar. Size e-postayla göndereceğiz; yalnızca alan adını taşıdığınız sağlayıcıya verin.",
+    "The email could not be sent. See Settings → Logs → Email log.": "E-posta gönderilemedi. Ayarlar → Kayıtlar → E-posta kaydı'na bakın.",
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Bir alan adının Kayıt şirketi menüsünde EPP kodunu gönder'e bastığınızda, ör. bir müşteri API'si kod vermeyen bir kayıt şirketindeki (Namecheap) bir alan adının kodunu istedikten sonra."
 }

@@ -97,7 +97,7 @@ Bij een actief domein dat via ons is geregistreerd, kunt u:
 - **De nameservers wijzigen** (2 tot 4). De wijziging gaat meteen naar het register; het internet ziet haar binnen enkele uren.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **De EPP-code opvragen** die u nodig hebt om het domein naar een andere provider te verhuizen. Bij sommige domeinen wordt hij op het scherm getoond; bij andere wordt hij naar het e-mailadres van de domeineigenaar gemaild.
+- **De EPP-code opvragen** die u nodig hebt om het domein naar een andere provider te verhuizen. Bij sommige domeinen wordt hij op het scherm getoond; bij andere wordt hij naar het e-mailadres van de domeineigenaar gemaild. Bij andere vraagt u hem aan en e-mailen wij hem naar u.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Automatisch verlengen uit- of aanzetten.** Staat het uit, dan ontvangt u geen betalingsverzoeken meer voor het domein en eindigt het op de vervaldatum.

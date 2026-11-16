@@ -97,7 +97,7 @@ Przy aktywnej domenie zarejestrowanej przez nas można:
 - **Zmienić serwery nazw** (od 2 do 4). Zmiana trafia do rejestru od razu; internet widzi ją w ciągu kilku godzin.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Pobrać kod EPP** potrzebny do przeniesienia domeny do innego dostawcy. Dla niektórych domen jest pokazywany na ekranie; dla innych wysyłany na adres e-mail właściciela domeny.
+- **Pobrać kod EPP** potrzebny do przeniesienia domeny do innego dostawcy. Dla niektórych domen jest pokazywany na ekranie; dla innych wysyłany na adres e-mail właściciela domeny. Dla jeszcze innych prosisz o niego, a my wysyłamy go e-mailem.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Wyłączyć lub włączyć automatyczne odnawianie.** Gdy jest wyłączone, nie przychodzą już wezwania do zapłaty za domenę, a domena kończy się w terminie płatności.
