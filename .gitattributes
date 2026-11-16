@@ -13,15 +13,11 @@
 /phpstan.neon export-ignore
 /phpstan-baseline.neon export-ignore
 /.editorconfig export-ignore
-/.npmrc export-ignore
-/package.json export-ignore
-/vite.config.js export-ignore
 /CLAUDE.md export-ignore
 /.claude export-ignore
 /docs/architecture export-ignore
 /bin/build-release.sh export-ignore
 /bin/deploy.sh export-ignore
-.styleci.yml export-ignore
 /docs/screenshots export-ignore
 /bin/release-key export-ignore
 /Dockerfile export-ignore

@@ -89,12 +89,6 @@ class Ticket extends Model
         return $this->client?->name ?? ($this->name ?: (string) $this->email);
     }
 
-    /** Where its emails go: the client's address, else the one it was emailed from. */
-    public function requesterEmail(): ?string
-    {
-        return $this->client?->email ?: $this->email;
-    }
-
     /** The thread id its emails carry (Message-ID, References), so an emailed answer finds the ticket again. */
     public function emailThreadId(): string
     {
