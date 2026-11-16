@@ -9,6 +9,7 @@ use App\Filament\Client\Resources\Domains\Pages\ViewDomain;
 use App\Filament\Clusters\Settings\Pages\ClientAreaSettings;
 use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\Registrar;
 use App\Models\Service;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -170,5 +171,15 @@ class ClientDomainSelfServiceTest extends TestCase
             ->assertActionHidden('changeNameservers')
             ->assertActionHidden('getEppCode')
             ->assertActionHidden('toggleAutoRenew');
+    }
+
+    public function test_no_epp_code_button_for_a_registrar_whose_api_gives_none(): void
+    {
+        $namecheap = Registrar::factory()->create(['name' => 'Namecheap', 'module' => 'namecheap', 'credentials' => ['username' => 'reseller', 'api_key' => 'secret']]);
+        $domain = Service::factory()->domain()->for($this->client)->create(['domain' => 'maria.com']);
+        $domain->domainDetails()->create(['registration_type' => DomainRegistrationType::Register, 'registrar_id' => $namecheap->id]);
+
+        $this->page($domain)->assertActionHidden('getEppCode')->assertActionVisible('changeNameservers');
+        $this->page()->assertActionVisible('getEppCode');
     }
 }

@@ -84,6 +84,7 @@ use App\Provisioning\DescribesMachine;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
+use App\Provisioning\GivesNoEppCode;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\InstallsCertificates;
 use App\Provisioning\LimitsUsernameLength;
@@ -160,6 +161,7 @@ final class PluginApi
         ListsTldPrices::class,
         ChecksAvailability::class,
         EmailsEppCode::class,
+        GivesNoEppCode::class,
         ManagesDomainContacts::class,
         ManagesChildNameservers::class,
         ManagesRegistrarLock::class,

@@ -52,7 +52,7 @@ can be added.
 
 - `App\Provisioning\RegistrarModule`, `App\Provisioning\DomainRegistrar` and `App\Provisioning\ManualRegistrar`.
 - `App\Provisioning\DomainContact`, `App\Provisioning\TldPrice`.
-- Optional: `App\Provisioning\ListsTldPrices`, `App\Provisioning\ChecksAvailability`, `App\Provisioning\EmailsEppCode`,
+- Optional: `App\Provisioning\ListsTldPrices`, `App\Provisioning\ChecksAvailability`, `App\Provisioning\EmailsEppCode`, `App\Provisioning\GivesNoEppCode`,
   `App\Provisioning\ManagesDomainContacts`, `App\Provisioning\ManagesChildNameservers`,
   `App\Provisioning\ManagesRegistrarLock`.
 - `App\Support\DomainName` (names and TLDs) and `App\Support\EppPhone` (phone numbers as registries want them).

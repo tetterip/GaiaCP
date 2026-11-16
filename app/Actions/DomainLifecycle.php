@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
+use App\Provisioning\GivesNoEppCode;
 use App\Provisioning\ManagesChildNameservers;
 use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ManagesRegistrarLock;
@@ -127,6 +128,15 @@ class DomainLifecycle
 
         return $account !== null && ! $account->isManual()
             && rescue(fn () => $this->registrars->forRegistrar($account) instanceof EmailsEppCode, false, report: false);
+    }
+
+    /** Whether the domain's registrar can give its EPP code at all (not one that is GivesNoEppCode, such as Namecheap). */
+    public function givesEppCode(Service $service): bool
+    {
+        $account = $service->registration()->registrarAccount();
+
+        return $account === null || $account->isManual()
+            || ! rescue(fn () => $this->registrars->forRegistrar($account) instanceof GivesNoEppCode, false, report: false);
     }
 
     /**

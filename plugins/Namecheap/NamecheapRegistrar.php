@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
+use App\Provisioning\GivesNoEppCode;
 use App\Provisioning\ListsTldPrices;
 use App\Provisioning\ManagesChildNameservers;
 use App\Provisioning\ManagesDomainContacts;
@@ -22,7 +23,7 @@ use Throwable;
  * and users.getPricing for the costs (USD, 1 year). Commands that take the domain in two parts get SLD (the first label)
  * and TLD (the rest). Namecheap's API has no command that gives out a domain's EPP code: it is in Namecheap's own panel.
  */
-class NamecheapRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPrices, ManagesChildNameservers, ManagesDomainContacts, ManagesRegistrarLock
+class NamecheapRegistrar implements ChecksAvailability, DomainRegistrar, GivesNoEppCode, ListsTldPrices, ManagesChildNameservers, ManagesDomainContacts, ManagesRegistrarLock
 {
     /** Namecheap takes at most 12 nameservers. */
     public const MAX_NAMESERVERS = 12;

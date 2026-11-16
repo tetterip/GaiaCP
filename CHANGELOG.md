@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Namecheap 1.0.1: the client area hides "Get EPP code" for Namecheap domains (its API gives none), instead of a button
+  that always failed.
+- Plugin API: a registrar may implement `App\Provisioning\GivesNoEppCode` (optional) when its API cannot give the EPP code.
 - New registrar: the Module comes first and the Name follows it (it was always "Easy.gr") until you type your own.
 - The client form warns, with a link, when another client already has the same email: it is allowed, but only one of
   them can log in to the client area with it.

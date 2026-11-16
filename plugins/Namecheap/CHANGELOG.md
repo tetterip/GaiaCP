@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.1] - 2026-11-16
+
+- The client area no longer offers "Get EPP code" for Namecheap domains, since Namecheap's API gives none (`GivesNoEppCode`); the admin's button still says where to find it
+
 ## [1.0.0] - 2026-11-12
 
 - Domains at Namecheap: register, transfer, renew, nameservers and the daily expiry sync
