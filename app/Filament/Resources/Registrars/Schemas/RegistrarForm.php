@@ -11,6 +11,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class RegistrarForm
@@ -41,15 +42,24 @@ class RegistrarForm
                     ->columns(2)
                     ->columnSpanFull()
                     ->schema([
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->default('Easy.gr'),
+                        // The module first: the name follows it until the admin types their own.
                         Select::make('module')
                             ->options(fn (?Registrar $record) => self::moduleOptions($record))
                             ->default(fn () => app(PluginManager::class)->registrarModules()->keys()->first())
                             ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                $plugins = app(PluginManager::class);
+                                $oldLabel = filled($old) ? $plugins->registrarModule($old)?->label() : null;
+
+                                if (blank($get('name')) || $get('name') === $oldLabel) {
+                                    $set('name', filled($state) ? $plugins->registrarModule($state)?->label() : null);
+                                }
+                            })
                             ->required(),
+                        TextInput::make('name')
+                            ->required()
+                            ->maxLength(255)
+                            ->default(fn () => app(PluginManager::class)->registrarModules()->first()?->label()),
                         // Each module's own login fields (credentials.*), shown only for that module.
                         ...app(PluginManager::class)->all()->flatMap(fn ($plugin) => $plugin->registrarModules())
                             ->map(fn (RegistrarModule $module) => Group::make($module->credentialFields())

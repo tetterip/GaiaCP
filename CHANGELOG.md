@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- New registrar: the Module comes first and the Name follows it (it was always "Easy.gr") until you type your own.
 - The client form warns, with a link, when another client already has the same email: it is allowed, but only one of
   them can log in to the client area with it.
 - Plesk Change password names the shared Plesk login as a username: "Also change my Plesk login password (username: …)".
