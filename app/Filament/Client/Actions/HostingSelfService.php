@@ -163,8 +163,8 @@ class HostingSelfService
                     ->rule(Password::min(10)->letters()->mixedCase()->numbers())
                     ->helperText(__('At least 10 characters, with capital and small letters and numbers.')),
                 Checkbox::make('shared_login')
-                    ->label(fn (Service $record) => __('Also change my :panel login :login', ['panel' => self::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record)]))
-                    ->helperText(fn (Service $record) => __('The login you sign in to :panel with. It is the same for all your services there.', ['panel' => self::panelName($record)]))
+                    ->label(fn (Service $record) => __('Also change my :panel login password (username: :login)', ['panel' => self::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record)]))
+                    ->helperText(fn (Service $record) => __('You sign in to :panel with the username :login, not :username. It is the same for all your services there.', ['panel' => self::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record), 'username' => $record->username]))
                     ->visible(fn (Service $record) => app(ServiceLifecycle::class)->sharedLogin($record) !== null),
             ])
             ->modalSubmitActionLabel(__('Change password'))

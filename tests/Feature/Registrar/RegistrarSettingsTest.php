@@ -10,6 +10,7 @@ use App\Filament\Resources\Tlds\TldResource;
 use App\Models\Registrar;
 use App\Models\Tld;
 use App\Models\User;
+use App\Plugins\PluginManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
@@ -118,5 +119,17 @@ class RegistrarSettingsTest extends TestCase
         Livewire::test(EditRegistrar::class, ['record' => $this->easyRegistrar->id])
             ->callAction('checkDomain', ['domain' => 'ACME.gr'])
             ->assertNotified('Connected: acme.gr expires 15/03/2027');
+    }
+
+    public function test_a_new_registrar_is_named_after_its_module_until_the_admin_types_a_name(): void
+    {
+        $page = Livewire::test(CreateRegistrar::class)
+            ->assertFormSet(['name' => app(PluginManager::class)->registrarModules()->first()->label()])
+            ->fillForm(['module' => 'namecheap'])
+            ->assertFormSet(['name' => 'Namecheap']);
+
+        $page->fillForm(['name' => 'My reseller account'])
+            ->fillForm(['module' => 'enom'])
+            ->assertFormSet(['name' => 'My reseller account']);
     }
 }

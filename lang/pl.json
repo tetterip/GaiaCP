@@ -4158,10 +4158,11 @@
     "The client said they paid this notice, but you did not find the payment. The note goes away and the client can press I've paid again. Nothing else changes.": "Klient zgłosił, że opłacił to wezwanie, ale nie znaleziono płatności. Adnotacja znika, a klient może ponownie kliknąć Zapłaciłem. Nic więcej się nie zmienia.",
     "When a client presses I've paid on a payment notice (IRIS), to the admins with Receive system emails on who open billing.": "Gdy klient kliknie Zapłaciłem na wezwaniu do zapłaty (IRIS), do administratorów z włączonym Otrzymuj e-maile systemowe, którzy mają dostęp do rozliczeń.",
     "You told us on :date that you paid by :method. The notice shows as paid once we find the payment.": "Poinformowali nas Państwo :date, że zapłacono przez :method. Wezwanie zostanie oznaczone jako opłacone, gdy tylko znajdziemy płatność.",
-    "Also change my :panel login :login": "Zmień też moje logowanie do :panel :login",
-    "Also change the :panel login :login": "Zmień też logowanie do :panel :login",
     "Shared login": "Wspólne logowanie",
-    "The client signs in to the panel with this login, not with this service's username. It is the same for all their accounts on this server.": "Klient loguje się do panelu tym loginem, a nie nazwą użytkownika tej usługi. Jest taki sam dla wszystkich jego kont na tym serwerze.",
-    "The login you sign in to :panel with. It is the same for all your services there.": "Login, którym logujesz się do :panel. Jest taki sam dla wszystkich Twoich usług tam.",
-    "The password of :username, the FTP and SSH user of :domain.": "Hasło :username, użytkownika FTP i SSH domeny :domain."
+    "The password of :username, the FTP and SSH user of :domain.": "Hasło :username, użytkownika FTP i SSH domeny :domain.",
+    "Also change my :panel login password (username: :login)": "Zmień też moje hasło logowania do :panel (nazwa użytkownika: :login)",
+    "Also change the :panel login password (username: :login)": "Zmień też hasło logowania do :panel (nazwa użytkownika: :login)",
+    "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Klient loguje się do :panel nazwą użytkownika :login, a nie :username. Jest taka sama dla wszystkich jego kont na tym serwerze.",
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Logujesz się do :panel nazwą użytkownika :login, a nie :username. Jest taka sama dla wszystkich Twoich usług tam.",
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Klient :client też ma ten adres e-mail. Tylko jeden z nich może się nim zalogować do strefy klienta."
 }
