@@ -96,7 +96,7 @@ class DomainSelfService
             ->label('Get EPP code')
             ->icon(Heroicon::OutlinedKey)
             ->color('gray')
-            ->visible(fn (Service $record) => config('gaiacp.client_area.domain_epp') && self::atRegistrar($record))
+            ->visible(fn (Service $record) => config('gaiacp.client_area.domain_epp') && self::atRegistrar($record) && app(DomainLifecycle::class)->givesEppCode($record))
             ->requiresConfirmation()
             ->modalIcon(Heroicon::OutlinedKey)
             ->modalHeading(__('Get EPP code'))

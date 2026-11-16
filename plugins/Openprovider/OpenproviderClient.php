@@ -9,15 +9,15 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 /**
- * Openprovider REST API (v1beta): POST /auth/login with the username and password gives a bearer token, then JSON
+ * Openprovider REST API (v1): POST /auth/login with the username and password gives a bearer token, then JSON
  * requests. Replies are {"code": 0, "data": {…}} on success, or a non-zero code with the reason in "desc". The token
  * is kept for the life of this object (one job or page).
  */
 class OpenproviderClient
 {
-    public const LIVE_URL = 'https://api.openprovider.eu/v1beta';
+    public const LIVE_URL = 'https://api.openprovider.eu/v1';
 
-    public const SANDBOX_URL = 'http://api.sandbox.openprovider.nl:8480/v1beta';
+    public const SANDBOX_URL = 'https://api.sandbox.openprovider.nl/v1';
 
     private ?string $token = null;
 

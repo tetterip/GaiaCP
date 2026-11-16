@@ -5,5 +5,6 @@
     "Registers, renews, transfers and syncs domains through an Openprovider reseller account.": "Registra, renueva, transfiere y sincroniza dominios mediante una cuenta de revendedor de Openprovider.",
     "Sandbox": "Sandbox",
     "Sends every call to Openprovider's sandbox (api.sandbox.openprovider.nl), with a sandbox account's login.": "Envía cada llamada al sandbox de Openprovider (api.sandbox.openprovider.nl), con los datos de acceso de una cuenta sandbox.",
-    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Se guarda cifrada. Openprovider solo responde a las direcciones IP que permita en los ajustes de API de su cuenta."
+    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Se guarda cifrada. Openprovider solo responde a las direcciones IP que permita en los ajustes de API de su cuenta.",
+    "Turn on API access for this contact person first, in the Openprovider control panel: Account overview → Contact persons → API.": "Active primero el acceso a la API para esta persona de contacto, en el panel de control de Openprovider: Account overview → Contact persons → API."
 }

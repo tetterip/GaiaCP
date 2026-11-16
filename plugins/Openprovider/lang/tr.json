@@ -5,5 +5,6 @@
     "Registers, renews, transfers and syncs domains through an Openprovider reseller account.": "Alan adlarını bir Openprovider bayi hesabı üzerinden kaydeder, yeniler, transfer eder ve eşitler.",
     "Sandbox": "Sandbox",
     "Sends every call to Openprovider's sandbox (api.sandbox.openprovider.nl), with a sandbox account's login.": "Her çağrıyı bir sandbox hesabının giriş bilgileriyle Openprovider'ın sandbox ortamına (api.sandbox.openprovider.nl) gönderir.",
-    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Şifreli saklanır. Openprovider yalnızca hesabınızın API ayarlarında izin verdiğiniz IP adreslerine yanıt verir."
+    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Şifreli saklanır. Openprovider yalnızca hesabınızın API ayarlarında izin verdiğiniz IP adreslerine yanıt verir.",
+    "Turn on API access for this contact person first, in the Openprovider control panel: Account overview → Contact persons → API.": "Önce Openprovider kontrol panelinde bu ilgili kişi için API erişimini açın: Account overview → Contact persons → API."
 }

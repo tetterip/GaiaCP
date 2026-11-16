@@ -56,6 +56,7 @@ class OpenproviderPlugin extends Plugin implements RegistrarModule
         return [
             TextInput::make('credentials.username')
                 ->label('Openprovider username')
+                ->helperText(__('Turn on API access for this contact person first, in the Openprovider control panel: Account overview → Contact persons → API.'))
                 ->autocomplete('off')
                 ->required()
                 ->maxLength(255),
