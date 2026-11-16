@@ -148,8 +148,8 @@ class ServiceLifecycleActions
                     ->default(fn () => PasswordInput::generate())
                     ->helperText(__('Set on the server, then stored here. A strong one is suggested.')),
                 Checkbox::make('shared_login')
-                    ->label(fn (Service $record) => __('Also change the :panel login :login', ['panel' => HostingSelfService::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record)]))
-                    ->helperText(__('The client signs in to the panel with this login, not with this service\'s username. It is the same for all their accounts on this server.'))
+                    ->label(fn (Service $record) => __('Also change the :panel login password (username: :login)', ['panel' => HostingSelfService::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record)]))
+                    ->helperText(fn (Service $record) => __('The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.', ['panel' => HostingSelfService::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record), 'username' => $record->username]))
                     ->visible(fn (Service $record) => app(ServiceLifecycle::class)->sharedLogin($record) !== null),
             ])
             ->action(self::run(

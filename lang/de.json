@@ -4158,10 +4158,10 @@
     "The client said they paid this notice, but you did not find the payment. The note goes away and the client can press I've paid again. Nothing else changes.": "Der Kunde hat angegeben, diese Zahlungsaufforderung bezahlt zu haben, aber Sie haben die Zahlung nicht gefunden. Der Hinweis verschwindet und der Kunde kann erneut auf Ich habe bezahlt klicken. Sonst ändert sich nichts.",
     "When a client presses I've paid on a payment notice (IRIS), to the admins with Receive system emails on who open billing.": "Wenn ein Kunde bei einer Zahlungsaufforderung auf Ich habe bezahlt klickt (IRIS), an die Administratoren mit aktivem System-E-Mails empfangen, die die Abrechnung öffnen.",
     "You told us on :date that you paid by :method. The notice shows as paid once we find the payment.": "Sie haben uns am :date mitgeteilt, dass Sie per :method bezahlt haben. Die Zahlungsaufforderung wird als bezahlt angezeigt, sobald wir die Zahlung finden.",
-    "Also change my :panel login :login": "Auch meine :panel-Anmeldung :login ändern",
-    "Also change the :panel login :login": "Auch die :panel-Anmeldung :login ändern",
     "Shared login": "Gemeinsame Anmeldung",
-    "The client signs in to the panel with this login, not with this service's username. It is the same for all their accounts on this server.": "Der Kunde meldet sich mit diesem Benutzernamen im Panel an, nicht mit dem Benutzernamen dieses Dienstes. Er gilt für alle seine Konten auf diesem Server.",
-    "The login you sign in to :panel with. It is the same for all your services there.": "Der Benutzername, mit dem Sie sich bei :panel anmelden. Er gilt für alle Ihre Dienste dort.",
-    "The password of :username, the FTP and SSH user of :domain.": "Das Passwort von :username, dem FTP- und SSH-Benutzer von :domain."
+    "The password of :username, the FTP and SSH user of :domain.": "Das Passwort von :username, dem FTP- und SSH-Benutzer von :domain.",
+    "Also change my :panel login password (username: :login)": "Auch mein :panel-Anmeldepasswort ändern (Benutzername: :login)",
+    "Also change the :panel login password (username: :login)": "Auch das :panel-Anmeldepasswort ändern (Benutzername: :login)",
+    "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Der Kunde meldet sich bei :panel mit dem Benutzernamen :login an, nicht mit :username. Er gilt für alle seine Konten auf diesem Server.",
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Sie melden sich bei :panel mit dem Benutzernamen :login an, nicht mit :username. Er gilt für alle Ihre Dienste dort."
 }

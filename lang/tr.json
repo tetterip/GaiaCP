@@ -4158,10 +4158,10 @@
     "The client said they paid this notice, but you did not find the payment. The note goes away and the client can press I've paid again. Nothing else changes.": "Müşteri bu bildirimi ödediğini söyledi, ancak ödemeyi bulamadınız. Not kaldırılır ve müşteri Ödedim düğmesine tekrar basabilir. Başka bir şey değişmez.",
     "When a client presses I've paid on a payment notice (IRIS), to the admins with Receive system emails on who open billing.": "Bir müşteri bir ödeme bildiriminde Ödedim düğmesine bastığında (IRIS), Sistem e-postalarını al açık olan ve faturalandırmayı açabilen yöneticilere.",
     "You told us on :date that you paid by :method. The notice shows as paid once we find the payment.": ":date tarihinde :method ile ödediğinizi bildirdiniz. Ödemeyi bulduğumuzda bildirim ödendi olarak görünecek.",
-    "Also change my :panel login :login": ":panel girişimi (:login) de değiştir",
-    "Also change the :panel login :login": ":panel girişini (:login) de değiştir",
     "Shared login": "Ortak giriş",
-    "The client signs in to the panel with this login, not with this service's username. It is the same for all their accounts on this server.": "Müşteri panele bu hizmetin kullanıcı adıyla değil, bu girişle girer. Bu sunucudaki tüm hesapları için aynıdır.",
-    "The login you sign in to :panel with. It is the same for all your services there.": ":panel'e girdiğiniz giriş. Oradaki tüm hizmetleriniz için aynıdır.",
-    "The password of :username, the FTP and SSH user of :domain.": ":domain alan adının FTP ve SSH kullanıcısı :username için şifre."
+    "The password of :username, the FTP and SSH user of :domain.": ":domain alan adının FTP ve SSH kullanıcısı :username için şifre.",
+    "Also change my :panel login password (username: :login)": ":panel giriş şifremi de değiştir (kullanıcı adı: :login)",
+    "Also change the :panel login password (username: :login)": ":panel giriş şifresini de değiştir (kullanıcı adı: :login)",
+    "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Müşteri :panel'e :username ile değil, :login kullanıcı adıyla girer. Bu sunucudaki tüm hesapları için aynıdır.",
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": ":panel'e :username ile değil, :login kullanıcı adıyla girersiniz. Oradaki tüm hizmetleriniz için aynıdır."
 }
