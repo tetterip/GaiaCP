@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.6.2] - 2026-11-16
+
+- Change password on a subscription whose customer has another login (made by the client's first service, or by hand) names that login and can change its password too (`SharesPanelLogin`), in the admin and the client area
+
 ## [1.6.1] - 2026-11-12
 
 - Usage: this month's bandwidth adds the traffic of the subscription's other domains (`site get`), which Plesk counts apart from its main domain, as WHMCS's Plesk module does

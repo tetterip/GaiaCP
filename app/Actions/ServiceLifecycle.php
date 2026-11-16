@@ -16,6 +16,7 @@ use App\Provisioning\MachineDetails;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\UsernameGenerator;
 use Carbon\CarbonImmutable;
 use Closure;
@@ -188,8 +189,12 @@ class ServiceLifecycle
         ActivityLog::record('service.terminated', 'Terminated'.($this->onPanel($service) ? "; account {$service->username} removed" : ''), $service);
     }
 
-    /** Set a new login password on the panel, then store it (encrypted). The password itself is never logged. */
-    public function changePassword(Service $service, string $password): void
+    /**
+     * Set a new login password on the panel, then store it (encrypted). With $sharedLogin, the client's panel login
+     * shared by their accounts there (SharesPanelLogin: Plesk's customer) gets it too, first. The password itself is
+     * never logged.
+     */
+    public function changePassword(Service $service, string $password, bool $sharedLogin = false): void
     {
         if (! $this->onPanel($service)) {
             throw new ProvisioningException('Only hosting services with a server have a panel password.');
@@ -199,10 +204,40 @@ class ServiceLifecycle
             throw new ProvisioningException('Only active or suspended accounts can change password.');
         }
 
-        $this->panel($service, 'account.password_changed', fn (HostingProvisioner $panel) => $panel->changePassword($service, $password));
+        $login = $this->panel($service, 'account.password_changed', function (HostingProvisioner $panel) use ($service, $password, $sharedLogin): ?string {
+            $login = $sharedLogin && $panel instanceof SharesPanelLogin ? $panel->sharedLogin($service) : null;
+
+            // First, since a panel's rules are usually stricter for its login: a refusal changes nothing.
+            if ($login !== null) {
+                $panel->changeSharedLoginPassword($service, $password);
+            }
+
+            $panel->changePassword($service, $password);
+
+            return $login;
+        });
 
         $service->update(['password' => $password]);
-        ActivityLog::record('account.password_changed', "Password of {$service->username} changed on {$service->server->name}", $service);
+        ActivityLog::record('account.password_changed', "Password of {$service->username} changed on {$service->server->name}".($login !== null ? ", and of the panel login {$login}" : ''), $service);
+    }
+
+    /**
+     * The client's panel login shared by their accounts on that panel (SharesPanelLogin), when it is not the service's
+     * own username; null when it is, when the panel has none or can't be reached. Kept 5 minutes (a plain string).
+     */
+    public function sharedLogin(Service $service): ?string
+    {
+        if (! $this->onPanel($service) || ! in_array($service->status, [ServiceStatus::Active, ServiceStatus::Suspended], true)) {
+            return null;
+        }
+
+        $login = Cache::remember("service-shared-login:{$service->id}", 300, fn (): string => (string) rescue(function () use ($service) {
+            $panel = $this->provisioners->forService($service);
+
+            return $panel instanceof SharesPanelLogin ? $panel->sharedLogin($service) : null;
+        }, null, report: false));
+
+        return $login !== '' ? $login : null;
     }
 
     /**

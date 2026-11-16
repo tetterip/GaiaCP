@@ -99,6 +99,7 @@ use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarModule;
 use App\Provisioning\ServerModule;
+use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\TldPrice;
 use App\SignIn\SignIn;
 use App\Support\ClientFields;
@@ -142,6 +143,7 @@ final class PluginApi
         PanelAccount::class,
         ProvisioningException::class,
         OffersShortcuts::class,
+        SharesPanelLogin::class,
         ListsAccounts::class,
         ControlsPower::class,
         DescribesMachine::class,

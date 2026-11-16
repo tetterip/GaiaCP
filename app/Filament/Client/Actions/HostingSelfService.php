@@ -13,6 +13,7 @@ use App\Provisioning\OffersShortcuts;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Checkbox;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
@@ -152,9 +153,8 @@ class HostingSelfService
                     'panel' => self::panelName($record),
                     'username' => $record->username,
                 ]),
-                default => self::isPlesk($record)
-                ? __('The password of :username, the FTP and SSH user of :domain. Your Plesk login stays the same.', ['username' => $record->username, 'domain' => $record->domain])
-                    : __('The password of :username, for :panel, FTP and SSH. Programs that log in with the old one (an FTP program, for example) will need the new one.', ['username' => $record->username, 'panel' => self::panelName($record)]),
+                app(ServiceLifecycle::class)->sharedLogin($record) !== null => __('The password of :username, the FTP and SSH user of :domain.', ['username' => $record->username, 'domain' => $record->domain]),
+                default => __('The password of :username, for :panel, FTP and SSH. Programs that log in with the old one (an FTP program, for example) will need the new one.', ['username' => $record->username, 'panel' => self::panelName($record)]),
             })
             ->schema([
                 PasswordInput::make('password')
@@ -162,11 +162,15 @@ class HostingSelfService
                     ->required()
                     ->rule(Password::min(10)->letters()->mixedCase()->numbers())
                     ->helperText(__('At least 10 characters, with capital and small letters and numbers.')),
+                Checkbox::make('shared_login')
+                    ->label(fn (Service $record) => __('Also change my :panel login :login', ['panel' => self::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record)]))
+                    ->helperText(fn (Service $record) => __('The login you sign in to :panel with. It is the same for all your services there.', ['panel' => self::panelName($record)]))
+                    ->visible(fn (Service $record) => app(ServiceLifecycle::class)->sharedLogin($record) !== null),
             ])
             ->modalSubmitActionLabel(__('Change password'))
             ->action(function (Service $record, array $data) {
                 try {
-                    app(ServiceLifecycle::class)->changePassword($record, $data['password']);
+                    app(ServiceLifecycle::class)->changePassword($record, $data['password'], (bool) ($data['shared_login'] ?? false));
                 } catch (ProvisioningException) {
                     Notification::make()
                         ->title(__('We could not change the password.'))
@@ -183,10 +187,5 @@ class HostingSelfService
                     ->body($restart ? __('Inside your VPS the new password works after you restart it.') : null)
                     ->success()->persistent($restart)->send();
             });
-    }
-
-    private static function isPlesk(Service $record): bool
-    {
-        return $record->server?->type === 'plesk';
     }
 }

@@ -136,6 +136,37 @@ class ClientHostingSelfServiceTest extends TestCase
         $this->assertStringNotContainsString('New-Pass-2026x', $log->description);
     }
 
+    public function test_the_client_can_also_change_their_shared_plesk_login(): void
+    {
+        $this->fakePlesk();
+        $this->hosting->update(['server_id' => Server::factory()->plesk()->create(['hostname' => 'pl1.test'])->id]);
+        $this->pleskCustomers[12] = ['login' => 'maria-plesk', 'external_id' => 'gaiacp-client-'.$this->client->id];
+        $this->pleskWebspaces['maria.gr'] = ['owner' => 12, 'status' => 0, 'plan' => 'Starter', 'ftp_login' => 'maria', 'ip' => '203.0.113.5'];
+
+        // A hidden tick would drop shared_login, so the login's password changing shows it was offered.
+        $this->page()
+            ->callAction('changePassword', ['password' => 'New-Pass-2026x', 'shared_login' => true])
+            ->assertHasNoFormErrors()
+            ->assertNotified(__('Password changed'));
+
+        $this->assertSame('New-Pass-2026x', $this->pleskCustomers[12]['passwd']);
+        $this->assertSame('New-Pass-2026x', $this->pleskWebspaces['maria.gr']['ftp_password']);
+        $this->assertStringContainsString('panel login maria-plesk', ActivityLog::query()->where('event', 'account.password_changed')->sole()->description);
+    }
+
+    public function test_without_the_tick_the_shared_plesk_login_stays(): void
+    {
+        $this->fakePlesk();
+        $this->hosting->update(['server_id' => Server::factory()->plesk()->create(['hostname' => 'pl1.test'])->id]);
+        $this->pleskCustomers[12] = ['login' => 'maria-plesk', 'external_id' => 'gaiacp-client-'.$this->client->id];
+        $this->pleskWebspaces['maria.gr'] = ['owner' => 12, 'status' => 0, 'plan' => 'Starter', 'ftp_login' => 'maria', 'ip' => '203.0.113.5'];
+
+        $this->page()->callAction('changePassword', ['password' => 'New-Pass-2026x'])->assertNotified(__('Password changed'));
+
+        $this->assertArrayNotHasKey('passwd', $this->pleskCustomers[12]);
+        $this->assertSame('New-Pass-2026x', $this->pleskWebspaces['maria.gr']['ftp_password']);
+    }
+
     public function test_a_refused_password_shows_a_plain_message(): void
     {
         $this->fakeWhm();

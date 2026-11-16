@@ -48,8 +48,9 @@ class DomainPrices extends Page
     }
 
     /**
-     * "€12.00 for 1 year" (or "Free for 2 years"): the price for the shortest term, which is always named; on sale the
-     * normal price struck through before it. Null when not offered.
+     * "€12.00 for 1 year": the price for the shortest term, which is always named; on sale the normal price struck
+     * through before it. A free transfer is just "Free": it adds no time (a .gr keeps its expiry), so it has no term.
+     * Null when not offered.
      */
     private function price(Tld $tld, string $kind, string $currency): string|HtmlString|null
     {
@@ -60,6 +61,10 @@ class DomainPrices extends Page
         }
 
         $cents = (int) $tld->orderPriceCents($kind, $years, $currency);
+        if ($cents === 0 && $kind === 'transfer') {
+            return __('Free');
+        }
+
         $price = $cents === 0 ? __('Free') : Money::format($cents, $currency);
         $price = self::withTerm($price, Tld::termLabel($years));
 
