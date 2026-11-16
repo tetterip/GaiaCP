@@ -17,7 +17,7 @@ class OpenproviderClient
 {
     public const LIVE_URL = 'https://api.openprovider.eu/v1beta';
 
-    public const SANDBOX_URL = 'http://api.sandbox.openprovider.nl:8480/v1beta';
+    public const SANDBOX_URL = 'https://api.sandbox.openprovider.nl/v1beta';
 
     private ?string $token = null;
 

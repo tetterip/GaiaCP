@@ -199,7 +199,7 @@ never calls a panel API directly.
   `contactDomainAssociate` (a changed contact is a new record, as one may serve other domains), `add` / `modify` /
   `deleteRegisteredNameServer` (host label without the domain), `domainLock` / `domainUnlock`, `getPrices` (every TLD).
 - **Openprovider** (`plugins/Openprovider`, module `openprovider`; credentials `username`, `password`, `sandbox`): REST
-  `https://api.openprovider.eu/v1beta` (sandbox `api.sandbox.openprovider.nl:8480`), `POST /auth/login` for a bearer
+  `https://api.openprovider.eu/v1beta` (sandbox `https://api.sandbox.openprovider.nl/v1beta`), `POST /auth/login` for a bearer
   token kept per client object; replies `{code: 0, data}` or a code with `desc`. A domain is found with `GET /domains`
   (`full_name`) for its `id`; then `POST /domains/{id}/renew`, `PUT /domains/{id}`
   (nameservers, `is_locked`, contact handles), `GET /domains/{id}` for its `auth_code` (else `POST /domains/{id}/authcode/reset`). Registering or transferring first makes
