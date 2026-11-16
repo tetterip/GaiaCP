@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The client form warns, with a link, when another client already has the same email: it is allowed, but only one of
+  them can log in to the client area with it.
+- Plesk Change password names the shared Plesk login as a username: "Also change my Plesk login password (username: …)".
 - Plesk 1.6.2: when the client's Plesk login is not the service's username (it was made by their first service, or by
   hand), Change password names that login and offers to change it too, in the admin and the client area. Before, only the
   FTP / SSH user changed, and the client could not sign in to Plesk with the new password.

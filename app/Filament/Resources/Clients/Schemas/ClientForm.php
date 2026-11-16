@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Clients\Schemas;
 use App\Enums\ClientStatus;
 use App\Enums\MailTemplate;
 use App\Filament\Forms\PasswordInput;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Models\Client;
 use App\Payments\PaymentMethods;
 use App\Plugins\PluginManager;
@@ -22,6 +23,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rules\Password;
 use Symfony\Component\Intl\Countries;
 
@@ -49,7 +52,11 @@ class ClientForm
                             ->email()
                             ->required()
                             ->maxLength(255)
-                            ->helperText(__('Reminders go here; also the registrant email for domains.')),
+                            ->helperText(__('Reminders go here; also the registrant email for domains.'))
+                            ->live(onBlur: true)
+                            ->hint(fn (?string $state, ?Client $record) => self::sameEmail($state, $record))
+                            ->hintIcon(fn (?string $state, ?Client $record) => self::sameEmail($state, $record) ? Heroicon::OutlinedExclamationTriangle : null)
+                            ->hintColor('warning'),
                         Select::make('locale')
                             ->label('Email language')
                             ->options(Locales::available())
@@ -179,5 +186,30 @@ class ClientForm
                             ->columnSpanFull(),
                     ]),
             ]);
+    }
+
+    /**
+     * A warning when another client has the same email: allowed (one person, a personal and a company client), but
+     * only one of them can have the client area login, which is easy to miss. Links to that client.
+     */
+    public static function sameEmail(?string $email, ?Client $record): ?HtmlString
+    {
+        $email = mb_strtolower(trim((string) $email));
+
+        if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return null;
+        }
+
+        $other = Client::query()->whereRaw('lower(email) = ?', [$email])
+            ->when($record?->exists, fn ($q) => $q->whereKeyNot($record->getKey()))
+            ->orderBy('id')->first();
+
+        if ($other === null) {
+            return null;
+        }
+
+        $link = '<a href="'.e(ClientResource::getUrl('edit', ['record' => $other])).'" class="underline" target="_blank">'.e($other->name).'</a>';
+
+        return new HtmlString(__('Client :client has this email too. Only one of them can log in to the client area with it.', ['client' => $link]));
     }
 }

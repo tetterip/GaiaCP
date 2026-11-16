@@ -4163,5 +4163,6 @@
     "Also change my :panel login password (username: :login)": "Zmień też moje hasło logowania do :panel (nazwa użytkownika: :login)",
     "Also change the :panel login password (username: :login)": "Zmień też hasło logowania do :panel (nazwa użytkownika: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Klient loguje się do :panel nazwą użytkownika :login, a nie :username. Jest taka sama dla wszystkich jego kont na tym serwerze.",
-    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Logujesz się do :panel nazwą użytkownika :login, a nie :username. Jest taka sama dla wszystkich Twoich usług tam."
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Logujesz się do :panel nazwą użytkownika :login, a nie :username. Jest taka sama dla wszystkich Twoich usług tam.",
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Klient :client też ma ten adres e-mail. Tylko jeden z nich może się nim zalogować do strefy klienta."
 }

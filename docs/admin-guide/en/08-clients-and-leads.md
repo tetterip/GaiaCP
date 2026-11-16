@@ -5,7 +5,9 @@
 Main → **Clients** lists your clients. A client holds the details a domain registration and a payment notice need:
 first and last name, company, email, phone, a structured address and country, VAT number and tax office, plus the
 email language, the currency, the default payment method and two email switches: **Renewal reminders** and **Overdue
-notices**. **Tax exempt** keeps tax off their notices.
+notices**. **Tax exempt** keeps tax off their notices. Two clients may share an email (a person's own and their
+company's), but only one of them can log in to the client area with it, so the email field warns and links to the other
+client.
 
 Keep the address complete: it is the registrant contact sent to the registrar for their domains. The buttons
 by the VAT number check it and fill in the company's details where a plugin offers that (VIES for EU VAT

@@ -4163,5 +4163,6 @@
     "Also change my :panel login password (username: :login)": "Αλλαγή και του κωδικού σύνδεσης στο :panel (όνομα χρήστη: :login)",
     "Also change the :panel login password (username: :login)": "Αλλαγή και του κωδικού σύνδεσης στο :panel (όνομα χρήστη: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Ο πελάτης συνδέεται στο :panel με το όνομα χρήστη :login, όχι με το :username. Είναι το ίδιο για όλους τους λογαριασμούς του σε αυτόν τον server.",
-    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Συνδέεστε στο :panel με το όνομα χρήστη :login, όχι με το :username. Είναι το ίδιο για όλες τις υπηρεσίες σας εκεί."
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Συνδέεστε στο :panel με το όνομα χρήστη :login, όχι με το :username. Είναι το ίδιο για όλες τις υπηρεσίες σας εκεί.",
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Ο πελάτης :client έχει κι αυτός αυτό το email. Μόνο ο ένας από τους δύο μπορεί να συνδεθεί με αυτό στην περιοχή πελατών."
 }

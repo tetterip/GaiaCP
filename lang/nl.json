@@ -4163,5 +4163,6 @@
     "Also change my :panel login password (username: :login)": "Ook mijn :panel-wachtwoord wijzigen (gebruikersnaam: :login)",
     "Also change the :panel login password (username: :login)": "Ook het :panel-wachtwoord wijzigen (gebruikersnaam: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "De klant logt in op :panel met de gebruikersnaam :login, niet :username. Die is dezelfde voor al zijn accounts op deze server.",
-    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "U logt in op :panel met de gebruikersnaam :login, niet :username. Die is dezelfde voor al uw diensten daar."
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "U logt in op :panel met de gebruikersnaam :login, niet :username. Die is dezelfde voor al uw diensten daar.",
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Klant :client heeft dit e-mailadres ook. Maar één van beiden kan ermee inloggen op de klantomgeving."
 }

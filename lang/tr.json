@@ -4163,5 +4163,6 @@
     "Also change my :panel login password (username: :login)": ":panel giriş şifremi de değiştir (kullanıcı adı: :login)",
     "Also change the :panel login password (username: :login)": ":panel giriş şifresini de değiştir (kullanıcı adı: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Müşteri :panel'e :username ile değil, :login kullanıcı adıyla girer. Bu sunucudaki tüm hesapları için aynıdır.",
-    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": ":panel'e :username ile değil, :login kullanıcı adıyla girersiniz. Oradaki tüm hizmetleriniz için aynıdır."
+    "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": ":panel'e :username ile değil, :login kullanıcı adıyla girersiniz. Oradaki tüm hizmetleriniz için aynıdır.",
+    "Client :client has this email too. Only one of them can log in to the client area with it.": ":client müşterisi de bu e-postaya sahip. Müşteri alanına bununla yalnızca biri girebilir."
 }
