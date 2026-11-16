@@ -4,7 +4,9 @@ Every version of this plugin, newest first. The version is in `plugin.json`; it 
 
 ## [1.0.1] - 2026-11-16
 
-- Sandbox mode uses Openprovider's current sandbox address, `https://api.sandbox.openprovider.nl/v1beta` (the old one on port 8480 no longer answers)
+- Sandbox mode uses Openprovider's current sandbox address, `https://api.sandbox.openprovider.nl` (the old one on port 8480 no longer answers)
+- Calls the API's current version path `/v1`, as Openprovider's developer portal documents it (`/v1beta` answers the same)
+- The username field says to turn on API access for the contact person first
 
 ## [1.0.0] - 2026-11-12
 

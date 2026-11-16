@@ -5,5 +5,6 @@
     "Registers, renews, transfers and syncs domains through an Openprovider reseller account.": "Καταχωρεί, ανανεώνει, μεταφέρει και συγχρονίζει domains μέσω λογαριασμού μεταπωλητή Openprovider.",
     "Sandbox": "Sandbox",
     "Sends every call to Openprovider's sandbox (api.sandbox.openprovider.nl), with a sandbox account's login.": "Στέλνει κάθε κλήση στο sandbox της Openprovider (api.sandbox.openprovider.nl), με τα στοιχεία σύνδεσης ενός λογαριασμού sandbox.",
-    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Αποθηκεύεται κρυπτογραφημένος. Η Openprovider απαντά μόνο στις διευθύνσεις IP που επιτρέπεις στις ρυθμίσεις API του λογαριασμού σου."
+    "Stored encrypted. Openprovider answers only the IP addresses you allow under the API settings of your account.": "Αποθηκεύεται κρυπτογραφημένος. Η Openprovider απαντά μόνο στις διευθύνσεις IP που επιτρέπεις στις ρυθμίσεις API του λογαριασμού σου.",
+    "Turn on API access for this contact person first, in the Openprovider control panel: Account overview → Contact persons → API.": "Ενεργοποιήστε πρώτα την πρόσβαση API για αυτό το πρόσωπο επικοινωνίας, στον πίνακα ελέγχου της Openprovider: Account overview → Contact persons → API."
 }
