@@ -20,7 +20,7 @@ Settings → General → **Region** sets:
   change it at any time: payments, tickets and the activity log already saved show in the new timezone, at the same
   moment as before;
 - the **date format** used in tables and date pickers;
-- the **country** new clients start in (phone numbers without a country code are read as that country's).
+- the **country** new clients start in (phone numbers without a country code are read as that country's). Left empty, a client made without a country (by the API or an import) has none.
 
 The same page has **Create payment notices … days before the due date** (14 by default, see
 [Billing](06-billing.md)), the admin panel's default theme and the captcha (see
