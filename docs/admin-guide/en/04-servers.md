@@ -62,7 +62,9 @@ signed in, and falls back to the login page on an older DirectAdmin.
 
 On Plesk each client is one Plesk customer, and each hosting service a subscription to the service plan. The client's
 Plesk login is the username and password of their first service there; **Change password** on that service changes the
-login too, while on their other services it changes only the subscription's FTP / SSH user.
+login too, while on their other services it changes only the subscription's FTP / SSH user. There (and when the customer
+was made by hand in Plesk) the Change password window names the client's real Plesk login and offers **Also change the
+Plesk login**; the client gets the same tick in the client area. That login is the same for all the client's subscriptions.
 
 On CyberPanel a hosting account is a **website** (the service's domain) owned by a CyberPanel user with the service's
 username; the password is that user's CyberPanel login. Packages read like `Default` (the built-in one) or `admin_Pro` (one an admin added). New websites start on the

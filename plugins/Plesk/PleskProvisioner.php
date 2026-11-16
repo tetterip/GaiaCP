@@ -13,6 +13,7 @@ use App\Provisioning\ListsAccounts;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\SharesPanelLogin;
 use SimpleXMLElement;
 
 /**
@@ -22,7 +23,7 @@ use SimpleXMLElement;
  * login and password come from the client's first hosting service on that
  * server; each subscription's system (FTP) user is the service's username.
  */
-class PleskProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts
+class PleskProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts, SharesPanelLogin
 {
     /** webspace gen_setup status values */
     private const ACTIVE = 0;
@@ -177,23 +178,53 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
      */
     public function changePassword(Service $service, string $password): void
     {
-        $webspace = $this->findWebspace($service)
-            ?? throw new ProvisioningException("There is no subscription {$service->domain} on {$this->server->name}.");
-        $customerId = (int) $webspace->data->gen_info->{'owner-id'};
-        $customer = $this->plesk->call('customer', 'get', ['filter' => ['id' => $customerId], 'dataset' => ['gen_info' => []]], allowNotFound: true)[0] ?? null;
+        $customer = $this->owner($service);
 
         // First, since Plesk's password rules are usually stricter for a login: a refusal changes nothing.
         if ($customer !== null && strcasecmp((string) $customer->data->gen_info->login, (string) $service->username) === 0) {
-            $this->plesk->call('customer', 'set', [
-                'filter' => ['id' => $customerId],
-                'values' => ['gen_info' => ['passwd' => $password]],
-            ]);
+            $this->setCustomerPassword((int) $customer->id, $password);
         }
 
         // As api-php-lib's Webspace::setProperties().
         $this->plesk->call('webspace', 'set', [
             'filter' => ['name' => $this->domain($service)],
             'values' => ['hosting' => ['vrt_hst' => ['property' => [['name' => 'ftp_password', 'value' => $password]]]]],
+        ]);
+    }
+
+    /** The Plesk login of the customer who owns the subscription, when it is not the service's username (made by another service, or by hand). */
+    public function sharedLogin(Service $service): ?string
+    {
+        $login = (string) ($this->owner($service)?->data->gen_info->login ?? '');
+
+        return $login !== '' && strcasecmp($login, (string) $service->username) !== 0 ? $login : null;
+    }
+
+    public function changeSharedLoginPassword(Service $service, string $password): void
+    {
+        $customer = $this->owner($service)
+            ?? throw new ProvisioningException("No Plesk customer owns {$service->domain} on {$this->server->name}.");
+
+        $this->setCustomerPassword((int) $customer->id, $password);
+    }
+
+    /** The customer who owns the service's subscription; null when the admin or a reseller owns it. */
+    private function owner(Service $service): ?SimpleXMLElement
+    {
+        $webspace = $this->findWebspace($service)
+            ?? throw new ProvisioningException("There is no subscription {$service->domain} on {$this->server->name}.");
+
+        return $this->plesk->call('customer', 'get', [
+            'filter' => ['id' => (int) $webspace->data->gen_info->{'owner-id'}],
+            'dataset' => ['gen_info' => []],
+        ], allowNotFound: true)[0] ?? null;
+    }
+
+    private function setCustomerPassword(int $customerId, string $password): void
+    {
+        $this->plesk->call('customer', 'set', [
+            'filter' => ['id' => $customerId],
+            'values' => ['gen_info' => ['passwd' => $password]],
         ]);
     }
 

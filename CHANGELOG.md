@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Plesk 1.6.2: when the client's Plesk login is not the service's username (it was made by their first service, or by
+  hand), Change password names that login and offers to change it too, in the admin and the client area. Before, only the
+  FTP / SSH user changed, and the client could not sign in to Plesk with the new password.
+- Plugin API: a server panel may implement `App\Provisioning\SharesPanelLogin` (optional) for a login shared by a
+  client's accounts.
 - Domain prices shows a free transfer as just "Free", not "Free for 2 years": a free transfer (like a .gr one) adds no
   time, so the domain keeps its expiry.
 - A client made without a country (by the API, an import or a lead) no longer becomes Greek when Settings → General →

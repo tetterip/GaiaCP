@@ -5,6 +5,7 @@ namespace App\Filament\Actions;
 use App\Actions\ServiceLifecycle;
 use App\Actions\SetUpService;
 use App\Enums\ServiceStatus;
+use App\Filament\Client\Actions\HostingSelfService;
 use App\Filament\Forms\PackageSelect;
 use App\Filament\Forms\PasswordInput;
 use App\Models\Service;
@@ -14,6 +15,7 @@ use App\Provisioning\ProvisioningException;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -145,9 +147,13 @@ class ServiceLifecycleActions
                     ->minLength(8)
                     ->default(fn () => PasswordInput::generate())
                     ->helperText(__('Set on the server, then stored here. A strong one is suggested.')),
+                Checkbox::make('shared_login')
+                    ->label(fn (Service $record) => __('Also change the :panel login :login', ['panel' => HostingSelfService::panelName($record), 'login' => app(ServiceLifecycle::class)->sharedLogin($record)]))
+                    ->helperText(__('The client signs in to the panel with this login, not with this service\'s username. It is the same for all their accounts on this server.'))
+                    ->visible(fn (Service $record) => app(ServiceLifecycle::class)->sharedLogin($record) !== null),
             ])
             ->action(self::run(
-                fn (Service $record, ServiceLifecycle $lifecycle, array $data) => $lifecycle->changePassword($record, $data['password']),
+                fn (Service $record, ServiceLifecycle $lifecycle, array $data) => $lifecycle->changePassword($record, $data['password'], (bool) ($data['shared_login'] ?? false)),
                 __('Password changed'),
                 fn (Service $record, ServiceLifecycle $lifecycle) => $lifecycle->passwordWaitsForRestart($record)
                     ? __('Inside the VPS the new password works after its next restart: no QEMU guest agent answers in it.')

@@ -11,6 +11,7 @@ use App\Provisioning\PackageOptions;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\FakesPlesk;
 use Tests\TestCase;
 
@@ -196,6 +197,24 @@ class PleskLifecycleTest extends TestCase
         $this->assertSame('NewSecret123', $this->pleskWebspaces['bakery.gr']['ftp_password']);
         $this->assertArrayNotHasKey('passwd', $this->pleskCustomers[$id]);
         $this->assertNotContains('customer.set', $this->pleskOperations());
+    }
+
+    public function test_the_shared_plesk_login_changes_only_when_asked(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $id = array_key_first($this->pleskCustomers);
+        $this->assertNull($this->lifecycle->sharedLogin($service->refresh()));
+
+        $this->pleskCustomers[$id]['login'] = 'firstservice';
+        Cache::flush();
+        $this->assertSame('firstservice', $this->lifecycle->sharedLogin($service));
+
+        $this->lifecycle->changePassword($service, 'NewSecret123', sharedLogin: true);
+
+        $this->assertSame('NewSecret123', $this->pleskCustomers[$id]['passwd']);
+        $this->assertSame('NewSecret123', $this->pleskWebspaces['bakery.gr']['ftp_password']);
+        $this->assertDatabaseHas('activity_logs', ['event' => 'account.password_changed', 'description' => "Password of {$service->username} changed on {$service->server->name}, and of the panel login firstservice"]);
     }
 
     public function test_a_refused_plesk_login_password_changes_nothing(): void

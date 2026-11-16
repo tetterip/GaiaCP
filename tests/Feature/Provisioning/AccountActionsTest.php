@@ -5,18 +5,20 @@ namespace Tests\Feature\Provisioning;
 use App\Enums\ServiceStatus;
 use App\Filament\Resources\Servers\Pages\EditServer;
 use App\Filament\Resources\Services\Pages\EditService;
+use App\Models\Server;
 use App\Models\Service;
 use App\Models\User;
 use Filament\Actions\Testing\TestAction;
 use Filament\Notifications\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\FakesPlesk;
 use Tests\FakesWhm;
 use Tests\TestCase;
 
 class AccountActionsTest extends TestCase
 {
-    use FakesWhm, RefreshDatabase;
+    use FakesPlesk, FakesWhm, RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -185,6 +187,22 @@ class AccountActionsTest extends TestCase
 
         $this->assertContains(['passwd', ['user' => 'acme', 'password' => 'NewSecret123']], collect($this->whmCalls)->map(fn ($c) => [$c[0], array_intersect_key($c[1], ['user' => 1, 'password' => 1])])->all());
         $this->assertSame('NewSecret123', $service->refresh()->password);
+    }
+
+    public function test_change_password_can_also_change_the_clients_shared_plesk_login(): void
+    {
+        $this->fakePlesk();
+        $service = Service::factory()->create(['username' => 'acme', 'domain' => 'acme.gr', 'server_id' => Server::factory()->plesk()->create()->id]);
+        $this->pleskCustomers[12] = ['login' => 'acme-first', 'external_id' => 'gaiacp-client-'.$service->client_id];
+        $this->pleskWebspaces['acme.gr'] = ['owner' => 12, 'status' => 0, 'plan' => 'Starter', 'ftp_login' => 'acme', 'ip' => '203.0.113.5'];
+
+        Livewire::test(EditService::class, ['record' => $service->id])
+            ->callAction('changePassword', data: ['password' => 'NewSecret123', 'shared_login' => true])
+            ->assertHasNoActionErrors()
+            ->assertNotified('Password changed');
+
+        $this->assertSame('NewSecret123', $this->pleskCustomers[12]['passwd']);
+        $this->assertSame('NewSecret123', $this->pleskWebspaces['acme.gr']['ftp_password']);
     }
 
     public function test_a_failed_password_change_keeps_the_stored_one(): void

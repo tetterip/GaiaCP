@@ -4157,5 +4157,11 @@
     "Reject claim": "Απόρριψη δήλωσης",
     "The client said they paid this notice, but you did not find the payment. The note goes away and the client can press I've paid again. Nothing else changes.": "Ο πελάτης δήλωσε ότι πλήρωσε αυτή την ειδοποίηση, αλλά δεν βρήκες την πληρωμή. Η σήμανση φεύγει και ο πελάτης μπορεί να ξαναπατήσει «Το πλήρωσα». Τίποτα άλλο δεν αλλάζει.",
     "When a client presses I've paid on a payment notice (IRIS), to the admins with Receive system emails on who open billing.": "Όταν ένας πελάτης πατά «Το πλήρωσα» σε ειδοποίηση πληρωμής (IRIS), στους διαχειριστές με ενεργό το Λήψη email συστήματος που ανοίγουν τις χρεώσεις.",
-    "You told us on :date that you paid by :method. The notice shows as paid once we find the payment.": "Μας δηλώσατε στις :date ότι πληρώσατε με :method. Η ειδοποίηση θα εμφανιστεί ως πληρωμένη μόλις βρούμε την πληρωμή."
+    "You told us on :date that you paid by :method. The notice shows as paid once we find the payment.": "Μας δηλώσατε στις :date ότι πληρώσατε με :method. Η ειδοποίηση θα εμφανιστεί ως πληρωμένη μόλις βρούμε την πληρωμή.",
+    "Also change my :panel login :login": "Αλλαγή και της σύνδεσής μου στο :panel :login",
+    "Also change the :panel login :login": "Αλλαγή και της σύνδεσης :login στο :panel",
+    "Shared login": "Κοινή σύνδεση",
+    "The client signs in to the panel with this login, not with this service's username. It is the same for all their accounts on this server.": "Ο πελάτης συνδέεται στο panel με αυτό το όνομα χρήστη, όχι με το όνομα χρήστη αυτής της υπηρεσίας. Είναι το ίδιο για όλους τους λογαριασμούς του σε αυτόν τον server.",
+    "The login you sign in to :panel with. It is the same for all your services there.": "Το όνομα χρήστη με το οποίο συνδέεστε στο :panel. Είναι το ίδιο για όλες τις υπηρεσίες σας εκεί.",
+    "The password of :username, the FTP and SSH user of :domain.": "Ο κωδικός του :username, του χρήστη FTP και SSH του :domain."
 }
