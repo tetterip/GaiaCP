@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Domain prices shows a free transfer as just "Free", not "Free for 2 years": a free transfer (like a .gr one) adds no
+  time, so the domain keeps its expiry.
 - A client made without a country (by the API, an import or a lead) no longer becomes Greek when Settings → General →
   Region has no country: it has none until one is filled in. Clients that already have a country keep it.
 - A client area payment notice shows one **Pay online** button when several payment methods can take it (Stripe, the

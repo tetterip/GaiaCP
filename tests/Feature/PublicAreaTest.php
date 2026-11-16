@@ -153,8 +153,9 @@ class PublicAreaTest extends TestCase
         config(['gaiacp.public_area.domain_prices' => true]);
 
         $this->get('/domain-prices')->assertOk()
-            ->assertSeeInOrder(['.com', "€15.00 for\u{00A0}1\u{00A0}year", '.com.gr', '.gr', "€24.00 for\u{00A0}2\u{00A0}years", "Free for\u{00A0}2\u{00A0}years", "€24.00 for\u{00A0}2\u{00A0}years"])
-            ->assertDontSee('Prices are per year');
+            ->assertSeeInOrder(['.com', "€15.00 for\u{00A0}1\u{00A0}year", '.com.gr', '.gr', "€24.00 for\u{00A0}2\u{00A0}years", 'Free', "€24.00 for\u{00A0}2\u{00A0}years"])
+            ->assertDontSee('Prices are per year')
+            ->assertDontSee("Free for\u{00A0}2\u{00A0}years"); // a free transfer adds no time, so it names no term
 
         // Signed-in clients see it too
         $this->actingAs($this->user, 'client')->get('/domain-prices')->assertOk()->assertSee('.com.gr');
