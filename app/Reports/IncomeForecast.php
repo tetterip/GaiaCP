@@ -101,20 +101,6 @@ final class IncomeForecast
         return (int) Server::query()->where('active', true)->sum('monthly_cost_cents');
     }
 
-    /**
-     * What the registrar charges to renew a domain for one of its cycles (its TLD's renew cost for that many years),
-     * in the base currency; null for other services, tracked domains, cycles that are not whole years and TLDs
-     * without that cost.
-     */
-    public function domainCost(Service $service): ?int
-    {
-        if ($service->type !== ServiceType::Domain || $service->domainDetails?->registration_type === DomainRegistrationType::External) {
-            return null;
-        }
-
-        return $this->renewCost((string) $service->domain, $service->billing_cycle->months());
-    }
-
     /** The TLD's renew cost for a domain renewed every $months (whole years only), looked up once per ending and term. */
     private function renewCost(string $domain, int $months): ?int
     {

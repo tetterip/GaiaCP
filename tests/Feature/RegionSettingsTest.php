@@ -57,6 +57,18 @@ class RegionSettingsTest extends TestCase
         $this->assertSame('CY', Client::factory()->create(['country' => 'CY'])->country);
     }
 
+    public function test_a_client_gets_no_country_when_the_region_has_none(): void
+    {
+        config(['gaiacp.region.country' => null]);
+
+        $this->assertSame('', Client::factory()->create(['country' => null])->fresh()->country);
+        $this->assertSame('', Client::query()->create(['first_name' => 'Ada', 'last_name' => 'Lovelace', 'email' => 'ada@example.com'])->fresh()->country);
+
+        config(['gaiacp.region.country' => 'DE']);
+
+        $this->assertSame('DE', Client::query()->create(['first_name' => 'Max', 'last_name' => 'Planck', 'email' => 'max@example.com'])->fresh()->country);
+    }
+
     public function test_phone_numbers_without_a_code_are_read_as_the_clients_country(): void
     {
         $this->assertSame('+44.2079460018', EppPhone::format('020 7946 0018', 'GB'));

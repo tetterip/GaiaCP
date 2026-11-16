@@ -24,7 +24,7 @@ class ClientResource extends JsonResource
             'city' => $this->city,
             'state' => $this->state,
             'postcode' => $this->postcode,
-            'country' => $this->country,
+            'country' => $this->country ?: null,
             'vat_number' => $this->vat_number,
             'tax_office' => $this->tax_office,
             'profession' => $this->profession,

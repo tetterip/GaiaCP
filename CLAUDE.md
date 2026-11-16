@@ -136,7 +136,7 @@ Read the file for the area you are changing before you change it; don't read the
 ## Domain rules
 
 - **Payments are recorded, never charged by GaiaCP.** An admin records them by hand, or a payment plugin records what
-  the gateway confirmed (Stripe Checkout only: no card data, saved cards or automatic charges here); recording one
+  the gateway confirmed (redirect or hosted checkouts only: no card data, saved cards or automatic charges here); recording one
   advances the service's `next_due_date` by one billing cycle and unsuspends it if it was suspended for non-payment.
 - **Payment notices are not invoices.** The `invoices` table holds payment notices (proformas, numbered
   `PF-2026-0001`); call them that in the UI and emails, never τιμολόγιο. Real invoices are optional (Settings → Invoices,

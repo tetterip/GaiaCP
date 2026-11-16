@@ -3,7 +3,7 @@
 namespace App\Payments;
 
 /**
- * A way clients pay (bank transfer, later card payments), from a plugin. Its key is stored in `payments.method` and
+ * A way clients pay (bank transfer, card payments), from a plugin. Its key is stored in `payments.method` and
  * `clients.default_payment_method`; a payment keeps its key even when the plugin is switched off later.
  */
 interface PaymentModule

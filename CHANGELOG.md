@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- A client made without a country (by the API, an import or a lead) no longer becomes Greek when Settings → General →
+  Region has no country: it has none until one is filled in. Clients that already have a country keep it.
 - A client area payment notice shows one **Pay online** button when several payment methods can take it (Stripe, the
   banks, PayPal, IRIS…), with the methods in its menu; with only one it is that method's own button, as before.
   Settings → Payment methods marks a method that is on but can't take payments yet as **Not set up** (its keys or

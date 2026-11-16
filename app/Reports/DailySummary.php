@@ -205,15 +205,6 @@ final readonly class DailySummary
         return count(self::AGES) - 1;
     }
 
-    /** Problems an admin should look at today; none = all is well. */
-    public function needsAttention(): bool
-    {
-        return $this->overdueNotices->isNotEmpty()
-            || $this->moduleQueue->isNotEmpty()
-            || $this->unmatchedPayments->isNotEmpty()
-            || $this->domainFailures->isNotEmpty();
-    }
-
     /** Nothing new, nothing overdue, no domain changed or failed, no online payment to check, nothing in the module queue and no new release of GaiaCP or a plugin: no email. */
     public function isEmpty(): bool
     {

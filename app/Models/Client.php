@@ -99,12 +99,9 @@ class Client extends Model implements HasLocalePreference
         static::creating(function (Client $client) {
             $client->currency = $client->currency ? strtoupper($client->currency) : Currencies::base();
 
-            // Settings → General → Country when none was given (the column's own default otherwise)
+            // Settings → General → Country when none was given; none there either = no country, never a guess
             if (blank($client->country)) {
-                unset($client->country);
-                if ($country = Region::country()) {
-                    $client->country = $country;
-                }
+                $client->country = Region::country() ?? '';
             }
         });
 

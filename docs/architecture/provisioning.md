@@ -147,7 +147,7 @@ never calls a panel API directly.
   registrar: `tlds` (`Tld`, Settings → Domain pricing, `TldResource`: register / transfer / renew cents for each of
   `Tld::YEARS` = 1-3, null = not offered; grace / redemption fees; `registrar_id` = preferred registrar; `costs` =
   the registrar's charge per price column, base currency, `costCents()` / `marginCents()`, used by Income forecast's
-  Domain costs (`IncomeForecast::domainCost()`) and Reports → Domain profit (`byTld()`)). New orders
+  Domain costs (`IncomeForecast`) and Reports → Domain profit (`byTld()`)). New orders
   pre-select it (`domains.registrar_id`, the admin can change it) and offer only priced terms (`Tld::terms()`).
   `Registrar::forDomain()` = the TLD's preferred registrar (`Tld::match()`, longest TLD match, from the TLD table read once per request: `App\Support\TldLookup`) while active; `RegistrarFactory` builds the
   `DomainRegistrar` from the account's module (`PluginManager::enabledRegistrarModule()`). Only `DomainLifecycle` calls a registrar; `RecordPayment` renews an

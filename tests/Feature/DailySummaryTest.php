@@ -238,7 +238,6 @@ class DailySummaryTest extends TestCase
 
         $this->assertSame(36000, $summary->overdueTotal());
         $this->assertSame([[1, 7, 1, 12000], [8, 30, 1, 12000], [31, null, 1, 12000]], array_map(fn (array $g) => [$g['from'], $g['to'], $g['count'], $g['cents']], $summary->overdueByAge()));
-        $this->assertTrue($summary->needsAttention());
 
         $mail = (new DailySummaryMail($summary))->locale('en');
         $html = $mail->render();
@@ -260,7 +259,6 @@ class DailySummaryTest extends TestCase
 
         $summary = DailySummary::between(now()->toImmutable()->subDay(), now()->toImmutable());
 
-        $this->assertFalse($summary->needsAttention());
         $this->assertStringContainsString('All is well, nothing needs you today', (new DailySummaryMail($summary))->locale('en')->render());
     }
 
