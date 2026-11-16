@@ -145,6 +145,10 @@ return [
         'subject' => 'Het domein {$domain} is verlopen',
         'body' => "Het domein **{\$domain}** is verlopen op {\$expiry_date}. Verleng het zo snel mogelijk, anders kan iedereen het registreren.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'EPP-code van {$domain}',
+        'body' => "De EPP-code (verhuiscode) van **{\$domain}** is:\n\n**{\$epp_code}**\n\nGeef hem alleen aan de provider waarnaar u het domein verhuist. Heeft u er niet om gevraagd, neem dan contact met ons op.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} nadert de limiet van zijn pakket',

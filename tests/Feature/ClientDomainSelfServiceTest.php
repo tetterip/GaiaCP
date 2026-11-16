@@ -7,6 +7,7 @@ use App\Enums\ServiceStatus;
 use App\Enums\UserRole;
 use App\Filament\Client\Resources\Domains\Pages\ViewDomain;
 use App\Filament\Clusters\Settings\Pages\ClientAreaSettings;
+use App\Mail\EppCodeRequestMail;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\Registrar;
@@ -14,6 +15,7 @@ use App\Models\Service;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Plugins\EasyGr\EasyRegistrar;
@@ -180,6 +182,23 @@ class ClientDomainSelfServiceTest extends TestCase
         $domain->domainDetails()->create(['registration_type' => DomainRegistrationType::Register, 'registrar_id' => $namecheap->id]);
 
         $this->page($domain)->assertActionHidden('getEppCode')->assertActionVisible('changeNameservers');
-        $this->page()->assertActionVisible('getEppCode');
+        $this->page()->assertActionVisible('getEppCode')->assertActionHidden('requestEppCode');
+    }
+
+    public function test_the_client_requests_the_epp_code_of_a_domain_whose_registrar_gives_none(): void
+    {
+        Mail::fake();
+        $admin = User::factory()->create(['system_emails' => true]);
+        $namecheap = Registrar::factory()->create(['name' => 'Namecheap', 'module' => 'namecheap', 'credentials' => ['username' => 'reseller', 'api_key' => 'secret']]);
+        $domain = Service::factory()->domain()->for($this->client)->create(['domain' => 'maria.com']);
+        $domain->domainDetails()->create(['registration_type' => DomainRegistrationType::Register, 'registrar_id' => $namecheap->id]);
+
+        $this->page($domain)
+            ->callAction('requestEppCode')
+            ->assertNotified('EPP code requested');
+
+        Mail::assertSent(EppCodeRequestMail::class, fn (EppCodeRequestMail $mail) => $mail->hasTo($admin->email) && $mail->service->is($domain));
+        $this->assertSame(1, ActivityLog::query()->where('event', 'domain.epp_code_requested')->where('service_id', $domain->id)->count());
+        $this->assertSame(1, $admin->notifications()->count());
     }
 }

@@ -97,7 +97,7 @@ En un dominio activo registrado a través de nosotros puede:
 - **Cambiar los servidores de nombres** (de 2 a 4). El cambio llega al registro enseguida; internet lo ve en unas horas.
 <!-- endif -->
 <!-- if:domain_epp -->
-- **Obtener el código EPP** que necesita para trasladar el dominio a otro proveedor. Para algunos dominios se muestra en pantalla; para otros se envía por email a la dirección de email del titular del dominio.
+- **Obtener el código EPP** que necesita para trasladar el dominio a otro proveedor. Para algunos dominios se muestra en pantalla; para otros se envía por email a la dirección de email del titular del dominio. Para otros, lo solicita y se lo enviamos por email.
 <!-- endif -->
 <!-- if:domain_auto_renew -->
 - **Desactivar o activar la renovación automática.** Si está desactivada, no recibirá más avisos de pago por el dominio y este termina en su fecha de vencimiento.

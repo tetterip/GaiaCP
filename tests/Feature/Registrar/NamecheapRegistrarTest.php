@@ -4,9 +4,11 @@ namespace Tests\Feature\Registrar;
 
 use App\Actions\DomainLifecycle;
 use App\Enums\DomainRegistrationType;
+use App\Enums\MailTemplate;
 use App\Enums\ServiceStatus;
 use App\Filament\Resources\Registrars\Pages\CreateRegistrar;
 use App\Filament\Resources\Services\Pages\EditService;
+use App\Mail\ClientMail;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\ModuleLog;
@@ -20,6 +22,7 @@ use App\Provisioning\RegistrarFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Plugins\Namecheap\NamecheapClient;
 use Plugins\Namecheap\NamecheapRegistrar;
@@ -313,5 +316,28 @@ class NamecheapRegistrarTest extends TestCase
             ->callAction('childNameservers', ['operation' => 'save', 'host' => 'ns1', 'ip' => '192.0.2.20']);
         $this->assertSame(['ns1.acme.com' => '192.0.2.20'], $this->namecheapHosts);
         $this->assertContains('namecheap.domains.ns.update', $this->namecheapCommands());
+    }
+
+    public function test_the_admin_emails_the_client_an_epp_code_read_at_the_registrar(): void
+    {
+        Mail::fake();
+        $this->fakeNamecheap();
+        $this->actingAs(User::factory()->create());
+        $service = $this->activeDomain();
+
+        Livewire::test(EditService::class, ['record' => $service->id])
+            ->callAction('sendEppCode', ['epp_code' => ' a*B_c<1 '])
+            ->assertHasNoActionErrors()
+            ->assertNotified('EPP code emailed to '.$service->client->email);
+
+        Mail::assertSent(ClientMail::class, function (ClientMail $mail) use ($service) {
+            $html = $mail->render();
+
+            return $mail->mailTemplate === MailTemplate::DomainEppCode && $mail->hasTo($service->client->email)
+                && str_contains(html_entity_decode(strip_tags($html)), 'a*B_c<1') && ! str_contains($html, '<1');
+        });
+        $log = ActivityLog::query()->where('event', 'domain.epp_code_sent')->sole();
+        $this->assertStringNotContainsString('a*B_c', $log->description.json_encode($log->properties));
+        $this->assertSame([], $this->namecheapCalls);
     }
 }

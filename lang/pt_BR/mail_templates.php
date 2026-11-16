@@ -145,6 +145,10 @@ return [
         'subject' => 'O domínio {$domain} expirou',
         'body' => "O domínio **{\$domain}** expirou em {\$expiry_date}. Renove-o o quanto antes; caso contrário, qualquer pessoa poderá registrá-lo.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'Código EPP de {$domain}',
+        'body' => "O código EPP (código de transferência) de **{\$domain}** é:\n\n**{\$epp_code}**\n\nInforme-o apenas ao provedor para o qual você está transferindo o domínio. Se você não o solicitou, entre em contato conosco.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} está perto do limite do pacote',

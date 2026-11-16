@@ -4164,5 +4164,19 @@
     "Also change the :panel login password (username: :login)": "Auch das :panel-Anmeldepasswort ändern (Benutzername: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Der Kunde meldet sich bei :panel mit dem Benutzernamen :login an, nicht mit :username. Er gilt für alle seine Konten auf diesem Server.",
     "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Sie melden sich bei :panel mit dem Benutzernamen :login an, nicht mit :username. Er gilt für alle Ihre Dienste dort.",
-    "Client :client has this email too. Only one of them can log in to the client area with it.": "Der Kunde :client hat auch diese E-Mail-Adresse. Nur einer von beiden kann sich damit im Kundenbereich anmelden."
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Der Kunde :client hat auch diese E-Mail-Adresse. Nur einer von beiden kann sich damit im Kundenbereich anmelden.",
+    ":client asked for it. Read it at the registrar, then press Send EPP code.": ":client hat ihn angefordert. Lesen Sie ihn beim Registrar aus und klicken Sie dann auf EPP-Code senden.",
+    ":client asked for the EPP code of :domain": ":client hat den EPP-Code von :domain angefordert",
+    ":registrar gives no EPP code through its API. Read it in your :registrar account, then press Send EPP code in the domain's Registrar menu: the client gets it by email.": ":registrar gibt über seine API keinen EPP-Code aus. Lesen Sie ihn in Ihrem :registrar-Konto aus und klicken Sie dann im Registrar-Menü der Domain auf EPP-Code senden: Der Kunde erhält ihn per E-Mail.",
+    "Domain EPP Code": "Domain-EPP-Code",
+    "EPP code emailed to :email": "EPP-Code an :email gesendet",
+    "EPP code request: :name": "EPP-Code-Anfrage: :name",
+    "Emails the code to :email with the Domain EPP Code template. The code is not stored or logged.": "Sendet den Code mit der Vorlage Domain-EPP-Code an :email. Der Code wird weder gespeichert noch protokolliert.",
+    "Open the domain": "Domain öffnen",
+    "Request EPP code": "EPP-Code anfordern",
+    "Send EPP code": "EPP-Code senden",
+    "The EPP (transfer) code you entered": "Der eingegebene EPP-Code (Transfercode)",
+    "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "Mit dem EPP-Code kann ein anderer Anbieter diese Domain übernehmen. Wir senden ihn Ihnen per E-Mail; geben Sie ihn nur an den Anbieter weiter, zu dem Sie die Domain umziehen.",
+    "The email could not be sent. See Settings → Logs → Email log.": "Die E-Mail konnte nicht gesendet werden. Siehe Einstellungen → Logs → E-Mail-Protokoll.",
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Wenn Sie im Registrar-Menü einer Domain auf EPP-Code senden klicken, z. B. nachdem ein Kunde den Code einer Domain bei einem Registrar angefordert hat, dessen API keinen ausgibt (Namecheap)."
 }

@@ -145,6 +145,10 @@ return [
         'subject' => 'Domena {$domain} wygasła',
         'body' => "Domena **{\$domain}** wygasła {\$expiry_date}. Prosimy odnowić ją jak najszybciej, w przeciwnym razie może ją zarejestrować ktokolwiek.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'Kod EPP domeny {$domain}',
+        'body' => "Kod EPP (kod transferu) domeny **{\$domain}** to:\n\n**{\$epp_code}**\n\nPrzekaż go tylko dostawcy, do którego przenosisz domenę. Jeśli o niego nie prosiłeś, skontaktuj się z nami.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} zbliża się do limitu swojego pakietu',

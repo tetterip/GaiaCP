@@ -145,6 +145,10 @@ return [
         'subject' => 'Domaine expiré : {$domain}',
         'body' => "Le domaine **{\$domain}** a expiré le {\$expiry_date}. Renouvelez-le rapidement, sinon n'importe qui pourrait l'enregistrer.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'Code EPP de {$domain}',
+        'body' => "Le code EPP (code de transfert) de **{\$domain}** est :\n\n**{\$epp_code}**\n\nNe le donnez qu'au fournisseur vers lequel vous transférez le domaine. Si vous ne l'avez pas demandé, veuillez nous contacter.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} approche de la limite de son forfait',

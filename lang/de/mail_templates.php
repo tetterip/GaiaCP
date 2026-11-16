@@ -145,6 +145,10 @@ return [
         'subject' => 'Die Domain {$domain} ist abgelaufen',
         'body' => "Die Domain **{\$domain}** ist am {\$expiry_date} abgelaufen. Verlängern Sie sie bald, sonst kann sie von jedem registriert werden.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'EPP-Code von {$domain}',
+        'body' => "Der EPP-Code (Transfercode) von **{\$domain}** lautet:\n\n**{\$epp_code}**\n\nGeben Sie ihn nur an den Anbieter weiter, zu dem Sie die Domain umziehen. Wenn Sie ihn nicht angefordert haben, kontaktieren Sie uns bitte.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} erreicht bald das Limit seines Pakets',

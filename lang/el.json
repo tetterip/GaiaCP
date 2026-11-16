@@ -4164,5 +4164,19 @@
     "Also change the :panel login password (username: :login)": "Αλλαγή και του κωδικού σύνδεσης στο :panel (όνομα χρήστη: :login)",
     "The client signs in to :panel with the username :login, not :username. It is the same for all their accounts on this server.": "Ο πελάτης συνδέεται στο :panel με το όνομα χρήστη :login, όχι με το :username. Είναι το ίδιο για όλους τους λογαριασμούς του σε αυτόν τον server.",
     "You sign in to :panel with the username :login, not :username. It is the same for all your services there.": "Συνδέεστε στο :panel με το όνομα χρήστη :login, όχι με το :username. Είναι το ίδιο για όλες τις υπηρεσίες σας εκεί.",
-    "Client :client has this email too. Only one of them can log in to the client area with it.": "Ο πελάτης :client έχει κι αυτός αυτό το email. Μόνο ο ένας από τους δύο μπορεί να συνδεθεί με αυτό στην περιοχή πελατών."
+    "Client :client has this email too. Only one of them can log in to the client area with it.": "Ο πελάτης :client έχει κι αυτός αυτό το email. Μόνο ο ένας από τους δύο μπορεί να συνδεθεί με αυτό στην περιοχή πελατών.",
+    ":client asked for it. Read it at the registrar, then press Send EPP code.": "Ο :client τον ζήτησε. Βρες τον στον registrar και πάτα Αποστολή κωδικού EPP.",
+    ":client asked for the EPP code of :domain": "Ο :client ζήτησε τον κωδικό EPP του :domain",
+    ":registrar gives no EPP code through its API. Read it in your :registrar account, then press Send EPP code in the domain's Registrar menu: the client gets it by email.": "Η :registrar δεν δίνει κωδικό EPP μέσω του API της. Βρες τον στον λογαριασμό σου στη :registrar και πάτα Αποστολή κωδικού EPP στο μενού Registrar του domain: ο πελάτης τον παίρνει με email.",
+    "Domain EPP Code": "Κωδικός EPP domain",
+    "EPP code emailed to :email": "Ο κωδικός EPP στάλθηκε στο :email",
+    "EPP code request: :name": "Αίτημα κωδικού EPP: :name",
+    "Emails the code to :email with the Domain EPP Code template. The code is not stored or logged.": "Στέλνει τον κωδικό στο :email με το πρότυπο Κωδικός EPP domain. Ο κωδικός δεν αποθηκεύεται ούτε καταγράφεται.",
+    "Open the domain": "Άνοιγμα του domain",
+    "Request EPP code": "Αίτημα κωδικού EPP",
+    "Send EPP code": "Αποστολή κωδικού EPP",
+    "The EPP (transfer) code you entered": "Ο κωδικός EPP (μεταφοράς) που έδωσες",
+    "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "Ο κωδικός EPP επιτρέπει σε άλλον πάροχο να αναλάβει αυτό το domain. Θα σας τον στείλουμε με email· δώστε τον μόνο σε αυτόν στον οποίο μεταφέρετε το domain.",
+    "The email could not be sent. See Settings → Logs → Email log.": "Το email δεν στάλθηκε. Δες Ρυθμίσεις → Logs → Email log.",
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Όταν πατάς Αποστολή κωδικού EPP στο μενού Registrar ενός domain, π.χ. αφού ένας πελάτης ζήτησε τον κωδικό ενός domain σε registrar που δεν τον δίνει μέσω API (Namecheap)."
 }

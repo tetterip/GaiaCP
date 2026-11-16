@@ -145,6 +145,10 @@ return [
         'subject' => 'Il dominio {$domain} è scaduto',
         'body' => "Il dominio **{\$domain}** è scaduto il {\$expiry_date}. Lo rinnovi al più presto, altrimenti potrebbe essere registrato da chiunque.\n\n{\$payment_instructions}",
     ],
+    'domain_epp_code' => [
+        'subject' => 'Codice EPP di {$domain}',
+        'body' => "Il codice EPP (codice di trasferimento) di **{\$domain}** è:\n\n**{\$epp_code}**\n\nComunicalo solo al fornitore verso cui trasferisci il dominio. Se non l'hai richiesto, contattaci.",
+    ],
 
     'usage_warning' => [
         'subject' => '{$domain} si avvicina al limite del suo pacchetto',
