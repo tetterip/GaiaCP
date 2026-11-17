@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Plugins\Catalogue\Catalogue;
 use App\Plugins\PluginManager;
 use App\Plugins\PluginState;
+use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -268,16 +269,16 @@ class PluginCataloguePageTest extends TestCase
             ->assertSee('A community plugin');
 
         Livewire::test(PluginCatalogueEntry::class, ['folder' => $this->name])
-            ->assertActionHasUrl('publicPage', "https://plugins.example.test/plugins/{$this->name}/")
-            ->assertActionVisible('install')
-            ->assertActionHidden('update')
-            ->callAction('install', ['password' => 'wrong'])
+            ->assertActionHasUrl(TestAction::make('publicPage')->schemaComponent('plugin', 'content'), "https://plugins.example.test/plugins/{$this->name}/")
+            ->assertActionVisible(TestAction::make('install')->schemaComponent('plugin', 'content'))
+            ->assertActionDoesNotExist(TestAction::make('update')->schemaComponent('plugin', 'content'))
+            ->callAction(TestAction::make('install')->schemaComponent('plugin', 'content'), ['password' => 'wrong'])
             ->assertHasActionErrors(['password']);
 
         Livewire::test(PluginCatalogueEntry::class, ['folder' => $this->name])
-            ->callAction('install', ['password' => 'secret-password'])
+            ->callAction(TestAction::make('install')->schemaComponent('plugin', 'content'), ['password' => 'secret-password'])
             ->assertNotified('Catalogue plugin 1.1.0 installed')
-            ->assertActionHidden('install')
+            ->assertActionDoesNotExist(TestAction::make('install')->schemaComponent('plugin', 'content'))
             ->assertSee('Installed');
 
         $this->assertSame('1.1.0', app(PluginManager::class)->find(Str::kebab($this->name))->version());
