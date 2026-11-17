@@ -11,7 +11,8 @@ onto that repository's `catalogue` branch, which the web server deploys. No code
 catalogue.json         the plugins and their versions (format below)
 catalogue.json.sig     base64 Ed25519 signature of catalogue.json's exact bytes
 zips/<Folder>-<version>.zip
-index.html             the public page
+index.html             the public page (tags filter it; ?tag=<slug> picks one)
+plugins/<Folder>/      each plugin's public page: descriptions, tags, every version's changelog and zip
 ```
 
 ## catalogue.json, format 1
@@ -68,7 +69,7 @@ index.html             the public page
 - Settings → System → Plugin catalogue (`App\Filament\Pages\PluginCatalogue`, super admins) lists the stored copy,
   filtered by tag (`?tag=<slug>` picks one), type and status; each plugin has its own page
   (`PluginCatalogueEntry`, `/admin/settings/plugins/catalogue/<Folder>`: changelog of every version, details, tags),
-  which the update bell opens;
+  which the update bell opens, with a link to the plugin's public page;
   Install / Update ask for the admin's password and go through `CatalogueInstaller` (newest version that runs here →
   `download()` → `PluginInstaller::install()`), so the plugin starts disabled and is uninstalled like an uploaded one.
   Both are hidden while `GAIACP_PLUGIN_UPLOADS=false`; the page is closed in the demo.

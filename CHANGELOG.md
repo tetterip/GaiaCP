@@ -5,9 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 - Plugin catalogue: each plugin opens on its own page (changelog of every version, what it needs, author, licence,
   Install / Update), and plugins carry tags, shown in the list and used to filter it with the type and status. The
   bell for a plugin update opens that plugin's page.
+=======
+- Uninstalling a plugin no longer leaves every admin page with "500 Server Error" until the next deploy, where pages are
+  cached (`php artisan optimize`): installing and uninstalling now also clear Filament's cached list of pages.
+>>>>>>> origin/main
 - Installing or updating a plugin no longer switches the rest of the page to English (and to a copy of GaiaCP without
   its plugins) where the config is cached: rebuilding the cache made a second copy of the app that the request kept.
 - The Alpha Bank, Eurobank and Piraeus Bank plugins moved out of GaiaCP into the plugin catalogue

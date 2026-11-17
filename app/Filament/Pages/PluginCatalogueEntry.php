@@ -92,6 +92,12 @@ class PluginCatalogueEntry extends Page
         return [
             $this->installAction('install'),
             $this->installAction('update'),
+            Action::make('publicPage')
+                ->label('Public page')
+                ->icon(Heroicon::OutlinedGlobeAlt)
+                ->color('gray')
+                // the catalogue builder writes plugins/<Folder>/ next to catalogue.json
+                ->url(fn () => rtrim((string) config('gaiacp.plugins.catalogue.url'), '/').'/plugins/'.rawurlencode($this->folder).'/', shouldOpenInNewTab: true),
             Action::make('website')
                 ->label('Website')
                 ->icon(Heroicon::OutlinedArrowTopRightOnSquare)

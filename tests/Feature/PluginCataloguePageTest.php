@@ -268,6 +268,7 @@ class PluginCataloguePageTest extends TestCase
             ->assertSee('A community plugin');
 
         Livewire::test(PluginCatalogueEntry::class, ['folder' => $this->name])
+            ->assertActionHasUrl('publicPage', "https://plugins.example.test/plugins/{$this->name}/")
             ->assertActionVisible('install')
             ->assertActionHidden('update')
             ->callAction('install', ['password' => 'wrong'])
