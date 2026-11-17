@@ -205,6 +205,7 @@ class Catalogue
             licence: filled($plugin['licence'] ?? null) ? (string) $plugin['licence'] : null,
             official: (bool) ($plugin['official'] ?? false),
             versions: $versions,
+            tags: self::tags($plugin['tags'] ?? []),
         );
     }
 
@@ -237,6 +238,19 @@ class Catalogue
             releasedAt: filled($version['released_at'] ?? null) ? CarbonImmutable::parse((string) $version['released_at']) : null,
             changelog: (string) ($version['changelog'] ?? ''),
         );
+    }
+
+    /**
+     * Tags are slugs; a malformed one is left out rather than refusing the catalogue, since they only help to find
+     * a plugin.
+     *
+     * @return list<string>
+     */
+    private static function tags(mixed $tags): array
+    {
+        return collect(is_array($tags) ? $tags : [])
+            ->filter(fn (mixed $tag) => is_string($tag) && preg_match('/^[a-z0-9][a-z0-9-]{0,30}$/', $tag))
+            ->unique()->take(10)->values()->all();
     }
 
     private static function link(mixed $url): ?string

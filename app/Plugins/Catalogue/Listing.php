@@ -8,6 +8,7 @@ final readonly class Listing
     /**
      * @param  array<string, string>  $description  locale => text, `en` always there
      * @param  list<ListingVersion>  $versions  newest first
+     * @param  list<string>  $tags  slugs like "greece" (App\Plugins\Catalogue\Tags names them)
      */
     public function __construct(
         public string $folder,
@@ -21,6 +22,7 @@ final readonly class Listing
         public ?string $licence,
         public bool $official,
         public array $versions,
+        public array $tags = [],
     ) {}
 
     public function description(?string $locale = null): string

@@ -876,11 +876,6 @@ parameters:
 			count: 1
 			path: app/Filament/Pages/EditEmailTemplate.php
 
-		-
-			message: '#^Using nullsafe property access "\?\-\>plugins" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Filament/Pages/PluginCatalogue.php
 
 		-
 			message: '#^Parameter \#1 \$items of method Illuminate\\Support\\Collection\<int,\(array\|string\)\>\:\:merge\(\) expects Illuminate\\Contracts\\Support\\Arrayable\<int, \(array\|string\)\>\|iterable\<int, \(array\|string\)\>, Illuminate\\Support\\Collection\<string, \(array\|string\)\> given\.$#'
