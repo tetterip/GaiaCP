@@ -72,7 +72,7 @@ class PluginCatalogueEntry extends Page
         return $this->cataloguePlugin()->name;
     }
 
-    /** The name and description sit above the changelog (content()), not over the Settings menu. */
+    /** The name, author and buttons are the first box of the page (content()), not over the Settings menu. */
     public function getHeading(): string|Htmlable
     {
         return '';
@@ -88,69 +88,70 @@ class PluginCatalogueEntry extends Page
         ];
     }
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            $this->installAction('install'),
-            $this->installAction('update'),
-            Action::make('publicPage')
-                ->label('Public page')
-                ->icon(Heroicon::OutlinedGlobeAlt)
-                ->color('gray')
-                // the catalogue builder writes plugins/<Folder>/ next to catalogue.json
-                ->url(fn () => rtrim((string) config('gaiacp.plugins.catalogue.url'), '/').'/plugins/'.rawurlencode($this->folder).'/', shouldOpenInNewTab: true),
-            Action::make('website')
-                ->label('Website')
-                ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
-                ->color('gray')
-                ->url(fn () => $this->cataloguePlugin()->homepage, shouldOpenInNewTab: true)
-                ->visible(fn () => filled($this->cataloguePlugin()->homepage)),
-        ];
-    }
-
     public function content(Schema $schema): Schema
     {
         $listing = $this->cataloguePlugin();
         $row = $this->row($listing);
         $version = $listing->best() ?? $listing->latest();
+        $author = filled($listing->authorUrl)
+            ? '<a href="'.e($listing->authorUrl).'" target="_blank" rel="noopener" style="text-decoration: underline">'.e($listing->author).'</a>'
+            : e($listing->author);
 
         return $schema->components([
-            Grid::make(['default' => 1, 'lg' => 3])->schema([
-                Grid::make(1)->columnSpan(['lg' => 2])->schema([
-                    Section::make()
-                        ->schema([
-                            Text::make(new HtmlString('<h1 class="fi-header-heading">'.e($listing->name).'</h1>'
-                                .'<p class="fi-header-subheading" style="margin-top: 0.5rem">'.e($listing->description()).'</p>')),
-                            Text::make($this->communityNote())->color('warning')->visible(! $listing->official),
-                        ]),
-                    Section::make(__('Changelog'))
-                        ->schema(collect($listing->versions)
-                            ->map(fn (ListingVersion $v) => Text::make(new HtmlString('<div class="fi-prose"><h3>'.e($v->version)
-                                .($v->releasedAt ? ' <small style="font-weight: normal; color: var(--gray-500)">'.e($this->date($v)).'</small>' : '').'</h3>'
-                                .Str::markdown($v->changelog ?: '-', ['html_input' => 'strip', 'allow_unsafe_links' => false])
-                                .($v->runsHere() ? '' : '<p style="color: var(--gray-500)">'.e(__('Needs :needs', ['needs' => $v->missing()])).'</p>')
-                                .'</div>')))
-                            ->all()),
+            Section::make(new HtmlString('<span style="font-size: 1.5rem; line-height: 2rem">'.e($listing->name).'</span>'))
+                ->key('plugin')
+                ->icon(Heroicon::OutlinedPuzzlePiece)
+                ->description(new HtmlString(__('By :author', ['author' => $author])))
+                ->headerActions([
+                    $this->installAction('install'),
+                    $this->installAction('update'),
+                    Action::make('publicPage')
+                        ->label('Public page')
+                        ->icon(Heroicon::OutlinedGlobeAlt)
+                        ->color('gray')
+                        // the catalogue builder writes plugins/<Folder>/ next to catalogue.json
+                        ->url(fn () => rtrim((string) config('gaiacp.plugins.catalogue.url'), '/').'/plugins/'.rawurlencode($this->folder).'/', shouldOpenInNewTab: true),
+                    Action::make('website')
+                        ->label('Website')
+                        ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
+                        ->color('gray')
+                        ->url(fn () => $this->cataloguePlugin()->homepage, shouldOpenInNewTab: true)
+                        ->visible(fn () => filled($this->cataloguePlugin()->homepage)),
+                ])
+                ->schema([
+                    Text::make($listing->description()),
+                    Text::make($this->communityNote())->color('warning')->visible(! $listing->official),
                 ]),
+            Grid::make(['default' => 1, 'lg' => 3])->schema([
+                Section::make(__('Changelog'))
+                    ->columnSpan(['lg' => 2])
+                    ->schema(collect($listing->versions)
+                        ->map(fn (ListingVersion $v) => Text::make(new HtmlString('<div class="fi-prose"><h3>'.e($v->version)
+                            .($v->releasedAt ? ' <small style="font-weight: normal; color: var(--gray-500)">'.e($this->date($v)).'</small>' : '').'</h3>'
+                            .Str::markdown($v->changelog ?: '-', ['html_input' => 'strip', 'allow_unsafe_links' => false])
+                            .($v->runsHere() ? '' : '<p style="color: var(--gray-500)">'.e(__('Needs :needs', ['needs' => $v->missing()])).'</p>')
+                            .'</div>')))
+                        ->all()),
                 Section::make(__('Details'))
                     ->columnSpan(1)
+                    ->inlineLabel()
                     ->schema([
                         TextEntry::make('status')->label('Status')->state($row['status'])->badge()->color(self::statusColor($row['status_key'])),
-                        TextEntry::make('version')->label('Version')->state($version->version.($version->releasedAt ? ' · '.$this->date($version) : '')),
-                        TextEntry::make('installed')->label('Installed here')->state($row['installed'] ?? __('No')),
+                        TextEntry::make('version')->label('Version')->state($version->version),
+                        TextEntry::make('updated')->label('Updated')->state($version->releasedAt ? $this->date($version) : null)
+                            ->visible($version->releasedAt !== null),
+                        TextEntry::make('installed')->label('Installed')->state($row['installed'] ?? __('No')),
                         TextEntry::make('needs')->label('Needs')->state('GaiaCP '.($version->requires ?? '0').'+'.($version->php ? ', PHP '.$version->php.'+' : '')),
                         TextEntry::make('source')->label('Source')->state($listing->official ? __('Official') : __('Community'))
                             ->badge()->color($listing->official ? 'success' : 'gray'),
                         TextEntry::make('type')->label('Type')->state($row['category']),
+                        TextEntry::make('licence')->label('Licence')->state($listing->licence)->visible(filled($listing->licence)),
                         TextEntry::make('tags')->label('Tags')
                             ->state($listing->tags)
                             ->formatStateUsing(fn (string $state) => Tags::label($state))
                             ->badge()->color('info')
                             ->url(fn (string $state) => PluginCatalogue::getUrl(['tag' => $state]))
                             ->visible($listing->tags !== []),
-                        TextEntry::make('author')->label('Author')->state($listing->author)
-                            ->url($listing->authorUrl, shouldOpenInNewTab: true),
-                        TextEntry::make('licence')->label('Licence')->state($listing->licence)->visible(filled($listing->licence)),
                     ]),
             ]),
         ]);
