@@ -52,20 +52,20 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 **Billing**
 - Payment notices (proformas) made and emailed before each due date, with reminders and overdue notices
 - Automatic suspension of unpaid hosting, and unsuspension once it is paid
-- Card payments through Stripe Checkout, PayPal, Alpha Bank, Eurobank and Piraeus Bank (from the plugin catalogue), Nexi XPay, Mastercard Gateway, IRIS (Greek instant payments, QR code on notices), bank transfer, client credit, tax and EU reverse charge, several currencies
+- Card payments through Stripe Checkout, PayPal, Nexi XPay, Mastercard Gateway, Alpha Bank, Eurobank, Piraeus Bank and IRIS (Greek instant payments, QR code on notices; these four from the plugin catalogue), bank transfer, client credit, tax and EU reverse charge, several currencies
 - Optional numbered invoices and credit notes as PDF, issued when a notice is paid, with a CSV export for your accountant
 - Coupons, sale prices on products and domain endings, quotes, upgrades and downgrades, price changes with notice,
   add-ons and product options
 - Reports: income, forecast, profit per server and per domain ending
 
 **Hosting, domains and SSL**
-- Accounts created, suspended and ended on **cPanel / WHM**, **Plesk**, **DirectAdmin**, **HestiaCP**, **CyberPanel**, **Virtualmin** and **Enhance**, and VPS on **Proxmox VE**
-- Domains registered, transferred, renewed and synced at **easy.gr**, **Enom**, **Namecheap**, **NameSilo**, **Openprovider**, **GoDaddy** and **ResellerClub**, or by email for any other registrar;
+- Accounts created, suspended and ended on **cPanel / WHM**, **Plesk**, **DirectAdmin**, **HestiaCP**, **CyberPanel**, **Virtualmin** and **Enhance** (from the plugin catalogue), and VPS on **Proxmox VE**
+- Domains registered, transferred, renewed and synced at **Enom**, **Namecheap**, **NameSilo**, **Openprovider**, **ResellerClub**, **easy.gr** and **GoDaddy** (the last two from the plugin catalogue), or by email for any other registrar;
   domain endings and their costs imported from the registrar, with a warning when one sells at a loss
 - A module queue: a set up, suspension or renewal that fails on a server or at a registrar waits there and is retried
 - SSL certificates sold and reissued through **GoGetSSL**, validated and installed on your own cPanel / Plesk hosting
-- A comparison of each server's accounts with what you bill, and uptime from Uptime Kuma, UptimeRobot, HetrixTools
-  or Better Stack
+- A comparison of each server's accounts with what you bill, and uptime from Uptime Kuma, UptimeRobot, Better Stack
+  or HetrixTools (from the plugin catalogue)
 
 **Your clients**
 - A client area where clients order, pay, change nameservers, log in to their hosting panel, open tickets, read the
@@ -83,7 +83,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 - A dashboard you arrange yourself, a notifications bell, push notifications on your phone, a setup guide
 - Admin users with access levels, two-factor sign-in, passkeys, sign-in links by email, Google sign-in, login
   protection, backups, system health, logs
-- An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama) that
+- An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama; Kimi and Ollama from the plugin catalogue) that
   improves and translates the texts you write, drafts and summarises ticket replies, writes personal payment reminders,
   fills in missing translations and answers questions about your data in plain words
 - Webhooks, Slack, Discord and Telegram, a REST API, and an import from WHMCS

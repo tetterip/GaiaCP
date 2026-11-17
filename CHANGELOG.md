@@ -7,6 +7,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - Uninstalling a plugin no longer leaves every admin page with "500 Server Error" until the next deploy, where pages are
   cached (`php artisan optimize`): installing and uninstalling now also clear Filament's cached list of pages.
+- Eight more plugins moved out of GaiaCP into the plugin catalogue: IRIS, Enhance, easy.gr, GoDaddy, HetrixTools, ΑΑΔΕ,
+  Ollama and Kimi. An update keeps them where they are installed, on or off as they were, with their settings and data,
+  and they update from the catalogue from then on. A Git checkout loses the folders on its next pull: install them again
+  under Settings → System → Plugin catalogue (their data is still there).
+- GaiaCP's own tests use a built-in test registrar (`Tests\FakesRegistrar`) instead of easy.gr.
 - Installing or updating a plugin no longer switches the rest of the page to English (and to a copy of GaiaCP without
   its plugins) where the config is cached: rebuilding the cache made a second copy of the app that the request kept.
 - The Alpha Bank, Eurobank and Piraeus Bank plugins moved out of GaiaCP into the plugin catalogue

@@ -16,14 +16,14 @@ use App\Models\Product;
 use App\Models\Server;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Plugins\EasyGr\EasyRegistrar;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
 use Tests\FakesWhm;
+use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 class AutoSetupTest extends TestCase
 {
-    use FakesEasy, FakesWhm, RefreshDatabase;
+    use FakesRegistrar, FakesWhm, RefreshDatabase;
 
     private Client $client;
 
@@ -35,7 +35,7 @@ class AutoSetupTest extends TestCase
 
         $this->travelTo('2026-10-09 10:00');
         $this->fakeWhm();
-        $this->fakeEasy();
+        $this->fakeRegistrar();
         config(['gaiacp.domains.nameservers' => ['ns1.host.gr', 'ns2.host.gr']]);
 
         $this->client = Client::factory()->create();
@@ -122,7 +122,7 @@ class AutoSetupTest extends TestCase
 
         $this->assertSame([], $recorder->setupErrors);
         $this->assertSame(ServiceStatus::Active, $order->services()->sole()->status);
-        $this->assertContains(EasyRegistrar::REGISTER, $this->easyActions());
+        $this->assertContains(TestRegistrar::REGISTER, $this->registrarActions());
     }
 
     public function test_never_is_left_for_the_account_menu(): void
