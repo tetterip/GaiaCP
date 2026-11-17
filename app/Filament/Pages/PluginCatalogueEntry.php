@@ -117,13 +117,12 @@ class PluginCatalogueEntry extends Page
         return $schema->components([
             Grid::make(['default' => 1, 'lg' => 3])->schema([
                 Grid::make(1)->columnSpan(['lg' => 2])->schema([
-                    Text::make(new HtmlString('<h1 class="fi-header-heading">'.e($listing->name).'</h1>'
-                        .'<p class="fi-header-subheading" style="margin-top: 0.5rem">'.e($listing->description()).'</p>')),
                     Section::make()
                         ->schema([
-                            Text::make($this->communityNote())->color('warning'),
-                        ])
-                        ->visible(! $listing->official),
+                            Text::make(new HtmlString('<h1 class="fi-header-heading">'.e($listing->name).'</h1>'
+                                .'<p class="fi-header-subheading" style="margin-top: 0.5rem">'.e($listing->description()).'</p>')),
+                            Text::make($this->communityNote())->color('warning')->visible(! $listing->official),
+                        ]),
                     Section::make(__('Changelog'))
                         ->schema(collect($listing->versions)
                             ->map(fn (ListingVersion $v) => Text::make(new HtmlString('<div class="fi-prose"><h3>'.e($v->version)
