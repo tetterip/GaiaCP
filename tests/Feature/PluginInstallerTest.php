@@ -10,6 +10,7 @@ use App\Plugins\PluginInstaller;
 use App\Plugins\PluginInstallException;
 use App\Plugins\PluginManager;
 use App\Plugins\PluginState;
+use Filament\Facades\Filament;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -367,6 +368,24 @@ class PluginInstallerTest extends TestCase
         $this->assertDirectoryDoesNotExist("{$this->directory}/{$this->name}");
         $this->assertTrue(Schema::hasTable($this->table()));
         $this->assertTrue(Setting::query()->where('key', 'gaiacp.demo.token')->exists());
+    }
+
+    public function test_installing_and_uninstalling_clear_the_cached_panel_components(): void
+    {
+        $cache = Filament::getPanel('admin')->getComponentCachePath();
+        File::ensureDirectoryExists(dirname($cache));
+
+        try {
+            File::put($cache, '<?php return [];');
+            $plugin = app(PluginInstaller::class)->install($this->zip($this->pluginFiles(), $this->name));
+            $this->assertFileDoesNotExist($cache);
+
+            File::put($cache, '<?php return [];'); // as `optimize` on the next deploy
+            app(PluginInstaller::class)->uninstall($plugin);
+            $this->assertFileDoesNotExist($cache);
+        } finally {
+            File::delete($cache);
+        }
     }
 
     public function test_bundled_plugins_are_never_uninstalled(): void

@@ -5,6 +5,7 @@ namespace App\Plugins;
 use App\Models\ActivityLog;
 use App\Models\Setting;
 use App\Support\Demo;
+use Filament\Facades\Filament;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -489,6 +490,13 @@ class PluginInstaller
                     Artisan::call("{$cache}:clear"); // left uncached: slower, still right; the next deploy caches again
                 }
             });
+        }
+
+        // `optimize` also caches each panel's pages, resources and widgets, with the plugins' among them: an uninstalled
+        // plugin's page there breaks every page with a missing class, and an installed one's would not show. This
+        // request's panels were built before the change, so the cache is cleared, not rebuilt; the next deploy caches again.
+        foreach (Filament::getPanels() as $panel) {
+            $panel->clearCachedComponents();
         }
     }
 
