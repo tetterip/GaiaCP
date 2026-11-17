@@ -14,8 +14,8 @@ class RegistrarFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Email Notifications',
-            'module' => 'email',
+            'name' => 'Easy.gr',
+            'module' => 'easygr',
             'credentials' => ['username' => 'reseller', 'password' => 'secret'],
             'verify_tls' => true,
             'active' => true,

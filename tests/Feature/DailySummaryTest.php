@@ -18,19 +18,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Mail\MailManager;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
-use Tests\FakesRegistrar;
+use Tests\FakesEasy;
 use Tests\TestCase;
 
 class DailySummaryTest extends TestCase
 {
-    use FakesRegistrar, RefreshDatabase;
+    use FakesEasy, RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->travelTo('2026-10-10 09:00');
-        $this->fakeRegistrar();
+        $this->fakeEasy();
         Mail::fake();
     }
 
@@ -84,7 +84,7 @@ class DailySummaryTest extends TestCase
         $renewed = $this->domain('renewed.gr', ['expires_at' => '2026-11-05', 'nameservers' => ['ns1.x.gr', 'ns2.x.gr']]);
         $same = $this->domain('same.gr', ['expires_at' => '2027-01-01', 'nameservers' => ['NS1.X.GR', 'ns2.x.gr']]);
         $broken = $this->domain('broken.gr');
-        $this->registrarDomains = [
+        $this->easyDomains = [
             'renewed.gr' => ['expires' => '2027-11-05', 'ns' => ['ns1.x.gr', 'ns2.x.gr']],
             'same.gr' => ['expires' => '2027-01-01', 'ns' => ['ns1.x.gr', 'ns2.x.gr']],
         ];
@@ -137,7 +137,7 @@ class DailySummaryTest extends TestCase
     {
         User::factory()->create();
         $this->domain('same.gr', ['expires_at' => '2027-01-01']);
-        $this->registrarDomains = ['same.gr' => ['expires' => '2027-01-01']];
+        $this->easyDomains = ['same.gr' => ['expires' => '2027-01-01']];
         $this->artisan('gaiacp:sync-domains')->assertSuccessful();
 
         $this->artisan('gaiacp:daily-summary')->assertSuccessful();

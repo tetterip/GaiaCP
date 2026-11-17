@@ -151,9 +151,9 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `App\Support\Health\TableSizes` (information_schema on MySQL, dbstat on SQLite)
 - Plugin API: `App\Plugins\PluginApi::STABLE` (documented in `docs/plugin-api.md`, the promise to plugin authors) and
   `INTERNAL` (what bundled plugins also reach into); `PluginApiTest` fails on a bundled plugin using any other `App\` class
-- Plugins: `app/Plugins/` has `Plugin` and `PluginManager` (singleton; `BUILT_IN` = cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel and Virtualmin (off by default), Enom, Email Notifications, VIES VAT check, WHMCS
-  import, Bank transfer, Stripe, PayPal, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on
-  for a bundled one unless `Plugin::enabledByDefault()` is false (VIES; `GAIACP_PLUGINS_START_ENABLED` lists
+- Plugins: `app/Plugins/` has `Plugin` and `PluginManager` (singleton; `BUILT_IN` = cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel and Virtualmin (off by default), easy.gr, Enom, Email Notifications, ΑΑΔΕ, VIES VAT check, WHMCS
+  import, Bank transfer, Stripe, PayPal, Google sign-in, Google reCAPTCHA, Cloudflare Turnstile, Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks, Gaia and Flat themes; `plugins.enabled`, no row = on
+  for a bundled one unless `Plugin::enabledByDefault()` is false (easy.gr, ΑΑΔΕ, VIES; `GAIACP_PLUGINS_START_ENABLED` lists
   ones to start on anyway), off for others; `recordVersions()` writes the row after migrate, so this only decides a new
   install or a newly bundled plugin). Other plugins: `PluginManager::discover()` registers every `plugins/<Folder>/plugin.json`
   (its `class`, else `<Folder>Plugin`; failures in `problems()`), and `App\Plugins\PluginInstaller` (Settings → Plugins

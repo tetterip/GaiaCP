@@ -1,0 +1,14 @@
+{
+    "API key": "API anahtarı",
+    "API secret": "API gizli anahtarı",
+    "Leave empty to keep the current key. Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Mevcut anahtarı korumak için boş bırakın. Şifreli saklanır. developer.godaddy.com → API Keys altında bir üretim anahtarı oluşturun (test ortamı için bir OTE anahtarı).",
+    "Leave empty to keep the current one. Stored encrypted.": "Mevcut değeri korumak için boş bırakın. Şifreli saklanır.",
+    "Only for a reseller sub-account: the customer number whose domains these are. Leave empty for your own account.": "Yalnızca bir bayi alt hesabı için: bu alan adlarının sahibi olan müşteri numarası. Kendi hesabınız için boş bırakın.",
+    "Registers, renews, transfers and syncs domains through a GoDaddy account with an API key.": "Alan adlarını API anahtarlı bir GoDaddy hesabı üzerinden kaydeder, yeniler, transfer eder ve eşitler.",
+    "Sends every call to GoDaddy's test environment (api.ote-godaddy.com), with an OTE key.": "Her çağrıyı bir OTE anahtarıyla GoDaddy'nin test ortamına (api.ote-godaddy.com) gönderir.",
+    "Shopper ID": "Shopper ID",
+    "Shopper id": "Shopper ID",
+    "Stored encrypted.": "Şifreli saklanır.",
+    "Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Şifreli saklanır. developer.godaddy.com → API Keys altında bir üretim anahtarı oluşturun (test ortamı için bir OTE anahtarı).",
+    "Test mode": "Test modu"
+}

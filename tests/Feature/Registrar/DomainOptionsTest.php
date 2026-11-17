@@ -28,19 +28,19 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
-use Tests\FakesRegistrar;
-use Tests\Support\TestRegistrar\TestRegistrar;
+use Plugins\EasyGr\EasyRegistrar;
+use Tests\FakesEasy;
 use Tests\TestCase;
 
 class DomainOptionsTest extends TestCase
 {
-    use FakesRegistrar, RefreshDatabase;
+    use FakesEasy, RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fakeRegistrar();
+        $this->fakeEasy();
         Mail::fake();
         config(['gaiacp.invoices.days_before' => 14, 'gaiacp.tax.enabled' => false]);
     }
@@ -141,11 +141,11 @@ class DomainOptionsTest extends TestCase
     {
         config(['gaiacp.domains.renew_on_payment' => false]);
         $service = $this->domain('acme.gr');
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         app(RecordPayment::class)->handle($service, 1500, CarbonImmutable::parse('2026-10-20'), 'bank_transfer');
 
-        $this->assertSame([], $this->registrarCalls);
+        $this->assertSame([], $this->easyCalls);
         $this->assertSame('2027-11-01', $service->fresh()->next_due_date->toDateString());
     }
 
@@ -153,7 +153,7 @@ class DomainOptionsTest extends TestCase
     {
         $service = $this->domain('acme.gr', ['price_cents' => 0]);
         Service::factory()->for($service->client)->create(['domain' => 'acme.gr']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         $result = app(RenewFreeDomains::class)->handle(CarbonImmutable::parse('2026-10-20'));
         $again = app(RenewFreeDomains::class)->handle(CarbonImmutable::parse('2026-10-20'));
@@ -162,7 +162,7 @@ class DomainOptionsTest extends TestCase
         $this->assertSame(['renewed' => 0, 'ended' => 0], $again);
         $this->assertSame('2027-11-01', $service->fresh()->next_due_date->toDateString());
         $this->assertSame(0, $service->payments()->sole()->amount_cents);
-        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
+        $this->assertSame([EasyRegistrar::RENEW], $this->easyActions());
     }
 
     public function test_free_domain_without_hosting_is_set_to_end(): void
@@ -182,7 +182,7 @@ class DomainOptionsTest extends TestCase
     {
         config(['gaiacp.domains.free_renew_requires_product' => false]);
         $service = $this->domain('acme.gr', ['price_cents' => 0]);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         $this->assertSame(['renewed' => 1, 'ended' => 0], app(RenewFreeDomains::class)->handle(CarbonImmutable::parse('2026-10-20')));
     }
@@ -193,7 +193,7 @@ class DomainOptionsTest extends TestCase
         $order = Order::create(['client_id' => $service->client_id, 'status' => 'completed']);
         $service->update(['order_id' => $order->id]);
         Service::factory()->for($service->client)->create(['domain' => 'other.gr', 'order_id' => $order->id]);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         $this->assertSame(['renewed' => 1, 'ended' => 0], app(RenewFreeDomains::class)->handle(CarbonImmutable::parse('2026-10-20')));
     }
@@ -218,21 +218,21 @@ class DomainOptionsTest extends TestCase
     {
         config(['gaiacp.domains.idn' => true]);
         $service = $this->domain('Παράδειγμα.gr');
-        $this->registrarDomains['xn--hxajbheg2az3al.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['xn--hxajbheg2az3al.gr'] = ['expires' => '2026-11-01'];
 
         app(RecordPayment::class)->handle($service, 1500, CarbonImmutable::parse('2026-10-20'), 'bank_transfer');
 
         $this->assertSame('παράδειγμα.gr', $service->fresh()->domain);
-        $this->assertSame([[TestRegistrar::RENEW, ['domain' => 'xn--hxajbheg2az3al.gr', 'years' => '1']]], $this->registrarCalls);
+        $this->assertSame([[EasyRegistrar::RENEW, ['domain' => 'xn--hxajbheg2az3al.gr', 'years' => '1']]], $this->easyCalls);
     }
 
     public function test_late_fees_are_added_to_an_expired_domains_notice_and_paid_with_it(): void
     {
         config(['gaiacp.domains.late_fees' => true]);
-        $this->testRegistrar->tlds()->where('tld', '.gr')->update(['grace_fee_cents' => 500, 'grace_days' => 30, 'redemption_fee_cents' => 4000]);
+        $this->easyRegistrar->tlds()->where('tld', '.gr')->update(['grace_fee_cents' => 500, 'grace_days' => 30, 'redemption_fee_cents' => 4000]);
         $service = $this->domain('acme.gr');
         $service->registration()->update(['expires_at' => '2026-11-01']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         app(GenerateInvoices::class)->handle(CarbonImmutable::parse('2026-10-20'));
         $fees = app(AddDomainLateFees::class);
@@ -251,12 +251,12 @@ class DomainOptionsTest extends TestCase
         $this->assertSame(InvoiceStatus::Paid, $invoice->fresh()->status);
         $this->assertSame(6000, $service->payments()->sole()->amount_cents);
         $this->assertSame('2027-11-01', $service->fresh()->next_due_date->toDateString());
-        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
+        $this->assertSame([EasyRegistrar::RENEW], $this->easyActions());
     }
 
     public function test_no_late_fees_when_switched_off_or_for_tracked_domains(): void
     {
-        $this->testRegistrar->tlds()->update(['grace_fee_cents' => 500, 'grace_days' => 30]);
+        $this->easyRegistrar->tlds()->update(['grace_fee_cents' => 500, 'grace_days' => 30]);
         $service = $this->domain('acme.gr');
         $service->registration()->update(['expires_at' => '2026-11-01']);
         $tracked = $this->domain('tracked.gr');
@@ -274,10 +274,10 @@ class DomainOptionsTest extends TestCase
     public function test_paying_the_service_directly_also_settles_its_fee_line(): void
     {
         config(['gaiacp.domains.late_fees' => true]);
-        $this->testRegistrar->tlds()->update(['grace_fee_cents' => 500]);
+        $this->easyRegistrar->tlds()->update(['grace_fee_cents' => 500]);
         $service = $this->domain('acme.gr');
         $service->registration()->update(['expires_at' => '2026-11-01']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
         app(GenerateInvoices::class)->handle(CarbonImmutable::parse('2026-10-20'));
         app(AddDomainLateFees::class)->handle(CarbonImmutable::parse('2026-11-05'));
 

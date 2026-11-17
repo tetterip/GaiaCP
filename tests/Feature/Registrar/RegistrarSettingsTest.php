@@ -14,12 +14,12 @@ use App\Plugins\PluginManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
-use Tests\FakesRegistrar;
+use Tests\FakesEasy;
 use Tests\TestCase;
 
 class RegistrarSettingsTest extends TestCase
 {
-    use FakesRegistrar, RefreshDatabase;
+    use FakesEasy, RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -30,38 +30,34 @@ class RegistrarSettingsTest extends TestCase
 
     public function test_pages_render_and_are_linked_from_settings(): void
     {
-        $this->fakeRegistrar();
+        Registrar::factory()->withTlds()->create();
 
         $this->get(SettingsCluster::getUrl())->assertOk()->assertSee(RegistrarResource::getUrl())->assertSee(TldResource::getUrl());
-        $this->get(RegistrarResource::getUrl())->assertOk()->assertSee('Test registrar')->assertSee('Email Notifications');
+        $this->get(RegistrarResource::getUrl())->assertOk()->assertSee('Easy.gr')->assertSee('Email Notifications');
         $this->get(RegistrarResource::getUrl('create'))->assertOk()->assertDontSee('TLDs and prices');
     }
 
     public function test_create_a_registrar_account(): void
     {
-        $this->fakeRegistrar();
-        Registrar::query()->delete();
         // Email Notifications is there from the start but is no real registrar, so the first real one is the default.
         Livewire::test(CreateRegistrar::class)
-            ->assertSchemaStateSet(['module' => 'enom', 'is_default' => true])
+            ->assertSchemaStateSet(['module' => 'easygr', 'is_default' => true])
             ->fillForm([
-                'module' => 'test',
-                'name' => 'Test registrar',
+                'name' => 'Easy.gr',
                 'credentials' => ['username' => 'reseller', 'password' => 'p@ss'],
             ])
             ->call('create')
             ->assertHasNoFormErrors();
 
-        $registrar = Registrar::query()->where('module', 'test')->sole();
+        $registrar = Registrar::query()->where('module', 'easygr')->sole();
         $this->assertTrue($registrar->is_default);
         $this->assertSame(['username' => 'reseller', 'password' => 'p@ss'], $registrar->credentials);
-        $this->assertStringNotContainsString('p@ss', DB::table('registrars')->where('module', 'test')->value('credentials'));
+        $this->assertStringNotContainsString('p@ss', DB::table('registrars')->where('module', 'easygr')->value('credentials'));
     }
 
     public function test_blank_password_keeps_the_stored_one(): void
     {
-        $this->fakeRegistrar();
-        $registrar = $this->testRegistrar;
+        $registrar = Registrar::factory()->create();
 
         Livewire::test(EditRegistrar::class, ['record' => $registrar->id])
             ->assertSchemaStateSet(['credentials.password' => null])
@@ -74,8 +70,7 @@ class RegistrarSettingsTest extends TestCase
 
     public function test_edit_form_shows_the_stored_username(): void
     {
-        $this->fakeRegistrar();
-        $registrar = $this->testRegistrar;
+        $registrar = Registrar::factory()->create();
 
         $page = Livewire::test(EditRegistrar::class, ['record' => $registrar->id])
             ->assertSchemaStateSet(['credentials.username' => $registrar->credentials['username'], 'credentials.password' => null]);
@@ -92,8 +87,8 @@ class RegistrarSettingsTest extends TestCase
 
     public function test_only_one_default(): void
     {
-        $first = Registrar::factory()->create(['module' => 'test']);
-        Registrar::factory()->create(['module' => 'test', 'name' => 'Other']);
+        $first = Registrar::factory()->create();
+        Registrar::factory()->create(['name' => 'Other']);
 
         $this->assertFalse($first->refresh()->is_default);
     }
@@ -118,10 +113,10 @@ class RegistrarSettingsTest extends TestCase
 
     public function test_check_action_reads_a_domain(): void
     {
-        $this->fakeRegistrar();
-        $this->registrarDomains['acme.gr'] = ['expires' => '2027-03-15', 'ns' => ['ns1.host.gr']];
+        $this->fakeEasy();
+        $this->easyDomains['acme.gr'] = ['expires' => '2027-03-15', 'ns' => ['ns1.host.gr']];
 
-        Livewire::test(EditRegistrar::class, ['record' => $this->testRegistrar->id])
+        Livewire::test(EditRegistrar::class, ['record' => $this->easyRegistrar->id])
             ->callAction('checkDomain', ['domain' => 'ACME.gr'])
             ->assertNotified('Connected: acme.gr expires 15/03/2027');
     }

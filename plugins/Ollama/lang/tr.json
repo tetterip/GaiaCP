@@ -1,0 +1,8 @@
+{
+    "Base url": "Adres",
+    "Install Ollama (<strong>ollama.com</strong>) on this server or on a machine it can reach, download a model (<strong>ollama pull llama3.3</strong>) and fill in its address. On another machine, start Ollama with OLLAMA_HOST=0.0.0.0 and let only this server reach port 11434.": "Ollama'yı (<strong>ollama.com</strong>) bu sunucuya ya da onun erişebildiği bir makineye kurun, bir model indirin (<strong>ollama pull llama3.3</strong>) ve adresini girin. Başka bir makinede Ollama'yı OLLAMA_HOST=0.0.0.0 ile başlatın ve 11434 portuna yalnızca bu sunucunun erişmesine izin verin.",
+    "Nothing is billed: the model runs on your machine, which needs enough memory for it (about 8 GB for a small model). Texts are sent only when an admin presses an AI button.": "Hiçbir ücret alınmaz: model sizin makinenizde çalışır ve bunun için yeterli belleğe ihtiyaç duyar (küçük bir model için yaklaşık 8 GB). Metinler yalnızca bir yönetici bir yapay zeka düğmesine bastığında gönderilir.",
+    "Ollama": "Ollama",
+    "Ollama for the AI assistant: an open model such as Llama, Qwen or Gemma on your own server or computer, so texts never leave your machines.": "Yapay zeka asistanı için Ollama: Llama, Qwen veya Gemma gibi açık bir model kendi sunucunuzda ya da bilgisayarınızda çalışır, böylece metinler makinelerinizden asla çıkmaz.",
+    "Ollama's OpenAI-compatible address, ending in /v1.": "Ollama'nın OpenAI uyumlu adresi, /v1 ile biter."
+}

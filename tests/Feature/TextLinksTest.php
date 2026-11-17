@@ -7,6 +7,7 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plugins\Aade\AadeSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\Recaptcha\RecaptchaSettings;
 use Plugins\Stripe\StripeSettings;
@@ -42,7 +43,7 @@ class TextLinksTest extends TestCase
         $this->actingAs(User::factory()->create());
         config(['gaiacp.aade.enabled' => true]); // its console link shows only then
 
-        foreach ([RecaptchaSettings::class, TurnstileSettings::class, StripeSettings::class, GoogleLoginSettings::class] as $page) {
+        foreach ([RecaptchaSettings::class, TurnstileSettings::class, StripeSettings::class, AadeSettings::class, GoogleLoginSettings::class] as $page) {
             $links = $this->textLinks($this->get($page::getUrl())->assertOk()->getContent());
 
             $this->assertNotEmpty($links, "{$page} has no links in its texts");

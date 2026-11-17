@@ -16,20 +16,20 @@ use App\Provisioning\ProvisioningException;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Tests\FakesRegistrar;
-use Tests\Support\TestRegistrar\TestRegistrar;
+use Plugins\EasyGr\EasyRegistrar;
+use Tests\FakesEasy;
 use Tests\TestCase;
 
 class DomainLifecycleTest extends TestCase
 {
-    use FakesRegistrar, RefreshDatabase;
+    use FakesEasy, RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->travelTo('2026-10-09 10:00');
-        $this->fakeRegistrar();
+        $this->fakeEasy();
         config(['gaiacp.domains.nameservers' => ['ns1.host.gr', 'ns2.host.gr']]);
     }
 
@@ -52,11 +52,11 @@ class DomainLifecycleTest extends TestCase
 
         app(DomainLifecycle::class)->activate($service);
 
-        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::REGISTER, TestRegistrar::SYNC, TestRegistrar::GET_NAMESERVERS], $this->registrarActions());
-        $this->assertSame(['domain' => 'acme.gr', 'years' => '1', 'ns1' => 'ns1.host.gr', 'ns2' => 'ns2.host.gr', 'ns3' => '', 'ns4' => ''], array_intersect_key($this->registrarCalls[1][1], array_flip(['domain', 'years', 'ns1', 'ns2', 'ns3', 'ns4'])));
+        $this->assertSame([EasyRegistrar::SYNC, EasyRegistrar::REGISTER, EasyRegistrar::SYNC, EasyRegistrar::GET_NAMESERVERS], $this->easyActions());
+        $this->assertSame(['domain' => 'acme.gr', 'years' => '1', 'ns1' => 'ns1.host.gr', 'ns2' => 'ns2.host.gr', 'ns3' => '', 'ns4' => ''], array_intersect_key($this->easyCalls[1][1], array_flip(['domain', 'years', 'ns1', 'ns2', 'ns3', 'ns4'])));
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
         $this->assertSame('2027-10-09', $service->domainDetails->expires_at->toDateString());
-        $this->assertSame($this->testRegistrar->id, $service->domainDetails->registrar_id);
+        $this->assertSame($this->easyRegistrar->id, $service->domainDetails->registrar_id);
         // Read back at once, without waiting for Sync.
         $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $service->domainDetails->nameservers);
         $this->assertNotNull($service->domainDetails->last_synced_at);
@@ -66,7 +66,7 @@ class DomainLifecycleTest extends TestCase
     public function test_a_failed_nameserver_read_after_registering_still_activates(): void
     {
         $service = $this->pendingDomain();
-        $this->registrarFailures[TestRegistrar::GET_NAMESERVERS] = ['2400' => 'Command failed'];
+        $this->easyFailures[EasyRegistrar::GET_NAMESERVERS] = ['2400' => 'Command failed'];
 
         app(DomainLifecycle::class)->activate($service);
 
@@ -81,24 +81,24 @@ class DomainLifecycleTest extends TestCase
 
         app(DomainLifecycle::class)->activate($service);
 
-        $this->assertSame(['ns1.other.gr', 'ns2.other.gr'], $this->registrarDomains['acme.gr']['ns']);
+        $this->assertSame(['ns1.other.gr', 'ns2.other.gr'], $this->easyDomains['acme.gr']['ns']);
     }
 
     public function test_a_retry_after_a_timeout_does_not_register_twice(): void
     {
         $service = $this->pendingDomain();
-        $this->registrarDomains['acme.gr'] = ['expires' => '2027-10-09'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2027-10-09'];
 
         app(DomainLifecycle::class)->activate($service);
 
-        $this->assertNotContains(TestRegistrar::REGISTER, $this->registrarActions());
+        $this->assertNotContains(EasyRegistrar::REGISTER, $this->easyActions());
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
     }
 
     public function test_a_failed_registration_leaves_the_domain_pending(): void
     {
         $service = $this->pendingDomain();
-        $this->registrarFailures[TestRegistrar::REGISTER] = ['2302' => 'Object exists'];
+        $this->easyFailures[EasyRegistrar::REGISTER] = ['2302' => 'Object exists'];
 
         try {
             app(DomainLifecycle::class)->activate($service);
@@ -126,8 +126,8 @@ class DomainLifecycleTest extends TestCase
 
         app(DomainLifecycle::class)->activate($service);
 
-        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::TRANSFER], $this->registrarActions());
-        $this->assertSame('Secret-123', $this->registrarCalls[1][1]['pw']);
+        $this->assertSame([EasyRegistrar::SYNC, EasyRegistrar::TRANSFER], $this->easyActions());
+        $this->assertSame('Secret-123', $this->easyCalls[1][1]['pw']);
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
         $this->assertTrue(ActivityLog::where('event', 'domain.transfer_requested')->exists());
     }
@@ -147,13 +147,13 @@ class DomainLifecycleTest extends TestCase
 
         app(DomainLifecycle::class)->activate($service);
 
-        $this->assertSame([], $this->registrarCalls);
+        $this->assertSame([], $this->easyCalls);
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
     }
 
     public function test_the_chosen_registrar_is_used_over_the_tld_match(): void
     {
-        $other = Registrar::factory()->create(['module' => 'test', 'name' => 'Second account', 'is_default' => false]);
+        $other = Registrar::factory()->create(['name' => 'Second account', 'is_default' => false]);
         $service = $this->pendingDomain(details: ['registrar_id' => $other->id]);
 
         app(DomainLifecycle::class)->activate($service);
@@ -165,7 +165,7 @@ class DomainLifecycleTest extends TestCase
     public function test_sync_reads_expiry_and_nameservers_and_leaves_the_due_date(): void
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'next_due_date' => '2026-11-01']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-05', 'ns' => ['ns1.x.gr', 'ns2.x.gr']];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-05', 'ns' => ['ns1.x.gr', 'ns2.x.gr']];
 
         app(DomainLifecycle::class)->sync($service);
 
@@ -179,11 +179,11 @@ class DomainLifecycleTest extends TestCase
     {
         $service = $this->pendingDomain();
         app(DomainLifecycle::class)->activate($service);
-        $this->registrarCalls = [];
+        $this->easyCalls = [];
 
         app(RecordPayment::class)->handle($service->refresh(), 1500, CarbonImmutable::parse('2026-10-09'), 'bank_transfer');
 
-        $this->assertSame([], $this->registrarCalls);
+        $this->assertSame([], $this->easyCalls);
         $this->assertSame('2027-10-09', $service->refresh()->next_due_date->toDateString());
     }
 
@@ -191,11 +191,11 @@ class DomainLifecycleTest extends TestCase
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'start_date' => '2025-11-01', 'next_due_date' => '2026-11-01']);
         $service->domainDetails()->create(['expires_at' => '2026-11-01']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         app(RecordPayment::class)->handle($service->refresh(), 1500, CarbonImmutable::parse('2026-10-09'), 'bank_transfer');
 
-        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
+        $this->assertSame([EasyRegistrar::RENEW], $this->easyActions());
         $this->assertSame('2027-11-01', $service->refresh()->domainDetails->expires_at->toDateString());
     }
 
@@ -243,7 +243,7 @@ class DomainLifecycleTest extends TestCase
     public function test_daily_sync_command(): void
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2027-01-02'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2027-01-02'];
 
         $this->artisan('gaiacp:sync-domains')->assertSuccessful();
 
@@ -258,13 +258,13 @@ class DomainLifecycleTest extends TestCase
         app(RecordPayment::class)->handle($service->refresh(), 1500, CarbonImmutable::parse('2026-10-09'), 'bank_transfer');
         $this->artisan('gaiacp:sync-domains')->assertSuccessful();
 
-        $this->assertSame([], $this->registrarCalls);
+        $this->assertSame([], $this->easyCalls);
     }
 
     public function test_at_most_four_nameservers(): void
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr']);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2027-01-02'];
+        $this->easyDomains['acme.gr'] = ['expires' => '2027-01-02'];
 
         try {
             app(DomainLifecycle::class)->setNameservers($service, ['ns1.a.gr', 'ns2.a.gr', 'ns3.a.gr', 'ns4.a.gr', 'ns5.a.gr']);
@@ -279,6 +279,6 @@ class DomainLifecycleTest extends TestCase
             ->assertHasActionErrors(['nameservers' => 'max']);
 
         app(DomainLifecycle::class)->setNameservers($service, ['ns1.a.gr', 'ns2.a.gr', 'ns3.a.gr', 'ns4.a.gr']);
-        $this->assertSame(['ns1.a.gr', 'ns2.a.gr', 'ns3.a.gr', 'ns4.a.gr'], $this->registrarDomains['acme.gr']['ns']);
+        $this->assertSame(['ns1.a.gr', 'ns2.a.gr', 'ns3.a.gr', 'ns4.a.gr'], $this->easyDomains['acme.gr']['ns']);
     }
 }

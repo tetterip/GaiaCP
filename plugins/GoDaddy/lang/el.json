@@ -1,0 +1,14 @@
+{
+    "API key": "Κλειδί API",
+    "API secret": "Μυστικό API",
+    "Leave empty to keep the current key. Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Άφησέ το κενό για να μείνει το τρέχον κλειδί. Αποθηκεύεται κρυπτογραφημένο. Φτιάξε ένα κλειδί παραγωγής στο developer.godaddy.com → API Keys (κλειδί OTE για το δοκιμαστικό περιβάλλον).",
+    "Leave empty to keep the current one. Stored encrypted.": "Άφησέ το κενό για να μείνει το τρέχον. Αποθηκεύεται κρυπτογραφημένο.",
+    "Only for a reseller sub-account: the customer number whose domains these are. Leave empty for your own account.": "Μόνο για υπολογαριασμό μεταπωλητή: ο αριθμός πελάτη στον οποίο ανήκουν τα domains. Άφησέ το κενό για τον δικό σου λογαριασμό.",
+    "Registers, renews, transfers and syncs domains through a GoDaddy account with an API key.": "Καταχωρεί, ανανεώνει, μεταφέρει και συγχρονίζει domains μέσω λογαριασμού GoDaddy με κλειδί API.",
+    "Sends every call to GoDaddy's test environment (api.ote-godaddy.com), with an OTE key.": "Στέλνει κάθε κλήση στο δοκιμαστικό περιβάλλον της GoDaddy (api.ote-godaddy.com), με κλειδί OTE.",
+    "Shopper ID": "Shopper ID",
+    "Shopper id": "Shopper ID",
+    "Stored encrypted.": "Αποθηκεύεται κρυπτογραφημένο.",
+    "Stored encrypted. Make a production key at developer.godaddy.com → API Keys (an OTE key for the test environment).": "Αποθηκεύεται κρυπτογραφημένο. Φτιάξε ένα κλειδί παραγωγής στο developer.godaddy.com → API Keys (κλειδί OTE για το δοκιμαστικό περιβάλλον).",
+    "Test mode": "Δοκιμαστική λειτουργία"
+}

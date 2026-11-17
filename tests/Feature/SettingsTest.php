@@ -47,6 +47,7 @@ use Carbon\CarbonImmutable;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Plugins\Aade\AadeSettings;
 use Plugins\BankTransfer\BankTransferSettings;
 use Plugins\BetterStack\BetterStackSettings;
 use Plugins\Blacklists\BlacklistsSettings;
@@ -56,8 +57,12 @@ use Plugins\DeepSeek\DeepSeekSettings;
 use Plugins\Discord\DiscordSettings;
 use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
+use Plugins\HetrixTools\HetrixToolsSettings;
+use Plugins\Iris\IrisSettings;
+use Plugins\Kimi\KimiSettings;
 use Plugins\MastercardGateway\MastercardSettings;
 use Plugins\NexiXpay\NexiXpaySettings;
+use Plugins\Ollama\OllamaSettings;
 use Plugins\OpenAi\OpenAiSettings;
 use Plugins\PayPal\PayPalSettings;
 use Plugins\Proxmox\ProxmoxSettings;
@@ -79,7 +84,7 @@ class SettingsTest extends TestCase
 
     /** Every card on the Settings page, in order. */
     private const PAGES = [
-        GeneralSettings::class, LanguageSettings::class, CompanySettings::class, PaymentMethodsSettings::class, InvoiceSettings::class, TaxSettings::class, CreditSettings::class, SalesSettings::class, ViesSettings::class, ClientFieldResource::class, GoogleLoginSettings::class, RecaptchaSettings::class, TurnstileSettings::class, UptimeKumaSettings::class, UptimeRobotSettings::class, BetterStackSettings::class, GoGetSslSettings::class, BlacklistsSettings::class, SiteChecksSettings::class, ProxmoxSettings::class, AiSettings::class, ClaudeSettings::class, DeepSeekSettings::class, OpenAiSettings::class,
+        GeneralSettings::class, LanguageSettings::class, CompanySettings::class, PaymentMethodsSettings::class, InvoiceSettings::class, TaxSettings::class, CreditSettings::class, SalesSettings::class, AadeSettings::class, ViesSettings::class, ClientFieldResource::class, GoogleLoginSettings::class, RecaptchaSettings::class, TurnstileSettings::class, UptimeKumaSettings::class, UptimeRobotSettings::class, HetrixToolsSettings::class, BetterStackSettings::class, GoGetSslSettings::class, BlacklistsSettings::class, SiteChecksSettings::class, ProxmoxSettings::class, AiSettings::class, ClaudeSettings::class, DeepSeekSettings::class, KimiSettings::class, OpenAiSettings::class, OllamaSettings::class,
         ProductResource::class, ProductOptionGroupResource::class, ServerResource::class, RegistrarResource::class, DomainSettings::class, ClientAreaSettings::class, PublicAreaSettings::class, MenuSettings::class, CookieSettings::class,
         SupportSettings::class, TicketDepartmentResource::class, CannedReplyResource::class, TicketMailSettings::class,
         MailSettings::class, EmailTemplates::class,
@@ -90,7 +95,7 @@ class SettingsTest extends TestCase
     ];
 
     /** Listed on Settings → Payment methods and under it in the menu, without a card of their own. */
-    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, NexiXpaySettings::class, MastercardSettings::class];
+    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, NexiXpaySettings::class, MastercardSettings::class, IrisSettings::class];
 
     public function test_settings_shows_a_card_per_page_and_each_page_has_the_sub_navigation(): void
     {
@@ -111,7 +116,7 @@ class SettingsTest extends TestCase
         $this->get(TaxSettings::getUrl())->assertOk()
             ->assertSee(MailSettings::getUrl())
             ->assertSee(ServerResource::getUrl())
-            ->assertSeeInOrder(['General', 'General', 'Languages', 'Company', 'Client fields', 'Billing', 'Payment methods', 'Currencies', 'Invoices', 'Tax', 'Client credit', 'Automation', 'Sales', 'Products &amp; domains', 'Products', 'Product options', 'Domain pricing', 'Domains', 'Registrars', 'Servers', 'Client area', 'Client area', 'Public area', 'Menus', 'Cookies', 'Support', 'Ticket departments', 'Canned replies', 'Email to ticket', 'Email &amp; notifications', 'Mail', 'Email templates', 'Integrations', 'AI assistant', 'AI assistant', 'Security', 'Admin users', 'Login security', 'System', 'Plugins', 'Updates', 'Backups', 'System health', 'Logs', 'Logging', 'Module log', 'Email log', 'Error log'], false);
+            ->assertSeeInOrder(['General', 'General', 'Languages', 'Company', 'Client fields', 'Billing', 'Payment methods', 'Currencies', 'Invoices', 'Tax', 'Client credit', 'Automation', 'Sales', 'Products &amp; domains', 'Products', 'Product options', 'Domain pricing', 'Domains', 'Registrars', 'Servers', 'Client area', 'Client area', 'Public area', 'Menus', 'Cookies', 'Support', 'Ticket departments', 'Canned replies', 'Email to ticket', 'Email &amp; notifications', 'Mail', 'Email templates', 'Integrations', 'ΑΑΔΕ', 'AI assistant', 'AI assistant', 'Security', 'Admin users', 'Login security', 'System', 'Plugins', 'Updates', 'Backups', 'System health', 'Logs', 'Logging', 'Module log', 'Email log', 'Error log'], false);
     }
 
     public function test_every_stored_setting_is_on_exactly_one_page(): void

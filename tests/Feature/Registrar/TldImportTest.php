@@ -14,15 +14,14 @@ use App\Support\Currencies;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+use Tests\FakesEasy;
 use Tests\FakesEnom;
-use Tests\FakesRegistrar;
-use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 class TldImportTest extends TestCase
 {
+    use FakesEasy;
     use FakesEnom;
-    use FakesRegistrar;
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -32,10 +31,10 @@ class TldImportTest extends TestCase
         $this->actingAs(User::factory()->create());
     }
 
-    private function registrarPrices(): void
+    private function easyPrices(): void
     {
-        $this->fakeRegistrar();
-        $this->registrarTldPrices = [
+        $this->fakeEasy();
+        $this->easyTldPrices = [
             ['tld' => 'gr', 'min_period' => '2', 'min_buy' => '20.00', 'min_ren' => '18.50', 'transfer' => '0', 'redemption' => '60'],
             ['tld' => 'com', 'min_period' => '1', 'min_buy' => '9.90', 'min_ren' => '11.20', 'transfer' => '9.90', 'redemption' => ''],
             ['tld' => 'eu', 'min_period' => 1, 'min_buy' => 6.5, 'min_ren' => 6.5, 'transfer' => 6.5, 'redemption' => 40],
@@ -43,16 +42,16 @@ class TldImportTest extends TestCase
         ];
     }
 
-    public function test_the_registrar_lists_its_tld_costs_for_their_shortest_term(): void
+    public function test_easy_gr_lists_its_tld_costs_for_their_shortest_term(): void
     {
-        $this->registrarPrices();
+        $this->easyPrices();
 
-        $rows = app(ImportTldPrices::class)->fetch($this->testRegistrar);
+        $rows = app(ImportTldPrices::class)->fetch($this->easyRegistrar);
 
         $this->assertSame(['.com', '.eu', '.gr'], array_keys($rows)); // a 10-year term is not one GaiaCP prices
         $this->assertSame(['tld' => '.gr', 'years' => 2, 'register' => 2000, 'renew' => 1850, 'transfer' => null, 'redemption' => 6000], $rows['.gr']);
         $this->assertSame(990, $rows['.com']['register']);
-        $this->assertContains(TestRegistrar::TLD_PRICES, $this->registrarActions());
+        $this->assertContains(33, array_column($this->easyCalls, 0));
     }
 
     public function test_selling_price_adds_the_markup_and_rounds_up(): void
@@ -70,17 +69,17 @@ class TldImportTest extends TestCase
 
     public function test_import_creates_new_tlds_with_prices_and_updates_only_the_cost_of_listed_ones(): void
     {
-        $this->registrarPrices();
+        $this->easyPrices();
         $import = app(ImportTldPrices::class);
-        $rows = array_values($import->fetch($this->testRegistrar));
+        $rows = array_values($import->fetch($this->easyRegistrar));
 
-        $counts = $import->apply($this->testRegistrar, $rows, ['percent' => 20, 'fixed_cents' => 0, 'rounding' => '99', 'prices' => false, 'active' => false]);
+        $counts = $import->apply($this->easyRegistrar, $rows, ['percent' => 20, 'fixed_cents' => 0, 'rounding' => '99', 'prices' => false, 'active' => false]);
 
         $this->assertSame(['created' => 1, 'updated' => 2], $counts);
 
         $eu = Tld::query()->where('tld', '.eu')->sole();
         $this->assertFalse($eu->active);
-        $this->assertSame($this->testRegistrar->id, $eu->registrar_id);
+        $this->assertSame($this->easyRegistrar->id, $eu->registrar_id);
         $this->assertSame(799, $eu->register_1y_cents); // 6.50 + 20% = 7.80 → 7.99
         $this->assertSame(650, $eu->costCents('renew', 1));
         $this->assertSame(4899, $eu->redemption_fee_cents);
@@ -98,17 +97,17 @@ class TldImportTest extends TestCase
 
     public function test_import_can_set_the_prices_and_the_preferred_registrar_of_listed_tlds(): void
     {
-        $this->registrarPrices();
-        $other = Registrar::factory()->create(['module' => 'test', 'name' => 'Other']);
+        $this->easyPrices();
+        $other = Registrar::factory()->create(['name' => 'Other']);
         Tld::query()->where('tld', '.com')->update(['registrar_id' => $other->id]);
         $import = app(ImportTldPrices::class);
 
-        $import->apply($this->testRegistrar, [$import->fetch($this->testRegistrar)['.com']], ['percent' => 0, 'fixed_cents' => 300, 'rounding' => 'whole', 'prices' => true, 'preferred' => true]);
+        $import->apply($this->easyRegistrar, [$import->fetch($this->easyRegistrar)['.com']], ['percent' => 0, 'fixed_cents' => 300, 'rounding' => 'whole', 'prices' => true, 'preferred' => true]);
 
         $com = Tld::query()->where('tld', '.com')->sole();
         $this->assertSame(1300, $com->register_1y_cents); // 9.90 + 3.00 → 13
         $this->assertSame(1500, $com->renew_1y_cents); // 11.20 + 3.00 → 15
-        $this->assertSame($this->testRegistrar->id, $com->registrar_id);
+        $this->assertSame($this->easyRegistrar->id, $com->registrar_id);
     }
 
     public function test_enom_is_asked_about_each_tld_and_its_usd_costs_are_converted(): void
@@ -139,8 +138,8 @@ class TldImportTest extends TestCase
 
     public function test_daily_sync_updates_costs_only_and_rings_once_a_tld_sells_at_a_loss(): void
     {
-        $this->registrarPrices();
-        $this->registrarTldPrices[1]['min_ren'] = '16.00'; // .com renews for 15.00 here
+        $this->easyPrices();
+        $this->easyTldPrices[1]['min_ren'] = '16.00'; // .com renews for 15.00 here
         config(['gaiacp.domains.sync_costs' => true]);
 
         $this->artisan('gaiacp:sync-tld-costs')->assertSuccessful();
@@ -158,22 +157,22 @@ class TldImportTest extends TestCase
 
     public function test_daily_sync_is_off_by_default(): void
     {
-        $this->registrarPrices();
+        $this->easyPrices();
 
         $this->artisan('gaiacp:sync-tld-costs')->assertSuccessful();
 
-        $this->assertNotContains(33, array_column($this->registrarCalls, 0));
+        $this->assertNotContains(33, array_column($this->easyCalls, 0));
     }
 
     public function test_import_window_on_domain_pricing(): void
     {
-        $this->registrarPrices();
+        $this->easyPrices();
         Cache::flush();
 
         Livewire::test(ManageTlds::class)
             ->assertActionVisible('importTldPrices')
             ->mountAction('importTldPrices')
-            ->setActionData(['registrar_id' => $this->testRegistrar->id, 'only' => [], 'percent' => 10, 'fixed' => '0', 'rounding' => 'none', 'prices' => 0, 'preferred' => false, 'active' => true, 'tlds' => ['.eu']])
+            ->setActionData(['registrar_id' => $this->easyRegistrar->id, 'only' => [], 'percent' => 10, 'fixed' => '0', 'rounding' => 'none', 'prices' => 0, 'preferred' => false, 'active' => true, 'tlds' => ['.eu']])
             ->callMountedAction()
             ->assertHasNoActionErrors();
 

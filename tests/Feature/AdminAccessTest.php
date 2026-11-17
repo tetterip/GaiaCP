@@ -29,6 +29,7 @@ use App\Plugins\PluginManager;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Plugins\Aade\AadeSettings;
 use Tests\TestCase;
 
 class AdminAccessTest extends TestCase
@@ -81,7 +82,7 @@ class AdminAccessTest extends TestCase
             AdminArea::Clients->value => [ClientResource::class, OrderResource::class],
             AdminArea::Billing->value => [InvoiceResource::class],
             AdminArea::Reports->value => [AnnualIncome::class, ReportsCluster::class],
-            AdminArea::BusinessSettings->value => [CompanySettings::class, SettingsCluster::class],
+            AdminArea::BusinessSettings->value => [CompanySettings::class, AadeSettings::class, SettingsCluster::class],
             AdminArea::EmailSettings->value => [MailSettings::class, EmailTemplates::class, SettingsCluster::class],
         ];
         $super = User::factory()->create();

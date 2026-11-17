@@ -197,8 +197,8 @@ class ClientOrderTest extends TestCase
 
     public function test_the_term_follows_what_the_domain_is_offered_for(): void
     {
-        // .gr transfers only for 2 years, at no charge (as at easy.gr).
-        Registrar::query()->where('module', 'email')->latest('id')->first()->tlds()->where('tld', '.gr')->update(['transfer_2y_cents' => 0, 'renew_2y_cents' => 3000]);
+        // .gr transfers only for 2 years, at no charge (easy.gr).
+        Registrar::query()->where('module', 'easygr')->sole()->tlds()->where('tld', '.gr')->update(['transfer_2y_cents' => 0, 'renew_2y_cents' => 3000]);
 
         $this->page()
             ->fillForm(['product' => 'domain', 'domain_option' => 'transfer', 'domain' => 'acme.gr', 'epp_code' => 'abc'])

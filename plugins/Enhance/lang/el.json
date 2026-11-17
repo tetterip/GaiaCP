@@ -1,0 +1,5 @@
+{
+    "Creates, suspends and removes hosting subscriptions on Enhance control panels.": "Δημιουργεί, αναστέλλει και διαγράφει συνδρομές φιλοξενίας σε control panels Enhance.",
+    "Enhance: an access token allowed to manage customers and their subscriptions (Settings → Access tokens). Stored encrypted.": "Enhance: ένα access token με άδεια να διαχειρίζεται πελάτες και τις συνδρομές τους (Settings → Access tokens). Αποθηκεύεται κρυπτογραφημένο.",
+    "Enhance: the ID of your own organisation, shown with the access tokens. Customers are created under it, on its plans; the hostname is the control panel's address.": "Enhance: το ID του δικού σου οργανισμού, που φαίνεται μαζί με τα access tokens. Οι πελάτες δημιουργούνται κάτω από αυτόν, στα plans του· ως hostname βάλε τη διεύθυνση του control panel."
+}

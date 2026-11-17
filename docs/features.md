@@ -46,7 +46,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   service's page (another package clients can order); you approve or decline under Services → Upgrade requests
 - Admin orders: one order per client with several items (domain, hosting, maintenance); completing it registers
   the domain, creates the hosting account and activates the rest
-- Services: hosting accounts on **cPanel/WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel**, **Virtualmin** and **Enhance** (a catalogue plugin) servers, VPS on **Proxmox VE** (cloned from a template, IP pool, start / stop for admin and client), **domains** at one or more registrars (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub),
+- Services: hosting accounts on **cPanel/WHM**, **Plesk**, **HestiaCP**, **DirectAdmin**, **CyberPanel**, **Virtualmin** and **Enhance** servers, VPS on **Proxmox VE** (cloned from a template, IP pool, start / stop for admin and client), **domains** at one or more registrars (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub),
   and plain recurring services such as yearly **maintenance**. A hosting account shows its disk space and this month's
   bandwidth against its limits, read from the panel, to you and (unless switched off) to the client. An account that
   reaches 85% (Settings → Automation → Usage warning) of either gets a Usage Warning email suggesting a bigger package,
@@ -74,7 +74,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   bundled plugin): "Pay by card" on the client's unpaid payment notices opens Stripe Checkout, and the payment is
   recorded the same way once Stripe confirms it. PayPal the same way (a bundled plugin, off by default): "Pay with
   PayPal" opens PayPal's page, and GaiaCP takes the money only if the notice still asks for that amount. IRIS (a
-  plugin from the catalogue): "Pay with IRIS" shows the bank's fixed QR code, the IRIS number and the notice
+  bundled plugin, off by default): "Pay with IRIS" shows the bank's fixed QR code, the IRIS number and the notice
   number as the reason; recorded by hand
   - Card payments through Greek banks (plugins from the catalogue at plugins.gaiacp.digital; bundled up to 0.9.0): Alpha Bank and Eurobank (Cardlink, signed
     with the shared secret) and Piraeus Bank (paycenter ticket, answer signed with the ticket; also IRIS). Recorded
@@ -86,7 +86,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   on/off under Settings → Automation, and per admin with Receive system emails under Settings → Admin users)
 - Panel actions: create, suspend, unsuspend, terminate, change package
 - Registrar actions: register, renew, transfer, nameservers, expiry-date sync; contact details, private nameservers
-  (ns1.the-domain) and the registrar lock where the registrar offers them (easy.gr, a catalogue plugin: contacts and private nameservers;
+  (ns1.the-domain) and the registrar lock where the registrar offers them (easy.gr: contacts and private nameservers;
   Enom, Namecheap, NameSilo, Openprovider, ResellerClub: all three; GoDaddy: contacts and lock), for admins and, each behind a switch, clients
 - Backups: a zip of the database (SQL) and the uploaded files (optionally AES-256 with a password, which also carries
   the APP_KEY), daily or weekly, copied to FTP/FTPS and/or emailed; `gaiacp:restore` puts one back. An update that fails

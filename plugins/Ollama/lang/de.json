@@ -1,0 +1,8 @@
+{
+    "Base url": "Adresse",
+    "Install Ollama (<strong>ollama.com</strong>) on this server or on a machine it can reach, download a model (<strong>ollama pull llama3.3</strong>) and fill in its address. On another machine, start Ollama with OLLAMA_HOST=0.0.0.0 and let only this server reach port 11434.": "Installieren Sie Ollama (<strong>ollama.com</strong>) auf diesem Server oder einem Rechner, den er erreicht, laden Sie ein Modell herunter (<strong>ollama pull llama3.3</strong>) und tragen Sie die Adresse ein. Auf einem anderen Rechner starten Sie Ollama mit OLLAMA_HOST=0.0.0.0 und lassen nur diesen Server Port 11434 erreichen.",
+    "Nothing is billed: the model runs on your machine, which needs enough memory for it (about 8 GB for a small model). Texts are sent only when an admin presses an AI button.": "Nichts wird berechnet: Das Modell läuft auf Ihrem Rechner, der genug Speicher dafür braucht (etwa 8 GB für ein kleines Modell). Texte werden nur gesendet, wenn ein Admin eine KI-Schaltfläche drückt.",
+    "Ollama": "Ollama",
+    "Ollama for the AI assistant: an open model such as Llama, Qwen or Gemma on your own server or computer, so texts never leave your machines.": "Ollama für den KI-Assistenten: ein offenes Modell wie Llama, Qwen oder Gemma auf Ihrem eigenen Server oder Computer, damit Texte Ihre Rechner nie verlassen.",
+    "Ollama's OpenAI-compatible address, ending in /v1.": "Die OpenAI-kompatible Adresse von Ollama, endend auf /v1."
+}

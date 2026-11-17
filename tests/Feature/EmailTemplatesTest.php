@@ -31,13 +31,13 @@ use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
-use Tests\FakesRegistrar;
+use Tests\FakesEasy;
 use Tests\FakesWhm;
 use Tests\TestCase;
 
 class EmailTemplatesTest extends TestCase
 {
-    use FakesRegistrar, FakesWhm, RefreshDatabase;
+    use FakesEasy, FakesWhm, RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -203,7 +203,7 @@ class EmailTemplatesTest extends TestCase
     {
         Mail::fake();
         $this->fakeWhm();
-        $this->fakeRegistrar();
+        $this->fakeEasy();
         $this->switchOn(MailTemplate::OrderConfirmation, MailTemplate::DomainRegistration, MailTemplate::HostingWelcome);
         $client = Client::factory()->create();
         $server = Server::factory()->create(['hostname' => 'cp1.host.gr']);
@@ -230,11 +230,11 @@ class EmailTemplatesTest extends TestCase
     public function test_a_completed_transfer_is_announced_once(): void
     {
         Mail::fake();
-        $this->fakeRegistrar();
+        $this->fakeEasy();
         $this->switchOn(MailTemplate::DomainTransferCompleted);
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr']);
         $service->domainDetails()->create(['registration_type' => DomainRegistrationType::Transfer]);
-        $this->registrarDomains['acme.gr'] = ['expires' => '2027-03-01', 'ns' => ['ns1.x.gr', 'ns2.x.gr']];
+        $this->easyDomains['acme.gr'] = ['expires' => '2027-03-01', 'ns' => ['ns1.x.gr', 'ns2.x.gr']];
 
         app(DomainLifecycle::class)->sync($service->refresh());
         app(DomainLifecycle::class)->sync($service->refresh());

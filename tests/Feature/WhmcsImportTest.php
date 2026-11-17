@@ -324,7 +324,7 @@ class WhmcsImportTest extends TestCase
 
     public function test_it_imports_clients_servers_products_services_domains_and_unpaid_invoices(): void
     {
-        $easy = Registrar::factory()->create(['name' => 'Easy.gr', 'module' => 'easygr']);
+        $easy = Registrar::factory()->create();
         $this->seedWhmcs();
 
         $report = $this->import();
