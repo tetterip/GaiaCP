@@ -22,8 +22,10 @@ sign out.
 
 Settings → System → **Plugin catalogue** lists the plugins on offer at plugins.gaiacp.digital: each one is read by
 the GaiaCP project before it is listed. **Official** ones are made by GaiaCP, **Community** ones by others. Search
-by name, open **Details** for its changelog, author and licence, and **Install** it (your password is asked). It is
-added disabled, like an uploaded zip: enable it on the Plugins page. Only versions that run on your GaiaCP are offered.
+by name or tag, or filter by tag (such as Greece or Card payments), type or status. Click a plugin to open its own
+page, with every version's changelog, what it needs, its author, licence and tags (a tag there lists the other plugins
+with it), and **Install** it from the list or its page (your password is asked). It is added disabled, like an
+uploaded zip: enable it on the Plugins page. Only versions that run on your GaiaCP are offered.
 
 GaiaCP reads the catalogue once a day (and when you press **Refresh**). Nothing is updated by itself. When an
 installed plugin has a newer version, the bell rings once, the next daily summary lists it and the Plugins page shows

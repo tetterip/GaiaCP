@@ -6,6 +6,7 @@ use App\Enums\AdminArea;
 use App\Enums\UserRole;
 use App\Filament\Clusters\Settings\Pages\BackupSettings;
 use App\Filament\Pages\PluginCatalogue;
+use App\Filament\Pages\PluginCatalogueEntry;
 use App\Filament\Pages\SystemHealth;
 use App\Filament\Pages\Updates;
 use App\Filament\Resources\ActivityLogs\ActivityLogResource;
@@ -318,13 +319,13 @@ class AdminAlerts
                 __(':plugin :version is out', ['plugin' => $log->properties['name'] ?? '', 'version' => $log->properties['version'] ?? '']),
                 __('Installed here: :version. Update it from the plugin catalogue.', ['version' => $log->properties['installed'] ?? '']),
                 'heroicon-o-puzzle-piece', 'info',
-                PluginCatalogue::getUrl(panel: 'admin'),
+                self::cataloguePage($log->properties ?? []),
             ],
             'plugin.update_waiting' => [
                 __(':plugin :version is out', ['plugin' => $log->properties['name'] ?? '', 'version' => $log->properties['version'] ?? '']),
                 self::pluginWaiting($log->properties ?? []),
                 'heroicon-o-puzzle-piece', 'info',
-                ($log->properties['gaiacp'] ?? false) ? Updates::getUrl(panel: 'admin') : PluginCatalogue::getUrl(panel: 'admin'),
+                ($log->properties['gaiacp'] ?? false) ? Updates::getUrl(panel: 'admin') : self::cataloguePage($log->properties ?? []),
             ],
             'gaiacp.update_available' => [
                 __('GaiaCP :version is out', ['version' => $log->properties['version'] ?? '']),
@@ -372,6 +373,14 @@ class AdminAlerts
      *
      * @return array{0: ?string, 1: ?string, 2: string, 3: string, 4: ?string}
      */
+    /** @param  array<string, mixed>  $properties  of a plugin.update_* log: the plugin's catalogue page (older logs: the list) */
+    private static function cataloguePage(array $properties): string
+    {
+        return is_string($properties['folder'] ?? null) && preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $properties['folder'])
+            ? PluginCatalogueEntry::getUrl(['folder' => $properties['folder']], panel: 'admin')
+            : PluginCatalogue::getUrl(panel: 'admin');
+    }
+
     /** @param  array<string, mixed>  $properties  of a plugin.update_waiting log (also in the daily summary) */
     public static function pluginWaiting(array $properties): string
     {

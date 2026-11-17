@@ -39,6 +39,7 @@ class CheckPluginCatalogue extends Command
             if (! $told) {
                 ActivityLog::record('plugin.update_available', "Plugin {$plugin->name()} {$version} is in the catalogue (installed: {$plugin->version()})", properties: [
                     'plugin' => $plugin->id(),
+                    'folder' => $update['listing']->folder,
                     'name' => $plugin->name(),
                     'version' => $version,
                     'installed' => $plugin->version(),
@@ -59,6 +60,7 @@ class CheckPluginCatalogue extends Command
             if (! $told) {
                 ActivityLog::record('plugin.update_waiting', "Plugin {$plugin->name()} {$version} is in the catalogue but needs {$missing} (installed: {$plugin->version()})", properties: [
                     'plugin' => $plugin->id(),
+                    'folder' => $waiting['listing']->folder,
                     'name' => $plugin->name(),
                     'version' => $version,
                     'installed' => $plugin->version(),

@@ -11,6 +11,7 @@ use App\Filament\Clusters\Settings\Pages\LoginSecuritySettings;
 use App\Filament\Clusters\Settings\Pages\MailSettings;
 use App\Filament\Pages\ErrorLog;
 use App\Filament\Pages\PluginCatalogue;
+use App\Filament\Pages\PluginCatalogueEntry;
 use App\Filament\Pages\SystemHealth;
 use App\Filament\Pages\Updates;
 use App\Filament\Resources\IpBans\IpBanResource;
@@ -48,6 +49,7 @@ class Demo
     public const CLOSED = [
         Updates::class,
         PluginCatalogue::class,
+        PluginCatalogueEntry::class,
         ErrorLog::class,
         SystemHealth::class,
         BackupSettings::class,

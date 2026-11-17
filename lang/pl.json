@@ -4178,5 +4178,16 @@
     "The EPP (transfer) code you entered": "Wpisany kod EPP (kod transferu)",
     "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "Kod EPP pozwala innemu dostawcy przejąć tę domenę. Wyślemy go e-mailem; przekaż go tylko dostawcy, do którego przenosisz domenę.",
     "The email could not be sent. See Settings → Logs → Email log.": "Nie udało się wysłać e-maila. Zobacz Ustawienia → Logi → Log e-maili.",
-    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Gdy klikniesz Wyślij kod EPP w menu Rejestrator domeny, np. gdy klient poprosił o kod domeny u rejestratora, którego API go nie udostępnia (Namecheap)."
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Gdy klikniesz Wyślij kod EPP w menu Rejestrator domeny, np. gdy klient poprosił o kod domeny u rejestratora, którego API go nie udostępnia (Namecheap).",
+    "Bank transfer": "Przelew bankowy",
+    "Card payments": "Płatności kartą",
+    "Chat": "Czat",
+    "Greece": "Grecja",
+    "Import": "Import",
+    "Invoicing": "Fakturowanie",
+    "Needs :needs": "Wymaga :needs",
+    "Open the plugin's page": "Otwórz stronę wtyczki",
+    "Sign-in": "Logowanie",
+    "Update available": "Dostępna aktualizacja",
+    "Uptime": "Dostępność"
 }
