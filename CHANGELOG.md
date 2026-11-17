@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Installing or updating a plugin no longer switches the rest of the page to English (and to a copy of GaiaCP without
+  its plugins) where the config is cached: rebuilding the cache made a second copy of the app that the request kept.
 - The Alpha Bank, Eurobank and Piraeus Bank plugins moved out of GaiaCP into the plugin catalogue
   (plugins.gaiacp.digital): install them under Settings → System → Plugin catalogue. An update keeps them where they
   are installed, on or off as they were, with their settings and payments, and they update from the catalogue from

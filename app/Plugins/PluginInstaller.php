@@ -5,8 +5,10 @@ namespace App\Plugins;
 use App\Models\ActivityLog;
 use App\Models\Setting;
 use App\Support\Demo;
+use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use ParseError;
@@ -480,11 +482,31 @@ class PluginInstaller
                 continue;
             }
 
-            try {
-                Artisan::call("{$cache}:cache");
-            } catch (Throwable) {
-                Artisan::call("{$cache}:clear"); // left uncached: slower, still right; the next deploy caches again
-            }
+            self::keepingApplication(function () use ($cache) {
+                try {
+                    Artisan::call("{$cache}:cache");
+                } catch (Throwable) {
+                    Artisan::call("{$cache}:clear"); // left uncached: slower, still right; the next deploy caches again
+                }
+            });
+        }
+    }
+
+    /**
+     * Runs $callback and then points app() and the facades back at this request's application. config:cache builds
+     * a fresh application to read the config from, and a new Application makes itself the container instance (and its
+     * kernel the facades' root), so the rest of the request would run on that unbooted copy: English texts, no plugins.
+     */
+    public static function keepingApplication(callable $callback): mixed
+    {
+        $app = app();
+
+        try {
+            return $callback();
+        } finally {
+            Container::setInstance($app);
+            Facade::clearResolvedInstances();
+            Facade::setFacadeApplication($app);
         }
     }
 }
