@@ -72,9 +72,10 @@ class PluginCatalogueEntry extends Page
         return $this->cataloguePlugin()->name;
     }
 
-    public function getSubheading(): ?string
+    /** The name and description sit above the changelog (content()), not over the Settings menu. */
+    public function getHeading(): string|Htmlable
     {
-        return $this->cataloguePlugin()->description();
+        return '';
     }
 
     /** @return array<string, string> */
@@ -116,6 +117,8 @@ class PluginCatalogueEntry extends Page
         return $schema->components([
             Grid::make(['default' => 1, 'lg' => 3])->schema([
                 Grid::make(1)->columnSpan(['lg' => 2])->schema([
+                    Text::make(new HtmlString('<h1 class="fi-header-heading">'.e($listing->name).'</h1>'
+                        .'<p class="fi-header-subheading" style="margin-top: 0.5rem">'.e($listing->description()).'</p>')),
                     Section::make()
                         ->schema([
                             Text::make($this->communityNote())->color('warning'),

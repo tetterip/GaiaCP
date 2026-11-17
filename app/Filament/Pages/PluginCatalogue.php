@@ -35,7 +35,7 @@ use UnitEnum;
  * gaiacp:check-plugin-catalogue, or Refresh); installing downloads the newest version that runs here, checks it
  * against the catalogue and installs it as an uploaded plugin (CatalogueInstaller → PluginInstaller), so it starts
  * disabled and can be uninstalled on the Plugins page. Super admins, with their password, like Upload plugin. Each
- * plugin has its own page (PluginCatalogueEntry); tags and types filter the list.
+ * plugin has its own page (PluginCatalogueEntry), where its tags show; tags and types filter the list.
  */
 class PluginCatalogue extends Page implements HasTable
 {
@@ -217,7 +217,6 @@ class PluginCatalogue extends Page implements HasTable
             .$badge('primary', 'v'.$record['version'], 'heroicon-o-tag')
             .$badge($record['official'] ? 'success' : 'gray', $record['official'] ? __('Official') : __('Community'))
             .$badge('gray', $record['category'])
-            .collect($record['tags'])->map(fn (string $tag) => $badge('info', $tag, 'heroicon-o-hashtag'))->implode('')
             .'<span>'.e(__('By :author', ['author' => $record['author']])).'</span>'
             .'</span>'.e($record['description']));
     }
