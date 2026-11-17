@@ -13,6 +13,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   client) stays under the old client's Plesk customer, so its new client could sign in as the old client and, with
   1.6.1 / 1.6.2, change that login's password. **Request EPP code** emails the admins at most once an hour per domain.
   The plugin a catalogue plugin's page installs can no longer be changed from the browser.
+- Security (second audit before this release, hardening): the plugin catalogue's zips are downloaded only from the
+  catalogue's own host; unpacking a plugin zip counts the bytes really written against the 50 MB limit, not the sizes
+  the zip declares; a client's "I've paid" is kept only while the notice is still unpaid at that moment.
 - Installing a plugin from the catalogue no longer leaves its password window open (and "Error loading page" after
   Cancel) where the config is cached: the config and route caches are now rebuilt after the response has gone out,
   since rebuilding them inside the request undid the page's reload.

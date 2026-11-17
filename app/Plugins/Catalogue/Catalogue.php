@@ -228,6 +228,11 @@ class Catalogue
             throw new CatalogueException("{$folder} {$number} is not served over https.");
         }
 
+        // Only from the catalogue's own host: a signed catalogue can't send GaiaCP to an address on its own network.
+        if (strcasecmp((string) parse_url($url, PHP_URL_HOST), (string) parse_url($base, PHP_URL_HOST)) !== 0) {
+            throw new CatalogueException("{$folder} {$number} is not served from the catalogue's own address.");
+        }
+
         return new ListingVersion(
             version: $number,
             requires: filled($version['requires'] ?? null) ? (string) $version['requires'] : null,

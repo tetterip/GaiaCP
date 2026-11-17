@@ -50,7 +50,8 @@ plugins/<Folder>/      each plugin's public page: descriptions, tags, every vers
 - `tags`: optional slugs from the list `TAGS` in gaiacp-plugins' `bin/catalogue` (taken from `catalogue.config.json`'s
   `tags` for the folder, else `plugin.json`'s). GaiaCP names them in `App\Plugins\Catalogue\Tags` (add a new one there
   and to `lang/*.json`); one it doesn't know shows as the slug made readable, a malformed one is left out.
-- `url` is relative to the catalogue's address, or an absolute `https://` one.
+- `url` is relative to the catalogue's address, or an absolute `https://` one on the catalogue's own host (any other host
+  is refused).
 - `requires` / `php`: the oldest GaiaCP / PHP the version runs on. An install offers the newest version that runs on it
   (`Listing::best()`).
 - `source` is the builder's hash of the plugin's files, so a published version can't be changed later (GaiaCP ignores it).

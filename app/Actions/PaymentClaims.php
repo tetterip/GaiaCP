@@ -36,7 +36,11 @@ class PaymentClaims
         return $invoice->status === InvoiceStatus::Unpaid && $invoice->payment_claimed_at !== null;
     }
 
-    /** @param  string  $method  a payment method key (PaymentMethods), e.g. iris */
+    /**
+     * The caller makes sure the notice is the signed-in client's own (a client area page's record, ScopedToClient).
+     *
+     * @param  string  $method  a payment method key (PaymentMethods), e.g. iris
+     */
     public function claim(Invoice $invoice, string $method): void
     {
         if (! self::canClaim($invoice)) {
@@ -44,7 +48,7 @@ class PaymentClaims
         }
 
         // Once, even when the button is pressed twice at the same moment
-        $claimed = Invoice::query()->whereKey($invoice->id)->whereNull('payment_claimed_at')
+        $claimed = Invoice::query()->whereKey($invoice->id)->whereNull('payment_claimed_at')->where('status', InvoiceStatus::Unpaid)
             ->update(['payment_claimed_at' => now(), 'payment_claim_method' => $method]);
 
         if (! $claimed) {
