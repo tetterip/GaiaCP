@@ -10,10 +10,13 @@ use App\Plugins\PluginInstaller;
 use App\Plugins\PluginInstallException;
 use App\Plugins\PluginManager;
 use App\Plugins\PluginState;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -162,6 +165,24 @@ class PluginInstallerTest extends TestCase
         Livewire::test(Plugins::class)
             ->mountTableAction('changelog', 'cpanel')
             ->assertMountedActionModalSee('cPanel / WHM changelog');
+    }
+
+    public function test_rebuilding_the_config_cache_leaves_the_request_on_its_own_application(): void
+    {
+        // config:cache reads the config from a freshly made application, which makes itself app() and the facades' root
+        $app = app();
+        app()->setLocale('el');
+
+        PluginInstaller::keepingApplication(function () {
+            $fresh = require base_path('bootstrap/app.php');
+            $fresh->make(Kernel::class)->bootstrap();
+            $this->assertNotSame(app(), $this->app);
+        });
+
+        $this->assertSame($app, app());
+        $this->assertSame($app, Facade::getFacadeApplication());
+        $this->assertSame('el', App::getLocale());
+        $this->assertSame('Πρόσθετα', __('Plugins'));
     }
 
     public function test_plugin_json_may_sit_at_the_top_of_the_zip(): void
