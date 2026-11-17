@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The Alpha Bank, Eurobank and Piraeus Bank plugins moved out of GaiaCP into the plugin catalogue
+  (plugins.gaiacp.digital): install them under Settings → System → Plugin catalogue. An update keeps them where they
+  are installed, on or off as they were, with their settings and payments, and they update from the catalogue from
+  then on. A Git checkout loses the folders on its next pull: install them again from the catalogue (their data is
+  still there).
 - Request EPP code: for a domain at a registrar whose API gives no EPP code (Namecheap), the client area offers "Request
   EPP code"; the admins get the bell and an email. A domain's Registrar menu has **Send EPP code**, which emails the
   client a code read elsewhere with the new Domain EPP Code template (not stored or logged).
