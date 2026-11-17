@@ -18,14 +18,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
-use Plugins\EasyGr\EasyRegistrar;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
+use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 /** Client area step 5: a client changes nameservers, reads the EPP code and turns auto renew on or off on their own domain. */
 class ClientDomainSelfServiceTest extends TestCase
 {
-    use FakesEasy, RefreshDatabase;
+    use FakesRegistrar, RefreshDatabase;
 
     private Client $client;
 
@@ -36,7 +36,7 @@ class ClientDomainSelfServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fakeEasy();
+        $this->fakeRegistrar();
 
         $this->client = Client::factory()->create();
         $this->user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $this->client->id, 'email' => $this->client->email]);
@@ -44,10 +44,10 @@ class ClientDomainSelfServiceTest extends TestCase
         $this->domain = Service::factory()->domain()->for($this->client)->create(['domain' => 'maria.gr', 'next_due_date' => '2027-03-05']);
         $this->domain->domainDetails()->create([
             'registration_type' => DomainRegistrationType::Register,
-            'registrar_id' => $this->easyRegistrar->id,
+            'registrar_id' => $this->testRegistrar->id,
             'nameservers' => ['ns1.old.gr', 'ns2.old.gr'],
         ]);
-        $this->easyDomains['maria.gr'] = ['expires' => '2027-03-05', 'ns' => ['ns1.old.gr', 'ns2.old.gr'], 'epp' => 'Xy-9!'];
+        $this->registrarDomains['maria.gr'] = ['expires' => '2027-03-05', 'ns' => ['ns1.old.gr', 'ns2.old.gr'], 'epp' => 'Xy-9!'];
     }
 
     private function page(?Service $domain = null): Testable
@@ -72,7 +72,7 @@ class ClientDomainSelfServiceTest extends TestCase
             ->assertHasNoFormErrors()
             ->assertNotified(__('Nameservers changed'));
 
-        $this->assertSame(['ns1.new-host.com', 'ns2.new-host.com'], $this->easyDomains['maria.gr']['ns']);
+        $this->assertSame(['ns1.new-host.com', 'ns2.new-host.com'], $this->registrarDomains['maria.gr']['ns']);
         $this->assertSame(['ns1.new-host.com', 'ns2.new-host.com'], $this->domain->refresh()->domainDetails->nameservers);
 
         $log = ActivityLog::query()->where('event', 'domain.nameservers_changed')->latest('id')->first();
@@ -90,12 +90,12 @@ class ClientDomainSelfServiceTest extends TestCase
             ->callAction('changeNameservers', ['ns1' => 'ns1.new.gr', 'ns2' => ''])
             ->assertHasFormErrors(['ns2' => 'required']);
 
-        $this->assertNotContains(EasyRegistrar::SAVE_NAMESERVERS, $this->easyActions());
+        $this->assertNotContains(TestRegistrar::SAVE_NAMESERVERS, $this->registrarActions());
     }
 
     public function test_a_registrar_failure_shows_a_plain_message_and_keeps_the_details_in_the_log(): void
     {
-        $this->easyFailures[EasyRegistrar::SAVE_NAMESERVERS] = ['2306' => 'Host ns1.bad.gr does not exist'];
+        $this->registrarFailures[TestRegistrar::SAVE_NAMESERVERS] = ['2306' => 'Host ns1.bad.gr does not exist'];
 
         $this->page()
             ->callAction('changeNameservers', ['ns1' => 'ns1.bad.gr', 'ns2' => 'ns2.bad.gr'])

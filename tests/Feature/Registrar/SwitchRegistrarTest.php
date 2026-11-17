@@ -13,18 +13,18 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
 use Tests\TestCase;
 
 /** A domain set up at Email Notifications, then moved to easy.gr on its page. */
 class SwitchRegistrarTest extends TestCase
 {
-    use FakesEasy, RefreshDatabase;
+    use FakesRegistrar, RefreshDatabase;
 
     private function domainAtEmailNotifications(): Service
     {
         $this->travelTo('2026-10-19 10:00');
-        $this->fakeEasy();
+        $this->fakeRegistrar();
 
         $service = Service::factory()->domain()->for(Client::factory())->create([
             'domain' => 'acme.gr', 'status' => ServiceStatus::Active, 'billing_cycle' => BillingCycle::Biennially,
@@ -41,12 +41,12 @@ class SwitchRegistrarTest extends TestCase
 
     public function test_once_on_easy_gr_it_syncs(): void
     {
-        $this->easyDomains['acme.gr'] = ['expires' => '2028-10-19', 'ns' => ['ns1.host.gr', 'ns2.host.gr']];
+        $this->registrarDomains['acme.gr'] = ['expires' => '2028-10-19', 'ns' => ['ns1.host.gr', 'ns2.host.gr']];
         $service = $this->domainAtEmailNotifications();
 
         Livewire::test(EditService::class, ['record' => $service->id])
             ->assertActionHidden('syncDomain')
-            ->fillForm(['domainDetails.registrar_id' => $this->easyRegistrar->id])
+            ->fillForm(['domainDetails.registrar_id' => $this->testRegistrar->id])
             ->call('save')
             ->assertHasNoFormErrors()
             ->assertActionVisible('syncDomain')
@@ -56,7 +56,7 @@ class SwitchRegistrarTest extends TestCase
         Livewire::test(EditService::class, ['record' => $service->id])
             ->assertActionVisible('syncDomain');
 
-        $this->assertSame($this->easyRegistrar->id, $service->refresh()->domainDetails->registrar_id);
+        $this->assertSame($this->testRegistrar->id, $service->refresh()->domainDetails->registrar_id);
         $this->assertSame('2028-10-19', $service->domainDetails->expires_at->toDateString());
     }
 
@@ -65,13 +65,13 @@ class SwitchRegistrarTest extends TestCase
         $service = $this->domainAtEmailNotifications();
 
         Livewire::test(EditService::class, ['record' => $service->id])
-            ->fillForm(['domainDetails.registrar_id' => $this->easyRegistrar->id])
+            ->fillForm(['domainDetails.registrar_id' => $this->testRegistrar->id])
             ->call('save')
             ->callAction('syncDomain')
             ->assertNotified(__('Failed'));
 
         $this->assertTrue(ActivityLog::query()->where('event', 'provisioning.failed')
-            ->where('description', 'like', '%acme.gr is not in this easy.gr account%')->exists());
+            ->where('description', 'like', '%acme.gr is not in this Test registrar account%')->exists());
     }
 
     public function test_past_pending_the_choices_say_what_they_mean_and_track_only_hides_the_registrar(): void
