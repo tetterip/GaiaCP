@@ -59,7 +59,7 @@ plugins.gaiacp.digital δεν θα μπορούσε να σου δώσει άλ�
 |---|---|---|
 | Panels servers | cPanel / WHM, Plesk, HestiaCP, DirectAdmin· CyberPanel, Virtualmin, Enhance, Proxmox VE (κλειστά μέχρι να τα ανοίξεις) | Ρυθμίσεις → Servers |
 | Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Ρυθμίσεις → Registrars |
-| Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe, PayPal, Alpha Bank, Eurobank, Τράπεζα Πειραιώς, Nexi XPay, Mastercard Gateway, IRIS | Ρυθμίσεις → Τρόποι πληρωμής |
+| Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe, PayPal, Nexi XPay, Mastercard Gateway, IRIS | Ρυθμίσεις → Τρόποι πληρωμής |
 | Πιστοποιητικά SSL | GoGetSSL | Ρυθμίσεις → GoGetSSL |
 | Παρακολούθηση | Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, Έλεγχος IP σε blacklists, Έλεγχος sites | Ρυθμίσεις → Διασυνδέσεις |
 | Σύνδεση και ασφάλεια πελατών | Σύνδεση με Google, Google reCAPTCHA, Cloudflare Turnstile | Ρυθμίσεις → Περιοχή πελατών |
@@ -69,6 +69,10 @@ plugins.gaiacp.digital δεν θα μπορούσε να σου δώσει άλ�
 | AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Ρυθμίσεις → Βοηθός AI (δική της ομάδα: η σελίδα του βοηθού και κάθε υπηρεσίας) |
 | Εμφάνιση | Θέματα Gaia, Flat και Glass | Προφίλ, Ρυθμίσεις → Γενικά, Ρυθμίσεις → Περιοχή πελατών |
 | Μετακόμιση | Εισαγωγή από WHMCS | Ρυθμίσεις → Σύστημα |
+
+Στον κατάλογο πρόσθετων (τα εγκαθιστάς μόνο αν τα θέλεις): Alpha Bank, Eurobank και Τράπεζα Πειραιώς. Παλιότερα
+έρχονταν με το GaiaCP: μια εγκατάσταση που τα είχε τα κρατά, με τις ρυθμίσεις και τις πληρωμές τους, και τα ενημερώνει
+από τον κατάλογο.
 
 ## Webhooks
 

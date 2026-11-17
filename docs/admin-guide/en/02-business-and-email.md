@@ -85,7 +85,8 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
   ID and secret, and add a webhook there with the address shown on Settings → PayPal. When the client approves, GaiaCP
   takes the money only if the notice still asks for that amount, and records it once PayPal confirms it. GaiaCP also
   asks PayPal every hour about the payments it is still waiting on, in case the webhook doesn't come.
-- **Alpha Bank**, **Eurobank** and **Piraeus Bank** (each off until you switch it on): card payments on the bank's own
+- **Alpha Bank**, **Eurobank** and **Piraeus Bank** (from the plugin catalogue: install the one you need under
+  Settings → System → Plugin catalogue, then switch it on): card payments on the bank's own
   page, for notices in euro (Piraeus Bank also takes a few other currencies, and IRIS). The client's email, address,
   city, postcode and country must be filled in, since the bank needs them for 3-D Secure. Alpha Bank and Eurobank go
   through Cardlink: fill in the merchant ID and shared secret from the bank's set-up email, and choose Test or Live

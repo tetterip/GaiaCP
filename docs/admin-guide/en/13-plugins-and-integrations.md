@@ -54,7 +54,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 |---|---|---|
 | Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Virtualmin, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
 | Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Settings → Registrars |
-| Payment methods | Bank transfer, Stripe, PayPal, Alpha Bank, Eurobank, Piraeus Bank, Nexi XPay, Mastercard Gateway, IRIS | Settings → Payment methods |
+| Payment methods | Bank transfer, Stripe, PayPal, Nexi XPay, Mastercard Gateway, IRIS | Settings → Payment methods |
 | SSL certificates | GoGetSSL | Settings → GoGetSSL |
 | Monitoring | Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks | Settings → Integrations |
 | Client sign-in and safety | Google sign-in, Google reCAPTCHA, Cloudflare Turnstile | Settings → Client area |
@@ -64,6 +64,10 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 | AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Settings → AI assistant (its own group: the assistant's page and each service's) |
 | Look | Gaia, Flat and Glass themes | Profile, Settings → General, Settings → Client area |
 | Moving in | WHMCS import | Settings → System |
+
+In the plugin catalogue (installed only if you want them): Alpha Bank, Eurobank and Piraeus Bank. They used to ship
+with GaiaCP: an install that had them keeps them, with their settings and payments, and updates them from the
+catalogue.
 
 ## Webhooks
 
