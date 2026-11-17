@@ -16,14 +16,14 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
-use Plugins\EasyGr\EasyRegistrar;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
+use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 /** A domain's contact details, private nameservers and registrar lock, from the client's domain page and the admin's Registrar menu. */
 class DomainContactsTest extends TestCase
 {
-    use FakesEasy, RefreshDatabase;
+    use FakesRegistrar, RefreshDatabase;
 
     private Client $client;
 
@@ -34,15 +34,15 @@ class DomainContactsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fakeEasy();
+        $this->fakeRegistrar();
 
         $this->client = Client::factory()->create([
             'first_name' => 'Maria', 'last_name' => 'Papa', 'company' => null, 'address1' => 'Stadiou 5', 'city' => 'Athens',
             'state' => 'Attica', 'postcode' => '10562', 'country' => 'GR', 'phone' => '+30 6912345678', 'email' => 'maria@new.gr',
         ]);
         $this->user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $this->client->id, 'email' => $this->client->email]);
-        $this->domain = $this->domainAt('maria.gr', $this->easyRegistrar->id);
-        $this->easyDomains['maria.gr'] = ['expires' => '2027-03-05'];
+        $this->domain = $this->domainAt('maria.gr', $this->testRegistrar->id);
+        $this->registrarDomains['maria.gr'] = ['expires' => '2027-03-05'];
     }
 
     private function domainAt(string $name, int $registrarId, DomainRegistrationType $type = DomainRegistrationType::Register): Service
@@ -77,7 +77,7 @@ class DomainContactsTest extends TestCase
             ->assertHasNoFormErrors()
             ->assertNotified(__('Contact details saved'));
 
-        $saved = $this->easyDomains['maria.gr']['saved_contacts'];
+        $saved = $this->registrarDomains['maria.gr']['saved_contacts'];
         $this->assertSame('Acme ΙΚΕ', $saved['registrant']['name']);
         $this->assertSame('+30.6912345678', $saved['admin']['voice']);
         $this->assertSame('Stadiou 5', $saved['tech']['street1']);
@@ -93,7 +93,7 @@ class DomainContactsTest extends TestCase
             ->callAction('domainContacts', ['contacts' => ['registrant' => ['first_name' => '', 'email' => 'not-an-email']]])
             ->assertHasFormErrors(['contacts.registrant.first_name' => 'required', 'contacts.registrant.email' => 'email']);
 
-        $this->easyFailures[EasyRegistrar::GET_CONTACTS] = ['2303' => 'Object does not exist'];
+        $this->registrarFailures[TestRegistrar::GET_CONTACTS] = ['2303' => 'Object does not exist'];
         $this->page()
             ->mountAction('domainContacts')
             ->assertNotified(__('We could not read the contact details.'));
@@ -121,7 +121,7 @@ class DomainContactsTest extends TestCase
         $this->page()->callAction('childNameservers', ['operation' => 'save', 'host' => 'ns2', 'ip' => '192.0.2.11']);
         $this->page()->callAction('childNameservers', ['operation' => 'save', 'host' => 'ns1', 'ip' => '192.0.2.20']);
 
-        $this->assertSame(['ns1.maria.gr' => '192.0.2.20', 'ns2.maria.gr' => '192.0.2.11'], $this->easyDomains['maria.gr']['hosts']);
+        $this->assertSame(['ns1.maria.gr' => '192.0.2.20', 'ns2.maria.gr' => '192.0.2.11'], $this->registrarDomains['maria.gr']['hosts']);
         $this->assertEquals([['host' => 'ns1.maria.gr', 'ip' => '192.0.2.20'], ['host' => 'ns2.maria.gr', 'ip' => '192.0.2.11']], $this->domain->refresh()->domainDetails->child_nameservers);
 
         $this->page()
@@ -129,7 +129,7 @@ class DomainContactsTest extends TestCase
             ->assertHasNoFormErrors()
             ->assertNotified(__('Private nameserver deleted'));
 
-        $this->assertSame(['ns1.maria.gr' => '192.0.2.20'], $this->easyDomains['maria.gr']['hosts']);
+        $this->assertSame(['ns1.maria.gr' => '192.0.2.20'], $this->registrarDomains['maria.gr']['hosts']);
         $this->assertEquals([['host' => 'ns1.maria.gr', 'ip' => '192.0.2.20']], $this->domain->refresh()->domainDetails->child_nameservers);
         $this->assertSame(3, ActivityLog::query()->where('event', 'domain.child_nameserver_saved')->count());
     }
@@ -143,13 +143,13 @@ class DomainContactsTest extends TestCase
         $this->page()->assertActionHidden('domainContacts')->assertActionHidden('childNameservers');
 
         config(['gaiacp.client_area.domain_contacts' => true, 'gaiacp.client_area.domain_child_nameservers' => true]);
-        $tracked = $this->domainAt('elsewhere.gr', $this->easyRegistrar->id, DomainRegistrationType::External);
+        $tracked = $this->domainAt('elsewhere.gr', $this->testRegistrar->id, DomainRegistrationType::External);
         $this->page($tracked)->assertActionHidden('domainContacts')->assertActionHidden('childNameservers');
     }
 
     public function test_the_admin_sees_the_registrars_answer_when_it_fails(): void
     {
-        $this->easyFailures[EasyRegistrar::SAVE_CHILD_NAMESERVER] = ['ns' => 'Host already exists'];
+        $this->registrarFailures[TestRegistrar::SAVE_CHILD_NAMESERVER] = ['ns' => 'Host already exists'];
         $this->actingAs(User::factory()->create());
 
         Livewire::test(EditService::class, ['record' => $this->domain->id])

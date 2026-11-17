@@ -14,8 +14,8 @@ sign out.
 
 - **Disable** a plugin you don't use: its pages and options disappear, but its servers, accounts and settings stay, so
   enabling it again brings everything back. Tick several and use the mass actions to enable or disable them together.
-- Plugins bundled with GaiaCP can't be uninstalled, only disabled. Most start enabled; easy.gr, ΑΑΔΕ, VIES VAT check
-  and GoGetSSL start off.
+- Plugins bundled with GaiaCP can't be uninstalled, only disabled. Most start enabled; VIES VAT check and GoGetSSL
+  start off.
 - A plugin that needs a newer GaiaCP stays off until you update GaiaCP.
 
 ### The plugin catalogue
@@ -52,22 +52,23 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 
 | Kind | Plugins | Where you set them up |
 |---|---|---|
-| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Virtualmin, Enhance, Proxmox VE (off until switched on) | Settings → Servers |
-| Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Settings → Registrars |
-| Payment methods | Bank transfer, Stripe, PayPal, Nexi XPay, Mastercard Gateway, IRIS | Settings → Payment methods |
+| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Virtualmin, Proxmox VE (off until switched on) | Settings → Servers |
+| Registrars | Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications | Settings → Registrars |
+| Payment methods | Bank transfer, Stripe, PayPal, Nexi XPay, Mastercard Gateway | Settings → Payment methods |
 | SSL certificates | GoGetSSL | Settings → GoGetSSL |
-| Monitoring | Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, IP blacklist check, Site checks | Settings → Integrations |
+| Monitoring | Uptime Kuma, UptimeRobot, Better Stack, IP blacklist check, Site checks | Settings → Integrations |
 | Client sign-in and safety | Google sign-in, Google reCAPTCHA, Cloudflare Turnstile | Settings → Client area |
-| Tax details | VIES VAT check, ΑΑΔΕ registry lookup | their own settings pages |
+| Tax details | VIES VAT check | their own settings pages |
 | Notifications | Slack, Discord, Telegram, Webhooks | Settings → Email & notifications |
 | Support | Email to ticket | Settings → Support |
-| AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Settings → AI assistant (its own group: the assistant's page and each service's) |
+| AI | Claude, ChatGPT, DeepSeek | Settings → AI assistant (its own group: the assistant's page and each service's) |
 | Look | Gaia, Flat and Glass themes | Profile, Settings → General, Settings → Client area |
 | Moving in | WHMCS import | Settings → System |
 
-In the plugin catalogue (installed only if you want them): Alpha Bank, Eurobank and Piraeus Bank. They used to ship
-with GaiaCP: an install that had them keeps them, with their settings and payments, and updates them from the
-catalogue.
+In the plugin catalogue (installed only if you want them): Alpha Bank, Eurobank, Piraeus Bank and IRIS (payment
+methods), Enhance (server panel), easy.gr and GoDaddy (registrars), HetrixTools (monitoring), ΑΑΔΕ registry lookup
+(tax details), Kimi and Ollama (AI). They used to ship with GaiaCP: an install that had them keeps them, with their
+settings and data, and updates them from the catalogue.
 
 ## Webhooks
 
@@ -91,7 +92,7 @@ panel calls) to a channel, one short message each with a link to its page here. 
 ## AI assistant
 
 The AI assistant works with any of the AI service plugins: **Claude**, **ChatGPT**, **DeepSeek**, **Kimi** or
-**Ollama** (all off until you switch them on, super admins; see [Choosing an AI service](#choosing-an-ai-service)).
+**Ollama** (Kimi and Ollama from the plugin catalogue; all off until you switch them on, super admins; see [Choosing an AI service](#choosing-an-ai-service)).
 With one on and set up under Settings → AI assistant, an **AI** menu appears after the label of the texts you write: ticket replies and new
 tickets, canned replies, email templates, messages to clients, knowledge base articles, announcements, product and
 product group descriptions, quote texts and sales emails. It offers:

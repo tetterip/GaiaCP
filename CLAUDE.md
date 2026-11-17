@@ -211,7 +211,7 @@ Read the file for the area you are changing before you change it; don't read the
 - Server credentials and API tokens are stored **encrypted** (Laravel `encrypted` cast), never
   in plain columns or logs.
 - Tests never hit real servers: `Tests\TestCase` calls `Http::preventStrayRequests()`; use the
-  `Tests\FakesWhm` / `Tests\FakesPlesk` / `Tests\FakesHestia` / `Tests\FakesEasy` traits (in-memory panels) or `Http::fake()`.
+  `Tests\FakesWhm` / `Tests\FakesPlesk` / `Tests\FakesHestia` / `Tests\FakesRegistrar` traits (in-memory panels) or `Http::fake()`.
 - Service passwords are shown to the admin on the service form (revealable) but hidden from
   arrays/JSON; a blank field keeps the stored value.
 

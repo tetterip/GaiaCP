@@ -12,19 +12,19 @@ use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Plugins\EasyGr\EasyRegistrar;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
+use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 class DomainRenewalOnPaymentTest extends TestCase
 {
-    use FakesEasy, RefreshDatabase;
+    use FakesRegistrar, RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fakeEasy();
+        $this->fakeRegistrar();
     }
 
     private function pay(Service $service): RecordPayment
@@ -38,24 +38,24 @@ class DomainRenewalOnPaymentTest extends TestCase
     public function test_paying_an_active_domain_renews_it_for_one_cycle(): void
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'billing_cycle' => BillingCycle::Biennially]);
-        $this->easyDomains['acme.gr'] = ['expires' => '2026-11-01'];
+        $this->registrarDomains['acme.gr'] = ['expires' => '2026-11-01'];
 
         $recorder = $this->pay($service);
 
         $this->assertNull($recorder->renewalError);
-        $this->assertSame([[EasyRegistrar::RENEW, ['domain' => 'acme.gr', 'years' => '2']]], $this->easyCalls);
-        $this->assertSame('2028-11-01', $this->easyDomains['acme.gr']['expires']);
+        $this->assertSame([[TestRegistrar::RENEW, ['domain' => 'acme.gr', 'years' => '2']]], $this->registrarCalls);
+        $this->assertSame('2028-11-01', $this->registrarDomains['acme.gr']['expires']);
         $this->assertTrue(ActivityLog::where('event', 'domain.renewed')->exists());
     }
 
     public function test_longest_tld_picks_the_registrar(): void
     {
         $service = Service::factory()->domain()->create(['domain' => 'shop.com.gr']);
-        $this->easyDomains['shop.com.gr'] = ['expires' => '2026-11-01'];
+        $this->registrarDomains['shop.com.gr'] = ['expires' => '2026-11-01'];
 
         $this->pay($service);
 
-        $this->assertSame([EasyRegistrar::RENEW], $this->easyActions());
+        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
     }
 
     public function test_first_payment_of_a_pending_domain_does_not_renew(): void
@@ -64,7 +64,7 @@ class DomainRenewalOnPaymentTest extends TestCase
 
         $this->pay($service);
 
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
     }
 
     public function test_monthly_billed_domain_is_not_renewed_every_month(): void
@@ -73,7 +73,7 @@ class DomainRenewalOnPaymentTest extends TestCase
 
         $this->pay($service);
 
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
     }
 
     public function test_hosting_payments_never_call_the_registrar(): void
@@ -82,17 +82,17 @@ class DomainRenewalOnPaymentTest extends TestCase
 
         $this->pay($service);
 
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
     }
 
     public function test_registrar_failure_keeps_the_payment(): void
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'start_date' => '2025-11-01', 'next_due_date' => '2026-11-01']);
-        $this->easyFailures[EasyRegistrar::RENEW] = ['2304' => 'Status prohibits renew'];
+        $this->registrarFailures[TestRegistrar::RENEW] = ['2304' => 'Status prohibits renew'];
 
         $recorder = $this->pay($service);
 
-        $this->assertSame('easy.gr: 2304 - Status prohibits renew', $recorder->renewalError);
+        $this->assertSame('Test registrar: 2304 - Status prohibits renew', $recorder->renewalError);
         $this->assertSame('2027-11-01', $service->refresh()->next_due_date->toDateString());
         $this->assertSame(1, $service->payments()->count());
         $this->assertTrue(ActivityLog::where('event', 'provisioning.failed')->exists());
@@ -105,7 +105,7 @@ class DomainRenewalOnPaymentTest extends TestCase
         $recorder = $this->pay($service);
 
         $this->assertStringContainsString('No active registrar handles the TLD of acme.de', $recorder->renewalError);
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
     }
 
     public function test_admin_sees_the_renewal_failure(): void

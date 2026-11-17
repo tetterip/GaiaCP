@@ -28,7 +28,7 @@
         <env name="DB_URL" value=""/>
         <env name="APP_TIMEZONE" value="Europe/Athens"/>
         <env name="GAIACP_COUNTRY" value="GR"/>
-        <env name="GAIACP_PLUGINS_START_ENABLED" value="easygr,aade,vies"/>
+        <env name="GAIACP_PLUGINS_START_ENABLED" value="vies"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
