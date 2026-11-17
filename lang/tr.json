@@ -4178,5 +4178,16 @@
     "The EPP (transfer) code you entered": "Girdiğiniz EPP (transfer) kodu",
     "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "EPP kodu başka bir sağlayıcının bu alan adını devralmasını sağlar. Size e-postayla göndereceğiz; yalnızca alan adını taşıdığınız sağlayıcıya verin.",
     "The email could not be sent. See Settings → Logs → Email log.": "E-posta gönderilemedi. Ayarlar → Kayıtlar → E-posta kaydı'na bakın.",
-    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Bir alan adının Kayıt şirketi menüsünde EPP kodunu gönder'e bastığınızda, ör. bir müşteri API'si kod vermeyen bir kayıt şirketindeki (Namecheap) bir alan adının kodunu istedikten sonra."
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Bir alan adının Kayıt şirketi menüsünde EPP kodunu gönder'e bastığınızda, ör. bir müşteri API'si kod vermeyen bir kayıt şirketindeki (Namecheap) bir alan adının kodunu istedikten sonra.",
+    "Bank transfer": "Banka havalesi",
+    "Card payments": "Kartla ödemeler",
+    "Chat": "Sohbet",
+    "Greece": "Yunanistan",
+    "Import": "İçe aktarma",
+    "Invoicing": "Faturalama",
+    "Needs :needs": ":needs gerekli",
+    "Open the plugin's page": "Eklentinin sayfasını aç",
+    "Sign-in": "Oturum açma",
+    "Update available": "Güncelleme mevcut",
+    "Uptime": "Çalışma süresi"
 }

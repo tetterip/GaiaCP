@@ -4178,5 +4178,16 @@
     "The EPP (transfer) code you entered": "Ο κωδικός EPP (μεταφοράς) που έδωσες",
     "The EPP code lets another provider take over this domain. We will email it to you, so give it only to the one you are moving the domain to.": "Ο κωδικός EPP επιτρέπει σε άλλον πάροχο να αναλάβει αυτό το domain. Θα σας τον στείλουμε με email· δώστε τον μόνο σε αυτόν στον οποίο μεταφέρετε το domain.",
     "The email could not be sent. See Settings → Logs → Email log.": "Το email δεν στάλθηκε. Δες Ρυθμίσεις → Logs → Email log.",
-    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Όταν πατάς Αποστολή κωδικού EPP στο μενού Registrar ενός domain, π.χ. αφού ένας πελάτης ζήτησε τον κωδικό ενός domain σε registrar που δεν τον δίνει μέσω API (Namecheap)."
+    "When you press Send EPP code in a domain's Registrar menu, e.g. after a client asked for the code of a domain at a registrar whose API gives none (Namecheap).": "Όταν πατάς Αποστολή κωδικού EPP στο μενού Registrar ενός domain, π.χ. αφού ένας πελάτης ζήτησε τον κωδικό ενός domain σε registrar που δεν τον δίνει μέσω API (Namecheap).",
+    "Bank transfer": "Τραπεζική μεταφορά",
+    "Card payments": "Πληρωμές με κάρτα",
+    "Chat": "Συνομιλία",
+    "Greece": "Ελλάδα",
+    "Import": "Εισαγωγή",
+    "Invoicing": "Τιμολόγηση",
+    "Needs :needs": "Χρειάζεται :needs",
+    "Open the plugin's page": "Άνοιγμα της σελίδας του πρόσθετου",
+    "Sign-in": "Σύνδεση",
+    "Update available": "Υπάρχει ενημέρωση",
+    "Uptime": "Διαθεσιμότητα"
 }

@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Plugin catalogue: each plugin opens on its own page (changelog of every version, what it needs, author, licence,
+  Install / Update), and plugins carry tags, shown in the list and used to filter it with the type and status. The
+  bell for a plugin update opens that plugin's page.
 - Installing or updating a plugin no longer switches the rest of the page to English (and to a copy of GaiaCP without
   its plugins) where the config is cached: rebuilding the cache made a second copy of the app that the request kept.
 - The Alpha Bank, Eurobank and Piraeus Bank plugins moved out of GaiaCP into the plugin catalogue

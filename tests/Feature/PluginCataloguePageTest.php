@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Filament\Pages\PluginCatalogue;
+use App\Filament\Pages\PluginCatalogueEntry;
 use App\Filament\Pages\Plugins;
 use App\Models\ActivityLog;
 use App\Models\User;
+use App\Plugins\Catalogue\Catalogue;
 use App\Plugins\PluginManager;
 use App\Plugins\PluginState;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -114,7 +116,8 @@ class PluginCataloguePageTest extends TestCase
                 'name' => 'Catalogue plugin',
                 'description' => ['en' => 'From the catalogue.', 'el' => 'Από τον κατάλογο.'],
                 'category' => 'Integrations',
-                'author' => ['name' => 'Someone'],
+                'tags' => ['greece', 'cards', 'brand-new', 'Not A Slug'],
+                'author' => ['name' => 'Someone', 'url' => 'https://someone.example'],
                 'licence' => 'GPL-3.0-or-later',
                 'official' => $official,
                 'versions' => $this->versions,
@@ -223,10 +226,81 @@ class PluginCataloguePageTest extends TestCase
         $this->artisan('gaiacp:check-plugin-catalogue')->expectsOutput('The plugin catalogue is off.')->assertSuccessful();
     }
 
+    public function test_tags_show_on_the_list_and_filter_it(): void
+    {
+        $this->publish('1.0.0');
+
+        // a malformed tag is left out; one this GaiaCP has no name for shows as it is
+        $this->assertSame(['greece', 'cards', 'brand-new'], app(Catalogue::class)->fetch()->plugins[0]->tags);
+
+        Livewire::test(PluginCatalogue::class)
+            ->assertSee(['Greece', 'Card payments', 'Brand new'])
+            ->assertCanSeeTableRecords([$this->name])
+            ->filterTable('tag', ['greece'])
+            ->assertCanSeeTableRecords([$this->name])
+            ->filterTable('tag', ['ssl'])
+            ->assertCanNotSeeTableRecords([$this->name])
+            ->resetTableFilters()
+            ->searchTable('card payments')
+            ->assertCanSeeTableRecords([$this->name]);
+
+        // a tag on a plugin's page links to the list with that tag picked
+        $this->get(PluginCatalogue::getUrl(['tag' => 'ssl']))->assertOk()->assertDontSee('From the catalogue.');
+        $this->get(PluginCatalogue::getUrl(['tag' => 'greece']))->assertOk()->assertSee('From the catalogue.');
+
+        app()->setLocale('el');
+        Livewire::test(PluginCatalogue::class)->assertSee(['Ελλάδα', 'Πληρωμές με κάρτα']);
+    }
+
+    public function test_each_plugin_has_its_own_page_with_install(): void
+    {
+        $this->publish('1.0.0');
+        $this->publish('1.1.0');
+
+        Livewire::test(PluginCatalogue::class)
+            ->assertTableActionHasUrl('open', PluginCatalogueEntry::getUrl(['folder' => $this->name]), $this->name);
+
+        $this->get(PluginCatalogueEntry::getUrl(['folder' => $this->name]))
+            ->assertOk()
+            ->assertSee(['Catalogue plugin', 'From the catalogue.', 'Changelog', 'Version 1.1.0', 'Version 1.0.0', 'Not installed', 'Greece', 'Someone', 'GPL-3.0-or-later'])
+            ->assertSee(PluginCatalogue::getUrl(['tag' => 'greece']), escape: false)
+            ->assertSee('https://someone.example', escape: false)
+            ->assertSee('A community plugin');
+
+        Livewire::test(PluginCatalogueEntry::class, ['folder' => $this->name])
+            ->assertActionVisible('install')
+            ->assertActionHidden('update')
+            ->callAction('install', ['password' => 'wrong'])
+            ->assertHasActionErrors(['password']);
+
+        Livewire::test(PluginCatalogueEntry::class, ['folder' => $this->name])
+            ->callAction('install', ['password' => 'secret-password'])
+            ->assertNotified('Catalogue plugin 1.1.0 installed')
+            ->assertActionHidden('install')
+            ->assertSee('Installed');
+
+        $this->assertSame('1.1.0', app(PluginManager::class)->find(Str::kebab($this->name))->version());
+
+        $this->get(PluginCatalogueEntry::getUrl(['folder' => 'NotListed']))->assertNotFound();
+    }
+
+    public function test_the_update_bell_opens_the_plugins_page(): void
+    {
+        $other = User::factory()->create(['super_admin' => true]);
+        $this->publish('1.0.0');
+        Livewire::test(PluginCatalogue::class)->callTableAction('install', $this->name, ['password' => 'secret-password']);
+        $this->publish('1.1.0');
+
+        $this->artisan('gaiacp:check-plugin-catalogue')->assertSuccessful();
+
+        $this->assertSame(PluginCatalogueEntry::getUrl(['folder' => $this->name], panel: 'admin'), $other->notifications()->sole()->data['actions'][0]['url'] ?? null);
+    }
+
     public function test_only_super_admins_open_it(): void
     {
         $this->actingAs(User::factory()->create(['super_admin' => false]));
 
         $this->get(PluginCatalogue::getUrl())->assertForbidden();
+        $this->get(PluginCatalogueEntry::getUrl(['folder' => 'HelloWorld']))->assertForbidden();
     }
 }

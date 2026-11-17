@@ -26,6 +26,7 @@ index.html             the public page
         "name": "Hello World",
         "description": {"en": "…", "el": "…"},
         "category": "Integrations",
+        "tags": ["example"],
         "author": {"name": "GaiaCP", "url": "https://gaiacp.digital"},
         "homepage": "https://…",
         "licence": "GPL-3.0-or-later",
@@ -45,6 +46,9 @@ index.html             the public page
 }
 ```
 
+- `tags`: optional slugs from the list `TAGS` in gaiacp-plugins' `bin/catalogue` (taken from `catalogue.config.json`'s
+  `tags` for the folder, else `plugin.json`'s). GaiaCP names them in `App\Plugins\Catalogue\Tags` (add a new one there
+  and to `lang/*.json`); one it doesn't know shows as the slug made readable, a malformed one is left out.
 - `url` is relative to the catalogue's address, or an absolute `https://` one.
 - `requires` / `php`: the oldest GaiaCP / PHP the version runs on. An install offers the newest version that runs on it
   (`Listing::best()`).
@@ -61,7 +65,10 @@ index.html             the public page
 - `download()` fetches a version's zip and checks its size and SHA-256 against the signed catalogue; then
   `PluginInstaller` runs its usual checks on it.
 - Requests carry only `User-Agent: GaiaCP/<version>`; they show in the Module log as "Plugin catalogue".
-- Settings → System → Plugin catalogue (`App\Filament\Pages\PluginCatalogue`, super admins) lists the stored copy;
+- Settings → System → Plugin catalogue (`App\Filament\Pages\PluginCatalogue`, super admins) lists the stored copy,
+  filtered by tag (`?tag=<slug>` picks one), type and status; each plugin has its own page
+  (`PluginCatalogueEntry`, `/admin/settings/plugins/catalogue/<Folder>`: changelog of every version, details, tags),
+  which the update bell opens;
   Install / Update ask for the admin's password and go through `CatalogueInstaller` (newest version that runs here →
   `download()` → `PluginInstaller::install()`), so the plugin starts disabled and is uninstalled like an uploaded one.
   Both are hidden while `GAIACP_PLUGIN_UPLOADS=false`; the page is closed in the demo.
