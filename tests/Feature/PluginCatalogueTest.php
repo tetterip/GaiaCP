@@ -167,6 +167,18 @@ class PluginCatalogueTest extends TestCase
         app(Catalogue::class)->fetch();
     }
 
+    public function test_refuses_a_zip_on_another_host(): void
+    {
+        $catalogue = $this->catalogue();
+        $catalogue['plugins'][0]['versions'][0]['url'] = 'https://169.254.169.254/HelloWorld.zip';
+        $this->serve($catalogue);
+
+        $this->expectException(CatalogueException::class);
+        $this->expectExceptionMessage("not served from the catalogue's own address");
+
+        app(Catalogue::class)->fetch();
+    }
+
     public function test_downloads_a_zip_and_checks_it(): void
     {
         $this->serve($this->catalogue());

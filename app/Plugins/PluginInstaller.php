@@ -368,14 +368,60 @@ class PluginInstaller
             $this->checkRequires($manifest['requires'] ?? null);
 
             $unpacked = $work.'/unpacked';
-            if (! $zip->extractTo($unpacked, $entries)) {
-                throw new PluginInstallException(__('The zip could not be unpacked.'));
-            }
+            $this->extract($zip, $entries, $unpacked);
         } finally {
             $zip->close();
         }
 
         return [rtrim($unpacked.'/'.$prefix, '/'), ['folder' => $folder, 'class' => $class, 'version' => $version]];
+    }
+
+    /**
+     * Unpacks the entries, counting the bytes actually written: the sizes the zip declares can be false, so a zip that
+     * unpacks to more than MAX_UNPACKED_BYTES is stopped part way rather than filling the disk.
+     *
+     * @param  list<string>  $entries  names already checked to stay inside the folder
+     */
+    private function extract(ZipArchive $zip, array $entries, string $to): void
+    {
+        $written = 0;
+
+        foreach ($entries as $entry) {
+            $target = $to.'/'.str_replace('\\', '/', $entry);
+
+            if (str_ends_with($entry, '/')) {
+                File::ensureDirectoryExists($target);
+
+                continue;
+            }
+
+            File::ensureDirectoryExists(dirname($target));
+            $in = $zip->getStream($entry);
+            $out = $in !== false ? fopen($target, 'wb') : false;
+
+            if ($in === false || $out === false) {
+                throw new PluginInstallException(__('The zip could not be unpacked.'));
+            }
+
+            try {
+                while (! feof($in)) {
+                    $chunk = fread($in, 65536);
+                    if ($chunk === false) {
+                        throw new PluginInstallException(__('The zip could not be unpacked.'));
+                    }
+
+                    $written += strlen($chunk);
+                    if ($written > self::MAX_UNPACKED_BYTES) {
+                        throw new PluginInstallException(__('The zip unpacks to more than :size MB.', ['size' => self::MAX_UNPACKED_BYTES / 1024 / 1024]));
+                    }
+
+                    fwrite($out, $chunk);
+                }
+            } finally {
+                fclose($in);
+                fclose($out);
+            }
+        }
     }
 
     private function checkBundled(string $folder, string $class): void
