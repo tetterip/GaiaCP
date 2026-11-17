@@ -468,13 +468,16 @@ class PluginInstaller
         }
     }
 
+    /** Whether a rebuild of config / routes already waits for the end of this request. */
+    private static bool $rebuildQueued = false;
+
     /**
-     * New code must not be served from opcache, and cached config / routes must include (or drop) the plugin's.
-     * Only those two are rebuilt: clearing compiled views or the app cache mid-request breaks the open page.
-     */
-    /**
-     * Rebuilds the caches `php artisan optimize` made (config, routes, Filament's pages) after the plugins changed: a
-     * plugin installed, updated, uninstalled, enabled or disabled adds or takes away pages and their routes.
+     * Brings the caches `php artisan optimize` made (config, routes, Filament's pages) in line after the plugins
+     * changed: a plugin installed, updated, uninstalled, enabled or disabled adds or takes away pages and routes.
+     *
+     * They are cleared now and rebuilt once the response has gone out. Rebuilding config or routes makes a second
+     * application, and making it inside the request resets state the open page still needs (Livewire's hooks: the
+     * page's redirect was lost and its modal stayed open). Compiled views and the app cache are left alone.
      */
     public static function refreshCaches(): void
     {
@@ -482,27 +485,36 @@ class PluginInstaller
             @opcache_reset();
         }
 
-        // `optimize` also caches each panel's pages, resources and widgets, with the plugins' among them: an uninstalled
-        // plugin's page there breaks every page with a missing class, and an installed one's would not show. This
-        // request's panels were built before the change, so the cache is cleared, not rebuilt, and first: route:cache
-        // below reads it. The next deploy caches it again.
+        // Each panel's pages, resources and widgets, the plugins' among them: an uninstalled plugin's page there
+        // breaks every page with a missing class, and an installed one's would not show.
         foreach (Filament::getPanels() as $panel) {
             $panel->clearCachedComponents();
         }
 
-        foreach (['config' => app()->configurationIsCached(), 'route' => app()->routesAreCached()] as $cache => $cached) {
-            if (! $cached) {
-                continue;
-            }
+        $cached = array_keys(array_filter(['config' => app()->configurationIsCached(), 'route' => app()->routesAreCached()]));
 
-            self::keepingApplication(function () use ($cache) {
-                try {
-                    Artisan::call("{$cache}:cache");
-                } catch (Throwable) {
-                    Artisan::call("{$cache}:clear"); // left uncached: slower, still right; the next deploy caches again
-                }
-            });
+        foreach ($cached as $cache) {
+            Artisan::call("{$cache}:clear"); // only deletes the file; this request already has what it read
         }
+
+        if ($cached === [] || self::$rebuildQueued) {
+            return;
+        }
+
+        self::$rebuildQueued = true;
+        app()->terminating(function () use ($cached) {
+            self::$rebuildQueued = false;
+
+            foreach ($cached as $cache) {
+                self::keepingApplication(function () use ($cache) {
+                    try {
+                        Artisan::call("{$cache}:cache");
+                    } catch (Throwable) {
+                        Artisan::call("{$cache}:clear"); // left uncached: slower, still right; the next deploy caches again
+                    }
+                });
+            }
+        });
     }
 
     /**

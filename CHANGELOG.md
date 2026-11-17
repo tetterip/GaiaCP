@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Installing a plugin from the catalogue no longer leaves its password window open (and "Error loading page" after
+  Cancel) where the config is cached: the config and route caches are now rebuilt after the response has gone out,
+  since rebuilding them inside the request undid the page's reload.
 - Enabling a plugin installed from the catalogue or a zip no longer breaks every Settings page with "500 Server Error"
   (`Route [...] not defined`) where routes are cached, and the page no longer shows "Error loading page" after an
   uninstall: enabling and disabling refresh the caches too, Filament's list of pages first, and the Plugins pages open
