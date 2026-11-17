@@ -15,6 +15,7 @@ use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Facade;
@@ -184,6 +185,26 @@ class PluginInstallerTest extends TestCase
         $this->assertSame($app, Facade::getFacadeApplication());
         $this->assertSame('el', App::getLocale());
         $this->assertSame('Πρόσθετα', __('Plugins'));
+    }
+
+    public function test_cached_config_is_cleared_now_and_rebuilt_after_the_response(): void
+    {
+        // rebuilding inside the request made a second application that reset Livewire's hooks: the page's redirect
+        // was lost and the install window stayed open
+        $this->app->instance('config_loaded_from_cache', true);
+        $calls = [];
+        Artisan::shouldReceive('call')->andReturnUsing(function (string $command) use (&$calls) {
+            $calls[] = $command;
+
+            return 0;
+        });
+
+        PluginInstaller::refreshCaches();
+        PluginInstaller::refreshCaches();
+        $this->assertSame(['config:clear', 'config:clear'], $calls);
+
+        $this->app->terminate();
+        $this->assertSame(['config:clear', 'config:clear', 'config:cache'], $calls);
     }
 
     public function test_plugin_json_may_sit_at_the_top_of_the_zip(): void
