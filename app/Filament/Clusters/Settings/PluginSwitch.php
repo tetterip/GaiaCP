@@ -61,5 +61,8 @@ trait PluginSwitch
         Notification::make()->success()
             ->title($this->pluginEnabled ? __(':plugin enabled', ['plugin' => $plugin->name()]) : __(':plugin disabled', ['plugin' => $plugin->name()]))
             ->send();
+
+        // A fresh page: this request's panel and routes were built with the plugin as it was.
+        $this->redirect(static::getUrl());
     }
 }

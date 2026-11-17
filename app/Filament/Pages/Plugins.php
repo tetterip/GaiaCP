@@ -138,7 +138,7 @@ class Plugins extends Page implements HasTable, SettingsCard
                         Storage::disk('local')->delete($data['zip']);
                     }
 
-                    $this->flushCachedTableRecords();
+                    $this->reloadAfterPluginChange();
                     Notification::make()->success()
                         ->title(filled($previous)
                             ? __(':plugin updated to :version', ['plugin' => $plugin->name(), 'version' => $plugin->version()])
@@ -245,7 +245,7 @@ class Plugins extends Page implements HasTable, SettingsCard
                     ->visible(fn (array $record) => $record['state'] === PluginState::Enabled && $record['id'] !== 'demo')
                     ->action(function (array $record) {
                         $this->plugins()->disable($this->plugin($record));
-                        $this->flushCachedTableRecords();
+                        $this->reloadAfterPluginChange();
                         Notification::make()->success()->title(__(':plugin disabled', ['plugin' => $record['name']]))->send();
                     }),
                 Action::make('enable')
@@ -255,7 +255,7 @@ class Plugins extends Page implements HasTable, SettingsCard
                     ->visible(fn (array $record) => $record['state'] === PluginState::Disabled)
                     ->action(function (array $record) {
                         $this->plugins()->enable($this->plugin($record));
-                        $this->flushCachedTableRecords();
+                        $this->reloadAfterPluginChange();
                         Notification::make()->success()->title(__(':plugin enabled', ['plugin' => $record['name']]))->send();
                     }),
                 // Only uploaded plugins that were updated here: the update kept the folder it replaced
@@ -288,7 +288,7 @@ class Plugins extends Page implements HasTable, SettingsCard
                             return;
                         }
 
-                        $this->flushCachedTableRecords();
+                        $this->reloadAfterPluginChange();
                         Notification::make()->success()->title(__(':plugin rolled back to :version', ['plugin' => $plugin->name(), 'version' => $plugin->version()]))->send();
                     }),
                 // Only uploaded plugins, once disabled: the bundled ones can't be uninstalled (project rule)
@@ -317,7 +317,7 @@ class Plugins extends Page implements HasTable, SettingsCard
                             return;
                         }
 
-                        $this->flushCachedTableRecords();
+                        $this->reloadAfterPluginChange();
                         Notification::make()->success()->title(__(':plugin uninstalled', ['plugin' => $record['name']]))->send();
                     }),
             ])
@@ -357,8 +357,18 @@ class Plugins extends Page implements HasTable, SettingsCard
                     fn (array $record) => $record['name'],
                 )->notify($enable ? ':count plugin enabled|:count plugins enabled' : ':count plugin disabled|:count plugins disabled');
 
-                $this->flushCachedTableRecords();
+                $this->reloadAfterPluginChange();
             });
+    }
+
+    /**
+     * Opens the page afresh after a plugin was installed, updated, rolled back, uninstalled, enabled or disabled. This
+     * request's panel was built with the plugins as they were (its pages, routes and the classes Composer listed), so
+     * re-rendering it here could reach a page that no longer exists or miss the route of one that now does.
+     */
+    private function reloadAfterPluginChange(): void
+    {
+        $this->redirect(static::getUrl());
     }
 
     /** The order of the types on the page; a plugin with another category sorts last. */

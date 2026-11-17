@@ -297,7 +297,7 @@ class PluginCatalogue extends Page implements HasTable
                     return;
                 }
 
-                $this->flushCachedTableRecords();
+                $this->redirect(static::getUrl()); // a fresh page: this request's panel predates the new plugin
                 $plugins = app(PluginManager::class);
                 Notification::make()->success()
                     ->title(filled($plugins->installed($plugin)?->previous)

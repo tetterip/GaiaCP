@@ -251,7 +251,8 @@ class PluginInstallerTest extends TestCase
             ->callTableAction('roll_back', $this->id(), ['password' => 'secret-password'])
             ->assertHasNoTableActionErrors()
             ->assertNotified('Demo plugin rolled back to 1.0.0')
-            ->assertSee('Rolled back from 1.1.0');
+            ->assertRedirect(Plugins::getUrl());
+        Livewire::test(Plugins::class)->assertSee('Rolled back from 1.1.0');
 
         $this->assertSame('1.0.0', $plugin->version());
         $this->assertStringContainsString('"version":"1.0.0"', File::get("{$this->directory}/{$this->name}/plugin.json"));
@@ -386,6 +387,34 @@ class PluginInstallerTest extends TestCase
         } finally {
             File::delete($cache);
         }
+    }
+
+    public function test_enabling_or_disabling_a_plugin_refreshes_the_cached_pages(): void
+    {
+        $cache = Filament::getPanel('admin')->getComponentCachePath();
+        File::ensureDirectoryExists(dirname($cache));
+        $plugin = $this->plugins()->find('gogetssl');
+
+        try {
+            File::put($cache, '<?php return [];'); // as `optimize` on a deploy, before the plugin was switched on
+            $this->plugins()->enable($plugin);
+            $this->assertFileDoesNotExist($cache);
+
+            File::put($cache, '<?php return [];');
+            $this->plugins()->disable($plugin);
+            $this->assertFileDoesNotExist($cache);
+        } finally {
+            File::delete($cache);
+        }
+    }
+
+    public function test_the_page_reloads_after_a_plugin_is_switched(): void
+    {
+        $this->plugins()->disable($this->plugins()->find('gogetssl'));
+
+        Livewire::test(Plugins::class)
+            ->callTableAction('enable', 'gogetssl')
+            ->assertRedirect(Plugins::getUrl());
     }
 
     public function test_bundled_plugins_are_never_uninstalled(): void
