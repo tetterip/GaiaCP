@@ -11,18 +11,18 @@ use App\Models\User;
 use App\Support\DomainName;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
 use Tests\TestCase;
 
 class NameserversTest extends TestCase
 {
-    use FakesEasy, RefreshDatabase;
+    use FakesRegistrar, RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fakeEasy();
+        $this->fakeRegistrar();
         $this->actingAs(User::factory()->create());
     }
 
@@ -30,7 +30,7 @@ class NameserversTest extends TestCase
     {
         $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'status' => $status]);
         $service->domainDetails()->create(['registration_type' => $type, 'nameservers' => ['ns1.old.gr', 'ns2.old.gr']]);
-        $this->easyDomains['acme.gr'] = ['expires' => '2027-01-02', 'ns' => ['ns1.old.gr', 'ns2.old.gr']];
+        $this->registrarDomains['acme.gr'] = ['expires' => '2027-01-02', 'ns' => ['ns1.old.gr', 'ns2.old.gr']];
 
         return $service->refresh();
     }
@@ -76,13 +76,13 @@ class NameserversTest extends TestCase
             ->callAction('setNameservers', ['nameservers' => ['ns1.new.gr', 'anything goes']])
             ->assertHasActionErrors(['nameservers']);
 
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
 
         Livewire::test(EditService::class, ['record' => $service->id])
             ->callAction('setNameservers', ['nameservers' => ['NS1.New.gr', 'ns2.new.gr.']])
             ->assertHasNoActionErrors();
 
-        $this->assertSame(['ns1.new.gr', 'ns2.new.gr'], $this->easyDomains['acme.gr']['ns']);
+        $this->assertSame(['ns1.new.gr', 'ns2.new.gr'], $this->registrarDomains['acme.gr']['ns']);
         $this->assertSame(['ns1.new.gr', 'ns2.new.gr'], $service->refresh()->domainDetails->nameservers);
     }
 
@@ -97,7 +97,7 @@ class NameserversTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertSame(['ns1.old.gr', 'ns2.old.gr'], $service->refresh()->domainDetails->nameservers);
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
     }
 
     public function test_a_pending_or_tracked_domain_keeps_its_nameservers_on_the_form_and_they_are_checked(): void
@@ -121,7 +121,7 @@ class NameserversTest extends TestCase
             $service->delete();
         }
 
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
     }
 
     public function test_a_wrong_nameserver_or_a_fifth_one_is_flagged_as_soon_as_it_is_added(): void

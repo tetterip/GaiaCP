@@ -232,7 +232,7 @@ class PluginCatalogue extends Page implements HasTable
 
     protected function afterCatalogueInstall(): void
     {
-        $this->flushCachedTableRecords();
+        $this->redirect(static::getUrl()); // a fresh page: this request's panel predates the new plugin
     }
 
     public function content(Schema $schema): Schema

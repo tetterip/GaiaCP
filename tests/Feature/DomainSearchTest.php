@@ -23,14 +23,15 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use Plugins\Turnstile\TurnstilePlugin;
-use Tests\FakesEasy;
 use Tests\FakesEnom;
+use Tests\FakesRegistrar;
+use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 /** Domains → Search for a domain: the name with each TLD sold, free or taken, and Add to cart. */
 class DomainSearchTest extends TestCase
 {
-    use FakesEasy, FakesEnom, RefreshDatabase;
+    use FakesEnom, FakesRegistrar, RefreshDatabase;
 
     private User $user;
 
@@ -118,23 +119,23 @@ class DomainSearchTest extends TestCase
         $this->assertSame([['Check', ['SLD' => 'taken', 'TLD' => 'com']], ['Check', ['SLD' => 'free', 'TLD' => 'com']]], $this->enomCalls);
     }
 
-    public function test_easy_gr_answers_for_its_tlds(): void
+    public function test_the_registrar_answers_for_its_tlds(): void
     {
-        $this->fakeEasy();
-        $this->easyDomains['taken.gr'] = ['expires' => '2027-01-01'];
+        $this->fakeRegistrar();
+        $this->registrarDomains['taken.gr'] = ['expires' => '2027-01-01'];
 
         $this->assertSame(DomainAvailability::Taken, app(DomainSearch::class)->check('taken.gr'));
         $this->assertSame(DomainAvailability::Available, app(DomainSearch::class)->check('free.gr'));
-        $this->assertSame([[0, ['domain' => 'taken.gr']], [0, ['domain' => 'free.gr']]], $this->easyCalls);
-        Http::assertSent(fn (Request $request) => $request->method() === 'GET' && str_starts_with($request->url(), 'https://api.easy.gr'));
+        $this->assertSame([[TestRegistrar::AVAILABILITY, ['domain' => 'taken.gr']], [TestRegistrar::AVAILABILITY, ['domain' => 'free.gr']]], $this->registrarCalls);
     }
 
-    public function test_an_easy_gr_error_is_not_read_as_taken(): void
+    public function test_a_registrar_error_is_not_read_as_taken(): void
     {
-        $this->fakeEasy();
-        $this->easyFailures[0] = ['1001' => 'Wrong username or password'];
+        Http::fake(['*' => Http::response('Not found', 404)]); // no RDAP answer either
+        $this->fakeRegistrar();
+        $this->registrarFailures[TestRegistrar::AVAILABILITY] = ['1001' => 'Wrong username or password'];
 
-        // easy.gr refused, there is no RDAP for .gr and no nameservers: probably free, never "taken".
+        // The registrar refused, there is no RDAP for .gr and no nameservers: probably free, never "taken".
         $this->assertSame(DomainAvailability::Unknown, app(DomainSearch::class)->check('maybe.gr'));
     }
 

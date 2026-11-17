@@ -23,8 +23,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
-use Plugins\Aade\AadeRegistry;
-use Plugins\Aade\AadeSettings;
+use Plugins\Vies\ViesSettings;
 use Plugins\WhmcsImport\WhmcsImportPage;
 use Tests\FakesWhm;
 use Tests\Fixtures\ExamplePanel\ExamplePanelPlugin;
@@ -49,34 +48,34 @@ class PluginsTest extends TestCase
 
     public function test_the_bundled_plugins_start_enabled_and_are_listed(): void
     {
-        foreach (['cpanel', 'plesk', 'hestia', 'directadmin', 'easygr', 'aade', 'whmcs-import'] as $id) {
+        foreach (['cpanel', 'plesk', 'hestia', 'directadmin', 'enom', 'vies', 'whmcs-import'] as $id) {
             $this->assertSame(PluginState::Enabled, $this->plugins()->state($id));
         }
 
         $this->get('/admin/settings')->assertOk()->assertSee(Plugins::getUrl());
-        $this->get(Plugins::getUrl())->assertOk()->assertSee(['cPanel / WHM', 'Plesk', 'Easy.gr', 'ΑΑΔΕ', 'WHMCS import']);
+        $this->get(Plugins::getUrl())->assertOk()->assertSee(['cPanel / WHM', 'Plesk', 'Enom', 'VIES VAT check', 'WHMCS import']);
     }
 
-    public function test_easy_gr_and_aade_start_off_in_a_new_install_but_keep_an_existing_switch(): void
+    public function test_cyberpanel_and_vies_start_off_in_a_new_install_but_keep_an_existing_switch(): void
     {
         // An install that already has its rows (every install before this change) keeps them as they are
-        DB::table('plugins')->where('id', 'aade')->update(['enabled' => true]);
-        DB::table('plugins')->whereIn('id', ['easygr', 'cpanel'])->delete();
+        DB::table('plugins')->where('id', 'vies')->update(['enabled' => true]);
+        DB::table('plugins')->whereIn('id', ['cyberpanel', 'cpanel'])->delete();
         config(['gaiacp.plugins.start_enabled' => []]);
         app()->forgetInstance(PluginManager::class);
 
         $this->plugins()->recordVersions();
 
-        $this->assertSame(PluginState::Disabled, $this->plugins()->state('easygr'));
+        $this->assertSame(PluginState::Disabled, $this->plugins()->state('cyberpanel'));
         $this->assertSame(PluginState::Enabled, $this->plugins()->state('cpanel'));
-        $this->assertSame(PluginState::Enabled, $this->plugins()->state('aade'));
+        $this->assertSame(PluginState::Enabled, $this->plugins()->state('vies'));
 
         // GAIACP_PLUGINS_START_ENABLED turns one on in a new install
-        DB::table('plugins')->where('id', 'easygr')->delete();
-        config(['gaiacp.plugins.start_enabled' => ['easygr']]);
+        DB::table('plugins')->where('id', 'cyberpanel')->delete();
+        config(['gaiacp.plugins.start_enabled' => ['cyberpanel']]);
         app()->forgetInstance(PluginManager::class);
         $this->plugins()->recordVersions();
-        $this->assertSame(PluginState::Enabled, $this->plugins()->state('easygr'));
+        $this->assertSame(PluginState::Enabled, $this->plugins()->state('cyberpanel'));
     }
 
     public function test_disable_and_enable_from_the_page_are_logged(): void
@@ -85,6 +84,9 @@ class PluginsTest extends TestCase
             ->assertTableActionHidden('enable', 'plesk')
             ->callTableAction('disable', 'plesk')
             ->assertNotified('Plesk disabled')
+            ->assertRedirect(Plugins::getUrl()); // a fresh page: this request's panel predates the change
+
+        Livewire::test(Plugins::class)
             ->assertTableActionVisible('enable', 'plesk')
             ->assertTableActionHidden('disable', 'plesk');
 
@@ -102,16 +104,16 @@ class PluginsTest extends TestCase
         $this->plugins()->disable($this->plugins()->find('hestia'));
 
         Livewire::test(Plugins::class)
-            ->assertCanSeeTableRecords(['plesk', 'easygr', 'stripe'])
+            ->assertCanSeeTableRecords(['plesk', 'enom', 'stripe'])
             ->filterTable('type', ['Servers'])
             ->assertCanSeeTableRecords(['plesk', 'cpanel', 'hestia'])
-            ->assertCanNotSeeTableRecords(['easygr', 'stripe'])
+            ->assertCanNotSeeTableRecords(['enom', 'stripe'])
             ->filterTable('status', 'disabled')
             ->assertCanSeeTableRecords(['hestia'])
             ->assertCanNotSeeTableRecords(['plesk', 'cpanel'])
             ->resetTableFilters()
-            ->searchTable('easy')
-            ->assertCanSeeTableRecords(['easygr'])
+            ->searchTable('enom')
+            ->assertCanSeeTableRecords(['enom'])
             ->assertCanNotSeeTableRecords(['plesk', 'stripe'])
             ->searchTable('no such plugin')
             ->assertSee('No plugins to show');
@@ -169,31 +171,29 @@ class PluginsTest extends TestCase
 
     public function test_a_disabled_registrar_plugin_stops_registrar_calls_and_new_accounts(): void
     {
-        $this->plugins()->disable($this->plugins()->find('easygr'));
+        $this->plugins()->disable($this->plugins()->find('enom'));
 
         $this->expectException(ProvisioningException::class);
-        $this->expectExceptionMessage('Easy.gr plugin is disabled');
+        $this->expectExceptionMessage('Enom plugin is disabled');
 
         try {
             Livewire::test(CreateRegistrar::class)
-                ->assertFormFieldExists('module', fn ($field) => $field->getOptions() === []);
+                ->assertFormFieldExists('module', fn ($field) => ! array_key_exists('enom', $field->getOptions()));
         } finally {
-            app(RegistrarFactory::class)->make('easygr', ['username' => 'u', 'password' => 'p']);
+            app(RegistrarFactory::class)->make('enom', ['username' => 'u', 'password' => 'p']);
         }
     }
 
-    public function test_a_disabled_aade_plugin_hides_its_settings_and_the_lookup(): void
+    public function test_a_disabled_plugin_hides_its_settings_and_keeps_them(): void
     {
-        config(['gaiacp.aade' => ['enabled' => true, 'username' => 'CODE', 'password' => 'secret', 'afm_called_by' => null]]);
-        $this->assertTrue(AadeRegistry::enabled());
+        config(['gaiacp.vies.reverse_charge' => true]);
 
-        $this->plugins()->disable($this->plugins()->find('aade'));
+        $this->plugins()->disable($this->plugins()->find('vies'));
 
-        $this->assertFalse(AadeRegistry::enabled());
-        $this->get(AadeSettings::getUrl())->assertForbidden();
-        $this->get('/admin/settings')->assertDontSee(AadeSettings::getUrl());
-        Livewire::test(Plugins::class)->assertTableActionHidden('settings', 'aade');
-        $this->assertSame('CODE', config('gaiacp.aade.username')); // the codes stay for when it is enabled again
+        $this->get(ViesSettings::getUrl())->assertForbidden();
+        $this->get('/admin/settings')->assertDontSee(ViesSettings::getUrl());
+        Livewire::test(Plugins::class)->assertTableActionHidden('settings', 'vies');
+        $this->assertTrue(config('gaiacp.vies.reverse_charge')); // kept for when it is enabled again
     }
 
     public function test_a_disabled_whmcs_import_plugin_hides_the_page_and_refuses_the_command(): void

@@ -64,7 +64,7 @@ class PluginCatalogueEntry extends Page
 
     protected function afterCatalogueInstall(): void
     {
-        // the page reads the plugin's status on each render
+        $this->redirect(static::getUrl(['folder' => $this->folder])); // a fresh page: this request's panel predates the new plugin
     }
 
     public function getTitle(): string|Htmlable

@@ -2,7 +2,7 @@
 
 How each server panel (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Enhance) and registrar (easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications) plugin talks to its API. Read before touching one or adding a call.
 
-Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/Virtualmin`, `plugins/EasyGr`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`, `plugins/GoDaddy`, `plugins/ResellerClub`) behind the interfaces in
+Each server type and registrar is a plugin (`plugins/Cpanel`, `plugins/Plesk`, `plugins/Hestia`, `plugins/DirectAdmin`, `plugins/CyberPanel`, `plugins/Virtualmin`, `plugins/Enom`, `plugins/Namecheap`, `plugins/NameSilo`, `plugins/Openprovider`, `plugins/ResellerClub`; easy.gr, GoDaddy and Enhance come from the plugin catalogue) behind the interfaces in
 `app/Provisioning/` (`ServerModule` → `HostingProvisioner`, `RegistrarModule` → `DomainRegistrar`) so the rest of the app
 never calls a panel API directly.
 
@@ -164,7 +164,7 @@ never calls a panel API directly.
   emailed = `ProvisioningException`, so nothing is marked done) and books nothing. `DomainLifecycle::readsRegistrar()`
   is false for it: no sync (`gaiacp:sync-domains` skips it), no admin EPP action, and `eppCode()` returns null (the
   client is told the code will be emailed)
-- **easy.gr** (`plugins/EasyGr`), ported from its WHMCS module: form POST to `https://api.easy.gr` with `username`,
+- **easy.gr** (`plugins/EasyGr`, a plugin catalogue plugin kept in the gaiacp-plugins repository), ported from its WHMCS module: form POST to `https://api.easy.gr` with `username`,
   `password` and a numeric `action` (1 EPP, 2/3 get/save nameservers, 4 register, 5 renew, 11 transfer,
   19 sync/expiry); replies `done` 1 ok / 0 with `errors` / 3 registry down. Keep the module's field names.
   TLS is verified by default (the module disables it; don't); `registrars.verify_tls` is a per-account escape

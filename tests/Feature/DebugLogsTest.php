@@ -16,7 +16,6 @@ use App\Models\ModuleLog;
 use App\Models\Server;
 use App\Models\User;
 use App\Provisioning\ProvisioningException;
-use App\Provisioning\RegistrarFactory;
 use App\Support\LogReader;
 use App\Support\ModuleLogger;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,16 +26,14 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
-use Plugins\Aade\AadeRegistry;
 use Plugins\Cpanel\WhmClient;
-use Plugins\EasyGr\EasyRegistrar;
 use Plugins\Plesk\PleskClient;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
 use Tests\TestCase;
 
 class DebugLogsTest extends TestCase
 {
-    use FakesEasy, RefreshDatabase;
+    use FakesRegistrar, RefreshDatabase;
 
     private function whm(): WhmClient
     {
@@ -106,37 +103,6 @@ class DebugLogsTest extends TestCase
         foreach (['ADMINPASS', 'Cust&lt;Pass&gt;', 'Cust<Pass>', 'FtpPass9'] as $secret) {
             $this->assertStringNotContainsString($secret, $all);
         }
-    }
-
-    public function test_easy_password_and_epp_code_are_masked(): void
-    {
-        config(['gaiacp.debug.module_log' => true]);
-        $this->fakeEasy();
-        $this->easyDomains['acme.gr'] = ['expires' => '2027-03-15', 'epp' => 'Epp-Secret-42'];
-        $registrar = app(RegistrarFactory::class)->make('easygr', ['username' => 'reseller', 'password' => 'EasyPass1']);
-
-        $this->assertSame('Epp-Secret-42', $registrar->eppCode('acme.gr'));
-
-        $log = ModuleLog::sole();
-        $this->assertSame('easy', $log->module);
-        $this->assertSame(EasyRegistrar::EPP_CODE.' EPP code', $log->action);
-        $this->assertStringContainsString('username=reseller', $log->request);
-        $this->assertStringNotContainsString('EasyPass1', $log->request);
-        $this->assertStringNotContainsString('Epp-Secret-42', $log->response);
-    }
-
-    public function test_aade_password_is_masked(): void
-    {
-        config(['gaiacp.debug.module_log' => true, 'gaiacp.aade' => ['enabled' => true, 'username' => 'ACMECODE', 'password' => 'p&ss<word>', 'afm_called_by' => null]]);
-        Http::fake([AadeRegistry::ENDPOINT => Http::response('<env:Envelope/>', 500)]);
-
-        rescue(fn () => AadeRegistry::lookup('094014298'), report: false);
-
-        $log = ModuleLog::sole();
-        $this->assertSame('aade', $log->module);
-        $this->assertStringContainsString('ACMECODE', $log->request);
-        $this->assertStringNotContainsString('p&amp;ss&lt;word&gt;', $log->request);
-        $this->assertStringContainsString('<ns1:Password>'.ModuleLogger::MASK.'</ns1:Password>', $log->request);
     }
 
     public function test_masking_by_field_name(): void

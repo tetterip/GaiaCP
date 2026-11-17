@@ -32,14 +32,14 @@ use Filament\Notifications\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
-use Plugins\EasyGr\EasyRegistrar;
-use Tests\FakesEasy;
+use Tests\FakesRegistrar;
 use Tests\FakesWhm;
+use Tests\Support\TestRegistrar\TestRegistrar;
 use Tests\TestCase;
 
 class OrdersTest extends TestCase
 {
-    use FakesEasy, FakesWhm, RefreshDatabase;
+    use FakesRegistrar, FakesWhm, RefreshDatabase;
 
     private Client $client;
 
@@ -51,7 +51,7 @@ class OrdersTest extends TestCase
 
         $this->travelTo('2026-10-09 10:00');
         $this->fakeWhm();
-        $this->fakeEasy();
+        $this->fakeRegistrar();
         config(['gaiacp.domains.nameservers' => ['ns1.host.gr', 'ns2.host.gr']]);
 
         $this->client = Client::factory()->create();
@@ -81,7 +81,7 @@ class OrdersTest extends TestCase
         $this->assertSame('acme.gr', $order->services->firstWhere('type', ServiceType::Domain)->label);
         $this->assertSame(DomainRegistrationType::Register, $order->services->firstWhere('type', ServiceType::Domain)->domainDetails->registration_type);
         $this->assertSame(2000 + 6000 + 12000, $order->totalCents());
-        $this->assertSame([], $this->easyCalls);
+        $this->assertSame([], $this->registrarCalls);
         $this->assertSame([], $this->whmCalls);
     }
 
@@ -92,7 +92,7 @@ class OrdersTest extends TestCase
         $failures = app(CompleteOrder::class)->handle($order);
 
         $this->assertSame([], $failures);
-        $this->assertContains(EasyRegistrar::REGISTER, $this->easyActions());
+        $this->assertContains(TestRegistrar::REGISTER, $this->registrarActions());
         $this->assertArrayHasKey('acme', $this->whmAccounts);
         $this->assertTrue($order->services()->get()->every(fn ($s) => $s->status === ServiceStatus::Active));
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
@@ -102,7 +102,7 @@ class OrdersTest extends TestCase
     public function test_a_failing_item_stays_pending_and_a_retry_finishes_it(): void
     {
         $order = $this->place();
-        $this->easyFailures[EasyRegistrar::REGISTER] = ['2302' => 'Object exists'];
+        $this->registrarFailures[TestRegistrar::REGISTER] = ['2302' => 'Object exists'];
 
         $failures = app(CompleteOrder::class)->handle($order);
 
@@ -112,7 +112,7 @@ class OrdersTest extends TestCase
         $this->assertSame(OrderStatus::Pending, $order->refresh()->status);
         $this->assertSame(2, $order->services()->where('status', ServiceStatus::Active)->count());
 
-        unset($this->easyFailures[EasyRegistrar::REGISTER]);
+        unset($this->registrarFailures[TestRegistrar::REGISTER]);
         $whmCreates = count(array_filter($this->whmCalls, fn ($c) => $c[0] === 'createacct'));
 
         $this->assertSame([], app(CompleteOrder::class)->handle($order));
@@ -124,12 +124,12 @@ class OrdersTest extends TestCase
     {
         $order = $this->place();
         app(CompleteOrder::class)->handle($order);
-        $this->easyCalls = [];
+        $this->registrarCalls = [];
 
         $payments = app(RecordOrderPayment::class)->handle($order, CarbonImmutable::parse('2026-10-09'), 'bank_transfer');
 
         $this->assertSame([2000, 6000, 12000], collect($payments)->pluck('amount_cents')->sort()->values()->all());
-        $this->assertSame([], $this->easyCalls); // the registration already covers the first year
+        $this->assertSame([], $this->registrarCalls); // the registration already covers the first year
         $this->assertTrue($order->services()->get()->every(fn ($s) => $s->next_due_date->toDateString() === '2027-10-09'));
         $this->assertSame([], app(RecordOrderPayment::class)->handle($order, CarbonImmutable::parse('2026-10-09'), 'bank_transfer'));
     }
@@ -137,7 +137,7 @@ class OrdersTest extends TestCase
     public function test_admin_places_and_completes_an_order(): void
     {
         $this->actingAs(User::factory()->create());
-        $this->easyRegistrar->tlds()->where('tld', '.com.gr')->update(['register_2y_cents' => 3000]);
+        $this->testRegistrar->tlds()->where('tld', '.com.gr')->update(['register_2y_cents' => 3000]);
         $undo = Repeater::fake();
 
         Livewire::test(CreateOrder::class)
@@ -163,7 +163,7 @@ class OrdersTest extends TestCase
             ->callAction('completeOrder')
             ->assertNotified('Order completed');
 
-        $this->assertSame('2', collect($this->easyCalls)->firstWhere(0, EasyRegistrar::REGISTER)[1]['years']);
+        $this->assertSame('2', collect($this->registrarCalls)->firstWhere(0, TestRegistrar::REGISTER)[1]['years']);
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
     }
 
@@ -198,13 +198,13 @@ class OrdersTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
         $order = $this->place();
-        $this->easyFailures[EasyRegistrar::REGISTER] = ['2306' => 'Συμπλήρωσε την περιοχή'];
+        $this->registrarFailures[TestRegistrar::REGISTER] = ['2306' => 'Συμπλήρωσε την περιοχή'];
 
         Livewire::test(ViewOrder::class, ['record' => $order->id])
             ->callAction('completeOrder')
             ->assertNotified(Notification::make()
                 ->title('Some items are still pending')
-                ->body('acme.gr: easy.gr: 2306 - Συμπλήρωσε την περιοχή. Fix them and run "Complete order" again; finished items are skipped.')
+                ->body('acme.gr: Test registrar: 2306 - Συμπλήρωσε την περιοχή. Fix them and run "Complete order" again; finished items are skipped.')
                 ->danger()
                 ->persistent());
     }
@@ -215,7 +215,7 @@ class OrdersTest extends TestCase
         $order = $this->place();
         $domain = $order->services()->where('type', ServiceType::Domain)->sole();
         $hosting = $order->services()->where('type', ServiceType::Hosting)->sole();
-        $otherRegistrar = Registrar::factory()->create(['name' => 'Second easy.gr']);
+        $otherRegistrar = Registrar::factory()->create(['module' => 'test', 'name' => 'Second easy.gr']);
         $otherServer = Server::factory()->create(['name' => 'nl1']);
 
         Livewire::test(ViewOrder::class, ['record' => $order->id])
@@ -339,7 +339,7 @@ class OrdersTest extends TestCase
     public function test_domain_prices_come_from_domain_pricing(): void
     {
         $this->actingAs(User::factory()->create());
-        $this->easyRegistrar->tlds()->where('tld', '.gr')->update(['register_1y_cents' => 2000, 'renew_1y_cents' => 1800, 'transfer_1y_cents' => 0]);
+        $this->testRegistrar->tlds()->where('tld', '.gr')->update(['register_1y_cents' => 2000, 'renew_1y_cents' => 1800, 'transfer_1y_cents' => 0]);
         $undo = Repeater::fake();
 
         $page = Livewire::test(CreateOrder::class)
@@ -376,7 +376,7 @@ class OrdersTest extends TestCase
     public function test_changing_the_type_or_product_drops_the_old_prices(): void
     {
         $this->actingAs(User::factory()->create());
-        $this->easyRegistrar->tlds()->where('tld', '.gr')->update(['register_1y_cents' => 2400, 'renew_1y_cents' => 2400]);
+        $this->testRegistrar->tlds()->where('tld', '.gr')->update(['register_1y_cents' => 2400, 'renew_1y_cents' => 2400]);
         $domain = Product::factory()->create(['name' => 'Domain', 'type' => ServiceType::Domain, 'package' => null]);
         $maintenance = Product::factory()->maintenance()->create();
         $unpriced = Product::factory()->maintenance()->create(['name' => 'Hourly support', 'prices' => []]);
@@ -407,7 +407,7 @@ class OrdersTest extends TestCase
     public function test_a_tld_priced_only_for_two_years_is_ordered_for_two_years(): void
     {
         $this->actingAs(User::factory()->create());
-        $this->easyRegistrar->tlds()->where('tld', '.gr')->update(['register_1y_cents' => null, 'register_2y_cents' => 2400, 'renew_1y_cents' => null, 'renew_2y_cents' => 2400]);
+        $this->testRegistrar->tlds()->where('tld', '.gr')->update(['register_1y_cents' => null, 'register_2y_cents' => 2400, 'renew_1y_cents' => null, 'renew_2y_cents' => 2400]);
         $undo = Repeater::fake();
 
         $page = Livewire::test(CreateOrder::class)

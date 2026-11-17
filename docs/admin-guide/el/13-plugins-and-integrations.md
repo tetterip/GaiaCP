@@ -16,7 +16,7 @@ Google, παρακολούθηση, chat, webhooks, θέματα, η εισαγ�
   servers, οι λογαριασμοί και οι ρυθμίσεις του μένουν, οπότε αν το ξανανοίξεις όλα επιστρέφουν. Τσέκαρε πολλά και
   χρησιμοποίησε τις μαζικές ενέργειες για να τα ενεργοποιήσεις ή να τα απενεργοποιήσεις μαζί.
 - Τα πρόσθετα που έρχονται με το GaiaCP δεν απεγκαθίστανται, μόνο απενεργοποιούνται. Τα περισσότερα ξεκινούν
-  ανοιχτά· το easy.gr, η ΑΑΔΕ, ο Έλεγχος ΑΦΜ VIES και το GoGetSSL ξεκινούν κλειστά.
+  ανοιχτά· ο Έλεγχος ΑΦΜ VIES και το GoGetSSL ξεκινούν κλειστά.
 - Ένα πρόσθετο που χρειάζεται νεότερο GaiaCP μένει κλειστό μέχρι να ενημερώσεις το GaiaCP.
 
 ### Ο κατάλογος πρόσθετων
@@ -59,22 +59,23 @@ plugins.gaiacp.digital δεν θα μπορούσε να σου δώσει άλ�
 
 | Είδος | Πρόσθετα | Πού τα ρυθμίζεις |
 |---|---|---|
-| Panels servers | cPanel / WHM, Plesk, HestiaCP, DirectAdmin· CyberPanel, Virtualmin, Enhance, Proxmox VE (κλειστά μέχρι να τα ανοίξεις) | Ρυθμίσεις → Servers |
-| Registrars | easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications | Ρυθμίσεις → Registrars |
-| Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe, PayPal, Nexi XPay, Mastercard Gateway, IRIS | Ρυθμίσεις → Τρόποι πληρωμής |
+| Panels servers | cPanel / WHM, Plesk, HestiaCP, DirectAdmin· CyberPanel, Virtualmin, Proxmox VE (κλειστά μέχρι να τα ανοίξεις) | Ρυθμίσεις → Servers |
+| Registrars | Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications | Ρυθμίσεις → Registrars |
+| Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe, PayPal, Nexi XPay, Mastercard Gateway | Ρυθμίσεις → Τρόποι πληρωμής |
 | Πιστοποιητικά SSL | GoGetSSL | Ρυθμίσεις → GoGetSSL |
-| Παρακολούθηση | Uptime Kuma, UptimeRobot, HetrixTools, Better Stack, Έλεγχος IP σε blacklists, Έλεγχος sites | Ρυθμίσεις → Διασυνδέσεις |
+| Παρακολούθηση | Uptime Kuma, UptimeRobot, Better Stack, Έλεγχος IP σε blacklists, Έλεγχος sites | Ρυθμίσεις → Διασυνδέσεις |
 | Σύνδεση και ασφάλεια πελατών | Σύνδεση με Google, Google reCAPTCHA, Cloudflare Turnstile | Ρυθμίσεις → Περιοχή πελατών |
-| Φορολογικά στοιχεία | Έλεγχος ΑΦΜ VIES, αναζήτηση στο μητρώο ΑΑΔΕ | οι δικές τους σελίδες ρυθμίσεων |
+| Φορολογικά στοιχεία | Έλεγχος ΑΦΜ VIES | οι δικές τους σελίδες ρυθμίσεων |
 | Ειδοποιήσεις | Slack, Discord, Telegram, Webhooks | Ρυθμίσεις → Email και ειδοποιήσεις |
 | Υποστήριξη | Email σε ticket | Ρυθμίσεις → Υποστήριξη |
-| AI | Claude, ChatGPT, DeepSeek, Kimi, Ollama | Ρυθμίσεις → Βοηθός AI (δική της ομάδα: η σελίδα του βοηθού και κάθε υπηρεσίας) |
+| AI | Claude, ChatGPT, DeepSeek | Ρυθμίσεις → Βοηθός AI (δική της ομάδα: η σελίδα του βοηθού και κάθε υπηρεσίας) |
 | Εμφάνιση | Θέματα Gaia, Flat και Glass | Προφίλ, Ρυθμίσεις → Γενικά, Ρυθμίσεις → Περιοχή πελατών |
 | Μετακόμιση | Εισαγωγή από WHMCS | Ρυθμίσεις → Σύστημα |
 
-Στον κατάλογο πρόσθετων (τα εγκαθιστάς μόνο αν τα θέλεις): Alpha Bank, Eurobank και Τράπεζα Πειραιώς. Παλιότερα
-έρχονταν με το GaiaCP: μια εγκατάσταση που τα είχε τα κρατά, με τις ρυθμίσεις και τις πληρωμές τους, και τα ενημερώνει
-από τον κατάλογο.
+Στον κατάλογο πρόσθετων (τα εγκαθιστάς μόνο αν τα θέλεις): Alpha Bank, Eurobank, Τράπεζα Πειραιώς και IRIS (τρόποι
+πληρωμής), Enhance (panel server), easy.gr και GoDaddy (registrars), HetrixTools (παρακολούθηση), αναζήτηση στο μητρώο
+ΑΑΔΕ (φορολογικά στοιχεία), Kimi και Ollama (AI). Παλιότερα έρχονταν με το GaiaCP: μια εγκατάσταση που τα είχε τα
+κρατά, με τις ρυθμίσεις και τα δεδομένα τους, και τα ενημερώνει από τον κατάλογο.
 
 ## Webhooks
 
