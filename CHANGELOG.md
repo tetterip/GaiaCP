@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Enabling a plugin installed from the catalogue or a zip no longer breaks every Settings page with "500 Server Error"
+  (`Route [...] not defined`) where routes are cached, and the page no longer shows "Error loading page" after an
+  uninstall: enabling and disabling refresh the caches too, Filament's list of pages first, and the Plugins pages open
+  afresh after every plugin change.
 - Uninstalling a plugin no longer leaves every admin page with "500 Server Error" until the next deploy, where pages are
   cached (`php artisan optimize`): installing and uninstalling now also clear Filament's cached list of pages.
 - Installing or updating a plugin no longer switches the rest of the page to English (and to a copy of GaiaCP without

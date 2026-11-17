@@ -107,7 +107,7 @@ class PluginInstaller
             File::deleteDirectory($work);
         }
 
-        $this->refreshCaches();
+        self::refreshCaches();
 
         ActivityLog::record('plugin.installed', $existing !== null
             ? "Plugin {$plugin->name()} {$plugin->version()} uploaded over {$from}"
@@ -205,7 +205,7 @@ class PluginInstaller
 
         $plugin->refreshManifest();
         $this->plugins->recordVersions();
-        $this->refreshCaches();
+        self::refreshCaches();
 
         ActivityLog::record('plugin.rolled_back', "Plugin {$plugin->name()} rolled back from {$from} to {$plugin->version()}", properties: [
             'plugin' => $plugin->id(),
@@ -278,7 +278,7 @@ class PluginInstaller
         File::deleteDirectory($folder);
         DB::table('plugins')->where('id', $plugin->id())->delete();
         $this->plugins->forget($plugin);
-        $this->refreshCaches();
+        self::refreshCaches();
 
         ActivityLog::record('plugin.uninstalled', "Plugin {$plugin->name()} {$plugin->version()} uninstalled".($deleteData ? ' with its data' : ''), properties: ['plugin' => $plugin->id(), 'version' => $plugin->version(), 'data_deleted' => $deleteData]);
     }
@@ -472,10 +472,22 @@ class PluginInstaller
      * New code must not be served from opcache, and cached config / routes must include (or drop) the plugin's.
      * Only those two are rebuilt: clearing compiled views or the app cache mid-request breaks the open page.
      */
-    private function refreshCaches(): void
+    /**
+     * Rebuilds the caches `php artisan optimize` made (config, routes, Filament's pages) after the plugins changed: a
+     * plugin installed, updated, uninstalled, enabled or disabled adds or takes away pages and their routes.
+     */
+    public static function refreshCaches(): void
     {
         if (function_exists('opcache_reset')) {
             @opcache_reset();
+        }
+
+        // `optimize` also caches each panel's pages, resources and widgets, with the plugins' among them: an uninstalled
+        // plugin's page there breaks every page with a missing class, and an installed one's would not show. This
+        // request's panels were built before the change, so the cache is cleared, not rebuilt, and first: route:cache
+        // below reads it. The next deploy caches it again.
+        foreach (Filament::getPanels() as $panel) {
+            $panel->clearCachedComponents();
         }
 
         foreach (['config' => app()->configurationIsCached(), 'route' => app()->routesAreCached()] as $cache => $cached) {
@@ -490,13 +502,6 @@ class PluginInstaller
                     Artisan::call("{$cache}:clear"); // left uncached: slower, still right; the next deploy caches again
                 }
             });
-        }
-
-        // `optimize` also caches each panel's pages, resources and widgets, with the plugins' among them: an uninstalled
-        // plugin's page there breaks every page with a missing class, and an installed one's would not show. This
-        // request's panels were built before the change, so the cache is cleared, not rebuilt; the next deploy caches again.
-        foreach (Filament::getPanels() as $panel) {
-            $panel->clearCachedComponents();
         }
     }
 

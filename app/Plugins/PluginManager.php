@@ -614,6 +614,9 @@ class PluginManager
         );
         $this->rows = null;
         ActivityLog::record($enabled ? 'plugin.enabled' : 'plugin.disabled', "Plugin {$plugin->name()} ".($enabled ? 'enabled' : 'disabled'), properties: ['plugin' => $plugin->id()]);
+
+        // Its pages come or go, so cached routes would miss them (Route [...] not defined on every page) or keep dead ones.
+        PluginInstaller::refreshCaches();
     }
 
     private function offMessage(?Plugin $plugin, string $label): string

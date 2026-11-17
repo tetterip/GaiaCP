@@ -85,6 +85,9 @@ class PluginsTest extends TestCase
             ->assertTableActionHidden('enable', 'plesk')
             ->callTableAction('disable', 'plesk')
             ->assertNotified('Plesk disabled')
+            ->assertRedirect(Plugins::getUrl()); // a fresh page: this request's panel predates the change
+
+        Livewire::test(Plugins::class)
             ->assertTableActionVisible('enable', 'plesk')
             ->assertTableActionHidden('disable', 'plesk');
 
