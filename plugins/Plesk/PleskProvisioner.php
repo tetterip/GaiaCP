@@ -2,6 +2,7 @@
 
 namespace Plugins\Plesk;
 
+use App\Enums\ServiceStatus;
 use App\Models\Client;
 use App\Models\Server;
 use App\Models\Service;
@@ -181,7 +182,7 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
         $customer = $this->owner($service);
 
         // First, since Plesk's password rules are usually stricter for a login: a refusal changes nothing.
-        if ($customer !== null && strcasecmp((string) $customer->data->gen_info->login, (string) $service->username) === 0) {
+        if ($customer !== null && strcasecmp((string) $customer->data->gen_info->login, (string) $service->username) === 0 && $this->belongsToClient($customer, $service)) {
             $this->setCustomerPassword((int) $customer->id, $password);
         }
 
@@ -195,15 +196,20 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
     /** The Plesk login of the customer who owns the subscription, when it is not the service's username (made by another service, or by hand). */
     public function sharedLogin(Service $service): ?string
     {
-        $login = (string) ($this->owner($service)?->data->gen_info->login ?? '');
+        $customer = $this->owner($service);
+        $login = (string) ($customer?->data->gen_info->login ?? '');
 
-        return $login !== '' && strcasecmp($login, (string) $service->username) !== 0 ? $login : null;
+        return $login !== '' && strcasecmp($login, (string) $service->username) !== 0 && $this->belongsToClient($customer, $service) ? $login : null;
     }
 
     public function changeSharedLoginPassword(Service $service, string $password): void
     {
         $customer = $this->owner($service)
             ?? throw new ProvisioningException("No Plesk customer owns {$service->domain} on {$this->server->name}.");
+
+        if (! $this->belongsToClient($customer, $service)) {
+            throw new ProvisioningException("The Plesk customer that owns {$service->domain} also has another client's subscriptions.");
+        }
 
         $this->setCustomerPassword((int) $customer->id, $password);
     }
@@ -270,7 +276,42 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
             'dataset' => ['gen_info' => []],
         ], allowNotFound: true)[0] ?? throw new ProvisioningException("The subscription {$service->domain} does not belong to a Plesk customer.");
 
+        if (! $this->belongsToClient($customer, $service)) {
+            throw new ProvisioningException("The Plesk customer that owns {$service->domain} also has another client's subscriptions.");
+        }
+
         return $this->session((string) $customer->data->gen_info->login, $clientIp);
+    }
+
+    /**
+     * Whether the client of the service may use the Plesk customer that owns its subscription (log in as it, change its
+     * password): one GaiaCP made for this client (its external ID), or one made by hand (or by WHMCS) that owns no
+     * subscription GaiaCP bills to another client. A subscription moved to another client (Move to another client)
+     * stays under the old client's Plesk customer, so its new client must not get that login.
+     */
+    private function belongsToClient(SimpleXMLElement $customer, Service $service): bool
+    {
+        $external = (string) ($customer->data->gen_info->{'external-id'} ?? '');
+
+        if ($external === $this->externalId($service->client)) {
+            return true;
+        }
+
+        if (str_starts_with($external, 'gaiacp-client-')) {
+            return false; // made by GaiaCP for another client
+        }
+
+        $domains = array_map(fn (SimpleXMLElement $webspace) => mb_strtolower((string) $webspace->data->gen_info->name), $this->plesk->call('webspace', 'get', [
+            'filter' => ['owner-id' => (int) $customer->id],
+            'dataset' => ['gen_info' => []],
+        ], allowNotFound: true));
+
+        return $domains === [] || ! Service::query()
+            ->where('server_id', $this->server->id)
+            ->where('client_id', '!=', $service->client_id)
+            ->whereIn('domain', $domains)
+            ->whereNotIn('status', [ServiceStatus::Terminated, ServiceStatus::Cancelled])
+            ->exists();
     }
 
     /** create_session for the server's own login ("admin" when it signs in with a secret key alone). */

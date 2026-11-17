@@ -200,5 +200,10 @@ class ClientDomainSelfServiceTest extends TestCase
         Mail::assertSent(EppCodeRequestMail::class, fn (EppCodeRequestMail $mail) => $mail->hasTo($admin->email) && $mail->service->is($domain));
         $this->assertSame(1, ActivityLog::query()->where('event', 'domain.epp_code_requested')->where('service_id', $domain->id)->count());
         $this->assertSame(1, $admin->notifications()->count());
+
+        // Pressed again within the hour: the admins are not asked twice
+        $this->page($domain)->callAction('requestEppCode')->assertNotified('EPP code requested');
+        Mail::assertSent(EppCodeRequestMail::class, 1);
+        $this->assertSame(1, ActivityLog::query()->where('event', 'domain.epp_code_requested')->where('service_id', $domain->id)->count());
     }
 }

@@ -65,6 +65,8 @@ Plesk login is the username and password of their first service there; **Change 
 login too, while on their other services it changes only the subscription's FTP / SSH user. There (and when the customer
 was made by hand in Plesk) the Change password window names the client's real Plesk login and offers **Also change the
 Plesk login**; the client gets the same tick in the client area. That login is the same for all the client's subscriptions.
+A subscription moved to another client stays under the old client's Plesk customer: its new client gets no **Log in** to
+Plesk and no tick, until you move the subscription to their own customer in Plesk.
 
 On CyberPanel a hosting account is a **website** (the service's domain) owned by a CyberPanel user with the service's
 username; the password is that user's CyberPanel login. Packages read like `Default` (the built-in one) or `admin_Pro` (one an admin added). New websites start on the
@@ -77,7 +79,7 @@ disables the virtual server; terminate deletes it with its files, mail and datab
 
 ### Enhance
 
-The **Enhance** plugin is off until you switch it on under Settings → Plugins. The hostname is the control panel's
+Install the **Enhance** plugin from the plugin catalogue (Settings → System → Plugin catalogue), then switch it on under Settings → Plugins. The hostname is the control panel's
 address (e.g. `cp.example.com`). A hosting product's package is the name of an Enhance plan. Each client becomes an
 Enhance customer with a login under their email, and each hosting service a subscription to the plan with a website for
 its domain. The client has one Enhance login for all their services on that server: its password is the first
@@ -154,7 +156,7 @@ differences each morning.
 ## Monitoring
 
 Link each server to its monitor in an uptime service to see whether it is up: **Uptime Kuma**, **UptimeRobot**,
-**HetrixTools** or **Better Stack** (each a plugin with its own settings page under Integrations, where you enter the
+**HetrixTools** (from the plugin catalogue) or **Better Stack** (each a plugin with its own settings page under Integrations, where you enter the
 API key). On the server, pick the monitoring service and the monitor. Every 5 minutes GaiaCP reads the status:
 
 - the Servers list shows Up / Down / Pending / Maintenance and an uptime bar for 24 hours or 30 days;
