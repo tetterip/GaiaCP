@@ -5,8 +5,9 @@ registrar side (expiry date, nameservers, EPP code) that GaiaCP reads and change
 
 ## Registrars
 
-Settings → Products & domains → **Registrars** holds your registrar accounts (super admins only). **easy.gr**,
-**Enom**, **Namecheap**, **NameSilo**, **Openprovider**, **GoDaddy** and **ResellerClub** are bundled plugins; others can be added as plugins. Add the account with its login (stored encrypted) and
+Settings → Products & domains → **Registrars** holds your registrar accounts (super admins only). **Enom**,
+**Namecheap**, **NameSilo**, **Openprovider** and **ResellerClub** are bundled plugins; **easy.gr** and **GoDaddy** are installed from
+the plugin catalogue (Settings → System → Plugin catalogue), and others can be added as plugins. Add the account with its login (stored encrypted) and
 press **Test with a domain**: it reads one domain's expiry and nameservers without changing anything. From SSH,
 `php artisan gaiacp:registrar-check example.com` does the same.
 

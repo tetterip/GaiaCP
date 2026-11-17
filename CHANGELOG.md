@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-11-17
+
+- Security (audit before this release): Plesk 1.6.3 lets a client log in to Plesk, open its shortcuts or change the
+  Plesk login's password only when the Plesk customer that owns the subscription is their own (made by GaiaCP for them,
+  or made by hand and holding no other client's subscription). A subscription moved to another client (Move to another
+  client) stays under the old client's Plesk customer, so its new client could sign in as the old client and, with
+  1.6.1 / 1.6.2, change that login's password. **Request EPP code** emails the admins at most once an hour per domain.
+  The plugin a catalogue plugin's page installs can no longer be changed from the browser.
 - Installing a plugin from the catalogue no longer leaves its password window open (and "Error loading page" after
   Cancel) where the config is cached: the config and route caches are now rebuilt after the response has gone out,
   since rebuilding them inside the request undid the page's reload.

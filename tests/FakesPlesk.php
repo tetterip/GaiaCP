@@ -93,7 +93,7 @@ trait FakesPlesk
                 $byId = isset($op->filter->id) ? (int) $op->filter->id : null;
                 foreach ($this->pleskCustomers as $id => $c) {
                     if ($byId !== null ? $id === $byId : $c['external_id'] === $ext) {
-                        return ["{$ok}<id>{$id}</id><data><gen_info><login>{$c['login']}</login></gen_info></data>"];
+                        return ["{$ok}<id>{$id}</id><data><gen_info><login>{$c['login']}</login><external-id>".($c['external_id'] ?? '').'</external-id></gen_info></data>'];
                     }
                 }
 
@@ -129,6 +129,12 @@ trait FakesPlesk
                 return ["{$ok}<id>sess-".base64_decode((string) $op->data->user_ip)."-{$op->login}</id>"];
 
             case 'webspace.get':
+                if (isset($op->filter->{'owner-id'})) {
+                    $owned = array_filter($this->pleskWebspaces, fn (array $ws) => $ws['owner'] === (int) $op->filter->{'owner-id'});
+
+                    return array_map(fn (string $name, array $ws) => "{$ok}<id>1</id><data><gen_info><name>{$name}</name><owner-id>{$ws['owner']}</owner-id><status>{$ws['status']}</status></gen_info></data>",
+                        array_keys($owned), $owned) ?: $notFound;
+                }
                 if (! isset($op->filter->name)) {
                     return array_map(fn (string $name, array $ws) => "{$ok}<id>1</id><data><gen_info><name>{$name}</name><owner-id>{$ws['owner']}</owner-id><status>{$ws['status']}</status></gen_info>"
                         ."<hosting><vrt_hst><property><name>ftp_login</name><value>{$ws['ftp_login']}</value></property></vrt_hst></hosting>"

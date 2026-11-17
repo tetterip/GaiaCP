@@ -120,14 +120,14 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
   before sending, and shows when it was last sent
 - Client page "Payment record": income from the client, their average payment delay over 12 months (rated Pays on time
   up to 3 days, Watch up to 14, Pays late beyond), late payments and suspensions
-- Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Enhance, Proxmox VE (the last four off by default), easy.gr, Enom, Namecheap, NameSilo, Openprovider, GoDaddy, ResellerClub, Email Notifications, ΑΑΔΕ, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
+- Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Proxmox VE (the last three off by default), Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
-Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), IRIS (off by default, Settings → IRIS), Google sign-in ("Continue with Google"
+Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Nexi XPay and Mastercard Gateway (off by default), Google sign-in ("Continue with Google"
   in the client area and, when ticked, on /admin, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
-  Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot, HetrixTools and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
+  Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
   the admin panel themes Gaia, Flat and Glass are bundled plugins,
-  each on by default (except easy.gr, ΑΑΔΕ and VIES VAT check, off in a new install unless `GAIACP_PLUGINS_START_ENABLED` names them)
+  each on by default (except VIES VAT check, off in a new install unless `GAIACP_PLUGINS_START_ENABLED` names it)
   and switched off when not used (their servers, accounts and settings stay); bundled plugins
   can't be uninstalled. Each has its own version and changelog, shown on that page with when it was installed or
   updated; a plugin that needs a newer GaiaCP stays off until GaiaCP is updated. Other plugins are installed with

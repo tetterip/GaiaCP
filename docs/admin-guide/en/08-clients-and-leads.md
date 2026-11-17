@@ -11,7 +11,7 @@ client.
 
 Keep the address complete: it is the registrant contact sent to the registrar for their domains. The buttons
 by the VAT number check it and fill in the company's details where a plugin offers that (VIES for EU VAT
-numbers, ΑΑΔΕ for Greek ones).
+numbers, ΑΑΔΕ for Greek ones, from the plugin catalogue).
 
 **Client fields** (Settings → General → Client fields) adds fields of your own: text, several lines, a list of choices,
 yes / no or a date, each required or not, hidden from the client, shown to them or editable by them, and optionally

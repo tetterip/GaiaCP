@@ -21,6 +21,7 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Locked;
 
 /**
  * One plugin of the catalogue on its own page (Settings → Plugin catalogue → a plugin): what it does, its tags, every
@@ -38,6 +39,7 @@ class PluginCatalogueEntry extends Page
 
     protected static ?string $slug = 'plugins/catalogue/{folder}';
 
+    #[Locked] // the plugin Install / Update acts on: set by the URL only, never by the browser
     public string $folder;
 
     public static function getRelativeRouteName(Panel $panel): string

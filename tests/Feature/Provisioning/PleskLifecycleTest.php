@@ -234,4 +234,49 @@ class PleskLifecycleTest extends TestCase
         $this->assertArrayNotHasKey('ftp_password', $this->pleskWebspaces['bakery.gr']);
         $this->assertSame($old, $service->refresh()->password);
     }
+
+    public function test_a_subscription_moved_to_another_client_gets_no_plesk_login_of_the_old_client(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $id = array_key_first($this->pleskCustomers);
+        // Moved to another client: the subscription stays under the old client's Plesk customer
+        $service->refresh()->update(['client_id' => Client::factory()->create()->id]);
+        $this->pleskCustomers[$id]['login'] = 'oldclient';
+        Cache::flush();
+
+        $this->assertNull($this->lifecycle->sharedLogin($service->refresh()));
+
+        try {
+            $this->lifecycle->loginUrl($service, '198.51.100.7');
+            $this->fail('expected an exception');
+        } catch (ProvisioningException $e) {
+            $this->assertStringContainsString('another client', $e->getMessage());
+        }
+
+        $this->lifecycle->changePassword($service, 'NewSecret123', sharedLogin: true);
+
+        $this->assertSame('NewSecret123', $this->pleskWebspaces['bakery.gr']['ftp_password']);
+        $this->assertArrayNotHasKey('passwd', $this->pleskCustomers[$id]);
+    }
+
+    public function test_a_plesk_customer_made_by_hand_is_shared_only_when_it_holds_no_other_clients_subscription(): void
+    {
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+        $id = array_key_first($this->pleskCustomers);
+        $this->pleskCustomers[$id] = ['login' => 'byhand', 'external_id' => null];
+        Cache::flush();
+
+        $this->assertSame('byhand', $this->lifecycle->sharedLogin($service->refresh()));
+
+        // The same Plesk customer also owns a subscription GaiaCP bills to someone else
+        $this->pleskWebspaces['other.gr'] = ['owner' => $id, 'status' => 0, 'plan' => 'Starter', 'ftp_login' => 'other', 'ip' => '203.0.113.5'];
+        Service::factory()->for($this->server)->create(['status' => ServiceStatus::Active, 'domain' => 'other.gr', 'username' => 'other']);
+        Cache::flush();
+
+        $this->assertNull($this->lifecycle->sharedLogin($service));
+        $this->expectException(ProvisioningException::class);
+        $this->lifecycle->loginUrl($service, '198.51.100.7');
+    }
 }

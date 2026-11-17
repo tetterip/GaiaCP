@@ -111,7 +111,7 @@ Settings → **Payment methods** lists how clients can pay. Each method is a plu
   clients" goes on the button, "Pay by card (name)": your bank's name, say. GaiaCP records a payment only after reading
   the order back from the gateway, and looks every hour for clients who closed the page; one never finished closes after
   a day.
-- **IRIS** (off until you switch it on): payments by IRIS, Greece's instant bank payments, from the client's bank app.
+- **IRIS** (from the plugin catalogue, off until you switch it on): payments by IRIS, Greece's instant bank payments, from the client's bank app.
   Fill in the payee, the IRIS number or alias your bank linked (VAT number, mobile or alias) and upload the fixed QR
   code your bank gave you. Unpaid notices in the client area get **Pay with IRIS**, which shows the QR code, the
   number, the amount and the notice number to write as the reason. IRIS has no connection for shops, so record each

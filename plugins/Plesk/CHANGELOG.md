@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.6.3] - 2026-11-17
+
+- Security: Log in to Plesk, its shortcuts and changing the Plesk login's password work only when the Plesk customer that owns the subscription is the client's own (made by GaiaCP for them, or made by hand and holding no other client's subscription). A subscription moved to another client stays under the old client's Plesk customer, so its new client no longer gets that login
+
 ## [1.6.2] - 2026-11-16
 
 - Change password on a subscription whose customer has another login (made by the client's first service, or by hand) names that login and can change its password too (`SharesPanelLogin`), in the admin and the client area

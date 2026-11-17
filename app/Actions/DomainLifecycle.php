@@ -26,6 +26,7 @@ use App\Support\DomainName;
 use App\Support\Locales;
 use Carbon\CarbonImmutable;
 use Closure;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\HtmlString;
@@ -216,11 +217,16 @@ class DomainLifecycle
     /**
      * A client asks for the EPP code of a domain at a registrar whose API gives none (GivesNoEppCode): the admins who
      * may open Services get the bell and, with Receive system emails on, an email; one of them then reads the code at
-     * the registrar and sends it with sendEppCode().
+     * the registrar and sends it with sendEppCode(). Once an hour per domain, so pressing again can't flood the admins.
      */
     public function requestEppCode(Service $service): void
     {
         $this->assertDomain($service);
+
+        if (! Cache::add("domain-epp-request:{$service->id}", true, now()->addHour())) {
+            return;
+        }
+
         $registrar = $service->registration()->registrarAccount()->name ?? '';
 
         ActivityLog::record('domain.epp_code_requested', "EPP code of {$service->domain} requested by the client; {$registrar} gives none through its API", $service);
