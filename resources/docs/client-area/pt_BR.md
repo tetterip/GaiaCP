@@ -36,7 +36,7 @@ No primeiro acesso, um breve tour mostra o que você pode fazer aqui. O menu com
 
 ## Início
 
-O Início mostra o que você tem a pagar, quantos serviços estão ativos e o que renova em seguida, com um link para cada item. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem.
+O Início mostra o que você tem a pagar, com um botão **Pagar** em cada aviso de pagamento (ou uma linha dizendo que tudo está pago), seus serviços com um botão que faz o login no painel de controle de cada conta de hospedagem, e o que renova em seguida; um domínio que não renova automaticamente aparece marcado ali. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem.
 
 ## Serviços e domínios
 

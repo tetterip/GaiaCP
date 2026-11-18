@@ -4208,5 +4208,17 @@
     "New clients": "Νέοι πελάτες",
     "Tickets waiting": "Tickets σε αναμονή",
     "None waiting for us": "Κανένα δεν περιμένει εμάς",
-    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Αναμένονται στις επόμενες :days ημέρες, από :count ανανέωση|Αναμένονται στις επόμενες :days ημέρες, από :count ανανεώσεις"
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Αναμένονται στις επόμενες :days ημέρες, από :count ανανέωση|Αναμένονται στις επόμενες :days ημέρες, από :count ανανεώσεις",
+    "Was due :date": "Έληξε στις :date",
+    "All :count payment notices to pay": "Όλες οι :count ειδοποιήσεις προς πληρωμή",
+    "Everything is paid": "Όλα είναι πληρωμένα",
+    "Next renewal :date, :name": "Επόμενη ανανέωση :date, :name",
+    "My services": "Οι υπηρεσίες μου",
+    "renews :date": "ανανέωση :date",
+    "ends :date": "λήγει :date",
+    "Manage": "Διαχείριση",
+    ":count active service|:count active services": ":count ενεργή υπηρεσία|:count ενεργές υπηρεσίες",
+    "Does not renew automatically": "Δεν ανανεώνεται αυτόματα",
+    "New ticket": "Νέο ticket",
+    "Register a domain": "Κατοχύρωση domain"
 }

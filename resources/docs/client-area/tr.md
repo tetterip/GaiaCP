@@ -36,7 +36,7 @@ Her sayfanın altındaki "Çerez ayarları" çerez seçimini yeniden gösterir, 
 
 ## Ana sayfa
 
-Ana sayfa ne ödemeniz gerektiğini, kaç hizmetin etkin olduğunu ve sırada neyin yenileneceğini, her birine bir bağlantıyla gösterir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür.
+Ana sayfa ne ödemeniz gerektiğini, her ödeme bildiriminde bir **Öde** düğmesiyle (ya da her şeyin ödendiğini söyleyen tek bir satırla), her barındırma hesabının kontrol paneline giriş yaptıran bir düğmeyle hizmetlerinizi ve sırada neyin yenileneceğini gösterir; otomatik yenilenmeyen bir alan adı orada işaretlenir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür.
 
 ## Hizmetler ve alan adları
 

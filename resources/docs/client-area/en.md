@@ -36,7 +36,7 @@ The first time you log in, a short tour shows what you can do here. The menu und
 
 ## Home
 
-Home shows what you have to pay, how many services are active and what renews next, with a link to each. Our announcements, such as planned work on your server, appear at the top of Home while they apply.
+Home shows what you have to pay, with a **Pay** button on each payment notice (or one line saying everything is paid), your services with a button that logs you in to the control panel of each hosting account, and what renews next; a domain that will not renew automatically is marked there. Our announcements, such as planned work on your server, appear at the top of Home while they apply.
 
 ## Services and domains
 

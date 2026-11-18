@@ -36,7 +36,7 @@ Beim ersten Login zeigt eine kurze Tour, was Sie hier tun können. Das Menü unt
 
 ## Startseite
 
-Die Startseite zeigt, was Sie zu zahlen haben, wie viele Dienste aktiv sind und was als Nächstes verlängert wird, jeweils mit einem Link. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten.
+Die Startseite zeigt, was Sie zu zahlen haben, mit einer Schaltfläche **Bezahlen** bei jeder Zahlungsaufforderung (oder einer Zeile, dass alles bezahlt ist), Ihre Dienste mit einer Schaltfläche, die Sie im Control Panel jedes Hosting-Kontos anmeldet, und was als Nächstes verlängert wird; eine Domain, die sich nicht automatisch verlängert, ist dort markiert. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten.
 
 ## Dienste und Domains
 

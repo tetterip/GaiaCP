@@ -4,14 +4,17 @@ namespace App\Filament\Client\Pages;
 
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Filament\Client\Actions\HostingSelfService;
 use App\Filament\Client\Resources\Domains\DomainResource;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Filament\Client\Resources\Services\ServiceResource;
+use App\Filament\Client\Resources\Tickets\TicketResource;
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Models\Client;
 use App\Models\ClientMessage;
 use App\Models\Invoice;
 use App\Models\Service;
+use App\Monitoring\MonitorStatus;
 use App\Support\Greeting;
 use App\Support\MailTemplates;
 use BackedEnum;
@@ -23,13 +26,21 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
-/** The client area's home page: what they owe, what is active per kind and what renews next. */
+/**
+ * The client area's home page: what they owe (each notice with its Pay, or one line when all is paid), their services
+ * with the way into each one's control panel, and what renews next.
+ */
 class Dashboard extends Page
 {
     use TranslatesPageLabels;
 
     /** How many upcoming renewals Home lists. */
     public const UPCOMING = 5;
+
+    /** How many services and unpaid notices Home lists before pointing to the whole list. */
+    public const SERVICES = 5;
+
+    public const NOTICES = 4;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
@@ -118,29 +129,64 @@ class Dashboard extends Page
         ]));
     }
 
-    /** @return Collection<int, Service> the next renewals of services and domains still billed */
+    /**
+     * The client's services Home lists first: hosting before domains before the rest, a suspended one before the active
+     * ones of its kind, each with its server's state dot (as the Hosting list shows it) and, where the panel lets
+     * clients in, the link that logs them in to it.
+     *
+     * @return list<array{service: Service, url: string, state: array{status: MonitorStatus, text: string}|null, login: ?string, panel: ?string}>
+     */
+    public function services(): array
+    {
+        $kind = [ServiceType::Hosting->value => 0, ServiceType::Domain->value => 1];
+
+        return $this->visibleServices()
+            ->whereIn('status', [ServiceStatus::Active, ServiceStatus::Suspended])
+            ->with('server')
+            ->orderBy('next_due_date')
+            ->get()
+            ->sortBy(fn (Service $service) => [$kind[$service->type->value] ?? 2, $service->status === ServiceStatus::Suspended ? 0 : 1])
+            ->take(self::SERVICES)
+            ->map(fn (Service $service) => [
+                'service' => $service,
+                'url' => $this->serviceUrl($service),
+                'state' => ServiceResource::serverState($service),
+                'login' => HostingSelfService::canLogIn($service) ? route('filament.client.services.panel-login', ['service' => $service->id]) : null,
+                'panel' => HostingSelfService::canLogIn($service) ? HostingSelfService::panelName($service) : null,
+            ])
+            ->values()->all();
+    }
+
+    /**
+     * The next renewals of services and domains still billed. A domain with auto renew off is listed too (it ends on
+     * that day unless they renew it); other services set to end with their period are left out.
+     *
+     * @return Collection<int, Service>
+     */
     public function upcoming(): Collection
     {
         return $this->visibleServices()
             ->billable()
-            ->where('auto_terminate', false)
+            ->where(fn (Builder $query) => $query->where('auto_terminate', false)->orWhere('type', ServiceType::Domain))
             ->orderBy('next_due_date')
             ->limit(self::UPCOMING)
             ->get();
     }
 
-    /** @return list<array{label: string, url: string, icon: Heroicon}> Home's shortcuts to the pages clients use most */
+    /**
+     * Home's shortcuts, by what a client comes to do (the menu lists the pages). Shown on a phone, where the menu is
+     * folded away.
+     *
+     * @return list<array{label: string, url: string, icon: Heroicon}>
+     */
     public function shortcuts(): array
     {
         return array_values(array_filter([
             Order::canAccess() ? ['label' => __('Order'), 'url' => Order::getUrl(), 'icon' => Heroicon::OutlinedShoppingCart] : null,
-            ['label' => __('Payment notices'), 'url' => PaymentNoticeResource::getUrl(), 'icon' => Heroicon::OutlinedDocumentText],
-            Credit::canAccess() ? ['label' => __('Credit'), 'url' => Credit::getUrl(), 'icon' => Heroicon::OutlinedWallet] : null,
-            ['label' => __('Services'), 'url' => ServiceResource::getUrl(), 'icon' => Heroicon::OutlinedServerStack],
-            ['label' => __('Domains'), 'url' => DomainResource::getUrl(), 'icon' => Heroicon::OutlinedGlobeAlt],
+            TicketResource::canAccess() ? ['label' => __('New ticket'), 'url' => TicketResource::getUrl('create'), 'icon' => Heroicon::OutlinedChatBubbleLeftRight] : null,
+            SearchDomains::canAccess() ? ['label' => __('Register a domain'), 'url' => SearchDomains::getUrl(), 'icon' => Heroicon::OutlinedGlobeAlt] : null,
+            Credit::canAccess() ? ['label' => __('Add funds'), 'url' => Credit::getUrl(), 'icon' => Heroicon::OutlinedWallet] : null,
             ['label' => __('Your profile'), 'url' => filament()->getProfileUrl(), 'icon' => Heroicon::OutlinedUserCircle],
-            KnowledgeBase::canAccess() ? ['label' => __('Knowledge base'), 'url' => KnowledgeBase::getUrl(), 'icon' => Heroicon::OutlinedBookOpen] : null,
-            ['label' => __('Help'), 'url' => Help::getUrl(), 'icon' => Heroicon::OutlinedQuestionMarkCircle],
         ]));
     }
 
