@@ -4189,5 +4189,12 @@
     "Open the plugin's page": "Abrir la página del plugin",
     "Sign-in": "Inicio de sesión",
     "Update available": "Actualización disponible",
-    "Uptime": "Disponibilidad"
+    "Uptime": "Disponibilidad",
+    "In 7 days": "En 7 días",
+    "Later": "Más adelante",
+    "Nothing is overdue or due in the next 30 days": "Nada vencido ni con vencimiento en los próximos 30 días",
+    "Search services, domains, payment notices…": "Buscar servicios, dominios, avisos de pago…",
+    "Shortcuts": "Accesos directos",
+    "Show :count more": "Mostrar :count más",
+    "Show less": "Mostrar menos"
 }

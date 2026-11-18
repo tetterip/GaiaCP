@@ -4189,5 +4189,12 @@
     "Open the plugin's page": "De pagina van de plug-in openen",
     "Sign-in": "Aanmelden",
     "Update available": "Update beschikbaar",
-    "Uptime": "Beschikbaarheid"
+    "Uptime": "Beschikbaarheid",
+    "In 7 days": "Binnen 7 dagen",
+    "Later": "Later",
+    "Nothing is overdue or due in the next 30 days": "Niets is achterstallig of vervalt in de komende 30 dagen",
+    "Search services, domains, payment notices…": "Zoek diensten, domeinen, betalingsberichten…",
+    "Shortcuts": "Snelkoppelingen",
+    "Show :count more": "Nog :count tonen",
+    "Show less": "Minder tonen"
 }

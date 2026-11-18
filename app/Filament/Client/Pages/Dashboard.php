@@ -23,7 +23,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
-/** The client area's home page: what they owe, what is active and what renews next. */
+/** The client area's home page: what they owe, what is active per kind and what renews next. */
 class Dashboard extends Page
 {
     use TranslatesPageLabels;
@@ -96,6 +96,26 @@ class Dashboard extends Page
     public function activeCount(): int
     {
         return $this->visibleServices()->where('status', ServiceStatus::Active)->count();
+    }
+
+    /**
+     * The active services per kind, as the sidebar splits them, each with its list; a kind with none is left out.
+     *
+     * @return list<array{label: string, count: int, url: string, icon: Heroicon}>
+     */
+    public function activeByKind(): array
+    {
+        $types = $this->visibleServices()->where('status', ServiceStatus::Active)->toBase()
+            ->selectRaw('type, count(*) as total')->groupBy('type')->pluck('total', 'type');
+        $hosting = (int) $types->get(ServiceType::Hosting->value, 0);
+        $domains = (int) $types->get(ServiceType::Domain->value, 0);
+        $other = (int) $types->sum() - $hosting - $domains;
+
+        return array_values(array_filter([
+            $hosting > 0 ? ['label' => __('Hosting'), 'count' => $hosting, 'url' => ServiceResource::getUrl('index', ['kind' => 'hosting']), 'icon' => Heroicon::OutlinedServerStack] : null,
+            $domains > 0 ? ['label' => __('Domains'), 'count' => $domains, 'url' => DomainResource::getUrl(), 'icon' => Heroicon::OutlinedGlobeAlt] : null,
+            $other > 0 ? ['label' => __('Other services'), 'count' => $other, 'url' => ServiceResource::getUrl('index', ['kind' => 'other']), 'icon' => Heroicon::OutlinedWrenchScrewdriver] : null,
+        ]));
     }
 
     /** @return Collection<int, Service> the next renewals of services and domains still billed */

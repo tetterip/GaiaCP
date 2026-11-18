@@ -1,5 +1,6 @@
-{{-- Home, like the admin dashboard: what is owed beside credit and services, then shortcuts and lists. The cards are the
-     dashboard's .gx-* (filament.dashboard.styles), the rest filament.themes.client. --}}
+{{-- Home, like the admin dashboard: what is owed beside credit and the active services per kind, then a tile per shortcut
+     and the two lists side by side. The cards are the dashboard's .gx-* (filament.dashboard.styles), the rest
+     filament.themes.client. --}}
 <x-filament-panels::page>
     @include('filament.dashboard.styles')
 
@@ -34,11 +35,13 @@
                 <div class="gx-muted">{{ match ($unpaid->count()) { 0 => __('Nothing to pay'), 1 => __('1 payment notice'), default => __(':count payment notices', ['count' => $unpaid->count()]) } }}</div>
             </div>
             <div class="gx-boxes">
+                @if ($overdue->isNotEmpty())
                 <div @class(['gx-box', 'gx-box-bad' => $overdue->isNotEmpty()])>
                     <div class="gx-box-label">{{ __('Past due') }}</div>
                     <div class="gx-box-value">{{ $sum($overdue) }}</div>
                     <div class="gx-box-sub">{{ trans_choice(':count notice|:count notices', $overdue->count()) }}</div>
                 </div>
+                @endif
                 <div class="gx-box">
                     <div class="gx-box-label">{{ __('Next renewal') }}</div>
                     <div class="gx-box-value">{{ $upcoming->isNotEmpty() ? $date($upcoming->first()->next_due_date) : '—' }}</div>
@@ -61,52 +64,88 @@
                     <a class="gx-link" href="{{ \App\Filament\Client\Pages\Credit::getUrl() }}">{{ __('Credit') }}</a>
                 </section>
             @endif
-            <section class="fi-section gx-card gcp-home-stat">
-                <div class="gx-hero-label">{{ __('Active services') }}</div>
-                <div class="gx-big">{{ $this->activeCount() }}</div>
-                <div class="gx-muted">{{ __('Hosting, domains and more') }}</div>
+            <section class="fi-section gx-card gcp-home-stat gcp-home-services">
+                <div class="gcp-home-services-top">
+                    <div>
+                        <div class="gx-hero-label">{{ __('Active services') }}</div>
+                        <div class="gx-big">{{ $this->activeCount() }}</div>
+                    </div>
+                    @if (\App\Filament\Client\Pages\Order::canAccess())
+                        <x-filament::button tag="a" :href="\App\Filament\Client\Pages\Order::getUrl()" color="gray" size="sm" outlined icon="heroicon-m-plus">{{ __('Order') }}</x-filament::button>
+                    @endif
+                </div>
+                <div class="gcp-home-types">
+                    @forelse ($this->activeByKind() as $type)
+                        <a href="{{ $type['url'] }}" class="gcp-home-type">
+                            <x-filament::icon :icon="$type['icon']" class="gcp-home-type-icon" />
+                            <span class="gcp-home-type-label">{{ $type['label'] }}</span>
+                            <span class="gcp-home-type-count">{{ $type['count'] }}</span>
+                            <x-filament::icon icon="heroicon-m-chevron-right" class="gcp-home-arrow" />
+                        </a>
+                    @empty
+                        <div class="gx-muted">{{ __('Hosting, domains and more') }}</div>
+                    @endforelse
+                </div>
             </section>
         </div>
     </div>
 
-    <div class="gcp-home-shortcuts">
+    <nav class="gcp-home-tiles" aria-label="{{ __('Shortcuts') }}">
         @foreach ($this->shortcuts() as $shortcut)
-            <x-filament::button tag="a" :href="$shortcut['url']" :icon="$shortcut['icon']" color="gray" size="sm" outlined>
-                {{ $shortcut['label'] }}
-            </x-filament::button>
+            <a href="{{ $shortcut['url'] }}" class="gcp-home-tile">
+                <span class="gcp-home-tile-icon"><x-filament::icon :icon="$shortcut['icon']" /></span>
+                <span>{{ $shortcut['label'] }}</span>
+            </a>
         @endforeach
-    </div>
+    </nav>
 
+    <div class="gcp-home-lists">
     @if ($unpaid->isNotEmpty())
-        <x-filament::section :heading="__('Payment notices to pay')">
-            <table class="gcp-home-list">
+        <section class="fi-section gx-card gcp-home-card">
+            <div class="gx-head">
+                <span class="gx-ico gx-tone-warn">@svg('heroicon-o-document-text', 'gx-ico-svg')</span>
+                <h2 class="gx-title">{{ __('Payment notices to pay') }}</h2>
+            </div>
+            <div class="gcp-home-rows">
                 @foreach ($unpaid as $notice)
-                    <tr>
-                        <td><a href="{{ $noticeUrl($notice) }}">{{ $notice->number }}</a></td>
-                        <td @class(['gcp-end', 'gcp-overdue' => $notice->isOverdue()])>{{ __('Due :date', ['date' => $date($notice->due_date)]) }}</td>
-                        <td class="gcp-end">{{ \App\Support\Money::format($notice->total_cents, $notice->currency) }}</td>
-                    </tr>
+                    <a href="{{ $noticeUrl($notice) }}" class="gcp-home-row">
+                        <span class="gcp-home-row-text">
+                            <strong>{{ $notice->number }}</strong>
+                            <span @class(['gcp-overdue' => $notice->isOverdue()])>{{ __('Due :date', ['date' => $date($notice->due_date)]) }}</span>
+                        </span>
+                        <span class="gcp-home-row-amount">{{ \App\Support\Money::format($notice->total_cents, $notice->currency) }}</span>
+                        <span class="gcp-home-row-pay">{{ __('Pay') }}</span>
+                    </a>
                 @endforeach
-            </table>
-        </x-filament::section>
+            </div>
+        </section>
     @endif
 
     @if ($upcoming->isNotEmpty())
-        <x-filament::section :heading="__('Coming up for renewal')">
-            <table class="gcp-home-list">
+        <section class="fi-section gx-card gcp-home-card">
+            <div class="gx-head">
+                <span class="gx-ico">@svg('heroicon-o-arrow-path', 'gx-ico-svg')</span>
+                <h2 class="gx-title">{{ __('Coming up for renewal') }}</h2>
+            </div>
+            <div class="gcp-home-rows">
                 @foreach ($upcoming as $service)
-                    <tr>
-                        <td><a href="{{ $this->serviceUrl($service) }}">{{ $service->label }}</a></td>
-                        <td @class(['gcp-end', 'gcp-overdue' => $service->isOverdue()])>{{ $date($service->next_due_date) }}</td>
-                        <td class="gcp-end">{{ \App\Support\Money::format($service->price_cents, $service->currency) }}</td>
-                    </tr>
+                    <a href="{{ $this->serviceUrl($service) }}" class="gcp-home-row">
+                        <span class="gcp-home-row-text">
+                            <strong>{{ $service->domain ?: $service->label }}</strong>
+                            <span @class(['gcp-overdue' => $service->isOverdue()])>{{ $service->domain && $service->label !== $service->domain ? $service->label : $service->type->getLabel() }} · {{ $date($service->next_due_date) }}</span>
+                        </span>
+                        <span class="gcp-home-row-amount">{{ \App\Support\Money::format($service->price_cents, $service->currency) }}</span>
+                        <x-filament::icon icon="heroicon-m-chevron-right" class="gcp-home-arrow" />
+                    </a>
                 @endforeach
-            </table>
-        </x-filament::section>
+            </div>
+        </section>
     @endif
+    </div>
 
     @if (filled(config('gaiacp.company.email')))
-        <p class="gcp-home-note">
+        <p class="gcp-home-note gcp-home-contact">
+            <x-filament::icon icon="heroicon-o-envelope" />
             {{ __('Questions? Write to us at :email.', ['email' => config('gaiacp.company.email')]) }}
         </p>
     @endif

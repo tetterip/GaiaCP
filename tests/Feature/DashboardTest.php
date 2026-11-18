@@ -10,10 +10,12 @@ use App\Enums\QuoteStatus;
 use App\Enums\ServiceType;
 use App\Enums\TicketStatus;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Resources\Services\ServiceResource;
 use App\Filament\Widgets\ActivityChart;
 use App\Filament\Widgets\BillingOverview;
 use App\Filament\Widgets\NeedsAttention;
 use App\Filament\Widgets\ServerCapacity;
+use App\Filament\Widgets\UpcomingRenewals;
 use App\Models\ActivityLog;
 use App\Models\CancellationRequest;
 use App\Models\Client;
@@ -279,5 +281,73 @@ class DashboardTest extends TestCase
         // Support only: the tickets, nothing else
         $this->actingAs(User::factory()->limitedTo([AdminArea::Support])->create());
         $this->assertSame(['1 ticket waiting for a reply over 24 hours'], array_column(NeedsAttention::items(), 'title'));
+    }
+
+    public function test_the_chart_drops_a_runaway_percentage_and_the_axis_decimals(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-10-17 12:00'));
+        Payment::factory()->create(['paid_on' => '2026-10-17', 'amount_cents' => 46100]);
+        Payment::factory()->create(['paid_on' => '2026-10-05', 'amount_cents' => 2000]); // the 7 days before
+
+        $this->actingAs(User::factory()->create());
+        Livewire::test(ActivityChart::class)
+            ->call('setPeriod', '7d')
+            ->assertSee('€461.00')
+            ->assertSee('€20.00')
+            ->assertDontSee('2205%')
+            ->assertSee('€600<', false)
+            ->assertDontSee('€600.00');
+    }
+
+    public function test_renewals_lists_the_most_urgent_services_in_groups_with_record_payment(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-10-17 12:00'));
+        $late = Service::factory()->create(['domain' => 'late.example', 'next_due_date' => '2026-10-10', 'price_cents' => 5000]);
+        Service::factory()->create(['domain' => 'soon.example', 'next_due_date' => '2026-10-20']);
+        Service::factory()->create(['domain' => 'later.example', 'next_due_date' => '2026-11-10']);
+        Service::factory()->create(['domain' => 'far.example', 'next_due_date' => '2026-12-10']);
+        Service::factory()->create(['domain' => 'gone.example', 'next_due_date' => '2026-10-01', 'status' => 'terminated']);
+
+        $this->actingAs(User::factory()->create());
+        Livewire::test(UpcomingRenewals::class)
+            ->assertSeeInOrder(['Renewals', 'Past due', 'late.example', '€50.00', '10/10/2026', 'In 7 days', 'soon.example', 'Later', 'later.example'])
+            ->assertSee(ServiceResource::getUrl('edit', ['record' => $late]), false)
+            ->assertDontSee('far.example')
+            ->assertDontSee('gone.example')
+            ->assertDontSee('class="gx-more"', false)
+            ->callAction('recordPayment', ['amount' => '50.00', 'paid_on' => '2026-10-17', 'method' => 'bank_transfer'], ['service' => $late->id])
+            ->assertDontSee('late.example');
+
+        $this->assertTrue($late->refresh()->next_due_date->isAfter('2026-11-16'));
+        $this->assertSame(5000, (int) $late->payments()->sum('amount_cents'));
+
+        // Past SHOWN the card names how many more the services list has
+        Service::factory()->count(UpcomingRenewals::SHOWN)->create(['next_due_date' => '2026-10-18']);
+        Livewire::test(UpcomingRenewals::class)->assertSee('and 2 more')->assertDontSee('later.example');
+
+        Service::query()->update(['next_due_date' => '2027-06-01']);
+        Livewire::test(UpcomingRenewals::class)->assertSee('Nothing is overdue or due in the next 30 days');
+    }
+
+    public function test_needs_attention_folds_what_is_past_the_first_rows(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $this->assertLessThanOrEqual(NeedsAttention::SHOWN, count(NeedsAttention::items()));
+        Livewire::test(NeedsAttention::class)->assertDontSee('Show less');
+
+        foreach (range(1, 4) as $i) {
+            ActivityLog::record('backup.failed', "Backup $i failed");
+        }
+        Server::factory()->create(['monitor_status' => MonitorStatus::Down, 'monitor_status_since' => now()]);
+        Order::create(['client_id' => Client::factory()->create()->id]);
+        $this->notice(now()->subDays(3)->toDateString());
+        $this->notice(now()->toDateString());
+
+        $count = count(NeedsAttention::items());
+        $this->assertGreaterThan(NeedsAttention::SHOWN, $count);
+        Livewire::test(NeedsAttention::class)
+            ->assertSee('Show '.($count - NeedsAttention::SHOWN).' more')
+            ->assertSee('Show less')
+            ->assertSeeHtml('x-show="all"');
     }
 }
