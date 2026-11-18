@@ -6,15 +6,22 @@ use App\Models\User;
 use Filament\Facades\Filament;
 
 /**
- * Each admin's dashboard: two columns of cards, each column filling down on its own (masonry), kept in
- * `users.dashboard_layout` as [{widget, column, visible}] in order. Cards are dragged within and between the columns on
- * the dashboard and shown or hidden under Show / hide cards; a phone shows the first column, then the second. A card added
- * later goes to the end of the column with fewer cards; one an admin may not open (its canView()) never shows.
+ * Each admin's dashboard: a row across the top (column 0, where Needs attention starts) over two columns of cards, each
+ * column filling down on its own (masonry), kept in `users.dashboard_layout` as [{widget, column, visible}] in order.
+ * Cards are dragged within and between the three on the dashboard and shown or hidden under Show / hide cards; a phone
+ * shows the top row, the first column, then the second. A card added later goes to the end of the column with fewer
+ * cards; one an admin may not open (its canView()) never shows.
  */
 class DashboardLayout
 {
     /** The cards that start in the second column; the rest start in the first, so a phone shows the most urgent first. */
     public const SECOND_COLUMN = ['ActivityChart', 'UpcomingRenewals', 'SupportTickets'];
+
+    /** The cards that start across the top, over both columns. */
+    public const TOP = ['NeedsAttention'];
+
+    /** The top row, then the two columns. */
+    public const COLUMNS = [0, 1, 2];
 
     /** @return array<string, class-string> key => widget class, in their default order */
     public static function widgets(): array
@@ -36,7 +43,7 @@ class DashboardLayout
             ->unique('widget')
             ->map(fn (array $row) => [
                 'widget' => (string) $row['widget'],
-                'column' => (int) ($row['column'] ?? 1) === 2 ? 2 : 1,
+                'column' => in_array($column = (int) ($row['column'] ?? 1), self::COLUMNS, true) ? $column : 1,
                 'visible' => (bool) ($row['visible'] ?? true),
             ]);
 
@@ -44,7 +51,7 @@ class DashboardLayout
             if (! $rows->contains('widget', $key)) {
                 $column = $saved
                     ? ($rows->where('column', 2)->count() < $rows->where('column', 1)->count() ? 2 : 1)
-                    : (in_array($key, self::SECOND_COLUMN, true) ? 2 : 1);
+                    : (in_array($key, self::TOP, true) ? 0 : (in_array($key, self::SECOND_COLUMN, true) ? 2 : 1));
                 $rows->push(['widget' => $key, 'column' => $column, 'visible' => true]);
             }
         }
@@ -52,11 +59,11 @@ class DashboardLayout
         return $rows->values()->all();
     }
 
-    /** @return array{1: array<string, class-string>, 2: array<string, class-string>} key => widget class of the cards to show, per column */
+    /** @return array{0: array<string, class-string>, 1: array<string, class-string>, 2: array<string, class-string>} key => widget class of the cards to show, in the top row and per column */
     public static function shown(User $user): array
     {
         $widgets = self::widgets();
-        $columns = [1 => [], 2 => []];
+        $columns = [0 => [], 1 => [], 2 => []];
 
         foreach (self::rows($user) as $row) {
             if ($row['visible']) {
@@ -84,14 +91,14 @@ class DashboardLayout
      * the column's cards had, so the hidden ones and the ones the admin may not open keep theirs; unknown keys are
      * ignored.
      *
-     * @param  array<int|string, list<string>>  $columns  [1 => widget keys, 2 => widget keys]
+     * @param  array<int|string, list<string>>  $columns  [0 => widget keys, 1 => widget keys, 2 => widget keys]
      */
     public static function reorder(User $user, array $columns): void
     {
         $rows = collect(self::rows($user))->keyBy('widget');
         $sent = [];
 
-        foreach ([1, 2] as $column) {
+        foreach (self::COLUMNS as $column) {
             foreach ((array) ($columns[$column] ?? []) as $key) {
                 $key = (string) $key;
                 if ($rows->has($key) && ! isset($sent[$key])) {
@@ -100,7 +107,7 @@ class DashboardLayout
             }
         }
 
-        // The sent cards, column by column, fill the places they had between the cards that were not sent.
+        // The sent cards, the top row's then column by column, fill the places they had between the cards that were not sent.
         $order = array_keys($sent);
         $next = 0;
         $result = $rows->values()->map(function (array $row) use ($sent, $order, &$next, $rows) {

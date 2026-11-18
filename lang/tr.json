@@ -4196,5 +4196,17 @@
     "Search services, domains, payment notices…": "Hizmet, alan adı, ödeme bildirimi ara…",
     "Shortcuts": "Kısayollar",
     "Show :count more": ":count tane daha göster",
-    "Show less": "Daha az göster"
+    "Show less": "Daha az göster",
+    ":count backups failed": ":count yedekleme başarısız oldu",
+    ":count emails not sent": ":count e-posta gönderilemedi",
+    ":count updates failed": ":count güncelleme başarısız oldu",
+    ":count online payments to match by hand": "Elle eşleştirilecek :count çevrimiçi ödeme",
+    ":count panel or registrar calls failed": ":count panel veya kayıt şirketi çağrısı başarısız oldu",
+    "Last :time": "Son :time",
+    "Income today": "Bugünkü gelir",
+    "Yesterday: :value": "Dün: :value",
+    "New clients": "Yeni müşteriler",
+    "Tickets waiting": "Bekleyen destek talepleri",
+    "None waiting for us": "Bizi bekleyen yok",
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Önümüzdeki :days günde bekleniyor, :count yenilemeden|Önümüzdeki :days günde bekleniyor, :count yenilemeden"
 }

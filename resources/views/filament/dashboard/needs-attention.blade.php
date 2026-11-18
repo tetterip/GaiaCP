@@ -8,6 +8,7 @@
                 <span class="gx-pill gx-pill-warn">{{ count($items) }}</span>
             @endif
         </div>
+        <div class="gx-att-list">
         @forelse ($items as $item)
             <a @if ($item['url']) href="{{ $item['url'] }}" @endif class="gx-att" @if ($loop->index >= \App\Filament\Widgets\NeedsAttention::SHOWN) x-show="all" x-cloak @endif>
                 <span class="gx-ico gx-ico-sm gx-tone-{{ $item['tone'] }}">@svg($item['icon'], 'gx-ico-svg')</span>
@@ -19,14 +20,15 @@
                 </span>
                 @svg('heroicon-m-chevron-right', 'gx-att-arrow')
             </a>
-            @if ($loop->last && $loop->count > \App\Filament\Widgets\NeedsAttention::SHOWN)
-                <button type="button" class="gx-more" x-on:click="all = ! all" x-text="all ? @js(__('Show less')) : @js(__('Show :count more', ['count' => $loop->count - \App\Filament\Widgets\NeedsAttention::SHOWN]))"></button>
-            @endif
         @empty
             <div class="gx-att gx-att-empty">
                 <span class="gx-ico gx-tone-ok">@svg('heroicon-o-check', 'gx-ico-svg')</span>
                 <span class="gx-muted">{{ __('Nothing needs your attention') }}</span>
             </div>
         @endforelse
+        </div>
+        @if (count($items) > \App\Filament\Widgets\NeedsAttention::SHOWN)
+            <button type="button" class="gx-more" x-on:click="all = ! all" x-text="all ? @js(__('Show less')) : @js(__('Show :count more', ['count' => count($items) - \App\Filament\Widgets\NeedsAttention::SHOWN]))"></button>
+        @endif
     </section>
 </x-filament-widgets::widget>

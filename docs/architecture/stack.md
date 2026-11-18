@@ -366,10 +366,13 @@ How the admin and client panels, users, access, security, branding, themes and l
   ServerCapacity (accounts vs max) and NeedsAttention (its first `SHOWN` rows, the rest unfold; cron stopped, pending orders, change requests, overdue notices, failures of the
   last `FAILURE_DAYS`, each only for admins with that area); their CSS is `resources/views/filament/dashboard/styles.blade.php`
   in Filament's colours, so it works with any theme or none. The cards are laid out by
-  `resources/views/filament/dashboard/cards.blade.php`: two `.gx-col` columns of the same width from 768 px at any
-  width, each filling down on its own (masonry), stacked on a phone (first column first). Each card sits in a `.gx-slot`
+  `resources/views/filament/dashboard/cards.blade.php`: the day's numbers (`App\Support\DashboardToday`, `today.blade.php`:
+  income, new orders, new clients, tickets waiting, each by its resource's `canAccess()`; not a card), a row across the
+  top (`.gx-top`, column 0, `DashboardLayout::TOP` = Needs attention; left out while empty, a dashed drop place while
+  dragging), then two `.gx-col` columns of the same width from 768 px at any
+  width, each filling down on its own (masonry), stacked on a phone (top row, then the first column). Each card sits in a `.gx-slot`
   with a handle (`.gx-grip`, Filament's `x-sortable` = SortableJS with one shared group, arrow keys too, left / right
-  change column) that calls `Dashboard::reorderDashboard([1 => keys, 2 => keys])` (no re-render). Show / hide cards
+  change column) that calls `Dashboard::reorderDashboard([0 => keys, 1 => keys, 2 => keys])` (no re-render). Show / hide cards
   (header action) only shows / hides cards. Both are kept per admin in `users.dashboard_layout`
   [{widget, column, visible}], read by `App\Support\DashboardLayout` (default columns: `SECOND_COLUMN`; unknown cards
   dropped, new ones appended to the column with fewer cards, cards the admin may not open never offered; a reorder

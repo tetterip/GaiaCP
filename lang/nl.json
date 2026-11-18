@@ -4196,5 +4196,17 @@
     "Search services, domains, payment notices…": "Zoek diensten, domeinen, betalingsberichten…",
     "Shortcuts": "Snelkoppelingen",
     "Show :count more": "Nog :count tonen",
-    "Show less": "Minder tonen"
+    "Show less": "Minder tonen",
+    ":count backups failed": ":count back-ups mislukt",
+    ":count emails not sent": ":count e-mails niet verzonden",
+    ":count updates failed": ":count updates mislukt",
+    ":count online payments to match by hand": ":count online betalingen om handmatig te koppelen",
+    ":count panel or registrar calls failed": ":count aanroepen naar paneel of registrar mislukt",
+    "Last :time": "Laatste :time",
+    "Income today": "Inkomsten vandaag",
+    "Yesterday: :value": "Gisteren: :value",
+    "New clients": "Nieuwe klanten",
+    "Tickets waiting": "Wachtende tickets",
+    "None waiting for us": "Geen wacht op ons",
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Verwacht in de komende :days dagen, uit :count verlenging|Verwacht in de komende :days dagen, uit :count verlengingen"
 }

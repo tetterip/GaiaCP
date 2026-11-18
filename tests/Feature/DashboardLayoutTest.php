@@ -54,7 +54,8 @@ class DashboardLayoutTest extends TestCase
         $admin = User::factory()->create();
 
         $shown = DashboardLayout::shown($admin);
-        $this->assertSame(['SetupGuideCard', 'BillingOverview', 'ServerCapacity', 'NeedsAttention'], array_keys($shown[1]));
+        $this->assertSame(['NeedsAttention'], array_keys($shown[0]));
+        $this->assertSame(['SetupGuideCard', 'BillingOverview', 'ServerCapacity'], array_keys($shown[1]));
         $this->assertSame(['ActivityChart', 'UpcomingRenewals', 'SupportTickets'], array_keys($shown[2]));
 
         Order::create(['client_id' => Client::factory()->create()->id]); // something waits, so Needs attention shows
@@ -62,7 +63,46 @@ class DashboardLayoutTest extends TestCase
             ->assertSee('data-gx-column="2"', false)
             ->assertSee('Show / hide cards')
             ->assertDontSee('Arrange cards')
-            ->assertSeeInOrder(['Open balance', 'Needs attention', 'Orders and income']);
+            ->assertSee('data-gx-column="0"', false)
+            // Needs attention across the top, over both columns
+            ->assertSeeInOrder(['gx-top', 'Needs attention', 'data-gx-column="1"', 'Open balance', 'data-gx-column="2"', 'Orders and income'], false);
+    }
+
+    public function test_a_card_is_dragged_into_and_out_of_the_row_across_the_top(): void
+    {
+        $admin = User::factory()->create();
+        $this->actingAs($admin);
+        $shown = DashboardLayout::shown($admin);
+
+        Livewire::test(Dashboard::class)->call('reorderDashboard', [
+            0 => ['ActivityChart'],
+            1 => [...array_keys($shown[1]), 'NeedsAttention'],
+            2 => array_values(array_diff(array_keys($shown[2]), ['ActivityChart'])),
+            3 => ['BillingOverview'], // no such place: ignored
+        ]);
+
+        $shown = DashboardLayout::shown($admin->fresh());
+        $this->assertSame(['ActivityChart'], array_keys($shown[0]));
+        $this->assertSame('NeedsAttention', array_key_last($shown[1]));
+        $this->assertArrayHasKey('BillingOverview', $shown[1]);
+        $this->assertSame(0, collect(DashboardLayout::rows($admin->fresh()))->firstWhere('widget', 'ActivityChart')['column']);
+    }
+
+    public function test_layouts_saved_before_the_top_row_get_needs_attention_moved_there(): void
+    {
+        $admin = User::factory()->create(['dashboard_layout' => [
+            ['widget' => 'BillingOverview', 'column' => 1, 'visible' => true],
+            ['widget' => 'NeedsAttention', 'column' => 2, 'visible' => false],
+        ]]);
+        $untouched = User::factory()->create();
+
+        (require database_path('migrations/2026_11_18_000100_move_needs_attention_to_the_dashboard_top.php'))->up();
+
+        $this->assertSame([
+            ['widget' => 'BillingOverview', 'column' => 1, 'visible' => true],
+            ['widget' => 'NeedsAttention', 'column' => 0, 'visible' => false],
+        ], $admin->fresh()->dashboard_layout);
+        $this->assertNull($untouched->fresh()->dashboard_layout);
     }
 
     public function test_dragging_a_card_saves_its_column_and_order(): void

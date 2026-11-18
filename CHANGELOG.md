@@ -9,6 +9,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   due date and Record payment on each row, so a phone shows all of it without scrolling sideways (it was the services
   table squeezed into half the page); **Needs attention** shows its first six lines and unfolds the rest; the chart's
   title stays on one line, its axis reads "€600" and a change past 999% is left out; the Support counts are one low row.
+- Dashboard, the day at a glance: four boxes across the top show the income recorded today, new orders, new clients and
+  the tickets waiting, each next to yesterday's and opening its list. **Needs attention** starts across the top, over
+  both columns (drag it back into a column if you prefer; a layout you had saved gets it moved there once), puts the
+  urgent lines first and shows the failures of one kind as a single line with their count ("4 panel or registrar calls
+  failed") instead of one line each. **Open balance**: "Due in 7 days" now counts unpaid payment notices like the rest
+  of the card (it counted services by their next due date), and a new line shows what the renewals of the next 30 days
+  should bring, opening the Income forecast report.
 - Client area Home, easier to read: **Active services** counts hosting, domains and other services, each opening its
   list; the shortcuts are tiles (one row to swipe on a phone); the notices to pay and the coming renewals sit side by
   side, each row a link, with the domain first; **Past due** shows only when something is.
