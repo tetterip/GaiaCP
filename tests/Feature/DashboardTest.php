@@ -29,6 +29,8 @@ use App\Models\Ticket;
 use App\Models\UpgradeRequest;
 use App\Models\User;
 use App\Monitoring\MonitorStatus;
+use App\Support\DashboardToday;
+use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -210,10 +212,11 @@ class DashboardTest extends TestCase
 
         $this->actingAs(User::factory()->create());
         $titles = array_column(NeedsAttention::items(), 'title');
+        // The urgent rows first
         $this->assertSame([
-            '1 order waiting for Complete order',
             '1 overdue payment notice',
             'Backup failed',
+            '1 order waiting for Complete order',
         ], $titles);
 
         // Billing only: the notice, not the order or the activity log
@@ -269,8 +272,8 @@ class DashboardTest extends TestCase
             '1 cancellation request to answer',
             '1 upgrade / downgrade request to answer',
             '1 ticket waiting for a reply over 24 hours',
-            '1 payment notice due today',
             '2 domains to check at the registrar',
+            '1 payment notice due today',
             '1 quote ending within 3 days',
         ], $items->keys()->all());
         $this->assertStringStartsWith('nl1 · ', $items['1 server down']['sub']);
@@ -335,8 +338,8 @@ class DashboardTest extends TestCase
         $this->assertLessThanOrEqual(NeedsAttention::SHOWN, count(NeedsAttention::items()));
         Livewire::test(NeedsAttention::class)->assertDontSee('Show less');
 
-        foreach (range(1, 4) as $i) {
-            ActivityLog::record('backup.failed', "Backup $i failed");
+        foreach (['backup.failed', 'email.failed', 'update.failed', 'payment.online_unmatched'] as $event) {
+            ActivityLog::record($event, 'Failed');
         }
         Server::factory()->create(['monitor_status' => MonitorStatus::Down, 'monitor_status_since' => now()]);
         Order::create(['client_id' => Client::factory()->create()->id]);
@@ -349,5 +352,88 @@ class DashboardTest extends TestCase
             ->assertSee('Show '.($count - NeedsAttention::SHOWN).' more')
             ->assertSee('Show less')
             ->assertSeeHtml('x-show="all"');
+    }
+
+    public function test_needs_attention_shows_failures_of_a_kind_as_one_row(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $services = collect(['one.example', 'two.example', 'three.example', 'four.example'])
+            ->map(fn (string $domain) => Service::factory()->create(['domain' => $domain]));
+        foreach ($services as $service) {
+            ActivityLog::record('provisioning.failed', 'Suspend failed', $service);
+        }
+        ActivityLog::record('email.failed', 'Mailbox full');
+        ActivityLog::record('email.failed', 'Mailbox full');
+        ActivityLog::record('backup.failed', 'FTP upload failed');
+
+        $items = collect(NeedsAttention::items())->keyBy('title');
+
+        // The latest kind first, each once
+        $this->assertSame(['Backup failed', '2 emails not sent', '4 panel or registrar calls failed'], $items->keys()->all());
+        $calls = $items['4 panel or registrar calls failed'];
+        $this->assertStringContainsString('one.example, two.example, three.example… · Last ', $calls['sub']);
+        $this->assertStringContainsString('provisioning.failed', urldecode($calls['url']));
+        $this->assertStringContainsString('email.failed', urldecode($items['2 emails not sent']['url']));
+
+        // One failed call still names its service and opens it.
+        ActivityLog::query()->where('event', 'provisioning.failed')->where('service_id', '!=', $services[0]->id)->delete();
+        $one = collect(NeedsAttention::items())->firstWhere('title', 'Panel or registrar call failed: one.example');
+        $this->assertSame(ServiceResource::getUrl('edit', ['record' => $services[0]->id]), $one['url']);
+    }
+
+    public function test_the_day_s_numbers_sit_over_the_cards_for_the_areas_the_admin_may_open(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-10-17 12:00'));
+        $client = Client::factory()->create();
+        Client::factory()->create()->forceFill(['created_at' => '2026-10-16 09:00'])->save();
+        Client::factory()->create()->forceFill(['created_at' => '2026-10-10 09:00'])->save();
+        Order::create(['client_id' => $client->id]);
+        Order::create(['client_id' => $client->id]);
+        Order::create(['client_id' => $client->id])->forceFill(['created_at' => '2026-10-16 09:00'])->save();
+        Payment::factory()->create(['paid_on' => '2026-10-17', 'amount_cents' => 5000]);
+        Payment::factory()->create(['paid_on' => '2026-10-16', 'amount_cents' => 1250]);
+        Ticket::create(['client_id' => $client->id, 'subject' => 'Help', 'status' => TicketStatus::Open, 'last_reply_at' => now()->subHours(2)]);
+
+        $this->actingAs(User::factory()->create());
+        $boxes = collect(DashboardToday::boxes())->keyBy('key');
+
+        $this->assertSame(['income', 'orders', 'clients', 'tickets'], $boxes->keys()->all());
+        $this->assertSame(['€50.00', 'Yesterday: €12.50'], [$boxes['income']['value'], $boxes['income']['sub']]);
+        $this->assertStringContainsString('2026-10-17', urldecode($boxes['income']['url']));
+        $this->assertSame(['2', 'Yesterday: 1'], [$boxes['orders']['value'], $boxes['orders']['sub']]);
+        $this->assertSame(['1', 'Oldest 2 hours ago'], [$boxes['tickets']['value'], $boxes['tickets']['sub']]);
+        $this->assertSame('Yesterday: 1', $boxes['clients']['sub']);
+
+        $this->get(Dashboard::getUrl())->assertOk()
+            ->assertSeeInOrder(['Income today', '€50.00', 'New orders', 'New clients', 'Tickets waiting', 'Open balance']);
+
+        // Support only: the tickets box alone
+        $this->actingAs(User::factory()->limitedTo([AdminArea::Support])->create());
+        $this->assertSame(['tickets'], array_column(DashboardToday::boxes(), 'key'));
+        $this->get(Dashboard::getUrl())->assertOk()->assertSee('Tickets waiting')->assertDontSee('Income today');
+    }
+
+    public function test_the_balance_card_counts_notices_due_this_week_and_the_renewals_expected(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-10-17 12:00'));
+        $this->notice('2026-10-17', 4000);          // due today, with a service renewing today
+        $this->notice('2026-10-24', 2500);          // the last day of the week
+        $this->notice('2026-10-25', 9900);          // after it
+        Service::factory()->create(['next_due_date' => '2026-11-16', 'price_cents' => 1000]);
+        Service::factory()->create(['next_due_date' => '2026-11-17', 'price_cents' => 7700]); // a day past the 30
+        Service::factory()->create(['next_due_date' => '2026-10-01', 'price_cents' => 3300]); // overdue: not expected
+
+        $this->actingAs(User::factory()->create());
+        $expected = Service::query()->billable()->whereOnDate('next_due_date', '>=', '2026-10-17')->whereOnDate('next_due_date', '<=', '2026-11-16')->sum('price_cents');
+
+        Livewire::test(BillingOverview::class)
+            ->assertSeeInOrder(['Due in 7 days', '€65.00', '2 notices'])
+            ->assertSee('Expected in the next 30 days, from 4 renewals')
+            ->assertSee(Money::format((int) $expected, 'EUR'))
+            ->assertSee('income-forecast');
+
+        // Without Reports the line stays, without its link.
+        $this->actingAs(User::factory()->limitedTo([AdminArea::Billing])->create());
+        Livewire::test(BillingOverview::class)->assertSee('Expected in the next 30 days')->assertDontSee('income-forecast');
     }
 }

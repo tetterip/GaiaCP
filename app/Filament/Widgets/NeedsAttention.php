@@ -47,8 +47,9 @@ use Illuminate\Support\Collection;
  * leads to contact today, overdue payment notices and those due today, domains to check at the registrar (auto renew on
  * and the registrar's expiry within DOMAIN_DAYS, or well before the paid-through date), sent quotes ending within
  * QUOTE_DAYS, and what failed in the last FAILURE_DAYS days (panel / registrar calls, backups, emails, updates, online
- * payments that matched no notice). The first SHOWN show, the rest
- * unfold. With nothing to show the card is left off the dashboard (isEmpty()).
+ * payments that matched no notice; one row per kind with their count). The urgent rows come first; the first SHOWN show,
+ * the rest unfold. With nothing to show the card is left off the dashboard (isEmpty()). It starts in the row across the
+ * top of the dashboard (DashboardLayout::TOP), where its rows sit in two columns on a wide screen.
  */
 class NeedsAttention extends Widget
 {
@@ -225,17 +226,40 @@ class NeedsAttention extends Widget
         }
 
         if (ActivityLogResource::canAccess()) {
-            $failures = ActivityLog::query()->with('service')
+            // One row per kind of failure, however many there were (a server that is down fails every call to it).
+            $failures = ActivityLog::query()
                 ->whereIn('event', self::FAILURES)
                 ->whereNull('properties->retry') // a module queue retry that failed again shows once, in the item above
-                ->where('created_at', '>=', now()->subDays(self::FAILURE_DAYS))
-                ->latest('id')->limit(4)->get();
+                ->where('created_at', '>=', now()->subDays(self::FAILURE_DAYS));
 
-            foreach ($failures as $log) {
+            $counts = (clone $failures)->toBase()->selectRaw('event, count(*) as failures, max(id) as latest')->groupBy('event')->orderByDesc('latest')->get();
+            $latest = ActivityLog::query()->with('service')->findMany($counts->pluck('latest'))->keyBy('id');
+
+            foreach ($counts as $row) {
+                $log = $latest[$row->latest] ?? null;
+                if (! $log) {
+                    continue;
+                }
+
+                $count = (int) $row->failures;
+                $list = ActivityLogResource::getUrl(parameters: ['filters' => ['event' => ['value' => $log->event]]]);
+                $domains = $log->event === 'provisioning.failed' && $count > 1
+                    ? Service::query()->whereIn('id', (clone $failures)->where('event', $log->event)->whereNotNull('service_id')->latest('id')->limit(20)->pluck('service_id'))
+                        ->whereNotNull('domain')->limit(3)->pluck('domain')
+                    : collect();
+
                 $items[] = [
                     'icon' => $log->event === 'email.failed' ? 'heroicon-o-envelope' : 'heroicon-o-exclamation-triangle',
                     'tone' => 'bad',
-                    'title' => match ($log->event) {
+                    'title' => $count > 1
+                        ? match ($log->event) {
+                            'backup.failed' => __(':count backups failed', ['count' => $count]),
+                            'email.failed' => __(':count emails not sent', ['count' => $count]),
+                            'update.failed' => __(':count updates failed', ['count' => $count]),
+                            'payment.online_unmatched' => __(':count online payments to match by hand', ['count' => $count]),
+                            default => __(':count panel or registrar calls failed', ['count' => $count]),
+                        }
+                    : match ($log->event) {
                         'backup.failed' => __('Backup failed'),
                         'email.failed' => __('Email not sent'),
                         'update.failed' => __('Update failed'),
@@ -244,13 +268,19 @@ class NeedsAttention extends Widget
                             ? __('Panel or registrar call failed: :name', ['name' => $log->service->domain])
                             : __('Panel or registrar call failed'),
                     },
-                    'sub' => $log->created_at->diffForHumans(),
-                    'url' => $log->service_id && ServiceResource::canAccess()
+                    'sub' => $count > 1
+                        ? ($domains->isNotEmpty() ? $domains->join(', ').($count > $domains->count() ? '…' : '').' · ' : '').__('Last :time', ['time' => $log->created_at->diffForHumans()])
+                        : $log->created_at->diffForHumans(),
+                    'url' => $count === 1 && $log->service_id && ServiceResource::canAccess()
                         ? ServiceResource::getUrl('edit', ['record' => $log->service_id])
-                        : ActivityLogResource::getUrl(parameters: ['filters' => ['event' => ['value' => $log->event]]]),
+                        : $list,
                 ];
             }
         }
+
+        // The urgent rows (red) first, then what waits on an answer, then the rest; each keeps its place among its own.
+        $order = ['bad' => 0, 'warn' => 1];
+        $items = collect($items)->sortBy(fn (array $item) => $order[$item['tone']] ?? 2)->values()->all();
 
         return $items;
     }

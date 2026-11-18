@@ -4196,5 +4196,17 @@
     "Search services, domains, payment notices…": "Buscar serviços, domínios, avisos de pagamento…",
     "Shortcuts": "Atalhos",
     "Show :count more": "Mostrar mais :count",
-    "Show less": "Mostrar menos"
+    "Show less": "Mostrar menos",
+    ":count backups failed": ":count backups falharam",
+    ":count emails not sent": ":count e-mails não enviados",
+    ":count updates failed": ":count atualizações falharam",
+    ":count online payments to match by hand": ":count pagamentos online para associar manualmente",
+    ":count panel or registrar calls failed": ":count chamadas ao painel ou ao registrador falharam",
+    "Last :time": "Última :time",
+    "Income today": "Receita de hoje",
+    "Yesterday: :value": "Ontem: :value",
+    "New clients": "Novos clientes",
+    "Tickets waiting": "Tickets aguardando",
+    "None waiting for us": "Nenhum aguarda por nós",
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Previsto nos próximos :days dias, de :count renovação|Previsto nos próximos :days dias, de :count renovações"
 }

@@ -30,6 +30,99 @@
         }
     }
 
+    /* The row across the top, over both columns (where Needs attention starts): left out while it has no card, a
+       dashed place to drop one while a card is dragged */
+    .gx-top {
+        grid-column: 1 / -1;
+        min-height: 0;
+    }
+
+    .gx-top:not(:has(.gx-slot)) {
+        display: none;
+    }
+
+    .gx-dragging .gx-top:not(:has(.gx-slot)) {
+        display: flex;
+        min-height: 4rem;
+        border: 2px dashed var(--theme-line, var(--gray-300));
+        border-radius: 1rem;
+    }
+
+    .dark .gx-dragging .gx-top:not(:has(.gx-slot)) {
+        border-color: var(--theme-line, color-mix(in oklab, var(--color-white) 15%, transparent));
+    }
+
+    /* The day's numbers over the cards: four boxes in a row, two by two on a phone */
+    .gx-today {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .gx-today {
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(0, 1fr);
+            grid-template-columns: none;
+            gap: 1.5rem;
+        }
+    }
+
+    .gx-today-box {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+        min-width: 0;
+        padding: .85rem 1rem;
+        transition: box-shadow .15s ease, transform .15s ease;
+    }
+
+    a.gx-today-box:hover {
+        transform: translateY(-1px);
+    }
+
+    .gx-today-label {
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--theme-muted, var(--gray-500));
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gx-today-ico {
+        flex: none;
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .gx-today-value {
+        font-size: 1.35rem;
+        font-weight: 600;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gx-today-sub {
+        font-size: .78rem;
+        color: var(--theme-muted, var(--gray-500));
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        a.gx-today-box:hover {
+            transform: none;
+        }
+    }
+
     .gx-slot {
         position: relative;
         display: flex;
@@ -563,6 +656,34 @@
 
     a.gx-att:hover .gx-att-arrow {
         transform: translateX(3px);
+    }
+
+    /* The rows: one under the other, in two columns when the card sits in the row across the top of a wide screen */
+    .gx-att-list {
+        display: flex;
+        flex-direction: column;
+        gap: .4rem;
+    }
+
+    @media (min-width: 1024px) {
+        .gx-top .gx-att-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 1rem;
+        }
+    }
+
+    /* The balance card's last line: what the next days should bring */
+    .gx-expected {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: .75rem;
+        font-size: .85rem;
+    }
+
+    a.gx-expected:hover .gx-strong {
+        text-decoration: underline;
     }
 
     .gx-support-counts {

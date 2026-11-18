@@ -4196,5 +4196,17 @@
     "Search services, domains, payment notices…": "Αναζήτηση υπηρεσιών, domains, ειδοποιήσεων πληρωμής…",
     "Shortcuts": "Συντομεύσεις",
     "Show :count more": "Εμφάνιση :count ακόμη",
-    "Show less": "Εμφάνιση λιγότερων"
+    "Show less": "Εμφάνιση λιγότερων",
+    ":count backups failed": ":count αντίγραφα ασφαλείας απέτυχαν",
+    ":count emails not sent": ":count email δεν στάλθηκαν",
+    ":count updates failed": ":count ενημερώσεις απέτυχαν",
+    ":count online payments to match by hand": ":count online πληρωμές για αντιστοίχιση με το χέρι",
+    ":count panel or registrar calls failed": ":count κλήσεις σε panel ή registrar απέτυχαν",
+    "Last :time": "Τελευταία :time",
+    "Income today": "Εισπράξεις σήμερα",
+    "Yesterday: :value": "Χθες: :value",
+    "New clients": "Νέοι πελάτες",
+    "Tickets waiting": "Tickets σε αναμονή",
+    "None waiting for us": "Κανένα δεν περιμένει εμάς",
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Αναμένονται στις επόμενες :days ημέρες, από :count ανανέωση|Αναμένονται στις επόμενες :days ημέρες, από :count ανανεώσεις"
 }

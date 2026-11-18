@@ -2,19 +2,28 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Clusters\Reports\Pages\IncomeForecast as ForecastPage;
 use App\Filament\Resources\Invoices\InvoiceResource;
 use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Widgets\Concerns\FitsDashboard;
 use App\Models\Invoice;
-use App\Models\Service;
+use App\Reports\IncomeForecast;
 use App\Support\Currencies;
 use App\Support\Money;
+use Carbon\CarbonImmutable;
 use Filament\Widgets\Widget;
 
-/** The open balance: unpaid payment notices, how much of it is overdue and what falls due this week (base currency). */
+/**
+ * The open balance: unpaid payment notices, how much of it is overdue and how much falls due within WEEK days, and the
+ * renewals expected in the next FORECAST_DAYS days (App\Reports\IncomeForecast), all in the base currency.
+ */
 class BillingOverview extends Widget
 {
     use FitsDashboard;
+
+    public const WEEK = 7;
+
+    public const FORECAST_DAYS = 30;
 
     protected static bool $isLazy = false;
 
@@ -37,15 +46,20 @@ class BillingOverview extends Widget
     {
         $currency = Currencies::base();
         $overdue = Invoice::query()->unpaid()->whereOnDate('due_date', '<', today());
-        $week = Service::query()->billable()->whereOnDate('next_due_date', '>=', today())->whereOnDate('next_due_date', '<=', today()->addDays(7));
+        $week = Invoice::query()->unpaid()->whereOnDate('due_date', '>=', today())->whereOnDate('due_date', '<=', today()->addDays(self::WEEK));
+        $until = CarbonImmutable::today()->addDays(self::FORECAST_DAYS);
+        $expected = (new IncomeForecast)->dues(2)->filter(fn (array $due) => ! $due['overdue'] && $due['due'] <= $until);
 
         return [
             'balance' => Money::format(Invoice::owedInBase(Invoice::query()->unpaid()), $currency),
             'notices' => Invoice::query()->unpaid()->count(),
             'overdue' => Money::format(Invoice::owedInBase($overdue), $currency),
             'overdueCount' => (clone $overdue)->count(),
-            'week' => Money::format(Currencies::sumToBase($week, 'price_cents'), $currency),
+            'week' => Money::format(Invoice::owedInBase($week), $currency),
             'weekCount' => (clone $week)->count(),
+            'expected' => Money::format((int) $expected->sum('cents'), $currency),
+            'expectedCount' => $expected->count(),
+            'forecastUrl' => ForecastPage::canAccess() ? ForecastPage::getUrl() : null,
             'noticesUrl' => InvoiceResource::getUrl(),
             'paymentsUrl' => PaymentResource::canAccess() ? PaymentResource::getUrl() : null,
         ];
