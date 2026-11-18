@@ -116,7 +116,11 @@ cancellation and upgrade requests, client change requests, tickets waiting for a
 today, overdue notices and those due today, domains to check at the registrar (auto renew on and the registrar's expiry
 within 14 days, or well before the date they are paid up to), sent quotes ending within 3 days, and failed panel or
 registrar calls. Each line opens what it is about and goes away once that is dealt with; when nothing waits, the card
-is not shown at all.
+is not shown at all. It shows its first six lines, the most urgent first; **Show … more** unfolds the rest.
+
+**Renewals** lists the seven most urgent services that are overdue or due in the next 30 days, in groups (past due, in
+7 days, later), with what each costs and its due date. A row opens the service, the button at its end records its
+payment, and **All services** opens the whole list.
 
 The cards sit in two columns of the same width, each filling down on its own so a short card leaves no gap under it;
 on a phone the first column comes first, then the second. To move a card, drag it by the handle at the middle of its

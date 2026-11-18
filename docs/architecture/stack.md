@@ -361,8 +361,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included); avatars are
   `App\Filament\Avatars\InitialsAvatar` (an SVG data URL, nothing loaded from another site). The dashboard
   (`App\Filament\Pages\Dashboard`: greeting, every card half the width) has `App\Filament\Widgets\` BillingOverview (open balance),
-  ActivityChart (orders, completed orders and income per day / month, plain SVG), UpcomingRenewals,
-  ServerCapacity (accounts vs max) and NeedsAttention (cron stopped, pending orders, change requests, overdue notices, failures of the
+  ActivityChart (orders, completed orders and income per day / month, plain SVG), UpcomingRenewals (a plain widget: the
+  `SHOWN` most urgent services due within `DAYS` days in groups, Record payment per row through its `service` argument),
+  ServerCapacity (accounts vs max) and NeedsAttention (its first `SHOWN` rows, the rest unfold; cron stopped, pending orders, change requests, overdue notices, failures of the
   last `FAILURE_DAYS`, each only for admins with that area); their CSS is `resources/views/filament/dashboard/styles.blade.php`
   in Filament's colours, so it works with any theme or none. The cards are laid out by
   `resources/views/filament/dashboard/cards.blade.php`: two `.gx-col` columns of the same width from 768 px at any

@@ -39,7 +39,7 @@
         color: var(--gcp-text);
     }
 
-    /* Home: the To pay card beside the smaller ones, then shortcuts and lists */
+    /* Home: the To pay card beside the smaller ones, then shortcuts and lists (the lists' own styles further down) */
     .gcp-home-grid {
         display: grid;
         gap: 1.25rem;
@@ -69,17 +69,6 @@
 
     .gcp-home-owed {
         color: var(--gcp-bad);
-    }
-
-    .gcp-home-shortcuts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: .5rem;
-    }
-
-    .gcp-home-shortcuts .fi-btn {
-        border-radius: 999px;
-        background: var(--gcp-card);
     }
 
     .gcp-home-list {
@@ -120,6 +109,227 @@
     .gcp-home-note {
         font-size: .875rem;
         color: var(--gcp-muted);
+    }
+
+    /* Active services: the count over a row per kind, as tall as the To pay card beside it */
+    .gcp-home-side {
+        align-content: stretch;
+        grid-auto-rows: 1fr;
+    }
+
+    .gcp-home-services {
+        gap: .9rem;
+    }
+
+    .gcp-home-services-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .gcp-home-services .gx-big {
+        margin-top: .5rem;
+        font-size: 2.4rem;
+    }
+
+    .gcp-home-types {
+        display: flex;
+        flex-direction: column;
+        margin-top: auto;
+    }
+
+    .gcp-home-type {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+        padding: .6rem .25rem;
+        border-top: 1px solid var(--gcp-line);
+        font-size: .9rem;
+        color: var(--gcp-text);
+    }
+
+    .gcp-home-type:hover .gcp-home-type-label {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-type-icon {
+        width: 1.15rem;
+        height: 1.15rem;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-type-label {
+        flex: 1;
+        font-weight: 500;
+    }
+
+    .gcp-home-type-count {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-arrow {
+        flex: none;
+        width: 1rem;
+        height: 1rem;
+        color: var(--gcp-muted);
+    }
+
+    /* Shortcuts: a tile each across the page, one row to swipe on a phone */
+    .gcp-home-tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+        gap: .75rem;
+    }
+
+    .gcp-home-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+        padding: .9rem .5rem;
+        border-radius: var(--gcp-radius-control);
+        background: var(--gcp-card);
+        box-shadow: 0 0 0 1px var(--gcp-line);
+        font-size: .875rem;
+        font-weight: 500;
+        text-align: center;
+        color: var(--gcp-ink);
+        transition: box-shadow .15s ease;
+    }
+
+    .gcp-home-tile:hover,
+    .gcp-home-tile:focus-visible {
+        box-shadow: 0 0 0 1px var(--gcp-accent);
+    }
+
+    .gcp-home-tile-icon {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 2rem;
+        height: 2rem;
+        border-radius: .6rem;
+        background: var(--gcp-soft);
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-tile-icon svg {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    @media (max-width: 639px) {
+        .gcp-home-tiles {
+            display: flex;
+            overflow-x: auto;
+            margin-inline: -1rem;
+            padding: 2px 1rem;
+            scrollbar-width: none;
+        }
+
+        .gcp-home-tiles::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gcp-home-tile {
+            flex: none;
+            flex-direction: row;
+            padding: .6rem .85rem;
+            white-space: nowrap;
+        }
+    }
+
+    /* The two lists side by side on a wide screen, each row a link with its amount at the end */
+    .gcp-home-lists {
+        display: grid;
+        gap: 1.25rem;
+        align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+        .gcp-home-lists {
+            grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+        }
+    }
+
+    .gcp-home-card {
+        gap: .6rem;
+    }
+
+    .gcp-home-rows {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gcp-home-row {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+        padding: .65rem .25rem;
+        border-top: 1px solid var(--gcp-line);
+    }
+
+    .gcp-home-row:first-child {
+        border-top: 0;
+    }
+
+    .gcp-home-row-text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.35;
+        font-size: .8rem;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-row-text strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-row:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-row-amount {
+        font-size: .9rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-row-pay {
+        padding: .25rem .7rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 600;
+        background: var(--gaia-button, var(--primary-600));
+        color: var(--gaia-button-ink, #fff);
+    }
+
+    .gcp-home-row .gcp-overdue {
+        color: var(--gcp-bad);
+    }
+
+    .gcp-home-contact {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .gcp-home-contact svg {
+        flex: none;
+        width: 1.1rem;
+        height: 1.1rem;
     }
 
     /* Credit: the balance over the history */

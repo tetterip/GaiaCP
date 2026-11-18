@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\InvoiceStatus;
 use App\Enums\UserRole;
 use App\Filament\Client\Pages\Dashboard;
+use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Payment;
@@ -159,6 +160,53 @@ class ClientAreaPagesTest extends TestCase
             ->assertSee('1 payment notice')
             ->assertSee('Business hosting')
             ->assertSee('Website care');
+    }
+
+    public function test_home_counts_the_active_services_per_kind_and_links_each_list(): void
+    {
+        Service::factory()->for($this->client)->count(2)->create();
+        Service::factory()->domain()->for($this->client)->create(['domain' => 'maria.example']);
+        Service::factory()->maintenance()->for($this->client)->create();
+        Service::factory()->for($this->client)->create(['status' => 'terminated']);
+        Service::factory()->for($this->client)->create(['client_visible' => false]);
+        Service::factory()->for($this->other)->create();
+
+        Filament::setCurrentPanel('client');
+        $kinds = (new Dashboard)->activeByKind();
+
+        $this->assertSame(['Hosting' => 2, 'Domains' => 1, 'Other services' => 1], array_column($kinds, 'count', 'label'));
+        $this->assertStringContainsString('kind=hosting', $kinds[0]['url']);
+        $this->assertStringContainsString('kind=other', $kinds[2]['url']);
+
+        $this->get('/dashboard')->assertOk()
+            ->assertSeeInOrder(['Active services', '4', 'Hosting', 'Domains', 'Other services'])
+            ->assertSee('gcp-home-tile', false);
+
+        Service::query()->delete();
+        $this->assertSame([], (new Dashboard)->activeByKind());
+        $this->get('/dashboard')->assertOk()->assertSee('Hosting, domains and more');
+    }
+
+    public function test_home_shows_past_due_only_when_something_is_and_a_pay_button_per_notice(): void
+    {
+        $notice = $this->notice($this->client);
+        Service::factory()->domain()->for($this->client)->dueOn(now()->addWeek()->toDateString())->create(['domain' => 'maria.example']);
+
+        $this->get('/dashboard')->assertOk()
+            ->assertDontSee('Past due')
+            ->assertSeeInOrder(['Payment notices to pay', $notice->number, 'Pay', 'Coming up for renewal', 'maria.example'])
+            ->assertSee(PaymentNoticeResource::getUrl('view', ['record' => $notice], panel: 'client'), false);
+
+        $notice->update(['due_date' => now()->subDays(2)]);
+
+        $this->get('/dashboard')->assertOk()->assertSee('Past due');
+    }
+
+    public function test_the_search_field_names_what_a_client_finds(): void
+    {
+        $this->get('/dashboard')->assertOk()
+            ->assertSee('Search services, domains, payment notices…')
+            ->assertDontSee('Search clients');
     }
 
     public function test_the_pages_follow_the_clients_language(): void

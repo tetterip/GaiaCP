@@ -4189,5 +4189,12 @@
     "Open the plugin's page": "Eklentinin sayfasını aç",
     "Sign-in": "Oturum açma",
     "Update available": "Güncelleme mevcut",
-    "Uptime": "Çalışma süresi"
+    "Uptime": "Çalışma süresi",
+    "In 7 days": "7 gün içinde",
+    "Later": "Daha sonra",
+    "Nothing is overdue or due in the next 30 days": "Gecikmiş veya önümüzdeki 30 günde vadesi gelen bir şey yok",
+    "Search services, domains, payment notices…": "Hizmet, alan adı, ödeme bildirimi ara…",
+    "Shortcuts": "Kısayollar",
+    "Show :count more": ":count tane daha göster",
+    "Show less": "Daha az göster"
 }

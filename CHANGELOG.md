@@ -5,6 +5,15 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Dashboard, easier to read: **Renewals** is a compact list in groups (past due, in 7 days, later) with the amount, the
+  due date and Record payment on each row, so a phone shows all of it without scrolling sideways (it was the services
+  table squeezed into half the page); **Needs attention** shows its first six lines and unfolds the rest; the chart's
+  title stays on one line, its axis reads "€600" and a change past 999% is left out; the Support counts are one low row.
+- Client area Home, easier to read: **Active services** counts hosting, domains and other services, each opening its
+  list; the shortcuts are tiles (one row to swipe on a phone); the notices to pay and the coming renewals sit side by
+  side, each row a link, with the domain first; **Past due** shows only when something is.
+- The client area's search field no longer reads "Search clients, services, domains…".
+
 ## [0.10.0] - 2026-11-17
 
 - Security (audit before this release): Plesk 1.6.3 lets a client log in to Plesk, open its shortcuts or change the

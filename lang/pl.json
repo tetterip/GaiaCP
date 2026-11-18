@@ -4189,5 +4189,12 @@
     "Open the plugin's page": "Otwórz stronę wtyczki",
     "Sign-in": "Logowanie",
     "Update available": "Dostępna aktualizacja",
-    "Uptime": "Dostępność"
+    "Uptime": "Dostępność",
+    "In 7 days": "W ciągu 7 dni",
+    "Later": "Później",
+    "Nothing is overdue or due in the next 30 days": "Nic nie jest zaległe ani nie przypada w ciągu najbliższych 30 dni",
+    "Search services, domains, payment notices…": "Szukaj usług, domen, wezwań do zapłaty…",
+    "Shortcuts": "Skróty",
+    "Show :count more": "Pokaż jeszcze :count",
+    "Show less": "Pokaż mniej"
 }

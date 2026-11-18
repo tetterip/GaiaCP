@@ -23,6 +23,7 @@ class SetLocale
 
         if ($user instanceof User) {
             app()->setLocale($user->preferredLocale());
+            $this->nameClientSearch();
 
             return $next($request);
         }
@@ -37,7 +38,20 @@ class SetLocale
         }
 
         app()->setLocale(Locales::normalize($locale));
+        $this->nameClientSearch();
 
         return $next($request);
+    }
+
+    /** The client area's search field says what a client finds there, not the admin panel's "Search clients, …". */
+    private function nameClientSearch(): void
+    {
+        if (filament()->getCurrentPanel()?->getId() === 'client') {
+            app('translator')->addLines(
+                ['global-search.field.placeholder' => __('Search services, domains, payment notices…')],
+                app()->getLocale(),
+                'filament-panels',
+            );
+        }
     }
 }

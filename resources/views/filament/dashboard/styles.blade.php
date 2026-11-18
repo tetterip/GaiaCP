@@ -585,6 +585,122 @@
         background: var(--theme-soft, color-mix(in oklab, var(--color-white) 4%, transparent));
     }
 
+    /* Denser rows (Needs attention, Renewals, Support): a smaller icon, one line each for the title and the note */
+    .gx-compact .gx-att {
+        padding: .5rem .6rem;
+        gap: .75rem;
+    }
+
+    .gx-ico-sm {
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: .55rem;
+    }
+
+    .gx-ico-sm .gx-ico-svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .gx-compact .gx-att-text .gx-strong,
+    .gx-compact .gx-att-text .gx-muted {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* "Show 5 more" under the first rows, "and 11 more" under the renewals */
+    .gx-more {
+        align-self: flex-start;
+        margin: .2rem .6rem 0;
+        font-size: .82rem;
+        font-weight: 600;
+        color: var(--theme-accent, var(--primary-600));
+    }
+
+    /* Renewals: a small heading per group, the amount over the date at the end of each row */
+    .gx-group {
+        margin: .6rem .6rem .1rem;
+        font-size: .72rem;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--theme-muted, var(--gray-500));
+    }
+
+    .gx-bad-text {
+        color: var(--danger-600) !important;
+    }
+
+    .dark .gx-bad-text {
+        color: var(--danger-400) !important;
+    }
+
+    .gx-row-end {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        line-height: 1.35;
+        white-space: nowrap;
+    }
+
+    .gx-row-end .gx-muted {
+        font-size: .78rem;
+    }
+
+    .gx-tnum {
+        font-variant-numeric: tabular-nums;
+    }
+
+    a.gx-att-text:hover .gx-strong {
+        color: var(--theme-accent, var(--primary-600));
+    }
+
+    /* Support: each count beside its label, a zero in grey */
+    .gx-support .gx-support-count {
+        flex-direction: row;
+        align-items: baseline;
+        gap: .5rem;
+        padding: .55rem .8rem;
+    }
+
+    .gx-support .gx-support-count .gx-mid {
+        font-size: 1.35rem;
+    }
+
+    .gx-support .gx-support-count .gx-muted {
+        font-size: .78rem;
+        line-height: 1.2;
+    }
+
+    .gx-support .gx-zero .gx-mid {
+        color: var(--theme-muted, var(--gray-400));
+    }
+
+    @media (max-width: 639px) {
+        .gx-support .gx-support-count {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+
+    /* Chart: the title on one line, the smaller period buttons beside it or, when they don't fit, under it */
+    .gx-chart .gx-title {
+        flex: none;
+        white-space: nowrap;
+    }
+
+    .gx-chart .gx-seg {
+        margin-inline-start: auto;
+    }
+
+    .gx-chart .gx-seg button {
+        min-height: 1.75rem;
+        padding: 0 .6rem;
+        font-size: .78rem;
+        white-space: nowrap;
+    }
+
         @media (max-width: 639px) {
         .gx-big {
             font-size: 2.4rem;

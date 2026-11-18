@@ -4189,5 +4189,12 @@
     "Open the plugin's page": "Άνοιγμα της σελίδας του πρόσθετου",
     "Sign-in": "Σύνδεση",
     "Update available": "Υπάρχει ενημέρωση",
-    "Uptime": "Διαθεσιμότητα"
+    "Uptime": "Διαθεσιμότητα",
+    "In 7 days": "Σε 7 ημέρες",
+    "Later": "Αργότερα",
+    "Nothing is overdue or due in the next 30 days": "Τίποτα ληξιπρόθεσμο και τίποτα που λήγει στις επόμενες 30 ημέρες",
+    "Search services, domains, payment notices…": "Αναζήτηση υπηρεσιών, domains, ειδοποιήσεων πληρωμής…",
+    "Shortcuts": "Συντομεύσεις",
+    "Show :count more": "Εμφάνιση :count ακόμη",
+    "Show less": "Εμφάνιση λιγότερων"
 }

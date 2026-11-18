@@ -47,11 +47,15 @@ use Illuminate\Support\Collection;
  * leads to contact today, overdue payment notices and those due today, domains to check at the registrar (auto renew on
  * and the registrar's expiry within DOMAIN_DAYS, or well before the paid-through date), sent quotes ending within
  * QUOTE_DAYS, and what failed in the last FAILURE_DAYS days (panel / registrar calls, backups, emails, updates, online
- * payments that matched no notice). With nothing to show the card is left off the dashboard (isEmpty()).
+ * payments that matched no notice). The first SHOWN show, the rest
+ * unfold. With nothing to show the card is left off the dashboard (isEmpty()).
  */
 class NeedsAttention extends Widget
 {
     use FitsDashboard;
+
+    /** The rows shown at first; the rest wait under "Show … more". */
+    public const SHOWN = 6;
 
     public const FAILURE_DAYS = 3;
 
