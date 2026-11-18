@@ -98,7 +98,8 @@ class DashboardLayoutTest extends TestCase
 
         (require database_path('migrations/2026_11_18_000100_move_needs_attention_to_the_dashboard_top.php'))->up();
 
-        $this->assertSame([
+        // assertEquals: MySQL keeps a JSON object's keys in its own order
+        $this->assertEquals([
             ['widget' => 'BillingOverview', 'column' => 1, 'visible' => true],
             ['widget' => 'NeedsAttention', 'column' => 0, 'visible' => false],
         ], $admin->fresh()->dashboard_layout);
