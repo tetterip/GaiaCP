@@ -319,7 +319,7 @@ class DashboardTest extends TestCase
             ->assertDontSee('late.example');
 
         $this->assertTrue($late->refresh()->next_due_date->isAfter('2026-11-16'));
-        $this->assertSame(5000, $late->payments()->sum('amount_cents'));
+        $this->assertSame(5000, (int) $late->payments()->sum('amount_cents'));
 
         // Past SHOWN the card names how many more the services list has
         Service::factory()->count(UpcomingRenewals::SHOWN)->create(['next_due_date' => '2026-10-18']);
