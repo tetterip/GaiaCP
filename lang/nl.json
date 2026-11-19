@@ -4283,5 +4283,11 @@
     "Free names for what you described, suggested by AI:": "Vrije namen voor wat u beschreef, voorgesteld door AI:",
     "Domain ideas visitors": "Ook bezoekers",
     "Domains per day": "Domeinsuggesties per dag",
-    "Domain ideas": "Domeinnamen uit een beschrijving"
+    "Domain ideas": "Domeinnamen uit een beschrijving",
+    "Selected domains": "Geselecteerde domeinen",
+    "not active at our registrar": "niet actief bij onze registrar",
+    ":count domain changed|:count domains changed": ":count domein gewijzigd|:count domeinen gewijzigd",
+    "already off": "al uit",
+    "They renew again: you get a payment notice before each one's due date.": "Ze verlengen weer: u krijgt vóór elke vervaldatum een betalingsverzoek.",
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "U krijgt er geen betalingsverzoeken meer voor en elk eindigt op de vervaldatum. U kunt het daarvoor weer aanzetten."
 }

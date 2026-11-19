@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\DomainRegistrationType;
 use App\Enums\ServiceStatus;
 use App\Enums\UserRole;
+use App\Filament\Client\Resources\Domains\Pages\ListDomains;
 use App\Filament\Client\Resources\Domains\Pages\ViewDomain;
 use App\Filament\Clusters\Settings\Pages\ClientAreaSettings;
 use App\Mail\EppCodeRequestMail;
@@ -205,5 +206,39 @@ class ClientDomainSelfServiceTest extends TestCase
         $this->page($domain)->callAction('requestEppCode')->assertNotified('EPP code requested');
         Mail::assertSent(EppCodeRequestMail::class, 1);
         $this->assertSame(1, ActivityLog::query()->where('event', 'domain.epp_code_requested')->where('service_id', $domain->id)->count());
+    }
+
+    public function test_the_client_changes_several_domains_at_once_from_the_list(): void
+    {
+        $second = Service::factory()->domain()->for($this->client)->create(['domain' => 'nikos.gr', 'next_due_date' => '2027-06-01']);
+        $second->domainDetails()->create(['registration_type' => DomainRegistrationType::Register, 'registrar_id' => $this->testRegistrar->id, 'nameservers' => ['ns1.old.gr', 'ns2.old.gr']]);
+        $this->registrarDomains['nikos.gr'] = ['expires' => '2027-06-01', 'ns' => ['ns1.old.gr', 'ns2.old.gr'], 'epp' => 'Ab-1!'];
+        $tracked = Service::factory()->domain()->for($this->client)->create(['domain' => 'elsewhere.gr']);
+        $tracked->domainDetails()->create(['registration_type' => DomainRegistrationType::External]);
+        $theirs = Service::factory()->domain()->for(Client::factory())->create(['domain' => 'other.gr']);
+
+        Filament::setCurrentPanel('client');
+        $this->actingAs($this->user, 'client');
+        $list = Livewire::test(ListDomains::class);
+
+        $list->callTableBulkAction('nameserversMany', [$this->domain, $second, $tracked], ['ns1' => 'ns1.new-host.com', 'ns2' => 'ns2.new-host.com'])
+            ->assertHasNoFormErrors()
+            ->assertNotified();
+        $this->assertSame(['ns1.new-host.com', 'ns2.new-host.com'], $this->registrarDomains['maria.gr']['ns']);
+        $this->assertSame(['ns1.new-host.com', 'ns2.new-host.com'], $this->registrarDomains['nikos.gr']['ns']);
+        $this->assertNull($tracked->refresh()->domainDetails->nameservers, 'a tracked domain is left out');
+
+        $list->callTableBulkAction('autoRenewOffMany', [$this->domain, $second]);
+        $this->assertFalse($this->domain->refresh()->auto_renew);
+        $this->assertFalse($second->refresh()->auto_renew);
+        $list->callTableBulkAction('autoRenewOnMany', [$this->domain]);
+        $this->assertTrue($this->domain->refresh()->auto_renew);
+
+        // Another client's domain is never in the list to pick
+        $list->assertCanNotSeeTableRecords([$theirs]);
+
+        // Off under Settings → Client area: no bulk action either
+        config(['gaiacp.client_area.domain_nameservers' => false, 'gaiacp.client_area.domain_auto_renew' => false]);
+        Livewire::test(ListDomains::class)->assertTableBulkActionHidden('nameserversMany')->assertTableBulkActionHidden('autoRenewOffMany');
     }
 }

@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area Domains: tick several domains to change their nameservers or turn auto renew on or off for all of them
+  (each behind its Settings → Client area switch, as on a domain's page); one summary says which were changed or left out.
 - Domain search: names from a description (Settings → AI assistant → Domain names from a description, off by default).
   A client types a few words about their business and gets free names with the first ending sold and .com, each with
   its price (sent without email addresses or phone numbers; same 5 an hour). Signed-in clients only unless **Visitors

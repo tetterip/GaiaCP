@@ -4283,5 +4283,11 @@
     "Free names for what you described, suggested by AI:": "Nombres libres para lo que describió, sugeridos por IA:",
     "Domain ideas visitors": "También visitantes",
     "Domains per day": "Sugerencias de dominio al día",
-    "Domain ideas": "Nombres de dominio a partir de una descripción"
+    "Domain ideas": "Nombres de dominio a partir de una descripción",
+    "Selected domains": "Dominios seleccionados",
+    "not active at our registrar": "no activo en nuestro registrador",
+    ":count domain changed|:count domains changed": ":count dominio cambiado|:count dominios cambiados",
+    "already off": "ya desactivada",
+    "They renew again: you get a payment notice before each one's due date.": "Se renuevan de nuevo: recibirá un aviso de pago antes de la fecha de cada uno.",
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "No recibirá más avisos de pago por ellos y cada uno termina en su fecha. Puede volver a activarla antes."
 }

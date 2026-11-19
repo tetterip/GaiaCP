@@ -4283,5 +4283,11 @@
     "Free names for what you described, suggested by AI:": "Anlattığınız için boş adlar, yapay zekâ önerisi:",
     "Domain ideas visitors": "Ziyaretçiler de",
     "Domains per day": "Günlük alan adı önerisi",
-    "Domain ideas": "Açıklamadan alan adları"
+    "Domain ideas": "Açıklamadan alan adları",
+    "Selected domains": "Seçili alan adları",
+    "not active at our registrar": "kayıt kuruluşumuzda etkin değil",
+    ":count domain changed|:count domains changed": "Değiştirilen alan adı: :count",
+    "already off": "zaten kapalı",
+    "They renew again: you get a payment notice before each one's due date.": "Yeniden yenilenirler: her birinin vadesinden önce ödeme bildirimi alırsınız.",
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Bunlar için artık ödeme bildirimi almayacaksınız ve her biri vadesinde sona erer. Öncesinde yeniden açabilirsiniz."
 }

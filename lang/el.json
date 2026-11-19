@@ -4283,5 +4283,11 @@
     "Free names for what you described, suggested by AI:": "Ελεύθερα ονόματα για ό,τι περιγράψατε, προτάσεις του AI:",
     "Domain ideas visitors": "Και οι επισκέπτες",
     "Domains per day": "Προτάσεις domain την ημέρα",
-    "Domain ideas": "Ονόματα domain από περιγραφή"
+    "Domain ideas": "Ονόματα domain από περιγραφή",
+    "Selected domains": "Επιλεγμένα domains",
+    "not active at our registrar": "δεν είναι ενεργό στον registrar μας",
+    ":count domain changed|:count domains changed": "Άλλαξε :count domain|Άλλαξαν :count domains",
+    "already off": "είναι ήδη κλειστή",
+    "They renew again: you get a payment notice before each one's due date.": "Ανανεώνονται ξανά: θα παίρνετε ειδοποίηση πληρωμής πριν από την ημερομηνία του καθενός.",
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Δεν θα παίρνετε άλλες ειδοποιήσεις πληρωμής γι' αυτά και το καθένα λήγει στην ημερομηνία του. Μπορείτε να την ενεργοποιήσετε ξανά πριν από τότε."
 }
