@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: with product groups set up, Add to cart for a domain alone (the Domain names group) on the client Order page
+  and the public cart did nothing; the hidden product cards left the order without "A domain name only".
 - Client area Domains: tick several domains to change their nameservers or turn auto renew on or off for all of them
   (each behind its Settings → Client area switch, as on a domain's page); one summary says which were changed or left out.
 - Domain search: names from a description (Settings → AI assistant → Domain names from a description, off by default).

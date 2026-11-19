@@ -136,7 +136,7 @@ class PublicOrder extends Page
     {
         abort_unless(ClientOrder::publicEnabled(), 404);
 
-        $data = $this->form->getState();
+        $data = $this->orderState($this->form->getState());
 
         try {
             app(ClientOrder::class)->addToCart($data);

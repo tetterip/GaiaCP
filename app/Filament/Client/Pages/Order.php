@@ -121,7 +121,7 @@ class Order extends Page
     /** Checks the choice as an order would, puts it in the cart and opens the cart from the side (CartDrawer), with the form ready for the next item. */
     public function addToCart(): void
     {
-        $data = $this->form->getState();
+        $data = $this->orderState($this->form->getState());
 
         try {
             app(ClientOrder::class)->addToCart($data, $this->orderClient());
