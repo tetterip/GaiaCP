@@ -4220,5 +4220,22 @@
     ":count active service|:count active services": ":count aktiver Dienst|:count aktive Dienste",
     "Does not renew automatically": "Verlängert sich nicht automatisch",
     "New ticket": "Neues Ticket",
-    "Register a domain": "Domain registrieren"
+    "Register a domain": "Domain registrieren",
+    ":count payment notice is past due|:count payment notices are past due": ":count Zahlungsaufforderung ist überfällig|:count Zahlungsaufforderungen sind überfällig",
+    ":name ends on :date": ":name endet am :date",
+    ":name is close to its limit": ":name nähert sich seinem Limit",
+    ":name is suspended": ":name ist gesperrt",
+    ":number, was due :date": ":number, war fällig am :date",
+    "Complete your profile": "Profil vervollständigen",
+    "It comes back once its payment notice is paid": "Wird wieder aktiv, sobald die Zahlungsaufforderung bezahlt ist",
+    "No open tickets. Write to us whenever you need help.": "Keine offenen Tickets. Schreiben Sie uns, wann immer Sie Hilfe brauchen.",
+    "Quote :number waits for your answer": "Angebot :number wartet auf Ihre Antwort",
+    "See everything we offer": "Alle Angebote ansehen",
+    "Start here": "Hier starten",
+    "The SSL certificate of :name waits for validation": "Das SSL-Zertifikat von :name wartet auf Validierung",
+    "The changes to your details wait for our approval": "Die Änderungen Ihrer Daten warten auf unsere Freigabe",
+    "Validate": "Validieren",
+    "Waiting for you": "Wartet auf Sie",
+    "We answered your ticket :number": "Wir haben Ihr Ticket :number beantwortet",
+    "You have no services yet. Pick one to begin, or look for your domain name.": "Sie haben noch keine Dienste. Wählen Sie einen aus oder suchen Sie Ihren Domainnamen."
 }

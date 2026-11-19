@@ -4220,5 +4220,22 @@
     ":count active service|:count active services": ":count ενεργή υπηρεσία|:count ενεργές υπηρεσίες",
     "Does not renew automatically": "Δεν ανανεώνεται αυτόματα",
     "New ticket": "Νέο ticket",
-    "Register a domain": "Κατοχύρωση domain"
+    "Register a domain": "Κατοχύρωση domain",
+    ":count payment notice is past due|:count payment notices are past due": ":count ειδοποίηση πληρωμής είναι ληξιπρόθεσμη|:count ειδοποιήσεις πληρωμής είναι ληξιπρόθεσμες",
+    ":name ends on :date": "Το :name λήγει στις :date",
+    ":name is close to its limit": "Το :name πλησιάζει το όριό του",
+    ":name is suspended": "Το :name είναι σε αναστολή",
+    ":number, was due :date": ":number, έληξε στις :date",
+    "Complete your profile": "Συμπληρώστε το προφίλ σας",
+    "It comes back once its payment notice is paid": "Επανέρχεται μόλις εξοφληθεί η ειδοποίηση πληρωμής του",
+    "No open tickets. Write to us whenever you need help.": "Δεν έχετε ανοιχτά tickets. Γράψτε μας όποτε χρειαστείτε βοήθεια.",
+    "Quote :number waits for your answer": "Η προσφορά :number περιμένει την απάντησή σας",
+    "See everything we offer": "Δείτε όλα όσα προσφέρουμε",
+    "Start here": "Ξεκινήστε εδώ",
+    "The SSL certificate of :name waits for validation": "Το πιστοποιητικό SSL του :name περιμένει επικύρωση",
+    "The changes to your details wait for our approval": "Οι αλλαγές στα στοιχεία σας περιμένουν την έγκρισή μας",
+    "Validate": "Επικύρωση",
+    "Waiting for you": "Σας περιμένουν",
+    "We answered your ticket :number": "Απαντήσαμε στο ticket σας :number",
+    "You have no services yet. Pick one to begin, or look for your domain name.": "Δεν έχετε ακόμη υπηρεσίες. Διαλέξτε μία για να ξεκινήσετε ή αναζητήστε το domain σας."
 }

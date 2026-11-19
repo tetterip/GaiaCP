@@ -6,7 +6,7 @@ How the admin and client panels, users, access, security, branding, themes and l
 - SQLite in development, MySQL/MariaDB in production
 - Admin UI is **Filament 5** at `/admin`; no public order form. The client area is a second Filament panel at the site root
   (`ClientPanelProvider`, id `client`, guard `client`, password broker `clients` with 48-hour links, pages in
-  `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, the To pay card with each unpaid notice, My services with the panel login of each hosting account (`Dashboard::services()`), next renewals; shortcuts on a phone only), Services, Domains, Payment
+  `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, the To pay card with each unpaid notice, Waiting for you (`Dashboard::waiting()`: overdue notices, suspended services, answered tickets, open quotes, SSL waiting for validation, domains ending within `DOMAIN_DAYS` with auto renew off, this month's `usage_warnings`, a pending change request), My services with the panel login of each hosting account (`Dashboard::services()`), the domain search field, next renewals beside the Support card (`tickets()`, article search); shortcuts on a phone only; Start here for a client with no service yet (`isNew()`, `starters()` = products marked Popular), Services, Domains, Payment
   notices (`resources/views/filament/client/payment-notice.blade.php`, printed / saved as PDF by the browser with print
   CSS) and Payments: read-only resources using `ScopedToClient` (only the signed-in client's records, another's id is a
   404; services and domains only `Service::clientVisible()`, cancelled ones left out; notices show every line). The

@@ -36,7 +36,7 @@ Lors de votre première connexion, une courte visite montre ce que vous pouvez f
 
 ## Accueil
 
-L'Accueil montre ce que vous avez à payer, avec un bouton **Payer** sur chaque avis de paiement (ou une ligne indiquant que tout est payé), vos services avec un bouton qui vous connecte au panneau de contrôle de chaque compte d'hébergement, et ce qui se renouvelle prochainement ; un domaine qui ne se renouvelle pas automatiquement y est signalé. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité.
+L'Accueil montre ce que vous avez à payer, avec un bouton **Payer** sur chaque avis de paiement (ou une ligne indiquant que tout est payé), vos services avec un bouton qui vous connecte au panneau de contrôle de chaque compte d'hébergement, et ce qui se renouvelle prochainement ; un domaine qui ne se renouvelle pas automatiquement y est signalé. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité. Quand quelque chose vous attend (un avis de paiement en retard, un service suspendu, une réponse à votre ticket, un devis, un certificat SSL à valider, un domaine qui se termine bientôt, un compte proche de sa limite), l’Accueil l’affiche en premier sous **En attente de vous**, chacun avec le bouton qui le règle. La carte **Support** montre vos tickets ouverts et à qui c’est le tour, et vous pouvez chercher un nom de domaine directement depuis l’Accueil. Tant que vous n’avez pas de premier service, l’Accueil affiche **Commencez ici** avec nos produits populaires.
 
 ## Services et domaines
 

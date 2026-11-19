@@ -36,7 +36,7 @@ No primeiro acesso, um breve tour mostra o que você pode fazer aqui. O menu com
 
 ## Início
 
-O Início mostra o que você tem a pagar, com um botão **Pagar** em cada aviso de pagamento (ou uma linha dizendo que tudo está pago), seus serviços com um botão que faz o login no painel de controle de cada conta de hospedagem, e o que renova em seguida; um domínio que não renova automaticamente aparece marcado ali. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem.
+O Início mostra o que você tem a pagar, com um botão **Pagar** em cada aviso de pagamento (ou uma linha dizendo que tudo está pago), seus serviços com um botão que faz o login no painel de controle de cada conta de hospedagem, e o que renova em seguida; um domínio que não renova automaticamente aparece marcado ali. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem. Quando algo aguarda você (um aviso de pagamento vencido, um serviço suspenso, uma resposta ao seu ticket, um orçamento, um certificado SSL para validar, um domínio prestes a terminar, uma conta perto do limite), o Início mostra isso primeiro em **Aguardando você**, cada item com o botão que o resolve. O cartão **Suporte** mostra seus tickets abertos e de quem é a vez, e você pode procurar um nome de domínio direto do Início. Até ter um primeiro serviço, o Início mostra **Comece aqui** com nossos produtos populares.
 
 ## Serviços e domínios
 
