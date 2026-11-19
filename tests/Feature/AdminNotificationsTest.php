@@ -172,7 +172,8 @@ class AdminNotificationsTest extends TestCase
         $admin = User::factory()->create();
         $this->assertMatchesRegularExpression($bell, $this->actingAs($admin)->get(Dashboard::getUrl())->assertOk()
             ->assertSee('gaiacp-bell-seen', false) // rings when unread ones appear (filament.bell-ring)
-            ->assertSee('gaiacp-notification-swipe', false) // swiped away on a touch screen (filament.notification-swipe)
+            ->assertSee('gaiacp-notification-swipe', false) // swiped away by touch or mouse (filament.notification-swipe)
+            ->assertSee("addEventListener('pointerdown'", false) // pointer events: a mouse or trackpad drag counts too
             ->getContent());
 
         $admin->update(['panel_notifications' => false]);

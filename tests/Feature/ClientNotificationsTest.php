@@ -167,7 +167,7 @@ class ClientNotificationsTest extends TestCase
     {
         $bell = '/class="[^"]*fi-topbar-database-notifications-btn/';
         $this->assertMatchesRegularExpression($bell, $this->actingAs($this->user, 'client')->get(ClientDashboard::getUrl(panel: 'client'))->assertOk()
-            ->assertSee('gaiacp-notification-swipe', false) // swiped away on a touch screen (filament.notification-swipe)
+            ->assertSee('gaiacp-notification-swipe', false) // swiped away by touch or mouse (filament.notification-swipe)
             ->getContent());
 
         // An admin linked to the client: client notifications in the client area, the admin's own in /admin

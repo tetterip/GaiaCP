@@ -17,7 +17,7 @@ As **chaves de acesso** fazem você entrar com sua digital, rosto ou bloqueio de
 Seu perfil (o menu com o seu nome, no fim do menu ou no canto superior direito) altera seu endereço de e-mail, telefone, idioma e senha, e pode ativar a autenticação em dois fatores para mais segurança.
 
 <!-- if:notifications -->
-O **sino** no topo da página mostra o que aconteceu desde a última vez que você olhou: um novo aviso de pagamento, um lembrete de pagamento ou aviso de atraso, um pagamento que recebemos, um serviço pronto, suspenso ou encerrado, um domínio prestes a renovar, um novo preço, nossa resposta ao seu ticket ou a uma solicitação. Um número nele mostra quantas você ainda não leu; clique em uma para abrir a página dela. No celular ou tablet, deslize uma para a esquerda ou para a direita para removê-la. Para não recebê-las, desative **Notificações** no seu perfil. Continuamos enviando e-mails como antes.
+O **sino** no topo da página mostra o que aconteceu desde a última vez que você olhou: um novo aviso de pagamento, um lembrete de pagamento ou aviso de atraso, um pagamento que recebemos, um serviço pronto, suspenso ou encerrado, um domínio prestes a renovar, um novo preço, nossa resposta ao seu ticket ou a uma solicitação. Um número nele mostra quantas você ainda não leu; clique em uma para abrir a página dela. Deslize uma para a esquerda ou para a direita para removê-la, com o dedo ou arrastando-a com o mouse. Para não recebê-las, desative **Notificações** no seu perfil. Continuamos enviando e-mails como antes.
 
 <!-- endif -->
 <!-- if:email_history -->
