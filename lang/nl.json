@@ -4271,9 +4271,6 @@
     "This ticket can't be marked urgent.": "Dit ticket kan niet als dringend worden gemarkeerd.",
     "Urgent per month": "Dringend per maand",
     "Domain names from a description": "Domeinnamen uit een beschrijving",
-    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "In de domeinzoeker krijgt een klant die een paar woorden over zijn bedrijf typt (\"een banketbakkerij in Thessaloniki\") vrije namen met uw eerste extensie en .com, elk met de prijs. Stuurt de beschrijving, zonder e-mailadressen of telefoonnummers. Telt mee in dezelfde :count per uur.",
-    "Visitors too": "Ook bezoekers",
-    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Bezoekers die niet zijn ingelogd, altijd na de captcha (een captcha-plugin moet aan staan). Uit: alleen ingelogde klanten.",
     "Domain suggestions a day": "Domeinsuggesties per dag",
     "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Van klanten en bezoekers samen, beide knoppen, zodat ze nooit de maandlimiet opmaken die uw team nodig heeft. Leeg = geen limiet.",
     "Enter a name like example or example.gr, or describe your business in a few words.": "Typ een naam als example of example.gr, of beschrijf uw bedrijf in een paar woorden.",
@@ -4289,5 +4286,8 @@
     ":count domain changed|:count domains changed": ":count domein gewijzigd|:count domeinen gewijzigd",
     "already off": "al uit",
     "They renew again: you get a payment notice before each one's due date.": "Ze verlengen weer: u krijgt vóór elke vervaldatum een betalingsverzoek.",
-    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "U krijgt er geen betalingsverzoeken meer voor en elk eindigt op de vervaldatum. U kunt het daarvoor weer aanzetten."
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "U krijgt er geen betalingsverzoeken meer voor en elk eindigt op de vervaldatum. U kunt het daarvoor weer aanzetten.",
+    "Also for visitors without an account": "Ook voor bezoekers zonder account",
+    "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "In de domeinzoeker typt een klant die nog geen naam heeft een paar woorden over zijn bedrijf („een banketbakkerij in Thessaloniki”) en krijgt passende vrije namen met uw eerste extensie en .com, elk met zijn prijs. Alleen de beschrijving gaat naar de AI-dienst, nooit e-mailadressen of telefoonnummers. Elke zoekopdracht telt mee voor dezelfde :count per uur.",
+    "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Aan: ook mensen die uw site bezoeken zonder in te loggen kunnen het gebruiken, na een captcha-controle (zet eerst een captcha-plugin aan). Uit: alleen ingelogde klanten."
 }

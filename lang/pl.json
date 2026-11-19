@@ -4271,9 +4271,6 @@
     "This ticket can't be marked urgent.": "Tego zgłoszenia nie można oznaczyć jako pilne.",
     "Urgent per month": "Pilne w miesiącu",
     "Domain names from a description": "Nazwy domen z opisu",
-    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "W wyszukiwarce domen klient, który wpisze kilka słów o swojej firmie („cukiernia w Salonikach”), dostaje wolne nazwy z pierwszą końcówką i .com, każdą z ceną. Wysyła opis bez adresów e-mail i numerów telefonów. Liczy się do tych samych :count na godzinę.",
-    "Visitors too": "Także odwiedzający",
-    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Niezalogowani odwiedzający, zawsze po captchy (musi być włączona wtyczka captcha). Wyłączone: tylko zalogowani klienci.",
     "Domain suggestions a day": "Propozycje domen dziennie",
     "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Od klientów i odwiedzających razem, oba przyciski, aby nigdy nie wyczerpali miesięcznego limitu potrzebnego zespołowi. Puste = bez limitu.",
     "Enter a name like example or example.gr, or describe your business in a few words.": "Wpiszcie nazwę jak example lub example.gr albo opiszcie firmę kilkoma słowami.",
@@ -4289,5 +4286,8 @@
     ":count domain changed|:count domains changed": "Zmienione domeny: :count",
     "already off": "już wyłączone",
     "They renew again: you get a payment notice before each one's due date.": "Znowu się odnawiają: przed terminem każdej otrzymacie wezwanie do zapłaty.",
-    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Nie otrzymacie już wezwań do zapłaty za nie, a każda wygaśnie w swoim terminie. Można to wcześniej włączyć ponownie."
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Nie otrzymacie już wezwań do zapłaty za nie, a każda wygaśnie w swoim terminie. Można to wcześniej włączyć ponownie.",
+    "Also for visitors without an account": "Także dla odwiedzających bez konta",
+    "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "W wyszukiwarce domen klient, który nie ma jeszcze nazwy, wpisuje kilka słów o swojej firmie („cukiernia w Salonikach”) i dostaje pasujące wolne nazwy z Twoją pierwszą końcówką i .com, każdą z ceną. Do usługi AI trafia tylko opis, nigdy adresy e-mail ani numery telefonów. Każde wyszukiwanie liczy się do tych samych :count na godzinę.",
+    "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Włączone: z funkcji mogą korzystać także osoby odwiedzające stronę bez logowania, po sprawdzeniu captcha (najpierw włącz wtyczkę captcha). Wyłączone: tylko zalogowani klienci."
 }

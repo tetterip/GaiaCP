@@ -149,7 +149,7 @@ class SearchDomains extends Page
 
     /**
      * Whether a description gets names (Settings → AI assistant → Domain names from a description): signed-in clients,
-     * and visitors only with Visitors too and a captcha plugin on (they always solve it first).
+     * and visitors only with Also for visitors without an account and a captcha plugin on (they always solve it first).
      */
     public function canDescribe(): bool
     {

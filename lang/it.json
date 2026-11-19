@@ -4271,9 +4271,6 @@
     "This ticket can't be marked urgent.": "Questo ticket non può essere segnato come urgente.",
     "Urgent per month": "Urgenti al mese",
     "Domain names from a description": "Nomi di dominio da una descrizione",
-    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "Nella ricerca domini, un cliente che scrive qualche parola sulla sua attività («una pasticceria a Salonicco») riceve nomi liberi con la tua prima estensione e .com, ciascuno con il prezzo. Invia la descrizione, senza email né numeri di telefono. Conta nelle stesse :count all'ora.",
-    "Visitors too": "Anche i visitatori",
-    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "I visitatori non connessi, sempre dopo il captcha (deve essere attivo un plugin captcha). Disattivato: solo i clienti connessi.",
     "Domain suggestions a day": "Suggerimenti di dominio al giorno",
     "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Da clienti e visitatori insieme, entrambi i pulsanti, così non esauriscono mai il limite mensile che serve al tuo team. Vuoto = nessun limite.",
     "Enter a name like example or example.gr, or describe your business in a few words.": "Scriva un nome come example o example.gr, oppure descriva la sua attività in poche parole.",
@@ -4289,5 +4286,8 @@
     ":count domain changed|:count domains changed": ":count dominio modificato|:count domini modificati",
     "already off": "già disattivato",
     "They renew again: you get a payment notice before each one's due date.": "Si rinnovano di nuovo: riceverà un avviso di pagamento prima della scadenza di ciascuno.",
-    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Non riceverà più avvisi di pagamento per questi e ciascuno termina alla sua scadenza. Può riattivarlo prima."
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Non riceverà più avvisi di pagamento per questi e ciascuno termina alla sua scadenza. Può riattivarlo prima.",
+    "Also for visitors without an account": "Anche per i visitatori senza account",
+    "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "Nella ricerca domini, un cliente che non ha ancora un nome scrive qualche parola sulla sua attività («una pasticceria a Salonicco») e ottiene nomi liberi adatti, con la tua prima estensione e .com, ciascuno con il suo prezzo. Al servizio di IA va solo la descrizione, mai indirizzi email o numeri di telefono. Ogni ricerca conta nelle stesse :count all’ora.",
+    "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Attivo: anche chi visita il sito senza accedere può usarlo, dopo un controllo captcha (attiva prima un plugin captcha). Disattivo: solo i clienti che hanno effettuato l’accesso."
 }
