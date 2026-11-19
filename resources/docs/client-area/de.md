@@ -218,6 +218,10 @@ Unter Support → **Downloads** finden Sie Dateien, die wir mit Ihnen teilen, et
 
 Unter Support → Tickets können Sie mit **Ticket eröffnen** uns alles fragen: Wählen Sie die Abteilung und den betreffenden Dienst, schreiben Sie Ihre Frage und hängen Sie Dateien wie Screenshots an. Wir antworten im Ticket und per E-Mail; klicken Sie darin auf **Antworten**, um zurückzuschreiben. Schließen Sie es, wenn Sie nichts mehr brauchen. Ein geschlossenes Ticket öffnet sich wieder, wenn Sie antworten, und eines, das wir beantwortet haben, schließt sich von selbst, wenn wir einige Tage nichts von Ihnen hören.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Wenn einer Ihrer Dienste nicht mehr funktioniert (Ihre Website oder E-Mail ist ausgefallen), schalten Sie beim Öffnen des Tickets **Dringend** ein und wählen Sie diesen Dienst: Wir werden sofort benachrichtigt. Dringende Tickets gibt es nur wenige pro Monat, heben Sie sie also für das auf, was nicht warten kann; das Formular zeigt, wie viele Ihnen bleiben.
+<!-- endif -->
 <!-- if:ticket_mail -->
 Sie können auf unsere Ticket-E-Mails auch aus Ihrem eigenen Postfach antworten: Ihre Antwort wird dem Ticket hinzugefügt, mit ihren angehängten Dateien. Eine E-Mail an unsere Support-Adresse eröffnet ein neues Ticket.
 <!-- endif -->

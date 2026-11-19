@@ -2,6 +2,7 @@
 
 namespace App\Filament\Client\Pages;
 
+use App\Actions\Tickets;
 use App\Credit\ClientCredit;
 use App\Filament\Client\Resources\Emails\EmailResource;
 use App\Filament\Concerns\TranslatesPageLabels;
@@ -104,6 +105,7 @@ class Help extends Page
             'credit_manual' => ClientCredit::enabled() && ! ClientCredit::autoApply(),
             'terms' => TermsOfService::required(),
             'tickets' => (bool) config('gaiacp.support.client_tickets'),
+            'urgent_tickets' => config('gaiacp.support.client_tickets') && Tickets::urgentLimit() > 0,
             'notifications' => $on('notifications'),
             'welcome_tour' => $on('welcome_tour'),
             'email_history' => EmailResource::canAccess(),

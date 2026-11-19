@@ -94,6 +94,7 @@ return [
     'support' => [
         'client_tickets' => true, // clients open and answer tickets in the client area
         'client_priority' => true, // clients choose the priority (else Medium)
+        'urgent_per_month' => null, // urgent tickets each client may open a month, for a service that stopped working (null = off)
         'admin_emails' => true, // email the admins (Receive system emails) about new tickets and client replies
         'auto_close_days' => 7, // close a ticket that waits on the client this many days (null = never)
         'attachments_max_kb' => 5120,

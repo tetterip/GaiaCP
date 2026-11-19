@@ -218,6 +218,10 @@ Onder Ondersteuning → **Downloads** vindt u bestanden die we met u delen, zoal
 
 Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Als een van uw diensten niet meer werkt (uw website of e-mail ligt eruit), zet dan **Dringend** aan wanneer u het ticket opent en kies die dienst: wij krijgen meteen bericht. Dringende tickets zijn beperkt per maand, bewaar ze dus voor wat niet kan wachten; het formulier toont hoeveel u er nog heeft.
+<!-- endif -->
 <!-- if:ticket_mail -->
 U kunt onze ticketmails ook vanuit uw eigen mailbox beantwoorden: uw antwoord wordt aan het ticket toegevoegd, met de bijgevoegde bestanden. Een e-mail die u naar ons supportadres stuurt, opent een nieuw ticket.
 <!-- endif -->

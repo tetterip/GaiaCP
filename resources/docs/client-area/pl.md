@@ -218,6 +218,10 @@ W Pomoc → **Pliki do pobrania** znajdziesz pliki, które Ci udostępniamy, tak
 
 W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Jeśli któraś z Państwa usług przestała działać (strona lub poczta nie działa), włączcie **Pilne** przy otwieraniu zgłoszenia i wybierzcie tę usługę: dowiadujemy się o tym od razu. Pilnych zgłoszeń jest kilka w miesiącu, więc warto zostawić je na to, co nie może czekać; formularz pokazuje, ile zostało.
+<!-- endif -->
 <!-- if:ticket_mail -->
 Na e-maile dotyczące zgłoszeń można też odpowiadać z własnej skrzynki: odpowiedź zostaje dodana do zgłoszenia wraz z załącznikami. E-mail wysłany na nasz adres wsparcia otwiera nowe zgłoszenie.
 <!-- endif -->

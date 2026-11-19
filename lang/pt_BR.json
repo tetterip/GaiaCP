@@ -4257,5 +4257,17 @@
     "Checkout": "Finalizar pedido",
     ":list +:count": ":list +:count",
     "In :count day|In :count days": "Em :count dia|Em :count dias",
-    ":count day ago|:count days ago": "Há :count dia|Há :count dias"
+    ":count day ago|:count days ago": "Há :count dia|Há :count dias",
+    "Urgent": "Urgente",
+    "Urgent tickets per client each month": "Tickets urgentes por cliente por mês",
+    "Off": "Desativado",
+    "A client marks a ticket urgent when an active service stopped working: you get a bell, a push notification and the Urgent ticket event in Slack, Discord or Telegram at once. Empty = off.": "Um cliente marca um ticket como urgente quando um serviço ativo parou de funcionar: você recebe na hora um sino, uma notificação push e o evento Ticket urgente no Slack, Discord ou Telegram. Vazio = desativado.",
+    "Urgent ticket opened": "Ticket urgente aberto",
+    "Urgent ticket :number": "Ticket urgente :number",
+    "Urgent: a service stopped working": "Urgente: um serviço parou de funcionar",
+    "You can mark :count more ticket urgent this month.|You can mark :count more tickets urgent this month.": "Você ainda pode marcar :count ticket como urgente este mês.|Você ainda pode marcar :count tickets como urgentes este mês.",
+    "You used this month's urgent tickets; this one goes in as usual.": "Você usou os tickets urgentes deste mês; este será enviado normalmente.",
+    "The service that stopped working.": "O serviço que parou de funcionar.",
+    "This ticket can't be marked urgent.": "Este ticket não pode ser marcado como urgente.",
+    "Urgent per month": "Urgentes por mês"
 }

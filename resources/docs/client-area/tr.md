@@ -218,6 +218,10 @@ Destek → **İndirmeler** altında sizinle paylaştığımız rehberler ve yaz�
 
 Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Hizmetlerinizden biri çalışmayı durdurduysa (web siteniz veya e-postanız çöktüyse), bileti açarken **Acil** seçeneğini açın ve o hizmeti seçin: hemen haberimiz olur. Acil biletler ayda birkaç tanedir, bu yüzden onları bekleyemeyecek işler için saklayın; form kaç tane kaldığını gösterir.
+<!-- endif -->
 <!-- if:ticket_mail -->
 Destek talebi e-postalarımızı kendi posta kutunuzdan da yanıtlayabilirsiniz: yanıtınız ekli dosyalarıyla birlikte talebe eklenir. Destek adresimize gönderdiğiniz bir e-posta yeni bir destek talebi açar.
 <!-- endif -->

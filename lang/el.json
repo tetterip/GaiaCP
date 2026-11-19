@@ -4257,5 +4257,17 @@
     "Checkout": "Ολοκλήρωση παραγγελίας",
     ":list +:count": ":list +:count",
     "In :count day|In :count days": "Σε :count ημέρα|Σε :count ημέρες",
-    ":count day ago|:count days ago": "Πριν από :count ημέρα|Πριν από :count ημέρες"
+    ":count day ago|:count days ago": "Πριν από :count ημέρα|Πριν από :count ημέρες",
+    "Urgent": "Επείγον",
+    "Urgent tickets per client each month": "Επείγοντα tickets ανά πελάτη τον μήνα",
+    "Off": "Κλειστό",
+    "A client marks a ticket urgent when an active service stopped working: you get a bell, a push notification and the Urgent ticket event in Slack, Discord or Telegram at once. Empty = off.": "Ο πελάτης σημειώνει ένα ticket ως επείγον όταν μια ενεργή υπηρεσία σταμάτησε να λειτουργεί: παίρνετε αμέσως καμπανάκι, push και το συμβάν Επείγον ticket σε Slack, Discord ή Telegram. Κενό = κλειστό.",
+    "Urgent ticket opened": "Άνοιξε επείγον ticket",
+    "Urgent ticket :number": "Επείγον ticket :number",
+    "Urgent: a service stopped working": "Επείγον: μια υπηρεσία σταμάτησε να λειτουργεί",
+    "You can mark :count more ticket urgent this month.|You can mark :count more tickets urgent this month.": "Μπορείτε να σημειώσετε ακόμα :count ticket ως επείγον αυτόν τον μήνα.|Μπορείτε να σημειώσετε ακόμα :count tickets ως επείγοντα αυτόν τον μήνα.",
+    "You used this month's urgent tickets; this one goes in as usual.": "Χρησιμοποιήσατε τα επείγοντα tickets αυτού του μήνα· αυτό θα σταλεί κανονικά.",
+    "The service that stopped working.": "Η υπηρεσία που σταμάτησε να λειτουργεί.",
+    "This ticket can't be marked urgent.": "Αυτό το ticket δεν μπορεί να σημειωθεί ως επείγον.",
+    "Urgent per month": "Επείγοντα τον μήνα"
 }

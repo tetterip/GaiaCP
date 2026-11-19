@@ -218,6 +218,10 @@ Under Support → **Downloads** you find files we share with you, such as guides
 
 Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+If a service of yours stopped working (your website or email is down), switch on **Urgent** when you open the ticket and choose that service: we are told at once. Urgent tickets are a few each month, so keep them for what can't wait; the form shows how many you have left.
+<!-- endif -->
 <!-- if:ticket_mail -->
 You can also answer our ticket emails from your own mailbox: your answer is added to the ticket, with its attached files. An email you send to our support address opens a new ticket.
 <!-- endif -->

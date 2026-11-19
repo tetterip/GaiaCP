@@ -90,6 +90,7 @@ final class ChatLine
             str_starts_with($event, 'order.') => '🛒',
             $event === 'client.signed_up' => '👤',
             str_starts_with($event, 'invoice.') => '🧾',
+            $event === 'ticket.urgent' => '🚨',
             str_starts_with($event, 'ticket.') => '🎫',
             str_starts_with($event, 'domain.') => '🌐',
             $event === 'server.down', $event === 'provisioning.failed' => '🔴',
@@ -102,7 +103,7 @@ final class ChatLine
     {
         return match ($event) {
             'invoice.paid', 'payment.recorded', 'order.placed', 'order.completed', 'client.signed_up', 'lead.converted', 'service.activated', 'domain.renewed', 'server.up' => 'success',
-            'server.down', 'provisioning.failed', 'payment.reversed' => 'danger',
+            'server.down', 'provisioning.failed', 'payment.reversed', 'ticket.urgent' => 'danger',
             'service.suspended', 'service.terminated', 'service.auto_terminated', 'service.cancellation_requested', 'domain.expiring', 'ticket.opened', 'ticket.client_replied' => 'warning',
             default => 'info',
         };

@@ -4257,5 +4257,17 @@
     "Checkout": "Siparişi tamamla",
     ":list +:count": ":list +:count",
     "In :count day|In :count days": ":count gün sonra",
-    ":count day ago|:count days ago": ":count gün önce"
+    ":count day ago|:count days ago": ":count gün önce",
+    "Urgent": "Acil",
+    "Urgent tickets per client each month": "Müşteri başına aylık acil bilet",
+    "Off": "Kapalı",
+    "A client marks a ticket urgent when an active service stopped working: you get a bell, a push notification and the Urgent ticket event in Slack, Discord or Telegram at once. Empty = off.": "Etkin bir hizmet çalışmayı durdurduğunda müşteri bileti acil olarak işaretler: hemen bir zil, anlık bildirim ve Slack, Discord veya Telegram'da Acil bilet olayı alırsınız. Boş = kapalı.",
+    "Urgent ticket opened": "Acil bilet açıldı",
+    "Urgent ticket :number": "Acil bilet :number",
+    "Urgent: a service stopped working": "Acil: bir hizmet çalışmayı durdurdu",
+    "You can mark :count more ticket urgent this month.|You can mark :count more tickets urgent this month.": "Bu ay acil olarak işaretleyebileceğiniz bilet sayısı: :count",
+    "You used this month's urgent tickets; this one goes in as usual.": "Bu ayın acil biletlerini kullandınız; bu bilet normal şekilde gönderilecek.",
+    "The service that stopped working.": "Çalışmayı durduran hizmet.",
+    "This ticket can't be marked urgent.": "Bu bilet acil olarak işaretlenemez.",
+    "Urgent per month": "Aylık acil"
 }

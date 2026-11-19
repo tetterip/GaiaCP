@@ -4257,5 +4257,17 @@
     "Checkout": "Afrekenen",
     ":list +:count": ":list +:count",
     "In :count day|In :count days": "Over :count dag|Over :count dagen",
-    ":count day ago|:count days ago": ":count dag geleden|:count dagen geleden"
+    ":count day ago|:count days ago": ":count dag geleden|:count dagen geleden",
+    "Urgent": "Dringend",
+    "Urgent tickets per client each month": "Dringende tickets per klant per maand",
+    "Off": "Uit",
+    "A client marks a ticket urgent when an active service stopped working: you get a bell, a push notification and the Urgent ticket event in Slack, Discord or Telegram at once. Empty = off.": "Een klant markeert een ticket als dringend wanneer een actieve dienst niet meer werkt: u krijgt meteen een bel, een pushmelding en het event Dringend ticket in Slack, Discord of Telegram. Leeg = uit.",
+    "Urgent ticket opened": "Dringend ticket geopend",
+    "Urgent ticket :number": "Dringend ticket :number",
+    "Urgent: a service stopped working": "Dringend: een dienst werkt niet meer",
+    "You can mark :count more ticket urgent this month.|You can mark :count more tickets urgent this month.": "U kunt deze maand nog :count ticket als dringend markeren.|U kunt deze maand nog :count tickets als dringend markeren.",
+    "You used this month's urgent tickets; this one goes in as usual.": "U heeft de dringende tickets van deze maand gebruikt; dit ticket gaat gewoon door.",
+    "The service that stopped working.": "De dienst die niet meer werkt.",
+    "This ticket can't be marked urgent.": "Dit ticket kan niet als dringend worden gemarkeerd.",
+    "Urgent per month": "Dringend per maand"
 }

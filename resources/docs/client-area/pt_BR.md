@@ -218,6 +218,10 @@ Em Suporte → **Downloads** você encontra arquivos que compartilhamos com voc�
 
 Em Suporte → Tickets, use **Abrir um ticket** para nos perguntar qualquer coisa: escolha o departamento e o serviço a que se refere, escreva sua pergunta e anexe arquivos, como capturas de tela. Respondemos no ticket e por e-mail; clique em **Responder** nele para escrever de volta. Feche-o quando não precisar de mais nada. Um ticket fechado é reaberto se você responder, e um que respondemos fecha sozinho quando não temos notícias suas por alguns dias.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Se um serviço seu parou de funcionar (seu site ou e-mail caiu), ative **Urgente** ao abrir o ticket e escolha esse serviço: somos avisados na hora. Os tickets urgentes são poucos por mês, então guarde-os para o que não pode esperar; o formulário mostra quantos ainda restam.
+<!-- endif -->
 <!-- if:ticket_mail -->
 Você também pode responder aos nossos e-mails de tickets pela sua própria caixa de e-mail: sua resposta é adicionada ao ticket, com os arquivos anexados. Um e-mail que você envia para o nosso endereço de suporte abre um novo ticket.
 <!-- endif -->

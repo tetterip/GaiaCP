@@ -175,6 +175,7 @@ class Settings
         'debug.notification_days',
         'support.client_tickets',
         'support.client_priority',
+        'support.urgent_per_month',
         'support.admin_emails',
         'support.auto_close_days',
         'support.attachments_max_kb',

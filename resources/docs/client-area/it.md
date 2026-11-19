@@ -218,6 +218,10 @@ In Supporto → **Download** trovi i file che condividiamo con te, come guide e 
 
 In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Se un Suo servizio ha smesso di funzionare (il sito o l'email non vanno), attivi **Urgente** quando apre il ticket e scelga quel servizio: veniamo avvisati subito. I ticket urgenti sono pochi ogni mese, quindi li tenga per ciò che non può aspettare; il modulo mostra quanti gliene restano.
+<!-- endif -->
 <!-- if:ticket_mail -->
 Può anche rispondere alle email dei nostri ticket dalla Sua casella di posta: la Sua risposta viene aggiunta al ticket, con i file allegati. Un'email inviata al nostro indirizzo di supporto apre un nuovo ticket.
 <!-- endif -->

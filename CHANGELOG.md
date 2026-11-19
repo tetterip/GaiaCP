@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Urgent tickets (Settings → Support → Urgent tickets per client each month, off by default): a client switches on
+  **Urgent** for an active service that stopped working; the ticket gets the new Urgent priority, the bell and push say
+  "Urgent ticket", and the new `ticket.urgent` event can be posted alone to Slack, Discord, Telegram or a webhook.
+  The High priority's colour is now amber, so Urgent stands out in red.
 - Client area Domains: each row shows the domain's nameservers under its name and, for one ending within 30 days,
   how many days are left (or how long ago it was due) under its due date; Expires is hidden on phones.
 - Client area cart, quicker: **Add to cart** opens the cart from the side of the page instead of leaving it, and the

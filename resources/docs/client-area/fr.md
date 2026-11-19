@@ -218,6 +218,10 @@ Sous Support → **Téléchargements**, vous trouvez les fichiers que nous parta
 
 Dans Support → Tickets, **Ouvrir un ticket** vous permet de nous demander n'importe quoi : choisissez le département et le service concerné, rédigez votre question et joignez des fichiers comme des captures d'écran. Nous répondons sur le ticket et par email ; cliquez sur **Répondre** pour nous écrire en retour. Fermez-le quand vous n'avez plus besoin de rien. Un ticket fermé se rouvre si vous répondez, et un ticket auquel nous avons répondu se ferme de lui-même si nous n'avons pas de nouvelles de votre part pendant quelques jours.
 <!-- endif -->
+
+<!-- if:urgent_tickets -->
+Si l'un de vos services ne fonctionne plus (votre site ou vos e-mails sont en panne), activez **Urgent** en ouvrant le ticket et choisissez ce service : nous sommes prévenus aussitôt. Les tickets urgents sont limités chaque mois, gardez-les pour ce qui ne peut pas attendre ; le formulaire indique combien il vous en reste.
+<!-- endif -->
 <!-- if:ticket_mail -->
 Vous pouvez aussi répondre à nos emails de ticket depuis votre propre messagerie : votre réponse est ajoutée au ticket, avec ses pièces jointes. Un email envoyé à notre adresse de support ouvre un nouveau ticket.
 <!-- endif -->
