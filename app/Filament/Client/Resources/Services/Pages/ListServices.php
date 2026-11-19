@@ -7,13 +7,18 @@ use App\Enums\ServiceType;
 use App\Filament\Client\Concerns\HasStatusChips;
 use App\Filament\Client\Pages\Order;
 use App\Filament\Client\Resources\Services\ServiceResource;
+use App\Livewire\ProductPicker;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\EmbeddedTable;
 use Filament\Schemas\Components\RenderHook;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 
 class ListServices extends ListRecords
@@ -37,8 +42,29 @@ class ListServices extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        // With nothing listed yet, the empty list's own button says it
-        return [Order::callToAction()->hidden(fn () => ! $this->chipsQuery()->exists())];
+        return [
+            // New hosting / New service: the products of this kind in a window over the list (ProductPicker)
+            Action::make('newService')
+                ->label($this->kind === 'hosting' ? __('New hosting') : __('Order a new service'))
+                ->icon(Heroicon::OutlinedPlus)
+                ->modalHeading($this->kind === 'hosting' ? __('New hosting') : __('Order a new service'))
+                ->modalDescription(__('Choose a plan; you place the order from the cart.'))
+                ->modalContent(fn () => view('filament.client.product-picker-modal', ['kind' => $this->kind === 'hosting' ? 'hosting' : 'other']))
+                ->modalWidth(Width::SixExtraLarge)
+                ->modalSubmitAction(false)
+                ->modalCancelAction(false)
+                ->visible(fn () => Order::canAccess() && ProductPicker::offersAnything($this->kind === 'hosting' ? 'hosting' : 'other')),
+            // Nothing to pick from here (no product of this kind): the Order page, as before. With nothing listed yet, the empty list's own button says it
+            Order::callToAction()->hidden(fn () => ! $this->chipsQuery()->exists() || ProductPicker::offersAnything($this->kind === 'hosting' ? 'hosting' : 'other')),
+        ];
+    }
+
+    /** A product went in the cart from the window: close it and show the cart from the side. */
+    #[On('product-added')]
+    public function productAdded(): void
+    {
+        $this->unmountAction();
+        $this->dispatch('open-cart');
     }
 
     public function content(Schema $schema): Schema

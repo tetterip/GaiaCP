@@ -4254,5 +4254,10 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Alan adı süresi",
     "This choice is not offered.": "Bu seçenek sunulmuyor.",
-    "Checkout": "Siparişi tamamla"
+    "Checkout": "Siparişi tamamla",
+    "New hosting": "Yeni hosting",
+    "Choose a plan; you place the order from the cart.": "Bir paket seçin; siparişi sepetten verirsiniz.",
+    "I already have it": "Zaten bende var",
+    "Register it with this order": "Bu siparişle kaydet",
+    "More choices": "Daha fazla seçenek"
 }

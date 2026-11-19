@@ -4254,5 +4254,10 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Durata del dominio",
     "This choice is not offered.": "Questa scelta non è disponibile.",
-    "Checkout": "Vai alla cassa"
+    "Checkout": "Vai alla cassa",
+    "New hosting": "Nuovo hosting",
+    "Choose a plan; you place the order from the cart.": "Scegli un piano; l'ordine si completa dal carrello.",
+    "I already have it": "Ce l'ho già",
+    "Register it with this order": "Registralo con questo ordine",
+    "More choices": "Altre opzioni"
 }

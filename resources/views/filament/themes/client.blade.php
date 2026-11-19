@@ -760,6 +760,65 @@
         width: 100%;
     }
 
+    /* New hosting / New service (ProductPicker): the groups' chips, then a card per product */
+    .gcp-picker {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .gcp-picker-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+        gap: 1rem;
+    }
+
+    .gcp-picker-card {
+        display: flex;
+        flex-direction: column;
+        gap: .35rem;
+        padding: 1rem;
+        border-radius: var(--theme-radius, .75rem);
+        box-shadow: 0 0 0 1px var(--gray-200);
+    }
+
+    .dark .gcp-picker-card {
+        box-shadow: 0 0 0 1px var(--gray-700);
+    }
+
+    .gcp-picker-name {
+        font-weight: 600;
+    }
+
+    .gcp-picker-summary {
+        font-size: .85rem;
+        color: var(--gray-500);
+    }
+
+    .gcp-picker-card .gcp-cart-line-choice {
+        max-width: none;
+    }
+
+    .gcp-picker-options {
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+        margin-top: .5rem;
+        font-size: .85rem;
+    }
+
+    .gcp-picker-actions {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        margin-top: auto;
+        padding-top: .75rem;
+    }
+
+    .gcp-picker-add {
+        flex: 1;
+    }
+
     /* Downloads: each file's title, description and size, its button at the end (under them on phones) */
     .gcp-downloads {
         display: flex;

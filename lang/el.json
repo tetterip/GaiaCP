@@ -4254,5 +4254,10 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Διάρκεια domain",
     "This choice is not offered.": "Αυτή η επιλογή δεν προσφέρεται.",
-    "Checkout": "Ολοκλήρωση παραγγελίας"
+    "Checkout": "Ολοκλήρωση παραγγελίας",
+    "New hosting": "Νέο hosting",
+    "Choose a plan; you place the order from the cart.": "Διαλέξτε πακέτο· την παραγγελία την ολοκληρώνετε από το καλάθι.",
+    "I already have it": "Το έχω ήδη",
+    "Register it with this order": "Καταχώριση μαζί με την παραγγελία",
+    "More choices": "Περισσότερες επιλογές"
 }

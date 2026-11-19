@@ -4254,5 +4254,10 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Looptijd van het domein",
     "This choice is not offered.": "Deze keuze wordt niet aangeboden.",
-    "Checkout": "Afrekenen"
+    "Checkout": "Afrekenen",
+    "New hosting": "Nieuwe hosting",
+    "Choose a plan; you place the order from the cart.": "Kies een pakket; u plaatst de bestelling vanuit de winkelwagen.",
+    "I already have it": "Heb ik al",
+    "Register it with this order": "Registreren met deze bestelling",
+    "More choices": "Meer keuzes"
 }

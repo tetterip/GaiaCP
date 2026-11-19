@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area: **New hosting** above the Hosting list (**Order a new service** above Other services) opens the
+  packages in a window, with the order page's group chips, each package's billing periods and prices, the domain for
+  hosting (own or register with the order) and **Add to cart**, which opens the cart; **More choices** goes to the
+  full order page.
 - Client area cart, quicker: **Add to cart** opens the cart from the side of the page instead of leaving it, and the
   cart icon in the top bar opens the same panel, with the first payment and **Checkout** (the Cart page, for the note,
   coupon and terms). Each item's billing cycle and a domain's term can be changed right there, each choice with the
