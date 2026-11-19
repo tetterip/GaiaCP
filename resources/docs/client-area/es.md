@@ -42,6 +42,8 @@ Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de 
 
 **Servicios** lista su hosting y sus otros servicios con su estado, precio y próximo vencimiento. El menú los divide en **Hosting** y **Otros servicios**. La página de una cuenta de hosting muestra su ciclo de facturación y tiene un botón **Abrir sitio web**. **Dominios** lista sus dominios con su fecha de vencimiento, sus servidores de nombres y si se renuevan automáticamente. Cuando tiene servicios en más de un estado, los botones sobre cada lista muestran solo los de un estado (Activo, Suspendido, …), con cuántos hay. Un trabajo hecho una vez, como trasladar su sitio web, se cobra una sola vez y aparece como **Completado** después de pagarlo.
 
+Los botones sobre cada lista también destacan lo que requiere atención: en **Dominios**, los que vencen pronto, los que no se renuevan automáticamente y cada extensión (.gr, .com, …) cuando tiene más de una; en **Otros servicios**, cada tipo de servicio. Los dominios y servicios aparecen con el que vence primero arriba. Un número junto a **Avisos de pago**, **Hosting**, **Otros servicios** o **Dominios** en el menú significa que algo le espera: avisos sin pagar, servicios suspendidos o dominios que vencen pronto sin renovación automática.
+
 <!-- if:hosting -->
 En una cuenta de hosting activa puede:
 

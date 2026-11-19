@@ -4220,5 +4220,9 @@
     ":count active service|:count active services": ":count etkin hizmet|:count etkin hizmet",
     "Does not renew automatically": "Otomatik yenilenmez",
     "New ticket": "Yeni destek talebi",
-    "Register a domain": "Alan adı kaydet"
+    "Register a domain": "Alan adı kaydet",
+    "Expiring soon": "Yakında sona erecek",
+    "Auto renew off": "Otomatik yenileme kapalı",
+    "Ending soon, auto renew is off": "Yakında sona erecek, otomatik yenileme kapalı",
+    "Expiring": "Sona eriyor"
 }

@@ -4220,5 +4220,9 @@
     ":count active service|:count active services": ":count actieve dienst|:count actieve diensten",
     "Does not renew automatically": "Wordt niet automatisch verlengd",
     "New ticket": "Nieuw ticket",
-    "Register a domain": "Domein registreren"
+    "Register a domain": "Domein registreren",
+    "Expiring soon": "Verlopen binnenkort",
+    "Auto renew off": "Automatisch verlengen uit",
+    "Ending soon, auto renew is off": "Verlopen binnenkort, automatisch verlengen staat uit",
+    "Expiring": "Verlopen"
 }

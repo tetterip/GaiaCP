@@ -4220,5 +4220,9 @@
     ":count active service|:count active services": ":count ενεργή υπηρεσία|:count ενεργές υπηρεσίες",
     "Does not renew automatically": "Δεν ανανεώνεται αυτόματα",
     "New ticket": "Νέο ticket",
-    "Register a domain": "Κατοχύρωση domain"
+    "Register a domain": "Κατοχύρωση domain",
+    "Expiring soon": "Λήγουν σύντομα",
+    "Auto renew off": "Χωρίς αυτόματη ανανέωση",
+    "Ending soon, auto renew is off": "Λήγουν σύντομα, χωρίς αυτόματη ανανέωση",
+    "Expiring": "Λήγουν"
 }

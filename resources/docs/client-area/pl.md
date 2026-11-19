@@ -42,6 +42,8 @@ Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy 
 
 **Usługi** wymieniają Państwa hosting i inne usługi z ich statusem, ceną i następnym terminem płatności. Menu dzieli je na **Hosting** i **Inne usługi**. Strona konta hostingowego pokazuje jego okres rozliczeniowy i ma przycisk **Otwórz stronę WWW**. **Domeny** wymieniają Państwa domeny z datą wygaśnięcia, serwerami nazw i informacją, czy odnawiają się automatycznie. Gdy usługi mają różne statusy, przyciski nad każdą listą pokazują tylko te o jednym statusie (Aktywna, Zawieszona, …), z ich liczbą. Praca wykonywana jednorazowo, np. przeniesienie strony, jest rozliczana raz i po opłaceniu ma status **Zakończone**.
 
+Przyciski nad każdą listą wyróżniają też to, co wymaga uwagi: w **Domenach** te, które wkrótce wygasają, te, które nie odnawiają się automatycznie, oraz każde rozszerzenie (.gr, .com, …), gdy mają Państwo więcej niż jedno; w **Innych usługach** każdy rodzaj usługi. Domeny i usługi są wymienione od tej, której termin mija najwcześniej. Liczba obok **Wezwań do zapłaty**, **Hostingu**, **Innych usług** lub **Domen** w menu oznacza, że coś na Państwa czeka: nieopłacone wezwania, zawieszone usługi lub domeny wkrótce wygasające bez automatycznego odnowienia.
+
 <!-- if:hosting -->
 Przy aktywnym koncie hostingowym można:
 

@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area lists, quicker to sort through: **Domains** has chips for the ones expiring within 30 days, the ones with
+  auto renew off and each extension (.gr, .com, .com.gr…) when the client has more than one, and lists the domain due
+  first on top (terminated ones last; it was alphabetical). **Other services** has a chip per kind (SSL, Maintenance…)
+  when there are two or more. The menu shows a number only where something waits for the client: unpaid notices on
+  Payment notices, suspended services on Hosting and Other services, and domains ending within 30 days with auto renew
+  off on Domains.
 - Dashboard, easier to read: **Renewals** is a compact list in groups (past due, in 7 days, later) with the amount, the
   due date and Record payment on each row, so a phone shows all of it without scrolling sideways (it was the services
   table squeezed into half the page); **Needs attention** shows its first six lines and unfolds the rest; the chart's

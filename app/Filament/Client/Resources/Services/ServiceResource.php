@@ -73,10 +73,24 @@ class ServiceResource extends Resource
             ->icon($item[1])
             ->group(static::getNavigationGroup())
             ->sort($item[2])
+            ->badge(fn () => self::suspendedCount($kind), 'danger')
+            ->badgeTooltip(__('Suspended'))
             ->isActiveWhen(fn (): bool => self::activeKind() === $kind)
             ->url(static::getUrl('index', ['kind' => $kind])))
             ->values()
             ->all();
+    }
+
+    /** The suspended services of a sidebar entry, its badge: they need paying (or a word with support) to come back. */
+    private static function suspendedCount(string $kind): ?string
+    {
+        $count = static::getEloquentQuery()
+            ->where('status', ServiceStatus::Suspended)
+            ->when($kind === 'hosting', fn (Builder $query) => $query->where('type', ServiceType::Hosting))
+            ->when($kind === 'other', fn (Builder $query) => $query->where('type', '!=', ServiceType::Hosting))
+            ->count();
+
+        return $count > 0 ? (string) $count : null;
     }
 
     /** The sidebar entry of the current services page: its ?kind, or the type of the service being viewed. */
@@ -154,11 +168,16 @@ class ServiceResource extends Resource
                     ->color(fn (Service $record) => $record->isOverdue() ? 'danger' : null)
                     ->sortable(),
             ])
-            ->defaultSort('next_due_date')
+            // The one due first on top, terminated ones last
+            ->defaultSort(fn (Builder $query) => $query
+                ->orderByRaw('case when status = ? then 1 else 0 end', [ServiceStatus::Terminated->value])
+                ->orderBy('next_due_date'))
             ->filters([
                 SelectFilter::make('status')
                     ->options(collect(ServiceStatus::cases())->reject(fn ($s) => $s === ServiceStatus::Cancelled)
                         ->mapWithKeys(fn (ServiceStatus $s) => [$s->value => $s->getLabel()])),
+                SelectFilter::make('type')
+                    ->options(collect(ServiceType::cases())->mapWithKeys(fn (ServiceType $t) => [$t->value => $t->getLabel()])),
             ])
             // The chips over the table (ListServices) set it and show which one is on
             ->filtersLayout(FiltersLayout::Hidden)

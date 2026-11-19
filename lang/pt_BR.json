@@ -4220,5 +4220,9 @@
     ":count active service|:count active services": ":count serviço ativo|:count serviços ativos",
     "Does not renew automatically": "Não renova automaticamente",
     "New ticket": "Novo ticket",
-    "Register a domain": "Registrar um domínio"
+    "Register a domain": "Registrar um domínio",
+    "Expiring soon": "Vencem em breve",
+    "Auto renew off": "Renovação automática desativada",
+    "Ending soon, auto renew is off": "Vencem em breve, renovação automática desativada",
+    "Expiring": "Vencem"
 }

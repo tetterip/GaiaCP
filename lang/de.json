@@ -4220,5 +4220,9 @@
     ":count active service|:count active services": ":count aktiver Dienst|:count aktive Dienste",
     "Does not renew automatically": "Verlängert sich nicht automatisch",
     "New ticket": "Neues Ticket",
-    "Register a domain": "Domain registrieren"
+    "Register a domain": "Domain registrieren",
+    "Expiring soon": "Laufen bald ab",
+    "Auto renew off": "Automatische Verlängerung aus",
+    "Ending soon, auto renew is off": "Laufen bald ab, automatische Verlängerung ist aus",
+    "Expiring": "Laufen ab"
 }
