@@ -1,6 +1,7 @@
-{{-- Home: what is owed, each notice with its Pay (one low line when all is paid), beside the client's services with the way
-     into each one's control panel; then the shortcuts (a phone only) and what renews next. The cards are the dashboard's .gx-* (filament.dashboard.styles), the rest
-     filament.themes.client. --}}
+{{-- Home: what waits for the client (only when something does), then what is owed, each notice with its Pay (one low line
+     when all is paid), beside the client's services with the way into each one's control panel; the domain search, the
+     shortcuts (a phone only), what renews next and the Support card. A client with no service yet gets Start here in
+     place of the two cards. The cards are the dashboard's .gx-* (filament.dashboard.styles), the rest filament.themes.client. --}}
 <x-filament-panels::page>
     @include('filament.dashboard.styles')
 
@@ -32,8 +33,82 @@
         $kinds = $this->activeByKind();
         $credit = \App\Filament\Client\Pages\Credit::canAccess();
         $noticesUrl = \App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource::getUrl();
+        $waiting = $this->waiting();
+        $new = $this->isNew();
+        $domainSearch = $this->domainSearchUrl();
+        $ticketsOn = \App\Filament\Client\Resources\Tickets\TicketResource::canAccess();
+        $kb = $this->knowledgeBaseUrl();
+        $tickets = $this->tickets();
     @endphp
 
+    @if ($waiting)
+        <section class="fi-section gx-card gcp-home-card gcp-home-waiting">
+            <div class="gx-head">
+                <span class="gx-ico gx-tone-warn">@svg('heroicon-o-bell-alert', 'gx-ico-svg')</span>
+                <h2 class="gx-title">{{ __('Waiting for you') }}</h2>
+            </div>
+            <div class="gcp-home-rows">
+                @foreach (array_slice($waiting, 0, \App\Filament\Client\Pages\Dashboard::WAITING) as $item)
+                    <a href="{{ $item['url'] }}" class="gcp-home-row gcp-home-wait gcp-home-wait-{{ $item['tone'] }}">
+                        <x-filament::icon :icon="$item['icon']" class="gcp-home-wait-icon" />
+                        <span class="gcp-home-row-text">
+                            <strong>{{ $item['text'] }}</strong>
+                            @if ($item['detail'])
+                                <span>{{ $item['detail'] }}</span>
+                            @endif
+                        </span>
+                        <span class="gcp-home-row-open">{{ $item['action'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+            @if (count($waiting) > \App\Filament\Client\Pages\Dashboard::WAITING)
+                <div class="gx-muted">{{ __('and :count more', ['count' => count($waiting) - \App\Filament\Client\Pages\Dashboard::WAITING]) }}</div>
+            @endif
+        </section>
+    @endif
+
+    @if ($new)
+        @php($starters = $this->starters())
+        <section class="fi-section gx-card gcp-home-card gcp-home-start">
+            <div class="gx-head">
+                <span class="gx-ico">@svg('heroicon-o-sparkles', 'gx-ico-svg')</span>
+                <h2 class="gx-title">{{ __('Start here') }}</h2>
+            </div>
+            <p class="gx-muted">{{ __('You have no services yet. Pick one to begin, or look for your domain name.') }}</p>
+            @if ($domainSearch)
+                <form method="get" action="{{ $domainSearch }}" class="gcp-domain-search gcp-home-search">
+                    <x-filament::input.wrapper prefix-icon="heroicon-o-globe-alt" class="gcp-domain-search-input">
+                        <x-filament::input type="search" name="q" :placeholder="__('Find your domain, e.g. myshop.gr')" :aria-label="__('Search for a domain')" autocomplete="off" required />
+                    </x-filament::input.wrapper>
+                    <x-filament::button type="submit" icon="heroicon-m-magnifying-glass">{{ __('Search') }}</x-filament::button>
+                </form>
+            @endif
+            @if ($starters)
+                <div class="gcp-home-starters">
+                    @foreach ($starters as $product)
+                        <a href="{{ $product['url'] }}" class="gcp-home-starter">
+                            <span class="gcp-home-starter-badge">{{ __('Popular') }}</span>
+                            <strong>{{ $product['name'] }}</strong>
+                            @if ($product['description'])
+                                <span class="gx-muted">{{ $product['description'] }}</span>
+                            @endif
+                            @if ($product['price'])
+                                <span class="gcp-home-starter-price">{{ $product['price'] }}</span>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+            <div class="gcp-home-start-actions">
+                @if (\App\Filament\Client\Pages\Order::canAccess())
+                    <x-filament::button tag="a" :href="\App\Filament\Client\Pages\Order::getUrl()" :color="$starters ? 'gray' : 'primary'" :outlined="(bool) $starters" icon="heroicon-m-shopping-cart">{{ __('See everything we offer') }}</x-filament::button>
+                @endif
+                @if ($this->profileIncomplete())
+                    <x-filament::button tag="a" :href="filament()->getProfileUrl()" color="gray" outlined icon="heroicon-m-user-circle">{{ __('Complete your profile') }}</x-filament::button>
+                @endif
+            </div>
+        </section>
+    @else
     <div class="gcp-home-grid">
         @if ($unpaid->isNotEmpty())
             <section class="fi-section gx-card gx-hero gcp-home-pay">
@@ -136,6 +211,16 @@
         </section>
     </div>
 
+    @if ($domainSearch)
+        <form method="get" action="{{ $domainSearch }}" class="gcp-domain-search gcp-home-search gcp-home-search-bar">
+            <x-filament::input.wrapper prefix-icon="heroicon-o-globe-alt" class="gcp-domain-search-input">
+                <x-filament::input type="search" name="q" :placeholder="__('Find your domain, e.g. myshop.gr')" :aria-label="__('Search for a domain')" autocomplete="off" required />
+            </x-filament::input.wrapper>
+            <x-filament::button type="submit" color="gray" icon="heroicon-m-magnifying-glass">{{ __('Search') }}</x-filament::button>
+        </form>
+    @endif
+    @endif
+
     <nav class="gcp-home-tiles" aria-label="{{ __('Shortcuts') }}">
         @foreach ($this->shortcuts() as $shortcut)
             <a href="{{ $shortcut['url'] }}" class="gcp-home-tile">
@@ -145,33 +230,83 @@
         @endforeach
     </nav>
 
-    @if ($upcoming->isNotEmpty())
-        <section class="fi-section gx-card gcp-home-card">
-            <div class="gx-head">
-                <span class="gx-ico">@svg('heroicon-o-arrow-path', 'gx-ico-svg')</span>
-                <h2 class="gx-title">{{ __('Coming up for renewal') }}</h2>
-            </div>
-            <div class="gcp-home-rows">
-                @foreach ($upcoming as $service)
-                    <a href="{{ $this->serviceUrl($service) }}" class="gcp-home-row">
-                        <span class="gcp-home-row-text">
-                            <strong>{{ $service->domain ?: $service->label }}</strong>
-                            <span @class(['gcp-overdue' => $service->isOverdue()])>
-                                {{ $service->domain && $service->label !== $service->domain ? $service->label : $service->type->getLabel() }} · {{ $service->billing_cycle->getLabel() }} · {{ $date($service->next_due_date) }}
-                                @if ($service->auto_terminate)
-                                    <span class="gcp-home-flag">{{ __('Does not renew automatically') }}</span>
-                                @endif
+    @if ($upcoming->isNotEmpty() || $ticketsOn || $kb)
+    <div @class(['gcp-home-grid', 'gcp-home-grid-one' => $upcoming->isEmpty() || ! ($ticketsOn || $kb)])>
+        @if ($upcoming->isNotEmpty())
+            <section class="fi-section gx-card gcp-home-card">
+                <div class="gx-head">
+                    <span class="gx-ico">@svg('heroicon-o-arrow-path', 'gx-ico-svg')</span>
+                    <h2 class="gx-title">{{ __('Coming up for renewal') }}</h2>
+                </div>
+                <div class="gcp-home-rows">
+                    @foreach ($upcoming as $service)
+                        <a href="{{ $this->serviceUrl($service) }}" class="gcp-home-row">
+                            <span class="gcp-home-row-text">
+                                <strong>{{ $service->domain ?: $service->label }}</strong>
+                                <span @class(['gcp-overdue' => $service->isOverdue()])>
+                                    {{ $service->domain && $service->label !== $service->domain ? $service->label : $service->type->getLabel() }} · {{ $service->billing_cycle->getLabel() }} · {{ $date($service->next_due_date) }}
+                                    @if ($service->auto_terminate)
+                                        <span class="gcp-home-flag">{{ __('Does not renew automatically') }}</span>
+                                    @endif
+                                </span>
                             </span>
-                        </span>
-                        <span class="gcp-home-row-amount">{{ \App\Support\Money::format($service->price_cents, $service->currency) }}</span>
-                        <x-filament::icon icon="heroicon-m-chevron-right" class="gcp-home-arrow" />
-                    </a>
-                @endforeach
-            </div>
-        </section>
+                            <span class="gcp-home-row-amount">{{ \App\Support\Money::format($service->price_cents, $service->currency) }}</span>
+                            <x-filament::icon icon="heroicon-m-chevron-right" class="gcp-home-arrow" />
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if ($ticketsOn || $kb)
+            <section class="fi-section gx-card gcp-home-card gcp-home-support">
+                <div class="gx-head">
+                    <span class="gx-ico">@svg('heroicon-o-lifebuoy', 'gx-ico-svg')</span>
+                    <h2 class="gx-title">{{ __('Support') }}</h2>
+                    @if ($ticketsOn)
+                        <x-filament::button tag="a" :href="\App\Filament\Client\Resources\Tickets\TicketResource::getUrl('create')" color="gray" size="sm" outlined icon="heroicon-m-plus" class="gcp-home-order">{{ __('New ticket') }}</x-filament::button>
+                    @endif
+                </div>
+                @if ($tickets->isNotEmpty())
+                    <div class="gcp-home-rows">
+                        @foreach ($tickets as $ticket)
+                            <a href="{{ \App\Filament\Client\Resources\Tickets\TicketResource::getUrl('view', ['record' => $ticket]) }}" class="gcp-home-row">
+                                <span class="gcp-home-row-text">
+                                    <strong>{{ $ticket->subject }}</strong>
+                                    <span>{{ $ticket->number }} · {{ ($ticket->last_reply_at ?? $ticket->created_at)->diffForHumans() }}</span>
+                                </span>
+                                <span @class(['gcp-home-flag', 'gcp-home-flag-info' => $ticket->status === \App\Enums\TicketStatus::Answered, 'gcp-home-flag-muted' => $ticket->status !== \App\Enums\TicketStatus::Answered])>
+                                    {{ match ($ticket->status) {
+                                        \App\Enums\TicketStatus::Answered => __('Answered'),
+                                        \App\Enums\TicketStatus::Open => __('Waiting for us'),
+                                        default => $ticket->status->getLabel(),
+                                    } }}
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                @elseif ($ticketsOn)
+                    <div class="gx-muted">{{ __('No open tickets. Write to us whenever you need help.') }}</div>
+                @endif
+                @if ($kb)
+                    <form method="get" action="{{ $kb }}" class="gcp-domain-search gcp-home-search">
+                        <x-filament::input.wrapper prefix-icon="heroicon-o-magnifying-glass" class="gcp-domain-search-input">
+                            <x-filament::input type="search" name="q" :placeholder="__('Search the articles')" :aria-label="__('Search the articles')" autocomplete="off" required />
+                        </x-filament::input.wrapper>
+                        <x-filament::button type="submit" color="gray">{{ __('Search') }}</x-filament::button>
+                    </form>
+                @endif
+                @if ($ticketsOn && $tickets->isNotEmpty())
+                    <div class="gcp-home-foot">
+                        <a class="gx-link" href="{{ \App\Filament\Client\Resources\Tickets\TicketResource::getUrl() }}">{{ __('All tickets') }}</a>
+                    </div>
+                @endif
+            </section>
+        @endif
+    </div>
     @endif
 
-    @if (filled(config('gaiacp.company.email')))
+    @if (! $ticketsOn && filled(config('gaiacp.company.email')))
         <p class="gcp-home-note gcp-home-contact">
             <x-filament::icon icon="heroicon-o-envelope" />
             {{ __('Questions? Write to us at :email.', ['email' => config('gaiacp.company.email')]) }}

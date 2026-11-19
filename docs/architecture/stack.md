@@ -6,7 +6,7 @@ How the admin and client panels, users, access, security, branding, themes and l
 - SQLite in development, MySQL/MariaDB in production
 - Admin UI is **Filament 5** at `/admin`; no public order form. The client area is a second Filament panel at the site root
   (`ClientPanelProvider`, id `client`, guard `client`, password broker `clients` with 48-hour links, pages in
-  `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, the To pay card with each unpaid notice, My services with the panel login of each hosting account (`Dashboard::services()`), next renewals; shortcuts on a phone only), Services, Domains, Payment
+  `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, the To pay card with each unpaid notice, Waiting for you (`Dashboard::waiting()`: overdue notices, suspended services, answered tickets, open quotes, SSL waiting for validation, domains ending within `DOMAIN_DAYS` with auto renew off, this month's `usage_warnings`, a pending change request), My services with the panel login of each hosting account (`Dashboard::services()`), the domain search field, next renewals beside the Support card (`tickets()`, article search); shortcuts on a phone only; Start here for a client with no service yet (`isNew()`, `starters()` = products marked Popular), Services, Domains, Payment
   notices (`resources/views/filament/client/payment-notice.blade.php`, printed / saved as PDF by the browser with print
   CSS) and Payments: read-only resources using `ScopedToClient` (only the signed-in client's records, another's id is a
   404; services and domains only `Service::clientVisible()`, cancelled ones left out; notices show every line). The
@@ -363,7 +363,7 @@ How the admin and client panels, users, access, security, branding, themes and l
   (`App\Filament\Pages\Dashboard`: greeting, every card half the width) has `App\Filament\Widgets\` BillingOverview (open balance),
   ActivityChart (orders, completed orders and income per day / month, plain SVG), UpcomingRenewals (a plain widget: the
   `SHOWN` most urgent services due within `DAYS` days in groups, Record payment per row through its `service` argument),
-  ServerCapacity (accounts vs max) and NeedsAttention (its first `SHOWN` rows, the rest unfold; cron stopped, pending orders, change requests, overdue notices, failures of the
+  ServerCapacity (accounts vs max, uptime over 30 days from `monthRatios()` or the service's own, Nearly full from `NEARLY_FULL`), RecentActivity (the last `SHOWN` Activity log events of `KINDS`, a button per kind; for admins with the Activity log) and NeedsAttention (a row's `action` is a link or one of the card's own Filament actions: `completeOrders`, `retryQueue`; its first `SHOWN` rows, the rest unfold; cron stopped, pending orders, change requests, overdue notices, failures of the
   last `FAILURE_DAYS`, each only for admins with that area); their CSS is `resources/views/filament/dashboard/styles.blade.php`
   in Filament's colours, so it works with any theme or none. The cards are laid out by
   `resources/views/filament/dashboard/cards.blade.php`: the day's numbers (`App\Support\DashboardToday`, `today.blade.php`:
@@ -393,9 +393,10 @@ How the admin and client panels, users, access, security, branding, themes and l
   `users.panel_notifications`, client profile) or Settings → Client area → Notifications bell is off; no push. They are
   stored as `App\Notifications\ClientAlert`, and both panels use `App\Livewire\PanelNotifications`, which lists only
   those in the client area and all others in /admin, so an admin linked to a client keeps the two apart. Hidden while
-  an admin looks through the client's login. On a touch screen a notification is swiped away left or right
-  (`resources/views/filament/notification-swipe.blade.php`, both panels: calls the notification's own `close()`, which
-  deletes it from the bell's list and closes a pop-up).
+  an admin looks through the client's login. A notification is swiped away left or right, by touch or mouse
+  (`resources/views/filament/notification-swipe.blade.php`, both panels, pointer events: calls the notification's own
+  `close()`, which deletes it from the bell's list and closes a pop-up; the two neighbours on each side follow the drag
+  with a damped offset and spring back; no animations with reduced motion; the X stays for the keyboard).
   Each one also goes as a push to the admin's devices (`App\Push\WebPush::notify()`, after the commit and the
   response): Web Push with no library, VAPID ES256 and aes128gcm by hand with OpenSSL, the VAPID key pair made on
   first use in `settings` (`push.vapid`, encrypted; a new APP_KEY makes new keys and drops the devices). Devices are

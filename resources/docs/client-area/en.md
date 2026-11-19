@@ -17,7 +17,7 @@ Instead of the password, you can press **Email me a sign-in link**: we email you
 Your profile (the menu with your name, at the bottom of the menu or at the top right) changes your email address, phone number, language and password, and can turn on two-factor authentication for extra safety.
 
 <!-- if:notifications -->
-The **bell** at the top of the page tells you what happened since you last looked: a new payment notice, a payment reminder or overdue notice, a payment we received, a service that is ready, suspended or ended, a domain about to renew, a new price, our answer to your ticket or to a request. A number on it shows how many you haven't read; press one to open its page. On a phone or tablet, swipe one left or right to remove it. To stop them, turn off **Notifications** in your profile. We still email you as before.
+The **bell** at the top of the page tells you what happened since you last looked: a new payment notice, a payment reminder or overdue notice, a payment we received, a service that is ready, suspended or ended, a domain about to renew, a new price, our answer to your ticket or to a request. A number on it shows how many you haven't read; press one to open its page. Swipe one left or right to remove it, with your finger or by dragging it with the mouse. To stop them, turn off **Notifications** in your profile. We still email you as before.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,7 +36,7 @@ The first time you log in, a short tour shows what you can do here. The menu und
 
 ## Home
 
-Home shows what you have to pay, with a **Pay** button on each payment notice (or one line saying everything is paid), your services with a button that logs you in to the control panel of each hosting account, and what renews next; a domain that will not renew automatically is marked there. Our announcements, such as planned work on your server, appear at the top of Home while they apply.
+Home shows what you have to pay, with a **Pay** button on each payment notice (or one line saying everything is paid), your services with a button that logs you in to the control panel of each hosting account, and what renews next; a domain that will not renew automatically is marked there. Our announcements, such as planned work on your server, appear at the top of Home while they apply. When something waits for you (a payment notice past due, a suspended service, an answer to your ticket, a quote, an SSL certificate to validate, a domain about to end, an account close to its limit), Home lists it first under **Waiting for you**, each with the button that settles it. The **Support** card shows your open tickets and whose turn it is, and you can search for a domain name right from Home. Until you have a first service, Home shows **Start here** with our popular products.
 
 ## Services and domains
 

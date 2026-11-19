@@ -17,7 +17,7 @@ Las **passkeys** le permiten iniciar sesión con su huella, su rostro o el bloqu
 Su perfil (el menú con su nombre, al final del menú o arriba a la derecha) cambia su dirección de email, teléfono, idioma y contraseña, y puede activar la verificación en dos pasos para mayor seguridad.
 
 <!-- if:notifications -->
-La **campana** de la parte superior de la página le indica lo que ha pasado desde la última vez que miró: un aviso de pago nuevo, un recordatorio de pago o aviso de retraso, un pago que recibimos, un servicio listo, suspendido o terminado, un dominio a punto de renovarse, un precio nuevo, nuestra respuesta a su ticket o a una solicitud. Un número sobre ella muestra cuántas no ha leído; pulse una para abrir su página. En un móvil o tableta, deslice una a la izquierda o a la derecha para quitarla. Para dejar de recibirlas, desactive **Notificaciones** en su perfil. Le seguiremos enviando emails como antes.
+La **campana** de la parte superior de la página le indica lo que ha pasado desde la última vez que miró: un aviso de pago nuevo, un recordatorio de pago o aviso de retraso, un pago que recibimos, un servicio listo, suspendido o terminado, un dominio a punto de renovarse, un precio nuevo, nuestra respuesta a su ticket o a una solicitud. Un número sobre ella muestra cuántas no ha leído; pulse una para abrir su página. Deslice una a la izquierda o a la derecha para quitarla, con el dedo o arrastrándola con el ratón. Para dejar de recibirlas, desactive **Notificaciones** en su perfil. Le seguiremos enviando emails como antes.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,7 +36,7 @@ La primera vez que inicia sesión, un breve recorrido muestra lo que puede hacer
 
 ## Inicio
 
-Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de pago (o una línea que dice que todo está pagado), sus servicios con un botón que le conecta al panel de control de cada cuenta de alojamiento, y qué se renueva a continuación; un dominio que no se renueva automáticamente aparece marcado allí. Nuestros anuncios, como trabajos programados en su servidor, aparecen en la parte superior de Inicio mientras estén vigentes.
+Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de pago (o una línea que dice que todo está pagado), sus servicios con un botón que le conecta al panel de control de cada cuenta de alojamiento, y qué se renueva a continuación; un dominio que no se renueva automáticamente aparece marcado allí. Nuestros anuncios, como trabajos programados en su servidor, aparecen en la parte superior de Inicio mientras estén vigentes. Cuando algo le espera (un aviso de pago vencido, un servicio suspendido, una respuesta a su ticket, un presupuesto, un certificado SSL por validar, un dominio a punto de terminar, una cuenta cerca de su límite), Inicio lo muestra primero en **Le espera**, cada uno con el botón que lo resuelve. La tarjeta **Soporte** muestra sus tickets abiertos y a quién le toca, y puede buscar un nombre de dominio directamente desde Inicio. Hasta que tenga un primer servicio, Inicio muestra **Empiece aquí** con nuestros productos populares.
 
 ## Servicios y dominios
 

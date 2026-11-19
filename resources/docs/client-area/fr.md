@@ -17,7 +17,7 @@ Les **clés d'accès** vous connectent avec votre empreinte, votre visage ou le 
 Votre profil (le menu à votre nom, en bas du menu ou en haut à droite) permet de modifier votre adresse email, votre numéro de téléphone, votre langue et votre mot de passe, et d'activer l'authentification à deux facteurs pour plus de sécurité.
 
 <!-- if:notifications -->
-La **cloche** en haut de la page vous indique ce qui s'est passé depuis votre dernier passage : un nouvel avis de paiement, un rappel de paiement ou un avis de retard, un paiement que nous avons reçu, un service prêt, suspendu ou terminé, un domaine bientôt renouvelé, un nouveau prix, notre réponse à votre ticket ou à une demande. Un nombre indique combien vous n'en avez pas lu ; cliquez sur l'une d'elles pour ouvrir sa page. Sur un téléphone ou une tablette, faites-en glisser une vers la gauche ou la droite pour la supprimer. Pour les arrêter, désactivez **Notifications** dans votre profil. Nous continuons de vous écrire par email comme avant.
+La **cloche** en haut de la page vous indique ce qui s'est passé depuis votre dernier passage : un nouvel avis de paiement, un rappel de paiement ou un avis de retard, un paiement que nous avons reçu, un service prêt, suspendu ou terminé, un domaine bientôt renouvelé, un nouveau prix, notre réponse à votre ticket ou à une demande. Un nombre indique combien vous n'en avez pas lu ; cliquez sur l'une d'elles pour ouvrir sa page. Faites-en glisser une vers la gauche ou la droite pour la supprimer, du doigt ou avec la souris. Pour les arrêter, désactivez **Notifications** dans votre profil. Nous continuons de vous écrire par email comme avant.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,7 +36,7 @@ Lors de votre première connexion, une courte visite montre ce que vous pouvez f
 
 ## Accueil
 
-L'Accueil montre ce que vous avez à payer, avec un bouton **Payer** sur chaque avis de paiement (ou une ligne indiquant que tout est payé), vos services avec un bouton qui vous connecte au panneau de contrôle de chaque compte d'hébergement, et ce qui se renouvelle prochainement ; un domaine qui ne se renouvelle pas automatiquement y est signalé. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité.
+L'Accueil montre ce que vous avez à payer, avec un bouton **Payer** sur chaque avis de paiement (ou une ligne indiquant que tout est payé), vos services avec un bouton qui vous connecte au panneau de contrôle de chaque compte d'hébergement, et ce qui se renouvelle prochainement ; un domaine qui ne se renouvelle pas automatiquement y est signalé. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité. Quand quelque chose vous attend (un avis de paiement en retard, un service suspendu, une réponse à votre ticket, un devis, un certificat SSL à valider, un domaine qui se termine bientôt, un compte proche de sa limite), l’Accueil l’affiche en premier sous **En attente de vous**, chacun avec le bouton qui le règle. La carte **Support** montre vos tickets ouverts et à qui c’est le tour, et vous pouvez chercher un nom de domaine directement depuis l’Accueil. Tant que vous n’avez pas de premier service, l’Accueil affiche **Commencez ici** avec nos produits populaires.
 
 ## Services et domaines
 

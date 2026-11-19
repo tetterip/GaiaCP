@@ -62,8 +62,8 @@ Client area, Support, Email & notifications, Integrations, AI assistant, Securit
 name. Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
 
 The **top bar** has the search (press `/` or Ctrl/⌘ + K: clients, services and domains, leads, quotes and tickets), a link
-that opens the client area in a new tab, **New order**, and the **bell**. On a phone or
-tablet, swipe a notification left or right to remove it.
+that opens the client area in a new tab, **New order**, and the **bell**. Swipe a notification
+left or right to remove it, with a finger or by dragging it with the mouse or trackpad.
 
 Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a page (`g c` Clients, `g d` Dashboard),
 `n` then a letter starts a new record. If you use speech input, or the single keys get in your way, turn them off in
@@ -123,6 +123,18 @@ the last 3 days (panel or registrar calls, backups, emails, updates), one line p
 Each line opens what it is about and goes away once that is dealt with; when nothing waits, the card is not shown at
 all. The urgent lines (red) come first. It shows its first six lines; **Show … more** unfolds the rest. The card
 starts across the top, over both columns, with its lines in two columns on a wide screen.
+
+Three of its lines have a button for the one thing that needs no choice: **Complete it** on the pending orders
+(each item on the registrar and server it would get by itself, as the bulk action of the Orders list does; open the
+order instead when you want to pick them), **Retry** on the module queue (every open item except terminations, which
+ask for your password in the queue) and **Reply** on the waiting tickets, which opens the one that waited longest.
+The rest of the line still opens its list.
+
+**Recent activity** shows the last eight payments, orders, new clients, cancellations and ticket replies from the
+Activity log, newest first; the buttons over it show one kind only. You see it when you can open the Activity log.
+
+On the **Servers** card each server has its status dot and, with monitoring, its uptime over 30 days beside its name;
+a server whose accounts reach 85% of its maximum is marked **Nearly full**, and **Full** at the maximum.
 
 **Renewals** lists the seven most urgent services that are overdue or due in the next 30 days, in groups (past due, in
 7 days, later), with what each costs and its due date. A row opens the service, the button at its end records its

@@ -17,7 +17,7 @@ Zamiast hasła możesz nacisnąć **Wyślij mi link do logowania**: wyślemy Ci 
 W profilu (menu z Państwa imieniem, na dole menu lub w prawym górnym rogu) można zmienić adres e-mail, numer telefonu, język i hasło oraz włączyć uwierzytelnianie dwuskładnikowe dla większego bezpieczeństwa.
 
 <!-- if:notifications -->
-**Dzwonek** u góry strony informuje, co się wydarzyło od ostatniego sprawdzenia: nowe wezwanie do zapłaty, przypomnienie o płatności lub powiadomienie o zaległości, otrzymana przez nas płatność, usługa gotowa, zawieszona lub zakończona, domena przed odnowieniem, nowa cena, nasza odpowiedź na zgłoszenie lub prośbę. Liczba na nim pokazuje, ile jest nieprzeczytanych; kliknięcie powiadomienia otwiera jego stronę. Na telefonie lub tablecie wystarczy przesunąć powiadomienie w lewo lub w prawo, aby je usunąć. Aby je wyłączyć, prosimy wyłączyć **Powiadomienia** w profilu. E-maile nadal będą wysyłane jak dotychczas.
+**Dzwonek** u góry strony informuje, co się wydarzyło od ostatniego sprawdzenia: nowe wezwanie do zapłaty, przypomnienie o płatności lub powiadomienie o zaległości, otrzymana przez nas płatność, usługa gotowa, zawieszona lub zakończona, domena przed odnowieniem, nowa cena, nasza odpowiedź na zgłoszenie lub prośbę. Liczba na nim pokazuje, ile jest nieprzeczytanych; kliknięcie powiadomienia otwiera jego stronę. Wystarczy przesunąć powiadomienie w lewo lub w prawo, palcem lub przeciągając je myszą, aby je usunąć. Aby je wyłączyć, prosimy wyłączyć **Powiadomienia** w profilu. E-maile nadal będą wysyłane jak dotychczas.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,7 +36,7 @@ Przy pierwszym logowaniu krótki przewodnik pokazuje, co możesz tu zrobić. Men
 
 ## Strona główna
 
-Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy każdym wezwaniu do zapłaty (albo jedną linią, że wszystko jest opłacone), Państwa usługi z przyciskiem logującym do panelu każdego konta hostingowego oraz to, co odnawia się najbliżej; domena, która nie odnawia się automatycznie, jest tam oznaczona. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują.
+Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy każdym wezwaniu do zapłaty (albo jedną linią, że wszystko jest opłacone), Państwa usługi z przyciskiem logującym do panelu każdego konta hostingowego oraz to, co odnawia się najbliżej; domena, która nie odnawia się automatycznie, jest tam oznaczona. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują. Gdy coś czeka na Ciebie (wezwanie do zapłaty po terminie, zawieszona usługa, odpowiedź na zgłoszenie, oferta, certyfikat SSL do weryfikacji, domena, która wkrótce się kończy, konto bliskie limitu), Strona główna pokazuje to najpierw w sekcji **Czeka na Ciebie**, każde z przyciskiem, który to załatwia. Karta **Wsparcie** pokazuje Twoje otwarte zgłoszenia i czyja jest kolej, a domenę możesz wyszukać bezpośrednio ze Strony głównej. Dopóki nie masz pierwszej usługi, Strona główna pokazuje **Zacznij tutaj** z naszymi popularnymi produktami.
 
 ## Usługi i domeny
 

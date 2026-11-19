@@ -730,6 +730,84 @@
         white-space: nowrap;
     }
 
+    /* The button on a Needs attention row that does its one thing (Complete order, Retry, Reply) */
+    .gx-act {
+        flex: none;
+        padding: .25rem .7rem;
+        border-radius: 999px;
+        border: 1px solid var(--theme-line, var(--gray-200));
+        font-size: .78rem;
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--theme-accent, var(--primary-600));
+        transition: background-color .15s ease, border-color .15s ease;
+    }
+
+    .gx-act:hover,
+    .gx-act:focus-visible {
+        border-color: var(--theme-accent, var(--primary-600));
+        background: var(--theme-soft, var(--gray-50));
+    }
+
+    .dark .gx-act {
+        border-color: var(--theme-line, rgb(255 255 255 / .12));
+        color: var(--theme-accent, var(--primary-400));
+    }
+
+    .dark .gx-act:hover,
+    .dark .gx-act:focus-visible {
+        background: var(--theme-soft, color-mix(in oklab, var(--color-white) 5%, transparent));
+    }
+
+    /* Recent activity: a button per kind over the rows, one line that scrolls sideways on a phone */
+    .gx-chips {
+        display: flex;
+        gap: .4rem;
+        overflow-x: auto;
+        padding: 0 .6rem .2rem;
+        scrollbar-width: none;
+    }
+
+    .gx-chips::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gx-chip {
+        flex: none;
+        padding: .2rem .7rem;
+        border-radius: 999px;
+        border: 1px solid var(--theme-line, var(--gray-200));
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--theme-muted, var(--gray-500));
+        transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .dark .gx-chip {
+        border-color: var(--theme-line, rgb(255 255 255 / .12));
+        color: var(--theme-muted, var(--gray-400));
+    }
+
+    .gx-chip:hover,
+    .gx-chip:focus-visible {
+        border-color: var(--theme-accent, var(--primary-600));
+    }
+
+    .gx-chip.is-on,
+    .dark .gx-chip.is-on {
+        border-color: var(--theme-accent, var(--primary-600));
+        background: var(--theme-accent, var(--primary-600));
+        color: #fff;
+    }
+
+    .gx-loading {
+        opacity: .55;
+    }
+
+    .gx-activity .gx-att-text .gx-strong {
+        font-weight: 500;
+    }
+
     /* "Show 5 more" under the first rows, "and 11 more" under the renewals */
     .gx-more {
         align-self: flex-start;

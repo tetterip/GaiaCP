@@ -17,7 +17,7 @@ Statt des Passworts können Sie auf **Anmeldelink per E-Mail senden** klicken: W
 In Ihrem Profil (das Menü mit Ihrem Namen, unten im Menü oder oben rechts) ändern Sie Ihre E-Mail-Adresse, Telefonnummer, Sprache und Ihr Passwort und können für zusätzliche Sicherheit die Zwei-Faktor-Authentifizierung einschalten.
 
 <!-- if:notifications -->
-Die **Glocke** oben auf der Seite zeigt, was seit Ihrem letzten Besuch passiert ist: eine neue Zahlungsaufforderung, eine Zahlungserinnerung oder Mahnung, eine bei uns eingegangene Zahlung, ein Dienst, der bereit, gesperrt oder beendet ist, eine Domain, die bald verlängert wird, ein neuer Preis, unsere Antwort auf Ihr Ticket oder auf eine Anfrage. Eine Zahl darauf zeigt, wie viele Sie noch nicht gelesen haben; klicken Sie auf eine, um ihre Seite zu öffnen. Auf einem Handy oder Tablet wischen Sie eine nach links oder rechts, um sie zu entfernen. Um sie abzustellen, schalten Sie **Benachrichtigungen** in Ihrem Profil aus. Wir senden Ihnen weiterhin wie bisher E-Mails.
+Die **Glocke** oben auf der Seite zeigt, was seit Ihrem letzten Besuch passiert ist: eine neue Zahlungsaufforderung, eine Zahlungserinnerung oder Mahnung, eine bei uns eingegangene Zahlung, ein Dienst, der bereit, gesperrt oder beendet ist, eine Domain, die bald verlängert wird, ein neuer Preis, unsere Antwort auf Ihr Ticket oder auf eine Anfrage. Eine Zahl darauf zeigt, wie viele Sie noch nicht gelesen haben; klicken Sie auf eine, um ihre Seite zu öffnen. Wischen Sie eine nach links oder rechts, um sie zu entfernen, mit dem Finger oder indem Sie sie mit der Maus ziehen. Um sie abzustellen, schalten Sie **Benachrichtigungen** in Ihrem Profil aus. Wir senden Ihnen weiterhin wie bisher E-Mails.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,7 +36,7 @@ Beim ersten Login zeigt eine kurze Tour, was Sie hier tun können. Das Menü unt
 
 ## Startseite
 
-Die Startseite zeigt, was Sie zu zahlen haben, mit einer Schaltfläche **Bezahlen** bei jeder Zahlungsaufforderung (oder einer Zeile, dass alles bezahlt ist), Ihre Dienste mit einer Schaltfläche, die Sie im Control Panel jedes Hosting-Kontos anmeldet, und was als Nächstes verlängert wird; eine Domain, die sich nicht automatisch verlängert, ist dort markiert. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten.
+Die Startseite zeigt, was Sie zu zahlen haben, mit einer Schaltfläche **Bezahlen** bei jeder Zahlungsaufforderung (oder einer Zeile, dass alles bezahlt ist), Ihre Dienste mit einer Schaltfläche, die Sie im Control Panel jedes Hosting-Kontos anmeldet, und was als Nächstes verlängert wird; eine Domain, die sich nicht automatisch verlängert, ist dort markiert. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten. Wenn etwas auf Sie wartet (eine überfällige Zahlungsaufforderung, ein gesperrter Dienst, eine Antwort auf Ihr Ticket, ein Angebot, ein zu validierendes SSL-Zertifikat, eine bald endende Domain, ein Konto nahe am Limit), zeigt die Startseite es zuerst unter **Wartet auf Sie**, jeweils mit der Schaltfläche, die es erledigt. Die Karte **Support** zeigt Ihre offenen Tickets und wer an der Reihe ist, und Sie können direkt auf der Startseite nach einem Domainnamen suchen. Bis Sie einen ersten Dienst haben, zeigt die Startseite **Hier starten** mit unseren beliebten Produkten.
 
 ## Dienste und Domains
 

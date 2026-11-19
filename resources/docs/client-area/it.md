@@ -17,7 +17,7 @@ Le **passkey** ti fanno accedere con impronta, volto o blocco schermo invece del
 Il Suo profilo (il menu con il Suo nome, in fondo al menu o in alto a destra) permette di cambiare indirizzo email, numero di telefono, lingua e password, e di attivare l'autenticazione a due fattori per una maggiore sicurezza.
 
 <!-- if:notifications -->
-La **campanella** in cima alla pagina Le indica cosa è successo dall'ultima volta che ha guardato: un nuovo avviso di pagamento, un promemoria di pagamento o un avviso di ritardo, un pagamento che abbiamo ricevuto, un servizio pronto, sospeso o terminato, un dominio in rinnovo, un nuovo prezzo, la nostra risposta al Suo ticket o a una richiesta. Un numero indica quante non ha ancora letto; ne prema una per aprirne la pagina. Su telefono o tablet, ne trascini una a sinistra o a destra per rimuoverla. Per non riceverle più, disattivi **Notifiche** nel Suo profilo. Continueremo comunque a inviarLe le email come prima.
+La **campanella** in cima alla pagina Le indica cosa è successo dall'ultima volta che ha guardato: un nuovo avviso di pagamento, un promemoria di pagamento o un avviso di ritardo, un pagamento che abbiamo ricevuto, un servizio pronto, sospeso o terminato, un dominio in rinnovo, un nuovo prezzo, la nostra risposta al Suo ticket o a una richiesta. Un numero indica quante non ha ancora letto; ne prema una per aprirne la pagina. Ne trascini una a sinistra o a destra per rimuoverla, con il dito o con il mouse. Per non riceverle più, disattivi **Notifiche** nel Suo profilo. Continueremo comunque a inviarLe le email come prima.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,7 +36,7 @@ Al primo accesso, un breve tour mostra cosa può fare qui. Il menu con il suo no
 
 ## Home
 
-La Home mostra quanto deve pagare, con un pulsante **Paga** su ogni avviso di pagamento (o una riga che dice che tutto è pagato), i Suoi servizi con un pulsante che La collega al pannello di controllo di ogni account di hosting, e cosa si rinnova per primo; un dominio che non si rinnova automaticamente è segnalato lì. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi.
+La Home mostra quanto deve pagare, con un pulsante **Paga** su ogni avviso di pagamento (o una riga che dice che tutto è pagato), i Suoi servizi con un pulsante che La collega al pannello di controllo di ogni account di hosting, e cosa si rinnova per primo; un dominio che non si rinnova automaticamente è segnalato lì. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi. Quando qualcosa attende te (un avviso di pagamento scaduto, un servizio sospeso, una risposta al tuo ticket, un preventivo, un certificato SSL da convalidare, un dominio che sta per terminare, un account vicino al limite), la Home lo mostra per primo sotto **In attesa di te**, ciascuno con il pulsante che lo risolve. La scheda **Supporto** mostra i tuoi ticket aperti e a chi tocca, e puoi cercare un nome di dominio direttamente dalla Home. Finché non hai un primo servizio, la Home mostra **Inizia qui** con i nostri prodotti più popolari.
 
 ## Servizi e domini
 
