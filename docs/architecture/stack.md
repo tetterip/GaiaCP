@@ -39,7 +39,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   downloaded only through `TicketAttachmentController` (admin: Support area; client: own ticket, never a note's).
   Emails: Support Ticket Opened / Reply / Closed to the client (`ClientAreaLinks` links to the ticket); `TicketMail` to
   the assigned admin, else every Support admin with Receive system emails (Settings → Support → Email the admins); bell
-  `ticket.opened` / `ticket.client_replied`. `gaiacp:close-tickets` (daily 07:00) closes Answered tickets older than
+  `ticket.opened` / `ticket.client_replied`. Urgent tickets (`support.urgent_per_month`, `Tickets::urgentLeft()`, calendar
+  month): a client's Urgent switch, for an active service, sets `TicketPriority::Urgent`, titles the bell "Urgent ticket"
+  and logs `ticket.urgent` too (for chat / webhook plugins only). `gaiacp:close-tickets` (daily 07:00) closes Answered tickets older than
   `support.auto_close_days`. Departments and canned replies (`{client_first_name}`, `{ticket_number}`, … filled by
   `Tickets::fill()`) are under Settings → Support; the dashboard's Support card sits under the renewals table.
   Tickets by email: the Email to ticket plugin (`plugins/TicketMail`, IMAP through `directorytree/imapengine`, no PHP

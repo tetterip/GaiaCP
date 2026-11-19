@@ -14,6 +14,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -21,8 +22,9 @@ use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\ValidationException;
 
-/** The client opens a ticket: department, the service it is about, the priority (Settings → Support) and files. */
+/** The client opens a ticket: department, the service it is about, the priority (Settings → Support), Urgent while the month's limit allows, and files. */
 class CreateTicket extends CreateRecord
 {
     protected static string $resource = TicketResource::class;
@@ -46,16 +48,27 @@ class CreateTicket extends CreateRecord
                         ->options(fn () => TicketDepartment::query()->clientVisible()->ordered()->pluck('name', 'id'))
                         ->required(fn () => TicketDepartment::query()->clientVisible()->exists())
                         ->visible(fn () => TicketDepartment::query()->clientVisible()->exists()),
+                    Toggle::make('urgent')
+                        ->label('Urgent: a service stopped working')
+                        ->helperText(fn () => self::urgentLeft() > 0
+                            ? trans_choice('You can mark :count more ticket urgent this month.|You can mark :count more tickets urgent this month.', self::urgentLeft())
+                            : __('You used this month\'s urgent tickets; this one goes in as usual.'))
+                        ->disabled(fn () => self::urgentLeft() === 0)
+                        ->live()
+                        ->visible(fn () => Tickets::urgentLimit() > 0 && self::services()->where('status', ServiceStatus::Active)->exists())
+                        ->columnSpanFull(),
                     Select::make('service_id')
                         ->label('About the service')
-                        ->placeholder(__('None in particular'))
-                        ->options(fn () => self::services()->get()
-                            ->mapWithKeys(fn (Service $s) => [$s->id => trim($s->label.' '.($s->domain !== $s->label ? $s->domain : ''))])),
+                        ->placeholder(fn (Get $get) => $get('urgent') ? __('Choose') : __('None in particular'))
+                        ->options(fn (Get $get) => self::services()->when($get('urgent'), fn (Builder $query) => $query->where('status', ServiceStatus::Active))->get()
+                            ->mapWithKeys(fn (Service $s) => [$s->id => trim($s->label.' '.($s->domain !== $s->label ? $s->domain : ''))]))
+                        ->required(fn (Get $get) => (bool) $get('urgent'))
+                        ->helperText(fn (Get $get) => $get('urgent') ? __('The service that stopped working.') : null),
                     Select::make('priority')
-                        ->options(TicketPriority::class)
+                        ->options(TicketPriority::clientOptions())
                         ->default(TicketPriority::Medium->value)
                         ->required()
-                        ->visible(fn () => (bool) config('gaiacp.support.client_priority')),
+                        ->visible(fn (Get $get) => (bool) config('gaiacp.support.client_priority') && ! $get('urgent')),
                     TextInput::make('subject')
                         ->required()
                         ->maxLength(200)
@@ -84,9 +97,28 @@ class CreateTicket extends CreateRecord
             ->where('status', '!=', ServiceStatus::Cancelled)->orderBy('label');
     }
 
+    /** Urgent tickets the client may still open this month. */
+    private static function urgentLeft(): int
+    {
+        $client = TicketResource::client();
+
+        return $client ? Tickets::urgentLeft($client) : 0;
+    }
+
     protected function handleRecordCreation(array $data): Model
     {
         $priority = $data['priority'] ?? null;
+        $service = filled($data['service_id'] ?? null) ? self::services()->find($data['service_id']) : null;
+
+        if (! empty($data['urgent'])) {
+            if (self::urgentLeft() === 0 || $service?->status !== ServiceStatus::Active) {
+                throw ValidationException::withMessages(['data.urgent' => __('This ticket can\'t be marked urgent.')]);
+            }
+
+            $priority = TicketPriority::Urgent;
+        } elseif (! config('gaiacp.support.client_priority') || ! array_key_exists((string) ($priority instanceof TicketPriority ? $priority->value : $priority), TicketPriority::clientOptions())) {
+            $priority = null;
+        }
 
         return app(Tickets::class)->open(
             TicketResource::client(),
@@ -94,8 +126,8 @@ class CreateTicket extends CreateRecord
             $data['subject'],
             $data['body'],
             filled($data['department_id'] ?? null) ? TicketDepartment::query()->clientVisible()->find($data['department_id']) : null,
-            config('gaiacp.support.client_priority') && $priority ? ($priority instanceof TicketPriority ? $priority : TicketPriority::from($priority)) : null,
-            filled($data['service_id'] ?? null) ? self::services()->find($data['service_id']) : null,
+            $priority === null ? null : ($priority instanceof TicketPriority ? $priority : TicketPriority::from($priority)),
+            $service,
             TicketFiles::from($data),
             asClient: true,
         );

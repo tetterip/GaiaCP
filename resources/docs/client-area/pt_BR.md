@@ -42,7 +42,7 @@ O Início mostra o que você tem a pagar, com um botão **Pagar** em cada aviso 
 
 **Serviços** lista sua hospedagem e outros serviços com status, preço e próximo vencimento. O menu os divide em **Hospedagem** e **Outros serviços**. A página de uma conta de hospedagem mostra o ciclo de cobrança e tem um botão **Abrir site**. **Domínios** lista seus domínios com a data de expiração, os nameservers e se renovam automaticamente. Quando você tem serviços em mais de um status, os botões acima de cada lista mostram só os de um status (Ativo, Suspenso, …), com a quantidade. Um trabalho feito uma vez, como mudar o seu site, é cobrado uma vez e aparece como **Concluído** depois que você o paga.
 
-Os botões acima de cada lista também destacam o que precisa de atenção: em **Domínios**, os que vencem em breve, os que não renovam automaticamente e cada extensão (.gr, .com, …) quando você tem mais de uma; em **Outros serviços**, cada tipo de serviço. Domínios e serviços aparecem com o que vence primeiro no topo. Um número ao lado de **Avisos de pagamento**, **Hospedagem**, **Outros serviços** ou **Domínios** no menu significa que algo espera por você: avisos não pagos, serviços suspensos ou domínios que vencem em breve sem renovação automática.
+Os botões acima de cada lista também destacam o que precisa de atenção: em **Domínios**, os que vencem em breve, os que não renovam automaticamente e cada extensão (.gr, .com, …) quando você tem mais de uma; em **Outros serviços**, cada tipo de serviço. Domínios e serviços aparecem com o que vence primeiro no topo. Um número ao lado de **Avisos de pagamento**, **Hospedagem**, **Outros serviços** ou **Domínios** no menu significa que algo espera por você: avisos não pagos, serviços suspensos ou domínios que vencem em breve sem renovação automática. Em **Domínios**, cada domínio mostra seus servidores de nomes abaixo do nome, e um que vence em até 30 dias mostra abaixo da data quantos dias faltam. Marque vários domínios para mudar os servidores de nomes ou ativar ou desativar a renovação automática de todos de uma vez (quando permitimos que você os altere).
 
 <!-- if:hosting -->
 Em uma conta de hospedagem ativa, você pode:
@@ -164,7 +164,7 @@ Para usá-lo, abra um aviso de pagamento não pago e clique em **Pagar com créd
 <!-- if:orders -->
 ## Como pedir
 
-**Pesquisa de domínios** (no menu, depois de Domínios) encontra um nome para você: digite-o (minhaloja ou minhaloja.gr) e você o vê com cada terminação que registramos, se está disponível ou indisponível, e o preço. **Adicionar ao carrinho** coloca um disponível no carrinho (**Com SSL** também adiciona um certificado para ele, quando oferecemos); para um que é seu, mas está em outro lugar, **É meu: transferir** abre o pedido de transferência. Talvez você precise antes confirmar que não é um robô. “Provavelmente disponível” significa que não foi possível consultar o registro naquele momento; verificamos de novo ao registrá-lo. Quando oferecemos, **Sugerir outros nomes** abaixo dos resultados lista nomes disponíveis próximos ao seu, sugeridos por IA, com a mesma terminação.
+**Pesquisa de domínios** (no menu, depois de Domínios) encontra um nome para você: digite-o (minhaloja ou minhaloja.gr) e você o vê com cada terminação que registramos, se está disponível ou indisponível, e o preço. **Adicionar ao carrinho** coloca um disponível no carrinho (**Com SSL** também adiciona um certificado para ele, quando oferecemos); para um que é seu, mas está em outro lugar, **É meu: transferir** abre o pedido de transferência. Talvez você precise antes confirmar que não é um robô. “Provavelmente disponível” significa que não foi possível consultar o registro naquele momento; verificamos de novo ao registrá-lo. Quando oferecemos, **Sugerir outros nomes** abaixo dos resultados lista nomes disponíveis próximos ao seu, sugeridos por IA, com a mesma terminação. Ainda sem nome? Quando oferecemos, descreva seu negócio em poucas palavras na mesma caixa (como "uma confeitaria em Tessalônica"): a IA sugere nomes livres, cada um com o preço. O que você digita é enviado ao serviço de IA, sem e-mails nem telefones.
 
 <!-- if:domain_prices -->
 **Veja os preços de todas as terminações de domínio**, abaixo da caixa de pesquisa, lista cada terminação que vendemos com o preço para registrar, transferir e renovar.
@@ -217,6 +217,10 @@ Em Suporte → **Downloads** você encontra arquivos que compartilhamos com voc�
 ## Tickets de suporte
 
 Em Suporte → Tickets, use **Abrir um ticket** para nos perguntar qualquer coisa: escolha o departamento e o serviço a que se refere, escreva sua pergunta e anexe arquivos, como capturas de tela. Respondemos no ticket e por e-mail; clique em **Responder** nele para escrever de volta. Feche-o quando não precisar de mais nada. Um ticket fechado é reaberto se você responder, e um que respondemos fecha sozinho quando não temos notícias suas por alguns dias.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Se um serviço seu parou de funcionar (seu site ou e-mail caiu), ative **Urgente** ao abrir o ticket e escolha esse serviço: somos avisados na hora. Os tickets urgentes são poucos por mês, então guarde-os para o que não pode esperar; o formulário mostra quantos ainda restam.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Você também pode responder aos nossos e-mails de tickets pela sua própria caixa de e-mail: sua resposta é adicionada ao ticket, com os arquivos anexados. Um e-mail que você envia para o nosso endereço de suporte abre um novo ticket.

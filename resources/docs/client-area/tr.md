@@ -42,7 +42,7 @@ Ana sayfa ne ödemeniz gerektiğini, her ödeme bildiriminde bir **Öde** düğm
 
 **Hizmetler**, hosting ve diğer hizmetlerinizi durumları, fiyatları ve sonraki vade tarihleriyle listeler. Menü bunları **Hosting** ve **Diğer hizmetler** olarak ayırır. Bir hosting hesabının sayfası ödeme dönemini gösterir ve bir **Web sitesini aç** düğmesi içerir. **Alan adları**, alan adlarınızı bitiş tarihleri, ad sunucuları ve otomatik yenilenip yenilenmedikleriyle listeler. Birden fazla durumda hizmetiniz olduğunda, her listenin üstündeki düğmeler yalnızca tek bir durumdakileri (Etkin, Askıda, …) kaç tane olduklarıyla gösterir. Web sitenizin taşınması gibi bir kez yapılan işler bir kez ücretlendirilir ve ödedikten sonra **Tamamlandı** olarak görünür.
 
-Her listenin üstündeki düğmeler ilgilenmeniz gerekenleri de ayırır: **Alan adları**nda yakında sona erenleri, otomatik yenilenmeyenleri ve birden fazla uzantınız varsa her uzantıyı (.gr, .com, …); **Diğer hizmetler**de her hizmet türünü. Alan adları ve hizmetler, vadesi ilk gelen en üstte olacak şekilde listelenir. Menüde **Ödeme bildirimleri**, **Hosting**, **Diğer hizmetler** veya **Alan adları** yanındaki bir sayı, sizi bekleyen bir şey olduğu anlamına gelir: ödenmemiş bildirimler, askıya alınmış hizmetler veya otomatik yenilenmeden yakında sona erecek alan adları.
+Her listenin üstündeki düğmeler ilgilenmeniz gerekenleri de ayırır: **Alan adları**nda yakında sona erenleri, otomatik yenilenmeyenleri ve birden fazla uzantınız varsa her uzantıyı (.gr, .com, …); **Diğer hizmetler**de her hizmet türünü. Alan adları ve hizmetler, vadesi ilk gelen en üstte olacak şekilde listelenir. Menüde **Ödeme bildirimleri**, **Hosting**, **Diğer hizmetler** veya **Alan adları** yanındaki bir sayı, sizi bekleyen bir şey olduğu anlamına gelir: ödenmemiş bildirimler, askıya alınmış hizmetler veya otomatik yenilenmeden yakında sona erecek alan adları. **Alan adları** bölümünde her alan adı, adının altında ad sunucularını gösterir; 30 gün içinde sona erecek olanlar, tarihin altında kaç gün kaldığını gösterir. Ad sunucularını değiştirmek veya otomatik yenilemeyi hepsi için birden açıp kapatmak için birkaç alan adını işaretleyin (bunları değiştirmenize izin verdiğimizde).
 
 <!-- if:hosting -->
 Etkin bir hosting hesabında şunları yapabilirsiniz:
@@ -164,7 +164,7 @@ Kullanmak için ödenmemiş bir ödeme bildirimini açın ve **Bakiyeyle öde**'
 <!-- if:orders -->
 ## Sipariş verme
 
-**Alan adı arama** (menüde, Alan adlarından sonra) sizin için bir ad bulur: yazın (magazam veya magazam.com.tr) ve kaydettiğimiz her uzantıyla, müsait mi alınmış mı olduğunu ve fiyatını görün. **Sepete ekle** müsait olanı sepete koyar (sunduğumuzda **SSL ile** onun için bir sertifika da ekler); size ait olup başka yerde bulunan biri için **Benim: transfer et** transfer siparişini açar. Önce robot olmadığınızı doğrulamanız istenebilir. “Muhtemelen müsait”, kayıt otoritesine o anda sorulamadığı anlamına gelir; kaydederken yeniden kontrol ederiz. Sunduğumuzda, sonuçların altındaki **Başka adlar öner** sizinkine yakın, yapay zekânın önerdiği, aynı uzantılı müsait adları listeler.
+**Alan adı arama** (menüde, Alan adlarından sonra) sizin için bir ad bulur: yazın (magazam veya magazam.com.tr) ve kaydettiğimiz her uzantıyla, müsait mi alınmış mı olduğunu ve fiyatını görün. **Sepete ekle** müsait olanı sepete koyar (sunduğumuzda **SSL ile** onun için bir sertifika da ekler); size ait olup başka yerde bulunan biri için **Benim: transfer et** transfer siparişini açar. Önce robot olmadığınızı doğrulamanız istenebilir. “Muhtemelen müsait”, kayıt otoritesine o anda sorulamadığı anlamına gelir; kaydederken yeniden kontrol ederiz. Sunduğumuzda, sonuçların altındaki **Başka adlar öner** sizinkine yakın, yapay zekânın önerdiği, aynı uzantılı müsait adları listeler. Henüz adınız yok mu? Sunduğumuzda, işinizi aynı kutuya birkaç kelimeyle yazın ("Selanik'te bir pastane" gibi): yapay zekâ boş adlar önerir, her biri fiyatıyla. Yazdıklarınız e-posta adresleri ve telefon numaraları olmadan yapay zekâ hizmetine gönderilir.
 
 <!-- if:domain_prices -->
 Arama kutusunun altındaki **Her alan adı uzantısının fiyatlarını görün**, sattığımız her uzantıyı kayıt, transfer ve yenileme fiyatıyla listeler.
@@ -217,6 +217,10 @@ Destek → **İndirmeler** altında sizinle paylaştığımız rehberler ve yaz�
 ## Destek talepleri
 
 Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Hizmetlerinizden biri çalışmayı durdurduysa (web siteniz veya e-postanız çöktüyse), bileti açarken **Acil** seçeneğini açın ve o hizmeti seçin: hemen haberimiz olur. Acil biletler ayda birkaç tanedir, bu yüzden onları bekleyemeyecek işler için saklayın; form kaç tane kaldığını gösterir.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Destek talebi e-postalarımızı kendi posta kutunuzdan da yanıtlayabilirsiniz: yanıtınız ekli dosyalarıyla birlikte talebe eklenir. Destek adresimize gönderdiğiniz bir e-posta yeni bir destek talebi açar.

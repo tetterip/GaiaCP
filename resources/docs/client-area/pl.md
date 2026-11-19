@@ -42,7 +42,7 @@ Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy 
 
 **Usługi** wymieniają Państwa hosting i inne usługi z ich statusem, ceną i następnym terminem płatności. Menu dzieli je na **Hosting** i **Inne usługi**. Strona konta hostingowego pokazuje jego okres rozliczeniowy i ma przycisk **Otwórz stronę WWW**. **Domeny** wymieniają Państwa domeny z datą wygaśnięcia, serwerami nazw i informacją, czy odnawiają się automatycznie. Gdy usługi mają różne statusy, przyciski nad każdą listą pokazują tylko te o jednym statusie (Aktywna, Zawieszona, …), z ich liczbą. Praca wykonywana jednorazowo, np. przeniesienie strony, jest rozliczana raz i po opłaceniu ma status **Zakończone**.
 
-Przyciski nad każdą listą wyróżniają też to, co wymaga uwagi: w **Domenach** te, które wkrótce wygasają, te, które nie odnawiają się automatycznie, oraz każde rozszerzenie (.gr, .com, …), gdy mają Państwo więcej niż jedno; w **Innych usługach** każdy rodzaj usługi. Domeny i usługi są wymienione od tej, której termin mija najwcześniej. Liczba obok **Wezwań do zapłaty**, **Hostingu**, **Innych usług** lub **Domen** w menu oznacza, że coś na Państwa czeka: nieopłacone wezwania, zawieszone usługi lub domeny wkrótce wygasające bez automatycznego odnowienia.
+Przyciski nad każdą listą wyróżniają też to, co wymaga uwagi: w **Domenach** te, które wkrótce wygasają, te, które nie odnawiają się automatycznie, oraz każde rozszerzenie (.gr, .com, …), gdy mają Państwo więcej niż jedno; w **Innych usługach** każdy rodzaj usługi. Domeny i usługi są wymienione od tej, której termin mija najwcześniej. Liczba obok **Wezwań do zapłaty**, **Hostingu**, **Innych usług** lub **Domen** w menu oznacza, że coś na Państwa czeka: nieopłacone wezwania, zawieszone usługi lub domeny wkrótce wygasające bez automatycznego odnowienia. W **Domenach** każda domena pokazuje swoje serwery nazw pod nazwą, a ta, której termin mija w ciągu 30 dni, pokazuje pod datą, ile dni zostało. Zaznaczcie kilka domen, aby zmienić ich serwery nazw albo włączyć lub wyłączyć automatyczne odnawianie dla wszystkich naraz (gdy pozwalamy na takie zmiany).
 
 <!-- if:hosting -->
 Przy aktywnym koncie hostingowym można:
@@ -164,7 +164,7 @@ Aby go użyć, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć *
 <!-- if:orders -->
 ## Zamawianie
 
-**Wyszukiwarka domen** (w menu, po Domenach) znajduje nazwę: wystarczy ją wpisać (mojsklep lub mojsklep.pl), a pojawi się z każdą obsługiwaną przez nas końcówką, z informacją, czy jest wolna, czy zajęta, i z ceną. **Dodaj do koszyka** dodaje wolną do koszyka (**Z SSL** dodaje do niej także certyfikat, jeśli go oferujemy); dla domeny, która należy do Państwa, ale jest gdzie indziej, **Moja: przenieś ją** otwiera zamówienie transferu. Najpierw może pojawić się prośba o potwierdzenie, że nie są Państwo robotem. „Prawdopodobnie dostępna” oznacza, że nie udało się wtedy zapytać rejestru; sprawdzimy ją ponownie przy rejestracji. Gdy to oferujemy, **Zaproponuj inne nazwy** pod wynikami wymienia wolne nazwy bliskie wyszukiwanej, zaproponowane przez AI, z tą samą końcówką.
+**Wyszukiwarka domen** (w menu, po Domenach) znajduje nazwę: wystarczy ją wpisać (mojsklep lub mojsklep.pl), a pojawi się z każdą obsługiwaną przez nas końcówką, z informacją, czy jest wolna, czy zajęta, i z ceną. **Dodaj do koszyka** dodaje wolną do koszyka (**Z SSL** dodaje do niej także certyfikat, jeśli go oferujemy); dla domeny, która należy do Państwa, ale jest gdzie indziej, **Moja: przenieś ją** otwiera zamówienie transferu. Najpierw może pojawić się prośba o potwierdzenie, że nie są Państwo robotem. „Prawdopodobnie dostępna” oznacza, że nie udało się wtedy zapytać rejestru; sprawdzimy ją ponownie przy rejestracji. Gdy to oferujemy, **Zaproponuj inne nazwy** pod wynikami wymienia wolne nazwy bliskie wyszukiwanej, zaproponowane przez AI, z tą samą końcówką. Nie macie jeszcze nazwy? Gdy to oferujemy, opiszcie firmę kilkoma słowami w tym samym polu (np. „cukiernia w Salonikach”): AI zaproponuje wolne nazwy, każdą z ceną. To, co wpiszecie, trafia do usługi AI bez adresów e-mail i numerów telefonów.
 
 <!-- if:domain_prices -->
 **Zobacz ceny wszystkich końcówek domen** pod polem wyszukiwania wymienia każdą sprzedawaną końcówkę z ceną rejestracji, transferu i odnowienia.
@@ -217,6 +217,10 @@ W Pomoc → **Pliki do pobrania** znajdziesz pliki, które Ci udostępniamy, tak
 ## Zgłoszenia
 
 W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Jeśli któraś z Państwa usług przestała działać (strona lub poczta nie działa), włączcie **Pilne** przy otwieraniu zgłoszenia i wybierzcie tę usługę: dowiadujemy się o tym od razu. Pilnych zgłoszeń jest kilka w miesiącu, więc warto zostawić je na to, co nie może czekać; formularz pokazuje, ile zostało.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Na e-maile dotyczące zgłoszeń można też odpowiadać z własnej skrzynki: odpowiedź zostaje dodana do zgłoszenia wraz z załącznikami. E-mail wysłany na nasz adres wsparcia otwiera nowe zgłoszenie.

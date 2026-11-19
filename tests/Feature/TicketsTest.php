@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Actions\Tickets;
 use App\Enums\AdminArea;
 use App\Enums\MailTemplate;
+use App\Enums\ServiceStatus;
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use App\Enums\UserRole;
@@ -16,7 +17,9 @@ use App\Filament\Resources\Tickets\Pages\CreateTicket;
 use App\Filament\Resources\Tickets\Pages\ViewTicket;
 use App\Mail\ClientMail;
 use App\Mail\TicketMail;
+use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\Service;
 use App\Models\Ticket;
 use App\Models\TicketDepartment;
 use App\Models\User;
@@ -276,5 +279,59 @@ class TicketsTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         app(Tickets::class)->reply($ticket, $other, 'Not mine');
+    }
+
+    public function test_a_client_marks_a_ticket_urgent_within_the_months_limit(): void
+    {
+        config(['gaiacp.support.urgent_per_month' => 1]);
+        $site = Service::factory()->for($this->client)->create(['status' => ServiceStatus::Active]);
+        $old = Service::factory()->for($this->client)->create(['status' => ServiceStatus::Suspended]);
+        $this->asClient();
+
+        // Only for an active service
+        Livewire::test(ClientCreateTicket::class)
+            ->fillForm(['urgent' => true, 'service_id' => $old->id, 'subject' => 'Down', 'body' => 'My site is down.'])
+            ->call('create')
+            ->assertHasFormErrors(['service_id']);
+
+        Livewire::test(ClientCreateTicket::class)
+            ->assertFormFieldExists('urgent')
+            ->fillForm(['urgent' => true, 'service_id' => $site->id, 'subject' => 'Site down', 'body' => 'My site is down.'])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $ticket = Ticket::query()->sole();
+        $this->assertSame(TicketPriority::Urgent, $ticket->priority);
+        $this->assertTrue(ActivityLog::query()->where('event', 'ticket.urgent')->where('properties->ticket_id', $ticket->id)->exists());
+        $bell = $this->admin->notifications()->sole();
+        $this->assertSame('Urgent ticket '.$ticket->number, $bell->data['title']);
+        $this->assertSame(0, Tickets::urgentLeft($this->client));
+
+        // The month's one is used: the switch is off and the ticket goes in as usual
+        Livewire::test(ClientCreateTicket::class)
+            ->assertFormFieldIsDisabled('urgent')
+            ->fillForm(['urgent' => true, 'service_id' => $site->id, 'subject' => 'Again', 'body' => 'Down again.'])
+            ->call('create')
+            ->assertHasNoFormErrors();
+        $this->assertSame([TicketPriority::Urgent, TicketPriority::Medium], Ticket::query()->orderBy('id')->pluck('priority')->all());
+
+        // Next month it is back
+        $this->travelTo(now()->addMonthNoOverflow()->startOfMonth()->addDay());
+        $this->assertSame(1, Tickets::urgentLeft($this->client));
+    }
+
+    public function test_urgent_tickets_are_off_by_default_and_clients_cannot_pick_urgent_as_a_priority(): void
+    {
+        Service::factory()->for($this->client)->create(['status' => ServiceStatus::Active]);
+        $this->asClient();
+
+        Livewire::test(ClientCreateTicket::class)
+            ->assertFormFieldHidden('urgent')
+            ->assertFormFieldExists('priority', fn ($field) => ! array_key_exists('urgent', $field->getOptions()))
+            ->fillForm(['priority' => 'urgent', 'subject' => 'Help', 'body' => 'Please.'])
+            ->call('create');
+
+        $this->assertNotSame(TicketPriority::Urgent, Ticket::query()->first()?->priority);
+        $this->assertSame(0, Tickets::urgentLimit());
     }
 }

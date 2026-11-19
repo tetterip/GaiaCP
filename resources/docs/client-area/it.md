@@ -42,7 +42,7 @@ La Home mostra quanto deve pagare, con un pulsante **Paga** su ogni avviso di pa
 
 **Servizi** elenca il Suo hosting e gli altri servizi con stato, prezzo e prossima scadenza. Il menu li divide in **Hosting** e **Altri servizi**. La pagina di un account hosting mostra il suo ciclo di fatturazione e ha un pulsante **Apri sito web**. **Domini** elenca i Suoi domini con data di scadenza, nameserver e se si rinnovano automaticamente. Quando ha servizi in più di uno stato, i pulsanti sopra ogni elenco mostrano solo quelli in uno stato (Attivo, Sospeso, …), con il loro numero. Un lavoro svolto una volta, come lo spostamento del Suo sito web, viene addebitato una volta e appare come **Completato** dopo il pagamento.
 
-I pulsanti sopra ogni elenco evidenziano anche ciò che richiede attenzione: in **Domini**, quelli in scadenza, quelli che non si rinnovano automaticamente e ogni estensione (.gr, .com, …) quando ne ha più di una; in **Altri servizi**, ogni tipo di servizio. Domini e servizi sono elencati con quello in scadenza per primo in alto. Un numero accanto a **Avvisi di pagamento**, **Hosting**, **Altri servizi** o **Domini** nel menu significa che qualcosa La aspetta: avvisi non pagati, servizi sospesi o domini in scadenza senza rinnovo automatico.
+I pulsanti sopra ogni elenco evidenziano anche ciò che richiede attenzione: in **Domini**, quelli in scadenza, quelli che non si rinnovano automaticamente e ogni estensione (.gr, .com, …) quando ne ha più di una; in **Altri servizi**, ogni tipo di servizio. Domini e servizi sono elencati con quello in scadenza per primo in alto. Un numero accanto a **Avvisi di pagamento**, **Hosting**, **Altri servizi** o **Domini** nel menu significa che qualcosa La aspetta: avvisi non pagati, servizi sospesi o domini in scadenza senza rinnovo automatico. In **Domini**, ogni dominio mostra i suoi nameserver sotto il nome, e uno in scadenza entro 30 giorni mostra sotto la data quanti giorni mancano. Selezioni più domini per cambiarne i nameserver o attivare o disattivare il rinnovo automatico per tutti insieme (quando Le permettiamo di modificarli).
 
 <!-- if:hosting -->
 Su un account hosting attivo può:
@@ -164,7 +164,7 @@ Per usarlo, apra un avviso di pagamento non pagato e prema **Paga con il credito
 <!-- if:orders -->
 ## Ordinare
 
-**Ricerca dominio** (nel menu, dopo Domini) trova un nome per Lei: lo digiti (ilmionegozio, o ilmionegozio.it) e lo vedrà con ogni estensione che registriamo, se è libero o già registrato, e il suo prezzo. **Aggiungi al carrello** mette nel carrello uno libero (**Con SSL** aggiunge anche un certificato, quando lo offriamo); per uno che è Suo ma si trova altrove, **È mio: trasferirlo** apre l'ordine per il trasferimento. Potrebbe esserLe chiesto prima di confermare di non essere un robot. “Probabilmente disponibile” significa che in quel momento non è stato possibile interrogare il registro; lo verifichiamo di nuovo al momento della registrazione. Quando lo offriamo, **Suggerisci altri nomi** sotto i risultati elenca nomi liberi simili al Suo, suggeriti dall'IA, con la stessa estensione.
+**Ricerca dominio** (nel menu, dopo Domini) trova un nome per Lei: lo digiti (ilmionegozio, o ilmionegozio.it) e lo vedrà con ogni estensione che registriamo, se è libero o già registrato, e il suo prezzo. **Aggiungi al carrello** mette nel carrello uno libero (**Con SSL** aggiunge anche un certificato, quando lo offriamo); per uno che è Suo ma si trova altrove, **È mio: trasferirlo** apre l'ordine per il trasferimento. Potrebbe esserLe chiesto prima di confermare di non essere un robot. “Probabilmente disponibile” significa che in quel momento non è stato possibile interrogare il registro; lo verifichiamo di nuovo al momento della registrazione. Quando lo offriamo, **Suggerisci altri nomi** sotto i risultati elenca nomi liberi simili al Suo, suggeriti dall'IA, con la stessa estensione. Non ha ancora un nome? Quando lo offriamo, descriva la sua attività in poche parole nella stessa casella (come «una pasticceria a Salonicco»): l'IA suggerisce nomi liberi, ciascuno con il prezzo. Ciò che scrive viene inviato al servizio di IA, senza email né numeri di telefono.
 
 <!-- if:domain_prices -->
 **Veda i prezzi di ogni estensione di dominio** sotto la casella di ricerca elenca ogni estensione che vendiamo con il suo prezzo di registrazione, trasferimento e rinnovo.
@@ -217,6 +217,10 @@ In Supporto → **Download** trovi i file che condividiamo con te, come guide e 
 ## Ticket di supporto
 
 In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Se un Suo servizio ha smesso di funzionare (il sito o l'email non vanno), attivi **Urgente** quando apre il ticket e scelga quel servizio: veniamo avvisati subito. I ticket urgenti sono pochi ogni mese, quindi li tenga per ciò che non può aspettare; il modulo mostra quanti gliene restano.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Può anche rispondere alle email dei nostri ticket dalla Sua casella di posta: la Sua risposta viene aggiunta al ticket, con i file allegati. Un'email inviata al nostro indirizzo di supporto apre un nuovo ticket.

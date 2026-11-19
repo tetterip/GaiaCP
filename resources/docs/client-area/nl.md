@@ -42,7 +42,7 @@ Home toont wat u moet betalen, met een knop **Betalen** bij elk betalingsbericht
 
 **Diensten** toont uw hosting en andere diensten met hun status, prijs en volgende vervaldatum. Het menu verdeelt ze in **Hosting** en **Andere diensten**. De pagina van een hostingaccount toont de betaalperiode en heeft een knop **Website openen**. **Domeinen** toont uw domeinen met hun verloopdatum, nameservers en of ze automatisch worden verlengd. Hebt u diensten met meer dan één status, dan tonen de knoppen boven elke lijst alleen die met één status (Actief, Opgeschort, …), met hoeveel het er zijn. Eenmalig werk, zoals het verhuizen van uw website, wordt één keer in rekening gebracht en verschijnt als **Voltooid** nadat u het hebt betaald.
 
-De knoppen boven elke lijst lichten ook uit wat aandacht vraagt: bij **Domeinen** de domeinen die binnenkort verlopen, die niet automatisch worden verlengd en elke extensie (.gr, .com, …) als u er meer dan één hebt; bij **Andere diensten** elk soort dienst. Domeinen en diensten staan met de eerst vervallende bovenaan. Een getal naast **Betalingsverzoeken**, **Hosting**, **Andere diensten** of **Domeinen** in het menu betekent dat er iets op u wacht: onbetaalde verzoeken, opgeschorte diensten of domeinen die binnenkort verlopen zonder automatische verlenging.
+De knoppen boven elke lijst lichten ook uit wat aandacht vraagt: bij **Domeinen** de domeinen die binnenkort verlopen, die niet automatisch worden verlengd en elke extensie (.gr, .com, …) als u er meer dan één hebt; bij **Andere diensten** elk soort dienst. Domeinen en diensten staan met de eerst vervallende bovenaan. Een getal naast **Betalingsverzoeken**, **Hosting**, **Andere diensten** of **Domeinen** in het menu betekent dat er iets op u wacht: onbetaalde verzoeken, opgeschorte diensten of domeinen die binnenkort verlopen zonder automatische verlenging. Bij **Domeinen** toont elk domein zijn nameservers onder de naam, en een domein dat binnen 30 dagen afloopt toont onder de datum hoeveel dagen er nog zijn. Vink meerdere domeinen aan om hun nameservers te wijzigen of automatisch verlengen voor allemaal tegelijk aan of uit te zetten (als we u dat toestaan).
 
 <!-- if:hosting -->
 Bij een actief hostingaccount kunt u:
@@ -164,7 +164,7 @@ Om het te gebruiken, opent u een onbetaald betalingsverzoek en drukt u op **Beta
 <!-- if:orders -->
 ## Bestellen
 
-**Domein zoeken** (in het menu, na Domeinen) vindt een naam voor u: typ hem (mijnwinkel, of mijnwinkel.gr) en u ziet hem met elke extensie die we registreren, of hij vrij of bezet is, en de prijs. **In winkelwagen** zet een vrije naam in de winkelwagen (**Met SSL** voegt er ook een certificaat voor toe, als we dat aanbieden); voor een naam die van u is maar ergens anders staat, opent **Van mij: verhuizen** de bestelling voor de verhuizing. Mogelijk wordt u eerst gevraagd te bevestigen dat u geen robot bent. “Waarschijnlijk beschikbaar” betekent dat het register op dat moment niet kon worden bevraagd; we controleren het opnieuw wanneer we de naam registreren. Als we het aanbieden, toont **Andere namen voorstellen** onder de resultaten vrije namen die op de uwe lijken, voorgesteld door AI, met dezelfde extensie.
+**Domein zoeken** (in het menu, na Domeinen) vindt een naam voor u: typ hem (mijnwinkel, of mijnwinkel.gr) en u ziet hem met elke extensie die we registreren, of hij vrij of bezet is, en de prijs. **In winkelwagen** zet een vrije naam in de winkelwagen (**Met SSL** voegt er ook een certificaat voor toe, als we dat aanbieden); voor een naam die van u is maar ergens anders staat, opent **Van mij: verhuizen** de bestelling voor de verhuizing. Mogelijk wordt u eerst gevraagd te bevestigen dat u geen robot bent. “Waarschijnlijk beschikbaar” betekent dat het register op dat moment niet kon worden bevraagd; we controleren het opnieuw wanneer we de naam registreren. Als we het aanbieden, toont **Andere namen voorstellen** onder de resultaten vrije namen die op de uwe lijken, voorgesteld door AI, met dezelfde extensie. Nog geen naam? Als we het aanbieden, beschrijf dan uw bedrijf in een paar woorden in hetzelfde vak (zoals "een banketbakkerij in Thessaloniki"): AI stelt vrije namen voor, elk met de prijs. Wat u typt gaat naar de AI-dienst, zonder e-mailadressen of telefoonnummers.
 
 <!-- if:domain_prices -->
 **Bekijk de prijzen van elke domeinextensie** onder het zoekvak toont elke extensie die we verkopen met de prijs voor registreren, verhuizen en verlengen.
@@ -217,6 +217,10 @@ Onder Ondersteuning → **Downloads** vindt u bestanden die we met u delen, zoal
 ## Supporttickets
 
 Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Als een van uw diensten niet meer werkt (uw website of e-mail ligt eruit), zet dan **Dringend** aan wanneer u het ticket opent en kies die dienst: wij krijgen meteen bericht. Dringende tickets zijn beperkt per maand, bewaar ze dus voor wat niet kan wachten; het formulier toont hoeveel u er nog heeft.
 <!-- endif -->
 <!-- if:ticket_mail -->
 U kunt onze ticketmails ook vanuit uw eigen mailbox beantwoorden: uw antwoord wordt aan het ticket toegevoegd, met de bijgevoegde bestanden. Een e-mail die u naar ons supportadres stuurt, opent een nieuw ticket.

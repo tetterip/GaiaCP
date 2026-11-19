@@ -5,6 +5,18 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area Domains: tick several domains to change their nameservers or turn auto renew on or off for all of them
+  (each behind its Settings → Client area switch, as on a domain's page); one summary says which were changed or left out.
+- Domain search: names from a description (Settings → AI assistant → Domain names from a description, off by default).
+  A client types a few words about their business and gets free names with the first ending sold and .com, each with
+  its price (sent without email addresses or phone numbers; same 5 an hour). Signed-in clients only unless **Visitors
+  too** (always with the captcha). New **Domain suggestions a day** (200) caps both AI buttons for clients and visitors.
+- Urgent tickets (Settings → Support → Urgent tickets per client each month, off by default): a client switches on
+  **Urgent** for an active service that stopped working; the ticket gets the new Urgent priority, the bell and push say
+  "Urgent ticket", and the new `ticket.urgent` event can be posted alone to Slack, Discord, Telegram or a webhook.
+  The High priority's colour is now amber, so Urgent stands out in red.
+- Client area Domains: each row shows the domain's nameservers under its name and, for one ending within 30 days,
+  how many days are left (or how long ago it was due) under its due date; Expires is hidden on phones.
 - Client area cart, quicker: **Add to cart** opens the cart from the side of the page instead of leaving it, and the
   cart icon in the top bar opens the same panel, with the first payment and **Checkout** (the Cart page, for the note,
   coupon and terms). Each item's billing cycle and a domain's term can be changed right there, each choice with the

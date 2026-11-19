@@ -29,7 +29,12 @@ Settings → Support also holds:
   clients can pick each one;
 - **Canned replies**: ready answers with placeholders such as `{client_first_name}` and `{ticket_number}`;
 - who is emailed, the files clients may attach (size and types), whether clients may set the priority, and after how
-  many days the files of closed tickets are deleted to free disk space (empty: kept).
+  many days the files of closed tickets are deleted to free disk space (empty: kept);
+- **Urgent tickets per client each month** (empty: off): a client marks a ticket urgent for an active service that
+  stopped working. It comes in with the Urgent priority, the bell and push notification say "Urgent ticket", and the
+  **Urgent ticket opened** event can be posted alone to Slack, Discord or Telegram (Settings → each one's events), so
+  you hear about a site that is down at once. The limit keeps it for what really can't wait; the month's count starts
+  again on the 1st.
 
 The dashboard's Support card lists the tickets waiting for an answer.
 

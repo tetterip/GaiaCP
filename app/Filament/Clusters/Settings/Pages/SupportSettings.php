@@ -37,7 +37,7 @@ class SupportSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['support.client_tickets', 'support.client_priority', 'support.admin_emails', 'support.auto_close_days', 'support.attachments_max_kb', 'support.attachment_types', 'support.attachment_days', 'support.reply_to', 'support.knowledge_base'];
+        return ['support.client_tickets', 'support.client_priority', 'support.urgent_per_month', 'support.admin_emails', 'support.auto_close_days', 'support.attachments_max_kb', 'support.attachment_types', 'support.attachment_days', 'support.reply_to', 'support.knowledge_base'];
     }
 
     public function form(Schema $schema): Schema
@@ -53,6 +53,13 @@ class SupportSettings extends SettingsFormPage
                         Toggle::make('support.client_priority')
                             ->label('Clients choose the priority')
                             ->helperText(__('Off, their tickets start as Medium.')),
+                        TextInput::make('support.urgent_per_month')
+                            ->label('Urgent tickets per client each month')
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(100)
+                            ->placeholder(__('Off'))
+                            ->helperText(__('A client marks a ticket urgent when an active service stopped working: you get a bell, a push notification and the Urgent ticket event in Slack, Discord or Telegram at once. Empty = off.')),
                         Toggle::make('support.admin_emails')
                             ->label('Email the admins about new tickets and client replies')
                             ->helperText(__('To the admin a ticket is assigned to, else every admin who opens tickets; only admins with Receive system emails on.')),
@@ -111,6 +118,7 @@ class SupportSettings extends SettingsFormPage
     {
         $values['support.client_tickets'] = (bool) ($values['support.client_tickets'] ?? false);
         $values['support.client_priority'] = (bool) ($values['support.client_priority'] ?? false);
+        $values['support.urgent_per_month'] = filled($values['support.urgent_per_month'] ?? null) && (int) $values['support.urgent_per_month'] > 0 ? (int) $values['support.urgent_per_month'] : null;
         $values['support.admin_emails'] = (bool) ($values['support.admin_emails'] ?? false);
         $values['support.knowledge_base'] = (bool) ($values['support.knowledge_base'] ?? false);
         $values['support.auto_close_days'] = filled($values['support.auto_close_days'] ?? null) ? (int) $values['support.auto_close_days'] : null;

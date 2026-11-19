@@ -42,7 +42,7 @@ Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de 
 
 **Servicios** lista su hosting y sus otros servicios con su estado, precio y próximo vencimiento. El menú los divide en **Hosting** y **Otros servicios**. La página de una cuenta de hosting muestra su ciclo de facturación y tiene un botón **Abrir sitio web**. **Dominios** lista sus dominios con su fecha de vencimiento, sus servidores de nombres y si se renuevan automáticamente. Cuando tiene servicios en más de un estado, los botones sobre cada lista muestran solo los de un estado (Activo, Suspendido, …), con cuántos hay. Un trabajo hecho una vez, como trasladar su sitio web, se cobra una sola vez y aparece como **Completado** después de pagarlo.
 
-Los botones sobre cada lista también destacan lo que requiere atención: en **Dominios**, los que vencen pronto, los que no se renuevan automáticamente y cada extensión (.gr, .com, …) cuando tiene más de una; en **Otros servicios**, cada tipo de servicio. Los dominios y servicios aparecen con el que vence primero arriba. Un número junto a **Avisos de pago**, **Hosting**, **Otros servicios** o **Dominios** en el menú significa que algo le espera: avisos sin pagar, servicios suspendidos o dominios que vencen pronto sin renovación automática.
+Los botones sobre cada lista también destacan lo que requiere atención: en **Dominios**, los que vencen pronto, los que no se renuevan automáticamente y cada extensión (.gr, .com, …) cuando tiene más de una; en **Otros servicios**, cada tipo de servicio. Los dominios y servicios aparecen con el que vence primero arriba. Un número junto a **Avisos de pago**, **Hosting**, **Otros servicios** o **Dominios** en el menú significa que algo le espera: avisos sin pagar, servicios suspendidos o dominios que vencen pronto sin renovación automática. En **Dominios**, cada dominio muestra sus servidores de nombres bajo su nombre, y uno que vence en 30 días muestra bajo su fecha cuántos días quedan. Marque varios dominios para cambiar sus servidores de nombres o activar o desactivar la renovación automática de todos a la vez (cuando le permitimos cambiarlos).
 
 <!-- if:hosting -->
 En una cuenta de hosting activa puede:
@@ -164,7 +164,7 @@ Para usarlo, abra un aviso de pago sin pagar y pulse **Pagar con saldo**.
 <!-- if:orders -->
 ## Hacer pedidos
 
-**Búsqueda de dominios** (en el menú, después de Dominios) le encuentra un nombre: escríbalo (mitienda, o mitienda.gr) y lo verá con cada terminación que registramos, si está libre u ocupado, y su precio. **Añadir al carrito** pone uno libre en el carrito (**Con SSL** añade también un certificado para él, cuando lo ofrecemos); para uno que es suyo pero está en otro sitio, **Es mío: transferirlo** abre el pedido de la transferencia. Puede que primero se le pida confirmar que no es un robot. “Probablemente disponible” significa que no se pudo consultar al registro en ese momento; lo comprobamos de nuevo al registrarlo. Cuando lo ofrecemos, **Sugerir otros nombres** bajo los resultados lista nombres libres parecidos al suyo, sugeridos por IA, con la misma terminación.
+**Búsqueda de dominios** (en el menú, después de Dominios) le encuentra un nombre: escríbalo (mitienda, o mitienda.gr) y lo verá con cada terminación que registramos, si está libre u ocupado, y su precio. **Añadir al carrito** pone uno libre en el carrito (**Con SSL** añade también un certificado para él, cuando lo ofrecemos); para uno que es suyo pero está en otro sitio, **Es mío: transferirlo** abre el pedido de la transferencia. Puede que primero se le pida confirmar que no es un robot. “Probablemente disponible” significa que no se pudo consultar al registro en ese momento; lo comprobamos de nuevo al registrarlo. Cuando lo ofrecemos, **Sugerir otros nombres** bajo los resultados lista nombres libres parecidos al suyo, sugeridos por IA, con la misma terminación. ¿Aún no tiene nombre? Cuando lo ofrecemos, describa su negocio en pocas palabras en el mismo cuadro (como «una pastelería en Salónica»): la IA sugiere nombres libres, cada uno con su precio. Lo que escribe se envía al servicio de IA, sin correos ni teléfonos.
 
 <!-- if:domain_prices -->
 **Ver los precios de cada terminación de dominio**, bajo el cuadro de búsqueda, lista cada terminación que vendemos con su precio de registro, transferencia y renovación.
@@ -217,6 +217,10 @@ En Soporte → **Descargas** encontrará archivos que compartimos con usted, com
 ## Tickets de soporte
 
 En Soporte → Tickets, **Abrir un ticket** para preguntarnos lo que sea: elija el departamento y el servicio al que se refiere, escriba su pregunta y adjunte archivos como capturas de pantalla. Respondemos en el ticket y por email; pulse **Responder** en él para contestar. Ciérrelo cuando no necesite nada más. Un ticket cerrado se vuelve a abrir si responde, y uno que respondimos se cierra solo cuando no sabemos nada de usted en unos días.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Si uno de sus servicios dejó de funcionar (su sitio web o su correo no funcionan), active **Urgente** al abrir el ticket y elija ese servicio: nos avisan al instante. Los tickets urgentes son pocos al mes, así que resérvelos para lo que no puede esperar; el formulario muestra cuántos le quedan.
 <!-- endif -->
 <!-- if:ticket_mail -->
 También puede responder a nuestros emails de tickets desde su propio buzón: su respuesta se añade al ticket, con sus archivos adjuntos. Un email que envíe a nuestra dirección de soporte abre un ticket nuevo.

@@ -94,6 +94,7 @@ return [
     'support' => [
         'client_tickets' => true, // clients open and answer tickets in the client area
         'client_priority' => true, // clients choose the priority (else Medium)
+        'urgent_per_month' => null, // urgent tickets each client may open a month, for a service that stopped working (null = off)
         'admin_emails' => true, // email the admins (Receive system emails) about new tickets and client replies
         'auto_close_days' => 7, // close a ticket that waits on the client this many days (null = never)
         'attachments_max_kb' => 5120,
@@ -246,6 +247,7 @@ return [
             'improve' => true, // Improve a text the admin wrote (spelling, tone, length)
             'translate' => true, // Translate a text into another language
             'domains' => false, // Suggest other names in the client area's domain search (clients and visitors press it)
+            'domain_ideas' => false, // Domain search: names from a description of the business (signed-in clients; visitors with domain_ideas_visitors)
             'products' => true, // Write a product's description from its details
             'outage' => true, // Write the server problem notice from what the monitors say
             'questions' => true, // Reports → Ask in plain words: read which ready-made question a question is
@@ -258,6 +260,8 @@ return [
             'language_files' => true, // Settings → Languages → Translate with AI: the panel's missing texts in a language
         ],
         'monthly_tokens' => null, // tokens (sent + received) all admins may use a calendar month; null = no limit
+        'domain_ideas_visitors' => false, // visitors get names from a description too, always after the captcha
+        'domains_per_day' => 200, // AI domain suggestions (both buttons) from clients and visitors a day; null = no limit
     ],
 
     // Cookie banner on the client area, /cart and sign up (Settings → Cookies, App\Support\CookieConsent)

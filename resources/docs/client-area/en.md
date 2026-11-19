@@ -42,7 +42,7 @@ Home shows what you have to pay, with a **Pay** button on each payment notice (o
 
 **Services** lists your hosting and other services with their status, price and next due date. The menu splits them into **Hosting** and **Other services**. A hosting account's page shows its billing cycle and has an **Open website** button. **Domains** lists your domains with their expiry date, nameservers and whether they renew automatically. When you have services in more than one status, the buttons above each list show only those in one status (Active, Suspended, …), with how many there are. Work done once, such as moving your website, is billed once and shows as **Completed** after you pay it.
 
-The buttons above each list also pick out what needs a look: on **Domains**, those expiring soon, those that will not renew automatically and each extension (.gr, .com, …) when you have more than one; on **Other services**, each kind of service. Domains and services are listed with the one due first on top. A number next to **Payment notices**, **Hosting**, **Other services** or **Domains** in the menu means something waits for you: unpaid notices, suspended services, or domains ending soon that will not renew automatically.
+The buttons above each list also pick out what needs a look: on **Domains**, those expiring soon, those that will not renew automatically and each extension (.gr, .com, …) when you have more than one; on **Other services**, each kind of service. Domains and services are listed with the one due first on top. A number next to **Payment notices**, **Hosting**, **Other services** or **Domains** in the menu means something waits for you: unpaid notices, suspended services, or domains ending soon that will not renew automatically. In **Domains**, each domain shows its nameservers under its name, and one ending within 30 days shows how many days are left under its due date. Tick several domains to change their nameservers or turn auto renew on or off for all of them at once (when we let you change them).
 
 <!-- if:hosting -->
 On an active hosting account you can:
@@ -164,7 +164,7 @@ To use it, open an unpaid payment notice and press **Pay with credit**.
 <!-- if:orders -->
 ## Ordering
 
-**Domain search** (in the menu, after Domains) finds a name for you: type it (myshop, or myshop.gr) and you see it with each ending we register, whether it is free or taken, and its price. **Add to cart** puts a free one in the cart (**With SSL** adds a certificate for it too, when we offer one); for one that is yours but somewhere else, **Mine: transfer it** opens the order for the transfer. You may be asked first to confirm that you are not a robot. “Probably available” means the registry could not be asked right then; we check it again when we register it. When we offer it, **Suggest other names** below the results lists free names close to yours, suggested by AI, with the same ending.
+**Domain search** (in the menu, after Domains) finds a name for you: type it (myshop, or myshop.gr) and you see it with each ending we register, whether it is free or taken, and its price. **Add to cart** puts a free one in the cart (**With SSL** adds a certificate for it too, when we offer one); for one that is yours but somewhere else, **Mine: transfer it** opens the order for the transfer. You may be asked first to confirm that you are not a robot. “Probably available” means the registry could not be asked right then; we check it again when we register it. When we offer it, **Suggest other names** below the results lists free names close to yours, suggested by AI, with the same ending. No name yet? When we offer it, describe your business in a few words in the same box (such as “a pastry shop in Thessaloniki”): AI suggests free names for it, each with its price. What you type is sent to the AI service, without email addresses or phone numbers.
 
 <!-- if:domain_prices -->
 **See the prices of every domain ending** under the search box lists each ending we sell with its price to register, transfer and renew.
@@ -217,6 +217,10 @@ Under Support → **Downloads** you find files we share with you, such as guides
 ## Support tickets
 
 Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+If a service of yours stopped working (your website or email is down), switch on **Urgent** when you open the ticket and choose that service: we are told at once. Urgent tickets are a few each month, so keep them for what can't wait; the form shows how many you have left.
 <!-- endif -->
 <!-- if:ticket_mail -->
 You can also answer our ticket emails from your own mailbox: your answer is added to the ticket, with its attached files. An email you send to our support address opens a new ticket.
