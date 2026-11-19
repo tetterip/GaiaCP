@@ -17,7 +17,7 @@ Les **clés d'accès** vous connectent avec votre empreinte, votre visage ou le 
 Votre profil (le menu à votre nom, en bas du menu ou en haut à droite) permet de modifier votre adresse email, votre numéro de téléphone, votre langue et votre mot de passe, et d'activer l'authentification à deux facteurs pour plus de sécurité.
 
 <!-- if:notifications -->
-La **cloche** en haut de la page vous indique ce qui s'est passé depuis votre dernier passage : un nouvel avis de paiement, un rappel de paiement ou un avis de retard, un paiement que nous avons reçu, un service prêt, suspendu ou terminé, un domaine bientôt renouvelé, un nouveau prix, notre réponse à votre ticket ou à une demande. Un nombre indique combien vous n'en avez pas lu ; cliquez sur l'une d'elles pour ouvrir sa page. Sur un téléphone ou une tablette, faites-en glisser une vers la gauche ou la droite pour la supprimer. Pour les arrêter, désactivez **Notifications** dans votre profil. Nous continuons de vous écrire par email comme avant.
+La **cloche** en haut de la page vous indique ce qui s'est passé depuis votre dernier passage : un nouvel avis de paiement, un rappel de paiement ou un avis de retard, un paiement que nous avons reçu, un service prêt, suspendu ou terminé, un domaine bientôt renouvelé, un nouveau prix, notre réponse à votre ticket ou à une demande. Un nombre indique combien vous n'en avez pas lu ; cliquez sur l'une d'elles pour ouvrir sa page. Faites-en glisser une vers la gauche ou la droite pour la supprimer, du doigt ou avec la souris. Pour les arrêter, désactivez **Notifications** dans votre profil. Nous continuons de vous écrire par email comme avant.
 
 <!-- endif -->
 <!-- if:email_history -->
