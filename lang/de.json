@@ -4246,5 +4246,9 @@
     "Nearly full": "Fast voll",
     "Nothing here yet": "Noch nichts hier",
     "Recent activity": "Letzte Aktivität",
-    "Complete it": "Abschließen"
+    "Complete it": "Abschließen",
+    "Expiring soon": "Laufen bald ab",
+    "Auto renew off": "Automatische Verlängerung aus",
+    "Ending soon, auto renew is off": "Laufen bald ab, automatische Verlängerung ist aus",
+    "Expiring": "Laufen ab"
 }

@@ -4246,5 +4246,9 @@
     "Nearly full": "Neredeyse dolu",
     "Nothing here yet": "Henüz burada bir şey yok",
     "Recent activity": "Son etkinlikler",
-    "Complete it": "Tamamla"
+    "Complete it": "Tamamla",
+    "Expiring soon": "Yakında sona erecek",
+    "Auto renew off": "Otomatik yenileme kapalı",
+    "Ending soon, auto renew is off": "Yakında sona erecek, otomatik yenileme kapalı",
+    "Expiring": "Sona eriyor"
 }

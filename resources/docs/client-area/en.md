@@ -42,6 +42,8 @@ Home shows what you have to pay, with a **Pay** button on each payment notice (o
 
 **Services** lists your hosting and other services with their status, price and next due date. The menu splits them into **Hosting** and **Other services**. A hosting account's page shows its billing cycle and has an **Open website** button. **Domains** lists your domains with their expiry date, nameservers and whether they renew automatically. When you have services in more than one status, the buttons above each list show only those in one status (Active, Suspended, …), with how many there are. Work done once, such as moving your website, is billed once and shows as **Completed** after you pay it.
 
+The buttons above each list also pick out what needs a look: on **Domains**, those expiring soon, those that will not renew automatically and each extension (.gr, .com, …) when you have more than one; on **Other services**, each kind of service. Domains and services are listed with the one due first on top. A number next to **Payment notices**, **Hosting**, **Other services** or **Domains** in the menu means something waits for you: unpaid notices, suspended services, or domains ending soon that will not renew automatically.
+
 <!-- if:hosting -->
 On an active hosting account you can:
 

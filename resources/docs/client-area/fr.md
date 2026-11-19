@@ -42,6 +42,8 @@ L'Accueil montre ce que vous avez à payer, avec un bouton **Payer** sur chaque 
 
 **Services** liste vos hébergements et autres services avec leur statut, leur prix et leur prochaine échéance. Le menu les répartit entre **Hébergement** et **Autres services**. La page d'un compte d'hébergement indique son cycle de facturation et propose un bouton **Ouvrir le site web**. **Domaines** liste vos domaines avec leur date d'expiration, leurs serveurs de noms et s'ils se renouvellent automatiquement. Quand vous avez des services dans plusieurs statuts, les boutons au-dessus de chaque liste n'affichent que ceux d'un statut (Actif, Suspendu, …), avec leur nombre. Un travail effectué une fois, comme la migration de votre site web, est facturé une fois et apparaît comme **Terminé** après votre paiement.
 
+Les boutons au-dessus de chaque liste font aussi ressortir ce qui demande votre attention : dans **Domaines**, ceux qui expirent bientôt, ceux qui ne se renouvellent pas automatiquement et chaque extension (.gr, .com, …) quand vous en avez plusieurs ; dans **Autres services**, chaque type de service. Les domaines et services sont listés avec celui qui arrive à échéance en premier en haut. Un nombre à côté de **Avis de paiement**, **Hébergement**, **Autres services** ou **Domaines** dans le menu signifie que quelque chose vous attend : avis impayés, services suspendus ou domaines qui expirent bientôt sans renouvellement automatique.
+
 <!-- if:hosting -->
 Sur un compte d'hébergement actif, vous pouvez :
 

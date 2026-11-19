@@ -4246,5 +4246,9 @@
     "Nearly full": "Σχεδόν γεμάτος",
     "Nothing here yet": "Τίποτα εδώ ακόμη",
     "Recent activity": "Πρόσφατη δραστηριότητα",
-    "Complete it": "Ολοκλήρωση"
+    "Complete it": "Ολοκλήρωση",
+    "Expiring soon": "Λήγουν σύντομα",
+    "Auto renew off": "Χωρίς αυτόματη ανανέωση",
+    "Ending soon, auto renew is off": "Λήγουν σύντομα, χωρίς αυτόματη ανανέωση",
+    "Expiring": "Λήγουν"
 }

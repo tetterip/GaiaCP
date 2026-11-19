@@ -5,6 +5,15 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Pages that are a table (Clients, Services, Domains, payment notices, reports, the client area's lists…) use the
+  whole width of the screen in both panels, so their columns are no longer squeezed into the middle. Home, forms and
+  custom pages keep their width.
+- Client area lists, quicker to sort through: **Domains** has chips for the ones expiring within 30 days, the ones with
+  auto renew off and each extension (.gr, .com, .com.gr…) when the client has more than one, and lists the domain due
+  first on top (terminated ones last; it was alphabetical). **Other services** has a chip per kind (SSL, Maintenance…)
+  when there are two or more. The menu shows a number only where something waits for the client: unpaid notices on
+  Payment notices, suspended services on Hosting and Other services, and domains ending within 30 days with auto renew
+  off on Domains.
 - Notifications can be swiped away with the mouse or a trackpad too, in the bell's list and the pop-ups of both panels
   (it was touch only): drag one left or right. The notifications next to it follow the drag a little and spring back
   when it is let go. The X still removes one from the keyboard.

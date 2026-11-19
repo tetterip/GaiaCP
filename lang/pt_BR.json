@@ -4246,5 +4246,9 @@
     "Nearly full": "Quase cheio",
     "Nothing here yet": "Nada aqui ainda",
     "Recent activity": "Atividade recente",
-    "Complete it": "Concluir"
+    "Complete it": "Concluir",
+    "Expiring soon": "Vencem em breve",
+    "Auto renew off": "Renovação automática desativada",
+    "Ending soon, auto renew is off": "Vencem em breve, renovação automática desativada",
+    "Expiring": "Vencem"
 }

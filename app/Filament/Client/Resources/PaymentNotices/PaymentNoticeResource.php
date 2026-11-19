@@ -46,6 +46,24 @@ class PaymentNoticeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'number';
 
+    /** The unpaid ones: something to do. */
+    public static function getNavigationBadge(): ?string
+    {
+        $count = static::getEloquentQuery()->where('status', InvoiceStatus::Unpaid)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'danger';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return __('Unpaid');
+    }
+
     protected static function scopeToClient(Builder $query): Builder
     {
         return $query->where('client_id', static::clientId())

@@ -21,6 +21,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -46,6 +47,70 @@ class DomainResource extends Resource
     }
 
     protected static ?string $recordTitleAttribute = 'domain';
+
+    /** Domains ending soon with auto renew off: they will be lost unless the client turns it back on or renews. */
+    public static function getNavigationBadge(): ?string
+    {
+        $count = self::autoRenewOff(static::getEloquentQuery())
+            ->whereOnDate('next_due_date', '<=', today()->addDays(self::EXPIRING_DAYS))
+            ->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return __('Ending soon, auto renew is off');
+    }
+
+    /** Days ahead in which a domain counts as expiring soon (its chip and the sidebar badge). */
+    public const EXPIRING_DAYS = 30;
+
+    /** Active or suspended domains due within EXPIRING_DAYS, overdue ones too: the ones that need paying or renewing. */
+    public static function expiringSoon(Builder $query): Builder
+    {
+        return $query->whereIn('status', ServiceStatus::billable())
+            ->whereOnDate('next_due_date', '<=', today()->addDays(self::EXPIRING_DAYS));
+    }
+
+    /** Active domains the client set not to renew: they end at their due date. */
+    public static function autoRenewOff(Builder $query): Builder
+    {
+        return $query->where('status', ServiceStatus::Active)->where('auto_terminate', true);
+    }
+
+    /** The extension of a registered name, everything after its first dot (example.com.gr: com.gr). */
+    public static function tldOf(string $domain): string
+    {
+        return str_contains($domain, '.') ? strtolower(substr($domain, strpos($domain, '.') + 1)) : '';
+    }
+
+    /** Domains ending in exactly this extension: .gr leaves out .com.gr. */
+    public static function withTld(Builder $query, string $tld): Builder
+    {
+        return $query->where('domain', 'like', '%.'.$tld)->where('domain', 'not like', '%.%.'.$tld);
+    }
+
+    /**
+     * The extensions among these domains, most used first.
+     *
+     * @return list<string>
+     */
+    public static function tlds(Builder $query): array
+    {
+        return $query->pluck('domain')
+            ->map(fn (?string $domain) => self::tldOf((string) $domain))
+            ->filter()
+            ->countBy()
+            ->sortDesc()
+            ->keys()
+            ->all();
+    }
 
     protected static function scopeToClient(Builder $query): Builder
     {
@@ -79,12 +144,24 @@ class DomainResource extends Resource
                     ->state(fn (Service $record) => $record->auto_renew)
                     ->boolean(),
             ])
-            ->defaultSort('domain')
+            // The one that ends first on top, terminated ones last
+            ->defaultSort(fn (Builder $query) => $query
+                ->orderByRaw('case when status = ? then 1 else 0 end', [ServiceStatus::Terminated->value])
+                ->orderBy('next_due_date')
+                ->orderBy('domain'))
             // Set by the chips over the table (ListDomains), which show which one is on
             ->filters([
                 SelectFilter::make('status')
                     ->options(collect(ServiceStatus::cases())->reject(fn ($s) => $s === ServiceStatus::Cancelled)
                         ->mapWithKeys(fn (ServiceStatus $s) => [$s->value => $s->getLabel()])),
+                Filter::make('expiring')
+                    ->label('Expiring soon')
+                    ->query(fn (Builder $query) => self::expiringSoon($query)),
+                Filter::make('auto_renew_off')
+                    ->query(fn (Builder $query) => self::autoRenewOff($query)),
+                SelectFilter::make('tld')
+                    ->options(fn () => collect(self::tlds(static::getEloquentQuery()))->mapWithKeys(fn (string $tld) => [$tld => '.'.$tld])->all())
+                    ->query(fn (Builder $query, array $data) => filled($data['value'] ?? null) ? self::withTld($query, (string) $data['value']) : $query),
             ])
             ->filtersLayout(FiltersLayout::Hidden)
             ->hiddenFilterIndicators()

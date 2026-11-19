@@ -23,6 +23,7 @@ use App\Http\Middleware\SetLocale;
 use App\Livewire\PanelNotifications;
 use App\Livewire\TwoFactorReminder;
 use App\Plugins\PluginManager;
+use App\Support\ContentWidth;
 use App\Support\Demo;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
@@ -55,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->maxContentWidth(fn () => ContentWidth::current())
             ->login(Login::class)
             // "Forgot password?" link: an email with a reset link to admins who can log in (2FA still asked after)
             ->passwordReset(RequestPasswordReset::class, ResetPassword::class)

@@ -4246,5 +4246,9 @@
     "Nearly full": "Bijna vol",
     "Nothing here yet": "Hier is nog niets",
     "Recent activity": "Recente activiteit",
-    "Complete it": "Afronden"
+    "Complete it": "Afronden",
+    "Expiring soon": "Verlopen binnenkort",
+    "Auto renew off": "Automatisch verlengen uit",
+    "Ending soon, auto renew is off": "Verlopen binnenkort, automatisch verlengen staat uit",
+    "Expiring": "Verlopen"
 }
