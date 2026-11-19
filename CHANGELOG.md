@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Dashboard, fewer clicks: three **Needs attention** lines have a button for the thing that needs no choice, Complete
+  order on the pending orders, Retry on the module queue (terminations stay in the queue) and Reply on the tickets
+  waiting, which opens the oldest. A new **Recent activity** card shows the last eight payments, orders, new clients,
+  cancellations and ticket replies from the Activity log, with a button per kind. The **Servers** card shows each
+  server's uptime over 30 days beside its name and marks one at 85% of its accounts Nearly full (Full at the maximum).
 - Dashboard, easier to read: **Renewals** is a compact list in groups (past due, in 7 days, later) with the amount, the
   due date and Record payment on each row, so a phone shows all of it without scrolling sideways (it was the services
   table squeezed into half the page); **Needs attention** shows its first six lines and unfolds the rest; the chart's

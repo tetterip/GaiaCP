@@ -4237,5 +4237,14 @@
     "Validate": "Doğrula",
     "Waiting for you": "Sizi bekleyenler",
     "We answered your ticket :number": ":number numaralı talebinizi yanıtladık",
-    "You have no services yet. Pick one to begin, or look for your domain name.": "Henüz hizmetiniz yok. Başlamak için birini seçin veya alan adınızı arayın."
+    "You have no services yet. Pick one to begin, or look for your domain name.": "Henüz hizmetiniz yok. Başlamak için birini seçin veya alan adınızı arayın.",
+    ":percent in 30 days": "30 günde :percent",
+    "Cancellations": "İptaller",
+    "Complete :count order|Complete :count orders": ":count siparişi tamamla|:count siparişi tamamla",
+    "Every open item is tried again now, domain renewals too. Terminations wait in the module queue.": "Açık her öğe şimdi yeniden denenir, alan adı yenilemeleri de. Sonlandırmalar modül kuyruğunda bekler.",
+    "Full": "Dolu",
+    "Nearly full": "Neredeyse dolu",
+    "Nothing here yet": "Henüz burada bir şey yok",
+    "Recent activity": "Son etkinlikler",
+    "Complete it": "Tamamla"
 }

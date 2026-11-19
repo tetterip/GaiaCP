@@ -4237,5 +4237,14 @@
     "Validate": "Zweryfikuj",
     "Waiting for you": "Czeka na Ciebie",
     "We answered your ticket :number": "Odpowiedzieliśmy na Twoje zgłoszenie :number",
-    "You have no services yet. Pick one to begin, or look for your domain name.": "Nie masz jeszcze usług. Wybierz jedną, aby zacząć, lub wyszukaj swoją domenę."
+    "You have no services yet. Pick one to begin, or look for your domain name.": "Nie masz jeszcze usług. Wybierz jedną, aby zacząć, lub wyszukaj swoją domenę.",
+    ":percent in 30 days": ":percent w 30 dni",
+    "Cancellations": "Anulowania",
+    "Complete :count order|Complete :count orders": "Zrealizuj :count zamówienie|Zrealizuj :count zamówienia|Zrealizuj :count zamówień",
+    "Every open item is tried again now, domain renewals too. Terminations wait in the module queue.": "Każda otwarta pozycja jest teraz ponawiana, także odnowienia domen. Zakończenia usług czekają w kolejce modułów.",
+    "Full": "Pełny",
+    "Nearly full": "Prawie pełny",
+    "Nothing here yet": "Jeszcze nic tu nie ma",
+    "Recent activity": "Ostatnia aktywność",
+    "Complete it": "Zrealizuj"
 }

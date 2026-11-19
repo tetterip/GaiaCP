@@ -4237,5 +4237,14 @@
     "Validate": "Επικύρωση",
     "Waiting for you": "Σας περιμένουν",
     "We answered your ticket :number": "Απαντήσαμε στο ticket σας :number",
-    "You have no services yet. Pick one to begin, or look for your domain name.": "Δεν έχετε ακόμη υπηρεσίες. Διαλέξτε μία για να ξεκινήσετε ή αναζητήστε το domain σας."
+    "You have no services yet. Pick one to begin, or look for your domain name.": "Δεν έχετε ακόμη υπηρεσίες. Διαλέξτε μία για να ξεκινήσετε ή αναζητήστε το domain σας.",
+    ":percent in 30 days": ":percent σε 30 ημέρες",
+    "Cancellations": "Ακυρώσεις",
+    "Complete :count order|Complete :count orders": "Ολοκλήρωση :count παραγγελίας|Ολοκλήρωση :count παραγγελιών",
+    "Every open item is tried again now, domain renewals too. Terminations wait in the module queue.": "Κάθε ανοιχτή ενέργεια δοκιμάζεται ξανά τώρα, και οι ανανεώσεις domain. Οι τερματισμοί περιμένουν στο module queue.",
+    "Full": "Γεμάτος",
+    "Nearly full": "Σχεδόν γεμάτος",
+    "Nothing here yet": "Τίποτα εδώ ακόμη",
+    "Recent activity": "Πρόσφατη δραστηριότητα",
+    "Complete it": "Ολοκλήρωση"
 }
