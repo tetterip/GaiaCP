@@ -4250,5 +4250,9 @@
     "Expiring soon": "Wkrótce wygasają",
     "Auto renew off": "Bez automatycznego odnowienia",
     "Ending soon, auto renew is off": "Wkrótce wygasają, automatyczne odnowienie wyłączone",
-    "Expiring": "Wygasają"
+    "Expiring": "Wygasają",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Okres domeny",
+    "This choice is not offered.": "Ta opcja nie jest oferowana.",
+    "Checkout": "Do kasy"
 }

@@ -145,8 +145,8 @@ class ClientPanelProvider extends PanelProvider
             ->navigation(fn (NavigationBuilder $builder): NavigationBuilder|bool => filament()->auth()->check()
                 ? (ClientMenu::saved(ClientMenu::CLIENT) === null ? true : ClientMenu::build(ClientMenu::CLIENT, $builder))
                 : PublicArea::navigation($builder))
-            // The cart, with how many items are in it, while clients can order (Cart)
-            ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() && Cart::canAccess() ? view('filament.client.cart-icon')->render() : '')
+            // The cart, with how many items are in it, opening its items from the side, while clients can order (CartDrawer)
+            ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() && Cart::canAccess() ? Blade::render('@livewire(\'cart-drawer\')') : '')
             // A visitor's language, cart, Log in and Sign up
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() ? '' : view('filament.client.public-topbar')->render())
             // The bell (App\Notifications\ClientAlerts): Settings → Client area → Notifications, and each login's profile.

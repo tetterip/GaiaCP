@@ -731,6 +731,35 @@
         font-variant-numeric: tabular-nums;
     }
 
+    .gcp-cart-line-text {
+        min-width: 0;
+        flex: 1;
+    }
+
+    /* A cart item's billing cycle or domain term, changed in place */
+    .gcp-cart-line-choice {
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+        max-width: 18rem;
+        margin-top: .5rem;
+        font-size: .8rem;
+        color: var(--gray-500);
+    }
+
+    /* The cart in the top bar (CartDrawer): its items, then the total and Checkout pinned under them */
+    .gcp-cart-drawer-total {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: .75rem;
+        font-weight: 600;
+    }
+
+    .gcp-cart-drawer-checkout {
+        width: 100%;
+    }
+
     /* Downloads: each file's title, description and size, its button at the end (under them on phones) */
     .gcp-downloads {
         display: flex;

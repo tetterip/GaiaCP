@@ -5,11 +5,10 @@ namespace App\Filament\Client\Pages;
 use App\Actions\ClientOrder;
 use App\Actions\ClientSignup;
 use App\Filament\Client\Concerns\OrderForm;
+use App\Filament\Client\Concerns\ShowsCartLines;
 use App\Models\Client;
 use App\Models\Coupon;
 use App\Support\Coupons;
-use App\Support\Currencies;
-use App\Support\Money;
 use App\Support\OrderCatalogue;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
@@ -38,6 +37,7 @@ use Illuminate\Validation\ValidationException;
 class PublicOrder extends Page
 {
     use OrderForm;
+    use ShowsCartLines;
 
     protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
@@ -148,21 +148,9 @@ class PublicOrder extends Page
         $this->fillEmpty();
     }
 
-    /** @return list<array{key: string, title: string, details: list<string>, amount: ?string, error: ?string}> */
-    public function lines(): array
+    protected function cartClient(): ?Client
     {
-        $order = app(ClientOrder::class);
-
-        return collect(ClientOrder::cart())->map(function (array $line, string $key) use ($order) {
-            $item = $order->describe($line);
-
-            return ['key' => $key, 'title' => $item['title'], 'details' => $item['details'], 'amount' => $item['amount_cents'] === null ? null : Money::format($item['amount_cents'], Currencies::forClient(null)), 'error' => $item['error']];
-        })->values()->all();
-    }
-
-    public function removeLine(string $key): void
-    {
-        ClientOrder::removeFromCart($key);
+        return null;
     }
 
     /**

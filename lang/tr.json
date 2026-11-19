@@ -4250,5 +4250,9 @@
     "Expiring soon": "Yakında sona erecek",
     "Auto renew off": "Otomatik yenileme kapalı",
     "Ending soon, auto renew is off": "Yakında sona erecek, otomatik yenileme kapalı",
-    "Expiring": "Sona eriyor"
+    "Expiring": "Sona eriyor",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Alan adı süresi",
+    "This choice is not offered.": "Bu seçenek sunulmuyor.",
+    "Checkout": "Siparişi tamamla"
 }

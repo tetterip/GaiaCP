@@ -4250,5 +4250,9 @@
     "Expiring soon": "In scadenza",
     "Auto renew off": "Rinnovo automatico disattivato",
     "Ending soon, auto renew is off": "In scadenza, rinnovo automatico disattivato",
-    "Expiring": "In scadenza"
+    "Expiring": "In scadenza",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Durata del dominio",
+    "This choice is not offered.": "Questa scelta non è disponibile.",
+    "Checkout": "Vai alla cassa"
 }
