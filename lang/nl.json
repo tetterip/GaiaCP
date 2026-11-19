@@ -4254,5 +4254,8 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Looptijd van het domein",
     "This choice is not offered.": "Deze keuze wordt niet aangeboden.",
-    "Checkout": "Afrekenen"
+    "Checkout": "Afrekenen",
+    ":list +:count": ":list +:count",
+    "In :count day|In :count days": "Over :count dag|Over :count dagen",
+    ":count day ago|:count days ago": ":count dag geleden|:count dagen geleden"
 }

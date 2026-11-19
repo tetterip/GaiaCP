@@ -4254,5 +4254,8 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Laufzeit der Domain",
     "This choice is not offered.": "Diese Auswahl wird nicht angeboten.",
-    "Checkout": "Zur Kasse"
+    "Checkout": "Zur Kasse",
+    ":list +:count": ":list +:count",
+    "In :count day|In :count days": "In :count Tag|In :count Tagen",
+    ":count day ago|:count days ago": "Vor :count Tag|Vor :count Tagen"
 }

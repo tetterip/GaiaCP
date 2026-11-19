@@ -204,4 +204,19 @@ class ClientStatusChipsTest extends TestCase
         $badges = collect(ServiceResource::getNavigationItems())->mapWithKeys(fn ($item) => [$item->getLabel() => $item->getBadge()]);
         $this->assertSame(['Hosting' => '1', 'Other services' => '2'], $badges->all());
     }
+
+    public function test_domain_rows_show_nameservers_and_how_soon_they_end(): void
+    {
+        $soon = Service::factory()->domain()->for($this->client)->create(['domain' => 'soon.gr', 'next_due_date' => today()->addDays(12)->toDateString()]);
+        $soon->domainDetails()->create(['nameservers' => ['ns1.host.gr', 'ns2.host.gr', 'ns3.host.gr']]);
+        Service::factory()->domain()->for($this->client)->create(['domain' => 'late.gr', 'next_due_date' => today()->subDays(3)->toDateString()]);
+        $later = Service::factory()->domain()->for($this->client)->create(['domain' => 'later.gr', 'next_due_date' => today()->addYear()->toDateString()]);
+        $later->domainDetails()->create(['nameservers' => ['a.ns.gr', 'b.ns.gr']]);
+
+        Livewire::test(ListDomains::class)
+            ->assertSee(['ns1.host.gr, ns2.host.gr +1', 'a.ns.gr, b.ns.gr', 'In 12 days', '3 days ago']);
+
+        $this->assertNull(DomainResource::dueIn($later->fresh()));
+        $this->assertSame('Today', DomainResource::dueIn(tap($later->fresh(), fn ($s) => $s->next_due_date = today()->toImmutable())));
+    }
 }

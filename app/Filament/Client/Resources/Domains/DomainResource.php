@@ -78,6 +78,43 @@ class DomainResource extends Resource
             ->whereOnDate('next_due_date', '<=', today()->addDays(self::EXPIRING_DAYS));
     }
 
+    /** The domain's nameservers under its name in the list ("ns1.host.gr, ns2.host.gr +1"), null before sync knows them. */
+    public static function nameserversLine(Service $service): ?string
+    {
+        $nameservers = array_values(array_filter((array) $service->domainDetails?->nameservers));
+
+        if ($nameservers === []) {
+            return null;
+        }
+
+        $line = implode(', ', array_slice($nameservers, 0, 2));
+
+        return count($nameservers) > 2 ? __(':list +:count', ['list' => $line, 'count' => count($nameservers) - 2]) : $line;
+    }
+
+    /** Whether a billable domain is due within EXPIRING_DAYS (overdue ones too), like the Expiring soon chip. */
+    public static function endsSoon(Service $service): bool
+    {
+        return in_array($service->status, ServiceStatus::billable(), true)
+            && $service->next_due_date->lte(today()->addDays(self::EXPIRING_DAYS));
+    }
+
+    /** "In 12 days" / "Today" / "5 days ago" under the due date of a domain that ends soon; null otherwise. */
+    public static function dueIn(Service $service): ?string
+    {
+        if (! self::endsSoon($service)) {
+            return null;
+        }
+
+        $days = (int) today()->diffInDays($service->next_due_date->startOfDay(), false);
+
+        return match (true) {
+            $days === 0 => __('Today'),
+            $days > 0 => trans_choice('In :count day|In :count days', $days),
+            default => trans_choice(':count day ago|:count days ago', -$days),
+        };
+    }
+
     /** Active domains the client set not to renew: they end at their due date. */
     public static function autoRenewOff(Builder $query): Builder
     {
@@ -126,6 +163,7 @@ class DomainResource extends Resource
             ->modifyQueryUsing(fn (Builder $query) => $query->with('domainDetails'))
             ->columns([
                 TextColumn::make('domain')
+                    ->description(fn (Service $record) => self::nameserversLine($record))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('status')
@@ -133,11 +171,13 @@ class DomainResource extends Resource
                 TextColumn::make('domainDetails.expires_at')
                     ->label('Expires')
                     ->date(AppServiceProvider::dateFormat())
-                    ->placeholder('—'),
+                    ->placeholder('—')
+                    ->visibleFrom('md'),
                 TextColumn::make('next_due_date')
                     ->label('Next due date')
                     ->date(AppServiceProvider::dateFormat())
-                    ->color(fn (Service $record) => $record->isOverdue() ? 'danger' : null)
+                    ->description(fn (Service $record) => self::dueIn($record))
+                    ->color(fn (Service $record) => $record->isOverdue() ? 'danger' : (self::endsSoon($record) ? 'warning' : null))
                     ->sortable(),
                 IconColumn::make('auto_renew')
                     ->label('Auto renew')

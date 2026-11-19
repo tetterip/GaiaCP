@@ -4254,5 +4254,8 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Duração do domínio",
     "This choice is not offered.": "Esta opção não é oferecida.",
-    "Checkout": "Finalizar pedido"
+    "Checkout": "Finalizar pedido",
+    ":list +:count": ":list +:count",
+    "In :count day|In :count days": "Em :count dia|Em :count dias",
+    ":count day ago|:count days ago": "Há :count dia|Há :count dias"
 }

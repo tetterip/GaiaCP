@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area Domains: each row shows the domain's nameservers under its name and, for one ending within 30 days,
+  how many days are left (or how long ago it was due) under its due date; Expires is hidden on phones.
 - Client area cart, quicker: **Add to cart** opens the cart from the side of the page instead of leaving it, and the
   cart icon in the top bar opens the same panel, with the first payment and **Checkout** (the Cart page, for the note,
   coupon and terms). Each item's billing cycle and a domain's term can be changed right there, each choice with the

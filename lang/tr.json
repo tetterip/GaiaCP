@@ -4254,5 +4254,8 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Alan adı süresi",
     "This choice is not offered.": "Bu seçenek sunulmuyor.",
-    "Checkout": "Siparişi tamamla"
+    "Checkout": "Siparişi tamamla",
+    ":list +:count": ":list +:count",
+    "In :count day|In :count days": ":count gün sonra",
+    ":count day ago|:count days ago": ":count gün önce"
 }

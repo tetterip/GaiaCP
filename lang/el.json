@@ -4254,5 +4254,8 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Διάρκεια domain",
     "This choice is not offered.": "Αυτή η επιλογή δεν προσφέρεται.",
-    "Checkout": "Ολοκλήρωση παραγγελίας"
+    "Checkout": "Ολοκλήρωση παραγγελίας",
+    ":list +:count": ":list +:count",
+    "In :count day|In :count days": "Σε :count ημέρα|Σε :count ημέρες",
+    ":count day ago|:count days ago": "Πριν από :count ημέρα|Πριν από :count ημέρες"
 }

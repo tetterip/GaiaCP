@@ -4254,5 +4254,8 @@
     ":choice · :amount": ":choice · :amount",
     "Domain term": "Okres domeny",
     "This choice is not offered.": "Ta opcja nie jest oferowana.",
-    "Checkout": "Do kasy"
+    "Checkout": "Do kasy",
+    ":list +:count": ":list +:count",
+    "In :count day|In :count days": "Dni do końca: :count",
+    ":count day ago|:count days ago": "Dni po terminie: :count"
 }
