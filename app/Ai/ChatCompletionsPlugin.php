@@ -88,7 +88,18 @@ abstract class ChatCompletionsPlugin extends Plugin implements AiModule
 
     public function model(): string
     {
-        return trim((string) config("gaiacp.{$this->id()}.model")) ?: $this->suggestedModels()[0];
+        return trim((string) config("gaiacp.{$this->id()}.model")) ?: $this->defaultModel();
+    }
+
+    /**
+     * The model asked while the field is empty: the first suggested one the key has (once Test connection read its
+     * models), else the first it has, so a retired model name is never asked by default.
+     */
+    public function defaultModel(): string
+    {
+        $known = $this->knownModels();
+
+        return collect($this->suggestedModels())->first(fn (string $model) => in_array($model, $known, true)) ?? $known[0] ?? $this->suggestedModels()[0];
     }
 
     public function complete(Prompt $prompt): Answer

@@ -29,7 +29,8 @@ class DeepSeekPlugin extends ChatCompletionsPlugin
 
     public function suggestedModels(): array
     {
-        return ['deepseek-chat', 'deepseek-flash', 'deepseek-v4-pro', 'deepseek-reasoner'];
+        // deepseek-chat and deepseek-reasoner are the older names, still on some keys
+        return ['deepseek-flash', 'deepseek-v4-pro', 'deepseek-chat', 'deepseek-reasoner'];
     }
 
     public function settingsPage(): ?string

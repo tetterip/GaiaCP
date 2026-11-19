@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- AI services (DeepSeek 1.0.3, OpenAI): with the Model field empty, the first suggested model your key has is used (read by
+  Test connection), so a retired default such as deepseek-chat is never asked; DeepSeek now suggests deepseek-flash first.
 - Fixed: with product groups set up, Add to cart for a domain alone (the Domain names group) on the client Order page
   and the public cart did nothing; the hidden product cards left the order without "A domain name only".
 - Client area Domains: tick several domains to change their nameservers or turn auto renew on or off for all of them
