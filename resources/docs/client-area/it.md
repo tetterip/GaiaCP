@@ -36,7 +36,7 @@ Al primo accesso, un breve tour mostra cosa può fare qui. Il menu con il suo no
 
 ## Home
 
-La Home mostra quanto deve pagare, quanti servizi sono attivi e cosa si rinnova per primo, con un link a ciascuno. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi.
+La Home mostra quanto deve pagare, con un pulsante **Paga** su ogni avviso di pagamento (o una riga che dice che tutto è pagato), i Suoi servizi con un pulsante che La collega al pannello di controllo di ogni account di hosting, e cosa si rinnova per primo; un dominio che non si rinnova automaticamente è segnalato lì. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi.
 
 ## Servizi e domini
 

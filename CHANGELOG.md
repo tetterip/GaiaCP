@@ -16,6 +16,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   failed") instead of one line each. **Open balance**: "Due in 7 days" now counts unpaid payment notices like the rest
   of the card (it counted services by their next due date), and a new line shows what the renewals of the next 30 days
   should bring, opening the Income forecast report.
+- Client area Home, the things clients come for: **My services** lists their services (hosting first, a suspended one
+  on top) with a button that logs them in to the control panel of each hosting account, where Settings → Client area
+  lets them, and the count per kind under it. **To pay** holds the unpaid notices, each with its Pay, and the credit;
+  with nothing to pay it is one line, "Everything is paid", with the next renewal. **Coming up for renewal** names the
+  billing cycle and now lists a domain whose auto renew is off, marked "Does not renew automatically". The shortcuts
+  are what a client comes to do (Order, New ticket, Register a domain, Add funds, Your profile) and show on a phone
+  only, where the menu is folded away.
 - Client area Home, easier to read: **Active services** counts hosting, domains and other services, each opening its
   list; the shortcuts are tiles (one row to swipe on a phone); the notices to pay and the coming renewals sit side by
   side, each row a link, with the domain first; **Past due** shows only when something is.

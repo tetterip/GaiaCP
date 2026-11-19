@@ -4208,5 +4208,17 @@
     "New clients": "Yeni müşteriler",
     "Tickets waiting": "Bekleyen destek talepleri",
     "None waiting for us": "Bizi bekleyen yok",
-    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Önümüzdeki :days günde bekleniyor, :count yenilemeden|Önümüzdeki :days günde bekleniyor, :count yenilemeden"
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Önümüzdeki :days günde bekleniyor, :count yenilemeden|Önümüzdeki :days günde bekleniyor, :count yenilemeden",
+    "Was due :date": "Son ödeme tarihi :date idi",
+    "All :count payment notices to pay": "Ödenecek :count ödeme bildiriminin tümü",
+    "Everything is paid": "Her şey ödendi",
+    "Next renewal :date, :name": "Sonraki yenileme :date, :name",
+    "My services": "Hizmetlerim",
+    "renews :date": ":date tarihinde yenilenir",
+    "ends :date": ":date tarihinde sona erer",
+    "Manage": "Yönet",
+    ":count active service|:count active services": ":count etkin hizmet|:count etkin hizmet",
+    "Does not renew automatically": "Otomatik yenilenmez",
+    "New ticket": "Yeni destek talebi",
+    "Register a domain": "Alan adı kaydet"
 }

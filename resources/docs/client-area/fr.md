@@ -36,7 +36,7 @@ Lors de votre première connexion, une courte visite montre ce que vous pouvez f
 
 ## Accueil
 
-L'Accueil montre ce que vous avez à payer, combien de services sont actifs et ce qui se renouvelle prochainement, avec un lien vers chacun. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité.
+L'Accueil montre ce que vous avez à payer, avec un bouton **Payer** sur chaque avis de paiement (ou une ligne indiquant que tout est payé), vos services avec un bouton qui vous connecte au panneau de contrôle de chaque compte d'hébergement, et ce qui se renouvelle prochainement ; un domaine qui ne se renouvelle pas automatiquement y est signalé. Nos annonces, comme des travaux prévus sur votre serveur, apparaissent en haut de l'Accueil tant qu'elles sont d'actualité.
 
 ## Services et domaines
 

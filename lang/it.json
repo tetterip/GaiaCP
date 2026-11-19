@@ -4208,5 +4208,17 @@
     "New clients": "Nuovi clienti",
     "Tickets waiting": "Ticket in attesa",
     "None waiting for us": "Nessuno in attesa di noi",
-    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Previsti nei prossimi :days giorni, da :count rinnovo|Previsti nei prossimi :days giorni, da :count rinnovi"
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Previsti nei prossimi :days giorni, da :count rinnovo|Previsti nei prossimi :days giorni, da :count rinnovi",
+    "Was due :date": "Scaduto il :date",
+    "All :count payment notices to pay": "Tutti i :count avvisi di pagamento da pagare",
+    "Everything is paid": "Tutto è pagato",
+    "Next renewal :date, :name": "Prossimo rinnovo :date, :name",
+    "My services": "I miei servizi",
+    "renews :date": "si rinnova il :date",
+    "ends :date": "termina il :date",
+    "Manage": "Gestisci",
+    ":count active service|:count active services": ":count servizio attivo|:count servizi attivi",
+    "Does not renew automatically": "Non si rinnova automaticamente",
+    "New ticket": "Nuovo ticket",
+    "Register a domain": "Registra un dominio"
 }

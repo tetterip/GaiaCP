@@ -36,7 +36,7 @@ Przy pierwszym logowaniu krótki przewodnik pokazuje, co możesz tu zrobić. Men
 
 ## Strona główna
 
-Strona główna pokazuje, ile jest do zapłaty, ile usług jest aktywnych i co odnawia się najbliżej, z linkiem do każdej pozycji. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują.
+Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy każdym wezwaniu do zapłaty (albo jedną linią, że wszystko jest opłacone), Państwa usługi z przyciskiem logującym do panelu każdego konta hostingowego oraz to, co odnawia się najbliżej; domena, która nie odnawia się automatycznie, jest tam oznaczona. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują.
 
 ## Usługi i domeny
 

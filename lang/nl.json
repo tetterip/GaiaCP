@@ -4208,5 +4208,17 @@
     "New clients": "Nieuwe klanten",
     "Tickets waiting": "Wachtende tickets",
     "None waiting for us": "Geen wacht op ons",
-    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Verwacht in de komende :days dagen, uit :count verlenging|Verwacht in de komende :days dagen, uit :count verlengingen"
+    "Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals": "Verwacht in de komende :days dagen, uit :count verlenging|Verwacht in de komende :days dagen, uit :count verlengingen",
+    "Was due :date": "Verviel op :date",
+    "All :count payment notices to pay": "Alle :count openstaande betalingsberichten",
+    "Everything is paid": "Alles is betaald",
+    "Next renewal :date, :name": "Volgende verlenging :date, :name",
+    "My services": "Mijn diensten",
+    "renews :date": "wordt verlengd op :date",
+    "ends :date": "eindigt op :date",
+    "Manage": "Beheren",
+    ":count active service|:count active services": ":count actieve dienst|:count actieve diensten",
+    "Does not renew automatically": "Wordt niet automatisch verlengd",
+    "New ticket": "Nieuw ticket",
+    "Register a domain": "Domein registreren"
 }

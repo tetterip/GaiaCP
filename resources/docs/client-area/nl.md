@@ -36,7 +36,7 @@ De eerste keer dat u inlogt, laat een korte rondleiding zien wat u hier kunt doe
 
 ## Home
 
-Home toont wat u moet betalen, hoeveel diensten actief zijn en wat als eerste wordt verlengd, met een link naar elk. Onze mededelingen, zoals gepland werk aan uw server, verschijnen bovenaan Home zolang ze van toepassing zijn.
+Home toont wat u moet betalen, met een knop **Betalen** bij elk betalingsbericht (of één regel dat alles is betaald), uw diensten met een knop die u aanmeldt bij het controlepaneel van elk hostingaccount, en wat als eerste wordt verlengd; een domein dat niet automatisch wordt verlengd, is daar gemarkeerd. Onze mededelingen, zoals gepland werk aan uw server, verschijnen bovenaan Home zolang ze van toepassing zijn.
 
 ## Diensten en domeinen
 

@@ -39,7 +39,7 @@
         color: var(--gcp-text);
     }
 
-    /* Home: the To pay card beside the smaller ones, then shortcuts and lists (the lists' own styles further down) */
+    /* Home: the To pay card beside My services, then the shortcuts (a phone) and the renewals (their styles further down) */
     .gcp-home-grid {
         display: grid;
         gap: 1.25rem;
@@ -47,24 +47,14 @@
 
     @media (min-width: 1024px) {
         .gcp-home-grid {
-            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             align-items: stretch;
         }
-    }
-
-    .gcp-home-side {
-        display: grid;
-        gap: 1.25rem;
-        align-content: start;
     }
 
     .gcp-home-grid .gx-hero {
         min-height: 0;
         height: 100%;
-    }
-
-    .gcp-home-stat .gx-big {
-        font-size: 2rem;
     }
 
     .gcp-home-owed {
@@ -111,65 +101,6 @@
         color: var(--gcp-muted);
     }
 
-    /* Active services: the count over a row per kind, as tall as the To pay card beside it */
-    .gcp-home-side {
-        align-content: stretch;
-        grid-auto-rows: 1fr;
-    }
-
-    .gcp-home-services {
-        gap: .9rem;
-    }
-
-    .gcp-home-services-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-
-    .gcp-home-services .gx-big {
-        margin-top: .5rem;
-        font-size: 2.4rem;
-    }
-
-    .gcp-home-types {
-        display: flex;
-        flex-direction: column;
-        margin-top: auto;
-    }
-
-    .gcp-home-type {
-        display: flex;
-        align-items: center;
-        gap: .7rem;
-        padding: .6rem .25rem;
-        border-top: 1px solid var(--gcp-line);
-        font-size: .9rem;
-        color: var(--gcp-text);
-    }
-
-    .gcp-home-type:hover .gcp-home-type-label {
-        color: var(--gcp-accent);
-    }
-
-    .gcp-home-type-icon {
-        width: 1.15rem;
-        height: 1.15rem;
-        color: var(--gcp-muted);
-    }
-
-    .gcp-home-type-label {
-        flex: 1;
-        font-weight: 500;
-    }
-
-    .gcp-home-type-count {
-        font-weight: 600;
-        font-variant-numeric: tabular-nums;
-        color: var(--gcp-ink);
-    }
-
     .gcp-home-arrow {
         flex: none;
         width: 1rem;
@@ -177,10 +108,9 @@
         color: var(--gcp-muted);
     }
 
-    /* Shortcuts: a tile each across the page, one row to swipe on a phone */
+    /* Shortcuts: one row to swipe on a phone; a wide screen has the menu beside the page */
     .gcp-home-tiles {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+        display: none;
         gap: .75rem;
     }
 
@@ -221,7 +151,7 @@
         height: 1.1rem;
     }
 
-    @media (max-width: 639px) {
+    @media (max-width: 1023px) {
         .gcp-home-tiles {
             display: flex;
             overflow-x: auto;
@@ -242,19 +172,7 @@
         }
     }
 
-    /* The two lists side by side on a wide screen, each row a link with its amount at the end */
-    .gcp-home-lists {
-        display: grid;
-        gap: 1.25rem;
-        align-items: start;
-    }
-
-    @media (min-width: 1024px) {
-        .gcp-home-lists {
-            grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-        }
-    }
-
+    /* The lists: each row a link with its amount at the end */
     .gcp-home-card {
         gap: .6rem;
     }
@@ -318,6 +236,167 @@
 
     .gcp-home-row .gcp-overdue {
         color: var(--gcp-bad);
+    }
+
+    /* To pay: the amount over the notices, each with its Pay; one low line when everything is paid */
+    .gcp-home-pay {
+        gap: .9rem;
+    }
+
+    .gcp-home-pay-amount {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+    }
+
+    .gcp-home-dot-bad {
+        background: var(--gcp-bad);
+    }
+
+    .gcp-home-pay .gcp-overdue {
+        color: var(--gcp-bad);
+    }
+
+    .gcp-home-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem 1rem;
+        margin-top: auto;
+        padding-top: .75rem;
+        border-top: 1px solid var(--gcp-line);
+        font-size: .85rem;
+    }
+
+    .gcp-home-credit {
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-credit strong {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-credit:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-paid {
+        align-self: start;
+    }
+
+    .gcp-home-paid-line {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+    }
+
+    .gcp-home-paid-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        line-height: 1.4;
+    }
+
+    .gcp-home-paid-text strong {
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
+    /* My services: a row each with the way into its panel, then the count per kind */
+    .gcp-home-services .gx-head {
+        flex-wrap: nowrap;
+    }
+
+    .gcp-home-order {
+        margin-inline-start: auto;
+    }
+
+    .gcp-home-row-text .gcp-live {
+        display: inline-block;
+        margin-inline-end: .35rem;
+        vertical-align: middle;
+    }
+
+    a.gcp-home-row-text:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-row-open {
+        flex: none;
+        padding: .3rem .7rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 600;
+        white-space: nowrap;
+        background: var(--gcp-soft);
+        color: var(--gcp-accent);
+        transition: box-shadow .15s ease;
+    }
+
+    .gcp-home-row-open:hover,
+    .gcp-home-row-open:focus-visible {
+        box-shadow: 0 0 0 1px var(--gcp-accent);
+    }
+
+    .gcp-home-row-manage {
+        background: none;
+        color: var(--gcp-muted);
+        box-shadow: 0 0 0 1px var(--gcp-line);
+    }
+
+    .gcp-home-kinds {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .4rem .9rem;
+        margin-top: auto;
+        padding-top: .75rem;
+        border-top: 1px solid var(--gcp-line);
+        font-size: .85rem;
+    }
+
+    .gcp-home-kinds .gx-muted {
+        margin-inline-end: auto;
+    }
+
+    @media (max-width: 639px) {
+        .gcp-home-kinds .gx-muted {
+            flex-basis: 100%;
+        }
+    }
+
+    .gcp-home-kind {
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-kind strong {
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-kind:hover,
+    .gcp-home-kind:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    /* "Does not renew automatically" on a domain whose auto renew is off */
+    .gcp-home-flag {
+        display: inline-block;
+        margin-inline-start: .35rem;
+        padding: 0 .45rem;
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 600;
+        background: var(--warning-50);
+        color: var(--warning-700);
+    }
+
+    .dark .gcp-home-flag {
+        background: color-mix(in oklab, var(--warning-500) 18%, transparent);
+        color: var(--warning-300);
     }
 
     .gcp-home-contact {
