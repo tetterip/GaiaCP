@@ -114,9 +114,9 @@ abstract class ChatCompletionsSettings extends SettingsFormPage
                         TextInput::make("{$id}.model")
                             ->label('Model')
                             ->datalist(fn () => static::plugin()->knownModels())
-                            ->placeholder(fn () => static::plugin()->suggestedModels()[0])
+                            ->placeholder(fn () => static::plugin()->defaultModel())
                             ->maxLength(100)
-                            ->helperText(__('Empty: :model. Test connection lists the models your key can use, which are then offered here.', ['model' => static::plugin()->suggestedModels()[0]])),
+                            ->helperText(fn () => __('Empty: :model. Test connection lists the models your key can use, which are then offered here.', ['model' => static::plugin()->defaultModel()])),
                         Text::make(fn () => new HtmlString(__('What the assistant may do, and a monthly limit: <a href=":url" class="underline">Settings → AI assistant</a>.', ['url' => AiSettings::getUrl()]))),
                     ]),
             ]);

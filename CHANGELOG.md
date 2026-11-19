@@ -5,12 +5,16 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- AI services (DeepSeek 1.0.3, OpenAI): with the Model field empty, the first suggested model your key has is used (read by
+  Test connection), so a retired default such as deepseek-chat is never asked; DeepSeek now suggests deepseek-flash first.
+- Fixed: with product groups set up, Add to cart for a domain alone (the Domain names group) on the client Order page
+  and the public cart did nothing; the hidden product cards left the order without "A domain name only".
 - Client area Domains: tick several domains to change their nameservers or turn auto renew on or off for all of them
   (each behind its Settings → Client area switch, as on a domain's page); one summary says which were changed or left out.
 - Domain search: names from a description (Settings → AI assistant → Domain names from a description, off by default).
   A client types a few words about their business and gets free names with the first ending sold and .com, each with
-  its price (sent without email addresses or phone numbers; same 5 an hour). Signed-in clients only unless **Visitors
-  too** (always with the captcha). New **Domain suggestions a day** (200) caps both AI buttons for clients and visitors.
+  its price (sent without email addresses or phone numbers; same 5 an hour). Signed-in clients only unless **Also for visitors
+  without an account** (always with the captcha). New **Domain suggestions a day** (200) caps both AI buttons for clients and visitors.
 - Urgent tickets (Settings → Support → Urgent tickets per client each month, off by default): a client switches on
   **Urgent** for an active service that stopped working; the ticket gets the new Urgent priority, the bell and push say
   "Urgent ticket", and the new `ticket.urgent` event can be posted alone to Slack, Discord, Telegram or a webhook.

@@ -4271,9 +4271,6 @@
     "This ticket can't be marked urgent.": "Bu bilet acil olarak işaretlenemez.",
     "Urgent per month": "Aylık acil",
     "Domain names from a description": "Açıklamadan alan adları",
-    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "Alan adı aramasında işi hakkında birkaç kelime yazan müşteri (\"Selanik'te bir pastane\") ilk uzantınız ve .com ile boş adlar alır, her biri fiyatıyla. Açıklamayı e-posta adresleri ve telefon numaraları olmadan gönderir. Saatte aynı :count sayıya dahildir.",
-    "Visitors too": "Ziyaretçiler de",
-    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Giriş yapmamış ziyaretçiler, her zaman captcha'dan sonra (bir captcha eklentisi açık olmalı). Kapalı: yalnızca giriş yapmış müşteriler.",
     "Domain suggestions a day": "Günlük alan adı önerisi",
     "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Müşteriler ve ziyaretçiler birlikte, iki düğme de, böylece ekibinizin ihtiyaç duyduğu aylık sınırı asla tüketmezler. Boş = sınır yok.",
     "Enter a name like example or example.gr, or describe your business in a few words.": "example veya example.gr gibi bir ad yazın ya da işinizi birkaç kelimeyle anlatın.",
@@ -4289,5 +4286,8 @@
     ":count domain changed|:count domains changed": "Değiştirilen alan adı: :count",
     "already off": "zaten kapalı",
     "They renew again: you get a payment notice before each one's due date.": "Yeniden yenilenirler: her birinin vadesinden önce ödeme bildirimi alırsınız.",
-    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Bunlar için artık ödeme bildirimi almayacaksınız ve her biri vadesinde sona erer. Öncesinde yeniden açabilirsiniz."
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Bunlar için artık ödeme bildirimi almayacaksınız ve her biri vadesinde sona erer. Öncesinde yeniden açabilirsiniz.",
+    "Also for visitors without an account": "Hesabı olmayan ziyaretçiler için de",
+    "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "Alan adı aramasında henüz adı olmayan bir müşteri işi hakkında birkaç kelime yazar (\"Selanik'te bir pastane\") ve ilk uzantınız ile .com'da uygun boş adlar alır, her biri fiyatıyla. Yapay zekâ hizmetine yalnızca açıklama gider, asla e-posta adresi veya telefon numarası gitmez. Her arama aynı saatlik :count hakka sayılır.",
+    "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Açık: sitenizi giriş yapmadan ziyaret edenler de bir captcha kontrolünden sonra kullanabilir (önce bir captcha eklentisini açın). Kapalı: yalnızca giriş yapmış müşteriler."
 }

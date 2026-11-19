@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.3] - 2026-11-19
+
+- With the Model field empty it asks the first model your key has (deepseek-flash on newer keys) instead of deepseek-chat, which newer keys no longer list
+
 ## [1.0.2] - 2026-10-26
 
 - Its settings page moved to the new Settings → AI assistant group, and it is listed under AI assistant on Settings → Plugins

@@ -109,11 +109,11 @@ class AiSettings extends SettingsFormPage
                             ->helperText(__('In the client area\'s domain search, a Suggest other names button that clients and visitors press: names close to the one searched, each checked like a search. Sends only the name searched. Each press uses tokens, so a client or an address gets at most :count presses an hour.', ['count' => SearchDomains::AI_PER_HOUR])),
                         Toggle::make('ai.features.domain_ideas')
                             ->label('Domain names from a description')
-                            ->helperText(__('In the domain search, a client who types a few words about their business ("a pastry shop in Thessaloniki") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.', ['count' => SearchDomains::AI_PER_HOUR]))
+                            ->helperText(__('In the domain search, a client who has no name yet types a few words about their business ("a pastry shop in Thessaloniki") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.', ['count' => SearchDomains::AI_PER_HOUR]))
                             ->live(),
                         Toggle::make('ai.domain_ideas_visitors')
-                            ->label('Visitors too')
-                            ->helperText(__('Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.'))
+                            ->label('Also for visitors without an account')
+                            ->helperText(__('On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.'))
                             ->visible(fn ($get) => (bool) $get('ai.features.domain_ideas')),
                         TextInput::make('ai.domains_per_day')
                             ->label('Domain suggestions a day')

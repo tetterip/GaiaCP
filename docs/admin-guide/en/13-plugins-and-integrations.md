@@ -122,7 +122,7 @@ It also writes texts from GaiaCP's own details, each with its own switch there:
 - **Domain names from a description** (off until you switch it on): a client with no name yet types a few words about
   their business in the same search box ("a pastry shop in Thessaloniki") and gets free names for it, with your first
   ending and .com, each with its price and Add to cart. The description is sent without email addresses or phone
-  numbers, and counts in the same 5 an hour. Signed-in clients only, unless you tick **Visitors too** (then visitors
+  numbers, and counts in the same 5 an hour. Signed-in clients only, unless you tick **Also for visitors without an account** (then visitors
   always solve the captcha first, so a captcha plugin must be on). **Domain suggestions a day** caps both buttons for
   clients and visitors together (200 by default), so they never use up the monthly limit your team needs.
 

@@ -4271,9 +4271,6 @@
     "This ticket can't be marked urgent.": "Αυτό το ticket δεν μπορεί να σημειωθεί ως επείγον.",
     "Urgent per month": "Επείγοντα τον μήνα",
     "Domain names from a description": "Ονόματα domain από περιγραφή",
-    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "Στην αναζήτηση domain, ο πελάτης που γράφει λίγες λέξεις για την επιχείρησή του («ζαχαροπλαστείο στη Θεσσαλονίκη») παίρνει ελεύθερα ονόματα με την πρώτη σας κατάληξη και το .com, το καθένα με την τιμή του. Στέλνει την περιγραφή, χωρίς emails και τηλέφωνα. Μετράει στις ίδιες :count φορές την ώρα.",
-    "Visitors too": "Και οι επισκέπτες",
-    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Οι επισκέπτες που δεν έχουν συνδεθεί, πάντα μετά το captcha (πρέπει να είναι ανοιχτό ένα plugin captcha). Κλειστό, μόνο οι συνδεδεμένοι πελάτες.",
     "Domain suggestions a day": "Προτάσεις domain την ημέρα",
     "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Από πελάτες και επισκέπτες μαζί, και για τα δύο κουμπιά, ώστε να μην εξαντλούν ποτέ το μηνιαίο όριο που χρειάζεται η ομάδα σας. Κενό = χωρίς όριο.",
     "Enter a name like example or example.gr, or describe your business in a few words.": "Γράψτε ένα όνομα όπως example ή example.gr, ή περιγράψτε την επιχείρησή σας με λίγες λέξεις.",
@@ -4289,5 +4286,8 @@
     ":count domain changed|:count domains changed": "Άλλαξε :count domain|Άλλαξαν :count domains",
     "already off": "είναι ήδη κλειστή",
     "They renew again: you get a payment notice before each one's due date.": "Ανανεώνονται ξανά: θα παίρνετε ειδοποίηση πληρωμής πριν από την ημερομηνία του καθενός.",
-    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Δεν θα παίρνετε άλλες ειδοποιήσεις πληρωμής γι' αυτά και το καθένα λήγει στην ημερομηνία του. Μπορείτε να την ενεργοποιήσετε ξανά πριν από τότε."
+    "You will get no more payment notices for them and each ends on its due date. You can turn it back on before then.": "Δεν θα παίρνετε άλλες ειδοποιήσεις πληρωμής γι' αυτά και το καθένα λήγει στην ημερομηνία του. Μπορείτε να την ενεργοποιήσετε ξανά πριν από τότε.",
+    "Also for visitors without an account": "Και για επισκέπτες χωρίς λογαριασμό",
+    "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "Στην αναζήτηση domain, ο πελάτης που δεν έχει ακόμα όνομα γράφει λίγες λέξεις για την επιχείρησή του («ζαχαροπλαστείο στη Θεσσαλονίκη») και παίρνει ελεύθερα ονόματα που ταιριάζουν, με την πρώτη σας κατάληξη και το .com, το καθένα με την τιμή του. Στην υπηρεσία AI στέλνεται μόνο η περιγραφή, ποτέ emails ή τηλέφωνα. Κάθε αναζήτηση μετράει στις ίδιες :count φορές την ώρα.",
+    "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Ανοιχτό: το χρησιμοποιούν και όσοι επισκέπτονται τη σελίδα σας χωρίς να έχουν συνδεθεί, αφού περάσουν έναν έλεγχο captcha (ανοίξτε πρώτα ένα plugin captcha). Κλειστό: μόνο οι πελάτες που έχουν συνδεθεί."
 }
