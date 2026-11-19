@@ -55,7 +55,7 @@ class DashboardLayoutTest extends TestCase
 
         $shown = DashboardLayout::shown($admin);
         $this->assertSame(['NeedsAttention'], array_keys($shown[0]));
-        $this->assertSame(['SetupGuideCard', 'BillingOverview', 'ServerCapacity'], array_keys($shown[1]));
+        $this->assertSame(['SetupGuideCard', 'BillingOverview', 'ServerCapacity', 'RecentActivity'], array_keys($shown[1]));
         $this->assertSame(['ActivityChart', 'UpcomingRenewals', 'SupportTickets'], array_keys($shown[2]));
 
         Order::create(['client_id' => Client::factory()->create()->id]); // something waits, so Needs attention shows

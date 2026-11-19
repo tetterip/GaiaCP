@@ -4237,5 +4237,14 @@
     "Validate": "Valideren",
     "Waiting for you": "Wacht op u",
     "We answered your ticket :number": "We hebben uw ticket :number beantwoord",
-    "You have no services yet. Pick one to begin, or look for your domain name.": "U hebt nog geen diensten. Kies er een om te beginnen of zoek uw domeinnaam."
+    "You have no services yet. Pick one to begin, or look for your domain name.": "U hebt nog geen diensten. Kies er een om te beginnen of zoek uw domeinnaam.",
+    ":percent in 30 days": ":percent in 30 dagen",
+    "Cancellations": "Opzeggingen",
+    "Complete :count order|Complete :count orders": ":count bestelling afronden|:count bestellingen afronden",
+    "Every open item is tried again now, domain renewals too. Terminations wait in the module queue.": "Elk open item wordt nu opnieuw geprobeerd, ook domeinverlengingen. Beëindigingen wachten in de modulewachtrij.",
+    "Full": "Vol",
+    "Nearly full": "Bijna vol",
+    "Nothing here yet": "Hier is nog niets",
+    "Recent activity": "Recente activiteit",
+    "Complete it": "Afronden"
 }

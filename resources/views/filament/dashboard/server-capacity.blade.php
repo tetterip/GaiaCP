@@ -17,7 +17,13 @@
                         @if ($server['status'] === \App\Monitoring\MonitorStatus::Down)
                             <span class="gx-pill gx-pill-bad">{{ $server['status']->label() }}</span>
                         @endif
+                        @if ($server['nearly_full'])
+                            <span @class(['gx-pill', 'gx-pill-bad' => $server['full'], 'gx-pill-warn' => ! $server['full']])>{{ $server['nearly_full'] }}</span>
+                        @endif
                         <span class="gx-muted gx-grow">{{ $server['panel'] }}</span>
+                        @if ($server['month'])
+                            <span class="gx-muted gx-tnum" title="{{ __('Uptime, 30 days') }}">{{ __(':percent in 30 days', ['percent' => $server['month']]) }}</span>
+                        @endif
                     </div>
                     <div class="gx-server-bars">
                         @if ($server['uptime'])
