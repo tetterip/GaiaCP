@@ -4250,5 +4250,9 @@
     "Expiring soon": "Expirent bientôt",
     "Auto renew off": "Renouvellement automatique désactivé",
     "Ending soon, auto renew is off": "Expirent bientôt, renouvellement automatique désactivé",
-    "Expiring": "Expirent"
+    "Expiring": "Expirent",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Durée du domaine",
+    "This choice is not offered.": "Ce choix n'est pas proposé.",
+    "Checkout": "Passer la commande"
 }

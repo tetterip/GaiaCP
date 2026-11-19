@@ -4250,5 +4250,9 @@
     "Expiring soon": "Λήγουν σύντομα",
     "Auto renew off": "Χωρίς αυτόματη ανανέωση",
     "Ending soon, auto renew is off": "Λήγουν σύντομα, χωρίς αυτόματη ανανέωση",
-    "Expiring": "Λήγουν"
+    "Expiring": "Λήγουν",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Διάρκεια domain",
+    "This choice is not offered.": "Αυτή η επιλογή δεν προσφέρεται.",
+    "Checkout": "Ολοκλήρωση παραγγελίας"
 }

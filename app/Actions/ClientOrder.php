@@ -24,6 +24,7 @@ use App\Support\DomainName;
 use App\Support\DomainSearch;
 use App\Support\DomainSsl;
 use App\Support\Locales;
+use App\Support\Money;
 use App\Support\ProductOptions;
 use App\Support\TermsOfService;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -157,6 +158,90 @@ class ClientOrder
     {
         $cart = (array) session()->get(self::CART, []);
         unset($cart[$key]);
+        session()->put(self::CART, $cart);
+    }
+
+    /**
+     * What a cart item lets the client change in the cart itself: the billing cycle of its product and the term of the
+     * domain it registers or transfers, each with the item's first payment for every choice. Only when there is more
+     * than one choice.
+     *
+     * @param  array<string, mixed>  $line
+     * @return list<array{field: string, label: string, value: string, options: array<string, string>}>
+     */
+    public function cartChoices(array $line, ?Client $client = null): array
+    {
+        $choices = [];
+        $currency = Currencies::forClient($client);
+        $priced = function (array $changed) use ($client, $currency): ?string {
+            try {
+                $amount = collect($this->items($changed, $client))->sum(fn (array $item) => $item['first_payment_cents'] ?? $item['price_cents']);
+            } catch (ValidationException) {
+                return null;
+            }
+
+            return Money::format((int) $amount, $currency);
+        };
+
+        $product = (string) ($line['product'] ?? '') === self::DOMAIN_ONLY ? null : self::products()->firstWhere('id', (int) ($line['product'] ?? 0));
+
+        if ($product !== null && count($product->cycles()) > 1) {
+            $options = [];
+            foreach ($product->cycles() as $cycle) {
+                if (($amount = $priced(['billing_cycle' => $cycle->value] + $line)) !== null) {
+                    $options[$cycle->value] = __(':choice · :amount', ['choice' => $cycle->getLabel(), 'amount' => $amount]);
+                }
+            }
+
+            if (count($options) > 1) {
+                $choices[] = ['field' => 'billing_cycle', 'label' => __('Billing cycle'), 'value' => (string) (BillingCycle::tryFrom((string) ($line['billing_cycle'] ?? ''))->value ?? $product->defaultCycle()?->value), 'options' => $options];
+            }
+        }
+
+        if (($domain = self::orderedDomain($line)) !== null) {
+            $kind = ($line['domain_option'] ?? null) === self::TRANSFER ? self::TRANSFER : self::REGISTER;
+            $options = [];
+            foreach (self::terms($domain, $kind) as $years) {
+                if (($amount = $priced(['years' => $years] + $line)) !== null) {
+                    $options[(string) $years] = __(':choice · :amount', ['choice' => Tld::termLabel($years), 'amount' => $amount]);
+                }
+            }
+
+            if (count($options) > 1) {
+                $choices[] = ['field' => 'years', 'label' => $product === null ? __('Term') : __('Domain term'), 'value' => (string) (int) ($line['years'] ?? 1), 'options' => $options];
+            }
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Changes a cart item's billing cycle or domain term (cartChoices()), checked as an order would.
+     *
+     * @throws ValidationException when the item can't be ordered that way
+     */
+    public function changeCartLine(string $key, string $field, string $value, ?Client $client = null): void
+    {
+        $cart = (array) session()->get(self::CART, []);
+
+        if (! isset($cart[$key]) || ! in_array($field, ['billing_cycle', 'years'], true)) {
+            return;
+        }
+
+        $line = self::cart()[$key] ?? null;
+        if ($line === null) {
+            return;
+        }
+
+        $allowed = collect($this->cartChoices($line, $client))->firstWhere('field', $field)['options'] ?? [];
+        if (! array_key_exists($value, $allowed)) {
+            throw ValidationException::withMessages([$field => __('This choice is not offered.')]);
+        }
+
+        $line[$field] = $field === 'years' ? (int) $value : $value;
+        $this->items($line, $client);
+
+        $cart[$key][$field] = $line[$field];
         session()->put(self::CART, $cart);
     }
 

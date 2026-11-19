@@ -4250,5 +4250,9 @@
     "Expiring soon": "Laufen bald ab",
     "Auto renew off": "Automatische Verlängerung aus",
     "Ending soon, auto renew is off": "Laufen bald ab, automatische Verlängerung ist aus",
-    "Expiring": "Laufen ab"
+    "Expiring": "Laufen ab",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Laufzeit der Domain",
+    "This choice is not offered.": "Diese Auswahl wird nicht angeboten.",
+    "Checkout": "Zur Kasse"
 }

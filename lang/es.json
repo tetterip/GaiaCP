@@ -4250,5 +4250,9 @@
     "Expiring soon": "Vencen pronto",
     "Auto renew off": "Renovación automática desactivada",
     "Ending soon, auto renew is off": "Vencen pronto, renovación automática desactivada",
-    "Expiring": "Vencen"
+    "Expiring": "Vencen",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Duración del dominio",
+    "This choice is not offered.": "Esta opción no se ofrece.",
+    "Checkout": "Finalizar pedido"
 }

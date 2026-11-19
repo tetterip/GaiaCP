@@ -243,6 +243,7 @@ class SearchDomains extends Page
         }
 
         Notification::make()->title(__(':domain is in your cart', ['domain' => $domain]))->success()->send();
+        $this->dispatch('cart-updated');
     }
 
     /** @return list<string> the domains already in the cart */

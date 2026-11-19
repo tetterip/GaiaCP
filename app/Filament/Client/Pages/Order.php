@@ -118,7 +118,7 @@ class Order extends Page
             ]);
     }
 
-    /** Checks the choice as an order would, puts it in the cart and opens the cart. */
+    /** Checks the choice as an order would, puts it in the cart and opens the cart from the side (CartDrawer), with the form ready for the next item. */
     public function addToCart(): void
     {
         $data = $this->form->getState();
@@ -130,7 +130,9 @@ class Order extends Page
         }
 
         Notification::make()->title(__('Added to your cart'))->success()->send();
-        $this->redirect(Cart::getUrl());
+        $this->mount($this->data['group'] ?? null);
+        $this->dispatch('cart-updated');
+        $this->dispatch('open-cart');
     }
 
     protected function orderClient(): ?Client

@@ -4250,5 +4250,9 @@
     "Expiring soon": "Verlopen binnenkort",
     "Auto renew off": "Automatisch verlengen uit",
     "Ending soon, auto renew is off": "Verlopen binnenkort, automatisch verlengen staat uit",
-    "Expiring": "Verlopen"
+    "Expiring": "Verlopen",
+    ":choice · :amount": ":choice · :amount",
+    "Domain term": "Looptijd van het domein",
+    "This choice is not offered.": "Deze keuze wordt niet aangeboden.",
+    "Checkout": "Afrekenen"
 }

@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area cart, quicker: **Add to cart** opens the cart from the side of the page instead of leaving it, and the
+  cart icon in the top bar opens the same panel, with the first payment and **Checkout** (the Cart page, for the note,
+  coupon and terms). Each item's billing cycle and a domain's term can be changed right there, each choice with the
+  item's price; a domain added from Domain search was always put in for its shortest term.
 - Pages that are a table (Clients, Services, Domains, payment notices, reports, the client area's lists…) use the
   whole width of the screen in both panels, so their columns are no longer squeezed into the middle. Home, forms and
   custom pages keep their width.
