@@ -190,6 +190,7 @@ class Settings
         'ai.features.improve',
         'ai.features.translate',
         'ai.features.domains',
+        'ai.features.domain_ideas',
         'ai.features.products',
         'ai.features.outage',
         'ai.features.questions',
@@ -201,6 +202,8 @@ class Settings
         'ai.features.clients',
         'ai.features.language_files',
         'ai.monthly_tokens',
+        'ai.domain_ideas_visitors',
+        'ai.domains_per_day',
     ];
 
     /** Secrets: stored encrypted with the app key, never sent back to the form (plus the plugins', see encrypted()). */

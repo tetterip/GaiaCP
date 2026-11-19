@@ -4269,5 +4269,19 @@
     "You used this month's urgent tickets; this one goes in as usual.": "Você usou os tickets urgentes deste mês; este será enviado normalmente.",
     "The service that stopped working.": "O serviço que parou de funcionar.",
     "This ticket can't be marked urgent.": "Este ticket não pode ser marcado como urgente.",
-    "Urgent per month": "Urgentes por mês"
+    "Urgent per month": "Urgentes por mês",
+    "Domain names from a description": "Nomes de domínio a partir de uma descrição",
+    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "Na busca de domínios, um cliente que escreve algumas palavras sobre o negócio (\"uma confeitaria em Tessalônica\") recebe nomes livres com sua primeira extensão e .com, cada um com o preço. Envia a descrição, sem e-mails nem telefones. Conta nas mesmas :count por hora.",
+    "Visitors too": "Visitantes também",
+    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Visitantes sem login, sempre após o captcha (um plugin de captcha precisa estar ativo). Desativado: só clientes com login.",
+    "Domain suggestions a day": "Sugestões de domínio por dia",
+    "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "De clientes e visitantes juntos, os dois botões, para nunca esgotarem o limite mensal de que sua equipe precisa. Vazio = sem limite.",
+    "Enter a name like example or example.gr, or describe your business in a few words.": "Digite um nome como example ou example.gr, ou descreva seu negócio em poucas palavras.",
+    "The names suggested are taken. Try describing it in other words.": "Os nomes sugeridos estão ocupados. Tente descrever com outras palavras.",
+    "Find your domain (myshop.gr) or describe your business": "Encontre seu domínio (myshop.gr) ou descreva seu negócio",
+    "No name yet? Describe your business in a few words, such as “a pastry shop in Thessaloniki”, and AI suggests free names. What you write is sent to the AI service.": "Ainda sem nome? Descreva seu negócio em poucas palavras, como \"uma confeitaria em Tessalônica\", e a IA sugere nomes livres. O que você escreve é enviado ao serviço de IA.",
+    "Free names for what you described, suggested by AI:": "Nomes livres para o que você descreveu, sugeridos pela IA:",
+    "Domain ideas visitors": "Visitantes também",
+    "Domains per day": "Sugestões de domínio por dia",
+    "Domain ideas": "Nomes de domínio a partir de uma descrição"
 }

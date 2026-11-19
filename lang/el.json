@@ -4269,5 +4269,19 @@
     "You used this month's urgent tickets; this one goes in as usual.": "Χρησιμοποιήσατε τα επείγοντα tickets αυτού του μήνα· αυτό θα σταλεί κανονικά.",
     "The service that stopped working.": "Η υπηρεσία που σταμάτησε να λειτουργεί.",
     "This ticket can't be marked urgent.": "Αυτό το ticket δεν μπορεί να σημειωθεί ως επείγον.",
-    "Urgent per month": "Επείγοντα τον μήνα"
+    "Urgent per month": "Επείγοντα τον μήνα",
+    "Domain names from a description": "Ονόματα domain από περιγραφή",
+    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "Στην αναζήτηση domain, ο πελάτης που γράφει λίγες λέξεις για την επιχείρησή του («ζαχαροπλαστείο στη Θεσσαλονίκη») παίρνει ελεύθερα ονόματα με την πρώτη σας κατάληξη και το .com, το καθένα με την τιμή του. Στέλνει την περιγραφή, χωρίς emails και τηλέφωνα. Μετράει στις ίδιες :count φορές την ώρα.",
+    "Visitors too": "Και οι επισκέπτες",
+    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Οι επισκέπτες που δεν έχουν συνδεθεί, πάντα μετά το captcha (πρέπει να είναι ανοιχτό ένα plugin captcha). Κλειστό, μόνο οι συνδεδεμένοι πελάτες.",
+    "Domain suggestions a day": "Προτάσεις domain την ημέρα",
+    "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Από πελάτες και επισκέπτες μαζί, και για τα δύο κουμπιά, ώστε να μην εξαντλούν ποτέ το μηνιαίο όριο που χρειάζεται η ομάδα σας. Κενό = χωρίς όριο.",
+    "Enter a name like example or example.gr, or describe your business in a few words.": "Γράψτε ένα όνομα όπως example ή example.gr, ή περιγράψτε την επιχείρησή σας με λίγες λέξεις.",
+    "The names suggested are taken. Try describing it in other words.": "Τα ονόματα που προτάθηκαν είναι πιασμένα. Δοκιμάστε να το περιγράψετε με άλλα λόγια.",
+    "Find your domain (myshop.gr) or describe your business": "Βρείτε το domain σας (myshop.gr) ή περιγράψτε την επιχείρησή σας",
+    "No name yet? Describe your business in a few words, such as “a pastry shop in Thessaloniki”, and AI suggests free names. What you write is sent to the AI service.": "Δεν έχετε όνομα ακόμα; Περιγράψτε την επιχείρησή σας με λίγες λέξεις, π.χ. «ζαχαροπλαστείο στη Θεσσαλονίκη», και το AI προτείνει ελεύθερα ονόματα. Ό,τι γράψετε στέλνεται στην υπηρεσία AI.",
+    "Free names for what you described, suggested by AI:": "Ελεύθερα ονόματα για ό,τι περιγράψατε, προτάσεις του AI:",
+    "Domain ideas visitors": "Και οι επισκέπτες",
+    "Domains per day": "Προτάσεις domain την ημέρα",
+    "Domain ideas": "Ονόματα domain από περιγραφή"
 }

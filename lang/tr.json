@@ -4269,5 +4269,19 @@
     "You used this month's urgent tickets; this one goes in as usual.": "Bu ayın acil biletlerini kullandınız; bu bilet normal şekilde gönderilecek.",
     "The service that stopped working.": "Çalışmayı durduran hizmet.",
     "This ticket can't be marked urgent.": "Bu bilet acil olarak işaretlenemez.",
-    "Urgent per month": "Aylık acil"
+    "Urgent per month": "Aylık acil",
+    "Domain names from a description": "Açıklamadan alan adları",
+    "In the domain search, a client who types a few words about their business (\"a pastry shop in Thessaloniki\") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.": "Alan adı aramasında işi hakkında birkaç kelime yazan müşteri (\"Selanik'te bir pastane\") ilk uzantınız ve .com ile boş adlar alır, her biri fiyatıyla. Açıklamayı e-posta adresleri ve telefon numaraları olmadan gönderir. Saatte aynı :count sayıya dahildir.",
+    "Visitors too": "Ziyaretçiler de",
+    "Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.": "Giriş yapmamış ziyaretçiler, her zaman captcha'dan sonra (bir captcha eklentisi açık olmalı). Kapalı: yalnızca giriş yapmış müşteriler.",
+    "Domain suggestions a day": "Günlük alan adı önerisi",
+    "From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.": "Müşteriler ve ziyaretçiler birlikte, iki düğme de, böylece ekibinizin ihtiyaç duyduğu aylık sınırı asla tüketmezler. Boş = sınır yok.",
+    "Enter a name like example or example.gr, or describe your business in a few words.": "example veya example.gr gibi bir ad yazın ya da işinizi birkaç kelimeyle anlatın.",
+    "The names suggested are taken. Try describing it in other words.": "Önerilen adlar alınmış. Başka kelimelerle anlatmayı deneyin.",
+    "Find your domain (myshop.gr) or describe your business": "Alan adınızı bulun (myshop.gr) veya işinizi anlatın",
+    "No name yet? Describe your business in a few words, such as “a pastry shop in Thessaloniki”, and AI suggests free names. What you write is sent to the AI service.": "Henüz adınız yok mu? İşinizi \"Selanik'te bir pastane\" gibi birkaç kelimeyle anlatın, yapay zekâ boş adlar önersin. Yazdıklarınız yapay zekâ hizmetine gönderilir.",
+    "Free names for what you described, suggested by AI:": "Anlattığınız için boş adlar, yapay zekâ önerisi:",
+    "Domain ideas visitors": "Ziyaretçiler de",
+    "Domains per day": "Günlük alan adı önerisi",
+    "Domain ideas": "Açıklamadan alan adları"
 }

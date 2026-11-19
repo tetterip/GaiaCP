@@ -43,7 +43,7 @@ class AiSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['ai.provider', ...array_map(fn (string $feature) => "ai.features.{$feature}", Assistant::FEATURES), 'ai.monthly_tokens'];
+        return ['ai.provider', ...array_map(fn (string $feature) => "ai.features.{$feature}", Assistant::FEATURES), 'ai.monthly_tokens', 'ai.domain_ideas_visitors', 'ai.domains_per_day'];
     }
 
     public function form(Schema $schema): Schema
@@ -107,6 +107,20 @@ class AiSettings extends SettingsFormPage
                         Toggle::make('ai.features.domains')
                             ->label('Suggest domain names')
                             ->helperText(__('In the client area\'s domain search, a Suggest other names button that clients and visitors press: names close to the one searched, each checked like a search. Sends only the name searched. Each press uses tokens, so a client or an address gets at most :count presses an hour.', ['count' => SearchDomains::AI_PER_HOUR])),
+                        Toggle::make('ai.features.domain_ideas')
+                            ->label('Domain names from a description')
+                            ->helperText(__('In the domain search, a client who types a few words about their business ("a pastry shop in Thessaloniki") gets free names for it with your first ending and .com, each with its price. Sends the description, without email addresses or phone numbers. Counts in the same :count an hour.', ['count' => SearchDomains::AI_PER_HOUR]))
+                            ->live(),
+                        Toggle::make('ai.domain_ideas_visitors')
+                            ->label('Visitors too')
+                            ->helperText(__('Visitors who are not signed in, always after the captcha (a captcha plugin must be on). Off, only signed-in clients.'))
+                            ->visible(fn ($get) => (bool) $get('ai.features.domain_ideas')),
+                        TextInput::make('ai.domains_per_day')
+                            ->label('Domain suggestions a day')
+                            ->integer()
+                            ->minValue(1)
+                            ->placeholder(__('No limit'))
+                            ->helperText(__('From clients and visitors together, both buttons, so that they never use up the monthly limit your team needs. Empty = no limit.')),
                     ]),
                 Section::make(__('Monthly limit'))
                     ->schema([
@@ -125,6 +139,7 @@ class AiSettings extends SettingsFormPage
         foreach (array_map(fn (string $feature) => "ai.features.{$feature}", Assistant::FEATURES) as $key) {
             $values[$key] = (bool) $values[$key];
         }
+        $values['ai.domain_ideas_visitors'] = (bool) ($values['ai.domain_ideas_visitors'] ?? false);
 
         return $values;
     }
@@ -135,6 +150,8 @@ class AiSettings extends SettingsFormPage
             $values[$key] = (bool) $values[$key];
         }
         $values['ai.monthly_tokens'] = filled($values['ai.monthly_tokens'] ?? null) ? (int) $values['ai.monthly_tokens'] : null;
+        $values['ai.domain_ideas_visitors'] = (bool) ($values['ai.domain_ideas_visitors'] ?? false);
+        $values['ai.domains_per_day'] = filled($values['ai.domains_per_day'] ?? null) && (int) $values['ai.domains_per_day'] > 0 ? (int) $values['ai.domains_per_day'] : null;
 
         return $values;
     }
