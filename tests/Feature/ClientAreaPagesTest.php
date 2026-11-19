@@ -2,19 +2,31 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Quotes;
+use App\Actions\Tickets;
+use App\Enums\BillingCycle;
+use App\Enums\CertificateStatus;
 use App\Enums\InvoiceStatus;
+use App\Enums\QuoteStatus;
+use App\Enums\TicketStatus;
 use App\Enums\UserRole;
 use App\Filament\Client\Pages\Dashboard;
+use App\Filament\Client\Pages\KnowledgeBase;
+use App\Filament\Client\Pages\SearchDomains;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Models\Client;
 use App\Models\Invoice;
+use App\Models\KbArticle;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Server;
 use App\Models\Service;
+use App\Models\Tld;
 use App\Models\User;
 use App\Plugins\PluginManager;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\FakesWhm;
 use Tests\TestCase;
 
@@ -185,7 +197,7 @@ class ClientAreaPagesTest extends TestCase
             ->assertSeeInOrder(['My services', '4 active services', 'Hosting', 'Domains', 'Other services'])
             ->assertSee('gcp-home-tile', false);
 
-        Service::query()->delete();
+        Service::query()->update(['status' => 'cancelled']);
         $this->assertSame([], (new Dashboard)->activeByKind());
         $this->get('/dashboard')->assertOk()->assertSee('Hosting, domains and more')->assertDontSee('active service');
     }
@@ -256,8 +268,8 @@ class ClientAreaPagesTest extends TestCase
             ->assertSee('Next renewal 01/03/2027, maria.example')
             ->assertDontSee('class="gx-big', false);
 
-        Service::query()->delete();
-        $this->get('/dashboard')->assertOk()->assertSee('Everything is paid')->assertSee('Nothing renews');
+        Service::query()->update(['status' => 'cancelled']);
+        $this->get('/dashboard')->assertOk()->assertSee('Everything is paid')->assertSee('Nothing renews')->assertDontSee('Start here');
     }
 
     public function test_renewals_name_the_cycle_and_flag_a_domain_that_will_not_renew(): void
@@ -271,6 +283,149 @@ class ClientAreaPagesTest extends TestCase
 
         $this->get('/dashboard')->assertOk()
             ->assertSeeInOrder(['Coming up for renewal', 'shop.example', 'Business hosting', 'Monthly', '01/02/2027', 'dropping.example', 'Does not renew automatically']);
+    }
+
+    public function test_home_lists_what_waits_for_the_client_only_when_something_does(): void
+    {
+        Filament::setCurrentPanel('client');
+        Service::factory()->for($this->client)->dueOn('2027-02-01')->create(['domain' => 'fine.example']);
+
+        $this->assertSame([], (new Dashboard)->waiting());
+        $this->get('/dashboard')->assertOk()->assertDontSee('Waiting for you');
+
+        $notice = $this->notice($this->client, ['due_date' => now()->subDays(4)]);
+        $suspended = Service::factory()->for($this->client)->create(['domain' => 'paused.example', 'status' => 'suspended']);
+        $ticket = app(Tickets::class)->open($this->client, auth('client')->user(), 'Email does not arrive', 'Hello', emailClient: false, asClient: true);
+        $ticket->update(['status' => TicketStatus::Answered]);
+        app(Tickets::class)->open($this->client, auth('client')->user(), 'Still with support', 'Hello', emailClient: false, asClient: true);
+        $quote = app(Quotes::class)->create(['client_id' => $this->client->id, 'items' => [['type' => 'other', 'label' => 'Website care', 'billing_cycle' => 'annually', 'price_cents' => 10000]]]);
+        $quote->update(['status' => QuoteStatus::Sent, 'sent_at' => now()]);
+        $ssl = Service::factory()->for($this->client)->create(['type' => 'ssl', 'domain' => 'secure.example', 'server_id' => null]);
+        $ssl->certificate()->update(['status' => CertificateStatus::Pending]);
+        $ending = Service::factory()->domain()->for($this->client)->create(['domain' => 'leaving.example', 'auto_terminate' => true, 'next_due_date' => today()->addDays(12)->toDateString()]);
+        Service::factory()->domain()->for($this->client)->create(['domain' => 'later.example', 'auto_terminate' => true, 'next_due_date' => today()->addDays(90)->toDateString()]);
+        $full = Service::factory()->for($this->client)->create(['domain' => 'full.example']);
+        DB::table('usage_warnings')->insert(['service_id' => $full->id, 'kind' => 'disk', 'period' => today()->format('Y-m'), 'percent' => 93, 'created_at' => now()]);
+        $this->client->changeRequests()->create(['fields' => ['city' => ['Athens', 'Patras']]]);
+        // Someone else's never show.
+        Service::factory()->for($this->other)->create(['domain' => 'theirs.example', 'status' => 'suspended']);
+
+        $rows = (new Dashboard)->waiting();
+
+        $this->assertSame([
+            '1 payment notice is past due',
+            'paused.example is suspended',
+            "We answered your ticket {$ticket->number}",
+            "Quote {$quote->number} waits for your answer",
+            'The SSL certificate of secure.example waits for validation',
+            'leaving.example ends on '.today()->addDays(12)->format('d/m/Y'),
+            'full.example is close to its limit',
+            'The changes to your details wait for our approval',
+        ], array_column($rows, 'text'));
+        $this->assertSame(['Pay', 'View', 'Read', 'View', 'Validate', 'Renew', 'View', 'Your profile'], array_column($rows, 'action'));
+        $this->assertSame('Disk space 93%', $rows[6]['detail']);
+        $this->assertSame(PaymentNoticeResource::getUrl('view', ['record' => $notice], panel: 'client'), $rows[0]['url']);
+        $this->assertStringEndsWith("/domains/{$ending->id}", $rows[5]['url']);
+
+        // Home shows the first ones and counts the rest.
+        $this->get('/dashboard')->assertOk()
+            ->assertSeeInOrder(['Waiting for you', '1 payment notice is past due', 'paused.example is suspended', 'Email does not arrive', 'waits for your answer', 'secure.example', 'leaving.example ends on', 'and 2 more', 'To pay'])
+            ->assertDontSee('theirs.example')
+            ->assertDontSee('later.example ends on');
+
+        config(['gaiacp.support.client_tickets' => false]);
+        $this->assertNotContains("We answered your ticket {$ticket->number}", array_column((new Dashboard)->waiting(), 'text'));
+    }
+
+    public function test_the_support_card_lists_the_open_tickets_with_whose_turn_it_is(): void
+    {
+        Filament::setCurrentPanel('client');
+        config(['gaiacp.company.email' => 'help@example.gr']);
+        Service::factory()->for($this->client)->create();
+        $author = auth('client')->user();
+
+        $this->get('/dashboard')->assertOk()
+            ->assertSeeInOrder(['Support', 'New ticket', 'No open tickets'])
+            ->assertDontSee('help@example.gr')
+            ->assertDontSee('Search the articles');
+
+        $waiting = app(Tickets::class)->open($this->client, $author, 'Slow website', 'Hello', emailClient: false, asClient: true);
+        $answered = app(Tickets::class)->open($this->client, $author, 'Mailbox is full', 'Hello', emailClient: false, asClient: true);
+        $answered->update(['status' => TicketStatus::Answered]);
+        $closed = app(Tickets::class)->open($this->client, $author, 'Old question', 'Hello', emailClient: false, asClient: true);
+        $closed->update(['status' => TicketStatus::Closed]);
+        app(Tickets::class)->open($this->other, User::factory()->create(), 'Not mine', 'Hello', emailClient: false, asClient: false);
+
+        $this->assertSame([$answered->id, $waiting->id], (new Dashboard)->tickets()->pluck('id')->all());
+
+        KbArticle::create(['texts' => ['en' => ['title' => 'Set up email', 'body' => 'Open your phone.']], 'published' => true]);
+
+        $this->get('/dashboard')->assertOk()
+            ->assertSeeInOrder(['Support', 'Mailbox is full', 'Answered', 'Slow website', 'Waiting for us', 'Search the articles', 'All tickets'])
+            ->assertDontSee('Old question')
+            ->assertDontSee('Not mine')
+            ->assertSee('action="'.KnowledgeBase::getUrl(panel: 'client').'"', false);
+
+        // Tickets off: the articles stay, and so does the contact email.
+        config(['gaiacp.support.client_tickets' => false]);
+        $this->assertCount(0, (new Dashboard)->tickets());
+        $this->get('/dashboard')->assertOk()->assertSee('Search the articles')->assertDontSee('Mailbox is full')->assertSee('help@example.gr');
+    }
+
+    public function test_home_has_the_domain_search_while_clients_search_for_domains(): void
+    {
+        Filament::setCurrentPanel('client');
+        Service::factory()->for($this->client)->create();
+
+        config(['gaiacp.client_area.orders' => false]);
+        $this->assertNull((new Dashboard)->domainSearchUrl());
+        $this->get('/dashboard')->assertOk()->assertDontSee('gcp-home-search-bar"', false);
+
+        config(['gaiacp.client_area.orders' => true]);
+        Tld::query()->updateOrCreate(['tld' => '.com'], ['register_1y_cents' => 1200, 'active' => true]);
+
+        $this->assertSame(SearchDomains::getUrl(panel: 'client'), (new Dashboard)->domainSearchUrl());
+        $this->get('/dashboard')->assertOk()
+            ->assertSee('gcp-home-search-bar"', false)
+            ->assertSee('action="'.SearchDomains::getUrl(panel: 'client').'"', false)
+            ->assertSee('name="q"', false);
+    }
+
+    public function test_a_client_with_no_service_yet_starts_here(): void
+    {
+        Filament::setCurrentPanel('client');
+        config(['gaiacp.client_area.orders' => true]);
+        $this->client->update(['address1' => null, 'city' => null, 'postcode' => null]);
+        Tld::query()->updateOrCreate(['tld' => '.com'], ['register_1y_cents' => 1200, 'active' => true]);
+        $popular = Product::factory()->priced(500, BillingCycle::Monthly)->create(['name' => 'Starter hosting', 'popular' => true, 'description' => "10 GB\n5 mailboxes"]);
+        Product::factory()->create(['name' => 'Plain hosting']);
+        Product::factory()->create(['name' => 'Kept for staff', 'popular' => true, 'client_visible' => false]);
+
+        $page = new Dashboard;
+        $this->assertTrue($page->isNew());
+        $this->assertTrue($page->profileIncomplete());
+        $starters = $page->starters();
+        $this->assertSame(['Starter hosting'], array_column($starters, 'name'));
+        $this->assertSame('10 GB 5 mailboxes', $starters[0]['description']);
+        $this->assertStringContainsString('5.00', $starters[0]['price']);
+        $this->assertStringContainsString('Monthly', $starters[0]['price']);
+        $this->assertStringContainsString('product='.$popular->id, $starters[0]['url']);
+
+        $this->get('/dashboard')->assertOk()
+            ->assertSeeInOrder(['Start here', 'You have no services yet', 'Popular', 'Starter hosting', 'See everything we offer', 'Complete your profile'])
+            ->assertSee('action="'.SearchDomains::getUrl(panel: 'client').'"', false)
+            ->assertDontSee('gcp-home-services"', false)
+            ->assertDontSee('Everything is paid')
+            ->assertDontSee('Plain hosting');
+
+        $this->client->update(['address1' => 'Ermou 1', 'city' => 'Athens', 'postcode' => '10563']);
+        auth('client')->user()->unsetRelation('client'); // the signed-in user of the test keeps the client it read
+        $this->get('/dashboard')->assertOk()->assertSee('Start here')->assertDontSee('Complete your profile');
+
+        // A first service, even one still waiting to be set up, ends it.
+        Service::factory()->for($this->client)->create(['status' => 'pending']);
+        $this->assertFalse((new Dashboard)->isNew());
+        $this->get('/dashboard')->assertOk()->assertDontSee('Start here')->assertSee('gcp-home-services"', false);
     }
 
     public function test_the_shortcuts_are_what_a_client_comes_to_do(): void

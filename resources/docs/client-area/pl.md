@@ -36,7 +36,7 @@ Przy pierwszym logowaniu krótki przewodnik pokazuje, co możesz tu zrobić. Men
 
 ## Strona główna
 
-Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy każdym wezwaniu do zapłaty (albo jedną linią, że wszystko jest opłacone), Państwa usługi z przyciskiem logującym do panelu każdego konta hostingowego oraz to, co odnawia się najbliżej; domena, która nie odnawia się automatycznie, jest tam oznaczona. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują.
+Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy każdym wezwaniu do zapłaty (albo jedną linią, że wszystko jest opłacone), Państwa usługi z przyciskiem logującym do panelu każdego konta hostingowego oraz to, co odnawia się najbliżej; domena, która nie odnawia się automatycznie, jest tam oznaczona. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują. Gdy coś czeka na Ciebie (wezwanie do zapłaty po terminie, zawieszona usługa, odpowiedź na zgłoszenie, oferta, certyfikat SSL do weryfikacji, domena, która wkrótce się kończy, konto bliskie limitu), Strona główna pokazuje to najpierw w sekcji **Czeka na Ciebie**, każde z przyciskiem, który to załatwia. Karta **Wsparcie** pokazuje Twoje otwarte zgłoszenia i czyja jest kolej, a domenę możesz wyszukać bezpośrednio ze Strony głównej. Dopóki nie masz pierwszej usługi, Strona główna pokazuje **Zacznij tutaj** z naszymi popularnymi produktami.
 
 ## Usługi i domeny
 

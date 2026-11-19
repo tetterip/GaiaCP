@@ -36,7 +36,7 @@ Beim ersten Login zeigt eine kurze Tour, was Sie hier tun können. Das Menü unt
 
 ## Startseite
 
-Die Startseite zeigt, was Sie zu zahlen haben, mit einer Schaltfläche **Bezahlen** bei jeder Zahlungsaufforderung (oder einer Zeile, dass alles bezahlt ist), Ihre Dienste mit einer Schaltfläche, die Sie im Control Panel jedes Hosting-Kontos anmeldet, und was als Nächstes verlängert wird; eine Domain, die sich nicht automatisch verlängert, ist dort markiert. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten.
+Die Startseite zeigt, was Sie zu zahlen haben, mit einer Schaltfläche **Bezahlen** bei jeder Zahlungsaufforderung (oder einer Zeile, dass alles bezahlt ist), Ihre Dienste mit einer Schaltfläche, die Sie im Control Panel jedes Hosting-Kontos anmeldet, und was als Nächstes verlängert wird; eine Domain, die sich nicht automatisch verlängert, ist dort markiert. Unsere Ankündigungen, etwa geplante Arbeiten an Ihrem Server, erscheinen oben auf der Startseite, solange sie gelten. Wenn etwas auf Sie wartet (eine überfällige Zahlungsaufforderung, ein gesperrter Dienst, eine Antwort auf Ihr Ticket, ein Angebot, ein zu validierendes SSL-Zertifikat, eine bald endende Domain, ein Konto nahe am Limit), zeigt die Startseite es zuerst unter **Wartet auf Sie**, jeweils mit der Schaltfläche, die es erledigt. Die Karte **Support** zeigt Ihre offenen Tickets und wer an der Reihe ist, und Sie können direkt auf der Startseite nach einem Domainnamen suchen. Bis Sie einen ersten Dienst haben, zeigt die Startseite **Hier starten** mit unseren beliebten Produkten.
 
 ## Dienste und Domains
 

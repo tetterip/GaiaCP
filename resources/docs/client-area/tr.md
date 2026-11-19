@@ -36,7 +36,7 @@ Her sayfanın altındaki "Çerez ayarları" çerez seçimini yeniden gösterir, 
 
 ## Ana sayfa
 
-Ana sayfa ne ödemeniz gerektiğini, her ödeme bildiriminde bir **Öde** düğmesiyle (ya da her şeyin ödendiğini söyleyen tek bir satırla), her barındırma hesabının kontrol paneline giriş yaptıran bir düğmeyle hizmetlerinizi ve sırada neyin yenileneceğini gösterir; otomatik yenilenmeyen bir alan adı orada işaretlenir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür.
+Ana sayfa ne ödemeniz gerektiğini, her ödeme bildiriminde bir **Öde** düğmesiyle (ya da her şeyin ödendiğini söyleyen tek bir satırla), her barındırma hesabının kontrol paneline giriş yaptıran bir düğmeyle hizmetlerinizi ve sırada neyin yenileneceğini gösterir; otomatik yenilenmeyen bir alan adı orada işaretlenir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür. Sizi bekleyen bir şey olduğunda (vadesi geçmiş ödeme bildirimi, askıya alınmış hizmet, talebinize yanıt, teklif, doğrulanacak SSL sertifikası, yakında sona erecek alan adı, sınırına yaklaşan hesap), Ana sayfa bunu önce **Sizi bekleyenler** altında, her birini çözen düğmeyle gösterir. **Destek** kartı açık taleplerinizi ve sıranın kimde olduğunu gösterir; alan adını doğrudan Ana sayfadan arayabilirsiniz. İlk hizmetinizi alana kadar Ana sayfa popüler ürünlerimizle **Buradan başlayın** bölümünü gösterir.
 
 ## Hizmetler ve alan adları
 

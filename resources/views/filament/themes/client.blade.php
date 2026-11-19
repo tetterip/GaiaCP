@@ -399,6 +399,145 @@
         color: var(--warning-300);
     }
 
+    .gcp-home-flag-info {
+        background: var(--primary-50);
+        color: var(--primary-700);
+    }
+
+    .dark .gcp-home-flag-info {
+        background: color-mix(in oklab, var(--primary-500) 18%, transparent);
+        color: var(--primary-300);
+    }
+
+    .gcp-home-flag-muted,
+    .dark .gcp-home-flag-muted {
+        background: color-mix(in oklab, currentColor 8%, transparent);
+        color: var(--gcp-muted, inherit);
+    }
+
+    .gcp-home-row > .gcp-home-flag {
+        flex: none;
+        margin-inline-start: 0;
+        white-space: nowrap;
+    }
+
+    /* The list of what waits for the client: one row per thing to do, with the page that settles it */
+    .gcp-home-wait-icon {
+        flex: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        color: var(--gcp-muted, currentColor);
+    }
+
+    .gcp-home-wait .gcp-home-row-text strong {
+        white-space: normal;
+    }
+
+    .gcp-home-wait-bad .gcp-home-wait-icon {
+        color: var(--danger-600);
+    }
+
+    .gcp-home-wait-warn .gcp-home-wait-icon {
+        color: var(--warning-600);
+    }
+
+    .gcp-home-wait-info .gcp-home-wait-icon {
+        color: var(--primary-600);
+    }
+
+    .dark .gcp-home-wait-bad .gcp-home-wait-icon {
+        color: var(--danger-400);
+    }
+
+    .dark .gcp-home-wait-warn .gcp-home-wait-icon {
+        color: var(--warning-400);
+    }
+
+    .dark .gcp-home-wait-info .gcp-home-wait-icon {
+        color: var(--primary-400);
+    }
+
+    /* A grid row with one card only (no renewals, or no Support card) */
+    @media (min-width: 1024px) {
+        .gcp-home-grid.gcp-home-grid-one {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .gcp-home-grid > .gcp-home-card {
+        height: 100%;
+    }
+
+    /* The domain and article searches on Home: a plain form that opens the search page on what was typed */
+    .gcp-home-search {
+        align-items: center;
+    }
+
+    .gcp-home-search-bar {
+        max-width: 40rem;
+    }
+
+    .gcp-home-support .gcp-home-search {
+        margin-top: auto;
+    }
+
+    /* The first card of a client with no service yet */
+    .gcp-home-start {
+        gap: .9rem;
+    }
+
+    .gcp-home-start .gcp-home-search {
+        max-width: 40rem;
+    }
+
+    .gcp-home-starters {
+        display: grid;
+        gap: .75rem;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+
+    .gcp-home-starter {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+        padding: .9rem 1rem;
+        border: 1px solid var(--gcp-line);
+        border-radius: .75rem;
+        transition: border-color .15s;
+    }
+
+    .gcp-home-starter:hover,
+    .gcp-home-starter:focus-visible {
+        border-color: var(--gcp-accent);
+    }
+
+    .gcp-home-starter-badge {
+        align-self: flex-start;
+        padding: 0 .45rem;
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 600;
+        background: var(--primary-50);
+        color: var(--primary-700);
+    }
+
+    .dark .gcp-home-starter-badge {
+        background: color-mix(in oklab, var(--primary-500) 18%, transparent);
+        color: var(--primary-300);
+    }
+
+    .gcp-home-starter-price {
+        margin-top: auto;
+        padding-top: .35rem;
+        font-weight: 600;
+    }
+
+    .gcp-home-start-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
     .gcp-home-contact {
         display: flex;
         align-items: center;

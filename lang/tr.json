@@ -4220,5 +4220,22 @@
     ":count active service|:count active services": ":count etkin hizmet|:count etkin hizmet",
     "Does not renew automatically": "Otomatik yenilenmez",
     "New ticket": "Yeni destek talebi",
-    "Register a domain": "Alan adı kaydet"
+    "Register a domain": "Alan adı kaydet",
+    ":count payment notice is past due|:count payment notices are past due": ":count ödeme bildiriminin vadesi geçti|:count ödeme bildiriminin vadesi geçti",
+    ":name ends on :date": ":name :date tarihinde sona eriyor",
+    ":name is close to its limit": ":name sınırına yaklaştı",
+    ":name is suspended": ":name askıya alındı",
+    ":number, was due :date": ":number, son ödeme tarihi :date idi",
+    "Complete your profile": "Profilinizi tamamlayın",
+    "It comes back once its payment notice is paid": "Ödeme bildirimi ödenince yeniden açılır",
+    "No open tickets. Write to us whenever you need help.": "Açık destek talebi yok. Yardıma ihtiyacınız olduğunda bize yazın.",
+    "Quote :number waits for your answer": ":number numaralı teklif yanıtınızı bekliyor",
+    "See everything we offer": "Sunduğumuz her şeyi görün",
+    "Start here": "Buradan başlayın",
+    "The SSL certificate of :name waits for validation": ":name için SSL sertifikası doğrulama bekliyor",
+    "The changes to your details wait for our approval": "Bilgilerinizdeki değişiklikler onayımızı bekliyor",
+    "Validate": "Doğrula",
+    "Waiting for you": "Sizi bekleyenler",
+    "We answered your ticket :number": ":number numaralı talebinizi yanıtladık",
+    "You have no services yet. Pick one to begin, or look for your domain name.": "Henüz hizmetiniz yok. Başlamak için birini seçin veya alan adınızı arayın."
 }

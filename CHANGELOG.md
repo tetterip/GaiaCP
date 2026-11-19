@@ -16,6 +16,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   failed") instead of one line each. **Open balance**: "Due in 7 days" now counts unpaid payment notices like the rest
   of the card (it counted services by their next due date), and a new line shows what the renewals of the next 30 days
   should bring, opening the Income forecast report.
+- Client area Home, what needs the client first: **Waiting for you** lists, only when there is something, the overdue
+  payment notices, suspended services, answered tickets, quotes waiting for an answer, SSL certificates waiting for
+  validation, domains ending within 30 days with auto renew off, accounts that got a usage warning this month and a
+  pending change of their details, each with the page that settles it. A **Support** card shows their open tickets
+  (Answered / Waiting for us) with New ticket and, while the knowledge base is on, a search of the articles; the
+  contact email line stays only while tickets are off. Home has the domain search field while clients search for
+  domains, and a client with no service yet sees **Start here**: the domain search, the products marked Popular and
+  Complete your profile when their address is missing
 - Client area Home, the things clients come for: **My services** lists their services (hosting first, a suspended one
   on top) with a button that logs them in to the control panel of each hosting account, where Settings → Client area
   lets them, and the count per kind under it. **To pay** holds the unpaid notices, each with its Pay, and the credit;

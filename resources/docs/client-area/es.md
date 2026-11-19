@@ -36,7 +36,7 @@ La primera vez que inicia sesión, un breve recorrido muestra lo que puede hacer
 
 ## Inicio
 
-Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de pago (o una línea que dice que todo está pagado), sus servicios con un botón que le conecta al panel de control de cada cuenta de alojamiento, y qué se renueva a continuación; un dominio que no se renueva automáticamente aparece marcado allí. Nuestros anuncios, como trabajos programados en su servidor, aparecen en la parte superior de Inicio mientras estén vigentes.
+Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de pago (o una línea que dice que todo está pagado), sus servicios con un botón que le conecta al panel de control de cada cuenta de alojamiento, y qué se renueva a continuación; un dominio que no se renueva automáticamente aparece marcado allí. Nuestros anuncios, como trabajos programados en su servidor, aparecen en la parte superior de Inicio mientras estén vigentes. Cuando algo le espera (un aviso de pago vencido, un servicio suspendido, una respuesta a su ticket, un presupuesto, un certificado SSL por validar, un dominio a punto de terminar, una cuenta cerca de su límite), Inicio lo muestra primero en **Le espera**, cada uno con el botón que lo resuelve. La tarjeta **Soporte** muestra sus tickets abiertos y a quién le toca, y puede buscar un nombre de dominio directamente desde Inicio. Hasta que tenga un primer servicio, Inicio muestra **Empiece aquí** con nuestros productos populares.
 
 ## Servicios y dominios
 

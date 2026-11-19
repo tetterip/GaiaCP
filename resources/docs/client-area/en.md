@@ -36,7 +36,7 @@ The first time you log in, a short tour shows what you can do here. The menu und
 
 ## Home
 
-Home shows what you have to pay, with a **Pay** button on each payment notice (or one line saying everything is paid), your services with a button that logs you in to the control panel of each hosting account, and what renews next; a domain that will not renew automatically is marked there. Our announcements, such as planned work on your server, appear at the top of Home while they apply.
+Home shows what you have to pay, with a **Pay** button on each payment notice (or one line saying everything is paid), your services with a button that logs you in to the control panel of each hosting account, and what renews next; a domain that will not renew automatically is marked there. Our announcements, such as planned work on your server, appear at the top of Home while they apply. When something waits for you (a payment notice past due, a suspended service, an answer to your ticket, a quote, an SSL certificate to validate, a domain about to end, an account close to its limit), Home lists it first under **Waiting for you**, each with the button that settles it. The **Support** card shows your open tickets and whose turn it is, and you can search for a domain name right from Home. Until you have a first service, Home shows **Start here** with our popular products.
 
 ## Services and domains
 
