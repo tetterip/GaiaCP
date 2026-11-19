@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Notifications can be swiped away with the mouse or a trackpad too, in the bell's list and the pop-ups of both panels
+  (it was touch only): drag one left or right. The notifications next to it follow the drag a little and spring back
+  when it is let go. The X still removes one from the keyboard.
 - Dashboard, easier to read: **Renewals** is a compact list in groups (past due, in 7 days, later) with the amount, the
   due date and Record payment on each row, so a phone shows all of it without scrolling sideways (it was the services
   table squeezed into half the page); **Needs attention** shows its first six lines and unfolds the rest; the chart's
