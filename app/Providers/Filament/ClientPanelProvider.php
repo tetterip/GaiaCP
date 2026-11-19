@@ -62,6 +62,7 @@ use App\Plugins\PluginManager;
 use App\Support\Branding;
 use App\Support\ClientAreaMaintenance as Maintenance;
 use App\Support\ClientMenu;
+use App\Support\ContentWidth;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\PublicArea;
@@ -104,6 +105,7 @@ class ClientPanelProvider extends PanelProvider
         return $panel
             ->id('client')
             ->path('')
+            ->maxContentWidth(fn () => ContentWidth::current())
             ->authGuard('client')
             ->authPasswordBroker('clients')
             ->login(Login::class)
