@@ -40,7 +40,7 @@
                 <h2>{{ $group }}</h2>
                 <div class="gcp-settings-grid">
                     @foreach ($cards as $card)
-                        <a href="{{ $card['url'] }}" class="gcp-settings-card" x-show="shows(@js($card['search']))">
+                        <a {{ \Filament\Support\generate_href_html($card['url']) }} class="gcp-settings-card" x-show="shows(@js($card['search']))">
                             <span class="gcp-settings-icon">
                                 <x-filament::icon :icon="$card['icon']" />
                             </span>

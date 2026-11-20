@@ -49,7 +49,7 @@
             </div>
             <div class="gcp-home-rows">
                 @foreach (array_slice($waiting, 0, \App\Filament\Client\Pages\Dashboard::WAITING) as $item)
-                    <a href="{{ $item['url'] }}" class="gcp-home-row gcp-home-wait gcp-home-wait-{{ $item['tone'] }}">
+                    <a {{ \Filament\Support\generate_href_html($item['url']) }} class="gcp-home-row gcp-home-wait gcp-home-wait-{{ $item['tone'] }}">
                         <x-filament::icon :icon="$item['icon']" class="gcp-home-wait-icon" />
                         <span class="gcp-home-row-text">
                             <strong>{{ $item['text'] }}</strong>
@@ -86,7 +86,7 @@
             @if ($starters)
                 <div class="gcp-home-starters">
                     @foreach ($starters as $product)
-                        <a href="{{ $product['url'] }}" class="gcp-home-starter">
+                        <a {{ \Filament\Support\generate_href_html($product['url']) }} class="gcp-home-starter">
                             <span class="gcp-home-starter-badge">{{ __('Popular') }}</span>
                             <strong>{{ $product['name'] }}</strong>
                             @if ($product['description'])
@@ -121,7 +121,7 @@
                 </div>
                 <div class="gcp-home-rows">
                     @foreach ($unpaid->take(\App\Filament\Client\Pages\Dashboard::NOTICES) as $notice)
-                        <a href="{{ $noticeUrl($notice) }}" class="gcp-home-row">
+                        <a {{ \Filament\Support\generate_href_html($noticeUrl($notice)) }} class="gcp-home-row">
                             <span class="gcp-home-row-text">
                                 <strong>{{ $notice->number }}</strong>
                                 <span @class(['gcp-overdue' => $notice->isOverdue()])>{{ $notice->isOverdue() ? __('Was due :date', ['date' => $date($notice->due_date)]) : __('Due :date', ['date' => $date($notice->due_date)]) }}</span>
@@ -132,9 +132,9 @@
                     @endforeach
                 </div>
                 <div class="gcp-home-foot">
-                    <a class="gx-link" href="{{ $noticesUrl }}">{{ $unpaid->count() > \App\Filament\Client\Pages\Dashboard::NOTICES ? __('All :count payment notices to pay', ['count' => $unpaid->count()]) : __('Payment notices') }}</a>
+                    <a class="gx-link" {{ \Filament\Support\generate_href_html($noticesUrl) }}>{{ $unpaid->count() > \App\Filament\Client\Pages\Dashboard::NOTICES ? __('All :count payment notices to pay', ['count' => $unpaid->count()]) : __('Payment notices') }}</a>
                     @if ($credit)
-                        <a class="gcp-home-credit" href="{{ \App\Filament\Client\Pages\Credit::getUrl() }}">{{ __('Your credit') }} <strong>{{ \App\Support\Money::format((int) $client->credit_cents, $client->currencyCode()) }}</strong></a>
+                        <a class="gcp-home-credit" {{ \Filament\Support\generate_href_html(\App\Filament\Client\Pages\Credit::getUrl()) }}>{{ __('Your credit') }} <strong>{{ \App\Support\Money::format((int) $client->credit_cents, $client->currencyCode()) }}</strong></a>
                     @endif
                 </div>
             </section>
@@ -154,9 +154,9 @@
                     </div>
                 </div>
                 <div class="gcp-home-foot">
-                    <a class="gx-link" href="{{ $noticesUrl }}">{{ __('Payment notices') }}</a>
+                    <a class="gx-link" {{ \Filament\Support\generate_href_html($noticesUrl) }}>{{ __('Payment notices') }}</a>
                     @if ($credit)
-                        <a class="gcp-home-credit" href="{{ \App\Filament\Client\Pages\Credit::getUrl() }}">{{ __('Your credit') }} <strong>{{ \App\Support\Money::format((int) $client->credit_cents, $client->currencyCode()) }}</strong></a>
+                        <a class="gcp-home-credit" {{ \Filament\Support\generate_href_html(\App\Filament\Client\Pages\Credit::getUrl()) }}>{{ __('Your credit') }} <strong>{{ \App\Support\Money::format((int) $client->credit_cents, $client->currencyCode()) }}</strong></a>
                     @endif
                 </div>
             </section>
@@ -175,7 +175,7 @@
                     @foreach ($services as $row)
                         @php($service = $row['service'])
                         <div class="gcp-home-row">
-                            <a href="{{ $row['url'] }}" class="gcp-home-row-text">
+                            <a {{ \Filament\Support\generate_href_html($row['url']) }} class="gcp-home-row-text">
                                 <strong>
                                     @if ($row['state'])
                                         <span class="gcp-live gcp-live-{{ $row['state']['status']->value }}" title="{{ $row['state']['text'] }}" aria-label="{{ $row['state']['text'] }}" role="img"></span>
@@ -192,7 +192,7 @@
                             @if ($row['login'])
                                 <a href="{{ $row['login'] }}" target="_blank" rel="noopener" class="gcp-home-row-open">{{ __('Log in to :panel', ['panel' => $row['panel']]) }}</a>
                             @else
-                                <a href="{{ $row['url'] }}" class="gcp-home-row-open gcp-home-row-manage">{{ __('Manage') }}</a>
+                                <a {{ \Filament\Support\generate_href_html($row['url']) }} class="gcp-home-row-open gcp-home-row-manage">{{ __('Manage') }}</a>
                             @endif
                         </div>
                     @endforeach
@@ -204,7 +204,7 @@
                 <div class="gcp-home-kinds">
                     <span class="gx-muted">{{ trans_choice(':count active service|:count active services', $this->activeCount()) }}</span>
                     @foreach ($kinds as $type)
-                        <a href="{{ $type['url'] }}" class="gcp-home-kind">{{ $type['label'] }} <strong>{{ $type['count'] }}</strong></a>
+                        <a {{ \Filament\Support\generate_href_html($type['url']) }} class="gcp-home-kind">{{ $type['label'] }} <strong>{{ $type['count'] }}</strong></a>
                     @endforeach
                 </div>
             @endif
@@ -223,7 +223,7 @@
 
     <nav class="gcp-home-tiles" aria-label="{{ __('Shortcuts') }}">
         @foreach ($this->shortcuts() as $shortcut)
-            <a href="{{ $shortcut['url'] }}" class="gcp-home-tile">
+            <a {{ \Filament\Support\generate_href_html($shortcut['url']) }} class="gcp-home-tile">
                 <span class="gcp-home-tile-icon"><x-filament::icon :icon="$shortcut['icon']" /></span>
                 <span>{{ $shortcut['label'] }}</span>
             </a>
@@ -240,7 +240,7 @@
                 </div>
                 <div class="gcp-home-rows">
                     @foreach ($upcoming as $service)
-                        <a href="{{ $this->serviceUrl($service) }}" class="gcp-home-row">
+                        <a {{ \Filament\Support\generate_href_html($this->serviceUrl($service)) }} class="gcp-home-row">
                             <span class="gcp-home-row-text">
                                 <strong>{{ $service->domain ?: $service->label }}</strong>
                                 <span @class(['gcp-overdue' => $service->isOverdue()])>
@@ -270,7 +270,7 @@
                 @if ($tickets->isNotEmpty())
                     <div class="gcp-home-rows">
                         @foreach ($tickets as $ticket)
-                            <a href="{{ \App\Filament\Client\Resources\Tickets\TicketResource::getUrl('view', ['record' => $ticket]) }}" class="gcp-home-row">
+                            <a {{ \Filament\Support\generate_href_html(\App\Filament\Client\Resources\Tickets\TicketResource::getUrl('view', ['record' => $ticket])) }} class="gcp-home-row">
                                 <span class="gcp-home-row-text">
                                     <strong>{{ $ticket->subject }}</strong>
                                     <span>{{ $ticket->number }} · {{ ($ticket->last_reply_at ?? $ticket->created_at)->diffForHumans() }}</span>
@@ -298,7 +298,7 @@
                 @endif
                 @if ($ticketsOn && $tickets->isNotEmpty())
                     <div class="gcp-home-foot">
-                        <a class="gx-link" href="{{ \App\Filament\Client\Resources\Tickets\TicketResource::getUrl() }}">{{ __('All tickets') }}</a>
+                        <a class="gx-link" {{ \Filament\Support\generate_href_html(\App\Filament\Client\Resources\Tickets\TicketResource::getUrl()) }}>{{ __('All tickets') }}</a>
                     </div>
                 @endif
             </section>

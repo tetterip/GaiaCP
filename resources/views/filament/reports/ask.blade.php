@@ -63,7 +63,7 @@
                                         @foreach (array_keys($answer['columns']) as $column)
                                             <td>
                                                 @if ($loop->first && filled($row['url'] ?? null))
-                                                    <a href="{{ $row['url'] }}">{{ $row[$column] ?? '' }}</a>
+                                                    <a {{ \Filament\Support\generate_href_html($row['url']) }}>{{ $row[$column] ?? '' }}</a>
                                                 @else
                                                     {{ $row[$column] ?? '' }}
                                                 @endif

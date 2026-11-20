@@ -22,7 +22,7 @@
                 <span><span class="gx-muted">{{ __('Next:') }}</span> <span class="gx-strong">{{ $next['title'] }}</span></span>
             @endif
             <span class="gx-setup-actions">
-                <a href="{{ $url }}">{{ __('Continue') }}</a>
+                <a {{ \Filament\Support\generate_href_html($url) }}>{{ __('Continue') }}</a>
                 <button type="button" wire:click="hide">{{ __('Hide') }}</button>
             </span>
         </div>

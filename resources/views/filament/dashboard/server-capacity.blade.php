@@ -4,7 +4,7 @@
         <div class="gx-head">
             <span class="gx-ico">@svg('heroicon-o-server-stack', 'gx-ico-svg')</span>
             <h2 class="gx-title">{{ __('Servers') }}</h2>
-            <a href="{{ $url }}" class="gx-link">{{ __('All servers') }}</a>
+            <a {{ \Filament\Support\generate_href_html($url) }} class="gx-link">{{ __('All servers') }}</a>
         </div>
         <div class="gx-server-list">
             @foreach ($servers as $server)

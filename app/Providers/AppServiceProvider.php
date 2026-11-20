@@ -18,6 +18,7 @@ use App\Support\Currencies;
 use App\Support\DateQueries;
 use App\Support\Demo;
 use App\Support\Locales;
+use App\Support\OrderableProducts;
 use App\Support\Region;
 use App\Support\Seo;
 use App\Support\Settings;
@@ -82,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(Currencies::class); // Settings → Currencies, read once per request
         $this->app->scoped(Translations::class); // the languages found, read once per request
         $this->app->scoped(ClientFields::class); // Settings → Client fields, read once per request
+        $this->app->scoped(OrderableProducts::class); // the products a client can order, read once per request
         $this->app->scoped(TldLookup::class); // the TLD table, read once per request (Tld::match())
         $this->app->make(PluginManager::class)->registerConfig($this->app);
 

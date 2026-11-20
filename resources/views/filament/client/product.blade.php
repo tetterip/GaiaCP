@@ -11,7 +11,7 @@
 @endphp
 <x-filament-panels::page>
     @if ($groupLink)
-        <nav class="gcp-home-note gcp-crumbs" aria-label="{{ __('Breadcrumb') }}"><a href="{{ $groupLink }}">{{ $product->group->pageTitle() }}</a> / {{ $product->localName() }}</nav>
+        <nav class="gcp-home-note gcp-crumbs" aria-label="{{ __('Breadcrumb') }}"><a {{ \Filament\Support\generate_href_html($groupLink) }}>{{ $product->group->pageTitle() }}</a> / {{ $product->localName() }}</nav>
     @endif
 
     <section class="gcp-card gcp-public-hero" @if ($product->orderColor()) data-gcp-color="{{ $product->orderColor() }}" @endif>

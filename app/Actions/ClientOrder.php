@@ -25,6 +25,7 @@ use App\Support\DomainSearch;
 use App\Support\DomainSsl;
 use App\Support\Locales;
 use App\Support\Money;
+use App\Support\OrderableProducts;
 use App\Support\ProductOptions;
 use App\Support\TermsOfService;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -400,9 +401,9 @@ class ClientOrder
     /** @return Collection<int, Product> what a client can order: shown in the client area, with a priced cycle; domains are ordered by name */
     public static function products(): Collection
     {
-        return Product::query()->clientOrderable()->with('tags')->where('type', '!=', ServiceType::Domain)->orderBy('type')->orderBy('name')->get()
+        return OrderableProducts::remember(fn () => Product::query()->clientOrderable()->with('tags')->where('type', '!=', ServiceType::Domain)->orderBy('type')->orderBy('name')->get()
             ->filter(fn (Product $product) => $product->cycles() !== [])
-            ->values();
+            ->values());
     }
 
     /** Whether a TLD is offered with a registration or transfer price, so "a domain name only" is offered. */
