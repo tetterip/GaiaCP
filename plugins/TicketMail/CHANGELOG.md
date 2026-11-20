@@ -2,6 +2,15 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.4.0] - 2026-11-20
+
+- An answer joins its ticket by the ticket's secret code in the email's In-Reply-To / References (the ticket emails now
+  carry it in their Message-ID), not by the ticket number alone: on "Unless the mail server found the sender forged", an
+  email with a client's address and [T-000123] in the subject could be written into that client's ticket by anyone who
+  guessed the number. The number in the subject (or the headers of a ticket email sent before) still joins when the mail
+  server confirmed the sender; otherwise the email opens a new ticket
+- A message from a sender the mail server didn't confirm shows **Sender not confirmed** on the admin's ticket page
+
 ## [1.3.1] - 2026-11-07
 
 - Test connection says "1 unread email" or "3 unread emails" in every language, instead of "email(s)"

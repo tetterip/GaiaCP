@@ -18,7 +18,7 @@
         .dark &:hover { color: var(--primary-300); }
     }
 </style>
-<script>
+<script @nonce>
     document.addEventListener('click', (event) => {
         const link = event.target.closest?.('a[href]:not([target])');
 

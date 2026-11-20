@@ -23,7 +23,7 @@
 @if ($scripts !== null)
     <template id="gaiacp-consent-scripts">{!! $scripts !!}</template>
 @endif
-<script>
+<script @nonce>
     (() => {
         const name = @js(\App\Support\CookieConsent::COOKIE);
         const banner = document.getElementById('gaiacp-cookies');

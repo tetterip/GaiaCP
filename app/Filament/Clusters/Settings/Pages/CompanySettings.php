@@ -19,6 +19,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use UnitEnum;
 
@@ -167,6 +168,32 @@ class CompanySettings extends SettingsFormPage
     private static function isSvgUpload(TemporaryUploadedFile $file): bool
     {
         return $file->getMimeType() === 'image/svg+xml' || SvgLogo::isSvg($file->getClientOriginalName());
+    }
+
+    /**
+     * Only a file the upload field has just stored (Branding::UPLOAD_PATTERN, on the disk), or the one already saved:
+     * Filament keeps any string the browser sends, so "branding/../.env" would otherwise be stored, served and later deleted.
+     */
+    protected function forStorage(array $values): array
+    {
+        foreach (Branding::ASSETS as $key) {
+            $file = $values["company.{$key}"] ?? null;
+
+            if (is_array($file)) {
+                $file = reset($file) ?: null;
+            }
+
+            $kept = $file === null || $file === '' || $file === config("gaiacp.company.{$key}");
+            $new = is_string($file) && preg_match(Branding::UPLOAD_PATTERN, $file) === 1 && Storage::disk('public')->exists($file);
+
+            if (! $kept && ! $new) {
+                throw ValidationException::withMessages(["data.company.{$key}" => __('Upload the file again.')]);
+            }
+
+            $values["company.{$key}"] = $file;
+        }
+
+        return $values;
     }
 
     protected function afterSaving(array $values, array $previous): void

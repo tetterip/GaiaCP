@@ -101,7 +101,7 @@
                 @endif
                 <div class="row">
                     <button type="submit">{{ __('Accept the quote') }}</button>
-                    <button type="button" class="secondary print" onclick="window.print()">{{ __('Print') }}</button>
+                    <button type="button" class="secondary print" id="print-quote">{{ __('Print') }}</button>
                 </div>
                 <p style="margin-top: 8px; font-size: 13px">{{ __('Accepting places the order: you get a payment notice by email with how to pay, and access to our client area.') }}</p>
             </form>
@@ -116,5 +116,6 @@
                 </form>
             </details>
         </div>
+        <script @nonce>document.getElementById('print-quote')?.addEventListener('click', () => window.print());</script>
     @endif
 @endsection

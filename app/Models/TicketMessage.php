@@ -9,8 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/** One message in a ticket: the client's, an admin's reply, or an admins' internal note (never shown to the client). */
-#[Fillable(['ticket_id', 'user_id', 'from_client', 'internal', 'body', 'email_message_id'])]
+/**
+ * One message in a ticket: the client's, an admin's reply, or an admins' internal note (never shown to the client).
+ * `sender_unconfirmed`: it came by email and the receiving mail server did not confirm the From address (Email to
+ * ticket on "Unless the mail server found the sender forged"), shown to the admins on the ticket.
+ */
+#[Fillable(['ticket_id', 'user_id', 'from_client', 'internal', 'body', 'email_message_id', 'sender_unconfirmed'])]
 class TicketMessage extends Model
 {
     use StoresTimesInUtc;
@@ -20,6 +24,7 @@ class TicketMessage extends Model
         return [
             'from_client' => 'boolean',
             'internal' => 'boolean',
+            'sender_unconfirmed' => 'boolean',
         ];
     }
 

@@ -18,7 +18,7 @@
 </style>
 
 {{-- The first code box is focused as soon as the two-factor step of a sign-in page shows (not in windows). --}}
-<script>
+<script @nonce>
     (() => {
         const focused = new WeakSet()
 

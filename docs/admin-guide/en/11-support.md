@@ -49,7 +49,10 @@ counts as from someone who isn't a client, whatever address it shows. **Email co
 when the mail server confirmed the sender": only an email your server confirmed (DMARC, DKIM or SPF pass) joins a
 client's ticket, since anyone can write a client's address as the sender. If your mail server adds no such check, email
 from clients opens tickets without a client; "Unless the mail server found the sender forged" accepts it (mailboxes set
-up before version 0.7.0 keep this one).
+up before version 0.7.0 keep this one). An answer finds its ticket by a secret code in the ticket emails' hidden
+headers, which the client's email app keeps when they press Reply; the ticket number in the subject is enough only when
+your mail server confirmed the sender, so no one can write into another client's ticket by guessing its number. A
+message from a sender your server didn't confirm shows **Sender not confirmed** on the ticket.
 
 ## Knowledge base
 

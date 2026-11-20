@@ -406,8 +406,11 @@ return [
     // this install updates from. A private repository needs a token that can read it (fine-grained, Contents: read).
     // Pages opened over https tell browsers to stay on https for this address for this many seconds (HSTS, App\Http\
     // Middleware\SecurityHeaders). 0 turns it off, e.g. while testing a certificate; subdomains are never included.
+    // GAIACP_CSP: the Content-Security-Policy (App\Support\ContentSecurityPolicy). "enforce" blocks scripts that are not
+    // GaiaCP's own; "report" only has browsers report them (to the log, as "Content-Security-Policy would block"), "off" sends none.
     'security' => [
         'hsts' => (int) env('GAIACP_HSTS', 31536000),
+        'csp' => env('GAIACP_CSP', 'enforce'),
     ],
 
     // Settings → Plugins: uploading a plugin zip installs PHP code that runs with GaiaCP's full access. A host can

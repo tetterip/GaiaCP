@@ -9,6 +9,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Vite;
 
 /**
  * The client's way to the gateway and back. pay() is a small page that loads the gateway's checkout script and opens
@@ -29,15 +30,16 @@ class MastercardController
         }
 
         $message = __('Taking you to the secure payment page…');
+        $nonce = filled($value = Vite::cspNonce()) ? ' nonce="'.e($value).'"' : '';
         $html = '<!DOCTYPE html><html lang="'.e(str_replace('_', '-', app()->getLocale())).'"><head><meta charset="utf-8">'
             .'<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">'
             .'<title>'.e($message).'</title>'
             .'<style>body{font-family:system-ui,sans-serif;display:flex;min-height:90vh;align-items:center;justify-content:center;text-align:center;color:#333;background:#fff}'
             .'button{font:inherit;padding:.6em 1.4em;margin-top:1em;border-radius:.4em;border:1px solid #888;background:#f4f4f4;cursor:pointer}'
             .'@media (prefers-color-scheme:dark){body{color:#ddd;background:#18181b}button{background:#27272a;color:#ddd}}</style>'
-            .'<script src="'.e(MastercardApi::checkoutScript()).'"></script></head><body><div>'
+            .'<script src="'.e(MastercardApi::checkoutScript()).'"'.$nonce.'></script></head><body><div>'
             .'<p>'.e($message).'</p><button type="button" id="pay">'.e(__('Continue')).'</button></div>'
-            .'<script>function go(){Checkout.configure({session:{id:'.json_encode($payment->session_id).'}});Checkout.showPaymentPage();}'
+            .'<script'.$nonce.'>function go(){Checkout.configure({session:{id:'.json_encode($payment->session_id).'}});Checkout.showPaymentPage();}'
             .'document.getElementById("pay").addEventListener("click",go);go();</script></body></html>';
 
         return response($html)->header('Cache-Control', 'no-store');

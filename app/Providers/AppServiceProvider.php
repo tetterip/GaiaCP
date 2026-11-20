@@ -41,6 +41,7 @@ use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\NoPendingMigrations;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
@@ -92,6 +93,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // nonce="…" for an inline <script> of a view, so the Content-Security-Policy lets it run (App\Support\ContentSecurityPolicy)
+        Blade::directive('nonce', fn () => '<?php if (filled($__cspNonce = \\App\\Support\\ContentSecurityPolicy::nonce())) echo \'nonce="\'.e($__cspNonce).\'"\'; ?>');
+
         // Save / Create stay at the foot of the screen on long forms (styled by filament/sticky-actions), on the right
         // with Save rightmost, like the Settings pages' Save bar
         BasePage::stickyFormActions();

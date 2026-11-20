@@ -5,6 +5,19 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Security: a Content-Security-Policy on every page. Scripts run only when they carry the page's nonce (Filament's,
+  Livewire's and GaiaCP's own) or are loaded by such a script (captchas, the cookie banner's scripts), so a script or
+  onclick="" slipped into a page doesn't run. What it blocks goes to the log (System → Logs); `GAIACP_CSP=report` only
+  reports, `off` turns it off. Mastercard Gateway 1.0.1 and Glass theme 1.2.3 add the nonce to their scripts.
+- **Plugin API**: an inline `<script>` of a plugin needs the page's nonce (`<script @nonce>` in a Blade view, or
+  `Vite::cspNonce()`), and inline event handlers such as `onclick=""` no longer run. The catalogue's bank plugins'
+  form submit script is allowed by its hash until they are updated.
+- Security (Email to ticket 1.4.0): an answer joins its ticket by a secret code in the ticket emails' headers, not by
+  the ticket number alone, so on "Unless the mail server found the sender forged" no one can write into a client's ticket
+  by guessing its number; the number in the subject still works when the mail server confirmed the sender. A message
+  from an unconfirmed sender shows **Sender not confirmed** on the admin's ticket.
+- Security: Settings → Company stores only a logo the upload field has just saved (or keeps the saved one), and a
+  logo name with `..` or an absolute path is never served or deleted.
 - Fixed: in dark mode in Gmail's apps (and Outlook) the logo at the top of emails was dark on dark and could not be read.
   The GaiaCP logo and the company logo in emails now sit on a white rounded background.
 - AI services (DeepSeek 1.0.3, OpenAI): with the Model field empty, the first suggested model your key has is used (read by
