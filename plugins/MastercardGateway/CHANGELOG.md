@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.1] - 2026-11-20
+
+- The payment page's scripts carry the page's nonce, so they run under GaiaCP's Content-Security-Policy
+
 ## [1.0.0] - 2026-11-12
 
 - Card payments through Mastercard Gateway (Mastercard Payment Gateway Services, the hosted checkout many banks offer

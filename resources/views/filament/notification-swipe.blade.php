@@ -8,7 +8,7 @@
     .fi-no-notification { touch-action: pan-y; }
     html.gaiacp-notification-dragging, html.gaiacp-notification-dragging * { user-select: none !important; cursor: grabbing !important; }
 </style>
-<script>
+<script @nonce>
     (() => {
         if (window['gaiacp-notification-swipe']) {
             return;

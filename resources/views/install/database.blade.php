@@ -9,7 +9,7 @@
     <form method="post" action="{{ route('install.database') }}">
         @csrf
         <label for="driver">{{ __('Type') }}</label>
-        <select id="driver" name="driver" onchange="document.getElementById('server').hidden = this.value === 'sqlite'; document.getElementById('file').hidden = this.value !== 'sqlite'">
+        <select id="driver" name="driver">
             @foreach ($drivers as $value => $label)
                 <option value="{{ $value }}" @selected($driver === $value)>{{ $label }}</option>
             @endforeach
@@ -40,4 +40,10 @@
 
         <div class="actions"><button>{{ __('Connect and create the tables') }}</button></div>
     </form>
+    <script @nonce>
+        document.getElementById('driver').addEventListener('change', (event) => {
+            document.getElementById('server').hidden = event.target.value === 'sqlite';
+            document.getElementById('file').hidden = event.target.value !== 'sqlite';
+        });
+    </script>
 @endsection

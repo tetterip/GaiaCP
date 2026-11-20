@@ -528,8 +528,13 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   keeps the installer's session in files and sends every page to `/install`; installed, `/install` is a 404. Past the
   first page the web installer needs the setup code (`Installer::setupCode()`, `storage/app/private/install-code.txt`,
   made on the first visit, deleted by `lock()`; tried on `POST /install`, 10 a minute, then session `install.unlocked`).
-  `App\Http\Middleware\SecurityHeaders` (every response): frame-ancestors / X-Frame-Options, nosniff, Referrer-Policy,
-  Permissions-Policy, and HSTS over https (`gaiacp.security.hsts`)
+  `App\Http\Middleware\SecurityHeaders` (every response): the Content-Security-Policy (`App\Support\ContentSecurityPolicy`,
+  `gaiacp.security.csp` enforce / report / off: scripts only with the page's nonce, `Vite::useCspNonce()` before the page
+  is drawn, which Filament and Livewire add themselves and views add with `@nonce`; 'strict-dynamic' lets those scripts
+  load others (captchas, cookie banner scripts); 'unsafe-eval' for Alpine; inline handlers such as onclick are blocked,
+  use x-on: or a script; `KNOWN_SCRIPTS` hashes older catalogue plugins' inline scripts; reports to `POST /csp-report`,
+  `CspReportController`, logged), frame-ancestors / X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy, and
+  HSTS over https (`gaiacp.security.hsts`). A response with its own policy (SVG logo, email preview) keeps it
 - Setup guide (Settings → General → Setup guide, `/admin/settings/setup`, super admins): `App\Support\SetupGuide` lists
   the steps after `/install` (business, region, mail, payment methods, tax, server, domain prices, product, client area
   and terms, backups, cron, two-factor), each opening an existing page. A step is done when what it sets up is there

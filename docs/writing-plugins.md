@@ -19,6 +19,9 @@ MyPlugin/
 └── database/migrations/    optional: its own tables, run on install and by every `php artisan migrate`
 ```
 
+- Pages run under a Content-Security-Policy: an inline `<script>` runs only with the page's nonce (`@nonce` in a Blade
+  view: `<script @nonce>`, or `nonce="'.e(Vite::cspNonce()).'"` in HTML you build), and inline handlers such as
+  `onclick=""` never run (use Alpine's `x-on:click` or a script). Scripts loaded by such a script, from any host, run.
 - The folder name is the namespace: classes are `Plugins\MyPlugin\...`, loaded from the folder (PSR-4).
 - A model of the plugin uses `App\Models\Concerns\StoresTimesInUtc`: times are stored in UTC and read in the
   Region's timezone. Give a plain date column a date string (`toDateString()`), not a Carbon, in a query; read a time

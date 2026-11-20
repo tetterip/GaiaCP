@@ -46,8 +46,10 @@ How the admin and client panels, users, access, security, branding, themes and l
   `Tickets::fill()`) are under Settings → Support; the dashboard's Support card sits under the renewals table.
   Tickets by email: the Email to ticket plugin (`plugins/TicketMail`, IMAP through `directorytree/imapengine`, no PHP
   imap extension) runs `gaiacp:fetch-ticket-mail` every minute; `InboundMail` adds an answer to its ticket
-  (`Ticket::idFromEmailReferences()` on In-Reply-To / References, else `[T-000123]` in the subject, only from the
-  ticket's client or sender, `Tickets::replyFromEmail()`) or opens one (`Tickets::openFromEmail()`, client by email
+  (`Ticket::fromEmailReferences()` on In-Reply-To / References, signed by the ticket's `emailToken()`, an HMAC of its
+  id with APP_KEY; an unsigned id or `[T-000123]` in the subject only from a sender the mail server confirmed; only from
+  the ticket's client or sender, `Tickets::replyFromEmail()`; an unconfirmed sender's message gets
+  `ticket_messages.sender_unconfirmed`, shown on the admin's ticket) or opens one (`Tickets::openFromEmail()`, client by email
   address, else none: `tickets.email` / `name`, linked later under Change). `ticket_messages.email_message_id` keeps a
   message from being added twice. `InboundWebhook` (`POST /webhooks/ticket-mail/{token}`, `ticket_mail.inbound_token`
   encrypted, made and shown once on the settings page, throttled) passes the raw MIME from Mailgun `body-mime`, SendGrid

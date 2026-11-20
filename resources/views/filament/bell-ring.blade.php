@@ -1,7 +1,7 @@
 {{-- Rings the top bar's bell when its unread count goes up: the first
      page of a visit with unread notifications, then each time polling brings more. The last count seen is kept for
      the browser tab's session, so moving between pages does not ring it again. --}}
-<script>
+<script @nonce>
     (() => {
         const key = 'gaiacp-bell-seen';
         const check = () => {
