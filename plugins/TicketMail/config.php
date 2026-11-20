@@ -18,6 +18,10 @@ return [
         // confirmed (DMARC, DKIM or SPF pass for that domain); 'forged' = all but what it found forged (DMARC / SPF
         // fail), which also trusts email from a server that checks nothing. Mailboxes set up before 1.3.0 keep 'forged'.
         'sender_check' => 'verified',
+        // The authserv-id(s) our own mail server (or mail provider) writes at the start of its Authentication-Results
+        // header, comma separated. Set, only a header with one of these names can confirm a sender; null = the topmost
+        // header counts, which is only safe when the receiving server always adds its own.
+        'trusted_servers' => null,
         'max_per_hour' => 10, // new tickets one sender may open by email in an hour
         // The secret in the address a mail provider posts emails to (POST /webhooks/ticket-mail/{token}); null = off.
         // Made with New webhook address under Settings → Email to ticket, stored encrypted.

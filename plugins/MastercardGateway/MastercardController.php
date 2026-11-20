@@ -39,7 +39,7 @@ class MastercardController
             .'@media (prefers-color-scheme:dark){body{color:#ddd;background:#18181b}button{background:#27272a;color:#ddd}}</style>'
             .'<script src="'.e(MastercardApi::checkoutScript()).'"'.$nonce.'></script></head><body><div>'
             .'<p>'.e($message).'</p><button type="button" id="pay">'.e(__('Continue')).'</button></div>'
-            .'<script'.$nonce.'>function go(){Checkout.configure({session:{id:'.json_encode($payment->session_id).'}});Checkout.showPaymentPage();}'
+            .'<script'.$nonce.'>function go(){Checkout.configure({session:{id:'.json_encode((string) $payment->session_id, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).'}});Checkout.showPaymentPage();}'
             .'document.getElementById("pay").addEventListener("click",go);go();</script></body></html>';
 
         return response($html)->header('Cache-Control', 'no-store');

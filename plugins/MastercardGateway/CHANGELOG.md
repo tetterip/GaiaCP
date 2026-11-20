@@ -5,6 +5,8 @@ Every version of this plugin, newest first. The version is in `plugin.json`; it 
 ## [1.0.1] - 2026-11-20
 
 - The payment page's scripts carry the page's nonce, so they run under GaiaCP's Content-Security-Policy
+- The payment session id is written into the page's script with `<`, `>`, `&` and quotes escaped, so no value could
+  ever close the script
 
 ## [1.0.0] - 2026-11-12
 

@@ -131,6 +131,58 @@ class TicketMailWebhookTest extends TestCase
         }
     }
 
+    public function test_with_our_servers_name_set_only_its_header_confirms_the_sender(): void
+    {
+        config(['gaiacp.ticket_mail.unknown_senders' => 'open', 'gaiacp.ticket_mail.sender_check' => 'verified',
+            'gaiacp.ticket_mail.trusted_servers' => 'MX.gaiacp.test, mx2.gaiacp.test']);
+        $client = Client::query()->where('email', 'nikos@example.com')->sole();
+        $latest = fn () => Ticket::query()->latest('id')->first()->client_id;
+
+        // Our server adds no header of its own: the sender's topmost "pass" under another name, or none, counts for nothing
+        foreach ([
+            'other-name@x' => ['Authentication-Results: evil.example; dmarc=pass header.from=example.com'],
+            'no-name@x' => ['Authentication-Results: dmarc=pass header.from=example.com'],
+            'look-alike@x' => ['Authentication-Results: mx.gaiacp.test.evil.example; dmarc=pass header.from=example.com'],
+        ] as $id => $headers) {
+            $this->post($this->url(), ['body-mime' => $this->email($id, $headers)])->assertOk();
+            $this->assertNull($latest(), $id);
+        }
+
+        // Our server's header decides, wherever a relay put its own above it (case, comments and a version number don't matter)
+        $this->post($this->url(), ['body-mime' => $this->email('ours@x', [
+            'Authentication-Results: relay.example; dmarc=none',
+            'Authentication-Results: Mx2.Gaiacp.Test 1 (our server); dkim=pass header.d=example.com',
+            'Authentication-Results: mx.gaiacp.test; spf=none smtp.mailfrom=example.com',
+        ])])->assertOk();
+        $this->assertSame($client->id, $latest());
+
+        // The topmost of ours says nothing: a "pass" the sender wrote with our name below it does not count
+        $this->post($this->url(), ['body-mime' => $this->email('ours-none@x', [
+            'Authentication-Results: mx.gaiacp.test; spf=none smtp.mailfrom=example.com',
+            'Authentication-Results: mx.gaiacp.test; dmarc=pass header.from=example.com',
+        ])])->assertOk();
+        $this->assertNull($latest());
+
+        // A "fail" still counts from any header
+        $this->post($this->url(), ['body-mime' => $this->email('fail@x', [
+            'Authentication-Results: mx.gaiacp.test; dkim=pass header.d=example.com',
+            'Authentication-Results: evil.example; dmarc=fail header.from=example.com',
+        ])])->assertOk();
+        $this->assertNull($latest());
+    }
+
+    public function test_the_servers_name_is_saved_in_lower_case_once_each(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(TicketMailSettings::class)
+            ->set('data.ticket_mail.trusted_servers', ' MX.gaiacp.test,mx.gaiacp.test  mx2.gaiacp.test ')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertSame('mx.gaiacp.test, mx2.gaiacp.test', Setting::query()->where('key', 'ticket_mail.trusted_servers')->value('value'));
+    }
+
     public function test_a_wrong_token_or_the_plugin_off_finds_nothing(): void
     {
         $this->post($this->url('wrong'), ['body-mime' => $this->email()])->assertNotFound();

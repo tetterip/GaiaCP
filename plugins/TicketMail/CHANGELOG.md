@@ -10,6 +10,9 @@ Every version of this plugin, newest first. The version is in `plugin.json`; it 
   guessed the number. The number in the subject (or the headers of a ticket email sent before) still joins when the mail
   server confirmed the sender; otherwise the email opens a new ticket
 - A message from a sender the mail server didn't confirm shows **Sender not confirmed** on the admin's ticket page
+- **Our mail server's name**: with the name your mail server writes at the start of its Authentication-Results header,
+  only that header can confirm a sender, so a "pass" header the sender wrote into the email counts for nothing, even
+  when the mail server adds none of its own. Empty, the topmost header counts as before
 
 ## [1.3.1] - 2026-11-07
 

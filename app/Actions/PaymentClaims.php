@@ -39,12 +39,17 @@ class PaymentClaims
     /**
      * The caller makes sure the notice is the signed-in client's own (a client area page's record, ScopedToClient).
      *
-     * @param  string  $method  a payment method key (PaymentMethods), e.g. iris
+     * @param  string  $method  the key of a payment method a new payment can use (PaymentMethods::options()), e.g. iris
      */
     public function claim(Invoice $invoice, string $method): void
     {
         if (! self::canClaim($invoice)) {
             throw new InvalidArgumentException('This payment notice cannot take a payment claim.');
+        }
+
+        // Only a way of paying GaiaCP offers now: the key is stored, logged and emailed to the admins
+        if (! array_key_exists($method, PaymentMethods::options())) {
+            throw new InvalidArgumentException('Unknown payment method for a payment claim.');
         }
 
         // Once, even when the button is pressed twice at the same moment

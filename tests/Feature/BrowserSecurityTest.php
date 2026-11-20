@@ -84,6 +84,16 @@ class BrowserSecurityTest extends TestCase
         Log::shouldHaveReceived('warning')->once();
     }
 
+    public function test_a_report_cannot_forge_log_lines(): void
+    {
+        Log::spy();
+        $this->call('POST', '/csp-report', [], [], [], ['CONTENT_TYPE' => 'application/csp-report'], json_encode(['csp-report' => [
+            'effective-directive' => 'script-src', 'blocked-uri' => "https://evil.example/x.js\n[2026-11-20 10:00:00] production.ERROR: fake\r\x00\x7f end",
+        ]]))->assertNoContent();
+
+        Log::shouldHaveReceived('warning')->with('Content-Security-Policy blocked', \Mockery::on(fn ($context) => $context['blocked'] === 'https://evil.example/x.js [2026-11-20 10:00:00] production.ERROR: fake  end'))->once();
+    }
+
     public function test_a_page_with_a_policy_of_its_own_keeps_it(): void
     {
         Storage::fake('public');
