@@ -330,6 +330,11 @@ How the admin and client panels, users, access, security, branding, themes and l
   SVG uploads go through `App\Support\SvgLogo`: cleaned (enshrined/svg-sanitize, no scripts or outside references,
   served with a sandboxing CSP), must give a viewBox or px width / height (root size set from it), and emails get a
   PNG copy (`<name>.email.png`) made with Imagick, or without it drawn by the admin's browser on Settings → Company (`settings.email-logo`, `SvgLogo::storePng()`; System health → Logo in emails warns until it exists)
+  Logos in emails sit on a white rounded background drawn into the image, because Gmail's apps and Outlook darken an
+  email's colours in dark mode but never its images (a dark logo on a transparent background vanished, and a CSS
+  background would be darkened too): `App\Support\MailLogo` draws it (GD) for the company logo, once per upload, into
+  `storage/framework/cache/mail-logos/` (logos without transparency are used as they are); the GaiaCP logo has it in
+  `public/images/gaiacp/logo-email.png` (made by `MailLogo::onBackground()` from the plain one, shown 47px high)
 - Themes: `App\Themes\ThemeModule` (from a plugin, `Plugin::themeModules()`: colours, Bunny font, serif font, a
   stylesheet view, colours for pages outside Filament) and `App\Themes\Themes`. `current()` is, in the admin panel,
   `users.theme` from Profile while its plugin is on, else `gaiacp.theme.default` from Settings → General, else the first

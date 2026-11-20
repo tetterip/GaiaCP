@@ -4,7 +4,7 @@
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
 @if ($logoSrc = \App\Mail\MailLayout::gaiacpLogo($message))
-<img src="{{ $logoSrc }}" alt="GaiaCP" style="height: 40px; max-width: 100%;">
+<img src="{{ $logoSrc }}" alt="GaiaCP" style="height: 47px; max-width: 100%;">
 @else
 GaiaCP
 @endif

@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: in dark mode in Gmail's apps (and Outlook) the logo at the top of emails was dark on dark and could not be read.
+  The GaiaCP logo and the company logo in emails now sit on a white rounded background.
 - AI services (DeepSeek 1.0.3, OpenAI): with the Model field empty, the first suggested model your key has is used (read by
   Test connection), so a retired default such as deepseek-chat is never asked; DeepSeek now suggests deepseek-flash first.
 - Fixed: with product groups set up, Add to cart for a domain alone (the Domain names group) on the client Order page

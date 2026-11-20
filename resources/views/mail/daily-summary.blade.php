@@ -63,7 +63,7 @@
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px;">
     <tr><td align="center" style="padding-bottom: 20px;">
-        <a href="{{ config('app.url') }}"><img src="{{ \App\Mail\MailLayout::gaiacpLogo($message ?? null) }}" alt="GaiaCP" height="40" style="height: 40px; max-width: 100%; border: 0;"></a>
+        <a href="{{ config('app.url') }}"><img src="{{ \App\Mail\MailLayout::gaiacpLogo($message ?? null) }}" alt="GaiaCP" height="47" style="height: 47px; max-width: 100%; border: 0;"></a>
     </td></tr>
 </table>
 
