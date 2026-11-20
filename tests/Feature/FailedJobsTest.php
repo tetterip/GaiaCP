@@ -62,6 +62,13 @@ class FailedJobsTest extends TestCase
 
         $this->assertSame(0, DB::table('failed_jobs')->count());
     }
+
+    public function test_an_empty_list_shows_a_green_tick(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->get(FailedJobs::getUrl())->assertOk()->assertSee('data-gcp-good-news', false);
+    }
 }
 
 class FailedJobsTestJob implements ShouldQueue
