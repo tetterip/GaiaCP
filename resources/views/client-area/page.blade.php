@@ -10,9 +10,10 @@
         <link rel="icon" href="{{ $favicon }}">
     @endif
     <style>
-        :root { --text: #1f2a24; --muted: #66706a; --line: #e2e5e3; --bg: #f7f8f7; --card: #fff; --accent: #2f7d55; }
+        /* the page follows the device's light / dark setting (prefers-color-scheme), like the client area's System mode */
+        :root { --text: #1f2a24; --muted: #66706a; --line: #e2e5e3; --bg: #f7f8f7; --card: #fff; --accent: #2f7d55; --link: #2f7d55; --on-accent: #fff; }
         @media (prefers-color-scheme: dark) {
-            :root { --text: #e6ebe7; --muted: #9aa49e; --line: #2c332f; --bg: #141816; --card: #1b201d; --accent: #6cc495; }
+            :root { --text: #e6ebe7; --muted: #9aa49e; --line: #2c332f; --bg: #141816; --card: #1b201d; --accent: #6cc495; --link: #6cc495; --on-accent: #111; }
         }
         * { box-sizing: border-box; }
         body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
@@ -20,7 +21,8 @@
         .card { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: min(var(--radius, 10px), 14px); padding: 24px; }
         h1 { font-size: 19px; margin: 0 0 12px; overflow-wrap: anywhere; }
         p { color: var(--muted); margin: 0; overflow-wrap: anywhere; }
-        button { margin-top: 16px; padding: 9px 16px; border: 0; border-radius: 8px; background: var(--accent); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+        a { color: var(--link); text-underline-offset: 2px; }
+        button { margin-top: 16px; padding: 9px 16px; border: 0; border-radius: 8px; background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600; cursor: pointer; }
         .brand { text-align: center; color: var(--muted); margin-bottom: 20px; font-weight: 600; }
         .brand img { max-height: 48px; max-width: 100%; }
         .brand .dark { display: none; }
