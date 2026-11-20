@@ -2,7 +2,7 @@
 @if (count($boxes))
     <div class="gx-today" aria-label="{{ __('Today') }}">
         @foreach ($boxes as $box)
-            <a href="{{ $box['url'] }}" class="fi-section gx-today-box" data-gx-today="{{ $box['key'] }}">
+            <a {{ \Filament\Support\generate_href_html($box['url']) }} class="fi-section gx-today-box" data-gx-today="{{ $box['key'] }}">
                 <span class="gx-today-label">@svg($box['icon'], 'gx-today-ico'){{ $box['label'] }}</span>
                 <span class="gx-today-value gx-tnum">{{ $box['value'] }}</span>
                 <span class="gx-today-sub">{{ $box['sub'] }}</span>

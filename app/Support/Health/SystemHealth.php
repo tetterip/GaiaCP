@@ -72,6 +72,7 @@ class SystemHealth
         return collect([
             ...$this->php(),
             ...$this->application(),
+            ...$this->speed(),
             ...$this->database(),
             ...$this->storage(),
             ...$this->automation(),
@@ -152,12 +153,54 @@ class SystemHealth
                 ? new Check('Application', 'App URL', Status::Ok, $url)
                 : new Check('Application', 'App URL', $production ? Status::Warning : Status::Info, $url ?: '(empty)', 'Set APP_URL to the https:// address of the admin.'),
             new Check('Application', 'Timezone', Status::Ok, (string) config('app.timezone')), // Settings → General → Region
-            new Check('Application', 'Cached config / routes', Status::Info,
-                (app()->configurationIsCached() ? 'config cached' : 'config not cached').', '.(app()->routesAreCached() ? 'routes cached' : 'routes not cached')),
             ...$this->proxy(),
             app()->runningInConsole() ? $this->privateFiles($url) : $this->privateFilesOf(request()),
             ...$this->security($production),
         ];
+    }
+
+    /**
+     * What makes each page quicker: PHP keeping GaiaCP's code compiled (OPcache; the command line usually runs without
+     * it, so only the page in the browser can tell), the caches `php artisan optimize` and `filament:optimize` write
+     * (an update and the Plesk deploy run both), and cache and sessions somewhere faster than the database.
+     *
+     * @return list<Check>
+     */
+    private function speed(): array
+    {
+        $production = app()->environment('production');
+        $missing = $production ? Status::Warning : Status::Info;
+        $checks = [];
+
+        if (app()->runningInConsole()) {
+            $checks[] = new Check('Speed', 'OPcache', Status::Info, 'Checked on the System health page', 'The command line usually runs without OPcache; the site\'s PHP is what counts.');
+        } else {
+            $enabled = function_exists('opcache_get_status') && (bool) (@opcache_get_status(false)['opcache_enabled'] ?? false);
+            $checks[] = $enabled
+                ? new Check('Speed', 'OPcache', Status::Ok, 'On')
+                : new Check('Speed', 'OPcache', $missing, 'Off', 'Turn on OPcache for this site\'s PHP (Plesk: PHP settings → opcache.enable): PHP then keeps GaiaCP\'s code compiled instead of reading it again on each page.');
+        }
+
+        $cached = [
+            'config' => app()->configurationIsCached(),
+            'routes' => app()->routesAreCached(),
+            'events' => app()->eventsAreCached(),
+            'Filament components' => is_dir(base_path('bootstrap/cache/filament')),
+            'icons' => is_file(base_path('bootstrap/cache/blade-icons.php')),
+        ];
+        $not = array_keys(array_filter($cached, fn (bool $is) => ! $is));
+        $checks[] = $not === []
+            ? new Check('Speed', 'Cached config, routes, components', Status::Ok, 'All cached')
+            : new Check('Speed', 'Cached config, routes, components', $missing, 'Not cached: '.implode(', ', $not), 'Run php artisan optimize and php artisan filament:optimize after each deploy (an update through GaiaCP runs them itself).');
+
+        $store = (string) config('cache.default');
+        $session = (string) config('session.driver');
+        $slow = array_keys(array_filter(['cache' => $store, 'sessions' => $session], fn (string $driver) => $driver === 'database'));
+        $checks[] = $slow === []
+            ? new Check('Speed', 'Cache and sessions', Status::Ok, "cache: {$store}, sessions: {$session}")
+            : new Check('Speed', 'Cache and sessions', Status::Info, "cache: {$store}, sessions: {$session}", 'Each page reads the '.implode(' and ', $slow).' from the database. CACHE_STORE=file and SESSION_DRIVER=file in .env (or redis, if the server has it) save a few queries on every page; everyone is logged out once when sessions move.');
+
+        return $checks;
     }
 
     /**

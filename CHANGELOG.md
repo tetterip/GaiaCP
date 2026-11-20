@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Faster panels: a click on a link to another page of the admin or the client area swaps only the page instead of
+  loading everything again, and the page starts loading while the pointer rests on the link (downloads, panel logins,
+  language switches and the other panel still open as normal pages). Fewer database queries on each page: the client
+  area reads its products once per page (the Order page asked 42 times), the dashboard's renewals card no longer asks
+  once per row, and the setup guide reads its settings with one query. System health has a **Speed** group: OPcache,
+  the cached config / routes / components, and cache and sessions in the database.
 - Client area menu: **Hosting**, **Other services** and **Domains** show how many the client has there, as a small grey
   number at the end of the line (none at 0; a line renamed in Settings → Client area → Menus keeps it). The red / amber number
   after it still means only that something waits for the client. **Credit** shows the balance the same

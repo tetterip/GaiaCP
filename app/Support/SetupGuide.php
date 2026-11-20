@@ -34,6 +34,12 @@ class SetupGuide
 {
     public const SETTING = 'setup_guide';
 
+    /** The settings whose saved row ticks a step (stored()) */
+    private const STORED = ['region.timezone', 'tax.enabled', 'public_area.home'];
+
+    /** @var list<string>|null which of them steps() found saved */
+    private static ?array $stored = null;
+
     public const DONE = 'done';
 
     public const SKIPPED = 'skipped';
@@ -158,7 +164,10 @@ class SetupGuide
     /** @return Collection<int, array{key: string, title: string, description: string, icon: mixed, url: string, status: ?string, auto: bool}> */
     public static function steps(): Collection
     {
-        $marked = self::state()['marked'];
+        // One query for the guide's own row and the settings its steps look for (every admin page asks, for the tour)
+        $rows = Setting::query()->whereIn('key', [self::SETTING, ...self::STORED])->pluck('value', 'key')->all();
+        self::$stored = array_keys($rows);
+        $marked = self::parse($rows[self::SETTING] ?? null)['marked'];
 
         return collect(self::definitions())->map(function (array $step) use ($marked) {
             $auto = $step['check'] !== null && ($step['check'])();
@@ -217,7 +226,13 @@ class SetupGuide
     /** @return array{marked: array<string, string>, hidden: bool} */
     public static function state(): array
     {
-        $value = (array) Setting::query()->whereKey(self::SETTING)->value('value');
+        return self::parse(Setting::query()->whereKey(self::SETTING)->value('value'));
+    }
+
+    /** @return array{marked: array<string, string>, hidden: bool} the stored row's value */
+    private static function parse(mixed $value): array
+    {
+        $value = (array) $value;
 
         return ['marked' => (array) ($value['marked'] ?? []), 'hidden' => (bool) ($value['hidden'] ?? false)];
     }
@@ -228,9 +243,9 @@ class SetupGuide
         Setting::query()->updateOrCreate(['key' => self::SETTING], ['value' => $state]);
     }
 
-    /** Saved on its Settings page (or by the installer), not only the default from config. */
+    /** Saved on its Settings page (or by the installer), not only the default from config; read by steps() first. */
     private static function stored(string $key): bool
     {
-        return Setting::query()->whereKey($key)->exists();
+        return in_array($key, self::$stored ?? Setting::query()->whereIn('key', self::STORED)->pluck('key')->all(), true);
     }
 }

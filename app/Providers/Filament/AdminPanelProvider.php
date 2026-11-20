@@ -25,6 +25,7 @@ use App\Livewire\TwoFactorReminder;
 use App\Plugins\PluginManager;
 use App\Support\ContentWidth;
 use App\Support\Demo;
+use App\Support\SpaLinks;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
 use Filament\Actions\Action;
@@ -71,6 +72,9 @@ class AdminPanelProvider extends PanelProvider
             ->requiresMultiFactorAuthentication(fn (): bool => ! Demo::enabled())
             ->multiFactorAuthenticationRequiredMiddlewareName(RequireAdminTwoFactor::class)
             ->brandName('GaiaCP')
+            // A link to another page of this panel swaps only the page, fetched while the pointer rests on it (SpaLinks)
+            ->spa(hasPrefetching: true)
+            ->spaUrlExceptions(fn (): array => SpaLinks::exceptions('admin'))
             // GaiaCP's own brand here (public/images/gaiacp); the company logo is for the client area only.
             ->brandLogo(fn (): string => asset('images/gaiacp/logo.svg'))
             ->darkModeBrandLogo(fn (): string => asset('images/gaiacp/logo-dark.svg'))

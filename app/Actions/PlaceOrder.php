@@ -21,6 +21,7 @@ use App\Models\Service;
 use App\Models\Tld;
 use App\Support\Coupons;
 use App\Support\DomainName;
+use App\Support\OrderableProducts;
 use App\Support\ProductOptions;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
@@ -196,6 +197,7 @@ class PlaceOrder
             }
 
             Product::query()->whereKey($product->id)->update(['stock' => max(0, $product->stock - $count)]);
+            OrderableProducts::flush();
         }
     }
 

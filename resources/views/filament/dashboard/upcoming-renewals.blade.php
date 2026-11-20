@@ -4,7 +4,7 @@
         <div class="gx-head">
             <span class="gx-ico">@svg('heroicon-o-arrow-path', 'gx-ico-svg')</span>
             <h2 class="gx-title">{{ __('Renewals') }}</h2>
-            <a href="{{ $url }}" class="gx-link">{{ __('All services') }}</a>
+            <a {{ \Filament\Support\generate_href_html($url) }} class="gx-link">{{ __('All services') }}</a>
         </div>
         @php($shown = count(array_merge([], ...array_values($groups))))
         @foreach ($labels as $key => $label)
@@ -12,7 +12,7 @@
             <div @class(['gx-group', 'gx-bad-text' => $key === 'overdue'])>{{ $label }}</div>
             @foreach ($groups[$key] as $row)
                 <div class="gx-att gx-row" wire:key="renewal-{{ $row['id'] }}">
-                    <a href="{{ $row['url'] }}" class="gx-att-text">
+                    <a {{ \Filament\Support\generate_href_html($row['url']) }} class="gx-att-text">
                         <span class="gx-strong">{{ $row['title'] }}</span>
                         <span class="gx-muted">{{ $row['sub'] }}</span>
                     </a>
@@ -32,7 +32,7 @@
                 <span class="gx-muted">{{ __('Nothing is overdue or due in the next 30 days') }}</span>
             </div>
         @elseif ($total > $shown)
-            <a href="{{ $url }}" class="gx-more">{{ __('and :count more', ['count' => $total - $shown]) }}</a>
+            <a {{ \Filament\Support\generate_href_html($url) }} class="gx-more">{{ __('and :count more', ['count' => $total - $shown]) }}</a>
         @endif
         <x-filament-actions::modals />
     </section>

@@ -68,6 +68,7 @@ use App\Support\Demo;
 use App\Support\PublicArea;
 use App\Support\Seo;
 use App\Support\ServerIncidents;
+use App\Support\SpaLinks;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
 use Filament\Actions\Action;
@@ -106,6 +107,9 @@ class ClientPanelProvider extends PanelProvider
             ->id('client')
             ->path('')
             ->maxContentWidth(fn () => ContentWidth::current())
+            // A link to another page of this panel swaps only the page, fetched while the pointer rests on it (SpaLinks)
+            ->spa(hasPrefetching: true)
+            ->spaUrlExceptions(fn (): array => SpaLinks::exceptions('client'))
             ->authGuard('client')
             ->authPasswordBroker('clients')
             ->login(Login::class)

@@ -47,11 +47,15 @@ class UpcomingRenewals extends Widget implements HasActions, HasSchemas
         return ServiceResource::canAccess();
     }
 
+    /** @var array<int, Service> the rows of this render, by id (not kept between requests) */
+    protected array $shown = [];
+
     /** Record payment for the row's service, sent as the `service` argument; only one on this card can be paid. */
     public function recordPaymentAction(): Action
     {
         return RecordPaymentAction::make()
-            ->record(fn (array $arguments): ?Service => self::query()->find($arguments['service'] ?? null))
+            // The card's rows are already loaded (with the payment checks): no query per row as the view renders them
+            ->record(fn (array $arguments): ?Service => $this->shown[(int) ($arguments['service'] ?? 0)] ?? self::query()->find($arguments['service'] ?? null))
             ->iconButton()
             ->size(Size::Small)
             ->after(fn () => $this->dispatch('$refresh'));
@@ -69,6 +73,7 @@ class UpcomingRenewals extends Widget implements HasActions, HasSchemas
         $week = today()->addDays(7);
         $rows = RecordPaymentAction::withChecks(self::query())->with('client')
             ->orderBy('next_due_date')->orderBy('id')->limit(self::SHOWN)->get();
+        $this->shown = $rows->keyBy('id')->all();
 
         return [
             'url' => ServiceResource::getUrl(),

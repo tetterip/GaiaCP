@@ -18,7 +18,7 @@
                 <div class="gx-box-sub">{{ trans_choice(':count notice|:count notices', $weekCount) }}</div>
             </div>
         </div>
-        <{{ $forecastUrl ? 'a' : 'div' }} @if ($forecastUrl) href="{{ $forecastUrl }}" @endif class="gx-expected">
+        <{{ $forecastUrl ? 'a' : 'div' }} @if ($forecastUrl) {{ \Filament\Support\generate_href_html($forecastUrl) }} @endif class="gx-expected">
             <span class="gx-muted">{{ trans_choice('Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals', $expectedCount, ['days' => \App\Filament\Widgets\BillingOverview::FORECAST_DAYS]) }}</span>
             <span class="gx-strong gx-tnum">{{ $expected }}</span>
         </{{ $forecastUrl ? 'a' : 'div' }}>

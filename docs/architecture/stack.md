@@ -4,6 +4,13 @@ How the admin and client panels, users, access, security, branding, themes and l
 
 - Laravel 13, PHP **8.3+** (the `User` PC ships PHP 8.2: upgrade it before running this app there)
 - SQLite in development, MySQL/MariaDB in production
+- Both panels run in SPA mode with prefetch (`->spa(hasPrefetching: true)`): a link to a page of the same panel gets
+  `wire:navigate.hover`, so it swaps only the page and fetches it on hover. `App\Support\SpaLinks::exceptions()` reads
+  the routes: every GET address that is not a Livewire page of that panel (the other panel, downloads, panel logins,
+  language switches, payment returns, plugin routes) opens as a normal page and is never prefetched. In custom views,
+  write internal links as `<a {{ \Filament\Support\generate_href_html($url) }}>` to get the same. Body scripts run again
+  on each page (guard document listeners with a flag on `window`, give Alpine components a `destroy()`); head
+  scripts run once. Repeated per-request reads are scoped bindings (`OrderableProducts`, `TldLookup`, `Currencies`).
 - Admin UI is **Filament 5** at `/admin`; no public order form. The client area is a second Filament panel at the site root
   (`ClientPanelProvider`, id `client`, guard `client`, password broker `clients` with 48-hour links, pages in
   `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, the To pay card with each unpaid notice, Waiting for you (`Dashboard::waiting()`: overdue notices, suspended services, answered tickets, open quotes, SSL waiting for validation, domains ending within `DOMAIN_DAYS` with auto renew off, this month's `usage_warnings`, a pending change request), My services with the panel login of each hosting account (`Dashboard::services()`), the domain search field, next renewals beside the Support card (`tickets()`, article search); shortcuts on a phone only; Start here for a client with no service yet (`isNew()`, `starters()` = products marked Popular), Services, Domains, Payment

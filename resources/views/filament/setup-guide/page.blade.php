@@ -53,7 +53,7 @@
                     </div>
                     <div class="gcp-step-desc">{{ $step['description'] }}</div>
                     <div class="gcp-step-actions">
-                        <a href="{{ $step['url'] }}">{{ $step['status'] === 'done' ? __('Change') : __('Open') }}</a>
+                        <a {{ \Filament\Support\generate_href_html($step['url']) }}>{{ $step['status'] === 'done' ? __('Change') : __('Open') }}</a>
                         @if ($step['status'] === null)
                             <button type="button" wire:click="mark('{{ $step['key'] }}', 'done')">{{ __('Mark as done') }}</button>
                             <button type="button" class="gcp-step-quiet" wire:click="mark('{{ $step['key'] }}', 'skipped')">{{ __('Skip') }}</button>
