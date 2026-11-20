@@ -27,6 +27,7 @@ use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Filament\Pages\EmailTemplates;
 use App\Filament\Pages\ErrorLog;
 use App\Filament\Pages\FailedJobs;
+use App\Filament\Pages\Plugins;
 use App\Filament\Pages\SystemHealth;
 use App\Filament\Resources\CannedReplies\CannedReplyResource;
 use App\Filament\Resources\ClientFields\ClientFieldResource;
@@ -112,6 +113,22 @@ class SettingsTest extends TestCase
             ->assertSee(MailSettings::getUrl())
             ->assertSee(ServerResource::getUrl())
             ->assertSeeInOrder(['General', 'General', 'Languages', 'Company', 'Client fields', 'Billing', 'Payment methods', 'Currencies', 'Invoices', 'Tax', 'Client credit', 'Automation', 'Sales', 'Products &amp; domains', 'Products', 'Product options', 'Domain pricing', 'Domains', 'Registrars', 'Servers', 'Client area', 'Client area', 'Public area', 'Menus', 'Cookies', 'Support', 'Ticket departments', 'Canned replies', 'Email to ticket', 'Email &amp; notifications', 'Mail', 'Email templates', 'Integrations', 'AI assistant', 'AI assistant', 'Security', 'Admin users', 'Login security', 'System', 'Plugins', 'Updates', 'Backups', 'System health', 'Logs', 'Logging', 'Module log', 'Email log', 'Error log'], false);
+    }
+
+    public function test_settings_search_also_matches_the_english_names_in_another_language(): void
+    {
+        $this->actingAs(User::factory()->create(['locale' => 'el']));
+        app()->setLocale('el');
+
+        $search = SettingsCluster::searchText(Plugins::class);
+
+        $this->assertStringContainsString('Πρόσθετα', $search);
+        $this->assertStringContainsString('Plugins', $search);
+        $this->assertSame('el', app()->getLocale());
+
+        $this->get(SettingsCluster::getUrl())->assertOk()
+            ->assertSee('Πρόσθετα')
+            ->assertSee('System Plugins Server panels, registrars and integrations', false); // in the card's search text
     }
 
     public function test_every_stored_setting_is_on_exactly_one_page(): void

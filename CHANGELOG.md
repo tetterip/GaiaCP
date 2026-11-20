@@ -9,6 +9,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   number at the end of the line (none at 0; a line renamed in Settings → Client area → Menus keeps it). The red / amber number
   after it still means only that something waits for the client. **Credit** shows the balance the same
   way while there is one, and **Tickets** the tickets that are not closed.
+- The quote, maintenance and unsubscribe pages stay readable in dark mode: links in the accent colour instead of the
+  browser's dark blue, and dark text on the light dark-mode buttons. A quote printed in dark mode uses light colours.
+- The search on Settings and Reports also finds a card by its English name and description in every other language
+  ("plugin" finds Πρόσθετα). An empty list that is good news (tickets, open upgrade and cancellation requests, failed
+  jobs, the error log) shows a green tick instead of a grey cross.
 - Security: a Content-Security-Policy on every page. Scripts run only when they carry the page's nonce (Filament's,
   Livewire's and GaiaCP's own) or are loaded by such a script (captchas, the cookie banner's scripts), so a script or
   onclick="" slipped into a page doesn't run. What it blocks goes to the log (System → Logs); `GAIACP_CSP=report` only

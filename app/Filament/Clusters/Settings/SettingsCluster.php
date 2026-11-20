@@ -2,6 +2,7 @@
 
 namespace App\Filament\Clusters\Settings;
 
+use App\Filament\Clusters\Concerns\SearchesCardsInEnglishToo;
 use App\Filament\Concerns\TranslatesPageLabels;
 use BackedEnum;
 use Filament\Clusters\Cluster;
@@ -17,6 +18,7 @@ use UnitEnum;
  */
 class SettingsCluster extends Cluster
 {
+    use SearchesCardsInEnglishToo;
     use TranslatesPageLabels;
 
     /** Sub-navigation and card groups, in order. A page's navigationSort keeps it inside its group's range. */
@@ -61,7 +63,21 @@ class SettingsCluster extends Cluster
         return __('Your business, billing, products, client area, support, email, integrations and the system.');
     }
 
-    /** @return Collection<string, Collection<int, array{label: string, description: string, icon: mixed, url: string}>> */
+    /**
+     * What the search box matches for a card: its group, name and description in the admin's language and in English.
+     *
+     * @param  string  $component  a page or resource implementing SettingsCard
+     */
+    public static function searchText(string $component): string
+    {
+        return static::inAdminLanguageAndEnglish(fn (): string => implode(' ', [
+            (string) $component::getNavigationGroup(),
+            $component::getNavigationLabel(),
+            $component::settingsDescription(),
+        ]));
+    }
+
+    /** The cards by group, each with label, description, icon, url and search (the texts the search box matches). */
     public function cards(): Collection
     {
         return collect(static::getClusteredComponents())
@@ -74,6 +90,7 @@ class SettingsCluster extends Cluster
                 'description' => $component::settingsDescription(),
                 'icon' => $component::getNavigationIcon(),
                 'url' => $component::getUrl(),
+                'search' => static::searchText($component),
             ])
             ->groupBy('group')
             ->sortBy(fn ($cards, string $group) => array_search($group, array_map(fn (string $g) => __($g), self::GROUPS), true));

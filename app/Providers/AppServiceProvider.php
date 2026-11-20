@@ -24,6 +24,7 @@ use App\Support\Settings;
 use App\Support\TldLookup;
 use App\Support\Translations;
 use App\Support\Version;
+use BladeUI\Icons\Factory as IconFactory;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Auth\Notifications\ResetPassword as FilamentResetPassword;
@@ -93,6 +94,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // GaiaCP's own icons (resources/svg) as "gcp-<file>", e.g. gcp-good-news: the green tick of an empty list
+        // that is good news (no tickets waiting, no failed jobs), coloured by filament.tables.
+        $this->callAfterResolving(IconFactory::class, fn (IconFactory $icons) => $icons->add('gaiacp', ['path' => resource_path('svg'), 'prefix' => 'gcp']));
+
         // nonce="…" for an inline <script> of a view, so the Content-Security-Policy lets it run (App\Support\ContentSecurityPolicy)
         Blade::directive('nonce', fn () => '<?php if (filled($__cspNonce = \\App\\Support\\ContentSecurityPolicy::nonce())) echo \'nonce="\'.e($__cspNonce).\'"\'; ?>');
 
