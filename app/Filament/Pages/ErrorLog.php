@@ -145,6 +145,7 @@ class ErrorLog extends Page implements HasTable, SettingsCard
                     ->modalCancelActionLabel(__('Close'))
                     ->modalWidth('5xl'),
             ])
+            ->emptyStateIcon('gcp-good-news') // nothing to deal with: a green tick, not Filament's grey cross
             ->emptyStateHeading(__('No entries'))
             ->emptyStateDescription(__('Nothing has been logged in this file.'))
             ->defaultPaginationPageOption(25);
