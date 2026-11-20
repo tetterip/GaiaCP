@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: the Amount, Tax and Total headers of the invoice PDF and of the client's payment notice sat left of their
+  amounts; they are right-aligned like the amounts below them.
 - The search on Settings and Reports also finds a card by its English name and description in every other language
   ("plugin" finds Πρόσθετα). An empty list that is good news (tickets, open upgrade and cancellation requests, failed
   jobs, the error log) shows a green tick instead of a grey cross.
