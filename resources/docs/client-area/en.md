@@ -216,7 +216,7 @@ Under Support → **Downloads** you find files we share with you, such as guides
 <!-- if:tickets -->
 ## Support tickets
 
-Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days.
+Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days. The grey number next to **Tickets** in the menu is how many of your tickets are not closed; a coloured one, how many we answered and wait for you.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

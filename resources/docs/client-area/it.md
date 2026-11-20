@@ -216,7 +216,7 @@ In Supporto → **Download** trovi i file che condividiamo con te, come guide e 
 <!-- if:tickets -->
 ## Ticket di supporto
 
-In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno.
+In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno. Il numero grigio accanto a **Ticket** nel menu indica quanti Suoi ticket non sono chiusi; quello colorato, quanti abbiamo risposto e aspettano Lei.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

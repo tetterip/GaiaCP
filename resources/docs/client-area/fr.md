@@ -216,7 +216,7 @@ Sous Support → **Téléchargements**, vous trouvez les fichiers que nous parta
 <!-- if:tickets -->
 ## Tickets de support
 
-Dans Support → Tickets, **Ouvrir un ticket** vous permet de nous demander n'importe quoi : choisissez le département et le service concerné, rédigez votre question et joignez des fichiers comme des captures d'écran. Nous répondons sur le ticket et par email ; cliquez sur **Répondre** pour nous écrire en retour. Fermez-le quand vous n'avez plus besoin de rien. Un ticket fermé se rouvre si vous répondez, et un ticket auquel nous avons répondu se ferme de lui-même si nous n'avons pas de nouvelles de votre part pendant quelques jours.
+Dans Support → Tickets, **Ouvrir un ticket** vous permet de nous demander n'importe quoi : choisissez le département et le service concerné, rédigez votre question et joignez des fichiers comme des captures d'écran. Nous répondons sur le ticket et par email ; cliquez sur **Répondre** pour nous écrire en retour. Fermez-le quand vous n'avez plus besoin de rien. Un ticket fermé se rouvre si vous répondez, et un ticket auquel nous avons répondu se ferme de lui-même si nous n'avons pas de nouvelles de votre part pendant quelques jours. Le nombre gris à côté de **Tickets** dans le menu indique combien de vos tickets ne sont pas fermés ; le nombre en couleur, combien nous avons répondus et attendent votre réponse.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

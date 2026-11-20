@@ -216,7 +216,7 @@ Destek → **İndirmeler** altında sizinle paylaştığımız rehberler ve yaz�
 <!-- if:tickets -->
 ## Destek talepleri
 
-Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır.
+Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır. Menüde **Destek talepleri** yanındaki gri sayı, kapanmamış taleplerinizi; renkli sayı ise yanıtladığımız ve sizi bekleyenleri gösterir.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

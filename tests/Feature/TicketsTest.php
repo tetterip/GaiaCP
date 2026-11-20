@@ -265,6 +265,20 @@ class TicketsTest extends TestCase
             Tickets::fill("Hello {client_first_name},\nabout {ticket_number}. {admin_name}", $ticket, $this->admin));
     }
 
+    public function test_the_client_menu_counts_the_tickets_not_closed_in_grey(): void
+    {
+        $this->asClient();
+        $label = fn () => ClientTicketResource::getNavigationItems()[0]->getLabel()->toHtml();
+        $this->assertSame('Tickets', $label());
+
+        $this->ticket();
+        $this->ticket()->update(['status' => TicketStatus::Answered]);
+        $this->ticket()->update(['status' => TicketStatus::Closed]);
+
+        $this->assertSame('Tickets <span class="gcp-nav-count">2</span>', $label());
+        $this->assertSame('1', ClientTicketResource::getNavigationBadge()); // the answered one, waiting for the client
+    }
+
     public function test_a_client_only_sees_their_own_tickets_and_none_when_switched_off(): void
     {
         $ticket = $this->ticket();

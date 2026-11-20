@@ -216,7 +216,7 @@ Onder Ondersteuning → **Downloads** vindt u bestanden die we met u delen, zoal
 <!-- if:tickets -->
 ## Supporttickets
 
-Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen.
+Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen. Het grijze getal naast **Tickets** in het menu geeft aan hoeveel van uw tickets niet gesloten zijn; het gekleurde, hoeveel we hebben beantwoord en op u wachten.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

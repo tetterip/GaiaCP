@@ -216,7 +216,7 @@ Unter Support → **Downloads** finden Sie Dateien, die wir mit Ihnen teilen, et
 <!-- if:tickets -->
 ## Support-Tickets
 
-Unter Support → Tickets können Sie mit **Ticket eröffnen** uns alles fragen: Wählen Sie die Abteilung und den betreffenden Dienst, schreiben Sie Ihre Frage und hängen Sie Dateien wie Screenshots an. Wir antworten im Ticket und per E-Mail; klicken Sie darin auf **Antworten**, um zurückzuschreiben. Schließen Sie es, wenn Sie nichts mehr brauchen. Ein geschlossenes Ticket öffnet sich wieder, wenn Sie antworten, und eines, das wir beantwortet haben, schließt sich von selbst, wenn wir einige Tage nichts von Ihnen hören.
+Unter Support → Tickets können Sie mit **Ticket eröffnen** uns alles fragen: Wählen Sie die Abteilung und den betreffenden Dienst, schreiben Sie Ihre Frage und hängen Sie Dateien wie Screenshots an. Wir antworten im Ticket und per E-Mail; klicken Sie darin auf **Antworten**, um zurückzuschreiben. Schließen Sie es, wenn Sie nichts mehr brauchen. Ein geschlossenes Ticket öffnet sich wieder, wenn Sie antworten, und eines, das wir beantwortet haben, schließt sich von selbst, wenn wir einige Tage nichts von Ihnen hören. Die graue Zahl neben **Tickets** im Menü zeigt, wie viele Ihrer Tickets nicht geschlossen sind; die farbige, wie viele wir beantwortet haben und auf Sie warten.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

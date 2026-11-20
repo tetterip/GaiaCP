@@ -216,7 +216,7 @@ Em Suporte → **Downloads** você encontra arquivos que compartilhamos com voc�
 <!-- if:tickets -->
 ## Tickets de suporte
 
-Em Suporte → Tickets, use **Abrir um ticket** para nos perguntar qualquer coisa: escolha o departamento e o serviço a que se refere, escreva sua pergunta e anexe arquivos, como capturas de tela. Respondemos no ticket e por e-mail; clique em **Responder** nele para escrever de volta. Feche-o quando não precisar de mais nada. Um ticket fechado é reaberto se você responder, e um que respondemos fecha sozinho quando não temos notícias suas por alguns dias.
+Em Suporte → Tickets, use **Abrir um ticket** para nos perguntar qualquer coisa: escolha o departamento e o serviço a que se refere, escreva sua pergunta e anexe arquivos, como capturas de tela. Respondemos no ticket e por e-mail; clique em **Responder** nele para escrever de volta. Feche-o quando não precisar de mais nada. Um ticket fechado é reaberto se você responder, e um que respondemos fecha sozinho quando não temos notícias suas por alguns dias. O número cinza ao lado de **Tickets** no menu mostra quantos dos seus tickets não estão fechados; o colorido, quantos respondemos e esperam por você.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

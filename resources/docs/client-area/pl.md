@@ -216,7 +216,7 @@ W Pomoc → **Pliki do pobrania** znajdziesz pliki, które Ci udostępniamy, tak
 <!-- if:tickets -->
 ## Zgłoszenia
 
-W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi.
+W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi. Szara liczba obok **Zgłoszeń** w menu pokazuje, ile Państwa zgłoszeń nie jest zamkniętych; kolorowa, na ile odpowiedzieliśmy i czekamy na Państwa.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->
