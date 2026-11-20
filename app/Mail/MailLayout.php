@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Support\Branding;
+use App\Support\MailLogo;
 use App\Support\MailTemplates;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -53,7 +54,8 @@ class MailLayout
 
     /**
      * The GaiaCP logo for the admins' system emails (`x-admin-mail`): embedded like the company logo, as a data: URI
-     * in a preview, and '' in the plain-text part, which shows the name instead.
+     * in a preview, and '' in the plain-text part, which shows the name instead. Its wordmark has a white outline
+     * (drawn into logo-email.png from logo.svg), so it stays readable where Gmail or Outlook darken the email.
      */
     public static function gaiacpLogo(mixed $message): string
     {
@@ -62,10 +64,15 @@ class MailLayout
         return $message ? $message->embed($logo) : self::dataUri($logo);
     }
 
-    /** Absolute path of the company logo (a PNG copy of an SVG), or null when there is none to show. */
+    /**
+     * Absolute path of the company logo for emails (a PNG copy of an SVG), with the white outline that keeps it
+     * readable in dark mode (MailLogo), or null when there is none to show.
+     */
     public static function logoPath(): ?string
     {
-        return Branding::emailLogoPath();
+        $path = Branding::emailLogoPath();
+
+        return $path === null ? null : MailLogo::for($path);
     }
 
     private static function dataUri(string $path): string
