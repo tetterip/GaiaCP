@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Installer: the language is a small button with the current code (EN) that opens the list of languages, instead of
+  a row of all ten that no longer fit next to the logo and spilled off the screen on a phone.
 - System health → Speed: OPcache shows as on where the host disables `opcache_get_status()` (Plesk does), and warns
   when it has room for fewer files than GaiaCP has (`opcache.max_accelerated_files` below 20000; Plesk's default is 1000).
 - Faster panels: a click on a link to another page of the admin or the client area swaps only the page instead of
