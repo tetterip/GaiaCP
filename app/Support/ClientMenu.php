@@ -228,7 +228,8 @@ final class ClientMenu
 
         foreach ($items as $item) {
             if ($label !== null && count($items) === 1) {
-                $item->label($label);
+                $current = $item->getLabel();
+                $item->label($current instanceof NavigationCount ? $current->withText($label) : $label);
             }
 
             if ($icon !== null) {

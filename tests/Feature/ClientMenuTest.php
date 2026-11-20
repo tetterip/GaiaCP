@@ -8,6 +8,7 @@ use App\Filament\Clusters\Settings\Pages\MenuSettings;
 use App\Models\Client;
 use App\Models\Product;
 use App\Models\ProductGroup;
+use App\Models\Service;
 use App\Models\User;
 use App\Support\ClientMenu;
 use Filament\Facades\Filament;
@@ -103,6 +104,18 @@ class ClientMenuTest extends TestCase
         $this->assertContains(['type' => 'page', 'key' => 'Order'], array_slice($rows, 0, $support)); // new, no heading: at the top
         $this->assertNotContains(['type' => 'page', 'key' => 'PaymentNoticeResource'], array_slice($rows, 0, $support)); // its heading is gone: at the end
         $this->assertContains(['type' => 'page', 'key' => 'PaymentNoticeResource'], $rows);
+    }
+
+    public function test_a_renamed_line_keeps_its_grey_count(): void
+    {
+        $this->save(ClientMenu::CLIENT, [
+            ['type' => 'heading', 'key' => 'services'],
+            ['type' => 'page', 'key' => 'DomainResource', 'label' => ['en' => 'My names']],
+        ]);
+        $this->actAsClient();
+        Service::factory()->domain()->count(2)->create(['client_id' => auth('client')->user()->client_id]);
+
+        $this->get('/domains')->assertOk()->assertSee('My names <span class="gcp-nav-count">2</span>', false);
     }
 
     public function test_a_product_that_cant_be_ordered_and_an_empty_heading_are_left_out(): void

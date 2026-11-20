@@ -201,8 +201,38 @@ class ClientStatusChipsTest extends TestCase
         Service::factory()->for($this->client)->create(['status' => ServiceStatus::Suspended]);
         Service::factory()->maintenance()->for($this->client)->create(['status' => ServiceStatus::Suspended]);
         Service::factory()->maintenance()->for($this->client)->create(['status' => ServiceStatus::Suspended]);
-        $badges = collect(ServiceResource::getNavigationItems())->mapWithKeys(fn ($item) => [$item->getLabel() => $item->getBadge()]);
+        $badges = collect(ServiceResource::getNavigationItems())->mapWithKeys(fn ($item) => [(string) $item->getLabel() => $item->getBadge()]);
         $this->assertSame(['Hosting' => '1', 'Other services' => '2'], $badges->all());
+    }
+
+    public function test_menu_lines_show_a_grey_count_of_what_each_lists(): void
+    {
+        $labels = fn () => collect([...ServiceResource::getNavigationItems(), ...DomainResource::getNavigationItems()])
+            ->mapWithKeys(fn ($item) => [(string) $item->getLabel() => $item->getLabel()->toHtml()])->all();
+
+        // Nothing yet: no count at all, not a 0
+        $this->assertSame(['Hosting' => 'Hosting', 'Other services' => 'Other services', 'Domains' => 'Domains'], $labels());
+
+        Service::factory()->for($this->client)->create();
+        Service::factory()->for($this->client)->create(['status' => ServiceStatus::Suspended]);
+        Service::factory()->for($this->client)->create(['status' => ServiceStatus::Cancelled]);
+        Service::factory()->for($this->client)->create(['client_visible' => false]);
+        Service::factory()->maintenance()->for($this->client)->create();
+        Service::factory()->domain()->for($this->client)->count(3)->create();
+        Service::factory()->domain()->create();
+
+        // The same as each list's All tab: cancelled, hidden and other clients' services left out
+        $this->assertSame([
+            'Hosting' => 'Hosting <span class="gcp-nav-count">2</span>',
+            'Other services' => 'Other services <span class="gcp-nav-count">1</span>',
+            'Domains' => 'Domains <span class="gcp-nav-count">3</span>',
+        ], $labels());
+
+        // The red badge for action stays apart from the count
+        $hosting = ServiceResource::getNavigationItems()[0];
+        $this->assertSame(['1', 'danger'], [$hosting->getBadge(), $hosting->getBadgeColor()]);
+
+        $this->get('/dashboard')->assertOk()->assertSee('<span class="gcp-nav-count">3</span>', false);
     }
 
     public function test_domain_rows_show_nameservers_and_how_soon_they_end(): void

@@ -30,6 +30,15 @@
         --gcp-bad: var(--danger-400);
     }
 
+    /* The grey count after a menu line ("Hosting 3", App\Support\NavigationCount): quiet, unlike the red / amber badge at the line's end */
+    .gcp-nav-count {
+        margin-inline-start: .35rem;
+        font-size: .75rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        color: var(--gcp-muted);
+    }
+
     /* A card with the theme's hairline, radius and shadow */
     .gcp-card {
         border-radius: var(--gcp-radius);
