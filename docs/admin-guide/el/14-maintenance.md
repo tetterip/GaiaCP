@@ -78,7 +78,8 @@ deploy. Το `GAIACP_UPDATE_CHECK=false` στο `.env` σταματά τον η�
 και τους servers και τους registrars) και αποτυγχάνει όταν κάτι δεν πάει καλά, ώστε να το τρέχει ένα script
 παρακολούθησης.
 
-Η ομάδα **Speed** λέει τι κάνει κάθε σελίδα πιο γρήγορη: το OPcache ενεργό στην PHP του site, τα cache που γράφουν τα
+Η ομάδα **Speed** λέει τι κάνει κάθε σελίδα πιο γρήγορη: το OPcache ενεργό στην PHP του site, με χώρο για όλα τα
+περίπου 18.000 αρχεία του GaiaCP (`opcache.max_accelerated_files=20000`· το 1.000 του Plesk αφήνει έξω τα περισσότερα), τα cache που γράφουν τα
 `php artisan optimize` και `php artisan filament:optimize` μετά από κάθε deploy (μια ενημέρωση μέσα από το GaiaCP τα
 τρέχει μόνη της), και το cache και τα sessions σε αρχεία ή Redis αντί για τη βάση (`CACHE_STORE=file` και
 `SESSION_DRIVER=file` στο `.env`· όλοι αποσυνδέονται μία φορά όταν αλλάξουν τα sessions). Μέσα στο panel, ένας
