@@ -73,7 +73,8 @@ connections to your servers and registrars. Anything marked as a problem says wh
 prints the same (add `--connections` to test the servers and registrars too) and fails when something is wrong, so a
 monitoring script can run it.
 
-Its **Speed** group says what makes each page quicker: OPcache on for the site's PHP, the caches that
+Its **Speed** group says what makes each page quicker: OPcache on for the site's PHP, with room for all of GaiaCP's
+about 18,000 files (`opcache.max_accelerated_files=20000`; Plesk's default of 1,000 leaves most of them out), the caches that
 `php artisan optimize` and `php artisan filament:optimize` write after a deploy (an update through GaiaCP runs them),
 and cache and sessions kept in files or Redis rather than the database (`CACHE_STORE=file` and `SESSION_DRIVER=file` in
 `.env`; everyone is logged out once when sessions move). Inside the panel, a link to another page swaps only the page

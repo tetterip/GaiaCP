@@ -124,4 +124,14 @@ class PanelSpeedTest extends TestCase
         config(['cache.default' => 'file', 'session.driver' => 'file']);
         $this->assertSame(Status::Ok, app(SystemHealth::class)->checks()->firstWhere('name', 'Cache and sessions')->status);
     }
+
+    public function test_opcache_needs_room_for_all_of_gaiacps_files(): void
+    {
+        $this->assertSame(Status::Warning, SystemHealth::opcache(false, 20000)->status);
+        // Plesk's default: on, but room for 1,000 of about 18,000 files
+        $small = SystemHealth::opcache(true, 1000);
+        $this->assertSame(Status::Warning, $small->status);
+        $this->assertStringContainsString('opcache.max_accelerated_files=20000', $small->hint);
+        $this->assertSame(Status::Ok, SystemHealth::opcache(true, 20000)->status);
+    }
 }

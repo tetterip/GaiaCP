@@ -61,6 +61,9 @@ class SystemHealth
         'opcache' => 'speed',
     ];
 
+    /** The files OPcache should have room for (opcache.max_accelerated_files): GaiaCP with vendor/ is about 18,000. */
+    public const OPCACHE_FILES = 20000;
+
     /** Daily jobs older than this have missed a day. */
     private const DAILY_GRACE_HOURS = 26;
 
@@ -175,10 +178,7 @@ class SystemHealth
         if (app()->runningInConsole()) {
             $checks[] = new Check('Speed', 'OPcache', Status::Info, 'Checked on the System health page', 'The command line usually runs without OPcache; the site\'s PHP is what counts.');
         } else {
-            $enabled = function_exists('opcache_get_status') && (bool) (@opcache_get_status(false)['opcache_enabled'] ?? false);
-            $checks[] = $enabled
-                ? new Check('Speed', 'OPcache', Status::Ok, 'On')
-                : new Check('Speed', 'OPcache', $missing, 'Off', 'Turn on OPcache for this site\'s PHP (Plesk: PHP settings → opcache.enable): PHP then keeps GaiaCP\'s code compiled instead of reading it again on each page.');
+            $checks[] = self::opcache(self::opcacheOn(), (int) ini_get('opcache.max_accelerated_files'), $missing);
         }
 
         $cached = [
@@ -201,6 +201,39 @@ class SystemHealth
             : new Check('Speed', 'Cache and sessions', Status::Info, "cache: {$store}, sessions: {$session}", 'Each page reads the '.implode(' and ', $slow).' from the database. CACHE_STORE=file and SESSION_DRIVER=file in .env (or redis, if the server has it) save a few queries on every page; everyone is logged out once when sessions move.');
 
         return $checks;
+    }
+
+    /** The OPcache line, from whether it runs and how many files it has room for. */
+    public static function opcache(bool $on, int $files, Status $missing = Status::Warning): Check
+    {
+        if (! $on) {
+            return new Check('Speed', 'OPcache', $missing, 'Off', 'Turn on OPcache for this site\'s PHP (Plesk: PHP settings → opcache.enable): PHP then keeps GaiaCP\'s code compiled instead of reading it again on each page.');
+        }
+
+        // GaiaCP with its vendor folder is about 18,000 PHP files: with room for fewer, most are read again each time
+        return $files < self::OPCACHE_FILES
+            ? new Check('Speed', 'OPcache', $missing, "On, room for {$files} files", 'GaiaCP has about 18,000 PHP files. Set opcache.max_accelerated_files='.self::OPCACHE_FILES.' (and opcache.memory_consumption=256) for this site\'s PHP (Plesk: PHP settings → Additional directives, below Plesk\'s own block), so all of them stay compiled.')
+            : new Check('Speed', 'OPcache', Status::Ok, "On, room for {$files} files");
+    }
+
+    /**
+     * Whether OPcache runs for this PHP. Hosts often disable opcache_get_status() (Plesk does by default), so the ini
+     * setting answers then.
+     */
+    private static function opcacheOn(): bool
+    {
+        if (! extension_loaded('Zend OPcache')) {
+            return false;
+        }
+
+        if (function_exists('opcache_get_status')) {
+            $status = @opcache_get_status(false);
+            if (is_array($status)) {
+                return (bool) ($status['opcache_enabled'] ?? false);
+            }
+        }
+
+        return filter_var(ini_get('opcache.enable'), FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
