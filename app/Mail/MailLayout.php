@@ -54,8 +54,8 @@ class MailLayout
 
     /**
      * The GaiaCP logo for the admins' system emails (`x-admin-mail`): embedded like the company logo, as a data: URI
-     * in a preview, and '' in the plain-text part, which shows the name instead. Its wordmark has a white outline
-     * (drawn into logo-email.png from logo.svg), so it stays readable where Gmail or Outlook darken the email.
+     * in a preview, and '' in the plain-text part, which shows the name instead. It sits on a white background drawn
+     * into logo-email.png (MailLogo), so it stays readable where Gmail or Outlook darken the email.
      */
     public static function gaiacpLogo(mixed $message): string
     {
@@ -65,7 +65,7 @@ class MailLayout
     }
 
     /**
-     * Absolute path of the company logo for emails (a PNG copy of an SVG), with the white outline that keeps it
+     * Absolute path of the company logo for emails (a PNG copy of an SVG), on the white background that keeps it
      * readable in dark mode (MailLogo), or null when there is none to show.
      */
     public static function logoPath(): ?string

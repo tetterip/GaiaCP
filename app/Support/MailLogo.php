@@ -7,24 +7,28 @@ use Throwable;
 
 /**
  * A logo that stays readable when a mail client turns the email dark. Gmail's apps and Outlook invert the colours of
- * an email in dark mode but never its images, so a dark logo on a transparent background ends up dark on dark.
- * The copy made here has a thin white outline around everything that is drawn: on the light email it disappears
- * into the background, on a darkened one it keeps the logo's letters apart from it. Logos without transparency
- * are already on their own background and are used as they are.
+ * an email in dark mode but never its images, so a dark logo on a transparent background ends up dark on dark (and a
+ * background given with CSS would be darkened too). The copy made here puts the logo on a white rounded background
+ * inside the image itself: a quiet white frame on the light email, a white badge that keeps the logo readable on a
+ * darkened one. Logos without transparency are already on their own background and are used as they are.
  *
  * The copy is drawn once (GD) and kept under storage/framework/cache/mail-logos, named after the file and its
  * modification time, so a new upload gets a new copy. Without GD, or when the image can't be read, the logo is used
- * as it is.
+ * as it is. The GaiaCP logo for emails (public/images/gaiacp/logo-email.png) is drawn the same way from logo.svg.
  */
 class MailLogo
 {
-    /** Height of the copy: twice the 80px emails show at most, for sharp screens. */
+    /** Height of the logo in the copy: twice the 80px emails show at most, for sharp screens. */
     public const HEIGHT = 160;
 
-    /** Width of the outline in pixels of the copy (so about half that on screen). */
-    public const OUTLINE = 3.0;
+    /** Space around the logo, above and below / left and right, and the corner radius, as parts of its height. */
+    public const PAD_Y = 0.09;
 
-    /** Path of the outlined copy of the logo at $path, or $path itself when it needs none or none can be made. */
+    public const PAD_X = 0.15;
+
+    public const RADIUS = 0.18;
+
+    /** Path of the copy on a white background of the logo at $path, or $path itself when it needs none or none can be made. */
     public static function for(string $path): string
     {
         if (! is_file($path) || ! function_exists('imagecreatefromstring')) {
@@ -38,12 +42,12 @@ class MailLogo
         }
 
         try {
-            $outlined = self::outline((string) file_get_contents($path));
+            $png = self::onBackground((string) file_get_contents($path));
         } catch (Throwable) {
             return $path;
         }
 
-        if ($outlined === null) {
+        if ($png === null) {
             return $path;
         }
 
@@ -51,7 +55,7 @@ class MailLogo
             @mkdir(dirname($copy), 0755, true);
         }
 
-        return @file_put_contents($copy, $outlined) !== false ? $copy : $path;
+        return @file_put_contents($copy, $png) !== false ? $copy : $path;
     }
 
     public static function copyPath(string $path): string
@@ -59,91 +63,31 @@ class MailLogo
         return storage_path('framework/cache/mail-logos/'.sha1($path.'|'.filemtime($path).'|'.filesize($path)).'.png');
     }
 
-    /** PNG bytes of the image with a white outline, or null when it has no transparent part to outline. */
-    public static function outline(string $bytes): ?string
+    /** PNG bytes of the logo on a white rounded background, or null when it has no transparent part (or isn't an image). */
+    public static function onBackground(string $bytes): ?string
     {
         $source = @imagecreatefromstring($bytes);
 
-        if (! $source instanceof GdImage) {
+        if (! $source instanceof GdImage || ! self::hasTransparency($source)) {
             return null;
         }
 
-        [$image, $margin] = self::toHeight($source);
-        $width = imagesx($image);
-        $height = imagesy($image);
+        $sourceWidth = imagesx($source);
+        $sourceHeight = imagesy($source);
+        $height = min(self::HEIGHT, $sourceHeight);
+        $width = max(1, (int) round($sourceWidth * $height / $sourceHeight));
+        $padX = (int) round($height * self::PAD_X);
+        $padY = (int) round($height * self::PAD_Y);
+        $outWidth = $width + 2 * $padX;
+        $outHeight = $height + 2 * $padY;
 
-        // Opacity of each pixel, 0..1
-        $opacity = [];
-        $transparent = false;
-
-        for ($y = 0; $y < $height; $y++) {
-            for ($x = 0; $x < $width; $x++) {
-                $alpha = (imagecolorat($image, $x, $y) >> 24) & 0x7F;
-                $opacity[$y][$x] = (127 - $alpha) / 127;
-                $inside = $x >= $margin && $y >= $margin && $x < $width - $margin && $y < $height - $margin;
-                $transparent = $transparent || ($inside && $alpha > 0);
-            }
-        }
-
-        if (! $transparent) {
-            return null; // on its own background already
-        }
-
-        // The pixels within OUTLINE of the drawing, softened at the edge
-        $reach = (int) ceil(self::OUTLINE + 0.5);
-        $kernel = [];
-
-        for ($dy = -$reach; $dy <= $reach; $dy++) {
-            for ($dx = -$reach; $dx <= $reach; $dx++) {
-                $weight = min(1.0, max(0.0, self::OUTLINE + 0.5 - sqrt($dx * $dx + $dy * $dy)));
-
-                if ($weight > 0) {
-                    $kernel[] = [$dx, $dy, $weight];
-                }
-            }
-        }
-
-        $out = imagecreatetruecolor($width, $height);
+        $out = imagecreatetruecolor($outWidth, $outHeight);
         imagealphablending($out, false);
         imagesavealpha($out, true);
+        self::roundedBackground($out, $outHeight * self::RADIUS);
 
-        for ($y = 0; $y < $height; $y++) {
-            for ($x = 0; $x < $width; $x++) {
-                $halo = 0.0;
-
-                foreach ($kernel as [$dx, $dy, $weight]) {
-                    $near = ($opacity[$y + $dy][$x + $dx] ?? 0) * $weight;
-
-                    if ($near > $halo) {
-                        $halo = $near;
-
-                        if ($halo >= 1.0) {
-                            break;
-                        }
-                    }
-                }
-
-                // The logo's pixel over the white outline
-                $rgba = imagecolorat($image, $x, $y);
-                $a = $opacity[$y][$x];
-                $total = $a + $halo * (1 - $a);
-
-                if ($total <= 0) {
-                    imagesetpixel($out, $x, $y, imagecolorallocatealpha($out, 255, 255, 255, 127));
-
-                    continue;
-                }
-
-                $channel = fn (int $value): int => (int) round(($value * $a + 255 * $halo * (1 - $a)) / $total);
-                imagesetpixel($out, $x, $y, imagecolorallocatealpha(
-                    $out,
-                    $channel(($rgba >> 16) & 0xFF),
-                    $channel(($rgba >> 8) & 0xFF),
-                    $channel($rgba & 0xFF),
-                    (int) round(127 - $total * 127),
-                ));
-            }
-        }
+        imagealphablending($out, true);
+        imagecopyresampled($out, $source, $padX, $padY, 0, 0, $width, $height, $sourceWidth, $sourceHeight);
 
         ob_start();
         imagepng($out, null, 9);
@@ -151,26 +95,52 @@ class MailLogo
         return (string) ob_get_clean();
     }
 
-    /**
-     * A true-colour copy at HEIGHT pixels high (never enlarged), with a transparent margin for the outline.
-     *
-     * @return array{GdImage, int} the copy and its margin
-     */
-    private static function toHeight(GdImage $source): array
+    private static function hasTransparency(GdImage $image): bool
     {
-        $sourceWidth = imagesx($source);
-        $sourceHeight = imagesy($source);
-        $margin = (int) ceil(self::OUTLINE) + 1;
-        $height = min(self::HEIGHT, $sourceHeight);
-        $width = max(1, (int) round($sourceWidth * $height / $sourceHeight));
+        if (! imageistruecolor($image)) {
+            return imagecolortransparent($image) >= 0;
+        }
 
-        $image = imagecreatetruecolor($width + 2 * $margin, $height + 2 * $margin);
-        imagealphablending($image, false);
-        imagesavealpha($image, true);
-        imagefill($image, 0, 0, imagecolorallocatealpha($image, 255, 255, 255, 127));
-        imagealphablending($image, true);
-        imagecopyresampled($image, $source, $margin, $margin, 0, 0, $width, $height, $sourceWidth, $sourceHeight);
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $step = max(1, (int) floor(min($width, $height) / 200)); // every pixel of a logo-sized image, a sample of a huge one
 
-        return [$image, $margin];
+        for ($y = 0; $y < $height; $y += $step) {
+            for ($x = 0; $x < $width; $x += $step) {
+                if (((imagecolorat($image, $x, $y) >> 24) & 0x7F) > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /** Fill the image with white, its corners rounded to $radius with smooth (antialiased) edges. */
+    private static function roundedBackground(GdImage $image, float $radius): void
+    {
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $radius = min($radius, $width / 2, $height / 2);
+        imagefill($image, 0, 0, imagecolorallocatealpha($image, 255, 255, 255, 0));
+        $corner = (int) ceil($radius);
+
+        for ($y = 0; $y < $corner; $y++) {
+            for ($x = 0; $x < $corner; $x++) {
+                // Distance of the pixel's centre from the corner circle's centre
+                $distance = sqrt(($radius - $x - 0.5) ** 2 + ($radius - $y - 0.5) ** 2);
+                $cover = max(0.0, min(1.0, $radius - $distance + 0.5));
+
+                if ($cover >= 1.0) {
+                    continue;
+                }
+
+                $color = imagecolorallocatealpha($image, 255, 255, 255, (int) round(127 * (1 - $cover)));
+
+                foreach ([[$x, $y], [$width - 1 - $x, $y], [$x, $height - 1 - $y], [$width - 1 - $x, $height - 1 - $y]] as [$px, $py]) {
+                    imagesetpixel($image, $px, $py, $color);
+                }
+            }
+        }
     }
 }
