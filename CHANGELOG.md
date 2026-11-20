@@ -75,8 +75,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   Payment notices, suspended services on Hosting and Other services, and domains ending within 30 days with auto renew
   off on Domains.
 - Notifications can be swiped away with the mouse or a trackpad too, in the bell's list and the pop-ups of both panels
-  (it was touch only): drag one left or right. The notifications next to it follow the drag a little and spring back
-  when it is let go. The X still removes one from the keyboard.
+  (it was touch only): drag one left or right. The notifications next to it follow the drag by a few pixels and settle
+  back when it is let go. The X still removes one from the keyboard.
 - Dashboard, fewer clicks: three **Needs attention** lines have a button for the thing that needs no choice, Complete
   order on the pending orders, Retry on the module queue (terminations stay in the queue) and Reply on the tickets
   waiting, which opens the oldest. A new **Recent activity** card shows the last eight payments, orders, new clients,
