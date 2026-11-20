@@ -1629,6 +1629,10 @@
         border-bottom: 1px solid var(--gcp-line);
     }
 
+    .gcp-notice-lines th.gcp-end {
+        text-align: end;
+    }
+
     .gcp-notice-lines td {
         padding: .55rem .5rem;
         border-bottom: 1px solid var(--gcp-line);

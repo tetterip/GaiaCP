@@ -205,6 +205,7 @@ class TaxInvoicesTest extends TestCase
         $html = Locales::using('el', fn () => view('invoices.pdf', ['invoice' => TaxInvoice::sole()->load('items', 'notice'), 'logo' => null])->render());
         $this->assertStringContainsString('Τιμολόγιο', $html);
         $this->assertStringContainsString('EL123456789', $html);
+        $this->assertStringContainsString('.lines th.end { text-align: right;', $html, 'amount headers line up with the amounts');
         $this->assertStringStartsWith('%PDF', InvoicePdf::content(TaxInvoice::sole()));
     }
 

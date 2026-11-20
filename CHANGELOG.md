@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: the Amount, Tax and Total headers of the invoice PDF and of the client's payment notice sat left of their
+  amounts; they are right-aligned like the amounts below them.
 - The quote, maintenance and unsubscribe pages stay readable in dark mode: links in the accent colour instead of the
   browser's dark blue, and dark text on the light dark-mode buttons. A quote printed in dark mode uses light colours.
 - The search on Settings and Reports also finds a card by its English name and description in every other language
