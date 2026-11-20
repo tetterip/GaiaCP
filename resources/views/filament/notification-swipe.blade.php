@@ -16,9 +16,9 @@
         window['gaiacp-notification-swipe'] = true;
 
         const still = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'; // a small overshoot, like a spring settling
-        const PULL = [0.22, 0.08]; // how much of the drag the first and second neighbour follow
-        const PULL_MAX = 28; // px: the furthest a neighbour is pulled, approached softly
+        const SPRING = 'cubic-bezier(0.22, 1.12, 0.36, 1)'; // settles with a barely visible overshoot
+        const PULL = [0.07, 0.025]; // how much of the drag the first and second neighbour follow: a hint, not a tug
+        const PULL_MAX = 10; // px: the furthest a neighbour is pulled, approached softly
         let swipe = null;
 
         const close = (el) => {
@@ -48,7 +48,7 @@
         // Damped: follows the drag at first, then gives less and less, never past PULL_MAX
         const pulled = (dx, pull) => PULL_MAX * Math.tanh((dx * pull) / PULL_MAX);
 
-        const springBack = (el, ms = 380) => {
+        const springBack = (el, ms = 320) => {
             el.style.transition = still() ? '' : `transform ${ms}ms ${SPRING}, opacity 200ms ease`;
             el.style.transform = '';
             el.style.opacity = '';
@@ -131,7 +131,8 @@
 
             const width = swipe.el.offsetWidth || 1;
             swipe.el.style.transform = `translateX(${dx}px)`;
-            swipe.el.style.opacity = String(Math.max(0.2, 1 - Math.abs(dx) / width));
+            // Stays solid while it follows the pointer and only fades in the last stretch, as it leaves
+            swipe.el.style.opacity = String(Math.min(1, Math.max(0.5, 1.5 - (1.2 * Math.abs(dx)) / width)));
             swipe.near.forEach(({ el, pull }) => { el.style.transform = `translateX(${pulled(dx, pull)}px)`; });
         }, { passive: false });
 
@@ -158,7 +159,7 @@
             const width = el.offsetWidth || 1;
             const fast = Math.abs(dx) > 40 && speed > 0.5;
 
-            near.forEach(({ el: neighbour }) => springBack(neighbour, 460));
+            near.forEach(({ el: neighbour }) => springBack(neighbour, 360));
 
             if (Math.abs(dx) < width * 0.35 && ! fast) {
                 springBack(el);
@@ -171,7 +172,7 @@
                 return;
             }
 
-            el.style.transition = 'transform 180ms ease-out, opacity 180ms ease-out';
+            el.style.transition = 'transform 220ms cubic-bezier(0.2, 0, 0, 1), opacity 220ms ease-out';
             el.style.transform = `translateX(${dx > 0 ? width : -width}px)`;
             el.style.opacity = '0';
 
@@ -180,12 +181,12 @@
             setTimeout(() => {
                 if (row) {
                     row.style.overflow = 'hidden';
-                    row.animate([{ height: `${row.offsetHeight}px` }, { height: '0px' }], { duration: 160, easing: 'ease-in', fill: 'forwards' });
-                    setTimeout(() => close(el), 160);
+                    row.animate([{ height: `${row.offsetHeight}px` }, { height: '0px' }], { duration: 220, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'forwards' });
+                    setTimeout(() => close(el), 220);
                 } else {
                     close(el);
                 }
-            }, 180);
+            }, 200);
         };
 
         document.addEventListener('pointerup', end);
