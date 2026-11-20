@@ -6,8 +6,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 ## [Unreleased]
 
 - Client area menu: **Hosting**, **Other services** and **Domains** show how many the client has there, as a small grey
-  number after the name (none at 0; a line renamed in Settings → Client area → Menus keeps it). The red / amber number
-  at the end of the line still means only that something waits for the client. **Credit** shows the balance the same
+  number at the end of the line (none at 0; a line renamed in Settings → Client area → Menus keeps it). The red / amber number
+  after it still means only that something waits for the client. **Credit** shows the balance the same
   way while there is one, and **Tickets** the tickets that are not closed.
 - Security: a Content-Security-Policy on every page. Scripts run only when they carry the page's nonce (Filament's,
   Livewire's and GaiaCP's own) or are loaded by such a script (captchas, the cookie banner's scripts), so a script or

@@ -30,12 +30,27 @@
         --gcp-bad: var(--danger-400);
     }
 
-    /* The grey count after a menu line ("Hosting 3", App\Support\NavigationCount): quiet, unlike the red / amber badge at the line's end */
+    /* The grey count of a menu line ("Hosting 3", App\Support\NavigationCount) at its right end, before the red / amber badge */
+    .fi-sidebar-item-label:has(> .gcp-nav-count) {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: .5rem;
+    }
+
     .gcp-nav-count {
-        margin-inline-start: .35rem;
+        margin-inline-start: auto;
+        min-width: 1.5rem;
+        padding: .1rem .45rem;
+        border-radius: 999px;
+        background: var(--gcp-soft);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
         font-size: .75rem;
         font-weight: 500;
+        line-height: 1.1rem;
+        text-align: center;
         font-variant-numeric: tabular-nums;
+        white-space: nowrap;
         color: var(--gcp-muted);
     }
 
