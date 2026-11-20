@@ -41,15 +41,16 @@
     .gcp-nav-count {
         margin-inline-start: auto;
         min-width: 1.5rem;
-        padding: .1rem .45rem;
+        height: 1.5rem;
+        padding: 0 .45rem;
         border-radius: 999px;
         position: relative;
         z-index: 1;
-        background: color-mix(in srgb, var(--gcp-muted) 14%, var(--gcp-card));
-        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gcp-muted) 45%, transparent);
+        background: linear-gradient(var(--gcp-soft), var(--gcp-soft)), var(--gcp-card);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
         font-size: .75rem;
         font-weight: 500;
-        line-height: 1.1rem;
+        line-height: 1.5rem;
         text-align: center;
         font-variant-numeric: tabular-nums;
         white-space: nowrap;
@@ -62,7 +63,7 @@
     }
 
     .fi-sidebar-item-btn:has(.gcp-nav-count) .fi-sidebar-item-badge-ctn .fi-badge {
-        padding-inline-start: 1.35rem;
+        padding-inline-start: .95rem;
     }
 
     .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) {
