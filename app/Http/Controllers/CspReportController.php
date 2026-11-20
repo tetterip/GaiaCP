@@ -20,7 +20,9 @@ class CspReportController extends Controller
         $report = is_array($report) ? ($report['csp-report'] ?? $report[0]['body'] ?? $report) : null;
 
         if (is_array($report)) {
-            $field = fn (string ...$names) => Str::limit((string) collect($names)->map(fn ($name) => $report[$name] ?? null)->first(fn ($value) => is_scalar($value) && $value !== ''), 300);
+            // On one line, without control characters: anyone can post here, and a line break would forge log entries
+            $field = fn (string ...$names) => Str::limit((string) preg_replace('/[\x00-\x1F\x7F]+/', ' ',
+                (string) collect($names)->map(fn ($name) => $report[$name] ?? null)->first(fn ($value) => is_scalar($value) && $value !== '')), 300);
 
             Log::warning(ContentSecurityPolicy::mode() === ContentSecurityPolicy::REPORT ? 'Content-Security-Policy would block' : 'Content-Security-Policy blocked', [
                 'directive' => $field('effective-directive', 'effectiveDirective', 'violated-directive'),

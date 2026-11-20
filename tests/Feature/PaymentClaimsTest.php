@@ -12,6 +12,7 @@ use App\Models\Service;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use InvalidArgumentException;
 use Tests\TestCase;
 
 /** A client's "I've paid" on a payment notice (App\Actions\PaymentClaims). */
@@ -56,6 +57,18 @@ class PaymentClaimsTest extends TestCase
         Invoice::query()->whereKey($this->notice->id)->update(['status' => InvoiceStatus::Paid]);
 
         app(PaymentClaims::class)->claim($this->notice, 'bank_transfer');
+
+        $this->assertNull($this->notice->refresh()->payment_claimed_at);
+        $this->assertSame(0, ActivityLog::query()->where('event', 'invoice.payment_claimed')->count());
+    }
+
+    public function test_only_a_known_payment_method_can_be_claimed(): void
+    {
+        try {
+            app(PaymentClaims::class)->claim($this->notice, "<b>wire</b>\nto me");
+            $this->fail('An unknown method was accepted.');
+        } catch (InvalidArgumentException) {
+        }
 
         $this->assertNull($this->notice->refresh()->payment_claimed_at);
         $this->assertSame(0, ActivityLog::query()->where('event', 'invoice.payment_claimed')->count());

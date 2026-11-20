@@ -26,7 +26,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Security (Email to ticket 1.4.0): an answer joins its ticket by a secret code in the ticket emails' headers, not by
   the ticket number alone, so on "Unless the mail server found the sender forged" no one can write into a client's ticket
   by guessing its number; the number in the subject still works when the mail server confirmed the sender. A message
-  from an unconfirmed sender shows **Sender not confirmed** on the admin's ticket.
+  from an unconfirmed sender shows **Sender not confirmed** on the admin's ticket. New **Our mail server's name**: set,
+  only the Authentication-Results header with that name can confirm a sender, so a "pass" header the sender wrote
+  into the email never counts, even when the mail server adds none of its own.
+- Security hardening from an outside audit: a Content-Security-Policy report can no longer put line breaks or other
+  control characters into the log (forged log lines); a client's "I've paid" takes only a payment method GaiaCP
+  offers; the Mastercard Gateway payment page escapes the session id in its script; a total over several currencies
+  takes only column names. The admin guide says what the AI features send to the AI service.
 - Security: Settings → Company stores only a logo the upload field has just saved (or keeps the saved one), and a
   logo name with `..` or an absolute path is never served or deleted.
 - Fixed: in dark mode in Gmail's apps (and Outlook) the logo at the top of emails was dark on dark and could not be read.

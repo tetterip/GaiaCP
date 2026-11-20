@@ -109,6 +109,13 @@ saved until you do). Only that field's text is sent, with fixed instructions tha
 formatting; never client details or passwords. Settings → **AI assistant** (its own group, with each AI service's page) turns each feature on or
 off, sets a monthly limit in tokens for all admins together and shows how many were used this month.
 
+Before you switch features on, keep in mind that what they send leaves GaiaCP for the AI service's company and is
+handled under its terms. The writing tools send only the field's text, but some features below send your clients'
+data: ticket conversations, services, payment history (each says what it sends, and hides names, addresses and phone
+numbers where it can). Check the service's data and privacy terms, mention it in your own privacy policy if your clients
+should know, and switch on only what you use. The monthly token limit and the daily limit on domain suggestions cap how
+much is sent; Ollama on your own server keeps everything with you.
+
 It also writes texts from GaiaCP's own details, each with its own switch there:
 
 - **Write from the product's details** in a product's Description menu: two or three sentences from its name, type,

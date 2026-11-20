@@ -128,29 +128,54 @@ class InboundMail
      * What the mail servers that received it say of the From address, in their Authentication-Results headers:
      * - forged: dmarc=fail, or spf=fail / softfail without a passing DKIM signature of the From domain, in any header
      *   (a sender can add a header of their own, but writing "fail" there only hurts them);
-     * - verified: the topmost header (the last server's, which is ours) says dmarc=pass, a DKIM signature of the From
-     *   domain passed, or SPF passed for it. Only the topmost counts, as a sender can write a "pass" header below it;
+     * - verified: the header of our own mail server says dmarc=pass, a DKIM signature of the From domain passed, or SPF
+     *   passed for it. With Settings → Email to ticket → Our mail server's name set, that is the topmost header whose
+     *   name (authserv-id, before the first ";") is one of those names, so a "pass" written by the sender under any other
+     *   name counts for nothing; without it, the topmost header, as a sender can write a "pass" header below it;
      * - unconfirmed: neither.
      * A DKIM signature or SPF pass of another domain says nothing of the From address (anyone can sign their own).
      */
     public static function senderCheck(MessageInterface $message, string $email): string
     {
         $domain = strtolower((string) substr(strrchr($email, '@') ?: '', 1));
+        $trusted = self::trustedServers();
         $verdict = self::UNCONFIRMED;
+        $decided = false;
 
         for ($i = 0; $i < 10 && ($header = $message->header('Authentication-Results', $i)) !== null; $i++) {
-            $results = self::results((string) $header->getRawValue(), $domain);
+            $value = (string) $header->getRawValue();
+            $results = self::results($value, $domain);
 
             if ($results['dmarc'] === 'fail' || (in_array($results['spf'], ['fail', 'softfail'], true) && ! $results['dkim'])) {
                 return self::FORGED;
             }
 
-            if ($i === 0 && ($results['dmarc'] === 'pass' || $results['dkim'] || ($results['spf'] === 'pass' && $results['spf_aligned']))) {
-                $verdict = self::VERIFIED;
+            // Ours: the topmost one, or the topmost one with our server's name
+            if (! $decided && ($trusted === [] || in_array(self::serverName($value), $trusted, true))) {
+                $decided = true;
+
+                if ($results['dmarc'] === 'pass' || $results['dkim'] || ($results['spf'] === 'pass' && $results['spf_aligned'])) {
+                    $verdict = self::VERIFIED;
+                }
             }
         }
 
         return $verdict;
+    }
+
+    /** @return list<string> Settings → Email to ticket → Our mail server's name, lower case; empty = not set */
+    public static function trustedServers(): array
+    {
+        return array_values(array_filter(array_map('strtolower',
+            preg_split('/[\s,;]+/', (string) config('gaiacp.ticket_mail.trusted_servers'), -1, PREG_SPLIT_NO_EMPTY) ?: [])));
+    }
+
+    /** The authserv-id: the name the server that wrote the header gave itself, before the first ";" (an optional version after it dropped). */
+    public static function serverName(string $value): string
+    {
+        $id = trim(explode(';', (string) preg_replace('/\([^)]*\)/', ' ', $value), 2)[0]);
+
+        return strtolower(preg_split('/\s+/', $id, 2)[0] ?? '');
     }
 
     /** @return array{dmarc: ?string, spf: ?string, spf_aligned: bool, dkim: bool} dkim: a signature of $domain passed */

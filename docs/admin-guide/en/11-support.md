@@ -54,6 +54,13 @@ headers, which the client's email app keeps when they press Reply; the ticket nu
 your mail server confirmed the sender, so no one can write into another client's ticket by guessing its number. A
 message from a sender your server didn't confirm shows **Sender not confirmed** on the ticket.
 
+A "pass" counts only from your own mail server, and a sender can write an Authentication-Results header of their own
+into the email. Fill in **Our mail server's name** with the name your server (or mail provider) writes at the start of
+its header, before the first `;` (open the source of an email you received, for example `mx.example.com`; several
+separated by commas): then only that header can confirm a sender. Left empty, the topmost header counts, which is safe
+only when your mail server always checks incoming email and adds its own header. Check that it does before choosing
+"Only when the mail server confirmed the sender": the check is only as good as your mail server's.
+
 ## Knowledge base
 
 Support → **Knowledge base** holds help articles in categories (Settings → Support → Knowledge base categories), each
