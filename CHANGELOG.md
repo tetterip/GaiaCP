@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Client area menu: **Hosting**, **Other services** and **Domains** show how many the client has there, as a small grey
+  number at the end of the line (none at 0; a line renamed in Settings → Client area → Menus keeps it). The red / amber number
+  after it still means only that something waits for the client. **Credit** shows the balance the same
+  way while there is one, and **Tickets** the tickets that are not closed.
 - Fixed: the Amount, Tax and Total headers of the invoice PDF and of the client's payment notice sat left of their
   amounts; they are right-aligned like the amounts below them.
 - The quote, maintenance and unsubscribe pages stay readable in dark mode: links in the accent colour instead of the

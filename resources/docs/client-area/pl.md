@@ -42,7 +42,7 @@ Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy 
 
 **Usługi** wymieniają Państwa hosting i inne usługi z ich statusem, ceną i następnym terminem płatności. Menu dzieli je na **Hosting** i **Inne usługi**. Strona konta hostingowego pokazuje jego okres rozliczeniowy i ma przycisk **Otwórz stronę WWW**. **Domeny** wymieniają Państwa domeny z datą wygaśnięcia, serwerami nazw i informacją, czy odnawiają się automatycznie. Gdy usługi mają różne statusy, przyciski nad każdą listą pokazują tylko te o jednym statusie (Aktywna, Zawieszona, …), z ich liczbą. Praca wykonywana jednorazowo, np. przeniesienie strony, jest rozliczana raz i po opłaceniu ma status **Zakończone**.
 
-Przyciski nad każdą listą wyróżniają też to, co wymaga uwagi: w **Domenach** te, które wkrótce wygasają, te, które nie odnawiają się automatycznie, oraz każde rozszerzenie (.gr, .com, …), gdy mają Państwo więcej niż jedno; w **Innych usługach** każdy rodzaj usługi. Domeny i usługi są wymienione od tej, której termin mija najwcześniej. Liczba obok **Wezwań do zapłaty**, **Hostingu**, **Innych usług** lub **Domen** w menu oznacza, że coś na Państwa czeka: nieopłacone wezwania, zawieszone usługi lub domeny wkrótce wygasające bez automatycznego odnowienia. W **Domenach** każda domena pokazuje swoje serwery nazw pod nazwą, a ta, której termin mija w ciągu 30 dni, pokazuje pod datą, ile dni zostało. Zaznaczcie kilka domen, aby zmienić ich serwery nazw albo włączyć lub wyłączyć automatyczne odnawianie dla wszystkich naraz (gdy pozwalamy na takie zmiany).
+Przyciski nad każdą listą wyróżniają też to, co wymaga uwagi: w **Domenach** te, które wkrótce wygasają, te, które nie odnawiają się automatycznie, oraz każde rozszerzenie (.gr, .com, …), gdy mają Państwo więcej niż jedno; w **Innych usługach** każdy rodzaj usługi. Domeny i usługi są wymienione od tej, której termin mija najwcześniej. Liczba obok **Wezwań do zapłaty**, **Hostingu**, **Innych usług** lub **Domen** w menu oznacza, że coś na Państwa czeka: nieopłacone wezwania, zawieszone usługi lub domeny wkrótce wygasające bez automatycznego odnowienia. Mała szara liczba na końcu wierszy **Hosting**, **Inne usługi** i **Domeny** pokazuje po prostu, ile ich Państwo mają. W **Domenach** każda domena pokazuje swoje serwery nazw pod nazwą, a ta, której termin mija w ciągu 30 dni, pokazuje pod datą, ile dni zostało. Zaznaczcie kilka domen, aby zmienić ich serwery nazw albo włączyć lub wyłączyć automatyczne odnawianie dla wszystkich naraz (gdy pozwalamy na takie zmiany).
 
 <!-- if:hosting -->
 Przy aktywnym koncie hostingowym można:
@@ -150,7 +150,7 @@ Gdy wysyłamy ofertę, przychodzi e-mail z linkiem do niej, a **Oferty** (w Rozl
 
 ## Saldo
 
-**Saldo** pokazuje stan salda i jego historię. Aby je doładować, prosimy kliknąć **Doładuj saldo** i wpisać kwotę: tworzymy na nią wezwanie do zapłaty, które opłaca się jak każde inne. Po jego opłaceniu kwota zostaje dodana do salda. Saldo można doładować, gdy ma się aktywną usługę.
+**Saldo** pokazuje stan salda i jego historię. Dopóki mają Państwo saldo, menu pokazuje kwotę na szaro obok **Saldo**. Aby je doładować, prosimy kliknąć **Doładuj saldo** i wpisać kwotę: tworzymy na nią wezwanie do zapłaty, które opłaca się jak każde inne. Po jego opłaceniu kwota zostaje dodana do salda. Saldo można doładować, gdy ma się aktywną usługę.
 
 Saldo opłaca wezwania do zapłaty pozycja po pozycji: pozycja (odnowienie usługi) jest opłacana tylko wtedy, gdy saldo pokrywa ją w całości, a to, czego nie pokrywa, pozostaje na wezwaniu do zapłaty jak zwykle.
 <!-- if:credit_auto -->
@@ -216,7 +216,7 @@ W Pomoc → **Pliki do pobrania** znajdziesz pliki, które Ci udostępniamy, tak
 <!-- if:tickets -->
 ## Zgłoszenia
 
-W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi.
+W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi. Szara liczba obok **Zgłoszeń** w menu pokazuje, ile Państwa zgłoszeń nie jest zamkniętych; kolorowa, na ile odpowiedzieliśmy i czekamy na Państwa.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

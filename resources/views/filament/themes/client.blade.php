@@ -30,6 +30,66 @@
         --gcp-bad: var(--danger-400);
     }
 
+    /* The grey count of a menu line ("Hosting 3", App\Support\NavigationCount) at its right end, before the red / amber badge */
+    .fi-sidebar-item-label:has(> .gcp-nav-count) {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .gcp-nav-count {
+        margin-inline-start: auto;
+        min-width: 1.5rem;
+        height: 1.5rem;
+        padding: 0 .45rem;
+        border-radius: 999px;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(var(--gcp-soft), var(--gcp-soft)), var(--gcp-card);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
+        font-size: .75rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: var(--gcp-muted);
+    }
+
+    /* With a red / amber badge too, the grey pill sits over its start, and a danger / warning badge gets a warning triangle */
+    .fi-sidebar-item-btn:has(.gcp-nav-count) .fi-sidebar-item-badge-ctn {
+        margin-inline-start: -1.35rem;
+    }
+
+    .fi-sidebar-item-btn:has(.gcp-nav-count) .fi-sidebar-item-badge-ctn .fi-badge {
+        padding-inline-start: .8rem;
+    }
+
+    .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) {
+        border-radius: 999px;
+        outline: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+        outline-offset: -1px;
+    }
+
+    .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) .fi-badge-label-ctn {
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) .fi-badge-label-ctn::before {
+        content: '';
+        display: inline-block;
+        width: .8rem;
+        height: .8rem;
+        flex-shrink: 0;
+        margin-inline-end: .25rem;
+        background: currentColor;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 20h20L12 3z'/%3E%3Cpath d='M12 10v4M12 17h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 20h20L12 3z'/%3E%3Cpath d='M12 10v4M12 17h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
     /* A card with the theme's hairline, radius and shadow */
     .gcp-card {
         border-radius: var(--gcp-radius);

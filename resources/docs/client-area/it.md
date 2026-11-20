@@ -42,7 +42,7 @@ La Home mostra quanto deve pagare, con un pulsante **Paga** su ogni avviso di pa
 
 **Servizi** elenca il Suo hosting e gli altri servizi con stato, prezzo e prossima scadenza. Il menu li divide in **Hosting** e **Altri servizi**. La pagina di un account hosting mostra il suo ciclo di fatturazione e ha un pulsante **Apri sito web**. **Domini** elenca i Suoi domini con data di scadenza, nameserver e se si rinnovano automaticamente. Quando ha servizi in più di uno stato, i pulsanti sopra ogni elenco mostrano solo quelli in uno stato (Attivo, Sospeso, …), con il loro numero. Un lavoro svolto una volta, come lo spostamento del Suo sito web, viene addebitato una volta e appare come **Completato** dopo il pagamento.
 
-I pulsanti sopra ogni elenco evidenziano anche ciò che richiede attenzione: in **Domini**, quelli in scadenza, quelli che non si rinnovano automaticamente e ogni estensione (.gr, .com, …) quando ne ha più di una; in **Altri servizi**, ogni tipo di servizio. Domini e servizi sono elencati con quello in scadenza per primo in alto. Un numero accanto a **Avvisi di pagamento**, **Hosting**, **Altri servizi** o **Domini** nel menu significa che qualcosa La aspetta: avvisi non pagati, servizi sospesi o domini in scadenza senza rinnovo automatico. In **Domini**, ogni dominio mostra i suoi nameserver sotto il nome, e uno in scadenza entro 30 giorni mostra sotto la data quanti giorni mancano. Selezioni più domini per cambiarne i nameserver o attivare o disattivare il rinnovo automatico per tutti insieme (quando Le permettiamo di modificarli).
+I pulsanti sopra ogni elenco evidenziano anche ciò che richiede attenzione: in **Domini**, quelli in scadenza, quelli che non si rinnovano automaticamente e ogni estensione (.gr, .com, …) quando ne ha più di una; in **Altri servizi**, ogni tipo di servizio. Domini e servizi sono elencati con quello in scadenza per primo in alto. Un numero accanto a **Avvisi di pagamento**, **Hosting**, **Altri servizi** o **Domini** nel menu significa che qualcosa La aspetta: avvisi non pagati, servizi sospesi o domini in scadenza senza rinnovo automatico. Il piccolo numero grigio alla fine delle righe **Hosting**, **Altri servizi** e **Domini** indica semplicemente quanti ne ha. In **Domini**, ogni dominio mostra i suoi nameserver sotto il nome, e uno in scadenza entro 30 giorni mostra sotto la data quanti giorni mancano. Selezioni più domini per cambiarne i nameserver o attivare o disattivare il rinnovo automatico per tutti insieme (quando Le permettiamo di modificarli).
 
 <!-- if:hosting -->
 Su un account hosting attivo può:
@@ -150,7 +150,7 @@ Quando Le inviamo un preventivo, riceve un'email con un link, e **Preventivi** (
 
 ## Credito
 
-**Credito** mostra il saldo del Suo credito e la sua cronologia. Per aggiungere fondi, prema **Aggiungi fondi** e inserisca un importo: creiamo un avviso di pagamento, che paga come qualsiasi altro. Una volta pagato, l'importo viene aggiunto al Suo credito. Può aggiungere fondi quando ha un servizio attivo.
+**Credito** mostra il saldo del Suo credito e la sua cronologia. Finché ha del credito, il menu mostra l'importo in grigio accanto a **Credito**. Per aggiungere fondi, prema **Aggiungi fondi** e inserisca un importo: creiamo un avviso di pagamento, che paga come qualsiasi altro. Una volta pagato, l'importo viene aggiunto al Suo credito. Può aggiungere fondi quando ha un servizio attivo.
 
 Il credito paga i Suoi avvisi di pagamento una riga alla volta: una riga (il rinnovo di un servizio) viene pagata solo quando il credito la copre per intero, e ciò che non copre resta sull'avviso da pagare come di consueto.
 <!-- if:credit_auto -->
@@ -216,7 +216,7 @@ In Supporto → **Download** trovi i file che condividiamo con te, come guide e 
 <!-- if:tickets -->
 ## Ticket di supporto
 
-In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno.
+In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno. Il numero grigio accanto a **Ticket** nel menu indica quanti Suoi ticket non sono chiusi; quello colorato, quanti abbiamo risposto e aspettano Lei.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

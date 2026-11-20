@@ -42,7 +42,7 @@ Inicio muestra lo que tiene que pagar, con un botón **Pagar** en cada aviso de 
 
 **Servicios** lista su hosting y sus otros servicios con su estado, precio y próximo vencimiento. El menú los divide en **Hosting** y **Otros servicios**. La página de una cuenta de hosting muestra su ciclo de facturación y tiene un botón **Abrir sitio web**. **Dominios** lista sus dominios con su fecha de vencimiento, sus servidores de nombres y si se renuevan automáticamente. Cuando tiene servicios en más de un estado, los botones sobre cada lista muestran solo los de un estado (Activo, Suspendido, …), con cuántos hay. Un trabajo hecho una vez, como trasladar su sitio web, se cobra una sola vez y aparece como **Completado** después de pagarlo.
 
-Los botones sobre cada lista también destacan lo que requiere atención: en **Dominios**, los que vencen pronto, los que no se renuevan automáticamente y cada extensión (.gr, .com, …) cuando tiene más de una; en **Otros servicios**, cada tipo de servicio. Los dominios y servicios aparecen con el que vence primero arriba. Un número junto a **Avisos de pago**, **Hosting**, **Otros servicios** o **Dominios** en el menú significa que algo le espera: avisos sin pagar, servicios suspendidos o dominios que vencen pronto sin renovación automática. En **Dominios**, cada dominio muestra sus servidores de nombres bajo su nombre, y uno que vence en 30 días muestra bajo su fecha cuántos días quedan. Marque varios dominios para cambiar sus servidores de nombres o activar o desactivar la renovación automática de todos a la vez (cuando le permitimos cambiarlos).
+Los botones sobre cada lista también destacan lo que requiere atención: en **Dominios**, los que vencen pronto, los que no se renuevan automáticamente y cada extensión (.gr, .com, …) cuando tiene más de una; en **Otros servicios**, cada tipo de servicio. Los dominios y servicios aparecen con el que vence primero arriba. Un número junto a **Avisos de pago**, **Hosting**, **Otros servicios** o **Dominios** en el menú significa que algo le espera: avisos sin pagar, servicios suspendidos o dominios que vencen pronto sin renovación automática. El pequeño número gris al final de las líneas **Hosting**, **Otros servicios** y **Dominios** indica simplemente cuántos tiene allí. En **Dominios**, cada dominio muestra sus servidores de nombres bajo su nombre, y uno que vence en 30 días muestra bajo su fecha cuántos días quedan. Marque varios dominios para cambiar sus servidores de nombres o activar o desactivar la renovación automática de todos a la vez (cuando le permitimos cambiarlos).
 
 <!-- if:hosting -->
 En una cuenta de hosting activa puede:
@@ -150,7 +150,7 @@ Cuando le enviamos un presupuesto, recibe un email con un enlace a él, y **Pres
 
 ## Saldo
 
-**Saldo** muestra su saldo disponible y su historial. Para añadir fondos, pulse **Añadir fondos** e introduzca un importe: creamos un aviso de pago por él, que paga como cualquier otro. Una vez pagado, el importe se añade a su saldo. Puede añadir fondos cuando tenga un servicio activo.
+**Saldo** muestra su saldo disponible y su historial. Mientras tenga saldo, el menú muestra el importe en gris junto a **Saldo**. Para añadir fondos, pulse **Añadir fondos** e introduzca un importe: creamos un aviso de pago por él, que paga como cualquier otro. Una vez pagado, el importe se añade a su saldo. Puede añadir fondos cuando tenga un servicio activo.
 
 El saldo paga sus avisos de pago línea a línea: una línea (la renovación de un servicio) se paga solo cuando su saldo la cubre entera, y lo que no cubre se queda en el aviso para pagarlo como siempre.
 <!-- if:credit_auto -->
@@ -216,7 +216,7 @@ En Soporte → **Descargas** encontrará archivos que compartimos con usted, com
 <!-- if:tickets -->
 ## Tickets de soporte
 
-En Soporte → Tickets, **Abrir un ticket** para preguntarnos lo que sea: elija el departamento y el servicio al que se refiere, escriba su pregunta y adjunte archivos como capturas de pantalla. Respondemos en el ticket y por email; pulse **Responder** en él para contestar. Ciérrelo cuando no necesite nada más. Un ticket cerrado se vuelve a abrir si responde, y uno que respondimos se cierra solo cuando no sabemos nada de usted en unos días.
+En Soporte → Tickets, **Abrir un ticket** para preguntarnos lo que sea: elija el departamento y el servicio al que se refiere, escriba su pregunta y adjunte archivos como capturas de pantalla. Respondemos en el ticket y por email; pulse **Responder** en él para contestar. Ciérrelo cuando no necesite nada más. Un ticket cerrado se vuelve a abrir si responde, y uno que respondimos se cierra solo cuando no sabemos nada de usted en unos días. El número gris junto a **Tickets** en el menú indica cuántos de sus tickets no están cerrados; el de color, cuántos hemos respondido y esperan su respuesta.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

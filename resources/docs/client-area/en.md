@@ -42,7 +42,7 @@ Home shows what you have to pay, with a **Pay** button on each payment notice (o
 
 **Services** lists your hosting and other services with their status, price and next due date. The menu splits them into **Hosting** and **Other services**. A hosting account's page shows its billing cycle and has an **Open website** button. **Domains** lists your domains with their expiry date, nameservers and whether they renew automatically. When you have services in more than one status, the buttons above each list show only those in one status (Active, Suspended, …), with how many there are. Work done once, such as moving your website, is billed once and shows as **Completed** after you pay it.
 
-The buttons above each list also pick out what needs a look: on **Domains**, those expiring soon, those that will not renew automatically and each extension (.gr, .com, …) when you have more than one; on **Other services**, each kind of service. Domains and services are listed with the one due first on top. A number next to **Payment notices**, **Hosting**, **Other services** or **Domains** in the menu means something waits for you: unpaid notices, suspended services, or domains ending soon that will not renew automatically. In **Domains**, each domain shows its nameservers under its name, and one ending within 30 days shows how many days are left under its due date. Tick several domains to change their nameservers or turn auto renew on or off for all of them at once (when we let you change them).
+The buttons above each list also pick out what needs a look: on **Domains**, those expiring soon, those that will not renew automatically and each extension (.gr, .com, …) when you have more than one; on **Other services**, each kind of service. Domains and services are listed with the one due first on top. A number next to **Payment notices**, **Hosting**, **Other services** or **Domains** in the menu means something waits for you: unpaid notices, suspended services, or domains ending soon that will not renew automatically. The small grey number at the end of the **Hosting**, **Other services** and **Domains** lines is simply how many you have there. In **Domains**, each domain shows its nameservers under its name, and one ending within 30 days shows how many days are left under its due date. Tick several domains to change their nameservers or turn auto renew on or off for all of them at once (when we let you change them).
 
 <!-- if:hosting -->
 On an active hosting account you can:
@@ -150,7 +150,7 @@ When we send you a quote, you get an email with a link to it, and **Quotes** (un
 
 ## Credit
 
-**Credit** shows your credit balance and its history. To add funds, press **Add funds** and enter an amount: we create a payment notice for it, which you pay like any other. Once it is paid, the amount is added to your credit. You can add funds once you have an active service.
+**Credit** shows your credit balance and its history. While you have credit, the menu shows the amount in grey next to **Credit**. To add funds, press **Add funds** and enter an amount: we create a payment notice for it, which you pay like any other. Once it is paid, the amount is added to your credit. You can add funds once you have an active service.
 
 Credit pays your payment notices one line at a time: a line (a service's renewal) is paid only when your credit covers all of it, and anything it doesn't cover stays on the notice to pay as usual.
 <!-- if:credit_auto -->
@@ -216,7 +216,7 @@ Under Support → **Downloads** you find files we share with you, such as guides
 <!-- if:tickets -->
 ## Support tickets
 
-Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days.
+Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days. The grey number next to **Tickets** in the menu is how many of your tickets are not closed; a coloured one, how many we answered and wait for you.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

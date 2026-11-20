@@ -42,7 +42,7 @@ Ana sayfa ne ödemeniz gerektiğini, her ödeme bildiriminde bir **Öde** düğm
 
 **Hizmetler**, hosting ve diğer hizmetlerinizi durumları, fiyatları ve sonraki vade tarihleriyle listeler. Menü bunları **Hosting** ve **Diğer hizmetler** olarak ayırır. Bir hosting hesabının sayfası ödeme dönemini gösterir ve bir **Web sitesini aç** düğmesi içerir. **Alan adları**, alan adlarınızı bitiş tarihleri, ad sunucuları ve otomatik yenilenip yenilenmedikleriyle listeler. Birden fazla durumda hizmetiniz olduğunda, her listenin üstündeki düğmeler yalnızca tek bir durumdakileri (Etkin, Askıda, …) kaç tane olduklarıyla gösterir. Web sitenizin taşınması gibi bir kez yapılan işler bir kez ücretlendirilir ve ödedikten sonra **Tamamlandı** olarak görünür.
 
-Her listenin üstündeki düğmeler ilgilenmeniz gerekenleri de ayırır: **Alan adları**nda yakında sona erenleri, otomatik yenilenmeyenleri ve birden fazla uzantınız varsa her uzantıyı (.gr, .com, …); **Diğer hizmetler**de her hizmet türünü. Alan adları ve hizmetler, vadesi ilk gelen en üstte olacak şekilde listelenir. Menüde **Ödeme bildirimleri**, **Hosting**, **Diğer hizmetler** veya **Alan adları** yanındaki bir sayı, sizi bekleyen bir şey olduğu anlamına gelir: ödenmemiş bildirimler, askıya alınmış hizmetler veya otomatik yenilenmeden yakında sona erecek alan adları. **Alan adları** bölümünde her alan adı, adının altında ad sunucularını gösterir; 30 gün içinde sona erecek olanlar, tarihin altında kaç gün kaldığını gösterir. Ad sunucularını değiştirmek veya otomatik yenilemeyi hepsi için birden açıp kapatmak için birkaç alan adını işaretleyin (bunları değiştirmenize izin verdiğimizde).
+Her listenin üstündeki düğmeler ilgilenmeniz gerekenleri de ayırır: **Alan adları**nda yakında sona erenleri, otomatik yenilenmeyenleri ve birden fazla uzantınız varsa her uzantıyı (.gr, .com, …); **Diğer hizmetler**de her hizmet türünü. Alan adları ve hizmetler, vadesi ilk gelen en üstte olacak şekilde listelenir. Menüde **Ödeme bildirimleri**, **Hosting**, **Diğer hizmetler** veya **Alan adları** yanındaki bir sayı, sizi bekleyen bir şey olduğu anlamına gelir: ödenmemiş bildirimler, askıya alınmış hizmetler veya otomatik yenilenmeden yakında sona erecek alan adları. **Hosting**, **Diğer hizmetler** ve **Alan adları** satırlarının sonundaki küçük gri sayı, orada kaç tane olduğunu gösterir. **Alan adları** bölümünde her alan adı, adının altında ad sunucularını gösterir; 30 gün içinde sona erecek olanlar, tarihin altında kaç gün kaldığını gösterir. Ad sunucularını değiştirmek veya otomatik yenilemeyi hepsi için birden açıp kapatmak için birkaç alan adını işaretleyin (bunları değiştirmenize izin verdiğimizde).
 
 <!-- if:hosting -->
 Etkin bir hosting hesabında şunları yapabilirsiniz:
@@ -150,7 +150,7 @@ Size bir teklif gönderdiğimizde ona bağlantı içeren bir e-posta alırsını
 
 ## Bakiye
 
-**Bakiye** bakiyenizi ve geçmişini gösterir. Bakiye yüklemek için **Bakiye yükle**'ye basın ve bir tutar girin: bunun için diğerleri gibi ödediğiniz bir ödeme bildirimi oluştururuz. Ödendiğinde tutar bakiyenize eklenir. Etkin bir hizmetiniz olduğunda bakiye yükleyebilirsiniz.
+**Bakiye** bakiyenizi ve geçmişini gösterir. Bakiyeniz olduğu sürece menü, tutarı **Bakiye**'nin yanında gri olarak gösterir. Bakiye yüklemek için **Bakiye yükle**'ye basın ve bir tutar girin: bunun için diğerleri gibi ödediğiniz bir ödeme bildirimi oluştururuz. Ödendiğinde tutar bakiyenize eklenir. Etkin bir hizmetiniz olduğunda bakiye yükleyebilirsiniz.
 
 Bakiye, ödeme bildirimlerinizi satır satır öder: bir satır (bir hizmetin yenilemesi) yalnızca bakiyeniz tamamını karşıladığında ödenir ve karşılamadığı her şey bildirimde her zamanki gibi ödenmek üzere kalır.
 <!-- if:credit_auto -->
@@ -216,7 +216,7 @@ Destek → **İndirmeler** altında sizinle paylaştığımız rehberler ve yaz�
 <!-- if:tickets -->
 ## Destek talepleri
 
-Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır.
+Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır. Menüde **Destek talepleri** yanındaki gri sayı, kapanmamış taleplerinizi; renkli sayı ise yanıtladığımız ve sizi bekleyenleri gösterir.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->

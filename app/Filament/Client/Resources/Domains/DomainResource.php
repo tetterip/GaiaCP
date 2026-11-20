@@ -16,11 +16,13 @@ use App\Filament\Client\Resources\Services\ServiceResource;
 use App\Models\Service;
 use App\Providers\AppServiceProvider;
 use App\Provisioning\ProvisioningException;
+use App\Support\NavigationCount;
 use BackedEnum;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -56,6 +58,12 @@ class DomainResource extends Resource
     }
 
     protected static ?string $recordTitleAttribute = 'domain';
+
+    /** The menu line with a grey count of the client's domains after it (NavigationCount); the badge stays for action. */
+    public static function getNavigationItems(): array
+    {
+        return array_map(fn (NavigationItem $item) => $item->label(new NavigationCount(static::getNavigationLabel(), fn () => static::getEloquentQuery()->count())), parent::getNavigationItems());
+    }
 
     /** Domains ending soon with auto renew off: they will be lost unless the client turns it back on or renews. */
     public static function getNavigationBadge(): ?string

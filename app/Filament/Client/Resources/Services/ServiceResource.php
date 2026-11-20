@@ -21,6 +21,7 @@ use App\Monitoring\MonitorStatus;
 use App\Monitoring\UptimeHistory;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
+use App\Support\NavigationCount;
 use App\Support\ProductOptions;
 use BackedEnum;
 use Filament\Infolists\Components\TextEntry;
@@ -36,6 +37,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 
 use function Filament\Support\original_request;
@@ -69,6 +71,7 @@ class ServiceResource extends Resource
         ];
 
         return collect($items)->map(fn (array $item, string $kind) => NavigationItem::make($item[0])
+            ->label(new NavigationCount($item[0], fn () => self::kindQuery($kind)->count()))
             ->key(static::class.'.'.$kind)
             ->icon($item[1])
             ->group(static::getNavigationGroup())
@@ -84,13 +87,17 @@ class ServiceResource extends Resource
     /** The suspended services of a sidebar entry, its badge: they need paying (or a word with support) to come back. */
     private static function suspendedCount(string $kind): ?string
     {
-        $count = static::getEloquentQuery()
-            ->where('status', ServiceStatus::Suspended)
-            ->when($kind === 'hosting', fn (Builder $query) => $query->where('type', ServiceType::Hosting))
-            ->when($kind === 'other', fn (Builder $query) => $query->where('type', '!=', ServiceType::Hosting))
-            ->count();
+        $count = self::kindQuery($kind)->where('status', ServiceStatus::Suspended)->count();
 
         return $count > 0 ? (string) $count : null;
+    }
+
+    /** @return Builder<Model> the client's services of a sidebar entry, as its list's All tab shows them */
+    private static function kindQuery(string $kind): Builder
+    {
+        return static::getEloquentQuery()
+            ->when($kind === 'hosting', fn (Builder $query) => $query->where('type', ServiceType::Hosting))
+            ->when($kind === 'other', fn (Builder $query) => $query->where('type', '!=', ServiceType::Hosting));
     }
 
     /** The sidebar entry of the current services page: its ?kind, or the type of the service being viewed. */

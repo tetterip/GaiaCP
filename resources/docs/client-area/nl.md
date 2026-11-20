@@ -42,7 +42,7 @@ Home toont wat u moet betalen, met een knop **Betalen** bij elk betalingsbericht
 
 **Diensten** toont uw hosting en andere diensten met hun status, prijs en volgende vervaldatum. Het menu verdeelt ze in **Hosting** en **Andere diensten**. De pagina van een hostingaccount toont de betaalperiode en heeft een knop **Website openen**. **Domeinen** toont uw domeinen met hun verloopdatum, nameservers en of ze automatisch worden verlengd. Hebt u diensten met meer dan één status, dan tonen de knoppen boven elke lijst alleen die met één status (Actief, Opgeschort, …), met hoeveel het er zijn. Eenmalig werk, zoals het verhuizen van uw website, wordt één keer in rekening gebracht en verschijnt als **Voltooid** nadat u het hebt betaald.
 
-De knoppen boven elke lijst lichten ook uit wat aandacht vraagt: bij **Domeinen** de domeinen die binnenkort verlopen, die niet automatisch worden verlengd en elke extensie (.gr, .com, …) als u er meer dan één hebt; bij **Andere diensten** elk soort dienst. Domeinen en diensten staan met de eerst vervallende bovenaan. Een getal naast **Betalingsverzoeken**, **Hosting**, **Andere diensten** of **Domeinen** in het menu betekent dat er iets op u wacht: onbetaalde verzoeken, opgeschorte diensten of domeinen die binnenkort verlopen zonder automatische verlenging. Bij **Domeinen** toont elk domein zijn nameservers onder de naam, en een domein dat binnen 30 dagen afloopt toont onder de datum hoeveel dagen er nog zijn. Vink meerdere domeinen aan om hun nameservers te wijzigen of automatisch verlengen voor allemaal tegelijk aan of uit te zetten (als we u dat toestaan).
+De knoppen boven elke lijst lichten ook uit wat aandacht vraagt: bij **Domeinen** de domeinen die binnenkort verlopen, die niet automatisch worden verlengd en elke extensie (.gr, .com, …) als u er meer dan één hebt; bij **Andere diensten** elk soort dienst. Domeinen en diensten staan met de eerst vervallende bovenaan. Een getal naast **Betalingsverzoeken**, **Hosting**, **Andere diensten** of **Domeinen** in het menu betekent dat er iets op u wacht: onbetaalde verzoeken, opgeschorte diensten of domeinen die binnenkort verlopen zonder automatische verlenging. Het kleine grijze getal aan het eind van de regels **Hosting**, **Andere diensten** en **Domeinen** geeft gewoon aan hoeveel u er hebt. Bij **Domeinen** toont elk domein zijn nameservers onder de naam, en een domein dat binnen 30 dagen afloopt toont onder de datum hoeveel dagen er nog zijn. Vink meerdere domeinen aan om hun nameservers te wijzigen of automatisch verlengen voor allemaal tegelijk aan of uit te zetten (als we u dat toestaan).
 
 <!-- if:hosting -->
 Bij een actief hostingaccount kunt u:
@@ -150,7 +150,7 @@ Wanneer we u een offerte sturen, ontvangt u een e-mail met een link ernaartoe, e
 
 ## Tegoed
 
-**Tegoed** toont uw tegoed en de geschiedenis ervan. Om tegoed te storten, drukt u op **Tegoed storten** en voert u een bedrag in: we maken er een betalingsverzoek voor aan, dat u betaalt zoals elk ander. Zodra het is betaald, wordt het bedrag aan uw tegoed toegevoegd. U kunt tegoed storten zodra u een actieve dienst hebt.
+**Tegoed** toont uw tegoed en de geschiedenis ervan. Zolang u tegoed hebt, toont het menu het bedrag in grijs naast **Tegoed**. Om tegoed te storten, drukt u op **Tegoed storten** en voert u een bedrag in: we maken er een betalingsverzoek voor aan, dat u betaalt zoals elk ander. Zodra het is betaald, wordt het bedrag aan uw tegoed toegevoegd. U kunt tegoed storten zodra u een actieve dienst hebt.
 
 Tegoed betaalt uw betalingsverzoeken regel voor regel: een regel (de verlenging van een dienst) wordt alleen betaald als uw tegoed hem volledig dekt, en wat het niet dekt, blijft op het verzoek staan om zoals gewoonlijk te betalen.
 <!-- if:credit_auto -->
@@ -216,7 +216,7 @@ Onder Ondersteuning → **Downloads** vindt u bestanden die we met u delen, zoal
 <!-- if:tickets -->
 ## Supporttickets
 
-Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen.
+Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen. Het grijze getal naast **Tickets** in het menu geeft aan hoeveel van uw tickets niet gesloten zijn; het gekleurde, hoeveel we hebben beantwoord en op u wachten.
 <!-- endif -->
 
 <!-- if:urgent_tickets -->
