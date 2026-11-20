@@ -63,7 +63,7 @@
     }
 
     .fi-sidebar-item-btn:has(.gcp-nav-count) .fi-sidebar-item-badge-ctn .fi-badge {
-        padding-inline-start: .95rem;
+        padding-inline-start: .8rem;
     }
 
     .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) {
