@@ -150,7 +150,7 @@ Quand nous vous envoyons un devis, vous recevez un email avec un lien vers celui
 
 ## Crédit
 
-**Crédit** affiche votre solde créditeur et son historique. Pour ajouter des fonds, cliquez sur **Ajouter des fonds** et saisissez un montant : nous créons un avis de paiement de ce montant, que vous réglez comme les autres. Une fois payé, le montant est ajouté à votre crédit. Vous pouvez ajouter des fonds dès que vous avez un service actif.
+**Crédit** affiche votre solde créditeur et son historique. Tant que vous avez du crédit, le menu affiche le montant en gris à côté de **Crédit**. Pour ajouter des fonds, cliquez sur **Ajouter des fonds** et saisissez un montant : nous créons un avis de paiement de ce montant, que vous réglez comme les autres. Une fois payé, le montant est ajouté à votre crédit. Vous pouvez ajouter des fonds dès que vous avez un service actif.
 
 Le crédit règle vos avis de paiement ligne par ligne : une ligne (le renouvellement d'un service) n'est réglée que si votre crédit la couvre entièrement, et ce qu'il ne couvre pas reste sur l'avis à régler normalement.
 <!-- if:credit_auto -->

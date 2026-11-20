@@ -150,7 +150,7 @@ Gdy wysyłamy ofertę, przychodzi e-mail z linkiem do niej, a **Oferty** (w Rozl
 
 ## Saldo
 
-**Saldo** pokazuje stan salda i jego historię. Aby je doładować, prosimy kliknąć **Doładuj saldo** i wpisać kwotę: tworzymy na nią wezwanie do zapłaty, które opłaca się jak każde inne. Po jego opłaceniu kwota zostaje dodana do salda. Saldo można doładować, gdy ma się aktywną usługę.
+**Saldo** pokazuje stan salda i jego historię. Dopóki mają Państwo saldo, menu pokazuje kwotę na szaro obok **Saldo**. Aby je doładować, prosimy kliknąć **Doładuj saldo** i wpisać kwotę: tworzymy na nią wezwanie do zapłaty, które opłaca się jak każde inne. Po jego opłaceniu kwota zostaje dodana do salda. Saldo można doładować, gdy ma się aktywną usługę.
 
 Saldo opłaca wezwania do zapłaty pozycja po pozycji: pozycja (odnowienie usługi) jest opłacana tylko wtedy, gdy saldo pokrywa ją w całości, a to, czego nie pokrywa, pozostaje na wezwaniu do zapłaty jak zwykle.
 <!-- if:credit_auto -->

@@ -150,7 +150,7 @@ Quando Le inviamo un preventivo, riceve un'email con un link, e **Preventivi** (
 
 ## Credito
 
-**Credito** mostra il saldo del Suo credito e la sua cronologia. Per aggiungere fondi, prema **Aggiungi fondi** e inserisca un importo: creiamo un avviso di pagamento, che paga come qualsiasi altro. Una volta pagato, l'importo viene aggiunto al Suo credito. Può aggiungere fondi quando ha un servizio attivo.
+**Credito** mostra il saldo del Suo credito e la sua cronologia. Finché ha del credito, il menu mostra l'importo in grigio accanto a **Credito**. Per aggiungere fondi, prema **Aggiungi fondi** e inserisca un importo: creiamo un avviso di pagamento, che paga come qualsiasi altro. Una volta pagato, l'importo viene aggiunto al Suo credito. Può aggiungere fondi quando ha un servizio attivo.
 
 Il credito paga i Suoi avvisi di pagamento una riga alla volta: una riga (il rinnovo di un servizio) viene pagata solo quando il credito la copre per intero, e ciò che non copre resta sull'avviso da pagare come di consueto.
 <!-- if:credit_auto -->

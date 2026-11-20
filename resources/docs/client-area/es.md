@@ -150,7 +150,7 @@ Cuando le enviamos un presupuesto, recibe un email con un enlace a él, y **Pres
 
 ## Saldo
 
-**Saldo** muestra su saldo disponible y su historial. Para añadir fondos, pulse **Añadir fondos** e introduzca un importe: creamos un aviso de pago por él, que paga como cualquier otro. Una vez pagado, el importe se añade a su saldo. Puede añadir fondos cuando tenga un servicio activo.
+**Saldo** muestra su saldo disponible y su historial. Mientras tenga saldo, el menú muestra el importe en gris junto a **Saldo**. Para añadir fondos, pulse **Añadir fondos** e introduzca un importe: creamos un aviso de pago por él, que paga como cualquier otro. Una vez pagado, el importe se añade a su saldo. Puede añadir fondos cuando tenga un servicio activo.
 
 El saldo paga sus avisos de pago línea a línea: una línea (la renovación de un servicio) se paga solo cuando su saldo la cubre entera, y lo que no cubre se queda en el aviso para pagarlo como siempre.
 <!-- if:credit_auto -->

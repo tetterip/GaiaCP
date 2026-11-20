@@ -150,7 +150,7 @@ Wanneer we u een offerte sturen, ontvangt u een e-mail met een link ernaartoe, e
 
 ## Tegoed
 
-**Tegoed** toont uw tegoed en de geschiedenis ervan. Om tegoed te storten, drukt u op **Tegoed storten** en voert u een bedrag in: we maken er een betalingsverzoek voor aan, dat u betaalt zoals elk ander. Zodra het is betaald, wordt het bedrag aan uw tegoed toegevoegd. U kunt tegoed storten zodra u een actieve dienst hebt.
+**Tegoed** toont uw tegoed en de geschiedenis ervan. Zolang u tegoed hebt, toont het menu het bedrag in grijs naast **Tegoed**. Om tegoed te storten, drukt u op **Tegoed storten** en voert u een bedrag in: we maken er een betalingsverzoek voor aan, dat u betaalt zoals elk ander. Zodra het is betaald, wordt het bedrag aan uw tegoed toegevoegd. U kunt tegoed storten zodra u een actieve dienst hebt.
 
 Tegoed betaalt uw betalingsverzoeken regel voor regel: een regel (de verlenging van een dienst) wordt alleen betaald als uw tegoed hem volledig dekt, en wat het niet dekt, blijft op het verzoek staan om zoals gewoonlijk te betalen.
 <!-- if:credit_auto -->

@@ -150,7 +150,7 @@ When we send you a quote, you get an email with a link to it, and **Quotes** (un
 
 ## Credit
 
-**Credit** shows your credit balance and its history. To add funds, press **Add funds** and enter an amount: we create a payment notice for it, which you pay like any other. Once it is paid, the amount is added to your credit. You can add funds once you have an active service.
+**Credit** shows your credit balance and its history. While you have credit, the menu shows the amount in grey next to **Credit**. To add funds, press **Add funds** and enter an amount: we create a payment notice for it, which you pay like any other. Once it is paid, the amount is added to your credit. You can add funds once you have an active service.
 
 Credit pays your payment notices one line at a time: a line (a service's renewal) is paid only when your credit covers all of it, and anything it doesn't cover stays on the notice to pay as usual.
 <!-- if:credit_auto -->

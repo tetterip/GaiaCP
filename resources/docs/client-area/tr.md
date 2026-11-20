@@ -150,7 +150,7 @@ Size bir teklif gönderdiğimizde ona bağlantı içeren bir e-posta alırsını
 
 ## Bakiye
 
-**Bakiye** bakiyenizi ve geçmişini gösterir. Bakiye yüklemek için **Bakiye yükle**'ye basın ve bir tutar girin: bunun için diğerleri gibi ödediğiniz bir ödeme bildirimi oluştururuz. Ödendiğinde tutar bakiyenize eklenir. Etkin bir hizmetiniz olduğunda bakiye yükleyebilirsiniz.
+**Bakiye** bakiyenizi ve geçmişini gösterir. Bakiyeniz olduğu sürece menü, tutarı **Bakiye**'nin yanında gri olarak gösterir. Bakiye yüklemek için **Bakiye yükle**'ye basın ve bir tutar girin: bunun için diğerleri gibi ödediğiniz bir ödeme bildirimi oluştururuz. Ödendiğinde tutar bakiyenize eklenir. Etkin bir hizmetiniz olduğunda bakiye yükleyebilirsiniz.
 
 Bakiye, ödeme bildirimlerinizi satır satır öder: bir satır (bir hizmetin yenilemesi) yalnızca bakiyeniz tamamını karşıladığında ödenir ve karşılamadığı her şey bildirimde her zamanki gibi ödenmek üzere kalır.
 <!-- if:credit_auto -->

@@ -29,6 +29,7 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
+use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -101,6 +102,18 @@ class ClientCreditTest extends TestCase
         $this->actingAs(User::factory()->create())->get(ViewInvoice::getUrl(['record' => $notice]))->assertOk();
         $deposit = CreditTransaction::sole();
         $this->assertSame([CreditType::Deposit, 5000, 5000, 'bank_transfer', 'TX-1', $notice->id], [$deposit->type, $deposit->amount_cents, $deposit->balance_cents, $deposit->method, $deposit->reference, $deposit->invoice_id]);
+    }
+
+    public function test_the_menu_shows_the_balance_in_grey_while_there_is_one(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => UserRole::Client, 'client_id' => $this->client->id, 'email' => $this->client->email]), 'client');
+        Filament::setCurrentPanel('client');
+        $label = fn () => Credit::getNavigationItems()[0]->getLabel()->toHtml();
+
+        $this->assertSame('Credit', $label());
+
+        $this->addCredit(2550);
+        $this->assertSame('Credit <span class="gcp-nav-count">'.e(Money::format(2550, $this->client->currencyCode())).'</span>', $label());
     }
 
     public function test_a_deposit_is_recorded_once(): void

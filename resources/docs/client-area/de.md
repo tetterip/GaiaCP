@@ -150,7 +150,7 @@ Wenn wir Ihnen ein Angebot senden, erhalten Sie eine E-Mail mit einem Link dazu,
 
 ## Guthaben
 
-**Guthaben** zeigt Ihr Guthaben und seinen Verlauf. Um Guthaben aufzuladen, klicken Sie auf **Guthaben aufladen** und geben Sie einen Betrag ein: Wir erstellen dafür eine Zahlungsaufforderung, die Sie wie jede andere bezahlen. Sobald sie bezahlt ist, wird der Betrag Ihrem Guthaben hinzugefügt. Sie können Guthaben aufladen, sobald Sie einen aktiven Dienst haben.
+**Guthaben** zeigt Ihr Guthaben und seinen Verlauf. Solange Sie Guthaben haben, zeigt das Menü den Betrag grau neben **Guthaben**. Um Guthaben aufzuladen, klicken Sie auf **Guthaben aufladen** und geben Sie einen Betrag ein: Wir erstellen dafür eine Zahlungsaufforderung, die Sie wie jede andere bezahlen. Sobald sie bezahlt ist, wird der Betrag Ihrem Guthaben hinzugefügt. Sie können Guthaben aufladen, sobald Sie einen aktiven Dienst haben.
 
 Das Guthaben bezahlt Ihre Zahlungsaufforderungen Position für Position: Eine Position (die Verlängerung eines Dienstes) wird nur bezahlt, wenn Ihr Guthaben sie vollständig deckt, und was es nicht deckt, bleibt wie üblich zur Zahlung auf der Aufforderung.
 <!-- if:credit_auto -->

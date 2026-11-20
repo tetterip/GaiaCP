@@ -150,7 +150,7 @@ Quando enviamos um orçamento, você recebe um e-mail com um link para ele, e **
 
 ## Crédito
 
-**Crédito** mostra o seu saldo de crédito e o histórico dele. Para adicionar fundos, clique em **Adicionar fundos** e informe um valor: criamos um aviso de pagamento para ele, que você paga como qualquer outro. Depois de pago, o valor é adicionado ao seu crédito. Você pode adicionar fundos quando tiver um serviço ativo.
+**Crédito** mostra o seu saldo de crédito e o histórico dele. Enquanto você tiver crédito, o menu mostra o valor em cinza ao lado de **Crédito**. Para adicionar fundos, clique em **Adicionar fundos** e informe um valor: criamos um aviso de pagamento para ele, que você paga como qualquer outro. Depois de pago, o valor é adicionado ao seu crédito. Você pode adicionar fundos quando tiver um serviço ativo.
 
 O crédito paga seus avisos de pagamento uma linha por vez: uma linha (a renovação de um serviço) só é paga quando o seu crédito a cobre por inteiro, e o que ele não cobre continua no aviso para ser pago normalmente.
 <!-- if:credit_auto -->
