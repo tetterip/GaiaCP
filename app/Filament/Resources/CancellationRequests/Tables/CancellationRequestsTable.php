@@ -23,6 +23,8 @@ class CancellationRequestsTable
     public static function configure(Table $table): Table
     {
         return $table
+            // No open requests is good news: a green tick, not Filament's grey cross (the Completed tab keeps the cross)
+            ->emptyStateIcon(fn ($livewire): ?string => ($livewire->activeTab ?? 'open') === 'open' ? 'gcp-good-news' : null)
             ->modifyQueryUsing(fn (Builder $query) => $query->with('service', 'client', 'domainService', 'decidedBy'))
             ->columns([
                 TextColumn::make('created_at')

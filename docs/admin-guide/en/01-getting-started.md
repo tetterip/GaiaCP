@@ -59,7 +59,7 @@ The **sidebar** has five groups:
 
 **Settings** (in the sidebar and in your user menu) is a page of cards in groups: General, Billing, Products & domains,
 Client area, Support, Email & notifications, Integrations, AI assistant, Security, System and Logs. Its search box finds a setting by
-name. Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
+name, in your language or in English ("plugin" finds Plugins whatever language the panel is in). Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
 
 The **top bar** has the search (press `/` or Ctrl/⌘ + K: clients, services and domains, leads, quotes and tickets), a link
 that opens the client area in a new tab, **New order**, and the **bell**. Swipe a notification

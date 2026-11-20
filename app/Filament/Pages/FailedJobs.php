@@ -135,6 +135,7 @@ class FailedJobs extends Page implements HasTable, SettingsCard
                         Notification::make()->success()->title(__('Failed job deleted'))->send();
                     }),
             ])
+            ->emptyStateIcon('gcp-good-news') // nothing failed: a green tick, not Filament's grey cross
             ->emptyStateHeading(__('No failed jobs'));
     }
 }

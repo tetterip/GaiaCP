@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The search on Settings and Reports also finds a card by its English name and description in every other language
+  ("plugin" finds Πρόσθετα). An empty list that is good news (tickets, open upgrade and cancellation requests, failed
+  jobs, the error log) shows a green tick instead of a grey cross.
 - Security: a Content-Security-Policy on every page. Scripts run only when they carry the page's nonce (Filament's,
   Livewire's and GaiaCP's own) or are loaded by such a script (captchas, the cookie banner's scripts), so a script or
   onclick="" slipped into a page doesn't run. What it blocks goes to the log (System → Logs); `GAIACP_CSP=report` only
