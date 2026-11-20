@@ -91,11 +91,11 @@ class PanelSpeedTest extends TestCase
 
         $queries = [];
         DB::listen(function ($query) use (&$queries) {
-            $queries[] = $query->sql;
+            $queries[] = str_replace(['"', '`'], '', $query->sql); // SQLite quotes names with ", MySQL / MariaDB with `
         });
         Livewire::test(UpcomingRenewals::class)->assertOk();
 
-        $byId = array_filter($queries, fn (string $sql) => str_contains($sql, 'from "services"') && str_contains($sql, '"services"."id" = ?'));
+        $byId = array_filter($queries, fn (string $sql) => str_contains($sql, 'from services') && str_contains($sql, 'services.id = ?'));
         $this->assertSame([], array_values($byId));
     }
 
@@ -103,7 +103,7 @@ class PanelSpeedTest extends TestCase
     {
         $queries = 0;
         DB::listen(function ($query) use (&$queries) {
-            $queries += str_contains($query->sql, 'from "settings"') ? 1 : 0;
+            $queries += str_contains(str_replace(['"', '`'], '', $query->sql), 'from settings') ? 1 : 0;
         });
 
         SetupGuide::steps();
