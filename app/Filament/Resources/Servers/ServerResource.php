@@ -42,7 +42,7 @@ class ServerResource extends Resource implements SettingsCard
 
     public static function settingsDescription(): string
     {
-        return __('cPanel/WHM, Plesk, HestiaCP and DirectAdmin servers that hosting accounts are created on, with their API logins.');
+        return __('The servers that hosting accounts are created on, with their API logins.');
     }
 
     public static function form(Schema $schema): Schema

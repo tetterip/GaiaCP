@@ -74,7 +74,7 @@ class DomainSettings extends SettingsFormPage
                             ->helperText(__('Once a domain has expired, its unpaid payment notice gets the TLD\'s grace fee, and the redemption fee on top after the grace period. Prices per TLD under Registrars.')),
                         Toggle::make('domains.sync_costs')
                             ->label('Update registrar costs daily')
-                            ->helperText(__('Every night, the registrars that can tell their prices (easy.gr, Enom) update the cost of the TLDs they are the preferred registrar of. Your selling prices never change by themselves: the bell rings when a TLD starts to sell for less than it costs.')),
+                            ->helperText(__('Every night, the registrars that can report their prices update the cost of the TLDs they are the preferred registrar of. Your selling prices never change by themselves: the bell rings when a TLD starts to sell for less than it costs.')),
                     ]),
                 Section::make(__('SSL with domains'))
                     ->description(__('Offered when a client orders a domain on its own (domain search, Order page, public order page): a certificate for the same name, its own service in the same order and payment notice.'))
