@@ -166,6 +166,10 @@ Per usarlo, apra un avviso di pagamento non pagato e prema **Paga con il credito
 
 **Ricerca dominio** (nel menu, dopo Domini) trova un nome per Lei: lo digiti (ilmionegozio, o ilmionegozio.it) e lo vedrà con ogni estensione che registriamo, se è libero o già registrato, e il suo prezzo. **Aggiungi al carrello** mette nel carrello uno libero (**Con SSL** aggiunge anche un certificato, quando lo offriamo); per uno che è Suo ma si trova altrove, **È mio: trasferirlo** apre l'ordine per il trasferimento. Potrebbe esserLe chiesto prima di confermare di non essere un robot. “Probabilmente disponibile” significa che in quel momento non è stato possibile interrogare il registro; lo verifichiamo di nuovo al momento della registrazione. Quando lo offriamo, **Suggerisci altri nomi** sotto i risultati elenca nomi liberi simili al Suo, suggeriti dall'IA, con la stessa estensione. Non ha ancora un nome? Quando lo offriamo, descriva la sua attività in poche parole nella stessa casella (come «una pasticceria a Salonicco»): l'IA suggerisce nomi liberi, ciascuno con il prezzo. Ciò che scrive viene inviato al servizio di IA, senza email né numeri di telefono.
 
+<!-- if:domain_spotlight -->
+Le estensioni scelte dalla maggior parte dei clienti (come .gr e .com) compaiono per prime, in schede più grandi, e i loro prezzi si vedono sotto la casella di ricerca prima di cercare.
+<!-- endif -->
+
 <!-- if:domain_prices -->
 **Veda i prezzi di ogni estensione di dominio** sotto la casella di ricerca elenca ogni estensione che vendiamo con il suo prezzo di registrazione, trasferimento e rinnovo.
 <!-- endif -->

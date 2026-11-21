@@ -10,6 +10,7 @@ use App\Invoicing\IssueInvoice;
 use App\Plugins\PluginManager;
 use App\SignIn\SignIn;
 use App\Support\CookieConsent;
+use App\Support\DomainSearch;
 use App\Support\Locales;
 use App\Support\PublicArea;
 use App\Support\TermsOfService;
@@ -94,6 +95,7 @@ class Help extends Page
             'ssl' => $plugins->certificateModules()->isNotEmpty(),
             'orders' => Order::canAccess(),
             'domain_prices' => DomainPrices::canAccess(),
+            'domain_spotlight' => DomainSearch::spotlight() !== [],
             'pay_card' => $payOnline->contains('payByCard'),
             'pay_paypal' => $payOnline->contains('payWithPaypal'),
             'pay_bank' => $payOnline->intersect(['payWithAlphaBank', 'payWithEurobank', 'payWithPiraeusBank', 'payWithNexiXpay', 'payWithMastercard'])->isNotEmpty(),
