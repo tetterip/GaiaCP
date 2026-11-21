@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Spotlight TLDs (Settings → Domains): up to 8 TLDs, such as .gr and .com, in the order you pick. The domain search
+  checks them first and shows them as cards above the other endings, the domain typed first; their prices show under
+  the search box (search page, public home page), Domain prices lists them first, AI names from a description use the
+  first two, and Domain pricing marks them with a star.
 - Settings and log texts no longer name particular registrars or server panels, since they are plugins: Update
   registrar costs daily, the client area's domain switches (contacts, private nameservers, registrar lock) and
   hosting login, the module log and the Servers page describe them in general. The client area switch is now

@@ -166,6 +166,10 @@ Aby go użyć, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć *
 
 **Wyszukiwarka domen** (w menu, po Domenach) znajduje nazwę: wystarczy ją wpisać (mojsklep lub mojsklep.pl), a pojawi się z każdą obsługiwaną przez nas końcówką, z informacją, czy jest wolna, czy zajęta, i z ceną. **Dodaj do koszyka** dodaje wolną do koszyka (**Z SSL** dodaje do niej także certyfikat, jeśli go oferujemy); dla domeny, która należy do Państwa, ale jest gdzie indziej, **Moja: przenieś ją** otwiera zamówienie transferu. Najpierw może pojawić się prośba o potwierdzenie, że nie są Państwo robotem. „Prawdopodobnie dostępna” oznacza, że nie udało się wtedy zapytać rejestru; sprawdzimy ją ponownie przy rejestracji. Gdy to oferujemy, **Zaproponuj inne nazwy** pod wynikami wymienia wolne nazwy bliskie wyszukiwanej, zaproponowane przez AI, z tą samą końcówką. Nie macie jeszcze nazwy? Gdy to oferujemy, opiszcie firmę kilkoma słowami w tym samym polu (np. „cukiernia w Salonikach”): AI zaproponuje wolne nazwy, każdą z ceną. To, co wpiszecie, trafia do usługi AI bez adresów e-mail i numerów telefonów.
 
+<!-- if:domain_spotlight -->
+Końcówki wybierane przez większość klientów (np. .gr i .com) pojawiają się najpierw, na większych kartach, a ich ceny widać pod polem wyszukiwania jeszcze przed wyszukaniem.
+<!-- endif -->
+
 <!-- if:domain_prices -->
 **Zobacz ceny wszystkich końcówek domen** pod polem wyszukiwania wymienia każdą sprzedawaną końcówkę z ceną rejestracji, transferu i odnowienia.
 <!-- endif -->

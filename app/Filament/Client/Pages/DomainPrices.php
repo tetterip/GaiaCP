@@ -6,6 +6,7 @@ use App\Filament\Client\Concerns\OpenToVisitors;
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Models\Tld;
 use App\Support\Currencies;
+use App\Support\DomainSearch;
 use App\Support\Money;
 use App\Support\PublicArea;
 use Filament\Pages\Page;
@@ -44,7 +45,22 @@ class DomainPrices extends Page
             'register' => $this->price($tld, 'register', $currency),
             'transfer' => $this->price($tld, 'transfer', $currency),
             'renew' => $this->price($tld, 'renew', $currency),
-        ], PublicArea::pricedTlds());
+        ], self::spotlightFirst(PublicArea::pricedTlds()));
+    }
+
+    /**
+     * @param  list<Tld>  $tlds
+     * @return list<Tld> the spotlight TLDs (Settings → Domains) first, in their order, then the rest as they were
+     */
+    private static function spotlightFirst(array $tlds): array
+    {
+        $spotlight = DomainSearch::spotlightTlds();
+
+        return collect($tlds)->sortBy(function (Tld $tld, int $index) use ($spotlight) {
+            $place = array_search($tld->getAttribute('tld'), $spotlight, true);
+
+            return $place === false ? DomainSearch::SPOTLIGHT_MAX + $index : $place;
+        })->values()->all();
     }
 
     /**

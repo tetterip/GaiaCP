@@ -69,7 +69,7 @@ class SearchDomains extends Page
     #[Url(as: 'q', except: '')]
     public string $query = '';
 
-    /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> */
+    /** @var list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> */
     public array $results = [];
 
     /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> the free names Suggest other names found */
@@ -138,7 +138,25 @@ class SearchDomains extends Page
 
         $this->suggestions = [];
         $this->unsupported = $candidates['unsupported'];
-        $this->results = array_map(fn (string $domain) => $this->row($domain), $candidates['domains']);
+        $this->results = array_map(fn (string $domain) => [...$this->row($domain), 'spotlight' => in_array($domain, $candidates['spotlight'], true)], $candidates['domains']);
+    }
+
+    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> the results shown as cards: the domain typed and the spotlight TLDs */
+    public function spotlightResults(): array
+    {
+        return array_values(array_filter($this->results, fn (array $result) => $result['spotlight']));
+    }
+
+    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> the other results, as lines */
+    public function otherResults(): array
+    {
+        return array_values(array_filter($this->results, fn (array $result) => ! $result['spotlight']));
+    }
+
+    /** @return list<array{tld: string, price: string, was: ?string}> the spotlight TLDs' prices, shown under the box before a search */
+    public function spotlightPrices(): array
+    {
+        return DomainSearch::spotlightPrices(Currencies::forClient(filament()->auth()->user()?->client));
     }
 
     /** Whether the search box's text describes a business (DESCRIPTION_WORDS words or more) rather than naming a domain. */
@@ -161,8 +179,8 @@ class SearchDomains extends Page
     }
 
     /**
-     * Names for the business described in the search box, with the first ending sold and .com (when sold too), each
-     * checked like a search; only the free ones are listed. Counts in the same AI_PER_HOUR as Suggest other names.
+     * Names for the business described in the search box, with the first two spotlight TLDs (else the first ending sold
+     * and .com, when sold too), each checked like a search; only the free ones are listed. Counts in the same AI_PER_HOUR as Suggest other names.
      */
     private function describe(): void
     {
@@ -184,8 +202,10 @@ class SearchDomains extends Page
             throw ValidationException::withMessages(['query' => __('No suggestions right now. Try again later.')]);
         }
 
+        $spotlight = collect(DomainSearch::spotlight())->map(fn (Tld $tld) => (string) $tld->getAttribute('tld'));
         $endings = collect(DomainSearch::tlds())->map(fn (Tld $tld) => (string) $tld->getAttribute('tld'));
-        $endings = collect([$endings->first(), $endings->contains('.com') ? '.com' : null])->filter()->unique();
+        $endings = $spotlight->count() >= 2 ? $spotlight->take(2)
+            : collect([$endings->first(), $endings->contains('.com') ? '.com' : null])->filter()->unique();
 
         $this->suggestions = [];
         $this->ideas = collect($labels)

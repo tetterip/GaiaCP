@@ -26,6 +26,7 @@
                 </x-filament::input.wrapper>
                 <x-filament::button type="submit" icon="heroicon-o-magnifying-glass">{{ __('Search') }}</x-filament::button>
             </form>
+            @include('filament.client.spotlight-prices', ['prices' => \App\Support\DomainSearch::spotlightPrices(\App\Support\Currencies::forClient(filament()->auth()->user()?->client))])
         @endif
     </section>
 

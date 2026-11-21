@@ -4291,5 +4291,15 @@
     "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "In der Domainsuche gibt ein Kunde, der noch keinen Namen hat, ein paar Worte zu seinem Geschäft ein („eine Konditorei in Thessaloniki“) und erhält passende freie Namen mit Ihrer ersten Endung und .com, jeweils mit Preis. An den KI-Dienst geht nur die Beschreibung, nie E-Mail-Adressen oder Telefonnummern. Jede Suche zählt zu denselben :count pro Stunde.",
     "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "An: Auch Besucher Ihrer Website ohne Anmeldung können es nutzen, nach einer Captcha-Prüfung (zuerst ein Captcha-Plugin einschalten). Aus: nur angemeldete Kunden.",
     "Sender not confirmed": "Absender nicht bestätigt",
-    "The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.": "Der Mailserver hat nicht bestätigt, dass diese E-Mail von ihrer Absenderadresse stammt (DMARC, DKIM oder SPF), daher könnte sie jeder geschrieben haben."
+    "The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.": "Der Mailserver hat nicht bestätigt, dass diese E-Mail von ihrer Absenderadresse stammt (DMARC, DKIM oder SPF), daher könnte sie jeder geschrieben haben.",
+    ":tld is not offered under Domain pricing.": ":tld wird unter Domainpreise nicht angeboten.",
+    "Add a TLD, e.g. .gr": "TLD hinzufügen, z. B. .gr",
+    "Nameservers, spotlight TLDs, auto renew, free domains, IDN, late renewal fees and an SSL certificate offered with domains.": "Nameserver, hervorgehobene TLDs, automatische Verlängerung, kostenlose Domains, IDN, Gebühren für verspätete Verlängerung und ein SSL-Zertifikat zu Domains.",
+    "Other endings:": "Weitere Endungen:",
+    "Popular domain endings": "Beliebte Domainendungen",
+    "Spotlight": "Hervorgehoben",
+    "Spotlight TLD: shown first in the domain search (Settings → Domains)": "Hervorgehobene TLD: erscheint in der Domainsuche zuerst (Einstellungen → Domains)",
+    "Spotlight TLDs": "Hervorgehobene TLDs",
+    "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Die Endungen, die die meisten Ihrer Kunden kaufen, etwa .gr und .com. Die Domainsuche prüft sie zuerst und zeigt sie als Karten über den anderen Endungen, mit ihrem Preis; die öffentliche Startseite und die Suchseite zeigen ihre Preise unter dem Suchfeld.",
+    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Bis zu :count unter Domainpreise angebotene TLDs, in der Reihenfolge der Anzeige; zum Umsortieren ziehen. Leer: alle Endungen werden gleich aufgeführt."
 }
