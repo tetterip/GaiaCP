@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: the WHMCS import, and its dry run, emailed the super admins a "server added" message for each WHMCS server
+  (the import runs as the signed-in admin); it no longer does. Clients were never emailed by it.
 - Fixed: the web installer gave a 500 error when the setup code was sent on a new copy with no database yet (its
   attempts were counted in the database cache, whose tables don't exist before the install); they are kept in files.
 - Fixed: a select (Settings → Tax → Country and every other searchable select) showed two rings with a gap when it
