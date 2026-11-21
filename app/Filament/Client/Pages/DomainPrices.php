@@ -57,7 +57,7 @@ class DomainPrices extends Page
         $spotlight = DomainSearch::spotlightTlds();
 
         return collect($tlds)->sortBy(function (Tld $tld, int $index) use ($spotlight) {
-            $place = array_search($tld->tld, $spotlight, true);
+            $place = array_search($tld->getAttribute('tld'), $spotlight, true);
 
             return $place === false ? DomainSearch::SPOTLIGHT_MAX + $index : $place;
         })->values()->all();

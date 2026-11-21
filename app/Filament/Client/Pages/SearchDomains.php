@@ -69,7 +69,7 @@ class SearchDomains extends Page
     #[Url(as: 'q', except: '')]
     public string $query = '';
 
-    /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> */
+    /** @var list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> */
     public array $results = [];
 
     /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> the free names Suggest other names found */
@@ -141,16 +141,16 @@ class SearchDomains extends Page
         $this->results = array_map(fn (string $domain) => [...$this->row($domain), 'spotlight' => in_array($domain, $candidates['spotlight'], true)], $candidates['domains']);
     }
 
-    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight?: bool}> the results shown as cards: the domain typed and the spotlight TLDs */
+    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> the results shown as cards: the domain typed and the spotlight TLDs */
     public function spotlightResults(): array
     {
-        return array_values(array_filter($this->results, fn (array $result) => $result['spotlight'] ?? false));
+        return array_values(array_filter($this->results, fn (array $result) => $result['spotlight']));
     }
 
-    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight?: bool}> the other results, as lines */
+    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> the other results, as lines */
     public function otherResults(): array
     {
-        return array_values(array_filter($this->results, fn (array $result) => ! ($result['spotlight'] ?? false)));
+        return array_values(array_filter($this->results, fn (array $result) => ! $result['spotlight']));
     }
 
     /** @return list<array{tld: string, price: string, was: ?string}> the spotlight TLDs' prices, shown under the box before a search */

@@ -232,10 +232,10 @@ class TldResource extends Resource implements SettingsCard
                     ->label('TLD')
                     ->weight('medium')
                     // Settings → Domains → Spotlight TLDs
-                    ->icon(fn (Tld $record) => in_array($record->tld, DomainSearch::spotlightTlds(), true) ? Heroicon::Star : null)
+                    ->icon(fn (Tld $record) => in_array($record->getAttribute('tld'), DomainSearch::spotlightTlds(), true) ? Heroicon::Star : null)
                     ->iconColor('warning')
                     ->iconPosition('after')
-                    ->tooltip(fn (Tld $record) => in_array($record->tld, DomainSearch::spotlightTlds(), true) ? __('Spotlight TLD: shown first in the domain search (Settings → Domains)') : null)
+                    ->tooltip(fn (Tld $record) => in_array($record->getAttribute('tld'), DomainSearch::spotlightTlds(), true) ? __('Spotlight TLD: shown first in the domain search (Settings → Domains)') : null)
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('registrar.name')

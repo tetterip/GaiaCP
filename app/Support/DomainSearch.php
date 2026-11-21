@@ -58,7 +58,7 @@ class DomainSearch
         return Tld::query()->active()->orderBy('id')->get()
             ->filter(fn (Tld $tld) => $tld->terms('register') !== [])
             ->sortBy(function (Tld $tld) use ($spotlight) {
-                $place = array_search($tld->tld, $spotlight, true);
+                $place = array_search($tld->getAttribute('tld'), $spotlight, true);
 
                 return $place === false ? self::SPOTLIGHT_MAX + $tld->id : $place;
             })
@@ -70,7 +70,7 @@ class DomainSearch
     {
         $spotlight = self::spotlightTlds();
 
-        return array_values(array_filter(self::tlds(), fn (Tld $tld) => in_array($tld->tld, $spotlight, true)));
+        return array_values(array_filter(self::tlds(), fn (Tld $tld) => in_array($tld->getAttribute('tld'), $spotlight, true)));
     }
 
     /**
@@ -92,7 +92,7 @@ class DomainSearch
             }
 
             $prices[] = [
-                'tld' => (string) $tld->tld,
+                'tld' => (string) $tld->getAttribute('tld'),
                 'price' => __(':price for :term', ['price' => $cents === 0 ? __('Free') : Money::format($cents, $currency), 'term' => Tld::termLabel($years)]),
                 'was' => $tld->salePriceCents('register', $years, $currency) !== null ? Money::format((int) $tld->priceCents('register', $years, $currency), $currency) : null,
             ];
@@ -139,7 +139,7 @@ class DomainSearch
         $requested = $sold ? $query : null;
         $domains = collect([$requested])->filter()->merge(array_map(fn (Tld $tld) => $name.$tld->tld, $tlds))
             ->unique()->take(self::MAX_RESULTS)->values()->all();
-        $spotlight = array_map(fn (Tld $tld) => $name.$tld->tld, self::spotlight());
+        $spotlight = array_map(fn (Tld $tld) => $name.$tld->getAttribute('tld'), self::spotlight());
 
         return [
             'domains' => $domains,
