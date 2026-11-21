@@ -43,6 +43,15 @@ class FocusMarkTest extends TestCase
         $this->get('/admin/login')->assertOk()->assertSee(self::MARK, false);
     }
 
+    public function test_a_select_shows_only_its_fields_frame_not_a_second_ring_inside_it(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $html = $this->get('/admin')->assertOk()->getContent();
+
+        $this->assertStringContainsString(".fi-select-input-btn:focus-visible {\n        outline: none !important;", $html);
+    }
+
     private function assertMarkComesLast(string $html, string $theme): void
     {
         $mark = strpos($html, self::MARK);
