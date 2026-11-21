@@ -103,7 +103,12 @@ class InstallerTest extends TestCase
 
     public function test_the_installer_speaks_greek_when_asked(): void
     {
-        $this->get('/install?lang=el')->assertOk()->assertSee('Εγκατάσταση GaiaCP');
+        $this->get('/install?lang=el')->assertOk()->assertSee('Εγκατάσταση GaiaCP')
+            // the language menu: the current code on its button, each language named in its own
+            ->assertSee('<details class="langs">', false)
+            ->assertSee('aria-label="Γλώσσα: Ελληνικά (EL)"', false)
+            ->assertSee('<a href="?lang=el" lang="el" aria-current="true">', false)
+            ->assertSee('<a href="?lang=en" lang="en">', false);
         $this->unlock()->get('/install/database')->assertOk()->assertSee('Σύνδεση και δημιουργία πινάκων');
     }
 
