@@ -9,6 +9,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   registrar costs daily, the client area's domain switches (contacts, private nameservers, registrar lock) and
   hosting login, the module log and the Servers page describe them in general. The client area switch is now
   **Log in to the control panel**.
+- Fixed: the WHMCS import, and its dry run, emailed the super admins a "server added" message for each WHMCS server
+  (the import runs as the signed-in admin); it no longer does. Clients were never emailed by it.
 - Fixed: Settings still listed the pages of disabled plugins (Slack, Discord, Telegram, CyberPanel, UptimeRobot and
   others) in its menu, cards and search. Every page a plugin adds now closes while the plugin is off, by URL too;
   turning one off with the On switch on its page goes to Settings → Plugins, where it is turned back on.

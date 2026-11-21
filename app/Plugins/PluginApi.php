@@ -104,6 +104,7 @@ use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\TldPrice;
 use App\SignIn\SignIn;
 use App\Support\ClientFields;
+use App\Support\ConnectionChanges;
 use App\Support\Currencies;
 use App\Support\Demo;
 use App\Support\DomainName;
@@ -255,6 +256,7 @@ final class PluginApi
         UptimeHistory::class,
         SignIn::class,
         ClientFields::class,
+        ConnectionChanges::class,
         Demo::class,
         Settings::class,
         Tax::class,
