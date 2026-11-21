@@ -24,7 +24,7 @@
 > and read each release's notes before updating.
 
 <p align="center">
-  <img src="docs/screenshots/admin-dashboard.png" alt="The admin dashboard: open balance, orders and income, servers with their uptime, and what is due">
+  <img src="docs/screenshots/admin-dashboard.png" alt="The admin dashboard: today's numbers, what needs your attention, the open balance, income and renewals">
 </p>
 
 ## What is GaiaCP?
@@ -104,7 +104,7 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
   </tr>
   <tr>
     <td align="center">A client's page: balance, payment record and every service in tabs</td>
-    <td align="center">The client area: what to pay and what renews next</td>
+    <td align="center">The client area: what waits for the client, what to pay and their services</td>
   </tr>
   <tr>
     <td width="50%"><img src="docs/screenshots/public-home.png" alt="The public home page"></td>
