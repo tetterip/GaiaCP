@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: on a phone, the Settings menu opened under the Save bar, which hid part of it; it now opens above it.
 - Settings and log texts no longer name particular registrars or server panels, since they are plugins: Update
   registrar costs daily, the client area's domain switches (contacts, private nameservers, registrar lock) and
   hosting login, the module log and the Servers page describe them in general. The client area switch is now
