@@ -156,6 +156,6 @@ class ChatPluginsTest extends TestCase
             ->assertNotified(__('Test message sent'));
         Http::assertSent(fn (Request $request) => str_contains($request['text'], 'Test message from GaiaCP'));
 
-        $this->get(DiscordSettings::getUrl())->assertOk();
+        $this->get(DiscordSettings::getUrl())->assertForbidden(); // off until enabled under Settings → Plugins
     }
 }
