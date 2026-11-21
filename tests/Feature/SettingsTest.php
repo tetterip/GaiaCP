@@ -43,6 +43,7 @@ use App\Mail\RenewalReminderMail;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\User;
+use App\Plugins\PluginManager;
 use App\Support\Settings;
 use Carbon\CarbonImmutable;
 use Filament\Facades\Filament;
@@ -96,6 +97,8 @@ class SettingsTest extends TestCase
     public function test_settings_shows_a_card_per_page_and_each_page_has_the_sub_navigation(): void
     {
         $this->actingAs(User::factory()->create());
+        // A plugin's pages show only while it is on (PluginsTest)
+        app(PluginManager::class)->all()->each(fn ($plugin) => app(PluginManager::class)->enable($plugin));
 
         $this->get('/admin')->assertOk()->assertSee(SettingsCluster::getUrl());
 

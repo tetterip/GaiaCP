@@ -71,7 +71,7 @@ use Throwable;
  * The plugins GaiaCP knows and whether each is on (`plugins.enabled`; no row = on for a bundled one, off for any
  * other), and what they add (server
  * types, registrar modules, pages, settings). Servers and registrars are built only for an enabled plugin's type (ProvisionerFactory, RegistrarFactory), pickers offer
- * only those, and a plugin's settings page hides while it is off. A plugin that needs a newer GaiaCP
+ * only those, and a plugin's pages hide while it is off (pageIsOn()). A plugin that needs a newer GaiaCP
  * (Plugin::requires()) counts as off. Each plugin's installed version is kept in `plugins.version`
  * (recordVersions(), after every migrate). A singleton: states are read once a request.
  *
@@ -93,6 +93,9 @@ class PluginManager
     /** @var array<string, string> folder => why a plugin folder could not be loaded */
     private array $problems = [];
 
+    /** @var array<class-string, string>|null page class => id of the plugin that adds it; null = not built yet */
+    private ?array $pageOwners = null;
+
     public function __construct()
     {
         foreach (self::BUILT_IN as $class) {
@@ -110,12 +113,14 @@ class PluginManager
     public function register(Plugin $plugin): void
     {
         $this->plugins[$plugin->id()] = $plugin;
+        $this->pageOwners = null;
     }
 
     /** Drops a plugin from this request's list (after it is uninstalled). */
     public function forget(Plugin $plugin): void
     {
         unset($this->plugins[$plugin->id()]);
+        $this->pageOwners = null;
     }
 
     /** Where plugin folders live (plugins/ of GaiaCP unless `gaiacp.plugins.directory` says otherwise). */
@@ -464,6 +469,24 @@ class PluginManager
     public function pages(): array
     {
         return $this->all()->flatMap(fn (Plugin $plugin) => $plugin->pages())->values()->all();
+    }
+
+    /**
+     * Whether a page may open: false for a plugin's page (pages() or settingsPage()) while that plugin is off, so it
+     * leaves the menu, the Settings cards and their search and is refused by URL (LimitedToAdminArea). Any other page: true.
+     *
+     * @param  class-string  $page
+     */
+    public function pageIsOn(string $page): bool
+    {
+        $this->pageOwners ??= $this->all()
+            ->flatMap(fn (Plugin $plugin) => collect([...$plugin->pages(), $plugin->settingsPage()])
+                ->filter()->mapWithKeys(fn (string $class) => [$class => $plugin->id()]))
+            ->all();
+
+        $owner = $this->pageOwners[ltrim($page, '\\')] ?? null;
+
+        return $owner === null || $this->enabled($owner);
     }
 
     /** The first enabled plugin's reason for this client to pay no tax (Plugin::taxExemption()), else null. */

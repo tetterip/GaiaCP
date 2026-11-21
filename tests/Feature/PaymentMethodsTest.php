@@ -6,6 +6,7 @@ use App\Enums\AdminArea;
 use App\Filament\Clusters\Settings\Pages\CompanySettings;
 use App\Filament\Clusters\Settings\Pages\PaymentMethodsSettings;
 use App\Filament\Clusters\Settings\Pages\TaxSettings;
+use App\Filament\Pages\Plugins;
 use App\Models\Client;
 use App\Models\Payment;
 use App\Models\Setting;
@@ -73,10 +74,10 @@ class PaymentMethodsTest extends TestCase
         $this->assertSame(['payment_instructions'], Setting::query()->pluck('key')->all());
         $this->assertSame("Eurobank\nGR00 0000 0000", config('gaiacp.payment_instructions'));
 
-        // Off, the page stays open with its switch, so it can be turned on again.
+        // Off, the page leaves the menu and is refused; it is turned on again under Settings → Plugins.
         $this->disableBankTransfer();
-        $this->get(BankTransferSettings::getUrl())->assertOk();
-        Livewire::test(BankTransferSettings::class)->assertSet('pluginEnabled', false);
+        $this->get(BankTransferSettings::getUrl())->assertForbidden();
+        $this->get(PaymentMethodsSettings::getUrl())->assertOk()->assertDontSee(BankTransferSettings::getUrl());
     }
 
     public function test_settings_lists_the_payment_methods_right_after_company_each_opening_its_settings(): void
@@ -106,32 +107,35 @@ class PaymentMethodsTest extends TestCase
         Livewire::test(PaymentMethodsSettings::class)
             ->assertCanSeeTableRecords(['bank_transfer', 'stripe'])
             ->assertSee('Disabled')
-            ->assertSee(BankTransferSettings::getUrl()) // off, but its page has the switch
+            ->assertDontSee(BankTransferSettings::getUrl()) // off: its page is closed
             ->assertDontSee(StripeSettings::getUrl()); // Stripe's keys are for super admins only
 
         // Only super admins (who open Settings → Plugins) flip a switch.
+        app(PluginManager::class)->enable(app(PluginManager::class)->find('bank_transfer'));
         Livewire::test(BankTransferSettings::class)->assertFormFieldIsDisabled('pluginEnabled', 'content');
 
         $this->actingAs(User::factory()->limitedTo([AdminArea::Clients])->create());
         $this->get(PaymentMethodsSettings::getUrl())->assertForbidden();
     }
 
-    public function test_the_switch_on_a_methods_page_turns_its_plugin_off_and_on(): void
+    public function test_the_switch_on_a_methods_page_turns_its_plugin_off_and_closes_the_page(): void
     {
         $this->actingAs(User::factory()->create());
         $plugins = app(PluginManager::class);
 
-        $page = Livewire::test(StripeSettings::class)->assertSet('pluginEnabled', true)
-            ->set('pluginEnabled', false);
+        Livewire::test(StripeSettings::class)->assertSet('pluginEnabled', true)
+            ->set('pluginEnabled', false)
+            ->assertRedirect(Plugins::getUrl()); // its page is closed while off
         $this->assertFalse($plugins->enabled('stripe'));
         $this->assertArrayNotHasKey('stripe', PaymentMethods::options());
         $this->assertDatabaseHas('activity_logs', ['event' => 'plugin.disabled']);
+        $this->get(StripeSettings::getUrl())->assertForbidden();
 
-        $page->set('pluginEnabled', true);
-        $this->assertTrue($plugins->enabled('stripe'));
+        $plugins->enable($plugins->find('stripe'));
+        $this->get(StripeSettings::getUrl())->assertOk();
 
         Livewire::test(GoogleLoginSettings::class)->set('pluginEnabled', false);
         $this->assertFalse($plugins->enabled('google_login'));
-        $this->get(GoogleLoginSettings::getUrl())->assertOk();
+        $this->get(GoogleLoginSettings::getUrl())->assertForbidden();
     }
 }

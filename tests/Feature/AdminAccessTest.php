@@ -100,8 +100,8 @@ class AdminAccessTest extends TestCase
             }
         }
 
-        // Reports → Ask in plain words shows only with an AI service set up
-        app(PluginManager::class)->enable(app(PluginManager::class)->find('claude'));
+        // Reports → Ask in plain words shows only with an AI service set up; a plugin's pages only while it is on
+        app(PluginManager::class)->all()->each(fn ($plugin) => app(PluginManager::class)->enable($plugin));
         config(['gaiacp.claude.api_key' => 'sk-ant-test']);
 
         $this->actingAs($super);
