@@ -171,7 +171,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   limit covers all admins, and each answer's tokens are kept (not the text). It also writes a product's description
   from its details (no prices), the client area's server problem notice from what the monitors say (public server
   names only), and, off until switched on, suggests free domain names close to a taken one in the client area's
-  domain search (only the name sent, 5 presses an hour per client or address). Reports → Ask in plain words answers
+  domain search (only the name sent, 5 presses an hour per client or address), and free names for a business described
+  in a few words (without emails or phone numbers; visitors only when allowed, always with the captcha; a daily cap
+  covers both). Reports → Ask in plain words answers
   questions such as "who owes more than €100?" from the data, read-only: the AI service only picks one of GaiaCP's
   ready-made questions and its dates or amounts, and never sees the answer; System → Help answers "how do I…" from
   the admin guide's closest sections. On a ticket it drafts a reply (from the conversation, the client's services and
@@ -211,7 +213,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   notes the client never sees, assign, move and close them, and open one for a client. The client is emailed each
   answer; the admins get an email and the bell for new tickets and replies. A ticket waiting on the client closes by
   itself after Settings → Support → Close tickets after (7 days). Departments, canned replies, file size and types are
-  under Settings → Support; the dashboard's Support card lists the tickets waiting for an answer. With the Email to
+  under Settings → Support; the dashboard's Support card lists the tickets waiting for an answer. Clients may mark a
+  few tickets a month Urgent for an active service that stopped working (Settings → Support, off by default; its own
+  event for the chat plugins and webhooks). With the Email to
   ticket plugin a support mailbox is read over IMAP every minute: answers to ticket emails join their ticket and new
   emails open one (from someone who isn't a client, a ticket without a client, or ignored). A mail provider
   (Mailgun, SendGrid, Postmark) can post the emails to a secret webhook address instead
