@@ -265,7 +265,9 @@ class SettingsTest extends TestCase
         $this->get(CompanySettings::getUrl())->assertOk()
             ->assertSee(CompanySettings::settingsDescription())
             ->assertSee('gx-save-bar', false)
-            ->assertSee('You have unsaved changes');
+            ->assertSee('You have unsaved changes')
+            // the Settings menu on a phone (a dropdown) opens above the Save bar, not under it
+            ->assertSee('.fi-page:has(.gx-save-bar) .fi-dropdown-panel', false);
 
         $this->assertSame(
             [SettingsCluster::getUrl() => 'Settings', 'General'],
