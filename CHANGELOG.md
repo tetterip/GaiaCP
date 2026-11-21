@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-21
+
+- Fixed (pre-release audit): two urgent tickets sent at the same moment could both pass the month's limit; a client's
+  urgent tickets are now opened one at a time.
 - Fixed: on a phone, the Settings menu opened under the Save bar, which hid part of it; it now opens above it.
 - Spotlight TLDs (Settings → Domains): up to 8 TLDs, such as .gr and .com, in the order you pick. The domain search
   checks them first and shows them as cards above the other endings, the domain typed first; their prices show under

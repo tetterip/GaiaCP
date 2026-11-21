@@ -20,8 +20,10 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 
 /** The client opens a ticket: department, the service it is about, the priority (Settings → Support), Urgent while the month's limit allows, and files. */
@@ -110,27 +112,40 @@ class CreateTicket extends CreateRecord
         $priority = $data['priority'] ?? null;
         $service = filled($data['service_id'] ?? null) ? self::services()->find($data['service_id']) : null;
 
-        if (! empty($data['urgent'])) {
-            if (self::urgentLeft() === 0 || $service?->status !== ServiceStatus::Active) {
-                throw ValidationException::withMessages(['data.urgent' => __('This ticket can\'t be marked urgent.')]);
-            }
-
-            $priority = TicketPriority::Urgent;
-        } elseif (! config('gaiacp.support.client_priority') || ! array_key_exists((string) ($priority instanceof TicketPriority ? $priority->value : $priority), TicketPriority::clientOptions())) {
+        if (! config('gaiacp.support.client_priority') || ! array_key_exists((string) ($priority instanceof TicketPriority ? $priority->value : $priority), TicketPriority::clientOptions())) {
             $priority = null;
         }
 
-        return app(Tickets::class)->open(
+        $open = fn (?TicketPriority $priority) => app(Tickets::class)->open(
             TicketResource::client(),
             filament()->auth()->user(),
             $data['subject'],
             $data['body'],
             filled($data['department_id'] ?? null) ? TicketDepartment::query()->clientVisible()->find($data['department_id']) : null,
-            $priority === null ? null : ($priority instanceof TicketPriority ? $priority : TicketPriority::from($priority)),
+            $priority,
             $service,
             TicketFiles::from($data),
             asClient: true,
         );
+
+        if (empty($data['urgent'])) {
+            return $open($priority === null ? null : ($priority instanceof TicketPriority ? $priority : TicketPriority::from($priority)));
+        }
+
+        $refused = fn () => ValidationException::withMessages(['data.urgent' => __('This ticket can\'t be marked urgent.')]);
+
+        // One urgent ticket at a time per client, so two sent together can't both pass the month's limit
+        try {
+            return Cache::lock('urgent-ticket:'.TicketResource::client()?->id, 10)->block(5, function () use ($open, $service, $refused) {
+                if (self::urgentLeft() === 0 || $service?->status !== ServiceStatus::Active) {
+                    throw $refused();
+                }
+
+                return $open(TicketPriority::Urgent);
+            });
+        } catch (LockTimeoutException) {
+            throw $refused();
+        }
     }
 
     protected function getRedirectUrl(): string

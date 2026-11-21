@@ -26,6 +26,7 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -331,6 +332,29 @@ class TicketsTest extends TestCase
 
         // Next month it is back
         $this->travelTo(now()->addMonthNoOverflow()->startOfMonth()->addDay());
+        $this->assertSame(1, Tickets::urgentLeft($this->client));
+    }
+
+    public function test_a_clients_urgent_tickets_are_opened_one_at_a_time(): void
+    {
+        config(['gaiacp.support.urgent_per_month' => 1]);
+        $site = Service::factory()->for($this->client)->create(['status' => ServiceStatus::Active]);
+        $this->asClient();
+
+        // Another urgent ticket of this client is being opened right now: this one waits, then is refused
+        $lock = Cache::lock('urgent-ticket:'.$this->client->id, 10);
+        $this->assertTrue($lock->get());
+
+        try {
+            Livewire::test(ClientCreateTicket::class)
+                ->fillForm(['urgent' => true, 'service_id' => $site->id, 'subject' => 'Down', 'body' => 'My site is down.'])
+                ->call('create')
+                ->assertHasErrors(['data.urgent']);
+        } finally {
+            $lock->release();
+        }
+
+        $this->assertSame(0, Ticket::query()->count());
         $this->assertSame(1, Tickets::urgentLeft($this->client));
     }
 

@@ -30,14 +30,22 @@ login security settings protect their login too; see [Admins and security](12-ad
 Settings → Client area switches each self-service action on or off:
 
 - **Domains** (active domains at a registrar you manage): change nameservers, get the EPP code, turn auto renew on or
-  off, and, where the registrar offers them, contact details, private nameservers and the registrar lock.
-- **Hosting** (active accounts): log in to cPanel or Plesk with one click and open its pages through quick shortcuts,
-  change the password, see disk and bandwidth usage and the server's uptime.
-- **Orders**: order products and domains through a cart, add add-ons, ask for an upgrade or a cancellation.
+  off, and, where the registrar offers them, contact details, private nameservers and the registrar lock. On the
+  Domains list they can tick several domains to change their nameservers or auto renew for all of them at once.
+- **Hosting** (active accounts): **Log in to the control panel** with one click (where the server's panel allows it)
+  and open its pages through quick shortcuts, change the password, see disk and bandwidth usage and the server's uptime.
+- **Orders**: order products and domains through a cart, which opens from the side and lets them change the billing
+  cycle or domain term in place, add add-ons, ask for an upgrade or a cancellation.
 - **Links in emails**: a "View in the client area" button at the end of client emails.
 - The **Notifications bell** and **Email history**.
 - The **Welcome tour**: on a client's first login, a few cards on their services, payment notices, ordering, support
   and profile; their menu → Tour shows it again. It doesn't open by itself when you look as the client.
+
+Their **Home** page shows what waits for them (payment notices to pay, suspended services, answered tickets, quotes,
+domains ending without auto renew), their services with the way into each control panel, what renews next, a Support
+card and the domain search; a client with no service yet sees **Start here** with your popular products. The menu shows
+a small grey count after Hosting, Other services, Domains and Tickets, and the balance after Credit; a red or amber
+number after it means something waits for the client.
 
 Every change a client makes goes through the same actions you use, is in the Activity log, and the requests (profile
 changes, cancellations, upgrades) wait for your answer.
