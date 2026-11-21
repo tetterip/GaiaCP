@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\ServiceLifecycle;
 use App\Enums\ServiceStatus;
+use App\Filament\Clusters\Settings\Pages\MailSettings;
 use App\Filament\Pages\Plugins;
 use App\Filament\Resources\Registrars\Pages\CreateRegistrar;
 use App\Filament\Resources\Servers\Pages\CreateServer;
@@ -23,6 +24,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
+use Plugins\CyberPanel\CyberPanelSettings;
+use Plugins\Slack\SlackSettings;
+use Plugins\UptimeRobot\UptimeRobotSettings;
 use Plugins\Vies\ViesSettings;
 use Plugins\WhmcsImport\WhmcsImportPage;
 use Tests\FakesWhm;
@@ -194,6 +198,30 @@ class PluginsTest extends TestCase
         $this->get('/admin/settings')->assertDontSee(ViesSettings::getUrl());
         Livewire::test(Plugins::class)->assertTableActionHidden('settings', 'vies');
         $this->assertTrue(config('gaiacp.vies.reverse_charge')); // kept for when it is enabled again
+    }
+
+    public function test_every_page_of_a_disabled_plugin_leaves_the_settings_menu_and_its_search_and_is_refused(): void
+    {
+        $pages = $this->plugins()->all()->flatMap(fn ($plugin) => collect([...$plugin->pages(), $plugin->settingsPage()])
+            ->filter()->map(fn (string $page) => [$plugin, $page]));
+        $this->assertNotEmpty($pages);
+
+        foreach ($pages as [$plugin, $page]) {
+            $this->plugins()->disable($plugin);
+            $this->assertFalse($page::canAccess(), $page.' opens while '.$plugin->id().' is off');
+        }
+
+        // The settings menu (on any settings page) and the overview's cards, which its search box filters
+        $slack = $this->plugins()->find('slack');
+        $this->get(MailSettings::getUrl())->assertOk()->assertDontSee(SlackSettings::getUrl())->assertDontSee(CyberPanelSettings::getUrl());
+        $this->get('/admin/settings')->assertOk()->assertDontSee(SlackSettings::getUrl())->assertDontSee(UptimeRobotSettings::getUrl());
+        $this->get(SlackSettings::getUrl())->assertForbidden();
+
+        $this->plugins()->enable($slack);
+        $this->get(MailSettings::getUrl())->assertSee(SlackSettings::getUrl());
+        $this->get('/admin/settings')->assertSee(SlackSettings::getUrl());
+        $this->get(SlackSettings::getUrl())->assertOk();
+        $this->assertTrue($this->plugins()->pageIsOn(MailSettings::class), 'a page of no plugin is always on');
     }
 
     public function test_a_disabled_whmcs_import_plugin_hides_the_page_and_refuses_the_command(): void
