@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: Settings still listed the pages of disabled plugins (Slack, Discord, Telegram, CyberPanel, UptimeRobot and
+  others) in its menu, cards and search. Every page a plugin adds now closes while the plugin is off, by URL too;
+  turning one off with the On switch on its page goes to Settings → Plugins, where it is turned back on.
 - Fixed: the web installer gave a 500 error when the setup code was sent on a new copy with no database yet (its
   attempts were counted in the database cache, whose tables don't exist before the install); they are kept in files.
 - Fixed: a select (Settings → Tax → Country and every other searchable select) showed two rings with a gap when it

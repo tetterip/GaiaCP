@@ -445,7 +445,7 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   inside its group's range and `SettingsCard::settingsDescription()` for its card. A payment plugin's settings page uses
   `PaymentMethodPage`: listed on Settings → Payment methods (`PaymentMethodsSettings`, every plugin with payment modules)
   and nested under it in the sub-navigation, with no card of its own. `PluginSwitch` puts an On switch (= the plugin's
-  Enable / Disable, super admins only) above a plugin's settings form; such a page stays open while the plugin is off. Old `/admin/products` etc. URLs
+  Enable / Disable, super admins only) above a plugin's settings form. Every page a plugin adds (`pages()`, `settingsPage()`) is closed while it is off: menu, cards, search and URL, through `LimitedToAdminArea` and `PluginManager::pageIsOn()`; switching it off there goes to Settings → Plugins. Old `/admin/products` etc. URLs
   redirect (`routes/web.php`)
 - Messages to clients: `ClientMessage` (`texts` per locale falling back to the default one, `filters`, `clients()` /
   `emailClients()`, `scopeShowing()`), `ClientMessageRecipient` (one row per client fixed by Send),
