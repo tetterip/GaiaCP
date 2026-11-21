@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.13] - 2026-11-21
+
+- A dry run, or an import started from Settings, no longer emails the super admins a "server added" message for each
+  WHMCS server: the dry run saves nothing, and the import reports its servers itself
+
 ## [1.0.12] - 2026-11-07
 
 - "1 problem" or "3 problems" in every language, instead of "problem(s)"

@@ -20,12 +20,15 @@ use App\Models\Registrar;
 use App\Models\Server;
 use App\Models\Service;
 use App\Models\User;
+use App\Notifications\ConnectionDetailsChanged;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;
 use Plugins\WhmcsImport\WhmcsApi;
@@ -760,5 +763,28 @@ class WhmcsImportTest extends TestCase
             ->assertSee('Imported');
 
         $this->assertSame(1, Client::count());
+    }
+
+    public function test_neither_the_dry_run_nor_the_import_emails_the_admins_about_its_servers(): void
+    {
+        Notification::fake();
+        Mail::fake();
+        $admin = User::factory()->create(['super_admin' => true, 'system_emails' => true]);
+        $this->actingAs($admin);
+        $this->seedWhmcs();
+
+        $this->import(dryRun: true);
+        $this->assertSame(0, Server::count());
+
+        $this->import();
+        $this->assertGreaterThan(0, Server::count());
+
+        Notification::assertNothingSent();
+        Mail::assertNothingOutgoing();
+        $this->assertFalse(ActivityLog::where('event', 'server.login_changed')->exists());
+
+        // An admin adding a server by hand is still reported
+        Server::factory()->create();
+        Notification::assertSentTo($admin, ConnectionDetailsChanged::class);
     }
 }
