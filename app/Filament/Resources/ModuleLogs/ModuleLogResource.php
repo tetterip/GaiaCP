@@ -48,7 +48,7 @@ class ModuleLogResource extends Resource implements SettingsCard
 
     public static function settingsDescription(): string
     {
-        return __('Requests to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, easy.gr, Enom and ΑΑΔΕ and what they answered, passwords masked.');
+        return __('Requests to server panels, registrars and other services and what they answered, passwords masked.');
     }
 
     public static function canCreate(): bool

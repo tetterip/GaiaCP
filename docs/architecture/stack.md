@@ -82,7 +82,7 @@ How the admin and client panels, users, access, security, branding, themes and l
   through `DomainLifecycle` (active domains at a registrar here, not `external`; a failure shows a plain message),
   auto renew through `SetDomainAutoRenew`; each behind a `gaiacp.client_area.*` switch (Settings → Client area,
   `ClientAreaSettings`). Hosting self-service (`Client/Actions/HostingSelfService` on the service page, active accounts on
-  an enabled panel): Change password through `ServiceLifecycle::changePassword()`, and "Log in to cPanel / Plesk" =
+  an enabled panel): Change password through `ServiceLifecycle::changePassword()`, and "Log in to the control panel" =
   `Client\PanelLoginController` (`filament.client.services.panel-login`, a new tab) → `ServiceLifecycle::loginUrl()` →
   `HostingProvisioner::loginUrl()` (WHM `create_user_session`; Plesk `create_session` for the subscription's customer
   only), a fresh one-time link per click, never stored or logged. Usage (disk space, this month's bandwidth, against
