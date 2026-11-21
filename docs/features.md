@@ -311,7 +311,7 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
     self-service (password, one-click cPanel / Plesk login and Quick shortcuts to their pages, Open website, disk and
     bandwidth usage, the server's uptime); ✅ client orders (a cart of products with their domains and
     domains on their own, one order and payment notice, through the same steps as New order); ✅ domain search (the name with
-    each TLD sold, free or taken, with its price, from the registrar, RDAP or DNS); ✅ "View in the client area" in client emails, Home
+    each TLD sold, free or taken, with its price, from the registrar, RDAP or DNS; spotlight TLDs first, as cards); ✅ "View in the client area" in client emails, Home
     shortcuts and a Help page for clients (EN / EL); ✅ sign up (off until switched on; the email address is confirmed
     first) and "Continue with Google" (a plugin); ✅ maintenance mode (Settings → Client area: a message or a redirect
     while the client area is closed); ✅ terms of service (a link or text and a version, accepted on client orders and

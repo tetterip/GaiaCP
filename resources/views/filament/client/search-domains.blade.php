@@ -6,6 +6,9 @@
         </x-filament::input.wrapper>
         <x-filament::button type="submit" icon="heroicon-o-magnifying-glass">{{ __('Search') }}</x-filament::button>
     </form>
+    @if ($results === [] && $ideas === [])
+        @include('filament.client.spotlight-prices', ['prices' => $this->spotlightPrices()])
+    @endif
     @if (\App\Filament\Client\Pages\DomainPrices::canAccess())
         <div class="gcp-cart-link">
             <x-filament::link :href="\App\Filament\Client\Pages\DomainPrices::getUrl()" icon="heroicon-o-tag" size="sm">{{ __('See the prices of every domain ending') }}</x-filament::link>
@@ -49,11 +52,23 @@
             @if ($unsupported)
                 <p class="gcp-cart-line-detail">{{ __('We do not register :tld domains. Here is the name with the ones we do.', ['tld' => $unsupported]) }}</p>
             @endif
-            <div class="gcp-cart-lines">
-                @foreach ($results as $result)
-                    @include('filament.client.search-domains-row', ['result' => $result, 'inCart' => $inCart])
-                @endforeach
-            </div>
+            @if (($spotlight = $this->spotlightResults()) !== [])
+                <div class="gcp-domain-cards">
+                    @foreach ($spotlight as $result)
+                        @include('filament.client.search-domains-card', ['result' => $result, 'inCart' => $inCart])
+                    @endforeach
+                </div>
+            @endif
+            @if (($others = $this->otherResults()) !== [])
+                @if ($spotlight !== [])
+                    <p class="gcp-cart-line-detail gcp-domain-note">{{ __('Other endings:') }}</p>
+                @endif
+                <div class="gcp-cart-lines">
+                    @foreach ($others as $result)
+                        @include('filament.client.search-domains-row', ['result' => $result, 'inCart' => $inCart])
+                    @endforeach
+                </div>
+            @endif
             @if ($this->canSuggest() && $suggestions === [])
                 <div class="gcp-domain-suggest">
                     <x-filament::button color="gray" size="sm" icon="heroicon-o-sparkles" wire:click="suggest" wire:loading.attr="disabled" wire:target="suggest">{{ __('Suggest other names') }}</x-filament::button>

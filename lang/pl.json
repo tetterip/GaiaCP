@@ -4291,5 +4291,15 @@
     "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "W wyszukiwarce domen klient, który nie ma jeszcze nazwy, wpisuje kilka słów o swojej firmie („cukiernia w Salonikach”) i dostaje pasujące wolne nazwy z Twoją pierwszą końcówką i .com, każdą z ceną. Do usługi AI trafia tylko opis, nigdy adresy e-mail ani numery telefonów. Każde wyszukiwanie liczy się do tych samych :count na godzinę.",
     "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Włączone: z funkcji mogą korzystać także osoby odwiedzające stronę bez logowania, po sprawdzeniu captcha (najpierw włącz wtyczkę captcha). Wyłączone: tylko zalogowani klienci.",
     "Sender not confirmed": "Nadawca niepotwierdzony",
-    "The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.": "Serwer pocztowy nie potwierdził, że ten e-mail pochodzi z adresu nadawcy (DMARC, DKIM lub SPF), więc mógł go napisać każdy."
+    "The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.": "Serwer pocztowy nie potwierdził, że ten e-mail pochodzi z adresu nadawcy (DMARC, DKIM lub SPF), więc mógł go napisać każdy.",
+    ":tld is not offered under Domain pricing.": ":tld nie jest oferowana w Cenniku domen.",
+    "Add a TLD, e.g. .gr": "Dodaj TLD, np. .gr",
+    "Nameservers, spotlight TLDs, auto renew, free domains, IDN, late renewal fees and an SSL certificate offered with domains.": "Serwery nazw, wyróżnione TLD, automatyczne odnawianie, darmowe domeny, IDN, opłaty za spóźnione odnowienie i certyfikat SSL oferowany z domenami.",
+    "Other endings:": "Inne końcówki:",
+    "Popular domain endings": "Popularne końcówki domen",
+    "Spotlight": "Wyróżnione",
+    "Spotlight TLD: shown first in the domain search (Settings → Domains)": "Wyróżniona TLD: pokazywana jako pierwsza w wyszukiwarce domen (Ustawienia → Domeny)",
+    "Spotlight TLDs": "Wyróżnione TLD",
+    "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Końcówki, które kupuje większość Twoich klientów, np. .gr i .com. Wyszukiwarka domen sprawdza je najpierw i pokazuje jako karty nad innymi końcówkami, z ich ceną; publiczna strona główna i strona wyszukiwania pokazują ich ceny pod polem wyszukiwania.",
+    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Do :count TLD oferowanych w Cenniku domen, w kolejności wyświetlania; przeciągnij, aby zmienić kolejność. Puste: wszystkie końcówki są wyświetlane tak samo."
 }

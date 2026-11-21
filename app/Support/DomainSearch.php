@@ -47,24 +47,82 @@ class DomainSearch
         self::$nameservers = $resolver;
     }
 
-    /** @return list<Tld> the TLDs sold for registration, as listed under Settings → Domain pricing */
+    /** The most TLDs Settings → Domains → Spotlight TLDs holds. */
+    public const SPOTLIGHT_MAX = 8;
+
+    /** @return list<Tld> the TLDs sold for registration: the spotlight ones first, in their order, then as listed under Settings → Domain pricing */
     public static function tlds(): array
     {
-        return Tld::query()->active()->orderBy('id')->get()->filter(fn (Tld $tld) => $tld->terms('register') !== [])->values()->all();
+        $spotlight = self::spotlightTlds();
+
+        return Tld::query()->active()->orderBy('id')->get()
+            ->filter(fn (Tld $tld) => $tld->terms('register') !== [])
+            ->sortBy(function (Tld $tld) use ($spotlight) {
+                $place = array_search($tld->tld, $spotlight, true);
+
+                return $place === false ? self::SPOTLIGHT_MAX + $tld->id : $place;
+            })
+            ->values()->all();
+    }
+
+    /** @return list<Tld> the spotlight TLDs (Settings → Domains) that are sold for registration, in their order */
+    public static function spotlight(): array
+    {
+        $spotlight = self::spotlightTlds();
+
+        return array_values(array_filter(self::tlds(), fn (Tld $tld) => in_array($tld->tld, $spotlight, true)));
+    }
+
+    /**
+     * The spotlight TLDs' registration prices in $currency, for their shortest term ("€12.00 for 2 years"), with the
+     * normal price while on sale ($was); the ones with no price in that currency are left out.
+     *
+     * @return list<array{tld: string, price: string, was: ?string}>
+     */
+    public static function spotlightPrices(string $currency): array
+    {
+        $prices = [];
+
+        foreach (self::spotlight() as $tld) {
+            $years = $tld->terms('register')[0];
+            $cents = $tld->orderPriceCents('register', $years, $currency);
+
+            if ($cents === null) {
+                continue;
+            }
+
+            $prices[] = [
+                'tld' => (string) $tld->tld,
+                'price' => __(':price for :term', ['price' => $cents === 0 ? __('Free') : Money::format($cents, $currency), 'term' => Tld::termLabel($years)]),
+                'was' => $tld->salePriceCents('register', $years, $currency) !== null ? Money::format((int) $tld->priceCents('register', $years, $currency), $currency) : null,
+            ];
+        }
+
+        return $prices;
+    }
+
+    /** @return list<string> Settings → Domains → Spotlight TLDs as stored (".gr", ".com"), in order */
+    public static function spotlightTlds(): array
+    {
+        return array_slice(array_values(array_unique(array_filter(array_map(
+            fn ($tld) => is_string($tld) && trim($tld, ' .') !== '' ? '.'.ltrim(mb_strtolower(trim($tld)), '.') : null,
+            (array) config('gaiacp.domains.spotlight', []),
+        )))), 0, self::SPOTLIGHT_MAX);
     }
 
     /**
      * What a search looks for: "myshop" or "myshop.gr" (also typed as a web address) gives myshop with each TLD sold,
-     * the one typed first. $unsupported is the TLD typed when it is not sold.
+     * the one typed first, then the spotlight TLDs. $unsupported is the TLD typed when it is not sold. $spotlight lists
+     * the domains shown first, as cards: the one typed and the spotlight ones (none without spotlight TLDs).
      *
-     * @return array{domains: list<string>, requested: ?string, unsupported: ?string}
+     * @return array{domains: list<string>, requested: ?string, unsupported: ?string, spotlight: list<string>}
      */
     public static function candidates(string $query): array
     {
         $query = preg_replace('#^(https?://)?(www\.)?#i', '', trim($query));
         $query = DomainName::normalize(strtok($query, '/?#') ?: '');
         $tlds = self::tlds();
-        $none = ['domains' => [], 'requested' => null, 'unsupported' => null];
+        $none = ['domains' => [], 'requested' => null, 'unsupported' => null, 'spotlight' => []];
 
         if ($query === '' || $tlds === []) {
             return $none;
@@ -79,12 +137,15 @@ class DomainSearch
         }
 
         $requested = $sold ? $query : null;
+        $domains = collect([$requested])->filter()->merge(array_map(fn (Tld $tld) => $name.$tld->tld, $tlds))
+            ->unique()->take(self::MAX_RESULTS)->values()->all();
+        $spotlight = array_map(fn (Tld $tld) => $name.$tld->tld, self::spotlight());
 
         return [
-            'domains' => collect([$requested])->filter()->merge(array_map(fn (Tld $tld) => $name.$tld->tld, $tlds))
-                ->unique()->take(self::MAX_RESULTS)->values()->all(),
+            'domains' => $domains,
             'requested' => $requested,
             'unsupported' => $suffix !== '' && ! $sold ? $suffix : null,
+            'spotlight' => $spotlight === [] ? [] : array_values(array_intersect($domains, [...array_filter([$requested]), ...$spotlight])),
         ];
     }
 

@@ -65,6 +65,11 @@ for less than it costs, the bell rings for the admins of products and domain set
 Settings → Products & domains → **Domains**:
 
 - **Default nameservers** for new registrations.
+- **Spotlight TLDs**: up to 8 of the TLDs you offer (such as .gr and .com), in the order you want; drag a TLD to
+  move it. The domain search checks them first and shows them as cards above the other endings, each with whether it
+  is free, its price and Add to cart; the domain the client typed is the first card. Their prices also show under the
+  search box (search page and public home page), Domain prices lists them first, AI names from a description use the
+  first two, and Domain pricing marks them with a star. Empty: every ending is listed the same way.
 - **Auto renew new domains**: the default of each domain's Auto renew switch. A domain that doesn't auto renew gets no
   payment notices and is marked Terminated on its due date.
 - **Renew at the registrar when a payment is recorded** (on by default). Off, a payment only moves the due date.

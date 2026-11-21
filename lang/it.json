@@ -4291,5 +4291,15 @@
     "In the domain search, a client who has no name yet types a few words about their business (\"a pastry shop in Thessaloniki\") and gets free names that fit, with your first ending and .com, each with its price. Only the description goes to the AI service, never email addresses or phone numbers. Each search counts toward the same :count an hour.": "Nella ricerca domini, un cliente che non ha ancora un nome scrive qualche parola sulla sua attività («una pasticceria a Salonicco») e ottiene nomi liberi adatti, con la tua prima estensione e .com, ciascuno con il suo prezzo. Al servizio di IA va solo la descrizione, mai indirizzi email o numeri di telefono. Ogni ricerca conta nelle stesse :count all’ora.",
     "On: people who visit your site without signing in can use it too, after a captcha check (turn on a captcha plugin first). Off: only clients who have signed in.": "Attivo: anche chi visita il sito senza accedere può usarlo, dopo un controllo captcha (attiva prima un plugin captcha). Disattivo: solo i clienti che hanno effettuato l’accesso.",
     "Sender not confirmed": "Mittente non confermato",
-    "The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.": "Il server di posta non ha confermato che questa email provenga dall'indirizzo del mittente (DMARC, DKIM o SPF), quindi chiunque potrebbe averla scritta."
+    "The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.": "Il server di posta non ha confermato che questa email provenga dall'indirizzo del mittente (DMARC, DKIM o SPF), quindi chiunque potrebbe averla scritta.",
+    ":tld is not offered under Domain pricing.": ":tld non è offerto in Prezzi domini.",
+    "Add a TLD, e.g. .gr": "Aggiungi un TLD, ad es. .gr",
+    "Nameservers, spotlight TLDs, auto renew, free domains, IDN, late renewal fees and an SSL certificate offered with domains.": "Nameserver, TLD in evidenza, rinnovo automatico, domini gratuiti, IDN, costi di rinnovo tardivo e un certificato SSL offerto con i domini.",
+    "Other endings:": "Altre estensioni:",
+    "Popular domain endings": "Estensioni di dominio più richieste",
+    "Spotlight": "In evidenza",
+    "Spotlight TLD: shown first in the domain search (Settings → Domains)": "TLD in evidenza: mostrato per primo nella ricerca domini (Impostazioni → Domini)",
+    "Spotlight TLDs": "TLD in evidenza",
+    "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Le estensioni che acquista la maggior parte dei tuoi clienti, come .gr e .com. La ricerca domini le controlla per prime e le mostra come schede sopra le altre estensioni, con il loro prezzo; la home page pubblica e la pagina di ricerca mostrano i loro prezzi sotto la casella di ricerca.",
+    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Fino a :count TLD offerti in Prezzi domini, nell'ordine in cui mostrarli; trascina per riordinare. Vuoto: tutte le estensioni sono elencate allo stesso modo."
 }

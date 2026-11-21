@@ -198,6 +198,10 @@ return [
         // When an SSL certificate's domain is the client's hosting account on a cPanel or Plesk server, GaiaCP puts the
         // validation file (or DNS record) in place and installs the issued certificate there (App\Certificates\CertificateHosting).
         'ssl_own_hosting' => true,
+
+        // Spotlight TLDs (".gr", ".com", at most 8): the domain search checks them first and shows them as cards above
+        // the other endings, with their price; the public home page and the domain search show their prices too.
+        'spotlight' => [],
     ],
 
     // The captcha on the login, sign up and forgot password forms (Settings → General): a captcha plugin's key

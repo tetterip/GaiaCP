@@ -14,6 +14,7 @@ use App\Models\Registrar;
 use App\Models\Tld;
 use App\Providers\AppServiceProvider;
 use App\Support\Currencies;
+use App\Support\DomainSearch;
 use App\Support\Money;
 use BackedEnum;
 use Closure;
@@ -230,6 +231,11 @@ class TldResource extends Resource implements SettingsCard
                 TextColumn::make('tld')
                     ->label('TLD')
                     ->weight('medium')
+                    // Settings → Domains → Spotlight TLDs
+                    ->icon(fn (Tld $record) => in_array($record->tld, DomainSearch::spotlightTlds(), true) ? Heroicon::Star : null)
+                    ->iconColor('warning')
+                    ->iconPosition('after')
+                    ->tooltip(fn (Tld $record) => in_array($record->tld, DomainSearch::spotlightTlds(), true) ? __('Spotlight TLD: shown first in the domain search (Settings → Domains)') : null)
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('registrar.name')

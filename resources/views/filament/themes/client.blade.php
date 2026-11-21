@@ -918,6 +918,120 @@
         margin-top: .75rem;
     }
 
+    /* Spotlight TLDs (Settings → Domains): their results as cards above the other endings, two a row on phones */
+    .gcp-domain-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+        gap: .75rem;
+        margin-bottom: 1rem;
+    }
+
+    .gcp-domain-card {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        min-width: 0;
+        padding: 1rem;
+        border-radius: var(--gcp-radius-control);
+        background: var(--gcp-soft);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
+        color: var(--gcp-text);
+    }
+
+    .gcp-domain-card.is-free {
+        background: var(--gcp-card);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gcp-accent) 45%, var(--gcp-line));
+    }
+
+    .gcp-domain-card-name {
+        display: flex;
+        align-items: baseline;
+        min-width: 0;
+        line-height: 1.2;
+    }
+
+    .gcp-domain-card-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-domain-card-tld {
+        flex-shrink: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-domain-card.is-free .gcp-domain-card-tld {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-domain-card .gcp-domain-status {
+        margin-top: 0;
+    }
+
+    .gcp-domain-card-end {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: .4rem;
+        margin-top: auto;
+    }
+
+    .gcp-domain-card-end .gcp-cart-line-amount {
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    @media (max-width: 40rem) {
+        .gcp-domain-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .5rem;
+        }
+
+        .gcp-domain-card {
+            padding: .75rem;
+        }
+
+        .gcp-domain-card-tld {
+            font-size: 1.25rem;
+        }
+
+        .gcp-domain-card-end .gcp-cart-line-amount {
+            font-size: .875rem;
+        }
+    }
+
+    /* The spotlight TLDs' prices under a domain search box (search page, public home page) */
+    .gcp-spotlight-prices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin: .75rem 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .gcp-spotlight-price {
+        display: inline-flex;
+        align-items: baseline;
+        gap: .4rem;
+        padding: .3rem .75rem;
+        border-radius: 999px;
+        background: var(--gcp-soft);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
+        font-size: .875rem;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-spotlight-price strong {
+        color: var(--gcp-accent);
+        font-weight: 700;
+    }
+
     /* Knowledge base (KnowledgeBase, KnowledgeBaseArticle, the tips on Open a ticket) */
     .gcp-kb-groups {
         display: grid;

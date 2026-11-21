@@ -166,6 +166,10 @@ Um es zu verwenden, öffnen Sie eine unbezahlte Zahlungsaufforderung und klicken
 
 **Domainsuche** (im Menü, nach Domains) findet einen Namen für Sie: Geben Sie ihn ein (meinshop oder meinshop.gr), und Sie sehen ihn mit jeder Endung, die wir registrieren, ob er frei oder vergeben ist, und seinen Preis. **In den Warenkorb** legt einen freien in den Warenkorb (**Mit SSL** fügt auch ein Zertifikat dafür hinzu, wenn wir eines anbieten); für einen, der Ihnen gehört, aber anderswo liegt, öffnet **Meine: transferieren** die Bestellung für den Transfer. Eventuell werden Sie zuerst gebeten zu bestätigen, dass Sie kein Roboter sind. „Wahrscheinlich verfügbar“ bedeutet, dass die Registry gerade nicht abgefragt werden konnte; wir prüfen es bei der Registrierung erneut. Wenn wir es anbieten, listet **Andere Namen vorschlagen** unter den Ergebnissen freie Namen ähnlich Ihrem, von KI vorgeschlagen, mit derselben Endung. Noch keinen Namen? Wenn wir es anbieten, beschreiben Sie Ihr Geschäft im selben Feld in ein paar Worten (etwa „eine Konditorei in Thessaloniki“): Die KI schlägt freie Namen vor, jeweils mit Preis. Was Sie eingeben, wird ohne E-Mail-Adressen und Telefonnummern an den KI-Dienst gesendet.
 
+<!-- if:domain_spotlight -->
+Die Endungen, die die meisten Kunden wählen (etwa .gr und .com), stehen zuerst, als größere Karten, und ihre Preise erscheinen schon vor der Suche unter dem Suchfeld.
+<!-- endif -->
+
 <!-- if:domain_prices -->
 **Preise aller Domainendungen ansehen** unter dem Suchfeld listet jede Endung, die wir verkaufen, mit ihrem Preis für Registrierung, Transfer und Verlängerung.
 <!-- endif -->

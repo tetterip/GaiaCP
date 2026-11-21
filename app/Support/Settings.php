@@ -76,6 +76,7 @@ class Settings
         'domains.ssl_product',
         'domains.ssl_discount',
         'domains.ssl_own_hosting',
+        'domains.spotlight',
         'client_area.domain_nameservers',
         'client_area.domain_epp',
         'client_area.domain_auto_renew',
