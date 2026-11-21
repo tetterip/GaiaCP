@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: the web installer gave a 500 error when the setup code was sent on a new copy with no database yet (its
+  attempts were counted in the database cache, whose tables don't exist before the install); they are kept in files.
 - Fixed: a select (Settings → Tax → Country and every other searchable select) showed two rings with a gap when it
   had the focus; it shows only its frame's ring, like the text fields next to it.
 - Installer: the language is a small button with the current code (EN) that opens the list of languages, instead of

@@ -6,6 +6,7 @@ use App\Install\Installer;
 use App\Models\Setting;
 use App\Models\User;
 use Dotenv\Dotenv;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
@@ -22,7 +23,8 @@ class InstallerTest extends TestCase
         $this->dir = sys_get_temp_dir().'/gaiacp-install-'.uniqid();
         mkdir($this->dir);
         $this->app->useEnvironmentPath($this->dir);
-        config(['gaiacp.install_lock' => $this->dir.'/installed']);
+        // The installer keeps its throttle in the file cache: a folder of its own, so no test inherits another's attempts
+        config(['gaiacp.install_lock' => $this->dir.'/installed', 'cache.stores.file.path' => $this->dir.'/cache']);
     }
 
     protected function tearDown(): void
@@ -217,6 +219,24 @@ class InstallerTest extends TestCase
             $this->post('/install', ['code' => 'WRONG-'.$i])->assertSessionHasErrors('code');
         }
         $this->post('/install', ['code' => 'WRONG'])->assertStatus(429);
+    }
+
+    /** Before the install the database store has no tables (or no SQLite file), so the throttle must not use it. */
+    public function test_the_setup_code_works_before_there_is_a_database(): void
+    {
+        config([
+            'database.connections.missing' => ['driver' => 'sqlite', 'database' => $this->dir.'/missing.sqlite', 'prefix' => ''],
+            'cache.default' => 'database',
+            'cache.stores.database.connection' => 'missing',
+        ]);
+        $this->app->forgetInstance(RateLimiter::class);
+        app(RateLimiter::class); // made at boot, as on a server
+
+        $this->get('/install')->assertOk();
+        $code = trim((string) file_get_contents($this->dir.'/install-code.txt'));
+
+        $this->post('/install', ['code' => 'AAAA-BBBB-CCCC'])->assertSessionHasErrors('code');
+        $this->post('/install', ['code' => $code])->assertRedirect(route('install.database'));
     }
 
     public function test_the_command_installs_without_questions(): void
