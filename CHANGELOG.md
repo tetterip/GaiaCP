@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: a select (Settings → Tax → Country and every other searchable select) showed two rings with a gap when it
+  had the focus; it shows only its frame's ring, like the text fields next to it.
 - Installer: the language is a small button with the current code (EN) that opens the list of languages, instead of
   a row of all ten that no longer fit next to the logo and spilled off the screen on a phone.
 - System health → Speed: OPcache shows as on where the host disables `opcache_get_status()` (Plesk does), and warns

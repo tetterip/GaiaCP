@@ -2,7 +2,7 @@
     A keyboard focus mark every theme keeps (WCAG 2.4.7): a 2px outline in the primary colour around whatever Tab
     reaches. An outline, not a box-shadow, so a theme's own shadows (Glass gives buttons a box-shadow with !important,
     which hid Filament's focus ring) never cover it. Only :focus-visible, so a mouse click shows nothing. Text fields
-    keep Filament's own mark on their frame. Also: a bigger target for the select's clear cross, borders in Windows
+    and selects keep Filament's own mark on their frame. Also: a bigger target for the select's clear cross, borders in Windows
     contrast themes. Both panels and every theme, PanelsRenderHook::HEAD_END, after the theme's styles.
 --}}
 <style>
@@ -20,6 +20,12 @@
         outline-offset: -2px !important;
     }
 
+    /* A select's button fills its field, whose frame already shows the mark (as text fields do): a second ring
+       inside it would double it */
+    .fi-select-input-btn:focus-visible {
+        outline: none !important;
+    }
+
     /* Filament's 16px "Clear selection" cross in selects: a 24px target (WCAG 2.5.8) that takes no more room */
     .fi-select-input-value-remove-btn {
         padding: 4px;
@@ -32,6 +38,11 @@
     @media (forced-colors: active) {
         :focus-visible {
             outline-color: Highlight !important;
+        }
+
+        /* the field's frame mark is a shadow, gone here: the select's button keeps its own */
+        .fi-select-input-btn:focus-visible {
+            outline: 2px solid Highlight !important;
         }
 
         .fi-btn, .fi-icon-btn, .fi-input-wrp, .fi-section, .fi-ta-ctn, .fi-dropdown-panel, .fi-modal-window {
