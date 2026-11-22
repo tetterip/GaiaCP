@@ -55,7 +55,7 @@ class ServicesListTest extends TestCase
         $this->assertSame(2, $chips['active']['count']);
         $this->assertSame(1, $chips['suspended']['count']);
         $this->assertSame(1, $chips['due_soon']['count']); // the domain is on another tab
-        $this->assertTrue($chips['all']['active']);
+        $this->assertTrue($chips['active']['active']); // Hosting opens on the active accounts
 
         $page->call('applyQuickFilter', 'suspended')
             ->assertCanSeeTableRecords([$suspended])
@@ -70,6 +70,38 @@ class ServicesListTest extends TestCase
         $page->call('applyQuickFilter', 'all')
             ->assertCanSeeTableRecords([$active, $soon, $suspended]);
         $this->assertTrue($page->instance()->quickFilters()['all']['active']);
+    }
+
+    public function test_hosting_opens_on_the_active_accounts_soonest_due_first(): void
+    {
+        $later = Service::factory()->dueOn('2027-03-01')->create();
+        $sooner = Service::factory()->dueOn('2026-12-01')->create();
+        $suspended = Service::factory()->dueOn('2026-11-01')->create(['status' => ServiceStatus::Suspended]);
+        $domain = Service::factory()->domain()->create();
+
+        $this->actingAs(User::factory()->create());
+        $page = Livewire::withQueryParams(['tab' => 'hosting'])->test(ListServices::class)
+            ->assertCanSeeTableRecords([$sooner, $later], inOrder: true)
+            ->assertCanNotSeeTableRecords([$suspended, $domain]);
+        $this->assertTrue($page->instance()->quickFilters()['active']['active']);
+
+        // Other tabs keep every open service, and back on Hosting it is the active ones again
+        $page->set('activeTab', 'all')
+            ->assertCanSeeTableRecords([$later, $sooner, $suspended, $domain]);
+        $this->assertTrue($page->instance()->quickFilters()['all']['active']);
+
+        $page->set('activeTab', 'hosting')
+            ->assertCanNotSeeTableRecords([$suspended]);
+
+        // A chip picked on Hosting stays
+        $page->call('applyQuickFilter', 'all')->assertCanSeeTableRecords([$suspended]);
+        $this->assertTrue($page->instance()->quickFilters()['all']['active']);
+
+        // A filter picked by hand is kept when moving between tabs
+        $page->call('applyQuickFilter', 'suspended')->set('activeTab', 'all');
+        $this->assertTrue($page->instance()->quickFilters()['suspended']['active']);
+
+        Livewire::withQueryParams(['tab' => 'all'])->test(ListServices::class)->assertCanSeeTableRecords([$suspended, $domain]);
     }
 
     public function test_the_next_due_column_says_how_near_it_is(): void

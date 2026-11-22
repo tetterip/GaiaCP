@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Services → Hosting opens on the active accounts, the soonest due first, so what renews next is at the top; the
+  other tabs still open on every open service, and a chip or filter you pick stays.
 - Fixed: a list's Filters panel was cut off at the bottom of the table, so under a short or empty list its lower
   filters (Server on the Hosting page) could not be reached; it now opens over the page.
 

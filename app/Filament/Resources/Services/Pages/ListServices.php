@@ -125,6 +125,54 @@ class ListServices extends ListRecords
         ];
     }
 
+    /** The chip each tab opens on: Hosting shows the active accounts, so what renews next is at the top. */
+    public const TAB_DEFAULTS = ['hosting' => 'active'];
+
+    /** Set by mount() so the table applies the tab's chip once its filters exist (not when the URL names filters). */
+    private bool $applyTabDefault = false;
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        $this->applyTabDefault = blank($this->tableFilters);
+    }
+
+    public function bootedInteractsWithTable(): void
+    {
+        parent::bootedInteractsWithTable();
+
+        if ($this->applyTabDefault) {
+            $this->applyTabDefault = false;
+            $this->applyQuickFilter($this->tabDefault());
+        }
+    }
+
+    /** Moving between tabs moves the chip to the new tab's own one, unless other filters were picked. */
+    public function updatedActiveTab(): void
+    {
+        $chips = collect($this->quickFilters())->filter(fn (array $chip) => $chip['active'])->keys();
+
+        parent::updatedActiveTab();
+
+        if ($chips->intersect(['all', ...array_values(self::TAB_DEFAULTS)])->isNotEmpty() && ! $this->hasOtherFilters()) {
+            $this->applyQuickFilter($this->tabDefault());
+        }
+    }
+
+    private function tabDefault(): string
+    {
+        return self::TAB_DEFAULTS[$this->activeTab] ?? 'all';
+    }
+
+    /** A filter other than the status and due soon ones that the chips set. */
+    private function hasOtherFilters(): bool
+    {
+        return collect($this->tableFilters ?? [])
+            ->except(['status', 'due_soon'])
+            ->contains(fn ($state) => collect((array) $state)->flatten()->filter(fn ($value) => filled($value) && $value !== false)->isNotEmpty());
+    }
+
     public function applyQuickFilter(string $key): void
     {
         if (! in_array($key, self::QUICK_FILTERS, true)) {
