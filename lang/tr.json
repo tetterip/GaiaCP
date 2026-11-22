@@ -4302,7 +4302,11 @@
     "Spotlight TLDs": "Öne çıkan TLD'ler",
     "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Müşterilerinizin çoğunun satın aldığı uzantılar, örneğin .gr ve .com. Alan adı araması önce bunları kontrol eder ve diğer uzantıların üstünde fiyatlarıyla kartlar olarak gösterir; herkese açık ana sayfa ve arama sayfası fiyatlarını arama kutusunun altında gösterir.",
     "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Alan adı fiyatlarında sunulan en fazla :count TLD, gösterilecekleri sırayla; sıralamak için sürükleyin. Boş: tüm uzantılar aynı şekilde listelenir.",
-    "Active, and suspended up to :count days overdue": "Etkin ve en fazla :count gün gecikmiş askıdakiler",
-    "Active and recent": "Etkin ve yakın zamanlı",
-    "Current": "Güncel"
+    "Current": "Güncel",
+    "Active and in quarantine": "Etkin ve karantinada",
+    "In quarantine": "Karantinada",
+    "Quarantine": "Karantina",
+    "Hosting quarantine": "Hosting karantinası",
+    "Hosting quarantine days": "Hosting karantina günleri",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Askıya alınmış bir hesap, otomatik askıya almadan sonra bu kadar gün karantinada görünür; Hizmetler → Hosting etkin hesaplarla ve bunlarla açılır. 0 = asla. Alan adları TLD'lerinin ek süre günlerini kullanır."
 }

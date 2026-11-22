@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
+use App\Support\Quarantine;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -86,7 +87,10 @@ class ServicesTable
                     ->tooltip(__('Expiry at the registrar, from the last sync'))
                     ->visible(fn ($livewire) => ($tab ?? $livewire->activeTab ?? null) === 'domains'),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    // Lapsed but still savable (App\Support\Quarantine): said in place of Active / Suspended
+                    ->formatStateUsing(fn (Service $record) => Quarantine::has($record) ? __('Quarantine') : $record->status->getLabel())
+                    ->color(fn (Service $record) => Quarantine::has($record) ? 'danger' : $record->status->getColor()),
             ])
             ->searchPlaceholder(__('Domain, username or client'))
             ->defaultSort('next_due_date')
@@ -111,12 +115,11 @@ class ServicesTable
                 Filter::make('overdue')
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<', today())),
                 Filter::make('current')
-                    ->label(fn () => __('Active, and suspended up to :count days overdue', ['count' => self::recentlySuspendedDays()]))
-                    ->query(fn (Builder $query) => $query->where(fn (Builder $query) => $query
-                        ->where('status', ServiceStatus::Active)
-                        ->orWhere(fn (Builder $query) => $query
-                            ->where('status', ServiceStatus::Suspended)
-                            ->whereOnDate('next_due_date', '>=', today()->subDays(self::recentlySuspendedDays()))))),
+                    ->label('Active and in quarantine')
+                    ->query(fn (Builder $query) => Quarantine::live($query)),
+                Filter::make('quarantine')
+                    ->label('In quarantine')
+                    ->query(fn (Builder $query) => Quarantine::scope($query)),
                 Filter::make('due_soon')
                     ->label(__('Due in the next :count days', ['count' => self::DUE_SOON_DAYS]))
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<=', today()->addDays(self::DUE_SOON_DAYS))),
@@ -137,13 +140,6 @@ class ServicesTable
             ])
             ->toolbarActions([ServiceBulkActions::group()])
             ->maxSelectableRecords(ServiceBulkActions::MAX);
-    }
-
-    /** How far back the Hosting list's first chip keeps suspended accounts: Settings → Automation → Suspend hosting
-     *  after (0 when it is empty, i.e. the active ones only). */
-    public static function recentlySuspendedDays(): int
-    {
-        return max(0, (int) config('gaiacp.automation.suspend_after_days'));
     }
 
     /** The line under the service: a hosting account's username, else the label when the domain is the title. */

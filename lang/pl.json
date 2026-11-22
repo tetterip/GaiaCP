@@ -4302,7 +4302,11 @@
     "Spotlight TLDs": "Wyróżnione TLD",
     "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Końcówki, które kupuje większość Twoich klientów, np. .gr i .com. Wyszukiwarka domen sprawdza je najpierw i pokazuje jako karty nad innymi końcówkami, z ich ceną; publiczna strona główna i strona wyszukiwania pokazują ich ceny pod polem wyszukiwania.",
     "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Do :count TLD oferowanych w Cenniku domen, w kolejności wyświetlania; przeciągnij, aby zmienić kolejność. Puste: wszystkie końcówki są wyświetlane tak samo.",
-    "Active, and suspended up to :count days overdue": "Aktywne oraz zawieszone zaległe do :count dni",
-    "Active and recent": "Aktywne i ostatnie",
-    "Current": "Bieżące"
+    "Current": "Bieżące",
+    "Active and in quarantine": "Aktywne i w kwarantannie",
+    "In quarantine": "W kwarantannie",
+    "Quarantine": "Kwarantanna",
+    "Hosting quarantine": "Kwarantanna hostingu",
+    "Hosting quarantine days": "Dni kwarantanny hostingu",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Zawieszone konto jest pokazywane w kwarantannie przez tyle dni po automatycznym zawieszeniu; Usługi → Hosting otwiera się z aktywnymi kontami i tymi. 0 = nigdy. Domeny używają dni karencji swojej TLD."
 }

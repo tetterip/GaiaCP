@@ -41,7 +41,7 @@ class AutomationSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.payment_claim_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
+        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.hosting_quarantine_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.payment_claim_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
     }
 
     public function form(Schema $schema): Schema
@@ -82,6 +82,13 @@ class AutomationSettings extends SettingsFormPage
                             ->minValue(1)
                             ->maxValue(365)
                             ->helperText(__('Leave empty to never suspend automatically. Recording the payment unsuspends.')),
+                        TextInput::make('automation.hosting_quarantine_days')
+                            ->label('Hosting quarantine')
+                            ->suffix(__('days'))
+                            ->integer()
+                            ->minValue(0)
+                            ->maxValue(3650)
+                            ->helperText(__('A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD\'s grace days.')),
                         TextInput::make('automation.cancel_unpaid_orders_days')
                             ->label('Cancel unpaid orders after')
                             ->suffix(__('days'))
@@ -228,6 +235,7 @@ class AutomationSettings extends SettingsFormPage
 
         $values['automation.price_change_notice_days'] = (int) ($values['automation.price_change_notice_days'] ?? 30);
         $values['automation.module_retries'] = max(0, (int) ($values['automation.module_retries'] ?? 3));
+        $values['automation.hosting_quarantine_days'] = max(0, (int) ($values['automation.hosting_quarantine_days'] ?? 30));
         $values['automation.client_messages_per_minute'] = max(1, (int) ($values['automation.client_messages_per_minute'] ?? 30));
 
         foreach (['automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.usage_warning_percent'] as $key) {

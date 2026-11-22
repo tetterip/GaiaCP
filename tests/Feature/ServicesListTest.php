@@ -7,6 +7,7 @@ use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\Tables\ServicesTable;
 use App\Models\Client;
 use App\Models\Service;
+use App\Models\Tld;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,7 +43,6 @@ class ServicesListTest extends TestCase
     public function test_quick_filters_count_and_set_the_filters(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-17 10:00'));
-        config(['gaiacp.automation.suspend_after_days' => 14]);
         $active = Service::factory()->dueOn('2027-03-01')->create();
         $soon = Service::factory()->dueOn('2026-10-22')->create();
         $suspended = Service::factory()->dueOn('2027-03-01')->create(['status' => ServiceStatus::Suspended]);
@@ -56,7 +56,7 @@ class ServicesListTest extends TestCase
         $this->assertSame(2, $chips['active']['count']);
         $this->assertSame(1, $chips['suspended']['count']);
         $this->assertSame(1, $chips['due_soon']['count']); // the domain is on another tab
-        $this->assertTrue($chips['current']['active']); // Hosting opens on the active and recently suspended accounts
+        $this->assertTrue($chips['current']['active']); // Hosting opens on the active accounts and those in quarantine
 
         $page->call('applyQuickFilter', 'suspended')
             ->assertCanSeeTableRecords([$suspended])
@@ -73,57 +73,75 @@ class ServicesListTest extends TestCase
         $this->assertTrue($page->instance()->quickFilters()['all']['active']);
     }
 
-    public function test_hosting_opens_on_the_active_and_recently_suspended_accounts_soonest_due_first(): void
+    public function test_hosting_opens_on_the_active_accounts_and_those_in_quarantine_soonest_due_first(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-11-22 10:00'));
-        config(['gaiacp.automation.suspend_after_days' => 60]);
+        config(['gaiacp.automation.suspend_after_days' => 14, 'gaiacp.automation.hosting_quarantine_days' => 30]);
         $later = Service::factory()->dueOn('2027-03-01')->create();
         $sooner = Service::factory()->dueOn('2026-12-01')->create();
-        $recent = Service::factory()->dueOn('2026-10-01')->create(['status' => ServiceStatus::Suspended]);
-        $old = Service::factory()->dueOn('2025-01-01')->create(['status' => ServiceStatus::Suspended]);
+        // Suspended after 14 days, in quarantine for 30 more: due on 9/10 at the earliest
+        $quarantined = Service::factory()->dueOn('2026-10-09')->create(['status' => ServiceStatus::Suspended]);
+        $past = Service::factory()->dueOn('2026-10-08')->create(['status' => ServiceStatus::Suspended]);
         $pending = Service::factory()->dueOn('2026-12-10')->create(['status' => ServiceStatus::Pending]);
         $domain = Service::factory()->domain()->create();
 
         $this->actingAs(User::factory()->create());
         $page = Livewire::withQueryParams(['tab' => 'hosting'])->test(ListServices::class)
-            ->assertCanSeeTableRecords([$recent, $sooner, $later], inOrder: true)
-            ->assertCanNotSeeTableRecords([$old, $pending, $domain]);
+            ->assertCanSeeTableRecords([$quarantined, $sooner, $later], inOrder: true)
+            ->assertCanNotSeeTableRecords([$past, $pending, $domain])
+            ->assertTableColumnFormattedStateSet('status', 'Quarantine', $quarantined)
+            ->assertTableColumnFormattedStateSet('status', 'Active', $sooner);
         $chips = $page->instance()->quickFilters();
         $this->assertTrue($chips['current']['active']);
         $this->assertSame(3, $chips['current']['count']);
+        $this->assertSame(1, $chips['quarantine']['count']);
 
-        // Other tabs keep every open service and have no such chip; back on Hosting it is the first chip again
+        $page->call('applyQuickFilter', 'quarantine')
+            ->assertCanSeeTableRecords([$quarantined])
+            ->assertCanNotSeeTableRecords([$past, $sooner]);
+        $page->call('applyQuickFilter', 'current');
+
+        // Other tabs keep every open service and have no quarantine chips; back on Hosting it is the first chip again
+        $page->set('activeTab', 'other')
+            ->assertCanNotSeeTableRecords([$past]);
         $page->set('activeTab', 'all')
-            ->assertCanSeeTableRecords([$later, $sooner, $recent, $old, $pending, $domain]);
+            ->assertCanSeeTableRecords([$later, $sooner, $quarantined, $past, $pending, $domain]);
         $this->assertTrue($page->instance()->quickFilters()['all']['active']);
         $this->assertArrayNotHasKey('current', $page->instance()->quickFilters());
 
         $page->set('activeTab', 'hosting')
-            ->assertCanNotSeeTableRecords([$old]);
+            ->assertCanNotSeeTableRecords([$past]);
 
         // A chip picked on Hosting stays
-        $page->call('applyQuickFilter', 'all')->assertCanSeeTableRecords([$old]);
+        $page->call('applyQuickFilter', 'all')->assertCanSeeTableRecords([$past]);
         $this->assertTrue($page->instance()->quickFilters()['all']['active']);
 
         // A filter picked by hand is kept when moving between tabs
         $page->call('applyQuickFilter', 'suspended')->set('activeTab', 'all');
         $this->assertTrue($page->instance()->quickFilters()['suspended']['active']);
 
-        Livewire::withQueryParams(['tab' => 'all'])->test(ListServices::class)->assertCanSeeTableRecords([$old, $domain]);
+        Livewire::withQueryParams(['tab' => 'all'])->test(ListServices::class)->assertCanSeeTableRecords([$past, $domain]);
     }
 
-    public function test_hosting_opens_on_the_active_accounts_when_nothing_is_suspended_automatically(): void
+    public function test_domains_open_on_the_active_ones_and_those_in_their_grace_days(): void
     {
-        config(['gaiacp.automation.suspend_after_days' => null]);
-        $active = Service::factory()->create();
-        $suspended = Service::factory()->create(['status' => ServiceStatus::Suspended, 'next_due_date' => today()->toDateString()]);
+        $this->travelTo(CarbonImmutable::parse('2026-11-22 10:00'));
+        Tld::query()->create(['tld' => '.gr', 'renew_1y_cents' => 1500, 'grace_days' => 15]);
+        $renewing = Service::factory()->domain()->dueOn('2027-01-10')->create(['domain' => 'renewing.gr']);
+        $expired = Service::factory()->domain()->dueOn('2026-11-20')->create(['domain' => 'expired.gr']);
+        $gone = Service::factory()->domain()->dueOn('2026-11-01')->create(['domain' => 'gone.gr']);
+        $com = Service::factory()->domain()->dueOn('2026-11-01')->create(['domain' => 'longer.com']); // no TLD: 30 days
 
         $this->actingAs(User::factory()->create());
-        $page = Livewire::withQueryParams(['tab' => 'hosting'])->test(ListServices::class)
-            ->assertCanSeeTableRecords([$active])
-            ->assertCanNotSeeTableRecords([$suspended]);
-        $this->assertTrue($page->instance()->quickFilters()['active']['active']);
-        $this->assertArrayNotHasKey('current', $page->instance()->quickFilters());
+        $page = Livewire::withQueryParams(['tab' => 'domains'])->test(ListServices::class)
+            ->assertCanSeeTableRecords([$com, $expired, $renewing], inOrder: true)
+            ->assertCanNotSeeTableRecords([$gone])
+            ->assertTableColumnFormattedStateSet('status', 'Quarantine', $expired)
+            ->assertTableColumnFormattedStateSet('status', 'Active', $renewing);
+        $this->assertTrue($page->instance()->quickFilters()['current']['active']);
+        $this->assertSame(2, $page->instance()->quickFilters()['quarantine']['count']);
+
+        $page->call('applyQuickFilter', 'all')->assertCanSeeTableRecords([$gone]);
     }
 
     public function test_the_next_due_column_says_how_near_it_is(): void

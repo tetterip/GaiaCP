@@ -118,6 +118,10 @@ return [
             ? (int) env('GAIACP_SUSPEND_AFTER_DAYS')
             : null,
 
+        // A suspended hosting account is "in quarantine" (App\Support\Quarantine) this many days after the automatic
+        // suspension, then past it: Services → Hosting opens on the active accounts and these. 0 = none is.
+        'hosting_quarantine_days' => 30,
+
         // Cancel a pending order (its items and payment notice) once it is this many days old with nothing paid or set
         // up; empty = never. Runs daily with the reminders.
         'cancel_unpaid_orders_days' => env('GAIACP_CANCEL_UNPAID_ORDERS_DAYS') !== null && env('GAIACP_CANCEL_UNPAID_ORDERS_DAYS') !== ''
