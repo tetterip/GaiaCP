@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait HasStatusChips
 {
-    public const STATUS_CHIPS = ['all', 'unpaid', 'paid', 'cancelled', 'overdue'];
+    public const STATUS_CHIPS = ['all', 'unpaid', 'paid', 'cancelled', 'overdue', 'due_today'];
 
     /** @return Builder<Invoice> */
     abstract protected function statusChipsQuery(): Builder;
@@ -25,7 +25,7 @@ trait HasStatusChips
         return View::make('filament.services.quick-filters')
             ->viewData(fn () => [
                 'filters' => $this->statusChips(),
-                'dots' => ['unpaid' => 'warning', 'paid' => 'success', 'cancelled' => 'gray', 'overdue' => 'danger'],
+                'dots' => ['unpaid' => 'warning', 'paid' => 'success', 'cancelled' => 'gray', 'overdue' => 'danger', 'due_today' => 'primary'],
             ]);
     }
 
@@ -34,19 +34,29 @@ trait HasStatusChips
     {
         $status = $this->tableFilters['status']['value'] ?? null;
         $overdue = (bool) ($this->tableFilters['overdue']['isActive'] ?? false);
-        $only = fn (InvoiceStatus $chip) => ! $overdue && $status === $chip->value;
+        $dueToday = (bool) ($this->tableFilters['due_today']['isActive'] ?? false);
+        $only = fn (InvoiceStatus $chip) => ! $overdue && ! $dueToday && $status === $chip->value;
 
-        return [
-            'all' => ['label' => __('All notices'), 'count' => $this->statusChipsQuery()->count(), 'active' => ! $overdue && blank($status)],
+        $chips = [
+            'all' => ['label' => __('All notices'), 'count' => $this->statusChipsQuery()->count(), 'active' => ! $overdue && ! $dueToday && blank($status)],
             'unpaid' => ['label' => __('Unpaid'), 'count' => $this->statusChipsQuery()->unpaid()->count(), 'active' => $only(InvoiceStatus::Unpaid)],
             'paid' => ['label' => __('Paid'), 'count' => $this->statusChipsQuery()->where('status', InvoiceStatus::Paid)->count(), 'active' => $only(InvoiceStatus::Paid)],
             'cancelled' => ['label' => __('Cancelled'), 'count' => $this->statusChipsQuery()->where('status', InvoiceStatus::Cancelled)->count(), 'active' => $only(InvoiceStatus::Cancelled)],
             'overdue' => [
                 'label' => __('Overdue'),
                 'count' => $this->statusChipsQuery()->unpaid()->whereOnDate('due_date', '<', today())->count(),
-                'active' => $overdue && blank($status),
+                'active' => $overdue && ! $dueToday && blank($status),
             ],
         ];
+
+        // Where the dashboard's "payment notices due today" leads; only on a day with some
+        $today = $this->statusChipsQuery()->unpaid()->whereOnDate('due_date', today())->count();
+
+        if ($today > 0 || $dueToday) {
+            $chips['due_today'] = ['label' => __('Due today'), 'count' => $today, 'active' => $dueToday && blank($status)];
+        }
+
+        return $chips;
     }
 
     /** Called by a chip in filament/services/quick-filters. */
@@ -61,6 +71,7 @@ trait HasStatusChips
 
         $filters['status']['value'] = in_array($key, ['unpaid', 'paid', 'cancelled'], true) ? $key : null;
         $filters['overdue']['isActive'] = $key === 'overdue';
+        $filters['due_today']['isActive'] = $key === 'due_today';
 
         $this->tableDeferredFilters = $filters;
         $this->tableFilters = $filters;

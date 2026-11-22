@@ -8,6 +8,7 @@ use App\Filament\Actions\RecordPaymentAction;
 use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\ServiceResource;
+use App\Filament\Widgets\NeedsAttention;
 use App\Models\ProductTag;
 use App\Models\Service;
 use App\Plugins\PluginManager;
@@ -110,6 +111,10 @@ class ServicesTable
                     ->query(fn (Builder $query) => $query->whereNotNull('new_price_from')),
                 Filter::make('overdue')
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<', today())),
+                // Where the dashboard's "domains to check at the registrar" row leads, so the list holds just those
+                Filter::make('registrar_check')
+                    ->label(__('To check at the registrar'))
+                    ->query(fn (Builder $query) => $query->whereIn('services.id', NeedsAttention::domainsToCheckQuery()->select('services.id'))),
                 Filter::make('due_soon')
                     ->label(__('Due in the next :count days', ['count' => self::DUE_SOON_DAYS]))
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<=', today()->addDays(self::DUE_SOON_DAYS))),

@@ -120,7 +120,7 @@ cancellation and upgrade requests, client change requests, tickets waiting for a
 today, overdue notices and those due today, domains to check at the registrar (auto renew on and the registrar's expiry
 within 14 days, or well before the date they are paid up to), sent quotes ending within 3 days, and what failed in
 the last 3 days (panel or registrar calls, backups, emails, updates), one line per kind with how many there were.
-Each line opens what it is about and goes away once that is dealt with; when nothing waits, the card is not shown at
+Each line opens what it is about (a list holds just those, with a chip such as **To check at the registrar** on) and goes away once that is dealt with; when nothing waits, the card is not shown at
 all. The urgent lines (red) come first. It shows its first six lines; **Show … more** unfolds the rest. The card
 starts across the top, over both columns, with its lines in two columns on a wide screen.
 

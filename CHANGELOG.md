@@ -16,6 +16,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron
   runs), and new installs start with files and cached pages. Before, an update cleared these caches and left them
   for you to make again.
+- Fixed: the dashboard's **Needs attention** links opened the whole list. "Domains to check at the registrar" now opens
+  just those domains (a **To check at the registrar** chip on Services → Domains), "Payment notices due today" just
+  those (a **Due today** chip), and the tickets, leads and quotes rows their tab again.
 - In Greek, the sign-in pages' "Remember me" now reads «Να με θυμάσαι» (was «Θυμήσου με»).
 
 ## [0.11.0] - 2026-11-21

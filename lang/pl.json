@@ -4309,5 +4309,8 @@
     "Optimizing": "Optymalizacja",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Strony działają nieco szybciej, bo nie odczytują ich już z bazy danych. Wszyscy zalogowani, także Ty i Twoi klienci, zostaną raz wylogowani i zalogują się ponownie. Nic więcej się nie zmienia.",
     "Use files": "Użyj plików",
-    "Use files and sign in again": "Użyj plików i zaloguj się ponownie"
+    "Use files and sign in again": "Użyj plików i zaloguj się ponownie",
+    "To check at the registrar": "Do sprawdzenia u rejestratora",
+    "Due today": "Termin dzisiaj",
+    "Registrar check": "Sprawdzenie u rejestratora"
 }

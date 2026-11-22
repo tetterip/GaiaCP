@@ -171,7 +171,7 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
                 'tone' => 'warn',
                 'title' => trans_choice(':count ticket waiting for a reply over :hours hours|:count tickets waiting for a reply over :hours hours', (clone $tickets)->count(), ['hours' => self::TICKET_HOURS]),
                 'sub' => __('Oldest :time', ['time' => StoredTime::parse((clone $tickets)->min('last_reply_at'))?->diffForHumans()]),
-                'url' => TicketResource::getUrl(parameters: ['activeTab' => 'waiting']),
+                'url' => TicketResource::getUrl(parameters: ['tab' => 'waiting']),
                 // Straight to the one that waited longest, where the reply box is
                 'action' => ['label' => __('Reply'), 'url' => TicketResource::getUrl('view', ['record' => (clone $tickets)->orderBy('last_reply_at')->value('id')])],
             ];
@@ -185,7 +185,7 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
                 'tone' => 'info',
                 'title' => trans_choice(':count lead to contact today|:count leads to contact today', $count),
                 'sub' => $first->map(fn (Lead $lead) => $lead->displayName())->join(', ').($count > 3 ? '…' : ''),
-                'url' => $count === 1 ? LeadResource::getUrl('edit', ['record' => $first->first()]) : LeadResource::getUrl(parameters: ['activeTab' => 'to_contact']),
+                'url' => $count === 1 ? LeadResource::getUrl('edit', ['record' => $first->first()]) : LeadResource::getUrl(parameters: ['tab' => 'to_contact']),
             ];
         }
 
@@ -207,7 +207,7 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
                 'sub' => Money::format(Currencies::sumToBase($dueToday, 'total_cents'), Currencies::base()),
                 'url' => ($first = (clone $dueToday)->value('id')) && (clone $dueToday)->count() === 1
                     ? InvoiceResource::getUrl('view', ['record' => $first])
-                    : InvoiceResource::getUrl(parameters: ['filters' => ['status' => ['value' => 'unpaid']]]),
+                    : InvoiceResource::getUrl(parameters: ['filters' => ['due_today' => ['isActive' => true]]]),
             ];
         }
 
@@ -219,7 +219,7 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
                 'sub' => $domains->take(3)->pluck('domain')->join(', ').($domains->count() > 3 ? '…' : ''),
                 'url' => $domains->count() === 1
                     ? ServiceResource::getUrl('edit', ['record' => $domains->first()])
-                    : ServiceResource::getUrl(parameters: ['activeTab' => 'domains']),
+                    : ServiceResource::getUrl(parameters: ['tab' => 'domains', 'filters' => ['registrar_check' => ['isActive' => true]]]),
             ];
         }
 
@@ -229,7 +229,7 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
                 'tone' => 'info',
                 'title' => trans_choice(':count quote ending within :days days|:count quotes ending within :days days', (clone $quotes)->count(), ['days' => self::QUOTE_DAYS]),
                 'sub' => (clone $quotes)->orderBy('valid_until')->limit(3)->pluck('number')->join(', '),
-                'url' => QuoteResource::getUrl(parameters: ['activeTab' => 'open']),
+                'url' => QuoteResource::getUrl(parameters: ['tab' => 'open']),
             ];
         }
 
@@ -392,8 +392,23 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
      */
     public static function domainsToCheck(): Collection
     {
-        return Service::query()
+        return self::domainsToCheckQuery()
             ->select('services.*')
+            ->join('domains', 'domains.service_id', '=', 'services.id')
+            ->orderBy('domains.expires_at')
+            ->get();
+    }
+
+    /**
+     * The domains of domainsToCheck() as a query on services, without a join, so the Services list can filter on it
+     * (ServicesTable's registrar_check filter, where the dashboard row leads).
+     *
+     * @return Builder<Service>
+     */
+    public static function domainsToCheckQuery(): Builder
+    {
+        return Service::query()->whereIn('services.id', Service::query()
+            ->select('services.id')
             ->join('domains', 'domains.service_id', '=', 'services.id')
             ->where('services.type', ServiceType::Domain)
             ->where('services.status', ServiceStatus::Active)
@@ -402,9 +417,7 @@ class NeedsAttention extends Widget implements HasActions, HasSchemas
             ->whereNotNull('domains.expires_at')
             ->where(fn ($query) => $query
                 ->whereOnDate('domains.expires_at', '<=', today()->addDays(self::DOMAIN_DAYS))
-                ->orWhereRaw('domains.expires_at < '.self::minusDays('services.next_due_date', self::DOMAIN_SLACK_DAYS)))
-            ->orderBy('domains.expires_at')
-            ->get();
+                ->orWhereRaw('domains.expires_at < '.self::minusDays('services.next_due_date', self::DOMAIN_SLACK_DAYS))));
     }
 
     /** A date column less some days, in the connection's SQL (SQLite in development and tests, MySQL / MariaDB in production). */

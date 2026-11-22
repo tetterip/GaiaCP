@@ -6,6 +6,7 @@ use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Filament\Resources\Services\Tables\ServicesTable;
+use App\Filament\Widgets\NeedsAttention;
 use App\Models\Service;
 use App\Providers\AppServiceProvider;
 use App\Reports\Csv;
@@ -36,7 +37,7 @@ class ListServices extends ListRecords
     ];
 
     /** The chips above the table: each sets the status / due soon filters, so they and the filter form agree. */
-    public const QUICK_FILTERS = ['all', 'active', 'suspended', 'pending', 'due_soon'];
+    public const QUICK_FILTERS = ['all', 'active', 'suspended', 'pending', 'due_soon', 'registrar_check'];
 
     protected function getHeaderActions(): array
     {
@@ -109,20 +110,32 @@ class ListServices extends ListRecords
         $query = fn () => $tab ? $tab->modifyQuery(Service::query()) : Service::query();
         $statuses = collect($this->tableFilters['status']['values'] ?? [])->sort()->values()->all();
         $dueSoon = (bool) ($this->tableFilters['due_soon']['isActive'] ?? false);
-        $only = fn (ServiceStatus $status) => ! $dueSoon && $statuses === [$status->value];
+        $check = (bool) ($this->tableFilters['registrar_check']['isActive'] ?? false);
+        $only = fn (ServiceStatus $status) => ! $dueSoon && ! $check && $statuses === [$status->value];
         $open = collect(ServicesTable::OPEN)->map->value->sort()->values()->all();
 
-        return [
-            'all' => ['label' => __('All'), 'count' => $query()->whereIn('status', ServicesTable::OPEN)->count(), 'active' => ! $dueSoon && $statuses === $open],
+        $chips = [
+            'all' => ['label' => __('All'), 'count' => $query()->whereIn('status', ServicesTable::OPEN)->count(), 'active' => ! $dueSoon && ! $check && $statuses === $open],
             'active' => ['label' => __('Active'), 'count' => $query()->where('status', ServiceStatus::Active)->count(), 'active' => $only(ServiceStatus::Active)],
             'suspended' => ['label' => __('Suspended'), 'count' => $query()->where('status', ServiceStatus::Suspended)->count(), 'active' => $only(ServiceStatus::Suspended)],
             'pending' => ['label' => __('Pending'), 'count' => $query()->where('status', ServiceStatus::Pending)->count(), 'active' => $only(ServiceStatus::Pending)],
             'due_soon' => [
                 'label' => __('Due in :count days', ['count' => ServicesTable::DUE_SOON_DAYS]),
                 'count' => $query()->billable()->whereOnDate('next_due_date', '<=', today()->addDays(ServicesTable::DUE_SOON_DAYS))->count(),
-                'active' => $dueSoon && $statuses === $open,
+                'active' => $dueSoon && ! $check && $statuses === $open,
             ],
         ];
+
+        // The dashboard's "domains to check at the registrar" (NeedsAttention::domainsToCheck()), only while there are some
+        if (in_array($this->activeTab, ['all', 'domains', null], true)) {
+            $count = $query()->whereIn('services.id', NeedsAttention::domainsToCheckQuery()->select('services.id'))->count();
+
+            if ($count > 0 || $check) {
+                $chips['registrar_check'] = ['label' => __('To check at the registrar'), 'count' => $count, 'active' => $check];
+            }
+        }
+
+        return $chips;
     }
 
     public function applyQuickFilter(string $key): void
@@ -140,6 +153,7 @@ class ListServices extends ListRecords
         }
 
         $filters['due_soon']['isActive'] = $key === 'due_soon';
+        $filters['registrar_check']['isActive'] = $key === 'registrar_check';
 
         $this->tableDeferredFilters = $filters;
         $this->tableFilters = $filters;
