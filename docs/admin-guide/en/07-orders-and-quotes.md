@@ -22,6 +22,10 @@ Order Confirmation email, if it is on). Nothing is called on a server or registr
 asks (with tax), moving each due date forward one cycle as usual. Deleting an item that is not paid (**Delete** in its ⋮ menu)
 takes it off the order's notice; the last item stays, so cancel the order instead.
 
+An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead: one click, no payment form. It
+sets the items up like Complete order and moves each due date forward one cycle; a 0 payment is kept per item so the
+free first period counts as used. Domain registrations still charge your registrar account.
+
 **Complete order** sets everything up: it registers or transfers the domains, creates the hosting accounts, then
 activates the rest. Its window lets you pick each domain's registrar and each hosting account's server and package
 first. An item that fails stays pending with the error on screen and in the Activity log; fix the cause and press

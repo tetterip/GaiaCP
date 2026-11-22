@@ -9,6 +9,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   logins** part; logins on, no email sent). Only WHMCS's password hash is copied; the first login stores the password
   with GaiaCP's own hash. Clients imported before get their logins by running the import again with only Client
   logins ticked.
+- An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead of Record payment: one click,
+  no payment form, sets its items up and moves each due date forward one cycle.
 - **Quarantine** in the service lists: a domain that has expired but is still inside its TLD's grace days (30 when
   the TLD has none), and a hosting account for Settings → Automation → **Hosting quarantine** days after its automatic
   suspension (30 by default, 0 = never), show a red Quarantine badge and have their own chip. Services → Hosting and
@@ -27,6 +29,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron
   runs), and new installs start with files and cached pages. Before, an update cleared these caches and left them
   for you to make again.
+- Fixed: the dashboard's **Needs attention** links opened the whole list. "Domains to check at the registrar" now opens
+  just those domains (a **To check at the registrar** chip on Services → Domains), "Payment notices due today" just
+  those (a **Due today** chip), and the tickets, leads and quotes rows their tab again.
 - Fixed: every admin page failed with an error (500) after a plugin folder went away while its pages were cached,
   for example a Git checkout that pulled the move of Slack, Discord and Telegram to the plugin catalogue. A cached
   page list that no longer matches the plugins is now dropped and made again.
