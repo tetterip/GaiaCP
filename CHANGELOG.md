@@ -5,6 +5,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- **Quarantine** in the service lists: a domain that has expired but is still inside its TLD's grace days (30 when
+  the TLD has none), and a hosting account for Settings → Automation → **Hosting quarantine** days after its automatic
+  suspension (30 by default, 0 = never), show a red Quarantine badge and have their own chip. Services → Hosting and
+  Domains open on **Active and in quarantine**, the soonest due first; the ones past quarantine show under All. The
+  other tabs still open on All, and a chip or filter you pick stays.
+- Fixed: a list's Filters panel was cut off at the bottom of the table, so under a short or empty list its lower
+  filters (Server on the Hosting page) could not be reached; it now opens over the page.
 - The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
 - Email to ticket and Webhooks now ship with GaiaCP as bundled plugins (never uninstalled, still off until switched
   on); they used to show as uploaded on the Plugins page.
@@ -19,6 +26,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - Fixed: the dashboard's **Needs attention** links opened the whole list. "Domains to check at the registrar" now opens
   just those domains (a **To check at the registrar** chip on Services → Domains), "Payment notices due today" just
   those (a **Due today** chip), and the tickets, leads and quotes rows their tab again.
+- Fixed: every admin page failed with an error (500) after a plugin folder went away while its pages were cached,
+  for example a Git checkout that pulled the move of Slack, Discord and Telegram to the plugin catalogue. A cached
+  page list that no longer matches the plugins is now dropped and made again.
 - In Greek, the sign-in pages' "Remember me" now reads «Να με θυμάσαι» (was «Θυμήσου με»).
 
 ## [0.11.0] - 2026-11-21

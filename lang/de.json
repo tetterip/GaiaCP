@@ -4312,5 +4312,12 @@
     "Use files and sign in again": "Dateien verwenden und neu anmelden",
     "To check at the registrar": "Beim Registrar zu prüfen",
     "Due today": "Heute fällig",
-    "Registrar check": "Prüfung beim Registrar"
+    "Registrar check": "Prüfung beim Registrar",
+    "Current": "Aktuell",
+    "Active and in quarantine": "Aktiv und in Quarantäne",
+    "In quarantine": "In Quarantäne",
+    "Quarantine": "Quarantäne",
+    "Hosting quarantine": "Hosting-Quarantäne",
+    "Hosting quarantine days": "Tage Hosting-Quarantäne",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Ein gesperrtes Konto wird so viele Tage nach der automatischen Sperrung als in Quarantäne angezeigt; Dienste → Hosting öffnet mit den aktiven Konten und diesen. 0 = nie. Domains nutzen die Kulanztage ihrer TLD."
 }

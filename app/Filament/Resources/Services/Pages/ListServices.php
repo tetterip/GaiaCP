@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Providers\AppServiceProvider;
 use App\Reports\Csv;
 use App\Support\Money;
+use App\Support\Quarantine;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -37,7 +38,7 @@ class ListServices extends ListRecords
     ];
 
     /** The chips above the table: each sets the status / due soon filters, so they and the filter form agree. */
-    public const QUICK_FILTERS = ['all', 'active', 'suspended', 'pending', 'due_soon', 'registrar_check'];
+    public const QUICK_FILTERS = ['all', 'current', 'quarantine', 'active', 'suspended', 'pending', 'due_soon', 'registrar_check'];
 
     protected function getHeaderActions(): array
     {
@@ -110,19 +111,37 @@ class ListServices extends ListRecords
         $query = fn () => $tab ? $tab->modifyQuery(Service::query()) : Service::query();
         $statuses = collect($this->tableFilters['status']['values'] ?? [])->sort()->values()->all();
         $dueSoon = (bool) ($this->tableFilters['due_soon']['isActive'] ?? false);
+        $current = (bool) ($this->tableFilters['current']['isActive'] ?? false);
+        $quarantine = (bool) ($this->tableFilters['quarantine']['isActive'] ?? false);
         $check = (bool) ($this->tableFilters['registrar_check']['isActive'] ?? false);
-        $only = fn (ServiceStatus $status) => ! $dueSoon && ! $check && $statuses === [$status->value];
+        $plain = ! $dueSoon && ! $current && ! $quarantine && ! $check;
+        $only = fn (ServiceStatus $status) => $plain && $statuses === [$status->value];
         $open = collect(ServicesTable::OPEN)->map->value->sort()->values()->all();
 
+        // Hosting and Domains, where services lapse into quarantine (App\Support\Quarantine)
+        $chips = in_array($this->activeTab, ['hosting', 'domains'], true) ? [
+            'current' => [
+                'label' => __('Active and in quarantine'),
+                'count' => Quarantine::live($query())->count(),
+                'active' => $current && ! $dueSoon && ! $quarantine && ! $check && $statuses === $open,
+            ],
+            'quarantine' => [
+                'label' => __('In quarantine'),
+                'count' => Quarantine::scope($query())->count(),
+                'active' => $quarantine && ! $dueSoon && ! $current && ! $check && $statuses === $open,
+            ],
+        ] : [];
+
         $chips = [
-            'all' => ['label' => __('All'), 'count' => $query()->whereIn('status', ServicesTable::OPEN)->count(), 'active' => ! $dueSoon && ! $check && $statuses === $open],
+            'all' => ['label' => __('All'), 'count' => $query()->whereIn('status', ServicesTable::OPEN)->count(), 'active' => $plain && $statuses === $open],
+            ...$chips,
             'active' => ['label' => __('Active'), 'count' => $query()->where('status', ServiceStatus::Active)->count(), 'active' => $only(ServiceStatus::Active)],
             'suspended' => ['label' => __('Suspended'), 'count' => $query()->where('status', ServiceStatus::Suspended)->count(), 'active' => $only(ServiceStatus::Suspended)],
             'pending' => ['label' => __('Pending'), 'count' => $query()->where('status', ServiceStatus::Pending)->count(), 'active' => $only(ServiceStatus::Pending)],
             'due_soon' => [
                 'label' => __('Due in :count days', ['count' => ServicesTable::DUE_SOON_DAYS]),
                 'count' => $query()->billable()->whereOnDate('next_due_date', '<=', today()->addDays(ServicesTable::DUE_SOON_DAYS))->count(),
-                'active' => $dueSoon && ! $check && $statuses === $open,
+                'active' => $dueSoon && ! $current && ! $quarantine && ! $check && $statuses === $open,
             ],
         ];
 
@@ -136,6 +155,61 @@ class ListServices extends ListRecords
         }
 
         return $chips;
+    }
+
+    /** The chip each tab opens on: Hosting and Domains show the active services and those in quarantine, soonest due
+     *  first, so what lapses next is at the top and the long-gone ones stay under All. */
+    public const TAB_DEFAULTS = ['hosting' => 'current', 'domains' => 'current'];
+
+    /** Set by mount() so the table applies the tab's chip once its filters exist (not when the URL names filters). */
+    private bool $applyTabDefault = false;
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        $this->applyTabDefault = blank($this->tableFilters);
+    }
+
+    public function bootedInteractsWithTable(): void
+    {
+        parent::bootedInteractsWithTable();
+
+        if ($this->applyTabDefault) {
+            $this->applyTabDefault = false;
+            $this->applyQuickFilter($this->tabDefault());
+        }
+    }
+
+    /** Moving between tabs moves the chip to the new tab's own one, unless other filters were picked. */
+    public function updatedActiveTab(): void
+    {
+        // On a tab's own chip (All, or Active and in quarantine) with nothing else picked
+        $statuses = collect($this->tableFilters['status']['values'] ?? [])->sort()->values()->all();
+        $open = collect(ServicesTable::OPEN)->map->value->sort()->values()->all();
+        $onDefault = $statuses === $open
+            && ! ($this->tableFilters['due_soon']['isActive'] ?? false)
+            && ! ($this->tableFilters['quarantine']['isActive'] ?? false)
+            && ! ($this->tableFilters['registrar_check']['isActive'] ?? false);
+
+        parent::updatedActiveTab();
+
+        if ($onDefault && ! $this->hasOtherFilters()) {
+            $this->applyQuickFilter($this->tabDefault());
+        }
+    }
+
+    private function tabDefault(): string
+    {
+        return self::TAB_DEFAULTS[$this->activeTab] ?? 'all';
+    }
+
+    /** A filter other than the status and due soon ones that the chips set. */
+    private function hasOtherFilters(): bool
+    {
+        return collect($this->tableFilters ?? [])
+            ->except(['status', 'due_soon', 'current', 'quarantine', 'registrar_check'])
+            ->contains(fn ($state) => collect((array) $state)->flatten()->filter(fn ($value) => filled($value) && $value !== false)->isNotEmpty());
     }
 
     public function applyQuickFilter(string $key): void
@@ -153,6 +227,8 @@ class ListServices extends ListRecords
         }
 
         $filters['due_soon']['isActive'] = $key === 'due_soon';
+        $filters['current']['isActive'] = $key === 'current';
+        $filters['quarantine']['isActive'] = $key === 'quarantine';
         $filters['registrar_check']['isActive'] = $key === 'registrar_check';
 
         $this->tableDeferredFilters = $filters;

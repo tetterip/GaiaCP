@@ -4312,5 +4312,12 @@
     "Use files and sign in again": "Χρήση αρχείων και νέα σύνδεση",
     "To check at the registrar": "Για έλεγχο στον registrar",
     "Due today": "Λήγουν σήμερα",
-    "Registrar check": "Έλεγχος στον registrar"
+    "Registrar check": "Έλεγχος στον registrar",
+    "Current": "Τρέχοντα",
+    "Active and in quarantine": "Ενεργά και σε καραντίνα",
+    "In quarantine": "Σε καραντίνα",
+    "Quarantine": "Καραντίνα",
+    "Hosting quarantine": "Καραντίνα φιλοξενίας",
+    "Hosting quarantine days": "Ημέρες καραντίνας φιλοξενίας",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Ένας λογαριασμός σε αναστολή εμφανίζεται σε καραντίνα για τόσες ημέρες μετά την αυτόματη αναστολή· η σελίδα Υπηρεσίες → Φιλοξενία ανοίγει με τους ενεργούς λογαριασμούς και αυτούς. 0 = ποτέ. Τα domains χρησιμοποιούν τις ημέρες χάριτος του TLD τους."
 }

@@ -4312,5 +4312,12 @@
     "Use files and sign in again": "Bestanden gebruiken en opnieuw aanmelden",
     "To check at the registrar": "Te controleren bij de registrar",
     "Due today": "Vandaag te betalen",
-    "Registrar check": "Controle bij de registrar"
+    "Registrar check": "Controle bij de registrar",
+    "Current": "Huidig",
+    "Active and in quarantine": "Actief en in quarantaine",
+    "In quarantine": "In quarantaine",
+    "Quarantine": "Quarantaine",
+    "Hosting quarantine": "Hostingquarantaine",
+    "Hosting quarantine days": "Dagen hostingquarantaine",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Een opgeschort account staat zoveel dagen na de automatische opschorting in quarantaine; Diensten → Hosting opent met de actieve accounts en deze. 0 = nooit. Domeinen gebruiken de respijtdagen van hun TLD."
 }

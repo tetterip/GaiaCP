@@ -14,6 +14,7 @@ use App\Models\Service;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
+use App\Support\Quarantine;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -87,7 +88,10 @@ class ServicesTable
                     ->tooltip(__('Expiry at the registrar, from the last sync'))
                     ->visible(fn ($livewire) => ($tab ?? $livewire->activeTab ?? null) === 'domains'),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    // Lapsed but still savable (App\Support\Quarantine): said in place of Active / Suspended
+                    ->formatStateUsing(fn (Service $record) => Quarantine::has($record) ? __('Quarantine') : $record->status->getLabel())
+                    ->color(fn (Service $record) => Quarantine::has($record) ? 'danger' : $record->status->getColor()),
             ])
             ->searchPlaceholder(__('Domain, username or client'))
             ->defaultSort('next_due_date')
@@ -115,6 +119,12 @@ class ServicesTable
                 Filter::make('registrar_check')
                     ->label(__('To check at the registrar'))
                     ->query(fn (Builder $query) => $query->whereIn('services.id', NeedsAttention::domainsToCheckQuery()->select('services.id'))),
+                Filter::make('current')
+                    ->label('Active and in quarantine')
+                    ->query(fn (Builder $query) => Quarantine::live($query)),
+                Filter::make('quarantine')
+                    ->label('In quarantine')
+                    ->query(fn (Builder $query) => Quarantine::scope($query)),
                 Filter::make('due_soon')
                     ->label(__('Due in the next :count days', ['count' => self::DUE_SOON_DAYS]))
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<=', today()->addDays(self::DUE_SOON_DAYS))),
