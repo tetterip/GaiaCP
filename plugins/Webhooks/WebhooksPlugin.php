@@ -29,6 +29,12 @@ class WebhooksPlugin extends Plugin
         return 'Integrations';
     }
 
+    /** Off until it is set up: it needs addresses (or a mailbox) first. */
+    public function enabledByDefault(): bool
+    {
+        return false;
+    }
+
     public function settingsPage(): ?string
     {
         return WebhooksPage::class;

@@ -25,9 +25,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Plugins\CyberPanel\CyberPanelSettings;
-use Plugins\Slack\SlackSettings;
 use Plugins\UptimeRobot\UptimeRobotSettings;
 use Plugins\Vies\ViesSettings;
+use Plugins\Webhooks\WebhooksPage;
 use Plugins\WhmcsImport\WhmcsImportPage;
 use Tests\FakesWhm;
 use Tests\Fixtures\ExamplePanel\ExamplePanelPlugin;
@@ -212,15 +212,15 @@ class PluginsTest extends TestCase
         }
 
         // The settings menu (on any settings page) and the overview's cards, which its search box filters
-        $slack = $this->plugins()->find('slack');
-        $this->get(MailSettings::getUrl())->assertOk()->assertDontSee(SlackSettings::getUrl())->assertDontSee(CyberPanelSettings::getUrl());
-        $this->get('/admin/settings')->assertOk()->assertDontSee(SlackSettings::getUrl())->assertDontSee(UptimeRobotSettings::getUrl());
-        $this->get(SlackSettings::getUrl())->assertForbidden();
+        $webhooks = $this->plugins()->find('webhooks');
+        $this->get(MailSettings::getUrl())->assertOk()->assertDontSee(WebhooksPage::getUrl())->assertDontSee(CyberPanelSettings::getUrl());
+        $this->get('/admin/settings')->assertOk()->assertDontSee(WebhooksPage::getUrl())->assertDontSee(UptimeRobotSettings::getUrl());
+        $this->get(WebhooksPage::getUrl())->assertForbidden();
 
-        $this->plugins()->enable($slack);
-        $this->get(MailSettings::getUrl())->assertSee(SlackSettings::getUrl());
-        $this->get('/admin/settings')->assertSee(SlackSettings::getUrl());
-        $this->get(SlackSettings::getUrl())->assertOk();
+        $this->plugins()->enable($webhooks);
+        $this->get(MailSettings::getUrl())->assertSee(WebhooksPage::getUrl());
+        $this->get('/admin/settings')->assertSee(WebhooksPage::getUrl());
+        $this->get(WebhooksPage::getUrl())->assertOk();
         $this->assertTrue($this->plugins()->pageIsOn(MailSettings::class), 'a page of no plugin is always on');
     }
 
