@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\ServiceStatus;
+use App\Enums\ServiceType;
 use App\Enums\UserRole;
 use App\Filament\Client\Pages\Order as OrderPage;
 use App\Filament\Resources\Products\Pages\EditProduct;
@@ -125,6 +126,27 @@ class ProductTagsTest extends TestCase
 
         $message = new ClientMessage(['filters' => ['tags' => [$this->old->id]]]);
         $this->assertSame([$maria->id], $message->clients()->pluck('id')->all());
+    }
+
+    public function test_products_filter_by_group_and_type(): void
+    {
+        $this->actingAs($this->admin);
+        $loose = Product::factory()->priced(1000)->create(['name' => 'Loose product', 'type' => ServiceType::Other]);
+        $vps = ProductGroup::create(['names' => ['en' => 'VPS']]);
+        $server = Product::factory()->priced(2000)->create(['name' => 'VPS one', 'product_group_id' => $vps->id]);
+
+        Livewire::test(ListProducts::class)
+            ->filterTable('group', [(string) $vps->id, 'none'])
+            ->assertCanSeeTableRecords([$server, $loose])
+            ->assertCanNotSeeTableRecords([$this->basic, $this->pro])
+            ->filterTable('group', [(string) $this->basic->product_group_id])
+            ->assertCanSeeTableRecords([$this->basic, $this->pro])
+            ->assertCanNotSeeTableRecords([$server, $loose]);
+
+        Livewire::test(ListProducts::class)
+            ->filterTable('type', [ServiceType::Other->value])
+            ->assertCanSeeTableRecords([$loose])
+            ->assertCanNotSeeTableRecords([$this->basic, $server]);
     }
 
     public function test_deleting_a_tag_takes_it_off_its_products(): void
