@@ -10,6 +10,8 @@ use App\Enums\QuoteStatus;
 use App\Enums\ServiceType;
 use App\Enums\TicketStatus;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Resources\Invoices\Pages\ListInvoices;
+use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Filament\Widgets\ActivityChart;
 use App\Filament\Widgets\BillingOverview;
@@ -278,6 +280,23 @@ class DashboardTest extends TestCase
         ], $items->keys()->all());
         $this->assertStringStartsWith('nl1 · ', $items['1 server down']['sub']);
         $this->assertSame('soon.gr, paid-ahead.gr', $items['2 domains to check at the registrar']['sub']);
+
+        // Each row leads to a list of just those: the domains with their own chip on, the notices due today
+        parse_str((string) parse_url($items['2 domains to check at the registrar']['url'], PHP_URL_QUERY), $query);
+        $this->assertSame('domains', $query['tab']);
+        $list = Livewire::withQueryParams($query)->test(ListServices::class)
+            ->assertCanSeeTableRecords(Service::query()->whereIn('domain', ['soon.gr', 'paid-ahead.gr'])->get())
+            ->assertCanNotSeeTableRecords(Service::query()->whereIn('domain', ['fine.gr', 'dropping.gr', 'tracked.gr'])->get());
+        $this->assertSame(['label' => 'To check at the registrar', 'count' => 2, 'active' => true], $list->instance()->quickFilters()['registrar_check']);
+        $this->assertFalse($list->instance()->quickFilters()['all']['active']);
+
+        $this->notice(today()->toDateString());
+        $dueToday = collect(NeedsAttention::items())->firstWhere('title', '2 payment notices due today');
+        parse_str((string) parse_url($dueToday['url'], PHP_URL_QUERY), $query);
+        $notices = Livewire::withQueryParams($query)->test(ListInvoices::class)
+            ->assertCanSeeTableRecords(Invoice::query()->whereOnDate('due_date', today())->get())
+            ->assertCanNotSeeTableRecords(Invoice::query()->whereOnDate('due_date', '>', today())->get());
+        $this->assertTrue($notices->instance()->statusChips()['due_today']['active']);
         $this->assertFalse(NeedsAttention::isEmpty());
         $this->get(Dashboard::getUrl())->assertOk()->assertSee('gx-slot-NeedsAttention', false)->assertSee('1 server down');
 

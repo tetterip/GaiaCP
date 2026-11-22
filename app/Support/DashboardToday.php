@@ -70,7 +70,7 @@ class DashboardToday
                 'label' => __('Tickets waiting'),
                 'value' => (string) (clone $waiting)->count(),
                 'sub' => $oldest ? __('Oldest :time', ['time' => $oldest->diffForHumans()]) : __('None waiting for us'),
-                'url' => TicketResource::getUrl(parameters: ['activeTab' => 'waiting']),
+                'url' => TicketResource::getUrl(parameters: ['tab' => 'waiting']),
             ];
         }
 
