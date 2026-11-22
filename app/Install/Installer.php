@@ -307,7 +307,7 @@ class Installer
 
     public function createAdmin(string $name, string $email, string $password, ?string $locale = null): User
     {
-        $user = User::create([
+        $user = User::query()->forceCreate([
             'name' => $name,
             'email' => $email,
             'locale' => $locale,

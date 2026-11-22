@@ -119,9 +119,9 @@ class ApiTest extends TestCase
         $this->api($token)->getJson('/api/v1/clients')->assertOk();
 
         // No longer a super admin (only they manage keys)
-        $admin->update(['super_admin' => false]);
+        $admin->forceFill(['super_admin' => false])->save();
         $this->api($token)->getJson('/api/v1/clients')->assertUnauthorized();
-        $admin->update(['super_admin' => true]);
+        $admin->forceFill(['super_admin' => true])->save();
 
         // Deleted: their keys are revoked, not left without an admin
         $admin->delete();
