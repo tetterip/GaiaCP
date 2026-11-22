@@ -36,7 +36,7 @@ class ListServices extends ListRecords
     ];
 
     /** The chips above the table: each sets the status / due soon filters, so they and the filter form agree. */
-    public const QUICK_FILTERS = ['all', 'active', 'suspended', 'pending', 'due_soon'];
+    public const QUICK_FILTERS = ['all', 'current', 'active', 'suspended', 'pending', 'due_soon'];
 
     protected function getHeaderActions(): array
     {
@@ -109,24 +109,38 @@ class ListServices extends ListRecords
         $query = fn () => $tab ? $tab->modifyQuery(Service::query()) : Service::query();
         $statuses = collect($this->tableFilters['status']['values'] ?? [])->sort()->values()->all();
         $dueSoon = (bool) ($this->tableFilters['due_soon']['isActive'] ?? false);
-        $only = fn (ServiceStatus $status) => ! $dueSoon && $statuses === [$status->value];
+        $current = (bool) ($this->tableFilters['current']['isActive'] ?? false);
+        $only = fn (ServiceStatus $status) => ! $dueSoon && ! $current && $statuses === [$status->value];
         $open = collect(ServicesTable::OPEN)->map->value->sort()->values()->all();
+        $days = ServicesTable::recentlySuspendedDays();
+
+        // "Active and recent" only on Hosting, where suspension happens, and only when suspended ones are kept
+        $chips = ($this->activeTab === 'hosting' && $days > 0) ? [
+            'current' => [
+                'label' => __('Active and recent'),
+                'count' => $query()->where(fn (Builder $q) => $q->where('status', ServiceStatus::Active)->orWhere(fn (Builder $q) => $q
+                    ->where('status', ServiceStatus::Suspended)->whereOnDate('next_due_date', '>=', today()->subDays($days))))->count(),
+                'active' => $current && ! $dueSoon && $statuses === $open,
+            ],
+        ] : [];
 
         return [
-            'all' => ['label' => __('All'), 'count' => $query()->whereIn('status', ServicesTable::OPEN)->count(), 'active' => ! $dueSoon && $statuses === $open],
+            'all' => ['label' => __('All'), 'count' => $query()->whereIn('status', ServicesTable::OPEN)->count(), 'active' => ! $dueSoon && ! $current && $statuses === $open],
+            ...$chips,
             'active' => ['label' => __('Active'), 'count' => $query()->where('status', ServiceStatus::Active)->count(), 'active' => $only(ServiceStatus::Active)],
             'suspended' => ['label' => __('Suspended'), 'count' => $query()->where('status', ServiceStatus::Suspended)->count(), 'active' => $only(ServiceStatus::Suspended)],
             'pending' => ['label' => __('Pending'), 'count' => $query()->where('status', ServiceStatus::Pending)->count(), 'active' => $only(ServiceStatus::Pending)],
             'due_soon' => [
                 'label' => __('Due in :count days', ['count' => ServicesTable::DUE_SOON_DAYS]),
                 'count' => $query()->billable()->whereOnDate('next_due_date', '<=', today()->addDays(ServicesTable::DUE_SOON_DAYS))->count(),
-                'active' => $dueSoon && $statuses === $open,
+                'active' => $dueSoon && ! $current && $statuses === $open,
             ],
         ];
     }
 
-    /** The chip each tab opens on: Hosting shows the active accounts, so what renews next is at the top. */
-    public const TAB_DEFAULTS = ['hosting' => 'active'];
+    /** The chip each tab opens on: Hosting shows the active accounts and the recently suspended ones (or only the
+     *  active ones when Settings → Automation keeps none), soonest due first. */
+    public const TAB_DEFAULTS = ['hosting' => 'current'];
 
     /** Set by mount() so the table applies the tab's chip once its filters exist (not when the URL names filters). */
     private bool $applyTabDefault = false;
@@ -151,25 +165,31 @@ class ListServices extends ListRecords
     /** Moving between tabs moves the chip to the new tab's own one, unless other filters were picked. */
     public function updatedActiveTab(): void
     {
-        $chips = collect($this->quickFilters())->filter(fn (array $chip) => $chip['active'])->keys();
+        // On a tab's own chip (All, Active and recent, Active) with nothing else picked
+        $statuses = collect($this->tableFilters['status']['values'] ?? [])->sort()->values()->all();
+        $open = collect(ServicesTable::OPEN)->map->value->sort()->values()->all();
+        $onDefault = ! ($this->tableFilters['due_soon']['isActive'] ?? false)
+            && ($statuses === $open || ($statuses === [ServiceStatus::Active->value] && ! ($this->tableFilters['current']['isActive'] ?? false)));
 
         parent::updatedActiveTab();
 
-        if ($chips->intersect(['all', ...array_values(self::TAB_DEFAULTS)])->isNotEmpty() && ! $this->hasOtherFilters()) {
+        if ($onDefault && ! $this->hasOtherFilters()) {
             $this->applyQuickFilter($this->tabDefault());
         }
     }
 
     private function tabDefault(): string
     {
-        return self::TAB_DEFAULTS[$this->activeTab] ?? 'all';
+        $chip = self::TAB_DEFAULTS[$this->activeTab] ?? 'all';
+
+        return $chip === 'current' && ServicesTable::recentlySuspendedDays() === 0 ? 'active' : $chip;
     }
 
     /** A filter other than the status and due soon ones that the chips set. */
     private function hasOtherFilters(): bool
     {
         return collect($this->tableFilters ?? [])
-            ->except(['status', 'due_soon'])
+            ->except(['status', 'due_soon', 'current'])
             ->contains(fn ($state) => collect((array) $state)->flatten()->filter(fn ($value) => filled($value) && $value !== false)->isNotEmpty());
     }
 
@@ -188,6 +208,7 @@ class ListServices extends ListRecords
         }
 
         $filters['due_soon']['isActive'] = $key === 'due_soon';
+        $filters['current']['isActive'] = $key === 'current';
 
         $this->tableDeferredFilters = $filters;
         $this->tableFilters = $filters;

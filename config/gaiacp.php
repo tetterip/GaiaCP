@@ -118,6 +118,10 @@ return [
             ? (int) env('GAIACP_SUSPEND_AFTER_DAYS')
             : null,
 
+        // Services → Hosting opens on the active accounts and the suspended ones whose due date is at most this many days
+        // past (0 = active only), so the accounts that may still pay show and the long-dead ones don't.
+        'recently_suspended_days' => 60,
+
         // Cancel a pending order (its items and payment notice) once it is this many days old with nothing paid or set
         // up; empty = never. Runs daily with the reminders.
         'cancel_unpaid_orders_days' => env('GAIACP_CANCEL_UNPAID_ORDERS_DAYS') !== null && env('GAIACP_CANCEL_UNPAID_ORDERS_DAYS') !== ''

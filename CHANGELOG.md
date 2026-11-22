@@ -5,8 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
-- Services → Hosting opens on the active accounts, the soonest due first, so what renews next is at the top; the
-  other tabs still open on every open service, and a chip or filter you pick stays.
+- Services → Hosting opens on a new **Active and recent** chip: the active accounts and the suspended ones up to
+  Settings → Automation → **Show suspended hosting for** days overdue (60 by default, 0 = active only), the soonest
+  due first. The other tabs still open on every open service, and a chip or filter you pick stays.
 - Fixed: a list's Filters panel was cut off at the bottom of the table, so under a short or empty list its lower
   filters (Server on the Hosting page) could not be reached; it now opens over the page.
 

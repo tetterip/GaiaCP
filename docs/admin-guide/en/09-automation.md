@@ -17,7 +17,9 @@ At the time set in Settings → Billing → **Automation** → Daily run at (09:
 3. pays notices from client credit, when that is on;
 4. sends the Upcoming Domain Renewal Notice, adds late fees to expired domains and renews free domains;
 5. **suspends** hosting that is overdue by **Suspend hosting after** days (empty = never). Recording the payment
-   unsuspends it;
+   unsuspends it. Suspended accounts stay until you terminate them; Services → Hosting opens on the active ones and
+   those suspended up to **Show suspended hosting for** days overdue (60 by default, 0 = active only), soonest due
+   first, so the accounts that may still pay are in view;
 6. **terminates** services set to end: a service with **Auto-terminate at the end of the cycle** (Automation section
    of the service) gets no more notices and is terminated on its next due date. For a domain this switch is shown as
    Auto renew off;

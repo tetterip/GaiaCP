@@ -4301,5 +4301,11 @@
     "Spotlight TLD: shown first in the domain search (Settings → Domains)": "TLD mis en avant : affiché en premier dans la recherche de domaine (Paramètres → Domaines)",
     "Spotlight TLDs": "TLD mis en avant",
     "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Les extensions que la plupart de vos clients achètent, comme .gr et .com. La recherche de domaine les vérifie en premier et les affiche en cartes au-dessus des autres extensions, avec leur prix ; la page d'accueil publique et la page de recherche affichent leurs prix sous le champ de recherche.",
-    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Jusqu'à :count TLD proposés dans Tarifs des domaines, dans l'ordre d'affichage ; faites glisser pour réordonner. Vide : toutes les extensions sont listées de la même façon."
+    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Jusqu'à :count TLD proposés dans Tarifs des domaines, dans l'ordre d'affichage ; faites glisser pour réordonner. Vide : toutes les extensions sont listées de la même façon.",
+    "Show suspended hosting for": "Afficher l'hébergement suspendu pendant",
+    "Services → Hosting opens on the active accounts and the suspended ones overdue by up to this many days. 0 = active only.": "Services → Hébergement s'ouvre sur les comptes actifs et les comptes suspendus en retard de ce nombre de jours au plus. 0 = actifs seulement.",
+    "Active, and suspended up to :count days overdue": "Actifs, et suspendus jusqu'à :count jours de retard",
+    "Active and recent": "Actifs et récents",
+    "Current": "Actuels",
+    "Recently suspended days": "Jours de suspension récente"
 }

@@ -110,6 +110,13 @@ class ServicesTable
                     ->query(fn (Builder $query) => $query->whereNotNull('new_price_from')),
                 Filter::make('overdue')
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<', today())),
+                Filter::make('current')
+                    ->label(fn () => __('Active, and suspended up to :count days overdue', ['count' => self::recentlySuspendedDays()]))
+                    ->query(fn (Builder $query) => $query->where(fn (Builder $query) => $query
+                        ->where('status', ServiceStatus::Active)
+                        ->orWhere(fn (Builder $query) => $query
+                            ->where('status', ServiceStatus::Suspended)
+                            ->whereOnDate('next_due_date', '>=', today()->subDays(self::recentlySuspendedDays()))))),
                 Filter::make('due_soon')
                     ->label(__('Due in the next :count days', ['count' => self::DUE_SOON_DAYS]))
                     ->query(fn (Builder $query) => $query->billable()->whereOnDate('next_due_date', '<=', today()->addDays(self::DUE_SOON_DAYS))),
@@ -130,6 +137,12 @@ class ServicesTable
             ])
             ->toolbarActions([ServiceBulkActions::group()])
             ->maxSelectableRecords(ServiceBulkActions::MAX);
+    }
+
+    /** Settings → Automation → Show suspended hosting for: how far back the Hosting list's first chip keeps them. */
+    public static function recentlySuspendedDays(): int
+    {
+        return max(0, (int) config('gaiacp.automation.recently_suspended_days', 60));
     }
 
     /** The line under the service: a hosting account's username, else the label when the domain is the title. */

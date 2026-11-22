@@ -4301,5 +4301,11 @@
     "Spotlight TLD: shown first in the domain search (Settings → Domains)": "Προβεβλημένο TLD: εμφανίζεται πρώτο στην αναζήτηση domain (Ρυθμίσεις → Domains)",
     "Spotlight TLDs": "Προβεβλημένα TLD",
     "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Οι καταλήξεις που αγοράζουν οι περισσότεροι πελάτες σας, όπως .gr και .com. Η αναζήτηση domain τις ελέγχει πρώτες και τις δείχνει σε κάρτες πάνω από τις άλλες καταλήξεις, με την τιμή τους· η δημόσια αρχική σελίδα και η σελίδα αναζήτησης δείχνουν τις τιμές τους κάτω από το πλαίσιο αναζήτησης.",
-    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Έως :count TLD από όσα προσφέρονται στις Τιμές domain, με τη σειρά που θα εμφανίζονται· σύρετε για αλλαγή σειράς. Κενό: όλες οι καταλήξεις εμφανίζονται με τον ίδιο τρόπο."
+    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Έως :count TLD από όσα προσφέρονται στις Τιμές domain, με τη σειρά που θα εμφανίζονται· σύρετε για αλλαγή σειράς. Κενό: όλες οι καταλήξεις εμφανίζονται με τον ίδιο τρόπο.",
+    "Show suspended hosting for": "Εμφάνιση φιλοξενίας σε αναστολή για",
+    "Services → Hosting opens on the active accounts and the suspended ones overdue by up to this many days. 0 = active only.": "Η σελίδα Υπηρεσίες → Φιλοξενία ανοίγει με τους ενεργούς λογαριασμούς και όσους είναι σε αναστολή με καθυστέρηση έως τόσες ημέρες. 0 = μόνο οι ενεργοί.",
+    "Active, and suspended up to :count days overdue": "Ενεργά, και σε αναστολή με καθυστέρηση έως :count ημέρες",
+    "Active and recent": "Ενεργά και πρόσφατα",
+    "Current": "Τρέχοντα",
+    "Recently suspended days": "Ημέρες πρόσφατης αναστολής"
 }
