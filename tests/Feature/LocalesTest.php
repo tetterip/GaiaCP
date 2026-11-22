@@ -496,4 +496,12 @@ class LocalesTest extends TestCase
         $this->assertSame('Η επιλογή στο πεδίο «διάρκεια» δεν είναι έγκυρη.', $errors->first('term'));
         $this->assertSame('Το πεδίο «Email» είναι υποχρεωτικό.', $errors->first('email'));
     }
+
+    public function test_our_wording_replaces_filaments_greek_where_we_override_it(): void
+    {
+        app()->setLocale('el');
+
+        $this->assertSame('Να με θυμάσαι', __('filament-panels::auth/pages/login.form.remember.label'));
+        $this->assertSame('Κωδικός πρόσβασης', __('filament-panels::auth/pages/login.form.password.label'));
+    }
 }
