@@ -7,6 +7,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [0.12.0] - 2026-11-22
 
+- Security (outside audit before the release): a user's **super admin** switch and admin areas are no longer set by
+  mass assignment, only where an admin chooses them (Users, the installer); the plugin autoloader only loads class names
+  made of PHP identifiers.
+- Plugin API: `User`'s `super_admin` and `admin_areas` are no longer fillable; a plugin that sets them uses
+  `forceFill()`.
 - **What's new**: after an update, each admin sees once what the new version brings (its main features and one
   sentence), with a link to the release notes, and again from the user menu → What's new. New
   installs and new admins don't get it, and an admin's first visit keeps the welcome tour.

@@ -28,7 +28,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'super_admin', 'admin_areas', 'active', 'system_emails', 'panel_notifications', 'keyboard_shortcuts'])]
+// super_admin and admin_areas grant access, so they are never mass assigned: set them with forceFill() where an admin chose them
+#[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'active', 'system_emails', 'panel_notifications', 'keyboard_shortcuts'])]
 #[Hidden(['password', 'imported_password', 'remember_token'])]
 /**
  * Two-factor authentication is opt-in per user from the profile page (authenticator app plus

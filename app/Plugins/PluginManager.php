@@ -204,7 +204,8 @@ class PluginManager
     private function autoload(string $directory): void
     {
         spl_autoload_register(function (string $class) use ($directory) {
-            if (str_starts_with($class, 'Plugins\\') && is_file($file = $directory.'/'.str_replace('\\', '/', substr($class, 8)).'.php')) {
+            // Only names made of PHP identifiers reach the disk, so no class name can point outside the plugins folder
+            if (preg_match('/^Plugins(\\\\[A-Za-z_][A-Za-z0-9_]*)+$/', $class) === 1 && is_file($file = $directory.'/'.str_replace('\\', '/', substr($class, 8)).'.php')) {
                 require_once $file;
             }
         });
