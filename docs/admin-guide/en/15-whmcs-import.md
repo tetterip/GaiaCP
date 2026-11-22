@@ -19,7 +19,7 @@ first.
 can in WHMCS or GaiaCP, and run it again. **Import** then does the same for real, in one go: if anything fails,
 nothing is saved.
 
-Each kind (servers, products, clients, services, domains, unpaid invoices) can be left out with its tick box. Run the
+Each kind (servers, products, clients, client logins, services, domains, unpaid invoices) can be left out with its tick box. Run the
 import again later for the rest: everything imported is remembered, so a second run only adds what is new. A client
 with the same email, a server with the same hostname, a product with the same name or a service with the same domain
 already in GaiaCP is linked rather than copied, and nothing already here is changed.
@@ -34,6 +34,7 @@ leave a kind out.
 | cPanel, Plesk and DirectAdmin servers | Servers (other types are skipped) |
 | Products, their prices per cycle and setup fees, product groups | Products and product groups (one-time products are skipped; stock control becomes Quantity available) |
 | Clients, with tax ID and custom fields | Clients; other custom fields become client fields |
+| Client logins (WHMCS 8 users, or the client's password in older versions) | Client area logins, turned on (off for Closed clients), no email sent: clients log in with the email and password they had in WHMCS |
 | Hosting and other services, with username, password, due date, status and end-of-period cancellations | Services |
 | Domains: each on your registrar account for its WHMCS registrar (added under Settings → Registrars); domains at a registrar with no account here as tracked only | Domains |
 | Billable items | Maintenance services |
@@ -41,6 +42,17 @@ leave a kind out.
 
 Not imported: payment history, addons, configurable options, contacts, TLD prices (set them under Domain pricing) and
 nameservers (the nightly domain sync reads them).
+
+## Client logins
+
+Clients keep their WHMCS password: GaiaCP copies only WHMCS's hash of it (WHMCS never had it in plain text either). The
+first time a client logs in with it, GaiaCP stores it with its own hash and forgets WHMCS's; a password set or reset in
+GaiaCP ends the WHMCS one at once. A client who already has a login here is left as it is, and WHMCS's two-factor
+authentication is not carried over (clients can turn on GaiaCP's from their profile). A password GaiaCP can't check,
+or an email another user already logs in with, is listed under the problems; those clients use **Forgot password?**.
+
+Imported your clients before this existed? Run the import again with only **Client logins** ticked: it adds the logins
+of the clients already here and changes nothing else.
 
 ## After the import
 

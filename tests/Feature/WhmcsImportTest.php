@@ -3,13 +3,17 @@
 namespace Tests\Feature;
 
 use App\Actions\RecordInvoicePayment;
+use App\Auth\ImportedPassword;
 use App\Enums\BillingCycle;
+use App\Enums\ClientAreaLogin;
 use App\Enums\ClientFieldAccess;
 use App\Enums\ClientFieldType;
 use App\Enums\DomainRegistrationType;
 use App\Enums\InvoiceStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Enums\UserRole;
+use App\Filament\Client\Pages\Auth\Login as ClientLogin;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\ClientField;
@@ -21,12 +25,16 @@ use App\Models\Server;
 use App\Models\Service;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Filament\Facades\Filament;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
+use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Plugins\WhmcsImport\WhmcsApi;
 use Plugins\WhmcsImport\WhmcsCrypt;
@@ -760,5 +768,167 @@ class WhmcsImportTest extends TestCase
             ->assertSee('Imported');
 
         $this->assertSame(1, Client::count());
+    }
+
+    /** WHMCS 8's logins: tblusers, and which user owns which client account. */
+    private function createWhmcsUsers(): void
+    {
+        Schema::connection('whmcs')->create('tblusers', function (Blueprint $t) {
+            $t->increments('id');
+            $t->string('email');
+            $t->string('password');
+        });
+        Schema::connection('whmcs')->create('tblusers_clients', function (Blueprint $t) {
+            $t->increments('id');
+            $t->integer('auth_user_id');
+            $t->integer('client_id');
+            $t->integer('owner')->default(0);
+        });
+    }
+
+    private function clientLogin(string $email, string $password): Testable
+    {
+        Filament::setCurrentPanel('client');
+
+        return Livewire::test(ClientLogin::class)->fillForm(['email' => $email, 'password' => $password])->call('authenticate');
+    }
+
+    public function test_whmcs_8_logins_let_clients_in_with_their_old_password(): void
+    {
+        $this->seedWhmcs();
+        $this->createWhmcsUsers();
+        $db = $this->whmcs();
+        $db->table('tblusers')->insert([
+            ['id' => 1, 'email' => 'login@example.gr', 'password' => password_hash('old-whmcs-password', PASSWORD_BCRYPT, ['cost' => 10])],
+            ['id' => 2, 'email' => 'helper@example.gr', 'password' => password_hash('helper-password', PASSWORD_BCRYPT)],
+        ]);
+        $db->table('tblusers_clients')->insert([
+            ['auth_user_id' => 2, 'client_id' => 7, 'owner' => 0], // a user invited to the account, not its owner
+            ['auth_user_id' => 1, 'client_id' => 7, 'owner' => 1],
+        ]);
+
+        Mail::fake();
+        $report = $this->import();
+
+        $this->assertSame(1, $report->counts['login']['created']);
+        Mail::assertNothingSent();
+        $client = Client::sole();
+        $user = $client->user;
+        $this->assertSame('login@example.gr', $user->email); // what they typed in WHMCS
+        $this->assertSame(UserRole::Client, $user->role);
+        $this->assertTrue($user->active);
+        $this->assertNotNull($user->email_verified_at);
+        $this->assertSame(ClientAreaLogin::On, ClientAreaLogin::for($client));
+        $this->assertArrayNotHasKey('imported_password', $user->toArray());
+
+        $this->clientLogin('login@example.gr', 'wrong-password')->assertHasFormErrors(['email']);
+        $this->assertGuest('client');
+
+        $this->clientLogin('login@example.gr', 'old-whmcs-password')->assertHasNoFormErrors();
+        $this->assertAuthenticatedAs($user, 'client');
+
+        // The old hash is gone: GaiaCP's own now holds the same password
+        $user->refresh();
+        $this->assertNull($user->imported_password);
+        $this->assertTrue(Hash::check('old-whmcs-password', $user->password));
+        $this->assertTrue(ActivityLog::where('event', 'user.imported_password_replaced')->exists());
+    }
+
+    public function test_older_whmcs_salted_md5_passwords_work_once_and_are_replaced(): void
+    {
+        $this->seedWhmcs();
+        Schema::connection('whmcs')->table('tblclients', fn (Blueprint $t) => $t->string('password')->default(''));
+        $this->whmcs()->table('tblclients')->where('id', 7)->update(['password' => md5('Ab3x!'.'pass1234').':Ab3x!']);
+
+        $this->import();
+
+        $user = User::where('email', 'giorgos@example.gr')->sole();
+        $this->assertNotNull($user->imported_password);
+        $this->clientLogin('giorgos@example.gr', 'pass1234')->assertHasNoFormErrors();
+        $this->assertAuthenticatedAs($user, 'client');
+        $this->assertNull($user->refresh()->imported_password);
+        $this->assertTrue(Hash::check('pass1234', $user->password));
+    }
+
+    public function test_clients_imported_before_get_their_logins_when_only_logins_are_imported(): void
+    {
+        $this->seedWhmcs();
+        $this->createWhmcsUsers();
+        $this->import(); // without WHMCS logins yet: no tblusers rows, so no login
+        $this->assertSame(ClientAreaLogin::None, ClientAreaLogin::for(Client::sole()));
+        $counts = [Client::count(), Service::count(), Invoice::count(), DB::table('whmcs_links')->count()];
+
+        $this->whmcs()->table('tblusers')->insert(['id' => 1, 'email' => 'giorgos@example.gr', 'password' => password_hash('secret', PASSWORD_DEFAULT)]);
+        $this->whmcs()->table('tblusers_clients')->insert(['auth_user_id' => 1, 'client_id' => 7, 'owner' => 1]);
+
+        $dry = (new WhmcsImport('whmcs', self::HASH))->run(true, ['login']);
+        $this->assertSame(['login'], array_keys($dry->toArray()['counts']));
+        $this->assertSame(1, $dry->counts['login']['created']);
+        $this->assertSame(0, User::where('role', UserRole::Client)->count());
+
+        (new WhmcsImport('whmcs', self::HASH))->run(parts: ['login']);
+        $this->assertSame($counts, [Client::count(), Service::count(), Invoice::count(), DB::table('whmcs_links')->count()]);
+        $this->assertSame(ClientAreaLogin::On, ClientAreaLogin::for(Client::sole()));
+
+        // Again: the login is there, nothing changes (a password changed here is never overwritten)
+        $again = (new WhmcsImport('whmcs', self::HASH))->run(parts: ['login']);
+        $this->assertSame(1, $again->counts['login']['existing']);
+        $this->assertSame(1, User::where('role', UserRole::Client)->count());
+
+        $this->artisan('gaiacp:import-whmcs', ['--hash' => self::HASH, '--without' => ['login']])->assertSuccessful();
+    }
+
+    public function test_logins_it_cannot_use_are_listed(): void
+    {
+        $this->seedWhmcs();
+        $this->createWhmcsUsers();
+        $db = $this->whmcs();
+        $db->table('tblclients')->insert([
+            ['id' => 8, 'firstname' => 'Κλειστός', 'lastname' => 'Πελάτης', 'email' => 'closed@example.gr', 'status' => 'Closed'],
+            ['id' => 9, 'firstname' => 'Άγνωστη', 'lastname' => 'Μορφή', 'email' => 'odd@example.gr', 'status' => 'Active'],
+        ]);
+        $db->table('tblusers')->insert([
+            ['id' => 1, 'email' => 'giorgos@example.gr', 'password' => password_hash('x', PASSWORD_DEFAULT)],
+            ['id' => 2, 'email' => 'closed@example.gr', 'password' => password_hash('y', PASSWORD_DEFAULT)],
+            ['id' => 3, 'email' => 'odd@example.gr', 'password' => 'sha512-something-unknown'],
+        ]);
+        $db->table('tblusers_clients')->insert([
+            ['auth_user_id' => 1, 'client_id' => 7, 'owner' => 1],
+            ['auth_user_id' => 2, 'client_id' => 8, 'owner' => 1],
+            ['auth_user_id' => 3, 'client_id' => 9, 'owner' => 1],
+        ]);
+        User::factory()->create(['email' => 'giorgos@example.gr']); // an admin with the client's email
+
+        $report = $this->import();
+
+        $this->assertSame(['created' => 1, 'matched' => 0, 'existing' => 0, 'skipped' => 2], $report->counts['login']);
+        $this->assertFalse(User::where('email', 'closed@example.gr')->sole()->active); // Closed in WHMCS: login off
+        $this->assertSame(2, count($report->grouped['passwords']));
+        $this->assertSame(UserRole::Admin, User::where('email', 'giorgos@example.gr')->sole()->role);
+    }
+
+    public function test_a_new_password_ends_the_imported_one(): void
+    {
+        $client = Client::factory()->create();
+        $user = User::factory()->create(['role' => UserRole::Client, 'client_id' => $client->id, 'email' => 'c@example.gr']);
+        $user->forceFill(['imported_password' => md5('old')])->save();
+        $this->assertNotNull($user->refresh()->imported_password);
+
+        $user->update(['password' => 'brand-new-password']);
+
+        $this->assertNull($user->refresh()->imported_password);
+        $this->clientLogin('c@example.gr', 'old')->assertHasFormErrors(['email']);
+        $this->clientLogin('c@example.gr', 'brand-new-password')->assertHasNoFormErrors();
+    }
+
+    public function test_imported_password_formats(): void
+    {
+        $this->assertTrue(ImportedPassword::check('secret', password_hash('secret', PASSWORD_BCRYPT)));
+        $this->assertTrue(ImportedPassword::check('secret', md5('salt'.'secret').':salt'));
+        $this->assertTrue(ImportedPassword::check('secret', strtoupper(md5('secret'))));
+        $this->assertFalse(ImportedPassword::check('wrong', md5('salt'.'secret').':salt'));
+        $this->assertFalse(ImportedPassword::check('', md5('')));
+        $this->assertFalse(ImportedPassword::check('secret', 'secret')); // never a plain-text comparison
+        $this->assertFalse(ImportedPassword::supported('plain-text'));
     }
 }

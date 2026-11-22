@@ -28,7 +28,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'super_admin', 'admin_areas', 'active', 'system_emails', 'panel_notifications', 'keyboard_shortcuts'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'imported_password', 'remember_token'])]
 /**
  * Two-factor authentication is opt-in per user from the profile page (authenticator app plus
  * recovery codes); `php artisan gaiacp:disable-2fa <email>` turns it off for a locked-out user.
@@ -109,6 +109,13 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 
     protected static function booted(): void
     {
+        // A new password (changed, reset, set by an admin) ends the one imported from WHMCS (App\Auth\UserProvider)
+        static::saving(function (self $user): void {
+            if ($user->isDirty('password') && ! $user->isDirty('imported_password')) {
+                $user->imported_password = null;
+            }
+        });
+
         static::creating(function (self $user): void {
             if ($user->role === UserRole::Admin && ! static::query()->admins()->where('super_admin', true)->exists()) {
                 $user->super_admin = true;

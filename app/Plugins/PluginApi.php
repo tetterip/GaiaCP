@@ -14,6 +14,7 @@ use App\Ai\Answer;
 use App\Ai\ChatCompletionsPlugin;
 use App\Ai\ChatCompletionsSettings;
 use App\Ai\Prompt;
+use App\Auth\ImportedPassword;
 use App\Captcha\CaptchaModule;
 use App\Certificates\CertificateModule;
 use App\Certificates\CertificateOrder;
@@ -233,6 +234,7 @@ final class PluginApi
 
     /** @var list<class-string> used by bundled plugins only; may change in any release */
     public const INTERNAL = [
+        ImportedPassword::class,
         CertificateLifecycle::class,
         ClientAreaAccess::class,
         ClientSignup::class,

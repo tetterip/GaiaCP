@@ -2,6 +2,12 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.0] - 2026-11-22
+
+- Client logins: each client gets a client area login with their WHMCS email and password (WHMCS 8 users, or the
+  client's password in older WHMCS), turned on, without an email. Run with only Client logins ticked to add them to
+  clients imported before
+
 ## [1.0.12] - 2026-11-07
 
 - "1 problem" or "3 problems" in every language, instead of "problem(s)"

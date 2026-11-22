@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\PasswordBrokerManager;
+use App\Auth\UserProvider;
 use App\Database\MariaDbConnection;
 use App\Database\MySqlConnection;
 use App\Database\SQLiteConnection;
@@ -41,6 +42,7 @@ use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\NoPendingMigrations;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
@@ -92,6 +94,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // The users provider: Laravel's eloquent one, plus passwords imported from WHMCS
+        Auth::provider('gaiacp', fn ($app, array $config) => new UserProvider($app['hash'], $config['model']));
+
         // Save / Create stay at the foot of the screen on long forms (styled by filament/sticky-actions), on the right
         // with Save rightmost, like the Settings pages' Save bar
         BasePage::stickyFormActions();

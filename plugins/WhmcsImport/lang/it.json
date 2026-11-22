@@ -10,6 +10,7 @@
     "Billable items": "Voci addebitabili",
     "Brings servers, products, clients, services, domains and unpaid invoices over from a WHMCS database.": "Porta server, prodotti, clienti, servizi, domini e fatture non pagate da un database WHMCS.",
     "Check these after importing; the rest is imported as described.": "Controllali dopo l'importazione; il resto viene importato come descritto.",
+    "Client logins": "Accessi dei clienti",
     "Copies everything the dry run lists into GaiaCP. Records imported before are skipped, so it is safe to run again.": "Copia in GaiaCP tutto ciò che elenca la prova. I record importati in precedenza vengono saltati, quindi è sicuro eseguirla di nuovo.",
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Copia clienti, prodotti, servizi, domini e fatture non pagate da un database WHMCS.",
     "Created": "Creato",

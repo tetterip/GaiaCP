@@ -10,6 +10,7 @@
     "Billable items": "Χρεώσιμα στοιχεία (Billable items)",
     "Brings servers, products, clients, services, domains and unpaid invoices over from a WHMCS database.": "Μεταφέρει servers, προϊόντα, πελάτες, υπηρεσίες, domains και απλήρωτα τιμολόγια από βάση δεδομένων WHMCS.",
     "Check these after importing; the rest is imported as described.": "Έλεγξε αυτά μετά την εισαγωγή· τα υπόλοιπα εισάγονται όπως περιγράφεται.",
+    "Client logins": "Λογαριασμοί σύνδεσης πελατών",
     "Copies everything the dry run lists into GaiaCP. Records imported before are skipped, so it is safe to run again.": "Αντιγράφει στο GaiaCP ό,τι δείχνει η δοκιμαστική εκτέλεση. Όσα εισήχθησαν παλιότερα παραλείπονται, οπότε μπορεί να ξανατρέξει με ασφάλεια.",
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Αντιγραφή πελατών, προϊόντων, υπηρεσιών, domains και απλήρωτων τιμολογίων από βάση WHMCS.",
     "Created": "Δημιουργήθηκε",

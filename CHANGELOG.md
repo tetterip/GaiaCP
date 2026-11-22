@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- WHMCS import 1.1.0: clients log in to the client area with the email and password they had in WHMCS (new **Client
+  logins** part; logins on, no email sent). Only WHMCS's password hash is copied; the first login stores the password
+  with GaiaCP's own hash. Clients imported before get their logins by running the import again with only Client
+  logins ticked.
+
 ## [0.10.0] - 2026-11-17
 
 - Security (audit before this release): Plesk 1.6.3 lets a client log in to Plesk, open its shortcuts or change the
