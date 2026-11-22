@@ -4309,5 +4309,12 @@
     "Optimizing": "Bezig met optimaliseren",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Pagina's worden iets sneller, omdat ze die niet meer uit de database lezen. Iedereen die is aangemeld, u en uw klanten ook, wordt één keer afgemeld en meldt zich opnieuw aan. Verder verandert er niets.",
     "Use files": "Bestanden gebruiken",
-    "Use files and sign in again": "Bestanden gebruiken en opnieuw aanmelden"
+    "Use files and sign in again": "Bestanden gebruiken en opnieuw aanmelden",
+    "Current": "Huidig",
+    "Active and in quarantine": "Actief en in quarantaine",
+    "In quarantine": "In quarantaine",
+    "Quarantine": "Quarantaine",
+    "Hosting quarantine": "Hostingquarantaine",
+    "Hosting quarantine days": "Dagen hostingquarantaine",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Een opgeschort account staat zoveel dagen na de automatische opschorting in quarantaine; Diensten → Hosting opent met de actieve accounts en deze. 0 = nooit. Domeinen gebruiken de respijtdagen van hun TLD."
 }

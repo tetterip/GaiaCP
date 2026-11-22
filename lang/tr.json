@@ -4309,5 +4309,12 @@
     "Optimizing": "Optimize ediliyor",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Sayfalar biraz hızlanır, çünkü bunları artık veritabanından okumazlar. Oturum açmış herkes, siz ve müşterileriniz de, bir kez çıkış yapar ve yeniden giriş yapar. Başka hiçbir şey değişmez.",
     "Use files": "Dosyaları kullan",
-    "Use files and sign in again": "Dosyaları kullan ve yeniden giriş yap"
+    "Use files and sign in again": "Dosyaları kullan ve yeniden giriş yap",
+    "Current": "Güncel",
+    "Active and in quarantine": "Etkin ve karantinada",
+    "In quarantine": "Karantinada",
+    "Quarantine": "Karantina",
+    "Hosting quarantine": "Hosting karantinası",
+    "Hosting quarantine days": "Hosting karantina günleri",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Askıya alınmış bir hesap, otomatik askıya almadan sonra bu kadar gün karantinada görünür; Hizmetler → Hosting etkin hesaplarla ve bunlarla açılır. 0 = asla. Alan adları TLD'lerinin ek süre günlerini kullanır."
 }

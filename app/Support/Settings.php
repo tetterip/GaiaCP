@@ -50,6 +50,7 @@ class Settings
         'reminders.overdue_days',
         'reminders.bcc',
         'automation.suspend_after_days',
+        'automation.hosting_quarantine_days',
         'automation.cancel_unpaid_orders_days',
         'automation.compare_servers',
         'automation.price_change_notice_days',

@@ -58,6 +58,18 @@ class ThemesTest extends TestCase
             ->assertDontSee('animation: gaia-rise .45s var(--gaia-ease) both;', false);
     }
 
+    public function test_a_table_card_does_not_cut_off_its_filters_dropdown(): void
+    {
+        // The Filters and Columns dropdowns open inside the table's header: clipping a table with a header cut the
+        // panel off under a short or empty list, and the Server filter could not be reached.
+        $this->actingAs(User::factory()->create());
+
+        $html = $this->get(Dashboard::getUrl())->assertOk()->getContent();
+
+        $this->assertStringContainsString('.fi-ta-ctn:not(.fi-ta-ctn-with-header) {', $html);
+        $this->assertDoesNotMatchRegularExpression('/\.fi-ta-ctn\s*\{\s*overflow:\s*hidden/', $html);
+    }
+
     public function test_the_header_logo_uses_the_same_hexagon_as_the_footer_mark(): void
     {
         $mark = file_get_contents(public_path('images/gaiacp/mark.svg'));

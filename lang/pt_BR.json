@@ -4309,5 +4309,12 @@
     "Optimizing": "Otimizando",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "As páginas ficam um pouco mais rápidas, porque não os leem mais do banco de dados. Todos os conectados, você e seus clientes também, saem uma vez e entram novamente. Nada mais muda.",
     "Use files": "Usar arquivos",
-    "Use files and sign in again": "Usar arquivos e entrar novamente"
+    "Use files and sign in again": "Usar arquivos e entrar novamente",
+    "Current": "Atuais",
+    "Active and in quarantine": "Ativos e em quarentena",
+    "In quarantine": "Em quarentena",
+    "Quarantine": "Quarentena",
+    "Hosting quarantine": "Quarentena de hospedagem",
+    "Hosting quarantine days": "Dias de quarentena de hospedagem",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Uma conta suspensa aparece em quarentena por estes dias após a suspensão automática; Serviços → Hospedagem abre com as contas ativas e estas. 0 = nunca. Domínios usam os dias de carência do seu TLD."
 }
