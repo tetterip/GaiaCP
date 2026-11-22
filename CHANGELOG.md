@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
 - Email to ticket and Webhooks now ship with GaiaCP as bundled plugins (never uninstalled, still off until switched
   on); they used to show as uploaded on the Plugins page.
 - Slack, Discord and Telegram moved out of GaiaCP into the plugin catalogue. An update keeps them where they are
