@@ -4301,5 +4301,13 @@
     "Spotlight TLD: shown first in the domain search (Settings → Domains)": "Hervorgehobene TLD: erscheint in der Domainsuche zuerst (Einstellungen → Domains)",
     "Spotlight TLDs": "Hervorgehobene TLDs",
     "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Die Endungen, die die meisten Ihrer Kunden kaufen, etwa .gr und .com. Die Domainsuche prüft sie zuerst und zeigt sie als Karten über den anderen Endungen, mit ihrem Preis; die öffentliche Startseite und die Suchseite zeigen ihre Preise unter dem Suchfeld.",
-    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Bis zu :count unter Domainpreise angebotene TLDs, in der Reihenfolge der Anzeige; zum Umsortieren ziehen. Leer: alle Endungen werden gleich aufgeführt."
+    "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Bis zu :count unter Domainpreise angebotene TLDs, in der Reihenfolge der Anzeige; zum Umsortieren ziehen. Leer: alle Endungen werden gleich aufgeführt.",
+    "GaiaCP cannot write to :path. Make the storage folder writable for the site and try again.": "GaiaCP kann nicht in :path schreiben. Machen Sie den Ordner storage für die Website beschreibbar und versuchen Sie es erneut.",
+    "GaiaCP is caching its settings, routes and pages now. Click Check again in a few seconds.": "GaiaCP legt jetzt seine Einstellungen, Routen und Seiten im Cache ab. Klicken Sie in einigen Sekunden auf Erneut prüfen.",
+    "Keep cache and sessions in files?": "Cache und Sitzungen in Dateien speichern?",
+    "Optimize now": "Jetzt optimieren",
+    "Optimizing": "Wird optimiert",
+    "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Seiten werden etwas schneller, weil sie diese nicht mehr aus der Datenbank lesen. Alle Angemeldeten, auch Sie und Ihre Kunden, werden einmal abgemeldet und melden sich erneut an. Sonst ändert sich nichts.",
+    "Use files": "Dateien verwenden",
+    "Use files and sign in again": "Dateien verwenden und neu anmelden"
 }
