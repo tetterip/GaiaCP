@@ -25,6 +25,7 @@ use App\Livewire\TwoFactorReminder;
 use App\Plugins\PluginManager;
 use App\Support\ContentWidth;
 use App\Support\Demo;
+use App\Support\Health\PanelCache;
 use App\Support\SpaLinks;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
@@ -53,6 +54,9 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // A cached page list naming a plugin page that is gone (or missing a new one) is dropped before ->id() reads it
+        PanelCache::forgetIfStale('admin', app(PluginManager::class)->pages());
+
         return $panel
             ->default()
             ->id('admin')

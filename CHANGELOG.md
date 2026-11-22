@@ -16,6 +16,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron
   runs), and new installs start with files and cached pages. Before, an update cleared these caches and left them
   for you to make again.
+- Fixed: every admin page failed with an error (500) after a plugin folder went away while its pages were cached,
+  for example a Git checkout that pulled the move of Slack, Discord and Telegram to the plugin catalogue. A cached
+  page list that no longer matches the plugins is now dropped and made again.
 - In Greek, the sign-in pages' "Remember me" now reads «Να με θυμάσαι» (was «Θυμήσου με»).
 
 ## [0.11.0] - 2026-11-21
