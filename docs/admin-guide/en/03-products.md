@@ -6,7 +6,7 @@ copy of the price, cycle, server and package, so changing a product never change
 
 ## Types
 
-- **Hosting**: an account on one of your servers (cPanel / WHM, Plesk, HestiaCP, DirectAdmin). Set up the servers
+- **Hosting**: an account on one of your servers (cPanel / WHM, Plesk, HestiaCP, DirectAdmin and the other panels). Set up the servers
   first: [Servers](04-servers.md).
 - **Domain**: a domain name at a registrar. Domains are priced per TLD under Domain pricing, not as products; see
   [Domains and SSL](05-domains-and-ssl.md).

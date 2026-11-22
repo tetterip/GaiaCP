@@ -1,213 +1,154 @@
 # Plugins and integrations
 
-Everything that talks to another system is a **plugin**: server panels, registrars, payment methods, captchas, sign-in
-with Google, monitoring, chat, webhooks, themes, the WHMCS import. That keeps GaiaCP small and lets you add what you
-need.
+Everything that talks to another system is a **plugin**: server panels, registrars, payment methods, monitoring,
+captchas, AI services, themes, the WHMCS import. Some ship with GaiaCP, more are in the plugin catalogue, and you can
+upload your own.
 
-## The Plugins page
+## The plugins page
 
-Settings → System → **Plugins** (super admins) lists every plugin with its version, what changed in it and when it was
-installed or updated, grouped by type. To find one, type part of its name in the search box, or open the filter
-button to show only some types (server panels, registrars, payment methods...), only the enabled or disabled ones, or,
-once you have uploaded one, only the bundled or uploaded ones. The page remembers the search and filters until you
-sign out.
+Settings → System → **Plugins** (super admins) lists every installed plugin by type, with its version and status.
+Search by name, or filter by type, status (enabled or disabled) and, once you have uploaded one, source.
 
-- **Disable** a plugin you don't use: its pages and options disappear, but its servers, accounts and settings stay, so
-  enabling it again brings everything back. Tick several and use the mass actions to enable or disable them together.
-- Plugins bundled with GaiaCP can't be uninstalled, only disabled. Most start enabled; VIES VAT check and GoGetSSL
-  start off.
-- A plugin that needs a newer GaiaCP stays off until you update GaiaCP.
+- **Enable** / **Disable**: a disabled plugin's menu items and settings pages disappear, but its servers, accounts and
+  settings are kept, so enabling it again brings everything back. Tick several to switch them together.
+- The **gear** on an enabled plugin opens its settings page.
+- **Changelog** shows what changed in each version.
+- **Roll back** (after an update, your password is asked) puts back the version it replaced.
+- Plugins that ship with GaiaCP can't be uninstalled, only disabled.
+- A plugin that needs a newer GaiaCP shows **Needs a newer GaiaCP** and stays off until you update.
 
-### The plugin catalogue
+An enabled plugin does nothing until you fill in its settings (keys, logins), so leaving one on costs nothing.
 
-Settings → System → **Plugin catalogue** lists the plugins on offer at plugins.gaiacp.digital: each one is read by
-the GaiaCP project before it is listed. **Official** ones are made by GaiaCP, **Community** ones by others. Search
-by name or tag, or filter by tag (such as Greece or Card payments), type or status. Click a plugin to open its own
-page, with every version's changelog, what it needs, its author, licence and tags (a tag there lists the other plugins
-with it), and **Install** it from the list or its page (your password is asked). It is added disabled, like an
-uploaded zip: enable it on the Plugins page. Only versions that run on your GaiaCP are offered.
+## The plugin catalogue
 
-GaiaCP reads the catalogue once a day (and when you press **Refresh**). Nothing is updated by itself. When an
-installed plugin has a newer version, the bell rings once, the next daily summary lists it and the Plugins page shows
-it; **Update** on the catalogue page installs it, keeping the old version to put back if the update fails. When the
-newer version needs a newer GaiaCP (or PHP) than yours, you are told the same way, with what it needs: update GaiaCP
-first, then the plugin.
+Settings → System → **Plugin catalogue** lists the plugins on plugins.gaiacp.digital. **Official** ones are made by
+GaiaCP, **Community** ones by others, and each is checked before it is listed. Search, or filter by tag, type or
+status; a plugin's own page shows its changelog, what it needs, its author and licence.
 
-After an update (from the catalogue or a zip), **Roll back** (the arrow on the Plugins page, your password is asked)
-puts back the version it replaced, if the new one gives you trouble. Its switch and settings stay; what the newer
-version added to the database is removed, with whatever was stored there. The catalogue is signed: GaiaCP refuses a catalogue or a zip that was changed
-on the way, so even someone who broke into plugins.gaiacp.digital could not hand you a different plugin.
+**Install** (your password is asked) adds a plugin disabled: enable it on the Plugins page. Only versions that run on
+your GaiaCP are offered.
 
-### Installing other plugins
+Nothing updates by itself. GaiaCP reads the catalogue once a day (or when you press **Refresh**), and when an
+installed plugin has a newer version the bell rings once, the daily summary lists it and the Plugins page shows it.
+Press **Update to …** on the catalogue to install it; if it fails, the old version stays. The catalogue and its zips are
+signed, so a plugin changed on the way is refused.
 
-**Upload plugin** takes a plugin's zip (your password is asked). It is checked before it goes live, its database tables
-are made, and it starts disabled. Upload a newer zip to update it. Once it is disabled you can uninstall it, keeping its data unless
-you ask otherwise. A folder copied into `plugins/` on the server is found too.
+## Uploading a plugin
 
-**An uploaded plugin runs as GaiaCP itself, with access to everything.** Only install plugins you trust. Setting
-`GAIACP_PLUGIN_UPLOADS=false` in `.env` turns uploads off; System health shows whether they are on.
+**Upload plugin** on the Plugins page takes a plugin's zip (your password is asked, and you tick that you trust it).
+It is checked, its tables are made, and it starts disabled. Upload a newer zip to update it. A disabled uploaded
+plugin can be uninstalled, keeping its data unless you tick **Also delete its tables and settings**.
 
-To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
-[reference](../../writing-plugins.md).
+**An uploaded plugin runs with GaiaCP's full access.** Install only plugins you trust. `GAIACP_PLUGIN_UPLOADS=false`
+in `.env` turns uploads (and catalogue installs) off; System health shows whether they are on.
+
+To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the [reference](../../writing-plugins.md).
 
 ## What ships with GaiaCP
 
-| Kind | Plugins | Where you set them up |
-|---|---|---|
-| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin; CyberPanel, Virtualmin, Proxmox VE (off until switched on) | Settings → Servers |
-| Registrars | Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications | Settings → Registrars |
-| Payment methods | Bank transfer, Stripe, PayPal, Nexi XPay, Mastercard Gateway | Settings → Payment methods |
-| SSL certificates | GoGetSSL | Settings → GoGetSSL |
-| Monitoring | Uptime Kuma, UptimeRobot, Better Stack, IP blacklist check, Site checks | Settings → Integrations |
-| Client sign-in and safety | Google sign-in, Google reCAPTCHA, Cloudflare Turnstile | Settings → Client area |
-| Tax details | VIES VAT check | their own settings pages |
-| Notifications | Webhooks (off until switched on) | Settings → Email & notifications |
-| Support | Email to ticket (off until switched on) | Settings → Support |
-| AI | Claude, ChatGPT, DeepSeek | Settings → AI assistant (its own group: the assistant's page and each service's) |
-| Look | Gaia, Flat and Glass themes | Profile, Settings → General, Settings → Client area |
-| Moving in | WHMCS import | Settings → System |
+| Kind | Plugins | Starts | Where you set them up |
+|---|---|---|---|
+| Server panels | cPanel / WHM, Plesk, HestiaCP, DirectAdmin | on | on each server: Settings → Products & domains → Servers |
+| | CyberPanel, Virtualmin, Proxmox VE | off | the same; CyberPanel and Proxmox also under Settings → Integrations |
+| Registrars | Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications | on | Settings → Products & domains → Registrars |
+| Payment methods | Bank transfer, Stripe | on | Settings → Billing → Payment methods |
+| | PayPal, Nexi XPay, Mastercard Gateway | off | the same |
+| Tax | VIES VAT check | off | Settings → Billing → VIES VAT check |
+| SSL certificates | GoGetSSL | off | Settings → Integrations → GoGetSSL |
+| Monitoring | Uptime Kuma, UptimeRobot, Better Stack, IP blacklist check, Site checks | on | Settings → Integrations |
+| Sign-in and captcha | Google sign-in, Google reCAPTCHA, Cloudflare Turnstile | on | Settings → Client area |
+| Support | Email to ticket | off | Settings → Support → Email to ticket |
+| Notifications | Webhooks | off | Settings → Email & notifications → Webhooks |
+| AI | Claude, ChatGPT, DeepSeek | off | Settings → AI assistant |
+| Look | Gaia, Flat and Glass themes | on | Profile; Settings → General (admin default); Settings → Client area |
+| Moving in | WHMCS import | on | Settings → System → Import from WHMCS |
 
-In the plugin catalogue (installed only if you want them): Alpha Bank, Eurobank, Piraeus Bank and IRIS (payment
-methods), Enhance (server panel), easy.gr and GoDaddy (registrars), HetrixTools (monitoring), ΑΑΔΕ registry lookup
-(tax details), Kimi and Ollama (AI), Slack, Discord and Telegram (notifications). They used to ship with GaiaCP: an install that had them keeps them, with their
-settings and data, and updates them from the catalogue.
+## From the plugin catalogue
+
+Installed only if you want them:
+
+- **Payments**: Alpha Bank, Eurobank, Piraeus Bank, IRIS (see [Payment methods](02-business-and-email.md#payment-methods))
+- **Server panel**: Enhance
+- **Registrars**: easy.gr, GoDaddy
+- **Monitoring**: HetrixTools
+- **Tax**: ΑΑΔΕ registry lookup for Greek VAT numbers
+- **AI**: Kimi, Ollama
+- **Chat**: Slack, Discord, Telegram
+
+An install that had one of these before it moved to the catalogue keeps it, with its settings, and updates it from
+the catalogue.
+
+**Slack**, **Discord** and **Telegram** post the events you pick (new orders, payments, tickets, servers down and
+up…) to a channel, one short message each with a link back here. Their pages are under Settings → Email &
+notifications: paste the channel's webhook address (for Telegram, the bot token and chat ID) and press **Send a test
+message**. The Telegram bot can also answer `/owed`, `/today`, `/tickets` and `/servers` in that chat.
 
 ## Webhooks
 
-The **Webhooks** plugin (off until switched on, super admins) sends GaiaCP's events (orders, sign ups, payment
-notices, payments, invoices and credit notes, service changes, domains, tickets, servers) as a JSON POST to the addresses you add, each with the
-events it wants. Use it to feed your own scripts, Zapier, Make or n8n.
+The **Webhooks** plugin (off until you switch it on) sends GaiaCP's events (orders, sign ups, payment notices,
+payments, invoices, service changes, domains, tickets, servers) as a JSON POST to your own scripts, Zapier, Make or
+n8n. Under Settings → Email & notifications → **Webhooks**, **New webhook** takes the address and the events it wants.
 
-Each request is signed with the endpoint's secret (shown once) in the `X-GaiaCP-Signature` header, so the receiver can
+Each request is signed with the webhook's secret (shown once) in the `X-GaiaCP-Signature` header, so the receiver can
 check it came from you. Deliveries go out within a minute and are retried after 1, 5 and 30 minutes, 2 and 12 hours.
-**Deliveries** shows what was sent and the answer, with Resend; **Test** sends a sample. An endpoint that keeps
+**Deliveries** shows what was sent and the answer, with **Resend**; **Test** sends a sample. A webhook that keeps
 failing rings the bell and is switched off after 50 failures in a row. Addresses on your local network are refused
 unless `GAIACP_WEBHOOKS_ALLOW_PRIVATE=true`.
 
-## Slack, Discord and Telegram
-
-Installed from the plugin catalogue. Each posts the events you pick (by default new orders, payments, tickets, client replies, servers down and up, failed
-panel calls) to a channel, one short message each with a link to its page here. Paste the channel's webhook address
-(for Telegram, the bot token and chat ID; **Find chat ID** reads it for you) and press **Send a test message**. With
-**Answer commands** on, the Telegram bot also answers `/owed`, `/today`, `/tickets` and `/servers` in that chat only.
-
 ## AI assistant
 
-The AI assistant works with any of the AI service plugins: **Claude**, **ChatGPT**, **DeepSeek**, **Kimi** or
-**Ollama** (Kimi and Ollama from the plugin catalogue; all off until you switch them on, super admins; see [Choosing an AI service](#choosing-an-ai-service)).
-With one on and set up under Settings → AI assistant, an **AI** menu appears after the label of the texts you write: ticket replies and new
-tickets, canned replies, email templates, messages to clients, knowledge base articles, announcements, product and
-product group descriptions, quote texts and sales emails. It offers:
+Switch on one AI service plugin (**Claude**, **ChatGPT** or **DeepSeek**; **Kimi** and **Ollama** from the catalogue),
+enter its API key on its page under Settings → AI assistant and press **Test connection**. Then Settings → **AI
+assistant** picks the service (when more than one is on), switches each feature on or off under **What it may do**
+and sets a **Monthly limit** in tokens for all admins together. The service bills your account directly.
 
-- **Improve**: fix spelling and grammar, or make the text friendlier, clearer, shorter or more formal, in its own
-  language;
-- **Translate into** one of the panel's languages (a ticket reply offers the client's language first), or, on a text
-  kept in several languages, **Translate from** the language you already wrote, or **Translate this text into** the field's language when you wrote it in another one.
+The features, each with its own switch:
 
-The answer opens in a window: change it if you like, then **Use this text** puts it in the field (nothing is sent or
-saved until you do). Only that field's text is sent, with fixed instructions that keep placeholders, links and
-formatting; never client details or passwords. Settings → **AI assistant** (its own group, with each AI service's page) turns each feature on or
-off, sets a monthly limit in tokens for all admins together and shows how many were used this month.
+- **Improve texts** and **Translate texts**: an **AI** menu next to the texts you write (ticket replies, canned
+  replies, email templates, messages to clients, knowledge base articles, announcements, product descriptions, quotes)
+  fixes spelling, changes the tone or translates. The answer opens in a window; **Use this text** puts it in the field.
+- **Write product descriptions**: in a product's Description menu, from its name, type, package and compare table.
+- **Write the server problem notice**: under Settings → Client area → Server problems, from what the monitors say now.
+- **Questions about your data**: Reports → **Ask in plain words** ("who owes more than €100?"). The AI only picks one
+  of GaiaCP's ready-made questions; GaiaCP answers it from your data, which never goes to the AI service.
+- **Panel help**: **Ask the AI assistant** in this guide's search answers from the closest sections of the guide.
+- **Draft ticket replies**, **Summarise tickets** and **Knowledge base articles from tickets**: on a ticket.
+- **Personal payment reminders**: **Personal reminder** on an unpaid payment notice rewrites the reminder for how this
+  client usually pays.
+- **Suggestions about clients**: **Suggestions** on a client's page: what they might buy, signs they may leave.
+- **Translate the panel**: **Translate with AI** under Settings → Languages fills a language's missing texts.
+- **Suggest domain names** and **Domain names from a description** (off until you switch them on): in the domain
+  search, **Suggest other names** offers free names close to the one searched, and a client with no name yet can
+  describe their business and get names for it (visitors too, if you tick **Also for visitors without an account**).
+  Each client or address may use them 5 times an hour, and **Domain suggestions a day** caps them for everyone together.
 
-Before you switch features on, keep in mind that what they send leaves GaiaCP for the AI service's company and is
-handled under its terms. The writing tools send only the field's text, but some features below send your clients'
-data: ticket conversations, services, payment history (each says what it sends, and hides names, addresses and phone
-numbers where it can). Check the service's data and privacy terms, mention it in your own privacy policy if your clients
-should know, and switch on only what you use. The monthly token limit and the daily limit on domain suggestions cap how
-much is sent; Ollama on your own server keeps everything with you.
-
-It also writes texts from GaiaCP's own details, each with its own switch there:
-
-- **Write from the product's details** in a product's Description menu: two or three sentences from its name, type,
-  package, group and compare table values (never its prices), in the panel's default language;
-- **Write from the servers' status** in Settings → Client area → Server problems → Message: the notice from what the
-  monitors say now (each server by its public name only, its status, since when and how many accounts are on it; never
-  hostnames, addresses or clients). Empty the message again once the problem is over;
-- **Suggest domain names** (off until you switch it on): in the client area's domain search, **Suggest other names**
-  lists free names close to the one searched, with the same ending, ready to add to the cart. Clients and visitors
-  press it, so each client or address may press it 5 times an hour; only the name searched is sent;
-- **Domain names from a description** (off until you switch it on): a client with no name yet types a few words about
-  their business in the same search box ("a pastry shop in Thessaloniki") and gets free names for it, with your first
-  ending and .com, each with its price and Add to cart. The description is sent without email addresses or phone
-  numbers, and counts in the same 5 an hour. Signed-in clients only, unless you tick **Also for visitors without an account** (then visitors
-  always solve the captcha first, so a captcha plugin must be on). **Domain suggestions a day** caps both buttons for
-  clients and visitors together (200 by default), so they never use up the monthly limit your team needs.
-
-Two more switches answer questions:
-
-- **Questions about your data**: Reports → **Ask in plain words** takes a question such as "who owes more than €100?",
-  "how much did we receive last month?" or "which domains expire in the next 30 days?". The AI service only reads which
-  of GaiaCP's ready-made questions it is (unpaid amounts, overdue notices, payments, best-paying clients, services due,
-  service counts, expiring domains, new clients, open tickets) and with what dates or amounts; GaiaCP then answers it
-  from your data, read-only, and the answer never goes to the AI service. **Read as** shows how it was understood, so
-  check it. An admin is offered only the questions of the areas they can open;
-- **Panel help**: in System → **Help**, type a question in the guide's search and press **Ask the AI assistant**: it
-  answers from the closest sections of this guide (only the question and those sections are sent), with links to
-  them.
-
-Three more help with tickets (Support → Tickets, for admins with the Support area):
-
-- **Draft ticket replies**: in a ticket's **Reply**, the AI menu's **Draft a reply** writes an answer to the client's
-  last message from the conversation, the client's services (type, name, status, paid until) and the three published
-  knowledge base articles closest to it, in the client's language. Where it would need to look something up it writes
-  `[check: …]` for you to fill in; read it, change it and send it yourself;
-- **Summarise tickets**: **Summarise** on a ticket reads in one line what the client needs, and suggests a priority, a
-  department and the client's mood. **Keep** saves the line (shown under the subject in the list until the client
-  writes again) with the priority and department you left chosen;
-- **Knowledge base articles from tickets**: on a ticket you answered, More → **Write a knowledge base article** turns
-  the answer into an article for anyone with the same question, in the default language. **Save as draft** keeps it
-  unpublished under Support → Knowledge base, for you to check, finish and publish.
-
-What they send is the ticket's conversation, never its notes or files, with the client's name, company, email
-addresses and phone numbers replaced by placeholders (the reply draft gets the first name back); the article also
-hides the client's domain names.
-
-Two more look at one client, without sending who they are:
-
-- **Personal payment reminders**: on an unpaid payment notice, **Personal reminder** rewrites the reminder email (its
-  Email templates text, placeholders kept) for how the client pays. It sends that text, the amount and days, and the
-  client's record of the last 24 months (how many notices were paid late and by how much, what else is overdue);
-- **Suggestions about clients**: on a client's page, **Suggestions** lists what they might buy, signs they may leave
-  and what to look after. It sends their services (product, cycle, price, since when, each domain only as "site 1",
-  "site 2"…), warnings that their hosting was nearly full, open cancellation requests, the last year's ticket subjects
-  and your products on offer.
-
-**Translate the panel** adds **Translate with AI** to Settings → Languages (super admins): the panel's texts that a
-language misses go to the AI service in batches of 40 and come back as uploaded translations. Only those texts are
-sent; a translation that loses a placeholder or an HTML tag is left out and stays in English. A whole new language is
-up to about 300,000 tokens.
+**What leaves GaiaCP.** The writing tools send only the field's text. The ticket, reminder and client features send
+some of your clients' data (ticket conversations, services, payment history), with names, email addresses and phone
+numbers replaced where they can be, and never passwords, ticket notes or files. Check the AI service's privacy terms,
+mention it in your own privacy policy if needed, and switch on only what you use. Ollama on your own server keeps
+everything with you.
 
 ### Choosing an AI service
 
-Every feature above works the same with each service; each has its own plugin and page under Settings → AI assistant,
-where **Test connection** checks the key and the model. With more than one on, Settings → AI assistant picks which one
-answers. The service bills your account directly.
+- **Claude** (Anthropic): an API key from console.anthropic.com. Opus writes best, Sonnet costs less, Haiku is the
+  cheapest and enough for spelling and translations.
+- **ChatGPT** (OpenAI): an API key with credit from platform.openai.com (a ChatGPT Plus subscription does not include
+  the API).
+- **DeepSeek** and **Kimi**: their own API keys; often cheaper.
+- **Ollama**: an open model on your own server or computer, free and private, but slower and less polished. Fill in
+  its **Address** (`http://localhost:11434/v1` on the same server).
 
-**Claude** (Anthropic) needs an API key from console.anthropic.com. Opus writes best, Sonnet costs half, Haiku is the
-cheapest and good enough for spelling and translations.
-
-**ChatGPT** (OpenAI), **DeepSeek** and **Kimi** (Moonshot AI) each need their own API key; DeepSeek and Kimi are often
-cheaper. ChatGPT needs an API key with credit from platform.openai.com: a ChatGPT Plus subscription does not include
-the API. Their models change often, so the model is typed in: **Test connection** lists the models your key can use and
-offers them in the field.
-
-**Ollama** runs an open model (Llama, Qwen, Gemma, Mistral…) on your own server or computer, so texts never leave your
-machines and nothing is billed. Install Ollama (ollama.com), download a model (`ollama pull llama3.3`) and fill in its
-**Address** under Settings → Ollama (`http://localhost:11434/v1` when it runs on the same server). On another machine,
-start Ollama with `OLLAMA_HOST=0.0.0.0` and let only the GaiaCP server reach port 11434; the API key is only for a
-proxy in front of it that asks for one. Small models need about 8 GB of memory and write less well than the paid
-services; a slow machine may take a minute or more per answer.
+For ChatGPT, DeepSeek and Kimi, **Test connection** lists the models your key can use.
 
 ## The REST API
 
 Settings → Integrations → **API keys** (super admins) makes keys for your own scripts and website: one per use, each
-with its permissions per area (read, create, update, delete) and the IP addresses it may call from (**Select all**,
-**Read only** and **Clear all** above the permissions tick them in one go). A key is shown once; revoke it at once if it
-leaks. A key works only while the admin who made it is an active super admin: deactivating them (or taking away
-super admin) stops their keys, and deleting them revokes the keys. Calls go through the same actions as the panel, so they send the same emails and are in
-the activity log under the key's name. **Documentation** on that page lists every call, with `openapi.json` to
-download. A script that may send a call again (after a timeout, say) adds an `Idempotency-Key` header: the same key
-within 24 hours gets the first answer back instead of recording a payment twice. Examples:
+with its permissions per area (read, create, update, delete) and the IP addresses it may call from. A key is shown
+once; revoke it at once if it leaks. It works only while the admin who made it is an active super admin.
+
+Calls go through the same actions as the panel, so they send the same emails and are in the activity log under the
+key's name. **Documentation** on that page lists every call, with `openapi.json` to download. A script that may send
+a call twice (after a timeout) adds an `Idempotency-Key` header, so a payment is never recorded twice. Examples:
 [using the API](../../using-the-api.md).
 
 Next: [Keeping GaiaCP healthy](14-maintenance.md).

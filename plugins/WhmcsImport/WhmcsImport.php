@@ -473,7 +473,7 @@ class WhmcsImport
                 ->unique('client_id')
                 ->keyBy('client_id');
         } elseif (! $schema->hasColumn('tblclients', 'password')) {
-            $this->report->problem('This WHMCS database has no client passwords (no tblusers table, no tblclients.password): no logins imported.');
+            $this->report->problem(__('This WHMCS database has no client passwords (no tblusers table, no tblclients.password): no logins imported.'));
 
             return;
         }
@@ -505,14 +505,14 @@ class WhmcsImport
 
             if (! ImportedPassword::supported($hash)) {
                 $this->report->count('login', 'skipped');
-                $this->report->problem("Client {$client->name}: WHMCS password in a format GaiaCP can't check; they can use Forgot password.", 'passwords');
+                $this->report->problem(__("Client :name: WHMCS password in a format GaiaCP can't check; they can use Forgot password.", ['name' => $client->name]), 'passwords');
 
                 continue;
             }
 
             if (User::query()->whereRaw('lower(email) = ?', [mb_strtolower($email)])->exists()) {
                 $this->report->count('login', 'skipped');
-                $this->report->problem("Client {$client->name}: another user already logs in with {$email}; no login imported.", 'passwords');
+                $this->report->problem(__('Client :name: another user already logs in with :email; no login imported.', ['name' => $client->name, 'email' => $email]), 'passwords');
 
                 continue;
             }
