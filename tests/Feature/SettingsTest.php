@@ -55,7 +55,6 @@ use Plugins\Blacklists\BlacklistsSettings;
 use Plugins\Claude\ClaudeSettings;
 use Plugins\CyberPanel\CyberPanelSettings;
 use Plugins\DeepSeek\DeepSeekSettings;
-use Plugins\Discord\DiscordSettings;
 use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\MastercardGateway\MastercardSettings;
@@ -65,9 +64,7 @@ use Plugins\PayPal\PayPalSettings;
 use Plugins\Proxmox\ProxmoxSettings;
 use Plugins\Recaptcha\RecaptchaSettings;
 use Plugins\SiteChecks\SiteChecksSettings;
-use Plugins\Slack\SlackSettings;
 use Plugins\Stripe\StripeSettings;
-use Plugins\Telegram\TelegramSettings;
 use Plugins\TicketMail\TicketMailSettings;
 use Plugins\Turnstile\TurnstileSettings;
 use Plugins\UptimeKuma\UptimeKumaSettings;
@@ -86,7 +83,7 @@ class SettingsTest extends TestCase
         SupportSettings::class, TicketDepartmentResource::class, CannedReplyResource::class, TicketMailSettings::class,
         MailSettings::class, EmailTemplates::class,
         AutomationSettings::class, BackupSettings::class, SystemHealth::class,
-        LoggingSettings::class, ModuleLogResource::class, EmailLogResource::class, ErrorLog::class, FailedJobs::class, SlackSettings::class, DiscordSettings::class, TelegramSettings::class,
+        LoggingSettings::class, ModuleLogResource::class, EmailLogResource::class, ErrorLog::class, FailedJobs::class,
         LoginSecuritySettings::class, IpBanResource::class,
         CyberPanelSettings::class,
     ];

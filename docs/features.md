@@ -154,11 +154,11 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   does nothing twice. 120 calls a minute per key (`GAIACP_API_PER_MINUTE`). Settings → API keys → Documentation
   lists every call, with `openapi.json` for Postman or a code generator; how to use it, with examples:
   [using-the-api.md](using-the-api.md)
-- Slack and Discord (plugins, off until switched on under Settings → Slack / Discord, super admins): the events you
+- Slack and Discord (plugins from the plugin catalogue, off until switched on under Settings → Slack / Discord, super admins): the events you
   pick (by default new orders, payments, tickets, client replies, servers down and up, failed panel calls) posted to a
   channel through its webhook (stored encrypted), one short message each with a link to its page in the admin area,
   in the app's language. Sent within a minute, retried after 1, 5 and 30 minutes; Send a test message checks it
-- Telegram bot (plugin, off until switched on under Settings → Telegram, super admins): the same events as Slack /
+- Telegram bot (plugin from the plugin catalogue, off until switched on under Settings → Telegram, super admins): the same events as Slack /
   Discord sent to one Telegram chat (a person or a group of admins), and, when Answer commands is on, read-only
   answers in that chat only to /owed (who owes, from overdue payment notices), /today (payments, orders and tickets),
   /tickets (waiting for an answer) and /servers (status and 24-hour uptime). Find chat ID reads it from the bot

@@ -421,6 +421,13 @@ return [
         'csp' => env('GAIACP_CSP', 'enforce'),
     ],
 
+    // System health → Speed (App\Support\Health\SpeedCaches): on a live site (APP_ENV=production) the scheduler caches
+    // config, routes and Filament's components within a minute when they are missing (after an update) or .env changed
+    // since. GAIACP_AUTO_OPTIMIZE=false leaves that to you (php artisan optimize, or Optimize now on System health).
+    'speed' => [
+        'auto_optimize' => (bool) env('GAIACP_AUTO_OPTIMIZE', true),
+    ],
+
     // Settings → Plugins: uploading a plugin zip installs PHP code that runs with GaiaCP's full access. A host can
     // turn uploads off (GAIACP_PLUGIN_UPLOADS=false); folders copied into plugins/ by hand still load.
     'plugins' => [

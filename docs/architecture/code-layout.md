@@ -342,7 +342,8 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   (client · domain · order · ticket · server · amount) and admin link. `gaiacp:send-chat-messages` (every minute,
   `ChatSender`) posts them, retries after 1, 5, 30 minutes, then fails with `chat.failed`, and deletes old rows
   (`debug.module_log_days`). `ChatSettingsPage` is their settings page (On switch, URL checked against the prefixes,
-  events, Send a test message). `plugins/Slack` (Block Kit mrkdwn section) and `plugins/Discord` (one embed coloured
+  events, Send a test message). The chat plugins are in the plugin catalogue (gaiacp-plugins; core tests use
+  `Tests\Support\TestChat`): `plugins/Slack` (Block Kit mrkdwn section) and `plugins/Discord` (one embed coloured
   by `ChatLine::level`, mentions off). `plugins/Telegram` is a chat plugin too: its "webhook URL" is the Bot API's
   `sendMessage` built from the encrypted `telegram.bot_token`, and the body carries `telegram.chat_id` (HTML parse
   mode). With `telegram.commands` on, saving the settings calls `setWebhook` (`POST /webhooks/telegram`, secret
@@ -402,7 +403,11 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `LookupAction` is the lookup button on the ΑΦΜ field of the client form (`clientVatNumberActions()`), which only fills fields
   (saved with Save). Request shape follows a working WooCommerce invoicing plugin
 - `app/Support/Health/`: `SystemHealth` (the checks behind `Pages/SystemHealth`, Settings → System health, and
-  `gaiacp:health`), `SchedulerMonitor` (last cron `schedule:run` and last run of each daily job, in the cache, fed by
+  `gaiacp:health`), `SpeedCaches` (its Speed fixes without a terminal: Optimize now = `optimize` plus Filament's
+  components and icons, which Filament adds to `optimize` only on the command line, built after the response; Use files =
+  CACHE_STORE / SESSION_DRIVER=file in .env; `gaiacp:optimize`, scheduled every minute on an installed production site
+  when a cache file is missing or .env is newer than the cached config, `gaiacp.speed.auto_optimize`; a failure clears
+  the partial caches and waits a day), `SchedulerMonitor` (last cron `schedule:run` and last run of each daily job, in the cache, fed by
   `app/Listeners/RecordCommandRuns`). A new daily command goes in `SchedulerMonitor::DAILY_COMMANDS` too. `Heartbeat`
   (`gaiacp:heartbeat`, every 5 minutes): GET to `automation.ping_url` while all is well, `automation.ping_fail_url`
   (`{message}` = what failed) after a failed daily job (26 h) or backup; both encrypted settings, last result in the cache. Cron

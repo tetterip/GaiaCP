@@ -86,7 +86,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 - An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama; Kimi and Ollama from the plugin catalogue) that
   improves and translates the texts you write, drafts and summarises ticket replies, writes personal payment reminders,
   fills in missing translations and answers questions about your data in plain words
-- Webhooks, Slack, Discord and Telegram, a REST API, and an import from WHMCS
+- Webhooks, a REST API and an import from WHMCS; Slack, Discord and Telegram from the plugin catalogue
 - English and Greek built in, plus machine translations into German, Spanish, French, Italian, Dutch, Polish,
   Brazilian Portuguese and Turkish; other languages are uploaded from the panel
 
