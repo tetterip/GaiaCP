@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Help: Plugins and integrations rewritten (what ships, what starts on, where each is set up, what is in the catalogue);
+  the sidebar, plugin and log paths of other chapters corrected.
+- The plugin catalogue's update button reads **Update to <version>** (in Greek it read «Αλλαγή»).
+- WHMCS import 1.1.1: its client login problems show in the admin's language.
+
 ## [0.12.0] - 2026-11-22
 
 - Security (outside audit before the release): a user's **super admin** switch and admin areas are no longer set by
