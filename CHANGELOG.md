@@ -10,6 +10,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron
   runs), and new installs start with files and cached pages. Before, an update cleared these caches and left them
   for you to make again.
+- In Greek, the sign-in pages' "Remember me" now reads «Να με θυμάσαι» (was «Θυμήσου με»).
 
 ## [0.11.0] - 2026-11-21
 
