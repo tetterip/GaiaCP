@@ -17,7 +17,10 @@ At the time set in Settings → Billing → **Automation** → Daily run at (09:
 3. pays notices from client credit, when that is on;
 4. sends the Upcoming Domain Renewal Notice, adds late fees to expired domains and renews free domains;
 5. **suspends** hosting that is overdue by **Suspend hosting after** days (empty = never). Recording the payment
-   unsuspends it;
+   unsuspends it. Suspended accounts stay until you terminate them. For **Hosting quarantine** days after the automatic
+   suspension (30 by default, 0 = never) an account shows as **Quarantine** in the lists, like a domain that has
+   expired but is still inside its TLD's grace days (30 when the TLD has none). Services → Hosting and Domains open
+   on the active services and those in quarantine, soonest due first; the ones past it show under **All**;
 6. **terminates** services set to end: a service with **Auto-terminate at the end of the cycle** (Automation section
    of the service) gets no more notices and is terminated on its next due date. For a domain this switch is shown as
    Auto renew off;

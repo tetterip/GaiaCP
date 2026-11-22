@@ -4310,6 +4310,13 @@
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Las páginas son algo más rápidas, porque ya no los leen de la base de datos. Todas las personas conectadas, usted y sus clientes también, cierran sesión una vez y vuelven a entrar. Nada más cambia.",
     "Use files": "Usar archivos",
     "Use files and sign in again": "Usar archivos y volver a iniciar sesión",
+    "Current": "Actuales",
+    "Active and in quarantine": "Activos y en cuarentena",
+    "In quarantine": "En cuarentena",
+    "Quarantine": "Cuarentena",
+    "Hosting quarantine": "Cuarentena de hosting",
+    "Hosting quarantine days": "Días de cuarentena de hosting",
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Una cuenta suspendida aparece en cuarentena durante estos días tras la suspensión automática; Servicios → Hosting se abre con las cuentas activas y estas. 0 = nunca. Los dominios usan los días de gracia de su TLD.",
     "Order activated": "Pedido activado",
     "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "El pedido suma :total, así que no hay nada que pagar. Sus elementos se configuran y cada fecha de vencimiento avanza un ciclo."
 }

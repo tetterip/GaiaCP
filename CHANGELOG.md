@@ -7,6 +7,13 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 - An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead of Record payment: one click,
   no payment form, sets its items up and moves each due date forward one cycle.
+- **Quarantine** in the service lists: a domain that has expired but is still inside its TLD's grace days (30 when
+  the TLD has none), and a hosting account for Settings → Automation → **Hosting quarantine** days after its automatic
+  suspension (30 by default, 0 = never), show a red Quarantine badge and have their own chip. Services → Hosting and
+  Domains open on **Active and in quarantine**, the soonest due first; the ones past quarantine show under All. The
+  other tabs still open on All, and a chip or filter you pick stays.
+- Fixed: a list's Filters panel was cut off at the bottom of the table, so under a short or empty list its lower
+  filters (Server on the Hosting page) could not be reached; it now opens over the page.
 - The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
 - Email to ticket and Webhooks now ship with GaiaCP as bundled plugins (never uninstalled, still off until switched
   on); they used to show as uploaded on the Plugins page.
