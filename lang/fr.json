@@ -4316,5 +4316,7 @@
     "Quarantine": "Quarantaine",
     "Hosting quarantine": "Quarantaine de l'hébergement",
     "Hosting quarantine days": "Jours de quarantaine de l'hébergement",
-    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Un compte suspendu apparaît en quarantaine pendant ce nombre de jours après la suspension automatique ; Services → Hébergement s'ouvre sur les comptes actifs et ceux-ci. 0 = jamais. Les domaines utilisent les jours de grâce de leur TLD."
+    "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Un compte suspendu apparaît en quarantaine pendant ce nombre de jours après la suspension automatique ; Services → Hébergement s'ouvre sur les comptes actifs et ceux-ci. 0 = jamais. Les domaines utilisent les jours de grâce de leur TLD.",
+    "Order activated": "Commande activée",
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "La commande s'élève à :total, il n'y a donc rien à payer. Ses éléments sont mis en place et chaque date d'échéance avance d'un cycle."
 }

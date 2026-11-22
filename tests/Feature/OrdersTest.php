@@ -167,6 +167,41 @@ class OrdersTest extends TestCase
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
     }
 
+    public function test_a_free_order_is_activated_without_the_payment_form(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $order = app(PlaceOrder::class)->handle($this->client, [
+            ['type' => 'hosting', 'label' => 'Hosting Basic', 'domain' => 'acme.gr', 'server_id' => $this->server->id, 'package' => 'basic',
+                'price_cents' => 0, 'billing_cycle' => BillingCycle::Annually],
+            ['type' => 'other', 'label' => 'Website set-up', 'price_cents' => 0, 'billing_cycle' => BillingCycle::OneTime],
+        ]);
+
+        Livewire::test(ViewOrder::class, ['record' => $order->id])
+            ->assertActionHidden('recordOrderPayment')
+            ->assertActionVisible('activateOrder')
+            ->callAction('activateOrder')
+            ->assertNotified('Order activated')
+            ->assertActionHidden('activateOrder');
+
+        $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
+        $hosting = $order->services()->where('type', ServiceType::Hosting)->sole();
+        $this->assertSame(ServiceStatus::Active, $hosting->status);
+        $this->assertSame('2027-10-09', $hosting->next_due_date->toDateString());
+        $this->assertSame(ServiceStatus::Completed, $order->services()->where('type', ServiceType::Other)->sole()->status);
+        // A 0 payment per item keeps the free first period counted as used, like free domain renewals.
+        $this->assertSame([0, 0], $order->services()->with('payments')->get()->flatMap->payments->pluck('amount_cents')->all());
+        $this->assertTrue($order->invoices()->get()->every(fn ($invoice) => $invoice->status === InvoiceStatus::Paid));
+    }
+
+    public function test_an_order_with_something_to_pay_keeps_the_payment_form(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(ViewOrder::class, ['record' => $this->place()->id])
+            ->assertActionVisible('recordOrderPayment')
+            ->assertActionHidden('activateOrder');
+    }
+
     public function test_the_order_shows_an_unpaid_notice_in_red(): void
     {
         $this->actingAs(User::factory()->create());

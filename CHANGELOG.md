@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead of Record payment: one click,
+  no payment form, sets its items up and moves each due date forward one cycle.
 - **Quarantine** in the service lists: a domain that has expired but is still inside its TLD's grace days (30 when
   the TLD has none), and a hosting account for Settings → Automation → **Hosting quarantine** days after its automatic
   suspension (30 by default, 0 = never), show a red Quarantine badge and have their own chip. Services → Hosting and
