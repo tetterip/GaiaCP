@@ -18,7 +18,9 @@ comparing plain numbers. To release:
 2. Set `VERSION` to the new number and move the `## [Unreleased]` notes in `CHANGELOG.md` under
    `## [<version>] - <date>`. Write the release's short notes in `docs/release-notes/<version>.md`: one line on what
    the version is about, then **New**, **Security**, **Fixed** and **Before you update**, a few plain lines each,
-   for people deciding whether to update (the changelog keeps every detail). Merge that to `main`.
+   for people deciding whether to update (the changelog keeps every detail). Add the notes' first line and three or four main
+   features (an icon and a few words each) to `App\Support\WhatsNew::versions()`: the What's new window admins see
+   after updating, translated like every text. Merge that to `main`.
 3. On GitHub: Releases → Draft a new release → a new tag `v<version>` (or `<version>`) on `main` → Publish. Pushing the
    tag from Git (`git tag v0.2.0 && git push origin v0.2.0`) works too.
 

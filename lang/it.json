@@ -4321,5 +4321,11 @@
     "Hosting quarantine days": "Giorni di quarantena hosting",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Un account sospeso risulta in quarantena per questi giorni dopo la sospensione automatica; Servizi → Hosting si apre con gli account attivi e questi. 0 = mai. I domini usano i giorni di grazia del loro TLD.",
     "Order activated": "Ordine attivato",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "L'ordine ammonta a :total, quindi non c'è nulla da pagare. I suoi elementi vengono attivati e ogni data di scadenza avanza di un ciclo."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "L'ordine ammonta a :total, quindi non c'è nulla da pagare. I suoi elementi vengono attivati e ogni data di scadenza avanza di un ciclo.",
+    "What's new": "Novità",
+    "Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.": "I clienti che arrivano da WHMCS mantengono la loro password, gli ordini gratuiti si attivano con un clic e Stato del sistema corregge la velocità dal pannello.",
+    "WHMCS logins": "Accessi da WHMCS",
+    "Free orders in one click": "Ordini gratuiti in un clic",
+    "Speed from the panel": "Velocità dal pannello",
+    "Release notes": "Note di rilascio"
 }

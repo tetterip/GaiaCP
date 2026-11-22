@@ -4321,5 +4321,11 @@
     "Hosting quarantine days": "Dagen hostingquarantaine",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Een opgeschort account staat zoveel dagen na de automatische opschorting in quarantaine; Diensten → Hosting opent met de actieve accounts en deze. 0 = nooit. Domeinen gebruiken de respijtdagen van hun TLD.",
     "Order activated": "Bestelling geactiveerd",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "De bestelling komt op :total, er valt dus niets te betalen. De onderdelen worden ingericht en elke vervaldatum schuift één cyclus op."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "De bestelling komt op :total, er valt dus niets te betalen. De onderdelen worden ingericht en elke vervaldatum schuift één cyclus op.",
+    "What's new": "Wat is er nieuw",
+    "Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.": "Klanten die van WHMCS komen houden hun wachtwoord, gratis bestellingen worden met één klik geactiveerd en Systeemstatus lost snelheid op vanuit het paneel.",
+    "WHMCS logins": "WHMCS-aanmeldingen",
+    "Free orders in one click": "Gratis bestellingen in één klik",
+    "Speed from the panel": "Snelheid vanuit het paneel",
+    "Release notes": "Release-opmerkingen"
 }

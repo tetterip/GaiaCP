@@ -4321,5 +4321,11 @@
     "Hosting quarantine days": "Ημέρες καραντίνας φιλοξενίας",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Ένας λογαριασμός σε αναστολή εμφανίζεται σε καραντίνα για τόσες ημέρες μετά την αυτόματη αναστολή· η σελίδα Υπηρεσίες → Φιλοξενία ανοίγει με τους ενεργούς λογαριασμούς και αυτούς. 0 = ποτέ. Τα domains χρησιμοποιούν τις ημέρες χάριτος του TLD τους.",
     "Order activated": "Η παραγγελία ενεργοποιήθηκε",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Η παραγγελία κοστίζει :total, οπότε δεν υπάρχει κάτι να πληρωθεί. Τα στοιχεία της ενεργοποιούνται και κάθε λήξη προχωρά έναν κύκλο."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Η παραγγελία κοστίζει :total, οπότε δεν υπάρχει κάτι να πληρωθεί. Τα στοιχεία της ενεργοποιούνται και κάθε λήξη προχωρά έναν κύκλο.",
+    "What's new": "Τι νέο υπάρχει",
+    "Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.": "Οι πελάτες που έρχονται από το WHMCS κρατούν τον κωδικό τους, οι δωρεάν παραγγελίες ενεργοποιούνται με ένα κλικ και η Υγεία συστήματος διορθώνει την ταχύτητα από τον πίνακα.",
+    "WHMCS logins": "Συνδέσεις από WHMCS",
+    "Free orders in one click": "Δωρεάν παραγγελίες με ένα κλικ",
+    "Speed from the panel": "Ταχύτητα από τον πίνακα",
+    "Release notes": "Σημειώσεις έκδοσης"
 }

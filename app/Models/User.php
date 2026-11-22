@@ -8,6 +8,7 @@ use App\Enums\AdminArea;
 use App\Enums\UserRole;
 use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
+use App\Support\Version;
 use Database\Factories\UserFactory;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
@@ -117,6 +118,9 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         });
 
         static::creating(function (self $user): void {
+            // A new user has nothing to catch up on: What's new opens from the next release on (App\Support\WhatsNew)
+            $user->whats_new_version ??= Version::current();
+
             if ($user->role === UserRole::Admin && ! static::query()->admins()->where('super_admin', true)->exists()) {
                 $user->super_admin = true;
             }

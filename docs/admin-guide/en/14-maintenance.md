@@ -65,6 +65,9 @@ raises the limit.
 
 An install deployed from Git has no Update button: it is updated by deploying.
 
+After an update each admin sees **What's new** once, the next time they open the panel: what the new version
+brings, with a link to its release notes. The menu under your name → **What's new** shows it again.
+
 ## System health
 
 Settings → System → **System health** checks the PHP version and extensions, the configuration, the database, storage,

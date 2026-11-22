@@ -28,6 +28,7 @@ use App\Support\Demo;
 use App\Support\Health\PanelCache;
 use App\Support\SpaLinks;
 use App\Support\WelcomeTour;
+use App\Support\WhatsNew;
 use App\Themes\Themes;
 use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
@@ -152,6 +153,11 @@ class AdminPanelProvider extends PanelProvider
                     ->icon(Heroicon::OutlinedMap)
                     ->alpineClickHandler("\$dispatch('open-welcome-tour')")
                     ->visible(fn (): bool => WelcomeTour::enabled()),
+                Action::make('whatsNew')
+                    ->label(fn (): string => __("What's new"))
+                    ->icon(Heroicon::OutlinedGift)
+                    ->alpineClickHandler("\$dispatch('open-whats-new')")
+                    ->visible(fn (): bool => WhatsNew::enabled()),
             ])
             // Installable as an app, with push notifications (App\Http\Controllers\PwaController, App\Push\WebPush)
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => view('filament.pwa')->render())
@@ -179,6 +185,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::CONTENT_START, fn (): string => TwoFactorReminder::shows() ? Blade::render('@livewire(\'two-factor-reminder\')') : '')
             // The welcome tour: by itself on the first visit, then from the user menu → Tour (App\Support\WelcomeTour)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WelcomeTour::enabled() ? view('filament.welcome-tour', ['opensNow' => WelcomeTour::opensNow()])->render() : '')
+            // What's new: this version's highlights, once per admin after an update, then from the user menu (App\Support\WhatsNew)
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WhatsNew::enabled() ? view('filament.whats-new', ['opensNow' => WhatsNew::opensNow()])->render() : '')
             ->renderHook(PanelsRenderHook::FOOTER, fn (): string => view('filament.footer')->render())
             // The public demo: what it is and when it is put back, and the demo login on the login page (App\Support\Demo)
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => Demo::enabled() ? view('filament.demo.bar')->render() : '')
