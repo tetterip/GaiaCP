@@ -9,6 +9,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   the sidebar, plugin and log paths of other chapters corrected.
 - The plugin catalogue's update button reads **Update to <version>** (in Greek it read «Αλλαγή»).
 - WHMCS import 1.1.1: its client login problems show in the admin's language.
+- Settings → Servers and Registrars list the active ones first, whatever column they are sorted by.
 
 ## [0.12.0] - 2026-11-22
 
