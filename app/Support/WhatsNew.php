@@ -3,29 +3,28 @@
 namespace App\Support;
 
 use App\Enums\UserRole;
-use App\Filament\Resources\Services\ServiceResource;
 use App\Models\User;
+use Filament\Support\Icons\Heroicon;
 
 /**
- * What's new: after an update, a small window in /admin with this version's one or two highlights (a picture, a title,
- * a sentence and a link), resources/views/filament/whats-new.blade.php. Admins only, once each
+ * What's new: after an update, a small window in /admin with what the version is about (the first line of its short
+ * release notes, docs/release-notes/<version>.md) under a picture made from its main features, each an icon and a few
+ * words (resources/views/filament/whats-new.blade.php), and a link to the release notes. Admins only, once each
  * (`users.whats_new_version`, set when it opens), and again from the user menu → What's new. Someone who skipped
  * versions sees only the latest one's. A user added after an update starts at that version, and an admin who has not
- * had the welcome tour yet gets the tour instead, so new installs never see it.
- *
- * The highlights are written with the release's short notes (docs/release-notes/<version>.md, docs/releases.md); a
- * version without any shows nothing.
+ * had the welcome tour yet gets the tour instead, so new installs never see it. A version with nothing here shows
+ * nothing (docs/releases.md, step 2).
  */
 class WhatsNew
 {
     /**
-     * The current version's highlights; empty when it has none or the user can't open what they are about.
+     * The current version's text and features; null when it has none.
      *
-     * @return list<array{title: string, text: string, image: string|null, url: string|null, link: string|null}>
+     * @return array{summary: string, features: list<array{icon: Heroicon, label: string}>}|null
      */
-    public static function highlights(): array
+    public static function current(): ?array
     {
-        return array_values(array_filter(self::versions()[self::version()] ?? []));
+        return self::versions()[self::version()] ?? null;
     }
 
     /** Whether the signed-in user is an admin and this version has something to show them. */
@@ -33,7 +32,7 @@ class WhatsNew
     {
         $user = filament()->auth()->user();
 
-        return filament()->getId() === 'admin' && $user instanceof User && $user->role === UserRole::Admin && self::highlights() !== [];
+        return filament()->getId() === 'admin' && $user instanceof User && $user->role === UserRole::Admin && self::current() !== null;
     }
 
     /** Whether it opens by itself on this page: once per admin and version, which is noted now. */
@@ -64,25 +63,31 @@ class WhatsNew
         return explode('-', Version::current(), 2)[0];
     }
 
-    /** @return array<string, list<array{title: string, text: string, image: string|null, url: string|null, link: string|null}|null>> */
+    /** The version's release notes on GitHub. */
+    public static function notesUrl(): string
+    {
+        return Version::REPOSITORY_URL.'/releases/tag/v'.self::version();
+    }
+
+    /** @return array<string, array{summary: string, features: list<array{icon: Heroicon, label: string}>}> */
     private static function versions(): array
     {
         return [
             '0.12.0' => [
-                self::highlight(
-                    __('Quarantine'),
-                    __('Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.'),
-                    'filament.whats-new.quarantine',
-                    ServiceResource::canAccess() ? ServiceResource::getUrl(parameters: ['tab' => 'domains']) : null,
-                    __('Open Domains'),
-                ),
+                'summary' => __('Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.'),
+                'features' => [
+                    self::feature(Heroicon::OutlinedKey, __('WHMCS logins')),
+                    self::feature(Heroicon::OutlinedGift, __('Free orders in one click')),
+                    self::feature(Heroicon::OutlinedClock, __('Quarantine')),
+                    self::feature(Heroicon::OutlinedBolt, __('Speed from the panel')),
+                ],
             ],
         ];
     }
 
-    /** @return array{title: string, text: string, image: string|null, url: string|null, link: string|null} */
-    private static function highlight(string $title, string $text, ?string $image = null, ?string $url = null, ?string $link = null): array
+    /** @return array{icon: Heroicon, label: string} */
+    private static function feature(Heroicon $icon, string $label): array
     {
-        return ['title' => $title, 'text' => $text, 'image' => $image, 'url' => $url, 'link' => $url === null ? null : $link];
+        return ['icon' => $icon, 'label' => $label];
     }
 }

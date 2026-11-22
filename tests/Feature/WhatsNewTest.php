@@ -34,16 +34,16 @@ class WhatsNewTest extends TestCase
 
         $this->actingAs($admin)->get('/admin')->assertOk()
             ->assertSee('data-whats-new-now="yes"', false)
-            ->assertSee('New in 0.12.0')
-            ->assertSee('Quarantine')
+            ->assertSee('free orders activate in one click')
+            ->assertSee('WHMCS logins')
             ->assertSee('open-whats-new', false)
-            ->assertSee('tab=domains', false);
+            ->assertSee('releases/tag/v0.12.0', false);
 
         $this->assertSame('0.12.0', $admin->refresh()->whats_new_version);
 
         $this->actingAs($admin)->get('/admin')->assertOk()
             ->assertSee('data-whats-new-now="no"', false)
-            ->assertSee('New in 0.12.0');
+            ->assertSee('WHMCS logins');
     }
 
     public function test_a_new_user_starts_at_the_current_version(): void
@@ -77,7 +77,7 @@ class WhatsNewTest extends TestCase
         $this->version('0.12.0-beta.1');
 
         $this->assertSame('0.12.0', WhatsNew::version());
-        $this->assertNotEmpty(WhatsNew::highlights());
+        $this->assertNotNull(WhatsNew::current());
     }
 
     public function test_clients_never_see_it(): void

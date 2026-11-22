@@ -4323,7 +4323,9 @@
     "Order activated": "Sipariş etkinleştirildi",
     "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Sipariş tutarı :total, bu yüzden ödenecek bir şey yok. Kalemleri kurulur ve her vade tarihi bir dönem ileri gider.",
     "What's new": "Yenilikler",
-    "New in :version": "Yeni: :version",
-    "Open Domains": "Alan adlarını aç",
-    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Süresi dolmuş ama hâlâ ek süre günlerinde olan alan adları ve kısa süredir askıya alınmış barındırma artık Karantina olarak görünüyor. Barındırma ve Alan adları, etkin olanlar ve karantinadakilerle açılır; böylece hâlâ kurtarılabilecek olanlar önce gelir."
+    "Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.": "WHMCS'ten gelen müşteriler şifrelerini korur, ücretsiz siparişler tek tıkla etkinleşir ve Sistem sağlığı hızı panelden düzeltir.",
+    "WHMCS logins": "WHMCS girişleri",
+    "Free orders in one click": "Tek tıkla ücretsiz siparişler",
+    "Speed from the panel": "Panelden hız",
+    "Release notes": "Sürüm notları"
 }

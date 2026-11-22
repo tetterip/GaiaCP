@@ -556,8 +556,9 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   shows them beside what each points at (`target`: a selector or `nav:` / `navgroup:` + a menu item's URL), dimming the
   rest; on a phone it opens the side menu for menu targets, and an absent target puts the card in the middle. It opens by itself once per user and panel (`users.admin_tour_seen_at` /
   `client_tour_seen_at`, set when it opens; never while an admin looks as the client) and from the user menu → Tour.
-- What's new (admins only): `App\Support\WhatsNew::versions()` holds each release's highlights (title, sentence, an
-  image view under `resources/views/filament/whats-new/`, a link), `filament.whats-new` (`BODY_END` hook) shows the
+- What's new (admins only): `App\Support\WhatsNew::versions()` holds each release's sentence (the first line of its
+  release notes) and main features (an icon and a few words each, drawn as the window's picture), with a link to the
+  release notes on GitHub; `filament.whats-new` (`BODY_END` hook) shows the
   current version's once per admin (`users.whats_new_version`, set when it opens; new users start at the version of
   that day, and an admin's first visit gets the welcome tour instead) and from the user menu → What's new.
   Settings → Client area → Welcome tour (`client_area.welcome_tour`) turns off the client one. Users from before it

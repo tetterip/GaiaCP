@@ -4323,7 +4323,9 @@
     "Order activated": "Pedido ativado",
     "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "O pedido soma :total, então não há nada a pagar. Os itens são configurados e cada data de vencimento avança um ciclo.",
     "What's new": "Novidades",
-    "New in :version": "Novo na :version",
-    "Open Domains": "Abrir Domínios",
-    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Domínios vencidos que ainda estão nos dias de carência, e hospedagem suspensa há pouco tempo, agora aparecem como Quarentena. Hospedagem e Domínios abrem nos ativos e nos em quarentena, para que venha primeiro o que ainda pode ser salvo."
+    "Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.": "Clientes vindos do WHMCS mantêm a senha, pedidos gratuitos são ativados com um clique e Saúde do sistema corrige a velocidade pelo painel.",
+    "WHMCS logins": "Logins do WHMCS",
+    "Free orders in one click": "Pedidos gratuitos em um clique",
+    "Speed from the panel": "Velocidade pelo painel",
+    "Release notes": "Notas da versão"
 }

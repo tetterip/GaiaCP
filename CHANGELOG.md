@@ -7,9 +7,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [0.12.0] - 2026-11-22
 
-- **What's new**: after an update, each admin sees the new version's highlight once (for 0.12.0, Quarantine), and again
-  from the user menu → What's new. New installs and new admins don't get it, and an admin's first visit keeps the
-  welcome tour.
+- **What's new**: after an update, each admin sees once what the new version brings (its main features and one
+  sentence), with a link to the release notes, and again from the user menu → What's new. New
+  installs and new admins don't get it, and an admin's first visit keeps the welcome tour.
 - WHMCS import 1.1.0: clients log in to the client area with the email and password they had in WHMCS (new **Client
   logins** part; logins on, no email sent). Only WHMCS's password hash is copied; the first login stores the password
   with GaiaCP's own hash. Clients imported before get their logins by running the import again with only Client

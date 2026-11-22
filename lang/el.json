@@ -4323,7 +4323,9 @@
     "Order activated": "Η παραγγελία ενεργοποιήθηκε",
     "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Η παραγγελία κοστίζει :total, οπότε δεν υπάρχει κάτι να πληρωθεί. Τα στοιχεία της ενεργοποιούνται και κάθε λήξη προχωρά έναν κύκλο.",
     "What's new": "Τι νέο υπάρχει",
-    "New in :version": "Νέα στην έκδοση :version",
-    "Open Domains": "Άνοιγμα των Domains",
-    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Τα domains που έληξαν αλλά είναι ακόμη μέσα στις ημέρες χάριτος, και η φιλοξενία που είναι σε αναστολή για λίγο καιρό, εμφανίζονται τώρα ως Καραντίνα. Οι σελίδες Φιλοξενία και Domains ανοίγουν με τα ενεργά και όσα είναι σε καραντίνα, ώστε πρώτα να βλέπεις ό,τι μπορεί ακόμη να σωθεί."
+    "Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.": "Οι πελάτες που έρχονται από το WHMCS κρατούν τον κωδικό τους, οι δωρεάν παραγγελίες ενεργοποιούνται με ένα κλικ και η Υγεία συστήματος διορθώνει την ταχύτητα από τον πίνακα.",
+    "WHMCS logins": "Συνδέσεις από WHMCS",
+    "Free orders in one click": "Δωρεάν παραγγελίες με ένα κλικ",
+    "Speed from the panel": "Ταχύτητα από τον πίνακα",
+    "Release notes": "Σημειώσεις έκδοσης"
 }
