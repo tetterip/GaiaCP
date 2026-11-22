@@ -6,6 +6,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 ## [Unreleased]
 
 - The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
+- System health → Speed is fixed from the panel, without a terminal: **Optimize now** caches the config, routes and
+  pages, and **Use files** keeps cache and sessions in files instead of the database (everyone signs in again once).
+  On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron
+  runs), and new installs start with files and cached pages. Before, an update cleared these caches and left them
+  for you to make again.
+- In Greek, the sign-in pages' "Remember me" now reads «Να με θυμάσαι» (was «Θυμήσου με»).
 
 ## [0.11.0] - 2026-11-21
 

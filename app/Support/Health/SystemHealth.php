@@ -36,6 +36,11 @@ class SystemHealth
 {
     public const MIN_PHP = '8.3.0';
 
+    /** The Speed lines System health offers a fix for (Optimize now, Use files). */
+    public const CACHES_CHECK = 'Cached config, routes, components';
+
+    public const DRIVERS_CHECK = 'Cache and sessions';
+
     /** Extension => what needs it. Missing ones are problems. */
     public const REQUIRED_EXTENSIONS = [
         'ctype' => 'Laravel',
@@ -165,7 +170,7 @@ class SystemHealth
     /**
      * What makes each page quicker: PHP keeping GaiaCP's code compiled (OPcache; the command line usually runs without
      * it, so only the page in the browser can tell), the caches `php artisan optimize` and `filament:optimize` write
-     * (an update and the Plesk deploy run both), and cache and sessions somewhere faster than the database.
+     * (SpeedCaches: Optimize now, or the scheduler on a live site), and cache and sessions somewhere faster than the database.
      *
      * @return list<Check>
      */
@@ -181,24 +186,27 @@ class SystemHealth
             $checks[] = self::opcache(self::opcacheOn(), (int) ini_get('opcache.max_accelerated_files'), $missing);
         }
 
-        $cached = [
-            'config' => app()->configurationIsCached(),
-            'routes' => app()->routesAreCached(),
-            'events' => app()->eventsAreCached(),
-            'Filament components' => is_dir(base_path('bootstrap/cache/filament')),
-            'icons' => is_file(base_path('bootstrap/cache/blade-icons.php')),
-        ];
-        $not = array_keys(array_filter($cached, fn (bool $is) => ! $is));
-        $checks[] = $not === []
-            ? new Check('Speed', 'Cached config, routes, components', Status::Ok, 'All cached')
-            : new Check('Speed', 'Cached config, routes, components', $missing, 'Not cached: '.implode(', ', $not), 'Run php artisan optimize and php artisan filament:optimize after each deploy (an update through GaiaCP runs them itself).');
+        $caches = app(SpeedCaches::class);
+        $not = $caches->missing();
+        $failure = $caches->lastFailure();
+        $auto = $production && config('gaiacp.speed.auto_optimize', true);
+        $checks[] = match (true) {
+            $failure !== null => new Check('Speed', self::CACHES_CHECK, Status::Warning, $not === [] ? 'All cached' : 'Not cached: '.implode(', ', $not), "The last try failed: {$failure}. Fix the cause, then click Optimize now."),
+            $not !== [] => new Check('Speed', self::CACHES_CHECK, $missing, 'Not cached: '.implode(', ', $not), $auto
+                ? 'Click Optimize now to make pages quicker. GaiaCP also does it by itself within a minute while cron runs, so after an update too.'
+                : 'Click Optimize now to make pages quicker. On a live site (APP_ENV=production) cron does it by itself.'),
+            $caches->stale() => new Check('Speed', self::CACHES_CHECK, $missing, '.env changed after caching', $auto
+                ? 'The site still uses the old .env values. Cron caches them again within a minute, or click Optimize now.'
+                : 'The site still uses the old .env values. Click Optimize now.'),
+            default => new Check('Speed', self::CACHES_CHECK, Status::Ok, 'All cached'),
+        };
 
         $store = (string) config('cache.default');
         $session = (string) config('session.driver');
         $slow = array_keys(array_filter(['cache' => $store, 'sessions' => $session], fn (string $driver) => $driver === 'database'));
         $checks[] = $slow === []
-            ? new Check('Speed', 'Cache and sessions', Status::Ok, "cache: {$store}, sessions: {$session}")
-            : new Check('Speed', 'Cache and sessions', Status::Info, "cache: {$store}, sessions: {$session}", 'Each page reads the '.implode(' and ', $slow).' from the database. CACHE_STORE=file and SESSION_DRIVER=file in .env (or redis, if the server has it) save a few queries on every page; everyone is logged out once when sessions move.');
+            ? new Check('Speed', self::DRIVERS_CHECK, Status::Ok, "cache: {$store}, sessions: {$session}")
+            : new Check('Speed', self::DRIVERS_CHECK, Status::Info, "cache: {$store}, sessions: {$session}", 'Each page reads the '.implode(' and ', $slow).' from the database. Click Use files to keep them in files instead, a little quicker. Everyone signed in, you too, signs in again once.');
 
         return $checks;
     }
