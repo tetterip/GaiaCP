@@ -121,7 +121,7 @@ public RDAP / DNS records) before they order.
 
 SSL certificates are sold through the **GoGetSSL** plugin (off by default):
 
-1. Switch it on under Settings → Plugins and fill in Settings → **GoGetSSL**: your API username and password and how
+1. Switch it on under Settings → System → Plugins and fill in Settings → **GoGetSSL**: your API username and password and how
    new certificates are validated by default (DNS record, a file on the website, or email). **Test connection** shows
    your balance. Orders are paid from your GoGetSSL balance, so keep it topped up. There is no test system: to try an
    order, buy the cheapest certificate and cancel it within its refund days.

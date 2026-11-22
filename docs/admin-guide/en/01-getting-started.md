@@ -51,10 +51,11 @@ The chapters of this guide follow roughly the same order, so you can read them a
 
 The **sidebar** has five groups:
 
-- **Main**: the Dashboard, Clients, Orders, Messages to clients and Leads.
-- **Billing**: Payment notices, Quotes, Payments and Reports.
-- **Services**: Hosting, Domains and Other services, Site checks, and the Upgrade and Cancellation requests clients send.
-- **Support**: Tickets, the Knowledge base and Announcements.
+- **Main**: the Dashboard, Clients, Orders, Quotes, Leads and Messages to clients.
+- **Billing**: Payment notices, Payments, Coupons and Reports (and Invoices, once they are on).
+- **Services**: Hosting, Domains and Other services, Site checks, the Upgrade and Cancellation requests clients send,
+  and the Module queue.
+- **Support**: Tickets, the Knowledge base, Announcements, Downloads and Pages.
 - **System**: the Activity log, Settings and this Help.
 
 **Settings** (in the sidebar and in your user menu) is a page of cards in groups: General, Billing, Products & domains,

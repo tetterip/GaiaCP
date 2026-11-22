@@ -99,7 +99,10 @@ trait InstallsCataloguePlugins
     protected function installAction(string $name): Action
     {
         return Action::make($name)
-            ->label($name === 'update' ? 'Update' : 'Install')
+            // "Update" alone reads as "Αλλαγή" (edit) in Greek; the version makes it an update in every language
+            ->label(fn (?array $record = null) => $name === 'update'
+                ? __('Update to :version', ['version' => $this->row($this->cataloguePlugin($record))['version']])
+                : __('Install'))
             ->icon($name === 'update' ? 'heroicon-o-arrow-path' : 'heroicon-o-arrow-down-tray')
             ->color($name === 'update' ? 'warning' : 'primary')
             ->visible(fn (?array $record = null) => PluginInstaller::uploadsAllowed()

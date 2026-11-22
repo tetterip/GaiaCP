@@ -2,8 +2,8 @@
 
 Hosting accounts are created on your servers through their panel's API. GaiaCP works with **cPanel / WHM**, **Plesk**,
 **HestiaCP**, **DirectAdmin**, **CyberPanel**, **Virtualmin** and **Enhance**, and with **Proxmox VE** for VPS. Each panel is a plugin
-under Settings → Plugins: the first four are on from the start, the others are off until you switch them on, and you
-can switch off the ones you don't use. Servers are under Settings → Products & domains → **Servers** (super admins only).
+under Settings → System → Plugins: the first four are on from the start, CyberPanel, Virtualmin and Proxmox VE are off
+until you switch them on, Enhance comes from the plugin catalogue, and you can switch off the ones you don't use. Servers are under Settings → Products & domains → **Servers** (super admins only).
 
 ## Adding a server
 
@@ -72,14 +72,14 @@ On CyberPanel a hosting account is a **website** (the service's domain) owned by
 username; the password is that user's CyberPanel login. Packages read like `Default` (the built-in one) or `admin_Pro` (one an admin added). New websites start on the
 PHP version picked under Settings → Integrations → **CyberPanel** (PHP 8.2 unless you change it).
 
-On Virtualmin (off until you switch it on under Settings → Plugins) a hosting account is a top-level **virtual server**
+On Virtualmin (off until you switch it on under Settings → System → Plugins) a hosting account is a top-level **virtual server**
 for the service's domain, owned by a user with the service's username, on a Virtualmin **plan** (the product's package)
 with the plan's features. The password is that user's Virtualmin / Usermin login, FTP and SSH password. Suspend
 disables the virtual server; terminate deletes it with its files, mail and databases.
 
 ### Enhance
 
-Install the **Enhance** plugin from the plugin catalogue (Settings → System → Plugin catalogue), then switch it on under Settings → Plugins. The hostname is the control panel's
+Install the **Enhance** plugin from the plugin catalogue (Settings → System → Plugin catalogue), then switch it on under Settings → System → Plugins. The hostname is the control panel's
 address (e.g. `cp.example.com`). A hosting product's package is the name of an Enhance plan. Each client becomes an
 Enhance customer with a login under their email, and each hosting service a subscription to the plan with a website for
 its domain. The client has one Enhance login for all their services on that server: its password is the first
@@ -117,7 +117,7 @@ from the panel.
 
 ## VPS on Proxmox VE
 
-The **Proxmox VE** plugin is off until you switch it on under Settings → Plugins. A VPS is a hosting service on a
+The **Proxmox VE** plugin is off until you switch it on under Settings → System → Plugins. A VPS is a hosting service on a
 Proxmox server:
 
 - **Package = a template.** In Proxmox, make a KVM template with cloud-init for each plan (for example

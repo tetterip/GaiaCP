@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.1] - 2026-11-22
+
+- The client login problems of a dry run or import show in the admin's language
+
 ## [1.1.0] - 2026-11-22
 
 - Client logins: each client gets a client area login with their WHMCS email and password (WHMCS 8 users, or the

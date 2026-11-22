@@ -7,7 +7,7 @@
 
 ## Τύποι
 
-- **Φιλοξενία**: ένας λογαριασμός σε έναν από τους servers σου (cPanel / WHM, Plesk, HestiaCP, DirectAdmin). Στήσε
+- **Φιλοξενία**: ένας λογαριασμός σε έναν από τους servers σου (cPanel / WHM, Plesk, HestiaCP, DirectAdmin και τα άλλα panels). Στήσε
   πρώτα τους servers: [Servers](04-servers.md).
 - **Domain**: ένα όνομα χώρου σε έναν registrar. Τα domains τιμολογούνται ανά TLD στις Τιμές domain, όχι ως
   προϊόντα· δες [Domains και SSL](05-domains-and-ssl.md).
