@@ -6,6 +6,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 ## [Unreleased]
 
 - The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
+- Email to ticket and Webhooks now ship with GaiaCP as bundled plugins (never uninstalled, still off until switched
+  on); they used to show as uploaded on the Plugins page.
+- Slack, Discord and Telegram moved out of GaiaCP into the plugin catalogue. An update keeps them where they are
+  installed, on or off as they were, with their settings, and they update from the catalogue from then on. A Git
+  checkout loses the folders on its next pull: install them again under Settings → System → Plugin catalogue.
 - System health → Speed is fixed from the panel, without a terminal: **Optimize now** caches the config, routes and
   pages, and **Use files** keeps cache and sessions in files instead of the database (everyone signs in again once).
   On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron

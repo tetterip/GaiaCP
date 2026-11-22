@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.0.8] - 2026-11-22
+
+- Ships with GaiaCP as a bundled plugin, so it is never uninstalled; it stays off until you switch it on
+
 ## [1.0.7] - 2026-11-08
 
 - Deliveries: tick several and Resend them together

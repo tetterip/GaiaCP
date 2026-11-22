@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.4.1] - 2026-11-22
+
+- Ships with GaiaCP as a bundled plugin, so it is never uninstalled; it stays off until you switch it on
+
 ## [1.4.0] - 2026-11-20
 
 - An answer joins its ticket by the ticket's secret code in the email's In-Reply-To / References (the ticket emails now

@@ -342,7 +342,8 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   (client · domain · order · ticket · server · amount) and admin link. `gaiacp:send-chat-messages` (every minute,
   `ChatSender`) posts them, retries after 1, 5, 30 minutes, then fails with `chat.failed`, and deletes old rows
   (`debug.module_log_days`). `ChatSettingsPage` is their settings page (On switch, URL checked against the prefixes,
-  events, Send a test message). `plugins/Slack` (Block Kit mrkdwn section) and `plugins/Discord` (one embed coloured
+  events, Send a test message). The chat plugins are in the plugin catalogue (gaiacp-plugins; core tests use
+  `Tests\Support\TestChat`): `plugins/Slack` (Block Kit mrkdwn section) and `plugins/Discord` (one embed coloured
   by `ChatLine::level`, mentions off). `plugins/Telegram` is a chat plugin too: its "webhook URL" is the Bot API's
   `sendMessage` built from the encrypted `telegram.bot_token`, and the body carries `telegram.chat_id` (HTML parse
   mode). With `telegram.commands` on, saving the settings calls `setWebhook` (`POST /webhooks/telegram`, secret
