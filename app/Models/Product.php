@@ -10,6 +10,7 @@ use App\Models\Concerns\HasSale;
 use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Currencies;
 use App\Support\Locales;
+use App\Support\OrderableProducts;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -71,6 +72,9 @@ class Product extends Model
 
     protected static function booted(): void
     {
+        static::saved(fn () => OrderableProducts::flush());
+        static::deleted(fn () => OrderableProducts::flush());
+
         static::creating(function (Product $product) {
             if (! array_key_exists('client_visible', $product->getAttributes())) {
                 $product->client_visible = true;

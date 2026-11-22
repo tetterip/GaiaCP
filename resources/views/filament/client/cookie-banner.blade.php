@@ -23,18 +23,17 @@
 @if ($scripts !== null)
     <template id="gaiacp-consent-scripts">{!! $scripts !!}</template>
 @endif
-<script>
+<script @nonce>
     (() => {
         const name = @js(\App\Support\CookieConsent::COOKIE);
         const banner = document.getElementById('gaiacp-cookies');
         const read = () => (document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)')) || [])[1];
-        let loaded = false;
-
-        // The waiting scripts, run once: a <script> copied from a <template> would not run by itself
+        // The waiting scripts, run once: a <script> copied from a <template> would not run by itself. This script runs
+        // again on each page opened in SPA mode, hence the flag on window.
         const load = () => {
             const template = document.getElementById('gaiacp-consent-scripts');
-            if (loaded || ! template) return;
-            loaded = true;
+            if (window.gaiacpConsentLoaded || ! template) return;
+            window.gaiacpConsentLoaded = true;
             template.content.childNodes.forEach((node) => {
                 if (node.nodeName !== 'SCRIPT') {
                     document.body.appendChild(node.cloneNode(true));

@@ -21,6 +21,7 @@ use App\Monitoring\MonitorStatus;
 use App\Monitoring\UptimeHistory;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
+use App\Support\NavigationCount;
 use App\Support\ProductOptions;
 use BackedEnum;
 use Filament\Infolists\Components\TextEntry;
@@ -36,6 +37,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 
 use function Filament\Support\original_request;
@@ -69,14 +71,33 @@ class ServiceResource extends Resource
         ];
 
         return collect($items)->map(fn (array $item, string $kind) => NavigationItem::make($item[0])
+            ->label(new NavigationCount($item[0], fn () => self::kindQuery($kind)->count()))
             ->key(static::class.'.'.$kind)
             ->icon($item[1])
             ->group(static::getNavigationGroup())
             ->sort($item[2])
+            ->badge(fn () => self::suspendedCount($kind), 'danger')
+            ->badgeTooltip(__('Suspended'))
             ->isActiveWhen(fn (): bool => self::activeKind() === $kind)
             ->url(static::getUrl('index', ['kind' => $kind])))
             ->values()
             ->all();
+    }
+
+    /** The suspended services of a sidebar entry, its badge: they need paying (or a word with support) to come back. */
+    private static function suspendedCount(string $kind): ?string
+    {
+        $count = self::kindQuery($kind)->where('status', ServiceStatus::Suspended)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    /** @return Builder<Model> the client's services of a sidebar entry, as its list's All tab shows them */
+    private static function kindQuery(string $kind): Builder
+    {
+        return static::getEloquentQuery()
+            ->when($kind === 'hosting', fn (Builder $query) => $query->where('type', ServiceType::Hosting))
+            ->when($kind === 'other', fn (Builder $query) => $query->where('type', '!=', ServiceType::Hosting));
     }
 
     /** The sidebar entry of the current services page: its ?kind, or the type of the service being viewed. */
@@ -154,11 +175,16 @@ class ServiceResource extends Resource
                     ->color(fn (Service $record) => $record->isOverdue() ? 'danger' : null)
                     ->sortable(),
             ])
-            ->defaultSort('next_due_date')
+            // The one due first on top, terminated ones last
+            ->defaultSort(fn (Builder $query) => $query
+                ->orderByRaw('case when status = ? then 1 else 0 end', [ServiceStatus::Terminated->value])
+                ->orderBy('next_due_date'))
             ->filters([
                 SelectFilter::make('status')
                     ->options(collect(ServiceStatus::cases())->reject(fn ($s) => $s === ServiceStatus::Cancelled)
                         ->mapWithKeys(fn (ServiceStatus $s) => [$s->value => $s->getLabel()])),
+                SelectFilter::make('type')
+                    ->options(collect(ServiceType::cases())->mapWithKeys(fn (ServiceType $t) => [$t->value => $t->getLabel()])),
             ])
             // The chips over the table (ListServices) set it and show which one is on
             ->filtersLayout(FiltersLayout::Hidden)

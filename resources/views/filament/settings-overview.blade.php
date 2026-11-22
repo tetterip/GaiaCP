@@ -23,7 +23,7 @@
         .gcp-settings-none { color: var(--gray-500); font-size: .875rem; }
     </style>
 
-    {{-- Search: filters the cards by name, description and group, ignoring case and Greek accents. --}}
+    {{-- Search: filters the cards by name, description and group (in the admin's language and in English), ignoring case and Greek accents. --}}
     <div
         class="gcp-settings"
         x-data="{
@@ -35,12 +35,12 @@
         <input type="search" x-model="q" class="gcp-settings-search" placeholder="{{ __('Search settings') }}" aria-label="{{ __('Search settings') }}" autofocus />
         @php($cardGroups = $this->cards())
         @foreach ($cardGroups as $group => $cards)
-            @php($texts = $cards->map(fn (array $card) => $group.' '.$card['label'].' '.$card['description'])->values())
+            @php($texts = $cards->pluck('search')->values())
             <section x-show="@js($texts).some((text) => shows(text))">
                 <h2>{{ $group }}</h2>
                 <div class="gcp-settings-grid">
                     @foreach ($cards as $card)
-                        <a href="{{ $card['url'] }}" class="gcp-settings-card" x-show="shows(@js($group.' '.$card['label'].' '.$card['description']))">
+                        <a {{ \Filament\Support\generate_href_html($card['url']) }} class="gcp-settings-card" x-show="shows(@js($card['search']))">
                             <span class="gcp-settings-icon">
                                 <x-filament::icon :icon="$card['icon']" />
                             </span>
@@ -54,6 +54,6 @@
                 </div>
             </section>
         @endforeach
-        <p class="gcp-settings-none" x-cloak x-show="! @js($cardGroups->flatMap(fn ($cards, $group) => $cards->map(fn (array $card) => $group.' '.$card['label'].' '.$card['description']))->values()).some((text) => shows(text))">{{ __('No settings match your search.') }}</p>
+        <p class="gcp-settings-none" x-cloak x-show="! @js($cardGroups->flatten(1)->pluck('search')->values()).some((text) => shows(text))">{{ __('No settings match your search.') }}</p>
     </div>
 </x-filament-panels::page>

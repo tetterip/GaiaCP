@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Enums\ServiceType;
 use App\Filament\Actions\ChangePriceAction;
 use App\Models\Product;
+use App\Models\ProductGroup;
 use App\Models\ProductTag;
 use App\Providers\AppServiceProvider;
 use App\Support\Money;
@@ -18,6 +20,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProductsTable
 {
+    /** The Group filter's choice for products in no group (shown under "Other" on the order pages). */
+    private const NO_GROUP = 'none';
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -75,6 +80,18 @@ class ProductsTable
             ->filters([
                 TernaryFilter::make('retired')
                     ->default(false),
+                SelectFilter::make('group')
+                    ->options(fn () => ProductGroup::query()->ordered()->get()
+                        ->mapWithKeys(fn (ProductGroup $group) => [(string) $group->id => $group->name()])
+                        ->all() + [self::NO_GROUP => __('Other')])
+                    ->multiple()
+                    ->query(fn (Builder $query, array $data) => $query->when($data['values'] ?? [], fn (Builder $query, array $groups) => $query
+                        ->where(fn (Builder $q) => $q
+                            ->whereIn('product_group_id', array_diff($groups, [self::NO_GROUP]))
+                            ->when(in_array(self::NO_GROUP, $groups, true), fn (Builder $q) => $q->orWhereNull('product_group_id'))))),
+                SelectFilter::make('type')
+                    ->options(ServiceType::class)
+                    ->multiple(),
                 SelectFilter::make('tags')
                     ->options(fn () => ProductTag::options())
                     ->multiple()

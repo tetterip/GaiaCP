@@ -58,6 +58,18 @@ class ThemesTest extends TestCase
             ->assertDontSee('animation: gaia-rise .45s var(--gaia-ease) both;', false);
     }
 
+    public function test_a_table_card_does_not_cut_off_its_filters_dropdown(): void
+    {
+        // The Filters and Columns dropdowns open inside the table's header: clipping a table with a header cut the
+        // panel off under a short or empty list, and the Server filter could not be reached.
+        $this->actingAs(User::factory()->create());
+
+        $html = $this->get(Dashboard::getUrl())->assertOk()->getContent();
+
+        $this->assertStringContainsString('.fi-ta-ctn:not(.fi-ta-ctn-with-header) {', $html);
+        $this->assertDoesNotMatchRegularExpression('/\.fi-ta-ctn\s*\{\s*overflow:\s*hidden/', $html);
+    }
+
     public function test_the_header_logo_uses_the_same_hexagon_as_the_footer_mark(): void
     {
         $mark = file_get_contents(public_path('images/gaiacp/mark.svg'));
@@ -248,6 +260,26 @@ class ThemesTest extends TestCase
         $this->assertSame(Themes::find('gaia')->themeColors()['primary'], Themes::colors(Themes::find('gaia'))['primary']);
         Filament::setCurrentPanel('client');
         $this->assertSame(Color::hex('#d94f00'), Themes::colors(Themes::find('gaia'))['primary']);
+    }
+
+    public function test_standalone_pages_keep_links_and_buttons_readable_in_both_colour_schemes(): void
+    {
+        // a dark brand colour: the button text turns white, and the dark-mode link is lightened until it reads
+        config(['gaiacp.client_area.brand_color' => '#1a237e']);
+        $html = view('themes.standalone')->render();
+
+        $this->assertSame('#ffffff', Themes::textOn('#1a237e'));
+        $this->assertMatchesRegularExpression('/@media \(prefers-color-scheme: dark\) \{\s*:root \{ --link: (#[0-9a-f]{6});/', $html);
+        preg_match_all('/--link: (#[0-9a-f]{6});/', $html, $links);
+        [$light, $dark] = $links[1];
+        $theme = Themes::forClientArea()->themeStandaloneColors();
+        $this->assertSame('#1a237e', $light);
+        $this->assertGreaterThanOrEqual(4.5, Themes::contrast($dark, $theme['dark']['card']));
+
+        // a theme's light dark-mode accent: dark text on the button
+        config(['gaiacp.client_area.brand_color' => null]);
+        $this->assertSame('#111111', Themes::textOn($theme['dark']['accent']));
+        $this->assertStringContainsString('--on-accent: #111111;', view('themes.standalone')->render());
     }
 
     public function test_client_area_settings_save_the_brand_colour(): void

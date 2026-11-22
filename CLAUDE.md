@@ -91,6 +91,8 @@ Read the file for the area you are changing before you change it; don't read the
 - `php artisan gaiacp:retry-module-queue [--dry-run]`: retry the failed set ups, unsuspends and overdue suspensions of
   Services → Module queue (every 15 minutes, Settings → Automation → Retry failed actions times, then one bell)
 - `php artisan gaiacp:health [--connections]`: the System health checks; fails when one is a problem
+- `php artisan gaiacp:optimize`: cache config, routes and Filament's components (System health → Optimize now; on a live
+  site the scheduler runs it within a minute when one is missing or .env changed, `GAIACP_AUTO_OPTIMIZE`)
 - `php artisan gaiacp:disable-2fa <email>`: turn off two-factor authentication for an admin who lost their app and
   recovery codes
 - `php artisan gaiacp:admin-ips [--clear]`: show, or empty after a lock-out, the addresses allowed to open /admin

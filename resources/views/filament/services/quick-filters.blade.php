@@ -2,7 +2,7 @@
      its count in the open tab) and payment notices (HasStatusChips, which passes its own dots). In Filament's colours,
      so they work with any theme or none. --}}
 @php
-    $dots ??= ['active' => 'success', 'suspended' => 'danger', 'pending' => 'warning', 'due_soon' => 'primary'];
+    $dots ??= ['active' => 'success', 'quarantine' => 'danger', 'suspended' => 'danger', 'pending' => 'warning', 'due_soon' => 'primary'];
 @endphp
 <div class="gx-chips" role="group" aria-label="{{ __('Quick filters') }}">
     @foreach ($filters as $key => $filter)

@@ -29,6 +29,7 @@ use App\Models\User;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Support\ClientFields;
+use App\Support\ConnectionChanges;
 use App\Support\Currencies;
 use App\Support\DomainName;
 use App\Support\Locales;
@@ -146,8 +147,19 @@ class WhmcsImport
     /** While a left-out part runs: link what is already here, create and count nothing. */
     private bool $linkOnly = false;
 
-    /** @param  list<string>|null  $parts  PARTS keys to import; null = all */
+    /**
+     * Servers it adds send no "login added" email to the super admins (ConnectionChanges): the admin started the import,
+     * and a dry run saves nothing.
+     *
+     * @param  list<string>|null  $parts  PARTS keys to import; null = all
+     */
     public function run(bool $dryRun = false, ?array $parts = null): WhmcsImportReport
+    {
+        return ConnectionChanges::quietly(fn () => $this->import($dryRun, $parts));
+    }
+
+    /** @param  list<string>|null  $parts */
+    private function import(bool $dryRun, ?array $parts): WhmcsImportReport
     {
         $this->parts = $parts === null ? array_keys(self::PARTS) : array_values(array_intersect(array_keys(self::PARTS), $parts));
         $this->report = new WhmcsImportReport($dryRun, $this->parts);

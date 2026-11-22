@@ -16,13 +16,16 @@ comparing plain numbers. To release:
      request with the release's notable features, merged when the release is published. The version number itself
      comes from GitHub, so it needs no edit.
 2. Set `VERSION` to the new number and move the `## [Unreleased]` notes in `CHANGELOG.md` under
-   `## [<version>] - <date>`; merge that to `main`.
+   `## [<version>] - <date>`. Write the release's short notes in `docs/release-notes/<version>.md`: one line on what
+   the version is about, then **New**, **Security**, **Fixed** and **Before you update**, a few plain lines each,
+   for people deciding whether to update (the changelog keeps every detail). Merge that to `main`.
 3. On GitHub: Releases → Draft a new release → a new tag `v<version>` (or `<version>`) on `main` → Publish. Pushing the
    tag from Git (`git tag v0.2.0 && git push origin v0.2.0`) works too.
 
 The Release workflow (`.github/workflows/release.yml`) then runs the tests, checks the tag matches `VERSION`, builds
 `gaiacp-<version>.zip` with `bin/build-release.sh` and attaches it with a SHA-256 checksum to the tag's release (created
-with the changelog section as notes when the tag was pushed without one). Actions → Release → Run workflow with a tag
+with those short notes and a link to the changelog, or the changelog section when there are none, when the tag was
+pushed without notes). Actions → Release → Run workflow with a tag
 rebuilds an existing tag's zip. The zip holds the code with its production dependencies (`vendor/`) and Filament's assets, without
 tests or dev files, so a server needs neither Composer nor Git. `bin/build-release.sh` builds the same zip locally
 (into `build/`) from the committed code.

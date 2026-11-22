@@ -17,7 +17,7 @@ Met **passkeys** logt u in met uw vingerafdruk, gezicht of schermvergrendeling i
 In uw profiel (het menu met uw naam, onderaan het menu of rechtsboven) wijzigt u uw e-mailadres, telefoonnummer, taal en wachtwoord, en kunt u tweestapsverificatie aanzetten voor extra veiligheid.
 
 <!-- if:notifications -->
-De **bel** bovenaan de pagina laat zien wat er is gebeurd sinds u voor het laatst keek: een nieuw betalingsverzoek, een betalingsherinnering of achterstandsmelding, een betaling die we hebben ontvangen, een dienst die klaar, opgeschort of beëindigd is, een domein dat binnenkort wordt verlengd, een nieuwe prijs, ons antwoord op uw ticket of op een verzoek. Een getal erop toont hoeveel u nog niet hebt gelezen; druk op een melding om de pagina ervan te openen. Op een telefoon of tablet veegt u een melding naar links of rechts om die te verwijderen. Wilt u ze niet meer, zet dan **Meldingen** uit in uw profiel. We blijven u zoals voorheen e-mailen.
+De **bel** bovenaan de pagina laat zien wat er is gebeurd sinds u voor het laatst keek: een nieuw betalingsverzoek, een betalingsherinnering of achterstandsmelding, een betaling die we hebben ontvangen, een dienst die klaar, opgeschort of beëindigd is, een domein dat binnenkort wordt verlengd, een nieuwe prijs, ons antwoord op uw ticket of op een verzoek. Een getal erop toont hoeveel u nog niet hebt gelezen; druk op een melding om de pagina ervan te openen. Veeg een melding naar links of rechts om die te verwijderen, met uw vinger of door hem met de muis te slepen. Wilt u ze niet meer, zet dan **Meldingen** uit in uw profiel. We blijven u zoals voorheen e-mailen.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,11 +36,13 @@ De eerste keer dat u inlogt, laat een korte rondleiding zien wat u hier kunt doe
 
 ## Home
 
-Home toont wat u moet betalen, hoeveel diensten actief zijn en wat als eerste wordt verlengd, met een link naar elk. Onze mededelingen, zoals gepland werk aan uw server, verschijnen bovenaan Home zolang ze van toepassing zijn.
+Home toont wat u moet betalen, met een knop **Betalen** bij elk betalingsbericht (of één regel dat alles is betaald), uw diensten met een knop die u aanmeldt bij het controlepaneel van elk hostingaccount, en wat als eerste wordt verlengd; een domein dat niet automatisch wordt verlengd, is daar gemarkeerd. Onze mededelingen, zoals gepland werk aan uw server, verschijnen bovenaan Home zolang ze van toepassing zijn. Wanneer iets op u wacht (een achterstallig betalingsbericht, een opgeschorte dienst, een antwoord op uw ticket, een offerte, een te valideren SSL-certificaat, een domein dat bijna eindigt, een account dicht bij zijn limiet), toont Home het eerst onder **Wacht op u**, elk met de knop die het afhandelt. De kaart **Support** toont uw open tickets en wie aan de beurt is, en u kunt direct vanaf Home naar een domeinnaam zoeken. Totdat u een eerste dienst hebt, toont Home **Begin hier** met onze populaire producten.
 
 ## Diensten en domeinen
 
 **Diensten** toont uw hosting en andere diensten met hun status, prijs en volgende vervaldatum. Het menu verdeelt ze in **Hosting** en **Andere diensten**. De pagina van een hostingaccount toont de betaalperiode en heeft een knop **Website openen**. **Domeinen** toont uw domeinen met hun verloopdatum, nameservers en of ze automatisch worden verlengd. Hebt u diensten met meer dan één status, dan tonen de knoppen boven elke lijst alleen die met één status (Actief, Opgeschort, …), met hoeveel het er zijn. Eenmalig werk, zoals het verhuizen van uw website, wordt één keer in rekening gebracht en verschijnt als **Voltooid** nadat u het hebt betaald.
+
+De knoppen boven elke lijst lichten ook uit wat aandacht vraagt: bij **Domeinen** de domeinen die binnenkort verlopen, die niet automatisch worden verlengd en elke extensie (.gr, .com, …) als u er meer dan één hebt; bij **Andere diensten** elk soort dienst. Domeinen en diensten staan met de eerst vervallende bovenaan. Een getal naast **Betalingsverzoeken**, **Hosting**, **Andere diensten** of **Domeinen** in het menu betekent dat er iets op u wacht: onbetaalde verzoeken, opgeschorte diensten of domeinen die binnenkort verlopen zonder automatische verlenging. Het kleine grijze getal aan het eind van de regels **Hosting**, **Andere diensten** en **Domeinen** geeft gewoon aan hoeveel u er hebt. Bij **Domeinen** toont elk domein zijn nameservers onder de naam, en een domein dat binnen 30 dagen afloopt toont onder de datum hoeveel dagen er nog zijn. Vink meerdere domeinen aan om hun nameservers te wijzigen of automatisch verlengen voor allemaal tegelijk aan of uit te zetten (als we u dat toestaan).
 
 <!-- if:hosting -->
 Bij een actief hostingaccount kunt u:
@@ -148,7 +150,7 @@ Wanneer we u een offerte sturen, ontvangt u een e-mail met een link ernaartoe, e
 
 ## Tegoed
 
-**Tegoed** toont uw tegoed en de geschiedenis ervan. Om tegoed te storten, drukt u op **Tegoed storten** en voert u een bedrag in: we maken er een betalingsverzoek voor aan, dat u betaalt zoals elk ander. Zodra het is betaald, wordt het bedrag aan uw tegoed toegevoegd. U kunt tegoed storten zodra u een actieve dienst hebt.
+**Tegoed** toont uw tegoed en de geschiedenis ervan. Zolang u tegoed hebt, toont het menu het bedrag in grijs naast **Tegoed**. Om tegoed te storten, drukt u op **Tegoed storten** en voert u een bedrag in: we maken er een betalingsverzoek voor aan, dat u betaalt zoals elk ander. Zodra het is betaald, wordt het bedrag aan uw tegoed toegevoegd. U kunt tegoed storten zodra u een actieve dienst hebt.
 
 Tegoed betaalt uw betalingsverzoeken regel voor regel: een regel (de verlenging van een dienst) wordt alleen betaald als uw tegoed hem volledig dekt, en wat het niet dekt, blijft op het verzoek staan om zoals gewoonlijk te betalen.
 <!-- if:credit_auto -->
@@ -162,7 +164,11 @@ Om het te gebruiken, opent u een onbetaald betalingsverzoek en drukt u op **Beta
 <!-- if:orders -->
 ## Bestellen
 
-**Domein zoeken** (in het menu, na Domeinen) vindt een naam voor u: typ hem (mijnwinkel, of mijnwinkel.gr) en u ziet hem met elke extensie die we registreren, of hij vrij of bezet is, en de prijs. **In winkelwagen** zet een vrije naam in de winkelwagen (**Met SSL** voegt er ook een certificaat voor toe, als we dat aanbieden); voor een naam die van u is maar ergens anders staat, opent **Van mij: verhuizen** de bestelling voor de verhuizing. Mogelijk wordt u eerst gevraagd te bevestigen dat u geen robot bent. “Waarschijnlijk beschikbaar” betekent dat het register op dat moment niet kon worden bevraagd; we controleren het opnieuw wanneer we de naam registreren. Als we het aanbieden, toont **Andere namen voorstellen** onder de resultaten vrije namen die op de uwe lijken, voorgesteld door AI, met dezelfde extensie.
+**Domein zoeken** (in het menu, na Domeinen) vindt een naam voor u: typ hem (mijnwinkel, of mijnwinkel.gr) en u ziet hem met elke extensie die we registreren, of hij vrij of bezet is, en de prijs. **In winkelwagen** zet een vrije naam in de winkelwagen (**Met SSL** voegt er ook een certificaat voor toe, als we dat aanbieden); voor een naam die van u is maar ergens anders staat, opent **Van mij: verhuizen** de bestelling voor de verhuizing. Mogelijk wordt u eerst gevraagd te bevestigen dat u geen robot bent. “Waarschijnlijk beschikbaar” betekent dat het register op dat moment niet kon worden bevraagd; we controleren het opnieuw wanneer we de naam registreren. Als we het aanbieden, toont **Andere namen voorstellen** onder de resultaten vrije namen die op de uwe lijken, voorgesteld door AI, met dezelfde extensie. Nog geen naam? Als we het aanbieden, beschrijf dan uw bedrijf in een paar woorden in hetzelfde vak (zoals "een banketbakkerij in Thessaloniki"): AI stelt vrije namen voor, elk met de prijs. Wat u typt gaat naar de AI-dienst, zonder e-mailadressen of telefoonnummers.
+
+<!-- if:domain_spotlight -->
+De extensies die de meeste klanten kiezen (zoals .gr en .com) staan bovenaan, als grotere kaarten, en hun prijzen staan al onder het zoekvak voordat u zoekt.
+<!-- endif -->
 
 <!-- if:domain_prices -->
 **Bekijk de prijzen van elke domeinextensie** onder het zoekvak toont elke extensie die we verkopen met de prijs voor registreren, verhuizen en verlengen.
@@ -170,7 +176,7 @@ Om het te gebruiken, opent u een onbetaald betalingsverzoek en drukt u op **Beta
 
 **Bestelling** toont wat u kunt bestellen; **Een nieuwe dienst bestellen** boven uw Diensten opent het ook (**Een domein bestellen** boven uw Domeinen opent domein zoeken). Verkopen we meerdere soorten diensten, kies dan eerst de soort (zoals gedeelde hosting of een VPS, of domeinnamen), daarna een pakket: **Pakketten vergelijken** eronder toont naast elkaar wat elk pakket omvat, met de prijs per betaalperiode, en de knoppen **Kiezen** kiezen ook een pakket. Badges naast de naam van een pakket (zoals Populair of Nieuw) wijzen op wat we aanraden of wat nieuw is. Kies een dienst en de betaalperiode, en eventuele opties die hij biedt (zoals een locatie of extra IP-adressen); elke optie toont wat ze aan de prijs toevoegt. Add-ons ervoor (zoals dagelijkse back-ups) kunt u hieronder aanvinken; ze staan op hetzelfde betalingsverzoek en worden er samen mee verlengd. Geef bij hosting aan of u het domein al hebt, een nieuw wilt registreren of er een wilt verhuizen dat u elders hebt (daarvoor hebt u de EPP-code nodig). U kunt ook los een domein bestellen, met een SSL-certificaat ervoor als we dat aanbieden (vink het aan onder het domein). Zodra u een domein typt om te registreren of te verhuizen, ziet u ernaast of het vrij is; een bezet domein kan alleen worden verhuisd, en een nog niet geregistreerd domein alleen geregistreerd.
 
-Druk op **In winkelwagen** en de **Winkelwagen** opent (het winkelwagenpictogram bovenaan elke pagina opent hem ook, met het aantal items erin). Druk op **Iets anders bestellen** om meer toe te voegen, zoals twee domeinen en drie hostingpakketten, of op de prullenbak naast een item om het eruit te halen. Alles in de winkelwagen wordt één bestelling met één betalingsverzoek.
+Druk op **In winkelwagen** en de winkelwagen opent aan de zijkant van de pagina, zodat u verder kunt kiezen; het winkelwagenpictogram bovenaan elke pagina opent hem ook, met het aantal artikelen. Daar kunt u de betaalperiode van een artikel wijzigen of voor hoeveel jaar een domein wordt geregistreerd, met de prijs van elke keuze, of het verwijderen met de prullenbak. **Afrekenen** opent de pagina **Winkelwagen**, waar u een opmerking toevoegt en de bestelling plaatst; **Iets anders bestellen** voegt meer toe, zoals twee domeinen en drie hostingpakketten. Alles in de winkelwagen wordt één bestelling met één betalingsverzoek.
 
 Heeft u een **kortingscode**, typ die dan in de winkelwagen: u ziet wat er afgaat voordat u de bestelling plaatst (een link met een code vult hem voor u in). Een kortingscode kan alleen de eerste betaling verlagen of ook elke verlenging, en verlaagt nooit installatiekosten.
 
@@ -214,7 +220,11 @@ Onder Ondersteuning → **Downloads** vindt u bestanden die we met u delen, zoal
 <!-- if:tickets -->
 ## Supporttickets
 
-Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen.
+Onder Support → Tickets gebruikt u **Een ticket openen** om ons iets te vragen: kies de afdeling en de dienst waarover het gaat, schrijf uw vraag en voeg bestanden toe, zoals schermafbeeldingen. We antwoorden op het ticket en per e-mail; druk op **Reageren** om terug te schrijven. Sluit het als u niets meer nodig hebt. Een gesloten ticket gaat weer open als u reageert, en een ticket dat we hebben beantwoord, sluit vanzelf als we een paar dagen niets van u horen. Het grijze getal naast **Tickets** in het menu geeft aan hoeveel van uw tickets niet gesloten zijn; het gekleurde, hoeveel we hebben beantwoord en op u wachten.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Als een van uw diensten niet meer werkt (uw website of e-mail ligt eruit), zet dan **Dringend** aan wanneer u het ticket opent en kies die dienst: wij krijgen meteen bericht. Dringende tickets zijn beperkt per maand, bewaar ze dus voor wat niet kan wachten; het formulier toont hoeveel u er nog heeft.
 <!-- endif -->
 <!-- if:ticket_mail -->
 U kunt onze ticketmails ook vanuit uw eigen mailbox beantwoorden: uw antwoord wordt aan het ticket toegevoegd, met de bijgevoegde bestanden. Een e-mail die u naar ons supportadres stuurt, opent een nieuw ticket.

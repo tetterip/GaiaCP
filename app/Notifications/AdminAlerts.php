@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Enums\AdminArea;
+use App\Enums\TicketPriority;
 use App\Enums\UserRole;
 use App\Filament\Clusters\Settings\Pages\BackupSettings;
 use App\Filament\Pages\PluginCatalogue;
@@ -453,12 +454,16 @@ class AdminAlerts
             return [null, null, '', '', null];
         }
 
+        $urgent = $log->event === 'ticket.opened' && $ticket->priority === TicketPriority::Urgent;
+
         return [
-            $log->event === 'ticket.opened'
-                ? __('New ticket :number', ['number' => $ticket->number])
-                : __('Client replied to :number', ['number' => $ticket->number]),
+            match (true) {
+                $urgent => __('Urgent ticket :number', ['number' => $ticket->number]),
+                $log->event === 'ticket.opened' => __('New ticket :number', ['number' => $ticket->number]),
+                default => __('Client replied to :number', ['number' => $ticket->number]),
+            },
             Str::limit(trim($ticket->requesterName().': '.$ticket->subject, ': '), 160),
-            'heroicon-o-lifebuoy', $log->event === 'ticket.opened' ? 'info' : 'warning',
+            $urgent ? 'heroicon-o-exclamation-triangle' : 'heroicon-o-lifebuoy', $urgent ? 'danger' : ($log->event === 'ticket.opened' ? 'info' : 'warning'),
             TicketResource::getUrl('view', ['record' => $ticket], panel: 'admin'),
         ];
     }

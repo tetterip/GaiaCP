@@ -247,6 +247,22 @@ trait OrderForm
         return OrderCatalogue::groups($this->groupKey($get));
     }
 
+    /**
+     * The form's state for ClientOrder: in the domain names group the product cards are hidden (so not in the state),
+     * and the choice is "A domain name only".
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function orderState(array $data): array
+    {
+        if (($data['group'] ?? null) === OrderCatalogue::DOMAINS) {
+            $data['product'] = ClientOrder::DOMAIN_ONLY;
+        }
+
+        return $data;
+    }
+
     /** The chosen group, else the one of the chosen product (a link or a form filled in with only the product). */
     private function groupKey(Get $get): ?string
     {

@@ -32,8 +32,14 @@ class RecordPaymentAction
             ->icon(Heroicon::OutlinedBanknotes)
             ->color('success')
             // A pending item already paid (its order's notice, say) waits for set up, not for another cycle's payment.
-            ->visible(fn (Service $record) => ($record->status === ServiceStatus::Pending && ! self::paid($record))
-                || (self::renewable($record) && self::due($record)));
+            ->visible(fn (Service $record) => self::payable($record));
+    }
+
+    /** Whether make() shows for the service: a pending one not paid yet, or an active / suspended one that owes or is near its due date. */
+    public static function payable(Service $record): bool
+    {
+        return ($record->status === ServiceStatus::Pending && ! self::paid($record))
+            || (self::renewable($record) && self::due($record));
     }
 
     /** A client who pays the next cycle before anything is owed (in the service page's Price menu). */

@@ -17,7 +17,7 @@ As **chaves de acesso** fazem você entrar com sua digital, rosto ou bloqueio de
 Seu perfil (o menu com o seu nome, no fim do menu ou no canto superior direito) altera seu endereço de e-mail, telefone, idioma e senha, e pode ativar a autenticação em dois fatores para mais segurança.
 
 <!-- if:notifications -->
-O **sino** no topo da página mostra o que aconteceu desde a última vez que você olhou: um novo aviso de pagamento, um lembrete de pagamento ou aviso de atraso, um pagamento que recebemos, um serviço pronto, suspenso ou encerrado, um domínio prestes a renovar, um novo preço, nossa resposta ao seu ticket ou a uma solicitação. Um número nele mostra quantas você ainda não leu; clique em uma para abrir a página dela. No celular ou tablet, deslize uma para a esquerda ou para a direita para removê-la. Para não recebê-las, desative **Notificações** no seu perfil. Continuamos enviando e-mails como antes.
+O **sino** no topo da página mostra o que aconteceu desde a última vez que você olhou: um novo aviso de pagamento, um lembrete de pagamento ou aviso de atraso, um pagamento que recebemos, um serviço pronto, suspenso ou encerrado, um domínio prestes a renovar, um novo preço, nossa resposta ao seu ticket ou a uma solicitação. Um número nele mostra quantas você ainda não leu; clique em uma para abrir a página dela. Deslize uma para a esquerda ou para a direita para removê-la, com o dedo ou arrastando-a com o mouse. Para não recebê-las, desative **Notificações** no seu perfil. Continuamos enviando e-mails como antes.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,11 +36,13 @@ No primeiro acesso, um breve tour mostra o que você pode fazer aqui. O menu com
 
 ## Início
 
-O Início mostra o que você tem a pagar, quantos serviços estão ativos e o que renova em seguida, com um link para cada item. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem.
+O Início mostra o que você tem a pagar, com um botão **Pagar** em cada aviso de pagamento (ou uma linha dizendo que tudo está pago), seus serviços com um botão que faz o login no painel de controle de cada conta de hospedagem, e o que renova em seguida; um domínio que não renova automaticamente aparece marcado ali. Nossos comunicados, como trabalhos planejados no seu servidor, aparecem no topo do Início enquanto valem. Quando algo aguarda você (um aviso de pagamento vencido, um serviço suspenso, uma resposta ao seu ticket, um orçamento, um certificado SSL para validar, um domínio prestes a terminar, uma conta perto do limite), o Início mostra isso primeiro em **Aguardando você**, cada item com o botão que o resolve. O cartão **Suporte** mostra seus tickets abertos e de quem é a vez, e você pode procurar um nome de domínio direto do Início. Até ter um primeiro serviço, o Início mostra **Comece aqui** com nossos produtos populares.
 
 ## Serviços e domínios
 
 **Serviços** lista sua hospedagem e outros serviços com status, preço e próximo vencimento. O menu os divide em **Hospedagem** e **Outros serviços**. A página de uma conta de hospedagem mostra o ciclo de cobrança e tem um botão **Abrir site**. **Domínios** lista seus domínios com a data de expiração, os nameservers e se renovam automaticamente. Quando você tem serviços em mais de um status, os botões acima de cada lista mostram só os de um status (Ativo, Suspenso, …), com a quantidade. Um trabalho feito uma vez, como mudar o seu site, é cobrado uma vez e aparece como **Concluído** depois que você o paga.
+
+Os botões acima de cada lista também destacam o que precisa de atenção: em **Domínios**, os que vencem em breve, os que não renovam automaticamente e cada extensão (.gr, .com, …) quando você tem mais de uma; em **Outros serviços**, cada tipo de serviço. Domínios e serviços aparecem com o que vence primeiro no topo. Um número ao lado de **Avisos de pagamento**, **Hospedagem**, **Outros serviços** ou **Domínios** no menu significa que algo espera por você: avisos não pagos, serviços suspensos ou domínios que vencem em breve sem renovação automática. O pequeno número cinza no fim das linhas **Hospedagem**, **Outros serviços** e **Domínios** mostra apenas quantos você tem ali. Em **Domínios**, cada domínio mostra seus servidores de nomes abaixo do nome, e um que vence em até 30 dias mostra abaixo da data quantos dias faltam. Marque vários domínios para mudar os servidores de nomes ou ativar ou desativar a renovação automática de todos de uma vez (quando permitimos que você os altere).
 
 <!-- if:hosting -->
 Em uma conta de hospedagem ativa, você pode:
@@ -148,7 +150,7 @@ Quando enviamos um orçamento, você recebe um e-mail com um link para ele, e **
 
 ## Crédito
 
-**Crédito** mostra o seu saldo de crédito e o histórico dele. Para adicionar fundos, clique em **Adicionar fundos** e informe um valor: criamos um aviso de pagamento para ele, que você paga como qualquer outro. Depois de pago, o valor é adicionado ao seu crédito. Você pode adicionar fundos quando tiver um serviço ativo.
+**Crédito** mostra o seu saldo de crédito e o histórico dele. Enquanto você tiver crédito, o menu mostra o valor em cinza ao lado de **Crédito**. Para adicionar fundos, clique em **Adicionar fundos** e informe um valor: criamos um aviso de pagamento para ele, que você paga como qualquer outro. Depois de pago, o valor é adicionado ao seu crédito. Você pode adicionar fundos quando tiver um serviço ativo.
 
 O crédito paga seus avisos de pagamento uma linha por vez: uma linha (a renovação de um serviço) só é paga quando o seu crédito a cobre por inteiro, e o que ele não cobre continua no aviso para ser pago normalmente.
 <!-- if:credit_auto -->
@@ -162,7 +164,11 @@ Para usá-lo, abra um aviso de pagamento não pago e clique em **Pagar com créd
 <!-- if:orders -->
 ## Como pedir
 
-**Pesquisa de domínios** (no menu, depois de Domínios) encontra um nome para você: digite-o (minhaloja ou minhaloja.gr) e você o vê com cada terminação que registramos, se está disponível ou indisponível, e o preço. **Adicionar ao carrinho** coloca um disponível no carrinho (**Com SSL** também adiciona um certificado para ele, quando oferecemos); para um que é seu, mas está em outro lugar, **É meu: transferir** abre o pedido de transferência. Talvez você precise antes confirmar que não é um robô. “Provavelmente disponível” significa que não foi possível consultar o registro naquele momento; verificamos de novo ao registrá-lo. Quando oferecemos, **Sugerir outros nomes** abaixo dos resultados lista nomes disponíveis próximos ao seu, sugeridos por IA, com a mesma terminação.
+**Pesquisa de domínios** (no menu, depois de Domínios) encontra um nome para você: digite-o (minhaloja ou minhaloja.gr) e você o vê com cada terminação que registramos, se está disponível ou indisponível, e o preço. **Adicionar ao carrinho** coloca um disponível no carrinho (**Com SSL** também adiciona um certificado para ele, quando oferecemos); para um que é seu, mas está em outro lugar, **É meu: transferir** abre o pedido de transferência. Talvez você precise antes confirmar que não é um robô. “Provavelmente disponível” significa que não foi possível consultar o registro naquele momento; verificamos de novo ao registrá-lo. Quando oferecemos, **Sugerir outros nomes** abaixo dos resultados lista nomes disponíveis próximos ao seu, sugeridos por IA, com a mesma terminação. Ainda sem nome? Quando oferecemos, descreva seu negócio em poucas palavras na mesma caixa (como "uma confeitaria em Tessalônica"): a IA sugere nomes livres, cada um com o preço. O que você digita é enviado ao serviço de IA, sem e-mails nem telefones.
+
+<!-- if:domain_spotlight -->
+As terminações que a maioria dos clientes escolhe (como .gr e .com) aparecem primeiro, em cartões maiores, e seus preços aparecem abaixo da caixa de pesquisa antes de pesquisar.
+<!-- endif -->
 
 <!-- if:domain_prices -->
 **Veja os preços de todas as terminações de domínio**, abaixo da caixa de pesquisa, lista cada terminação que vendemos com o preço para registrar, transferir e renovar.
@@ -170,7 +176,7 @@ Para usá-lo, abra um aviso de pagamento não pago e clique em **Pagar com créd
 
 **Pedido** mostra o que você pode pedir; **Pedir um novo serviço**, acima dos seus Serviços, também o abre (**Pedir um domínio**, acima dos seus Domínios, abre a pesquisa de domínios). Quando vendemos vários tipos de serviço, escolha primeiro o tipo (como hospedagem compartilhada ou uma VPS, ou nomes de domínio) e depois um pacote: **Comparar pacotes**, abaixo deles, mostra lado a lado o que cada um inclui, com o preço para cada período de cobrança, e os botões **Escolher** dela também escolhem um pacote. Os selos ao lado do nome de um pacote (como Popular ou Novo) indicam o que recomendamos ou o que é novo. Escolha um serviço e o período de cobrança, e as opções que ele oferecer (como uma localização ou endereços IP extras); cada opção mostra quanto acrescenta ao preço. Os complementos dele (como backups diários) podem ser marcados abaixo; eles ficam no mesmo aviso de pagamento e renovam junto com ele. Para hospedagem, diga se você já tem o domínio, se quer registrar um novo ou mover um que tem em outro lugar (você precisa do código EPP dele). Você também pode pedir só um domínio, com um certificado SSL para ele quando oferecemos (marque-o abaixo do domínio). Assim que você digita um domínio para registrar ou transferir, vê ao lado se ele está disponível; um domínio indisponível só pode ser transferido, e um ainda não registrado só pode ser registrado.
 
-Clique em **Adicionar ao carrinho** e o **Carrinho** abre (o ícone do carrinho no topo de todas as páginas também o abre, com a quantidade de itens). Clique em **Pedir outra coisa** para adicionar mais, como dois domínios e três pacotes de hospedagem, ou na lixeira ao lado de um item para retirá-lo. Tudo o que está no carrinho vira um único pedido, com um único aviso de pagamento.
+Clique em **Adicionar ao carrinho** e o carrinho abre na lateral da página, para você continuar escolhendo; o ícone do carrinho no topo de cada página também o abre, com quantos itens há nele. Ali você pode mudar o ciclo de cobrança de um item ou por quantos anos um domínio é registrado, com o preço de cada opção, ou removê-lo com a lixeira. **Finalizar pedido** abre a página **Carrinho**, onde você adiciona uma observação e faz o pedido; **Pedir outra coisa** adiciona mais, como dois domínios e três planos de hospedagem. Tudo no carrinho vira um pedido com um aviso de pagamento.
 
 Se você tem um **código de cupom**, digite-o no carrinho: você vê quanto ele desconta antes de fazer o pedido (um link com um código o preenche para você). Um cupom pode reduzir só o primeiro pagamento ou também cada renovação, e nunca reduz uma taxa de configuração.
 
@@ -214,7 +220,11 @@ Em Suporte → **Downloads** você encontra arquivos que compartilhamos com voc�
 <!-- if:tickets -->
 ## Tickets de suporte
 
-Em Suporte → Tickets, use **Abrir um ticket** para nos perguntar qualquer coisa: escolha o departamento e o serviço a que se refere, escreva sua pergunta e anexe arquivos, como capturas de tela. Respondemos no ticket e por e-mail; clique em **Responder** nele para escrever de volta. Feche-o quando não precisar de mais nada. Um ticket fechado é reaberto se você responder, e um que respondemos fecha sozinho quando não temos notícias suas por alguns dias.
+Em Suporte → Tickets, use **Abrir um ticket** para nos perguntar qualquer coisa: escolha o departamento e o serviço a que se refere, escreva sua pergunta e anexe arquivos, como capturas de tela. Respondemos no ticket e por e-mail; clique em **Responder** nele para escrever de volta. Feche-o quando não precisar de mais nada. Um ticket fechado é reaberto se você responder, e um que respondemos fecha sozinho quando não temos notícias suas por alguns dias. O número cinza ao lado de **Tickets** no menu mostra quantos dos seus tickets não estão fechados; o colorido, quantos respondemos e esperam por você.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Se um serviço seu parou de funcionar (seu site ou e-mail caiu), ative **Urgente** ao abrir o ticket e escolha esse serviço: somos avisados na hora. Os tickets urgentes são poucos por mês, então guarde-os para o que não pode esperar; o formulário mostra quantos ainda restam.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Você também pode responder aos nossos e-mails de tickets pela sua própria caixa de e-mail: sua resposta é adicionada ao ticket, com os arquivos anexados. Um e-mail que você envia para o nosso endereço de suporte abre um novo ticket.

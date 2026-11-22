@@ -23,7 +23,10 @@ use App\Http\Middleware\SetLocale;
 use App\Livewire\PanelNotifications;
 use App\Livewire\TwoFactorReminder;
 use App\Plugins\PluginManager;
+use App\Support\ContentWidth;
 use App\Support\Demo;
+use App\Support\Health\PanelCache;
+use App\Support\SpaLinks;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
 use Filament\Actions\Action;
@@ -51,10 +54,14 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // A cached page list naming a plugin page that is gone (or missing a new one) is dropped before ->id() reads it
+        PanelCache::forgetIfStale('admin', app(PluginManager::class)->pages());
+
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
+            ->maxContentWidth(fn () => ContentWidth::current())
             ->login(Login::class)
             // "Forgot password?" link: an email with a reset link to admins who can log in (2FA still asked after)
             ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
@@ -69,6 +76,9 @@ class AdminPanelProvider extends PanelProvider
             ->requiresMultiFactorAuthentication(fn (): bool => ! Demo::enabled())
             ->multiFactorAuthenticationRequiredMiddlewareName(RequireAdminTwoFactor::class)
             ->brandName('GaiaCP')
+            // A link to another page of this panel swaps only the page, fetched while the pointer rests on it (SpaLinks)
+            ->spa(hasPrefetching: true)
+            ->spaUrlExceptions(fn (): array => SpaLinks::exceptions('admin'))
             // GaiaCP's own brand here (public/images/gaiacp); the company logo is for the client area only.
             ->brandLogo(fn (): string => asset('images/gaiacp/logo.svg'))
             ->darkModeBrandLogo(fn (): string => asset('images/gaiacp/logo-dark.svg'))
@@ -102,7 +112,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('60s')
             // The bell rings once when unread notifications appear: on the first page of the visit, and when more arrive
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.bell-ring')->render() : '')
-            // Swipe a notification away on a touch screen (the bell's list and pop-ups)
+            // Swipe a notification away, by touch or mouse (the bell's list and pop-ups)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.notification-swipe')->render())
             // The theme says whether the admin's menu is in the top bar or at the foot of the sidebar
             ->userMenu(position: fn () => Themes::userMenuPosition())

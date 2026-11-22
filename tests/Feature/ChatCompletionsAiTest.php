@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Plugins\PluginManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use Plugins\Claude\ClaudeSettings;
@@ -58,7 +59,7 @@ class ChatCompletionsAiTest extends TestCase
 
         Http::assertSent(fn (Request $request) => $request->url() === 'https://api.deepseek.com/chat/completions'
             && $request->header('Authorization') === ['Bearer sk-deep']
-            && $request['model'] === 'deepseek-chat'
+            && $request['model'] === 'deepseek-flash'
             && $request['max_tokens'] === 8192
             && $request['messages'][0]['role'] === 'system' && str_contains($request['messages'][0]['content'], 'Fix the spelling')
             && $request['messages'][1] === ['role' => 'user', 'content' => "<text>\npls try port 587\n</text>"]);
@@ -125,6 +126,25 @@ class ChatCompletionsAiTest extends TestCase
             ->fillForm(['deepseek' => ['model' => 'deepseek-chat']])
             ->callAction('testConnection')
             ->assertNotified('Connected: deepseek-chat');
+    }
+
+    public function test_an_empty_model_field_asks_a_model_the_key_has(): void
+    {
+        $this->assertSame('deepseek-flash', (new DeepSeekPlugin)->model(), 'before Test connection: the first suggested');
+
+        // A newer key: no deepseek-chat any more
+        Http::fake(['api.deepseek.com/models' => Http::response(['object' => 'list', 'data' => [['id' => 'deepseek-v4-pro'], ['id' => 'deepseek-v4-lite']]])]);
+
+        Livewire::test(DeepSeekSettings::class)
+            ->fillForm(['deepseek' => ['api_key' => 'sk-typed', 'model' => '']])
+            ->callAction('testConnection')
+            ->assertNotified('Connected: deepseek-v4-pro');
+
+        $this->assertSame('deepseek-v4-pro', (new DeepSeekPlugin)->model(), 'the first suggested one the key has');
+
+        // None of the suggested ones: the first the key has
+        Cache::put('gaiacp.ai_models.deepseek', ['deepseek-v9'], now()->addHour());
+        $this->assertSame('deepseek-v9', (new DeepSeekPlugin)->model());
     }
 
     public function test_settings_are_saved_and_new_installs_start_with_it_off(): void

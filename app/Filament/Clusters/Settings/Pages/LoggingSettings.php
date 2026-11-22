@@ -61,7 +61,7 @@ class LoggingSettings extends SettingsFormPage
             ->statePath('data')
             ->components([
                 Section::make(__('Module log'))
-                    ->description(__('Every request GaiaCP sends to cPanel/WHM, Plesk, HestiaCP, DirectAdmin, easy.gr, Enom and ΑΑΔΕ, with the reply, as in WHMCS. Passwords, API tokens and EPP codes are masked.'))
+                    ->description(__('Every request GaiaCP sends to server panels, registrars and other services, with the reply, as in WHMCS. Passwords, API tokens and EPP codes are masked.'))
                     ->columns(2)
                     ->schema([
                         Toggle::make('debug.module_log')

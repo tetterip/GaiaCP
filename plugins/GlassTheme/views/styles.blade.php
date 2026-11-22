@@ -674,7 +674,7 @@
         }
     }
 </style>
-<script>
+<script @nonce>
     // The top bar takes its frosted background only once the page has scrolled (html.glass-scrolled)
     (() => {
         const root = document.documentElement;

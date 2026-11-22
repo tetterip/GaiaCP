@@ -50,29 +50,10 @@ class DomainSelfService
             ->fillForm(fn (Service $record) => collect(range(1, 4))
                 ->mapWithKeys(fn (int $i) => ["ns{$i}" => $record->registration()->nameservers[$i - 1] ?? null])
                 ->all())
-            ->schema([
-                Grid::make(2)->schema(collect(range(1, 4))->map(fn (int $i) => TextInput::make("ns{$i}")
-                    ->label(__('Nameserver :number', ['number' => $i]))
-                    ->required($i <= 2)
-                    ->maxLength(253)
-                    ->rule(fn (Get $get) => function (string $attribute, $value, Closure $fail) use ($get, $i) {
-                        if (filled($value) && ! DomainName::isNameserver((string) $value)) {
-                            $fail(__('Enter a name like ns1.example.com.'));
-
-                            return;
-                        }
-
-                        $earlier = array_map(fn (int $j) => strtolower(rtrim(trim((string) $get("ns{$j}")), '.')), $i > 1 ? range(1, $i - 1) : []);
-
-                        if (filled($value) && in_array(strtolower(rtrim(trim($value), '.')), $earlier, true)) {
-                            $fail(__('This nameserver is already in the list.'));
-                        }
-                    })
-                )->all()),
-            ])
+            ->schema(self::nameserverFields())
             ->modalSubmitActionLabel(__('Save'))
             ->action(function (Service $record, array $data, $livewire) {
-                $nameservers = array_values(array_filter(array_map(fn (int $i) => rtrim(trim((string) ($data["ns{$i}"] ?? '')), '.'), range(1, 4))));
+                $nameservers = self::nameserversFrom($data);
 
                 try {
                     app(DomainLifecycle::class)->setNameservers($record, $nameservers);
@@ -88,6 +69,40 @@ class DomainSelfService
                     ->success()->send();
                 $livewire->record->refresh();
             });
+    }
+
+    /** @return list<mixed> the four nameserver fields (two required), also used to change several domains at once */
+    public static function nameserverFields(): array
+    {
+        return [
+            Grid::make(2)->schema(collect(range(1, 4))->map(fn (int $i) => TextInput::make("ns{$i}")
+                ->label(__('Nameserver :number', ['number' => $i]))
+                ->required($i <= 2)
+                ->maxLength(253)
+                ->rule(fn (Get $get) => function (string $attribute, $value, Closure $fail) use ($get, $i) {
+                    if (filled($value) && ! DomainName::isNameserver((string) $value)) {
+                        $fail(__('Enter a name like ns1.example.com.'));
+
+                        return;
+                    }
+
+                    $earlier = array_map(fn (int $j) => strtolower(rtrim(trim((string) $get("ns{$j}")), '.')), $i > 1 ? range(1, $i - 1) : []);
+
+                    if (filled($value) && in_array(strtolower(rtrim(trim($value), '.')), $earlier, true)) {
+                        $fail(__('This nameserver is already in the list.'));
+                    }
+                })
+            )->all()),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $data  the fields of nameserverFields()
+     * @return list<string>
+     */
+    public static function nameserversFrom(array $data): array
+    {
+        return array_values(array_filter(array_map(fn (int $i) => rtrim(trim((string) ($data["ns{$i}"] ?? '')), '.'), range(1, 4))));
     }
 
     private static function eppCode(): Action

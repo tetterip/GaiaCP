@@ -59,11 +59,11 @@ The **sidebar** has five groups:
 
 **Settings** (in the sidebar and in your user menu) is a page of cards in groups: General, Billing, Products & domains,
 Client area, Support, Email & notifications, Integrations, AI assistant, Security, System and Logs. Its search box finds a setting by
-name. Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
+name, in your language or in English ("plugin" finds Plugins whatever language the panel is in). Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
 
 The **top bar** has the search (press `/` or Ctrl/⌘ + K: clients, services and domains, leads, quotes and tickets), a link
-that opens the client area in a new tab, **New order**, and the **bell**. On a phone or
-tablet, swipe a notification left or right to remove it.
+that opens the client area in a new tab, **New order**, and the **bell**. Swipe a notification
+left or right to remove it, with a finger or by dragging it with the mouse or trackpad.
 
 Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a page (`g c` Clients, `g d` Dashboard),
 `n` then a letter starts a new record. If you use speech input, or the single keys get in your way, turn them off in
@@ -109,19 +109,43 @@ Your user menu → Profile is yours alone:
 
 ## The dashboard
 
-The dashboard shows what needs you today: the open balance (what clients owe, what is past due and due in 7 days),
+Across the top are the day's numbers: the income recorded today, new orders, new clients and the tickets waiting for
+us, each next to yesterday's and opening its list (you see the ones for the areas you can open).
+
+Under them the dashboard shows what needs you today: the open balance (what clients owe, which notices are past due
+or fall due in 7 days, and what the renewals of the next 30 days should bring, which opens the Income forecast report),
 orders and income over time, the renewals coming up, your servers with their accounts and uptime, the support tickets
 waiting for an answer and **Needs attention**, the day's to-do list: cron stopped, servers down, pending orders,
 cancellation and upgrade requests, client change requests, tickets waiting for a reply over 24 hours, leads to contact
 today, overdue notices and those due today, domains to check at the registrar (auto renew on and the registrar's expiry
-within 14 days, or well before the date they are paid up to), sent quotes ending within 3 days, and failed panel or
-registrar calls. Each line opens what it is about and goes away once that is dealt with; when nothing waits, the card
-is not shown at all.
+within 14 days, or well before the date they are paid up to), sent quotes ending within 3 days, and what failed in
+the last 3 days (panel or registrar calls, backups, emails, updates), one line per kind with how many there were.
+Each line opens what it is about and goes away once that is dealt with; when nothing waits, the card is not shown at
+all. The urgent lines (red) come first. It shows its first six lines; **Show … more** unfolds the rest. The card
+starts across the top, over both columns, with its lines in two columns on a wide screen.
 
-The cards sit in two columns of the same width, each filling down on its own so a short card leaves no gap under it;
-on a phone the first column comes first, then the second. To move a card, drag it by the handle at the middle of its
-top edge (it shows when you point at the card) to another place in its column or into the other one, or focus the
-handle and press the arrow keys (left and right change column); the new layout is saved at once. **Show / hide cards** picks which cards show, and **Back to the default** there puts the order and
+Three of its lines have a button for the one thing that needs no choice: **Complete it** on the pending orders
+(each item on the registrar and server it would get by itself, as the bulk action of the Orders list does; open the
+order instead when you want to pick them), **Retry** on the module queue (every open item except terminations, which
+ask for your password in the queue) and **Reply** on the waiting tickets, which opens the one that waited longest.
+The rest of the line still opens its list.
+
+**Recent activity** shows the last eight payments, orders, new clients, cancellations and ticket replies from the
+Activity log, newest first; the buttons over it show one kind only. You see it when you can open the Activity log.
+
+On the **Servers** card each server has its status dot and, with monitoring, its uptime over 30 days beside its name;
+a server whose accounts reach 85% of its maximum is marked **Nearly full**, and **Full** at the maximum.
+
+**Renewals** lists the seven most urgent services that are overdue or due in the next 30 days, in groups (past due, in
+7 days, later), with what each costs and its due date. A row opens the service, the button at its end records its
+payment, and **All services** opens the whole list.
+
+The cards sit in a row across the top and, under it, two columns of the same width, each filling down on its own so
+a short card leaves no gap under it; on a phone the top row comes first, then the first column, then the second. To
+move a card, drag it by the handle at the middle of its top edge (it shows when you point at the card) to another
+place in its column, into the other one or into the row across the top (a dashed box shows there while you drag, when
+it is empty), or focus the handle and press the arrow keys (left and right change column, up from the top of a column
+goes to the top row); the new layout is saved at once. **Show / hide cards** picks which cards show, and **Back to the default** there puts the order and
 the hidden cards back. The layout is yours; other admins keep theirs. Admins with fewer rights see only the cards for
 the areas they can open.
 

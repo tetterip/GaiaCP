@@ -2,6 +2,7 @@
 
 use App\Plugins\PluginManager;
 use App\Support\Demo;
+use App\Support\Health\SpeedCaches;
 use Illuminate\Console\Scheduling\Schedule as Scheduler;
 use Illuminate\Support\Facades\Schedule;
 
@@ -45,6 +46,14 @@ Schedule::command('gaiacp:daily-summary')
 Schedule::command('gaiacp:compare-servers')
     ->dailyAt('04:30')
     ->withoutOverlapping(720)
+    ->onOneServer();
+
+// System health → Speed: caches config, routes and Filament's components again when one is missing (an update clears
+// them) or .env changed since; live sites only (SpeedCaches::shouldAutoBuild(), a few file checks each minute)
+Schedule::command('gaiacp:optimize')
+    ->everyMinute()
+    ->when(fn () => app(SpeedCaches::class)->shouldAutoBuild())
+    ->withoutOverlapping(10)
     ->onOneServer();
 
 // Messages to clients: the next few emails every minute, so no queue worker is needed

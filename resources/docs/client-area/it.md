@@ -17,7 +17,7 @@ Le **passkey** ti fanno accedere con impronta, volto o blocco schermo invece del
 Il Suo profilo (il menu con il Suo nome, in fondo al menu o in alto a destra) permette di cambiare indirizzo email, numero di telefono, lingua e password, e di attivare l'autenticazione a due fattori per una maggiore sicurezza.
 
 <!-- if:notifications -->
-La **campanella** in cima alla pagina Le indica cosa è successo dall'ultima volta che ha guardato: un nuovo avviso di pagamento, un promemoria di pagamento o un avviso di ritardo, un pagamento che abbiamo ricevuto, un servizio pronto, sospeso o terminato, un dominio in rinnovo, un nuovo prezzo, la nostra risposta al Suo ticket o a una richiesta. Un numero indica quante non ha ancora letto; ne prema una per aprirne la pagina. Su telefono o tablet, ne trascini una a sinistra o a destra per rimuoverla. Per non riceverle più, disattivi **Notifiche** nel Suo profilo. Continueremo comunque a inviarLe le email come prima.
+La **campanella** in cima alla pagina Le indica cosa è successo dall'ultima volta che ha guardato: un nuovo avviso di pagamento, un promemoria di pagamento o un avviso di ritardo, un pagamento che abbiamo ricevuto, un servizio pronto, sospeso o terminato, un dominio in rinnovo, un nuovo prezzo, la nostra risposta al Suo ticket o a una richiesta. Un numero indica quante non ha ancora letto; ne prema una per aprirne la pagina. Ne trascini una a sinistra o a destra per rimuoverla, con il dito o con il mouse. Per non riceverle più, disattivi **Notifiche** nel Suo profilo. Continueremo comunque a inviarLe le email come prima.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,11 +36,13 @@ Al primo accesso, un breve tour mostra cosa può fare qui. Il menu con il suo no
 
 ## Home
 
-La Home mostra quanto deve pagare, quanti servizi sono attivi e cosa si rinnova per primo, con un link a ciascuno. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi.
+La Home mostra quanto deve pagare, con un pulsante **Paga** su ogni avviso di pagamento (o una riga che dice che tutto è pagato), i Suoi servizi con un pulsante che La collega al pannello di controllo di ogni account di hosting, e cosa si rinnova per primo; un dominio che non si rinnova automaticamente è segnalato lì. I nostri annunci, come lavori programmati sul Suo server, appaiono in cima alla Home finché sono validi. Quando qualcosa attende te (un avviso di pagamento scaduto, un servizio sospeso, una risposta al tuo ticket, un preventivo, un certificato SSL da convalidare, un dominio che sta per terminare, un account vicino al limite), la Home lo mostra per primo sotto **In attesa di te**, ciascuno con il pulsante che lo risolve. La scheda **Supporto** mostra i tuoi ticket aperti e a chi tocca, e puoi cercare un nome di dominio direttamente dalla Home. Finché non hai un primo servizio, la Home mostra **Inizia qui** con i nostri prodotti più popolari.
 
 ## Servizi e domini
 
 **Servizi** elenca il Suo hosting e gli altri servizi con stato, prezzo e prossima scadenza. Il menu li divide in **Hosting** e **Altri servizi**. La pagina di un account hosting mostra il suo ciclo di fatturazione e ha un pulsante **Apri sito web**. **Domini** elenca i Suoi domini con data di scadenza, nameserver e se si rinnovano automaticamente. Quando ha servizi in più di uno stato, i pulsanti sopra ogni elenco mostrano solo quelli in uno stato (Attivo, Sospeso, …), con il loro numero. Un lavoro svolto una volta, come lo spostamento del Suo sito web, viene addebitato una volta e appare come **Completato** dopo il pagamento.
+
+I pulsanti sopra ogni elenco evidenziano anche ciò che richiede attenzione: in **Domini**, quelli in scadenza, quelli che non si rinnovano automaticamente e ogni estensione (.gr, .com, …) quando ne ha più di una; in **Altri servizi**, ogni tipo di servizio. Domini e servizi sono elencati con quello in scadenza per primo in alto. Un numero accanto a **Avvisi di pagamento**, **Hosting**, **Altri servizi** o **Domini** nel menu significa che qualcosa La aspetta: avvisi non pagati, servizi sospesi o domini in scadenza senza rinnovo automatico. Il piccolo numero grigio alla fine delle righe **Hosting**, **Altri servizi** e **Domini** indica semplicemente quanti ne ha. In **Domini**, ogni dominio mostra i suoi nameserver sotto il nome, e uno in scadenza entro 30 giorni mostra sotto la data quanti giorni mancano. Selezioni più domini per cambiarne i nameserver o attivare o disattivare il rinnovo automatico per tutti insieme (quando Le permettiamo di modificarli).
 
 <!-- if:hosting -->
 Su un account hosting attivo può:
@@ -148,7 +150,7 @@ Quando Le inviamo un preventivo, riceve un'email con un link, e **Preventivi** (
 
 ## Credito
 
-**Credito** mostra il saldo del Suo credito e la sua cronologia. Per aggiungere fondi, prema **Aggiungi fondi** e inserisca un importo: creiamo un avviso di pagamento, che paga come qualsiasi altro. Una volta pagato, l'importo viene aggiunto al Suo credito. Può aggiungere fondi quando ha un servizio attivo.
+**Credito** mostra il saldo del Suo credito e la sua cronologia. Finché ha del credito, il menu mostra l'importo in grigio accanto a **Credito**. Per aggiungere fondi, prema **Aggiungi fondi** e inserisca un importo: creiamo un avviso di pagamento, che paga come qualsiasi altro. Una volta pagato, l'importo viene aggiunto al Suo credito. Può aggiungere fondi quando ha un servizio attivo.
 
 Il credito paga i Suoi avvisi di pagamento una riga alla volta: una riga (il rinnovo di un servizio) viene pagata solo quando il credito la copre per intero, e ciò che non copre resta sull'avviso da pagare come di consueto.
 <!-- if:credit_auto -->
@@ -162,7 +164,11 @@ Per usarlo, apra un avviso di pagamento non pagato e prema **Paga con il credito
 <!-- if:orders -->
 ## Ordinare
 
-**Ricerca dominio** (nel menu, dopo Domini) trova un nome per Lei: lo digiti (ilmionegozio, o ilmionegozio.it) e lo vedrà con ogni estensione che registriamo, se è libero o già registrato, e il suo prezzo. **Aggiungi al carrello** mette nel carrello uno libero (**Con SSL** aggiunge anche un certificato, quando lo offriamo); per uno che è Suo ma si trova altrove, **È mio: trasferirlo** apre l'ordine per il trasferimento. Potrebbe esserLe chiesto prima di confermare di non essere un robot. “Probabilmente disponibile” significa che in quel momento non è stato possibile interrogare il registro; lo verifichiamo di nuovo al momento della registrazione. Quando lo offriamo, **Suggerisci altri nomi** sotto i risultati elenca nomi liberi simili al Suo, suggeriti dall'IA, con la stessa estensione.
+**Ricerca dominio** (nel menu, dopo Domini) trova un nome per Lei: lo digiti (ilmionegozio, o ilmionegozio.it) e lo vedrà con ogni estensione che registriamo, se è libero o già registrato, e il suo prezzo. **Aggiungi al carrello** mette nel carrello uno libero (**Con SSL** aggiunge anche un certificato, quando lo offriamo); per uno che è Suo ma si trova altrove, **È mio: trasferirlo** apre l'ordine per il trasferimento. Potrebbe esserLe chiesto prima di confermare di non essere un robot. “Probabilmente disponibile” significa che in quel momento non è stato possibile interrogare il registro; lo verifichiamo di nuovo al momento della registrazione. Quando lo offriamo, **Suggerisci altri nomi** sotto i risultati elenca nomi liberi simili al Suo, suggeriti dall'IA, con la stessa estensione. Non ha ancora un nome? Quando lo offriamo, descriva la sua attività in poche parole nella stessa casella (come «una pasticceria a Salonicco»): l'IA suggerisce nomi liberi, ciascuno con il prezzo. Ciò che scrive viene inviato al servizio di IA, senza email né numeri di telefono.
+
+<!-- if:domain_spotlight -->
+Le estensioni scelte dalla maggior parte dei clienti (come .gr e .com) compaiono per prime, in schede più grandi, e i loro prezzi si vedono sotto la casella di ricerca prima di cercare.
+<!-- endif -->
 
 <!-- if:domain_prices -->
 **Veda i prezzi di ogni estensione di dominio** sotto la casella di ricerca elenca ogni estensione che vendiamo con il suo prezzo di registrazione, trasferimento e rinnovo.
@@ -170,7 +176,7 @@ Per usarlo, apra un avviso di pagamento non pagato e prema **Paga con il credito
 
 **Ordine** mostra cosa può ordinare; anche **Ordina un nuovo servizio** sopra i Suoi Servizi lo apre (**Ordina un dominio** sopra i Suoi Domini apre la ricerca dominio). Quando vendiamo più tipi di servizio, scelga prima il tipo (come hosting condiviso o VPS, o nomi di dominio), poi un pacchetto: **Confronta i pacchetti** sotto di essi mostra affiancato cosa include ciascuno, con il prezzo per ogni periodo di fatturazione, e i suoi pulsanti **Scegli** selezionano anche un pacchetto. I badge accanto al nome di un pacchetto (come Popolare o Nuovo) indicano cosa consigliamo o cosa è nuovo. Scelga un servizio e il suo periodo di fatturazione, e le eventuali opzioni offerte (come una località o indirizzi IP aggiuntivi); ogni opzione mostra quanto aggiunge al prezzo. Gli add-on (come i backup giornalieri) si possono spuntare sotto; sono sullo stesso avviso di pagamento e si rinnovano insieme al servizio. Per l'hosting, indichi se ha già il dominio, se vuole registrarne uno nuovo o trasferirne uno che ha altrove (serve il suo codice EPP). Può anche ordinare un dominio da solo, con un certificato SSL quando lo offriamo (lo spunti sotto il dominio). Una volta digitato un dominio da registrare o trasferire, vede accanto se è libero; un dominio già registrato può solo essere trasferito, e uno non ancora registrato solo registrato.
 
-Prema **Aggiungi al carrello** e si apre il **Carrello** (lo apre anche l'icona del carrello in cima a ogni pagina, con il numero di articoli). Prema **Ordina qualcos'altro** per aggiungere altro, come due domini e tre piani di hosting, o il cestino accanto a un articolo per toglierlo. Tutto ciò che è nel carrello diventa un unico ordine con un unico avviso di pagamento.
+Prema **Aggiungi al carrello** e il carrello si apre a lato della pagina, così può continuare a scegliere; lo apre anche l'icona del carrello in cima a ogni pagina, con il numero di articoli. Lì può cambiare il ciclo di fatturazione di un articolo o per quanti anni registrare un dominio, con il prezzo di ogni scelta, o toglierlo con il cestino. **Vai alla cassa** apre la pagina **Carrello**, dove aggiunge una nota ed effettua l'ordine; **Ordina qualcos'altro** ne aggiunge altri, come due domini e tre piani hosting. Tutto ciò che è nel carrello diventa un unico ordine con un unico avviso di pagamento.
 
 Se ha un **codice coupon**, lo inserisca nel carrello: vedrà quanto sconta prima di inviare l'ordine (un link con un codice lo compila per Lei). Un coupon può ridurre solo il primo pagamento oppure anche ogni rinnovo, e non riduce mai un costo di attivazione.
 
@@ -214,7 +220,11 @@ In Supporto → **Download** trovi i file che condividiamo con te, come guide e 
 <!-- if:tickets -->
 ## Ticket di supporto
 
-In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno.
+In Supporto → Ticket, **Apri un ticket** per chiederci qualsiasi cosa: scelga il reparto e il servizio a cui si riferisce, scriva la Sua domanda e alleghi file come screenshot. Rispondiamo sul ticket e via email; prema **Rispondi** per scriverci di nuovo. Lo chiuda quando non ha bisogno di altro. Un ticket chiuso si riapre se risponde, e uno a cui abbiamo risposto si chiude da solo se non riceviamo Sue notizie per qualche giorno. Il numero grigio accanto a **Ticket** nel menu indica quanti Suoi ticket non sono chiusi; quello colorato, quanti abbiamo risposto e aspettano Lei.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Se un Suo servizio ha smesso di funzionare (il sito o l'email non vanno), attivi **Urgente** quando apre il ticket e scelga quel servizio: veniamo avvisati subito. I ticket urgenti sono pochi ogni mese, quindi li tenga per ciò che non può aspettare; il modulo mostra quanti gliene restano.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Può anche rispondere alle email dei nostri ticket dalla Sua casella di posta: la Sua risposta viene aggiunta al ticket, con i file allegati. Un'email inviata al nostro indirizzo di supporto apre un nuovo ticket.

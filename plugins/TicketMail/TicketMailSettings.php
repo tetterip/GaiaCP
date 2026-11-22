@@ -197,6 +197,13 @@ class TicketMailSettings extends SettingsFormPage
                             ])
                             ->selectablePlaceholder(false)
                             ->helperText(__('Anyone can write a client\'s address as the sender. The mail server that receives it checks it (DMARC, DKIM, SPF): confirmed is safer, but email from a client whose domain has no such records then opens a ticket without a client.')),
+                        TextInput::make('ticket_mail.trusted_servers')
+                            ->label('Our mail server\'s name')
+                            ->placeholder('mx.example.com')
+                            ->maxLength(255)
+                            ->rule('regex:/^[A-Za-z0-9.\-_,;\s]*$/')
+                            ->columnSpanFull()
+                            ->helperText(__('The name at the start of the Authentication-Results header your mail server (or mail provider) adds, before the first ";" (open a received email\'s source to see it); several separated by commas. Set, only that header can confirm a sender, so a sender can\'t confirm themselves with a header of their own. Empty: the topmost header counts, which is safe only when your mail server always adds its own.')),
                         TextInput::make('ticket_mail.max_per_hour')
                             ->label('New tickets per sender in an hour')
                             ->numeric()
@@ -218,6 +225,8 @@ class TicketMailSettings extends SettingsFormPage
         $values['ticket_mail.folder'] = filled($values['ticket_mail.folder'] ?? null) ? trim($values['ticket_mail.folder']) : 'INBOX';
         $values['ticket_mail.department_id'] = filled($values['ticket_mail.department_id'] ?? null) ? (int) $values['ticket_mail.department_id'] : null;
         $values['ticket_mail.max_per_hour'] = (int) ($values['ticket_mail.max_per_hour'] ?? 10);
+        $values['ticket_mail.trusted_servers'] = filled($names = preg_split('/[\s,;]+/', strtolower((string) ($values['ticket_mail.trusted_servers'] ?? '')), -1, PREG_SPLIT_NO_EMPTY))
+            ? implode(', ', array_unique($names)) : null;
 
         return $values;
     }

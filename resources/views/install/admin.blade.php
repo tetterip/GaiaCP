@@ -48,7 +48,7 @@
             @endunless
             <div class="hint">{{ __('New clients start in the country. Prices are entered in the base currency, which can\'t change once there are prices; more currencies can be added under Settings → Currencies. The rest can be changed later under Settings → General.') }}</div>
         </fieldset>
-        <script>
+        <script @nonce>
             (() => {
                 const select = document.getElementById('timezone');
                 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;

@@ -267,7 +267,9 @@
         box-shadow: 0 0 0 1px var(--theme-line) !important;
     }
 
-    .fi-ta-ctn {
+    /* Clip a table's corners only when it has no header, as Filament does: the header holds the Filters and Columns
+       dropdowns, which a clipped card cuts off (the Server filter out of reach under a short or empty list) */
+    .fi-ta-ctn:not(.fi-ta-ctn-with-header) {
         overflow: hidden;
     }
 

@@ -128,6 +128,43 @@ class TicketMailTest extends TestCase
         $this->assertNull(Ticket::query()->where('email', 'stranger@example.net')->sole()->client_id);
     }
 
+    public function test_an_answer_needs_the_tickets_secret_unless_the_mail_server_confirmed_the_sender(): void
+    {
+        $ticket = app(Tickets::class)->openFromEmail($this->client, 'nikos@example.com', 'Nikos', 'Email down', 'Help');
+        $other = app(Tickets::class)->openFromEmail($this->client, 'nikos@example.com', 'Nikos', 'Other', 'Help');
+        $host = parse_url((string) config('app.url'), PHP_URL_HOST);
+
+        // Each ticket has its own secret in its thread headers
+        $this->assertMatchesRegularExpression('/^ticket-'.$ticket->id.'\.[0-9a-f]{16}@/', $ticket->emailThreadId());
+        $this->assertNotSame($ticket->emailToken(), $other->emailToken());
+        $this->assertSame(['id' => $ticket->id, 'signed' => true], Ticket::fromEmailReferences(['<ticket-'.$ticket->id.'@'.$host.'>', '<'.$ticket->newEmailMessageId().'>']));
+        $this->assertSame(['id' => $other->id, 'signed' => false], Ticket::fromEmailReferences(['<ticket-'.$other->id.'.'.$ticket->emailToken().'@'.$host.'>']));
+
+        // The client's address with only the number (subject, a bare or borrowed id), unconfirmed by the mail server:
+        // a new ticket, marked for the admins, never an answer in theirs
+        foreach ([[], ['In-Reply-To' => '<ticket-'.$ticket->id.'@'.$host.'>'], ['References' => '<ticket-'.$ticket->id.'.'.$other->emailToken().'@'.$host.'>']] as $headers) {
+            [$outcome] = $this->process($this->email('nikos@example.com', "Re: [{$ticket->number}] Email down", 'Let me in', $headers));
+            $this->assertSame(InboundMail::OPENED, $outcome);
+        }
+        $this->assertSame(1, $ticket->messages()->count());
+        $this->assertTrue(Ticket::query()->latest('id')->first()->messages()->sole()->sender_unconfirmed);
+
+        // With the ticket's secret it joins, still marked as unconfirmed
+        $this->assertSame([InboundMail::REPLIED, $ticket->number],
+            $this->process($this->email('nikos@example.com', 'Re: Email down', 'Still down', ['References' => '<'.$ticket->emailThreadId().'>'])));
+        $this->assertTrue($ticket->messages()->get()->last()->sender_unconfirmed);
+
+        Filament::setCurrentPanel('admin');
+        $this->actingAs($this->admin);
+        Livewire::test(ViewTicket::class, ['record' => $ticket->getRouteKey()])->assertSee('Sender not confirmed');
+
+        // A sender the mail server confirmed may answer by the subject's number, unmarked
+        $confirmed = ['Authentication-Results' => 'mx.gaiacp.test; dmarc=pass header.from=example.com'];
+        $this->assertSame([InboundMail::REPLIED, $ticket->number],
+            $this->process($this->email('nikos@example.com', "Re: [{$ticket->number}] Email down", 'Works now', $confirmed)));
+        $this->assertFalse($ticket->messages()->get()->last()->sender_unconfirmed);
+    }
+
     public function test_an_unknown_sender_gets_a_ticket_an_admin_links_to_a_client(): void
     {
         $this->process($this->email('Maria Papa <maria@example.org>', 'Hosting offer', 'How much is hosting?'));

@@ -27,6 +27,8 @@ class ActivityChart extends Widget
 
     public const PERIODS = ['today', '7d', '30d', '12m'];
 
+    public const MAX_CHANGE = 999;
+
     protected static bool $isLazy = false;
 
     protected static ?int $sort = 2;
@@ -258,7 +260,8 @@ class ActivityChart extends Widget
             'periods' => self::periodLabels(),
             'income' => Money::format($income, $currency),
             'previous' => Money::format($previous, $currency),
-            'change' => $previous > 0 ? (int) round(($income - $previous) / $previous * 100) : null,
+            // No percentage against nothing, nor one past MAX_CHANGE (a first sale after a quiet month): the amounts beside it say it
+            'change' => $previous > 0 && abs($change = (int) round(($income - $previous) / $previous * 100)) <= self::MAX_CHANGE ? $change : null,
             'orders' => array_sum(array_column($series, 'orders')),
             'completed' => array_sum(array_column($series, 'completed')),
             'bars' => $bars,
@@ -266,7 +269,8 @@ class ActivityChart extends Widget
             'base' => $base,
             'line' => $line,
             'area' => $line.' L'.end($points)[0].' '.$base.' L'.$points[0][0].' '.$base.' Z',
-            'axis' => $income === 0 ? [] : array_map(fn (int $i) => Money::format(intdiv($top * (3 - $i), 3), $currency), range(0, 3)),
+            // The ticks are whole amounts, so their decimals go: "€600", not "€600.00"
+            'axis' => $income === 0 ? [] : array_map(fn (int $i) => preg_replace('/[.,]00(?!\d)/u', '', Money::format(intdiv($top * (3 - $i), 3), $currency)), range(0, 3)),
             'labels' => $labels,
         ];
     }

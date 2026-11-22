@@ -30,6 +30,99 @@
         }
     }
 
+    /* The row across the top, over both columns (where Needs attention starts): left out while it has no card, a
+       dashed place to drop one while a card is dragged */
+    .gx-top {
+        grid-column: 1 / -1;
+        min-height: 0;
+    }
+
+    .gx-top:not(:has(.gx-slot)) {
+        display: none;
+    }
+
+    .gx-dragging .gx-top:not(:has(.gx-slot)) {
+        display: flex;
+        min-height: 4rem;
+        border: 2px dashed var(--theme-line, var(--gray-300));
+        border-radius: 1rem;
+    }
+
+    .dark .gx-dragging .gx-top:not(:has(.gx-slot)) {
+        border-color: var(--theme-line, color-mix(in oklab, var(--color-white) 15%, transparent));
+    }
+
+    /* The day's numbers over the cards: four boxes in a row, two by two on a phone */
+    .gx-today {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .gx-today {
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(0, 1fr);
+            grid-template-columns: none;
+            gap: 1.5rem;
+        }
+    }
+
+    .gx-today-box {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+        min-width: 0;
+        padding: .85rem 1rem;
+        transition: box-shadow .15s ease, transform .15s ease;
+    }
+
+    a.gx-today-box:hover {
+        transform: translateY(-1px);
+    }
+
+    .gx-today-label {
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--theme-muted, var(--gray-500));
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gx-today-ico {
+        flex: none;
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .gx-today-value {
+        font-size: 1.35rem;
+        font-weight: 600;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gx-today-sub {
+        font-size: .78rem;
+        color: var(--theme-muted, var(--gray-500));
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        a.gx-today-box:hover {
+            transform: none;
+        }
+    }
+
     .gx-slot {
         position: relative;
         display: flex;
@@ -565,6 +658,34 @@
         transform: translateX(3px);
     }
 
+    /* The rows: one under the other, in two columns when the card sits in the row across the top of a wide screen */
+    .gx-att-list {
+        display: flex;
+        flex-direction: column;
+        gap: .4rem;
+    }
+
+    @media (min-width: 1024px) {
+        .gx-top .gx-att-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 1rem;
+        }
+    }
+
+    /* The balance card's last line: what the next days should bring */
+    .gx-expected {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: .75rem;
+        font-size: .85rem;
+    }
+
+    a.gx-expected:hover .gx-strong {
+        text-decoration: underline;
+    }
+
     .gx-support-counts {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -583,6 +704,200 @@
 
     .dark .gx-support-count {
         background: var(--theme-soft, color-mix(in oklab, var(--color-white) 4%, transparent));
+    }
+
+    /* Denser rows (Needs attention, Renewals, Support): a smaller icon, one line each for the title and the note */
+    .gx-compact .gx-att {
+        padding: .5rem .6rem;
+        gap: .75rem;
+    }
+
+    .gx-ico-sm {
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: .55rem;
+    }
+
+    .gx-ico-sm .gx-ico-svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .gx-compact .gx-att-text .gx-strong,
+    .gx-compact .gx-att-text .gx-muted {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* The button on a Needs attention row that does its one thing (Complete order, Retry, Reply) */
+    .gx-act {
+        flex: none;
+        padding: .25rem .7rem;
+        border-radius: 999px;
+        border: 1px solid var(--theme-line, var(--gray-200));
+        font-size: .78rem;
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--theme-accent, var(--primary-600));
+        transition: background-color .15s ease, border-color .15s ease;
+    }
+
+    .gx-act:hover,
+    .gx-act:focus-visible {
+        border-color: var(--theme-accent, var(--primary-600));
+        background: var(--theme-soft, var(--gray-50));
+    }
+
+    .dark .gx-act {
+        border-color: var(--theme-line, rgb(255 255 255 / .12));
+        color: var(--theme-accent, var(--primary-400));
+    }
+
+    .dark .gx-act:hover,
+    .dark .gx-act:focus-visible {
+        background: var(--theme-soft, color-mix(in oklab, var(--color-white) 5%, transparent));
+    }
+
+    /* Recent activity: a button per kind over the rows, one line that scrolls sideways on a phone */
+    .gx-chips {
+        display: flex;
+        gap: .4rem;
+        overflow-x: auto;
+        padding: 0 .6rem .2rem;
+        scrollbar-width: none;
+    }
+
+    .gx-chips::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gx-chip {
+        flex: none;
+        padding: .2rem .7rem;
+        border-radius: 999px;
+        border: 1px solid var(--theme-line, var(--gray-200));
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--theme-muted, var(--gray-500));
+        transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .dark .gx-chip {
+        border-color: var(--theme-line, rgb(255 255 255 / .12));
+        color: var(--theme-muted, var(--gray-400));
+    }
+
+    .gx-chip:hover,
+    .gx-chip:focus-visible {
+        border-color: var(--theme-accent, var(--primary-600));
+    }
+
+    .gx-chip.is-on,
+    .dark .gx-chip.is-on {
+        border-color: var(--theme-accent, var(--primary-600));
+        background: var(--theme-accent, var(--primary-600));
+        color: #fff;
+    }
+
+    .gx-loading {
+        opacity: .55;
+    }
+
+    .gx-activity .gx-att-text .gx-strong {
+        font-weight: 500;
+    }
+
+    /* "Show 5 more" under the first rows, "and 11 more" under the renewals */
+    .gx-more {
+        align-self: flex-start;
+        margin: .2rem .6rem 0;
+        font-size: .82rem;
+        font-weight: 600;
+        color: var(--theme-accent, var(--primary-600));
+    }
+
+    /* Renewals: a small heading per group, the amount over the date at the end of each row */
+    .gx-group {
+        margin: .6rem .6rem .1rem;
+        font-size: .72rem;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--theme-muted, var(--gray-500));
+    }
+
+    .gx-bad-text {
+        color: var(--danger-600) !important;
+    }
+
+    .dark .gx-bad-text {
+        color: var(--danger-400) !important;
+    }
+
+    .gx-row-end {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        line-height: 1.35;
+        white-space: nowrap;
+    }
+
+    .gx-row-end .gx-muted {
+        font-size: .78rem;
+    }
+
+    .gx-tnum {
+        font-variant-numeric: tabular-nums;
+    }
+
+    a.gx-att-text:hover .gx-strong {
+        color: var(--theme-accent, var(--primary-600));
+    }
+
+    /* Support: each count beside its label, a zero in grey */
+    .gx-support .gx-support-count {
+        flex-direction: row;
+        align-items: baseline;
+        gap: .5rem;
+        padding: .55rem .8rem;
+    }
+
+    .gx-support .gx-support-count .gx-mid {
+        font-size: 1.35rem;
+    }
+
+    .gx-support .gx-support-count .gx-muted {
+        font-size: .78rem;
+        line-height: 1.2;
+    }
+
+    .gx-support .gx-zero .gx-mid {
+        color: var(--theme-muted, var(--gray-400));
+    }
+
+    @media (max-width: 639px) {
+        .gx-support .gx-support-count {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+
+    /* Chart: the title on one line, the smaller period buttons beside it or, when they don't fit, under it */
+    .gx-chart .gx-title {
+        flex: none;
+        white-space: nowrap;
+    }
+
+    .gx-chart .gx-seg {
+        margin-inline-start: auto;
+    }
+
+    .gx-chart .gx-seg button {
+        min-height: 1.75rem;
+        padding: 0 .6rem;
+        font-size: .78rem;
+        white-space: nowrap;
     }
 
         @media (max-width: 639px) {

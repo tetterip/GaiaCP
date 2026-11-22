@@ -17,7 +17,7 @@ Parola yerine **Bana giriş bağlantısı gönder**'e basabilirsiniz: size bir k
 Profiliniz (menünün altında veya sağ üstte adınızın bulunduğu menü) e-posta adresinizi, telefon numaranızı, dilinizi ve parolanızı değiştirir ve ek güvenlik için iki adımlı doğrulamayı açabilir.
 
 <!-- if:notifications -->
-Sayfanın üstündeki **zil**, son baktığınızdan beri neler olduğunu söyler: yeni bir ödeme bildirimi, bir ödeme hatırlatması veya gecikme bildirimi, aldığımız bir ödeme, hazır olan, askıya alınan veya sona eren bir hizmet, yenilenmek üzere olan bir alan adı, yeni bir fiyat, destek talebinize veya bir isteğinize verdiğimiz yanıt. Üzerindeki sayı kaç tanesini okumadığınızı gösterir; sayfasını açmak için birine basın. Telefonda veya tablette, kaldırmak için birini sola ya da sağa kaydırın. Durdurmak için profilinizde **Bildirimler**'i kapatın. Size yine eskisi gibi e-posta göndeririz.
+Sayfanın üstündeki **zil**, son baktığınızdan beri neler olduğunu söyler: yeni bir ödeme bildirimi, bir ödeme hatırlatması veya gecikme bildirimi, aldığımız bir ödeme, hazır olan, askıya alınan veya sona eren bir hizmet, yenilenmek üzere olan bir alan adı, yeni bir fiyat, destek talebinize veya bir isteğinize verdiğimiz yanıt. Üzerindeki sayı kaç tanesini okumadığınızı gösterir; sayfasını açmak için birine basın. Kaldırmak için birini parmağınızla ya da fareyle sürükleyerek sola veya sağa kaydırın. Durdurmak için profilinizde **Bildirimler**'i kapatın. Size yine eskisi gibi e-posta göndeririz.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,11 +36,13 @@ Her sayfanın altındaki "Çerez ayarları" çerez seçimini yeniden gösterir, 
 
 ## Ana sayfa
 
-Ana sayfa ne ödemeniz gerektiğini, kaç hizmetin etkin olduğunu ve sırada neyin yenileneceğini, her birine bir bağlantıyla gösterir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür.
+Ana sayfa ne ödemeniz gerektiğini, her ödeme bildiriminde bir **Öde** düğmesiyle (ya da her şeyin ödendiğini söyleyen tek bir satırla), her barındırma hesabının kontrol paneline giriş yaptıran bir düğmeyle hizmetlerinizi ve sırada neyin yenileneceğini gösterir; otomatik yenilenmeyen bir alan adı orada işaretlenir. Sunucunuzdaki planlı çalışmalar gibi duyurularımız, geçerli oldukları sürece Ana sayfanın üstünde görünür. Sizi bekleyen bir şey olduğunda (vadesi geçmiş ödeme bildirimi, askıya alınmış hizmet, talebinize yanıt, teklif, doğrulanacak SSL sertifikası, yakında sona erecek alan adı, sınırına yaklaşan hesap), Ana sayfa bunu önce **Sizi bekleyenler** altında, her birini çözen düğmeyle gösterir. **Destek** kartı açık taleplerinizi ve sıranın kimde olduğunu gösterir; alan adını doğrudan Ana sayfadan arayabilirsiniz. İlk hizmetinizi alana kadar Ana sayfa popüler ürünlerimizle **Buradan başlayın** bölümünü gösterir.
 
 ## Hizmetler ve alan adları
 
 **Hizmetler**, hosting ve diğer hizmetlerinizi durumları, fiyatları ve sonraki vade tarihleriyle listeler. Menü bunları **Hosting** ve **Diğer hizmetler** olarak ayırır. Bir hosting hesabının sayfası ödeme dönemini gösterir ve bir **Web sitesini aç** düğmesi içerir. **Alan adları**, alan adlarınızı bitiş tarihleri, ad sunucuları ve otomatik yenilenip yenilenmedikleriyle listeler. Birden fazla durumda hizmetiniz olduğunda, her listenin üstündeki düğmeler yalnızca tek bir durumdakileri (Etkin, Askıda, …) kaç tane olduklarıyla gösterir. Web sitenizin taşınması gibi bir kez yapılan işler bir kez ücretlendirilir ve ödedikten sonra **Tamamlandı** olarak görünür.
+
+Her listenin üstündeki düğmeler ilgilenmeniz gerekenleri de ayırır: **Alan adları**nda yakında sona erenleri, otomatik yenilenmeyenleri ve birden fazla uzantınız varsa her uzantıyı (.gr, .com, …); **Diğer hizmetler**de her hizmet türünü. Alan adları ve hizmetler, vadesi ilk gelen en üstte olacak şekilde listelenir. Menüde **Ödeme bildirimleri**, **Hosting**, **Diğer hizmetler** veya **Alan adları** yanındaki bir sayı, sizi bekleyen bir şey olduğu anlamına gelir: ödenmemiş bildirimler, askıya alınmış hizmetler veya otomatik yenilenmeden yakında sona erecek alan adları. **Hosting**, **Diğer hizmetler** ve **Alan adları** satırlarının sonundaki küçük gri sayı, orada kaç tane olduğunu gösterir. **Alan adları** bölümünde her alan adı, adının altında ad sunucularını gösterir; 30 gün içinde sona erecek olanlar, tarihin altında kaç gün kaldığını gösterir. Ad sunucularını değiştirmek veya otomatik yenilemeyi hepsi için birden açıp kapatmak için birkaç alan adını işaretleyin (bunları değiştirmenize izin verdiğimizde).
 
 <!-- if:hosting -->
 Etkin bir hosting hesabında şunları yapabilirsiniz:
@@ -148,7 +150,7 @@ Size bir teklif gönderdiğimizde ona bağlantı içeren bir e-posta alırsını
 
 ## Bakiye
 
-**Bakiye** bakiyenizi ve geçmişini gösterir. Bakiye yüklemek için **Bakiye yükle**'ye basın ve bir tutar girin: bunun için diğerleri gibi ödediğiniz bir ödeme bildirimi oluştururuz. Ödendiğinde tutar bakiyenize eklenir. Etkin bir hizmetiniz olduğunda bakiye yükleyebilirsiniz.
+**Bakiye** bakiyenizi ve geçmişini gösterir. Bakiyeniz olduğu sürece menü, tutarı **Bakiye**'nin yanında gri olarak gösterir. Bakiye yüklemek için **Bakiye yükle**'ye basın ve bir tutar girin: bunun için diğerleri gibi ödediğiniz bir ödeme bildirimi oluştururuz. Ödendiğinde tutar bakiyenize eklenir. Etkin bir hizmetiniz olduğunda bakiye yükleyebilirsiniz.
 
 Bakiye, ödeme bildirimlerinizi satır satır öder: bir satır (bir hizmetin yenilemesi) yalnızca bakiyeniz tamamını karşıladığında ödenir ve karşılamadığı her şey bildirimde her zamanki gibi ödenmek üzere kalır.
 <!-- if:credit_auto -->
@@ -162,7 +164,11 @@ Kullanmak için ödenmemiş bir ödeme bildirimini açın ve **Bakiyeyle öde**'
 <!-- if:orders -->
 ## Sipariş verme
 
-**Alan adı arama** (menüde, Alan adlarından sonra) sizin için bir ad bulur: yazın (magazam veya magazam.com.tr) ve kaydettiğimiz her uzantıyla, müsait mi alınmış mı olduğunu ve fiyatını görün. **Sepete ekle** müsait olanı sepete koyar (sunduğumuzda **SSL ile** onun için bir sertifika da ekler); size ait olup başka yerde bulunan biri için **Benim: transfer et** transfer siparişini açar. Önce robot olmadığınızı doğrulamanız istenebilir. “Muhtemelen müsait”, kayıt otoritesine o anda sorulamadığı anlamına gelir; kaydederken yeniden kontrol ederiz. Sunduğumuzda, sonuçların altındaki **Başka adlar öner** sizinkine yakın, yapay zekânın önerdiği, aynı uzantılı müsait adları listeler.
+**Alan adı arama** (menüde, Alan adlarından sonra) sizin için bir ad bulur: yazın (magazam veya magazam.com.tr) ve kaydettiğimiz her uzantıyla, müsait mi alınmış mı olduğunu ve fiyatını görün. **Sepete ekle** müsait olanı sepete koyar (sunduğumuzda **SSL ile** onun için bir sertifika da ekler); size ait olup başka yerde bulunan biri için **Benim: transfer et** transfer siparişini açar. Önce robot olmadığınızı doğrulamanız istenebilir. “Muhtemelen müsait”, kayıt otoritesine o anda sorulamadığı anlamına gelir; kaydederken yeniden kontrol ederiz. Sunduğumuzda, sonuçların altındaki **Başka adlar öner** sizinkine yakın, yapay zekânın önerdiği, aynı uzantılı müsait adları listeler. Henüz adınız yok mu? Sunduğumuzda, işinizi aynı kutuya birkaç kelimeyle yazın ("Selanik'te bir pastane" gibi): yapay zekâ boş adlar önerir, her biri fiyatıyla. Yazdıklarınız e-posta adresleri ve telefon numaraları olmadan yapay zekâ hizmetine gönderilir.
+
+<!-- if:domain_spotlight -->
+Müşterilerin çoğunun seçtiği uzantılar (örneğin .gr ve .com) önce, daha büyük kartlar olarak gelir ve fiyatları siz aramadan önce arama kutusunun altında görünür.
+<!-- endif -->
 
 <!-- if:domain_prices -->
 Arama kutusunun altındaki **Her alan adı uzantısının fiyatlarını görün**, sattığımız her uzantıyı kayıt, transfer ve yenileme fiyatıyla listeler.
@@ -170,7 +176,7 @@ Arama kutusunun altındaki **Her alan adı uzantısının fiyatlarını görün*
 
 **Sipariş** neler sipariş edebileceğinizi gösterir; Hizmetlerinizin üstündeki **Yeni bir hizmet sipariş et** de onu açar (Alan adlarınızın üstündeki **Alan adı sipariş et** alan adı aramayı açar). Birkaç tür hizmet sattığımızda önce türü (paylaşımlı hosting veya VPS ya da alan adları gibi), sonra bir paketi seçin: altlarındaki **Paketleri karşılaştır** her birinin neleri içerdiğini yan yana, her ödeme dönemi için fiyatıyla gösterir ve **Seç** düğmeleri de bir paket seçer. Bir paketin adının yanındaki rozetler (Popüler veya Yeni gibi) önerdiğimizi ya da yeni olanı gösterir. Bir hizmeti ve ödeme dönemini ve sunduğu seçenekleri (konum veya ek IP adresleri gibi) seçin; her seçenek fiyata ne eklediğini gösterir. Onun için ek hizmetler (günlük yedekler gibi) aşağıda işaretlenebilir; aynı ödeme bildirimindedirler ve onunla birlikte yenilenirler. Hosting için alan adına zaten sahip olup olmadığınızı, yeni bir tane kaydetmek mi yoksa başka yerdeki bir alan adınızı taşımak mı istediğinizi belirtin (EPP kodu gerekir). Ayrıca tek başına bir alan adı da sipariş edebilirsiniz; sunduğumuzda onun için bir SSL sertifikasıyla birlikte (alan adının altında işaretleyin). Kaydedilecek veya transfer edilecek bir alan adını yazdığınızda yanında müsait olup olmadığını görürsünüz; alınmış bir alan adı yalnızca transfer edilebilir, henüz kayıtlı olmayan ise yalnızca kaydedilebilir.
 
-**Sepete ekle**'ye basın ve **Sepet** açılır (her sayfanın üstündeki sepet simgesi de içindeki ürün sayısıyla birlikte onu açar). İki alan adı ve üç hosting planı gibi daha fazlasını eklemek için **Başka bir şey sipariş et**'e, bir kalemi çıkarmak için yanındaki çöp kutusuna basın. Sepetteki her şey tek bir ödeme bildirimiyle tek bir sipariş olur.
+**Sepete ekle**'ye basın; sepet sayfanın yanında açılır, böylece seçmeye devam edebilirsiniz. Her sayfanın üstündeki sepet simgesi de içindeki ürün sayısıyla birlikte onu açar. Orada bir ürünün ödeme dönemini veya bir alan adının kaç yıllığına kaydedileceğini, her seçeneğin fiyatıyla birlikte değiştirebilir ya da çöp kutusuyla çıkarabilirsiniz. **Siparişi tamamla**, not ekleyip siparişi verdiğiniz **Sepet** sayfasını açar; **Başka bir şey sipariş et** iki alan adı ve üç hosting paketi gibi daha fazlasını ekler. Sepetteki her şey tek bir ödeme bildirimiyle tek bir sipariş olur.
 
 Bir **kupon kodunuz** varsa sepette yazın: siparişi vermeden önce ne kadar düşürdüğünü görürsünüz (kod içeren bir bağlantı onu sizin için doldurur). Bir kupon yalnızca ilk ödemeyi ya da her yenilemeyi de düşürebilir ve kurulum ücretini asla düşürmez.
 
@@ -214,7 +220,11 @@ Destek → **İndirmeler** altında sizinle paylaştığımız rehberler ve yaz�
 <!-- if:tickets -->
 ## Destek talepleri
 
-Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır.
+Destek → Destek talepleri altında bize her şeyi sormak için **Destek talebi aç**: departmanı ve ilgili hizmeti seçin, sorunuzu yazın ve ekran görüntüleri gibi dosyalar ekleyin. Talebe hem buradan hem de e-postayla yanıt veririz; yanıt yazmak için talepteki **Yanıtla**'ya basın. Başka bir şeye ihtiyacınız kalmadığında kapatın. Kapalı bir talep yanıt verirseniz yeniden açılır; yanıtladığımız bir talep ise birkaç gün sizden haber alamazsak kendiliğinden kapanır. Menüde **Destek talepleri** yanındaki gri sayı, kapanmamış taleplerinizi; renkli sayı ise yanıtladığımız ve sizi bekleyenleri gösterir.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Hizmetlerinizden biri çalışmayı durdurduysa (web siteniz veya e-postanız çöktüyse), bileti açarken **Acil** seçeneğini açın ve o hizmeti seçin: hemen haberimiz olur. Acil biletler ayda birkaç tanedir, bu yüzden onları bekleyemeyecek işler için saklayın; form kaç tane kaldığını gösterir.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Destek talebi e-postalarımızı kendi posta kutunuzdan da yanıtlayabilirsiniz: yanıtınız ekli dosyalarıyla birlikte talebe eklenir. Destek adresimize gönderdiğiniz bir e-posta yeni bir destek talebi açar.

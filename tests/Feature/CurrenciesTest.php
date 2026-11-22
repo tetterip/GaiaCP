@@ -24,6 +24,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Registrar;
 use App\Models\Service;
+use App\Models\TaxInvoice;
 use App\Models\Tld;
 use App\Models\User;
 use App\Reports\IncomeReport;
@@ -37,6 +38,7 @@ use Filament\Forms\Components\TextInput;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use InvalidArgumentException;
 use Livewire\Livewire;
 use RuntimeException;
 use Tests\TestCase;
@@ -318,6 +320,23 @@ class CurrenciesTest extends TestCase
 
         $this->assertSame(3000, Currencies::sumToBase(Payment::query(), 'amount_cents'));
         $this->assertSame(3000, app(IncomeReport::class)->monthly(today()->year)[today()->month]['cents']);
+    }
+
+    public function test_a_total_takes_only_column_names(): void
+    {
+        $this->assertSame(0, Currencies::sumToBase(Payment::query(), 'payments.amount_cents'));
+        $this->assertSame(0, Currencies::sumToBase(TaxInvoice::query(), TaxInvoice::signedTotalSql()));
+
+        foreach (['amount_cents) from users; --', '1'] as $column) {
+            try {
+                Currencies::sumToBase(Payment::query(), $column);
+                $this->fail("Took {$column}");
+            } catch (InvalidArgumentException) {
+            }
+        }
+
+        $this->expectException(InvalidArgumentException::class);
+        Currencies::sumToBase(Payment::query(), 'amount_cents', 'currency, password');
     }
 
     public function test_the_command_updates_the_rates_and_prices(): void

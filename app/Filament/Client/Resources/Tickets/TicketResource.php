@@ -9,8 +9,10 @@ use App\Filament\Client\Resources\Tickets\Pages\ListTickets;
 use App\Filament\Client\Resources\Tickets\Pages\ViewTicket;
 use App\Models\Ticket;
 use App\Providers\AppServiceProvider;
+use App\Support\NavigationCount;
 use BackedEnum;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -63,6 +65,12 @@ class TicketResource extends Resource
     }
 
     /** Answered ones wait for the client. */
+    /** The menu line with a grey count of the client's tickets that are not closed (NavigationCount); the badge is for answered ones. */
+    public static function getNavigationItems(): array
+    {
+        return array_map(fn (NavigationItem $item) => $item->label(new NavigationCount(static::getNavigationLabel(), fn () => static::getEloquentQuery()->where('status', '!=', TicketStatus::Closed)->count())), parent::getNavigationItems());
+    }
+
     public static function getNavigationBadge(): ?string
     {
         $count = static::getEloquentQuery()->where('status', TicketStatus::Answered)->count();

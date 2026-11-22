@@ -2,6 +2,7 @@
 
 namespace App\Filament\Client\Pages;
 
+use App\Actions\Tickets;
 use App\Credit\ClientCredit;
 use App\Filament\Client\Resources\Emails\EmailResource;
 use App\Filament\Concerns\TranslatesPageLabels;
@@ -9,6 +10,7 @@ use App\Invoicing\IssueInvoice;
 use App\Plugins\PluginManager;
 use App\SignIn\SignIn;
 use App\Support\CookieConsent;
+use App\Support\DomainSearch;
 use App\Support\Locales;
 use App\Support\PublicArea;
 use App\Support\TermsOfService;
@@ -93,6 +95,7 @@ class Help extends Page
             'ssl' => $plugins->certificateModules()->isNotEmpty(),
             'orders' => Order::canAccess(),
             'domain_prices' => DomainPrices::canAccess(),
+            'domain_spotlight' => DomainSearch::spotlight() !== [],
             'pay_card' => $payOnline->contains('payByCard'),
             'pay_paypal' => $payOnline->contains('payWithPaypal'),
             'pay_bank' => $payOnline->intersect(['payWithAlphaBank', 'payWithEurobank', 'payWithPiraeusBank', 'payWithNexiXpay', 'payWithMastercard'])->isNotEmpty(),
@@ -104,6 +107,7 @@ class Help extends Page
             'credit_manual' => ClientCredit::enabled() && ! ClientCredit::autoApply(),
             'terms' => TermsOfService::required(),
             'tickets' => (bool) config('gaiacp.support.client_tickets'),
+            'urgent_tickets' => config('gaiacp.support.client_tickets') && Tickets::urgentLimit() > 0,
             'notifications' => $on('notifications'),
             'welcome_tour' => $on('welcome_tour'),
             'email_history' => EmailResource::canAccess(),

@@ -17,7 +17,7 @@ Instead of the password, you can press **Email me a sign-in link**: we email you
 Your profile (the menu with your name, at the bottom of the menu or at the top right) changes your email address, phone number, language and password, and can turn on two-factor authentication for extra safety.
 
 <!-- if:notifications -->
-The **bell** at the top of the page tells you what happened since you last looked: a new payment notice, a payment reminder or overdue notice, a payment we received, a service that is ready, suspended or ended, a domain about to renew, a new price, our answer to your ticket or to a request. A number on it shows how many you haven't read; press one to open its page. On a phone or tablet, swipe one left or right to remove it. To stop them, turn off **Notifications** in your profile. We still email you as before.
+The **bell** at the top of the page tells you what happened since you last looked: a new payment notice, a payment reminder or overdue notice, a payment we received, a service that is ready, suspended or ended, a domain about to renew, a new price, our answer to your ticket or to a request. A number on it shows how many you haven't read; press one to open its page. Swipe one left or right to remove it, with your finger or by dragging it with the mouse. To stop them, turn off **Notifications** in your profile. We still email you as before.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,11 +36,13 @@ The first time you log in, a short tour shows what you can do here. The menu und
 
 ## Home
 
-Home shows what you have to pay, how many services are active and what renews next, with a link to each. Our announcements, such as planned work on your server, appear at the top of Home while they apply.
+Home shows what you have to pay, with a **Pay** button on each payment notice (or one line saying everything is paid), your services with a button that logs you in to the control panel of each hosting account, and what renews next; a domain that will not renew automatically is marked there. Our announcements, such as planned work on your server, appear at the top of Home while they apply. When something waits for you (a payment notice past due, a suspended service, an answer to your ticket, a quote, an SSL certificate to validate, a domain about to end, an account close to its limit), Home lists it first under **Waiting for you**, each with the button that settles it. The **Support** card shows your open tickets and whose turn it is, and you can search for a domain name right from Home. Until you have a first service, Home shows **Start here** with our popular products.
 
 ## Services and domains
 
 **Services** lists your hosting and other services with their status, price and next due date. The menu splits them into **Hosting** and **Other services**. A hosting account's page shows its billing cycle and has an **Open website** button. **Domains** lists your domains with their expiry date, nameservers and whether they renew automatically. When you have services in more than one status, the buttons above each list show only those in one status (Active, Suspended, …), with how many there are. Work done once, such as moving your website, is billed once and shows as **Completed** after you pay it.
+
+The buttons above each list also pick out what needs a look: on **Domains**, those expiring soon, those that will not renew automatically and each extension (.gr, .com, …) when you have more than one; on **Other services**, each kind of service. Domains and services are listed with the one due first on top. A number next to **Payment notices**, **Hosting**, **Other services** or **Domains** in the menu means something waits for you: unpaid notices, suspended services, or domains ending soon that will not renew automatically. The small grey number at the end of the **Hosting**, **Other services** and **Domains** lines is simply how many you have there. In **Domains**, each domain shows its nameservers under its name, and one ending within 30 days shows how many days are left under its due date. Tick several domains to change their nameservers or turn auto renew on or off for all of them at once (when we let you change them).
 
 <!-- if:hosting -->
 On an active hosting account you can:
@@ -148,7 +150,7 @@ When we send you a quote, you get an email with a link to it, and **Quotes** (un
 
 ## Credit
 
-**Credit** shows your credit balance and its history. To add funds, press **Add funds** and enter an amount: we create a payment notice for it, which you pay like any other. Once it is paid, the amount is added to your credit. You can add funds once you have an active service.
+**Credit** shows your credit balance and its history. While you have credit, the menu shows the amount in grey next to **Credit**. To add funds, press **Add funds** and enter an amount: we create a payment notice for it, which you pay like any other. Once it is paid, the amount is added to your credit. You can add funds once you have an active service.
 
 Credit pays your payment notices one line at a time: a line (a service's renewal) is paid only when your credit covers all of it, and anything it doesn't cover stays on the notice to pay as usual.
 <!-- if:credit_auto -->
@@ -162,7 +164,11 @@ To use it, open an unpaid payment notice and press **Pay with credit**.
 <!-- if:orders -->
 ## Ordering
 
-**Domain search** (in the menu, after Domains) finds a name for you: type it (myshop, or myshop.gr) and you see it with each ending we register, whether it is free or taken, and its price. **Add to cart** puts a free one in the cart (**With SSL** adds a certificate for it too, when we offer one); for one that is yours but somewhere else, **Mine: transfer it** opens the order for the transfer. You may be asked first to confirm that you are not a robot. “Probably available” means the registry could not be asked right then; we check it again when we register it. When we offer it, **Suggest other names** below the results lists free names close to yours, suggested by AI, with the same ending.
+**Domain search** (in the menu, after Domains) finds a name for you: type it (myshop, or myshop.gr) and you see it with each ending we register, whether it is free or taken, and its price. **Add to cart** puts a free one in the cart (**With SSL** adds a certificate for it too, when we offer one); for one that is yours but somewhere else, **Mine: transfer it** opens the order for the transfer. You may be asked first to confirm that you are not a robot. “Probably available” means the registry could not be asked right then; we check it again when we register it. When we offer it, **Suggest other names** below the results lists free names close to yours, suggested by AI, with the same ending. No name yet? When we offer it, describe your business in a few words in the same box (such as “a pastry shop in Thessaloniki”): AI suggests free names for it, each with its price. What you type is sent to the AI service, without email addresses or phone numbers.
+
+<!-- if:domain_spotlight -->
+The endings most clients choose (such as .gr and .com) come first, as larger cards, and their prices show under the search box before you search.
+<!-- endif -->
 
 <!-- if:domain_prices -->
 **See the prices of every domain ending** under the search box lists each ending we sell with its price to register, transfer and renew.
@@ -170,7 +176,7 @@ To use it, open an unpaid payment notice and press **Pay with credit**.
 
 **Order** shows what you can order; **Order a new service** above your Services, open it too (**Order a domain** above your Domains opens the domain search). When we sell several kinds of service, first choose the kind (such as shared hosting or a VPS, or domain names), then a package: **Compare packages** below them shows what each one includes side by side, with its price for each billing period, and its **Choose** buttons pick a package too. Badges by a package's name (such as Popular or New) point out what we recommend or what is new. Choose a service and its billing period, and any options it offers (such as a location or extra IP addresses); each option shows what it adds to the price. Add-ons for it (such as daily backups) can be ticked below; they are on the same payment notice and renew together with it. For hosting, say whether you already have the domain, want to register a new one or move one you have elsewhere (you need its EPP code). You can also order a domain on its own, with an SSL certificate for it when we offer one (tick it below the domain). Once you type a domain to register or transfer, you see by it whether it is free; a taken domain can only be transferred, and one not registered yet only registered.
 
-Press **Add to cart** and the **Cart** opens (the cart icon at the top of every page opens it too, with how many items are in it). Press **Order something else** to add more, such as two domains and three hosting plans, or the bin next to an item to take it out. Everything in the cart becomes one order with one payment notice.
+Press **Add to cart** and the cart opens from the side of the page, so you can go on choosing; the cart icon at the top of every page opens it too, with how many items are in it. There you can change an item's billing cycle or how many years a domain is registered for, with the price of each choice, or take it out with the bin. **Checkout** opens the **Cart** page, where you add a note and place the order; **Order something else** adds more, such as two domains and three hosting plans. Everything in the cart becomes one order with one payment notice.
 
 If you have a **coupon code**, type it in the cart: you see what it takes off before you place the order (a link with a code fills it in for you). A coupon may lower only the first payment or every renewal too, and it never lowers a setup fee.
 
@@ -214,7 +220,11 @@ Under Support → **Downloads** you find files we share with you, such as guides
 <!-- if:tickets -->
 ## Support tickets
 
-Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days.
+Under Support → Tickets, **Open a ticket** to ask us anything: choose the department and the service it is about, write your question and attach files such as screenshots. We answer on the ticket and by email; press **Reply** on it to write back. Close it when you need nothing more. A closed ticket opens again if you reply, and one we answered closes by itself when we hear nothing from you for a few days. The grey number next to **Tickets** in the menu is how many of your tickets are not closed; a coloured one, how many we answered and wait for you.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+If a service of yours stopped working (your website or email is down), switch on **Urgent** when you open the ticket and choose that service: we are told at once. Urgent tickets are a few each month, so keep them for what can't wait; the form shows how many you have left.
 <!-- endif -->
 <!-- if:ticket_mail -->
 You can also answer our ticket emails from your own mailbox: your answer is added to the ticket, with its attached files. An email you send to our support address opens a new ticket.

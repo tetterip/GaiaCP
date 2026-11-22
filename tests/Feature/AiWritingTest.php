@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\ClientOrder;
 use App\Enums\BillingCycle;
 use App\Enums\ServiceType;
 use App\Enums\UserRole;
@@ -225,5 +226,57 @@ class AiWritingTest extends TestCase
         }
         $page->set('suggestions', [])->call('suggest')->assertNotified(__('You have asked for suggestions often. Try again in an hour.'));
         $this->assertSame(SearchDomains::AI_PER_HOUR, AiUsage::query()->where('feature', 'domains')->count());
+    }
+
+    public function test_a_client_describes_the_business_and_gets_free_names_with_both_endings(): void
+    {
+        config(['gaiacp.ai.features.domain_ideas' => true]);
+        $this->domainSearch();
+
+        $page = Livewire::test(SearchDomains::class)
+            ->assertSee(__('Find your domain (myshop.gr) or describe your business'))
+            ->set('query', 'καφετέρια στη Θεσσαλονίκη, τηλ. 2310 123456, info@example.gr')
+            ->call('search')
+            ->assertHasNoErrors()
+            ->assertSee(__('Free names for what you described, suggested by AI:'))
+            ->assertSet('results', []);
+
+        $ideas = array_column($page->get('ideas'), 'domain');
+        sort($ideas);
+        // kafes.gr, kafes.com and kafeneio.gr are taken; "my cafe" is no name
+        $this->assertSame(['kafeneio.com', 'kafes-online.com', 'kafes-online.gr', 'kafesbar.com', 'kafesbar.gr'], $ideas);
+        $page->call('add', 'kafesbar.com')->assertNotified();
+        $this->assertSame('kafesbar.com', array_values(ClientOrder::cart())[0]['domain']);
+
+        $sent = $this->sentToClaude();
+        $this->assertStringContainsString('καφετέρια στη Θεσσαλονίκη', $sent);
+        $this->assertStringNotContainsString('2310', $sent, 'no phone numbers');
+        $this->assertStringNotContainsString('info@example.gr', $sent, 'no email addresses');
+        $this->assertSame(1, AiUsage::query()->where('feature', 'domain_ideas')->count());
+    }
+
+    public function test_descriptions_are_off_by_default_closed_to_visitors_and_limited_a_day(): void
+    {
+        $this->domainSearch();
+
+        // Off: a few words are just a bad name
+        Livewire::test(SearchDomains::class)->set('query', 'a cafe in town')->call('search')->assertHasErrors('query');
+        Http::assertNotSent(fn (Request $request) => str_contains($request->url(), 'anthropic'));
+
+        // A visitor gets none unless Visitors too is on (with a captcha plugin)
+        config(['gaiacp.ai.features.domain_ideas' => true]);
+        auth('client')->logout();
+        $this->assertFalse((new SearchDomains)->canDescribe());
+        config(['gaiacp.ai.domain_ideas_visitors' => true]);
+        $this->assertFalse((new SearchDomains)->canDescribe(), 'no captcha plugin on');
+
+        // The day's limit for clients and visitors together
+        config(['gaiacp.ai.domains_per_day' => 1]);
+        AiUsage::query()->create(['feature' => 'domains', 'provider' => 'claude', 'model' => 'x', 'input_tokens' => 1, 'output_tokens' => 1, 'created_at' => now()]);
+        $client = Client::factory()->create();
+        $this->actingAs(User::factory()->create(['role' => UserRole::Client, 'client_id' => $client->id, 'email' => $client->email]), 'client');
+        Livewire::test(SearchDomains::class)->set('query', 'a cafe in town')->call('search')
+            ->assertHasErrors(['query' => __('No suggestions right now. Try again later.')]);
+        Http::assertNotSent(fn (Request $request) => str_contains($request->url(), 'anthropic'));
     }
 }

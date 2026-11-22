@@ -57,6 +57,7 @@ class TicketsTable
             ])
             ->toolbarActions([TicketBulkActions::group()])
             ->maxSelectableRecords(TicketBulkActions::MAX)
+            ->emptyStateIcon('gcp-good-news') // nothing to deal with: a green tick, not Filament's grey cross
             ->emptyStateHeading(__('No tickets'));
     }
 }

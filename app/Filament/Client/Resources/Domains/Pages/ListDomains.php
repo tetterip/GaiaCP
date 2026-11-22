@@ -36,9 +36,45 @@ class ListDomains extends ListRecords
             ]);
     }
 
+    /**
+     * All, one per status, Expiring soon, Auto renew off, then one per extension while the client has two or more
+     * (.gr, .com…). Each chip sets every filter, so only one is on at a time.
+     */
     protected function statusChipDefinitions(): array
     {
-        return $this->chipsPerStatus(__('All'), [ServiceStatus::Active, ServiceStatus::Suspended, ServiceStatus::Pending, ServiceStatus::Terminated]);
+        $none = ['status' => ['value' => null], 'expiring' => ['isActive' => false], 'auto_renew_off' => ['isActive' => false], 'tld' => ['value' => null]];
+        $chips = [];
+
+        foreach ($this->chipsPerStatus(__('All'), [ServiceStatus::Active, ServiceStatus::Suspended, ServiceStatus::Pending, ServiceStatus::Terminated]) as $key => $chip) {
+            $chips[$key] = ['filters' => array_replace($none, $chip['filters'])] + $chip;
+        }
+
+        $chips['expiring'] = [
+            'label' => __('Expiring soon'),
+            'filters' => array_replace($none, ['expiring' => ['isActive' => true]]),
+            'query' => fn (Builder $query) => DomainResource::expiringSoon($query),
+            'dot' => 'warning',
+        ];
+        $chips['auto_renew_off'] = [
+            'label' => __('Auto renew off'),
+            'filters' => array_replace($none, ['auto_renew_off' => ['isActive' => true]]),
+            'query' => fn (Builder $query) => DomainResource::autoRenewOff($query),
+            'dot' => 'gray',
+        ];
+
+        $tlds = DomainResource::tlds($this->chipsQuery());
+
+        if (count($tlds) > 1) {
+            foreach ($tlds as $tld) {
+                $chips['tld-'.$tld] = [
+                    'label' => '.'.$tld,
+                    'filters' => array_replace($none, ['tld' => ['value' => $tld]]),
+                    'query' => fn (Builder $query) => DomainResource::withTld($query, $tld),
+                ];
+            }
+        }
+
+        return $chips;
     }
 
     protected function chipsQuery(): Builder

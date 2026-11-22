@@ -48,7 +48,7 @@
             <ol x-init="$el.querySelector('[aria-current]')?.scrollIntoView({ inline: 'center', block: 'nearest' })">
                 @foreach ($this::chapters() as $slug => $chapter)
                     <li>
-                        <a href="{{ $this::chapterUrl($slug) }}" @if ($slug === $current && blank($q)) aria-current="page" @endif>{{ $chapter['title'] }}</a>
+                        <a {{ \Filament\Support\generate_href_html($this::chapterUrl($slug)) }} @if ($slug === $current && blank($q)) aria-current="page" @endif>{{ $chapter['title'] }}</a>
                     </li>
                 @endforeach
             </ol>
@@ -72,7 +72,7 @@
                 @else
                     <div class="gcp-guide-results">
                         @foreach ($results as $result)
-                            <a href="{{ $this::chapterUrl($result['slug'], $result['anchor']) }}" wire:key="result-{{ $loop->index }}">
+                            <a {{ \Filament\Support\generate_href_html($this::chapterUrl($result['slug'], $result['anchor'])) }} wire:key="result-{{ $loop->index }}">
                                 <strong>{{ $result['chapter'] }}@if ($result['section']) › {{ $result['section'] }}@endif</strong>
                                 <span>{{ $result['excerpt'] }}</span>
                             </a>

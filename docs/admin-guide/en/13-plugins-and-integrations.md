@@ -61,15 +61,15 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the
 | Monitoring | Uptime Kuma, UptimeRobot, Better Stack, IP blacklist check, Site checks | Settings → Integrations |
 | Client sign-in and safety | Google sign-in, Google reCAPTCHA, Cloudflare Turnstile | Settings → Client area |
 | Tax details | VIES VAT check | their own settings pages |
-| Notifications | Slack, Discord, Telegram, Webhooks | Settings → Email & notifications |
-| Support | Email to ticket | Settings → Support |
+| Notifications | Webhooks (off until switched on) | Settings → Email & notifications |
+| Support | Email to ticket (off until switched on) | Settings → Support |
 | AI | Claude, ChatGPT, DeepSeek | Settings → AI assistant (its own group: the assistant's page and each service's) |
 | Look | Gaia, Flat and Glass themes | Profile, Settings → General, Settings → Client area |
 | Moving in | WHMCS import | Settings → System |
 
 In the plugin catalogue (installed only if you want them): Alpha Bank, Eurobank, Piraeus Bank and IRIS (payment
 methods), Enhance (server panel), easy.gr and GoDaddy (registrars), HetrixTools (monitoring), ΑΑΔΕ registry lookup
-(tax details), Kimi and Ollama (AI). They used to ship with GaiaCP: an install that had them keeps them, with their
+(tax details), Kimi and Ollama (AI), Slack, Discord and Telegram (notifications). They used to ship with GaiaCP: an install that had them keeps them, with their
 settings and data, and updates them from the catalogue.
 
 ## Webhooks
@@ -86,7 +86,7 @@ unless `GAIACP_WEBHOOKS_ALLOW_PRIVATE=true`.
 
 ## Slack, Discord and Telegram
 
-Each posts the events you pick (by default new orders, payments, tickets, client replies, servers down and up, failed
+Installed from the plugin catalogue. Each posts the events you pick (by default new orders, payments, tickets, client replies, servers down and up, failed
 panel calls) to a channel, one short message each with a link to its page here. Paste the channel's webhook address
 (for Telegram, the bot token and chat ID; **Find chat ID** reads it for you) and press **Send a test message**. With
 **Answer commands** on, the Telegram bot also answers `/owed`, `/today`, `/tickets` and `/servers` in that chat only.
@@ -109,6 +109,13 @@ saved until you do). Only that field's text is sent, with fixed instructions tha
 formatting; never client details or passwords. Settings → **AI assistant** (its own group, with each AI service's page) turns each feature on or
 off, sets a monthly limit in tokens for all admins together and shows how many were used this month.
 
+Before you switch features on, keep in mind that what they send leaves GaiaCP for the AI service's company and is
+handled under its terms. The writing tools send only the field's text, but some features below send your clients'
+data: ticket conversations, services, payment history (each says what it sends, and hides names, addresses and phone
+numbers where it can). Check the service's data and privacy terms, mention it in your own privacy policy if your clients
+should know, and switch on only what you use. The monthly token limit and the daily limit on domain suggestions cap how
+much is sent; Ollama on your own server keeps everything with you.
+
 It also writes texts from GaiaCP's own details, each with its own switch there:
 
 - **Write from the product's details** in a product's Description menu: two or three sentences from its name, type,
@@ -118,7 +125,13 @@ It also writes texts from GaiaCP's own details, each with its own switch there:
   hostnames, addresses or clients). Empty the message again once the problem is over;
 - **Suggest domain names** (off until you switch it on): in the client area's domain search, **Suggest other names**
   lists free names close to the one searched, with the same ending, ready to add to the cart. Clients and visitors
-  press it, so each client or address may press it 5 times an hour; only the name searched is sent.
+  press it, so each client or address may press it 5 times an hour; only the name searched is sent;
+- **Domain names from a description** (off until you switch it on): a client with no name yet types a few words about
+  their business in the same search box ("a pastry shop in Thessaloniki") and gets free names for it, with your first
+  ending and .com, each with its price and Add to cart. The description is sent without email addresses or phone
+  numbers, and counts in the same 5 an hour. Signed-in clients only, unless you tick **Also for visitors without an account** (then visitors
+  always solve the captcha first, so a captcha plugin must be on). **Domain suggestions a day** caps both buttons for
+  clients and visitors together (200 by default), so they never use up the monthly limit your team needs.
 
 Two more switches answer questions:
 

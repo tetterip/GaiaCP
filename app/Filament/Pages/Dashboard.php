@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Support\DashboardLayout;
+use App\Support\DashboardToday;
 use App\Support\Greeting;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Toggle;
@@ -18,9 +19,10 @@ use UnitEnum;
 
 /**
  * Filament's dashboard, first in the sidebar's Main group. Open to every admin; its widgets check their own areas.
- * Two columns of cards that each fill down on their own, one after the other on a phone (resources/views/filament/
- * dashboard/cards.blade.php). Each admin drags the cards within and between the columns there and hides the ones they
- * don't need under Show / hide cards (App\Support\DashboardLayout).
+ * The day's numbers (App\Support\DashboardToday), then a row across the top and two columns of cards that each fill down
+ * on their own, one after the other on a phone (resources/views/filament/dashboard/cards.blade.php). Each admin drags the
+ * cards within and between them there and hides the ones they don't need under Show / hide cards
+ * (App\Support\DashboardLayout).
  */
 class Dashboard extends BaseDashboard
 {
@@ -46,7 +48,7 @@ class Dashboard extends BaseDashboard
     public function getWidgetsContentComponent(): Component
     {
         return View::make('filament.dashboard.cards')
-            ->viewData(fn (): array => ['columns' => collect(($user = filament()->auth()->user()) ? DashboardLayout::shown($user) : [1 => [], 2 => []])
+            ->viewData(fn (): array => ['today' => DashboardToday::boxes(), 'columns' => collect(($user = filament()->auth()->user()) ? DashboardLayout::shown($user) : [0 => [], 1 => [], 2 => []])
                 ->map(fn (array $widgets) => collect($widgets)
                     // A card with nothing to show (isEmpty(), e.g. Needs attention) is left off until it has something.
                     ->filter(fn (string $widget) => $widget::canView() && ! (method_exists($widget, 'isEmpty') && $widget::isEmpty()))

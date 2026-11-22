@@ -48,9 +48,27 @@ class Branding
         return $path !== null && SvgLogo::isSvg($path) ? SvgLogo::pngFor($path) : $path;
     }
 
+    /** A file name the Company page stores now: branding/ + 40 random characters and an image extension. */
+    public const UPLOAD_PATTERN = '~\\Abranding/[A-Za-z0-9]{40}\\.(svg|png|jpe?g|ico)\\z~';
+
+    /**
+     * Whether a stored name may be opened or deleted: a plain relative path on the public disk (older installs keep the
+     * mail logo's own folder), never "..", an absolute path or a backslash, so a setting changed by hand or by a forged
+     * form can't serve or delete another file.
+     */
+    public static function safe(?string $file): bool
+    {
+        return is_string($file) && preg_match('~\\A[A-Za-z0-9_-][A-Za-z0-9_.-]*(/[A-Za-z0-9_-][A-Za-z0-9_.-]*)*\\z~', $file) === 1
+            && ! str_contains($file, '..');
+    }
+
     /** Delete a replaced upload, with an SVG's PNG copy for emails. */
     public static function delete(string $file): void
     {
+        if (! self::safe($file)) {
+            return;
+        }
+
         $disk = Storage::disk('public');
 
         if (SvgLogo::isSvg($file)) {
@@ -65,6 +83,6 @@ class Branding
         $key = self::ASSETS[$asset] ?? null;
         $file = $key ? config("gaiacp.company.{$key}") : null;
 
-        return is_string($file) && $file !== '' ? $file : null;
+        return self::safe($file) ? $file : null;
     }
 }

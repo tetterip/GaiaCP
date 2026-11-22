@@ -61,6 +61,36 @@ class BrandingTest extends TestCase
         Storage::disk('public')->assertExists(config('gaiacp.company.logo'));
     }
 
+    public function test_a_path_the_browser_made_up_is_never_stored_served_or_deleted(): void
+    {
+        $this->actingAs(User::factory()->create());
+        Storage::disk('public')->put('pages/kept.png', 'x');
+        Settings::save(['company.logo' => $this->logo()]);
+
+        // Filament keeps any string sent for the field: only a file it has just stored, or the saved one, is accepted
+        foreach (['branding/../../.env', '/etc/passwd', 'pages/kept.png', 'branding/'.str_repeat('a', 40).'.png'] as $forged) {
+            Livewire::test(CompanySettings::class)
+                ->fillForm(['company' => ['favicon' => ['forged' => $forged]]])
+                ->call('save')
+                ->assertHasErrors(['data.company.favicon']);
+        }
+        $this->assertNull(config('gaiacp.company.favicon'));
+
+        Livewire::test(CompanySettings::class)->call('save')->assertHasNoFormErrors(); // the saved logo is kept
+        $this->assertSame('branding/logo.png', config('gaiacp.company.logo'));
+
+        // A name changed by hand in the database is neither served nor deleted on the next upload
+        Settings::save(['company.logo' => '../pages/kept.png']);
+        $this->assertNull(Branding::path('logo'));
+        $this->get('/branding/logo')->assertNotFound();
+        Branding::delete('branding/../pages/kept.png');
+        Storage::disk('public')->assertExists('pages/kept.png');
+
+        // Older installs keep the mail logo's own folder
+        Settings::save(['company.logo' => $this->logo('mail/logo.png')]);
+        $this->assertNotNull(Branding::path('logo'));
+    }
+
     public function test_the_files_are_served_without_storage_link_and_their_url_changes_with_each_upload(): void
     {
         Settings::save(['company.logo' => $this->logo()]);

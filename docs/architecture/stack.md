@@ -4,9 +4,16 @@ How the admin and client panels, users, access, security, branding, themes and l
 
 - Laravel 13, PHP **8.3+** (the `User` PC ships PHP 8.2: upgrade it before running this app there)
 - SQLite in development, MySQL/MariaDB in production
+- Both panels run in SPA mode with prefetch (`->spa(hasPrefetching: true)`): a link to a page of the same panel gets
+  `wire:navigate.hover`, so it swaps only the page and fetches it on hover. `App\Support\SpaLinks::exceptions()` reads
+  the routes: every GET address that is not a Livewire page of that panel (the other panel, downloads, panel logins,
+  language switches, payment returns, plugin routes) opens as a normal page and is never prefetched. In custom views,
+  write internal links as `<a {{ \Filament\Support\generate_href_html($url) }}>` to get the same. Body scripts run again
+  on each page (guard document listeners with a flag on `window`, give Alpine components a `destroy()`); head
+  scripts run once. Repeated per-request reads are scoped bindings (`OrderableProducts`, `TldLookup`, `Currencies`).
 - Admin UI is **Filament 5** at `/admin`; no public order form. The client area is a second Filament panel at the site root
   (`ClientPanelProvider`, id `client`, guard `client`, password broker `clients` with 48-hour links, pages in
-  `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, amount owed, active count, next renewals), Services, Domains, Payment
+  `app/Filament/Client/`). Home (`/dashboard`: announcements from Messages to clients, the To pay card with each unpaid notice, Waiting for you (`Dashboard::waiting()`: overdue notices, suspended services, answered tickets, open quotes, SSL waiting for validation, domains ending within `DOMAIN_DAYS` with auto renew off, this month's `usage_warnings`, a pending change request), My services with the panel login of each hosting account (`Dashboard::services()`), the domain search field, next renewals beside the Support card (`tickets()`, article search); shortcuts on a phone only; Start here for a client with no service yet (`isNew()`, `starters()` = products marked Popular), Services, Domains, Payment
   notices (`resources/views/filament/client/payment-notice.blade.php`, printed / saved as PDF by the browser with print
   CSS) and Payments: read-only resources using `ScopedToClient` (only the signed-in client's records, another's id is a
   404; services and domains only `Service::clientVisible()`, cancelled ones left out; notices show every line). The
@@ -39,13 +46,17 @@ How the admin and client panels, users, access, security, branding, themes and l
   downloaded only through `TicketAttachmentController` (admin: Support area; client: own ticket, never a note's).
   Emails: Support Ticket Opened / Reply / Closed to the client (`ClientAreaLinks` links to the ticket); `TicketMail` to
   the assigned admin, else every Support admin with Receive system emails (Settings → Support → Email the admins); bell
-  `ticket.opened` / `ticket.client_replied`. `gaiacp:close-tickets` (daily 07:00) closes Answered tickets older than
+  `ticket.opened` / `ticket.client_replied`. Urgent tickets (`support.urgent_per_month`, `Tickets::urgentLeft()`, calendar
+  month): a client's Urgent switch, for an active service, sets `TicketPriority::Urgent`, titles the bell "Urgent ticket"
+  and logs `ticket.urgent` too (for chat / webhook plugins only). `gaiacp:close-tickets` (daily 07:00) closes Answered tickets older than
   `support.auto_close_days`. Departments and canned replies (`{client_first_name}`, `{ticket_number}`, … filled by
   `Tickets::fill()`) are under Settings → Support; the dashboard's Support card sits under the renewals table.
   Tickets by email: the Email to ticket plugin (`plugins/TicketMail`, IMAP through `directorytree/imapengine`, no PHP
   imap extension) runs `gaiacp:fetch-ticket-mail` every minute; `InboundMail` adds an answer to its ticket
-  (`Ticket::idFromEmailReferences()` on In-Reply-To / References, else `[T-000123]` in the subject, only from the
-  ticket's client or sender, `Tickets::replyFromEmail()`) or opens one (`Tickets::openFromEmail()`, client by email
+  (`Ticket::fromEmailReferences()` on In-Reply-To / References, signed by the ticket's `emailToken()`, an HMAC of its
+  id with APP_KEY; an unsigned id or `[T-000123]` in the subject only from a sender the mail server confirmed; only from
+  the ticket's client or sender, `Tickets::replyFromEmail()`; an unconfirmed sender's message gets
+  `ticket_messages.sender_unconfirmed`, shown on the admin's ticket) or opens one (`Tickets::openFromEmail()`, client by email
   address, else none: `tickets.email` / `name`, linked later under Change). `ticket_messages.email_message_id` keeps a
   message from being added twice. `InboundWebhook` (`POST /webhooks/ticket-mail/{token}`, `ticket_mail.inbound_token`
   encrypted, made and shown once on the settings page, throttled) passes the raw MIME from Mailgun `body-mime`, SendGrid
@@ -71,7 +82,7 @@ How the admin and client panels, users, access, security, branding, themes and l
   through `DomainLifecycle` (active domains at a registrar here, not `external`; a failure shows a plain message),
   auto renew through `SetDomainAutoRenew`; each behind a `gaiacp.client_area.*` switch (Settings → Client area,
   `ClientAreaSettings`). Hosting self-service (`Client/Actions/HostingSelfService` on the service page, active accounts on
-  an enabled panel): Change password through `ServiceLifecycle::changePassword()`, and "Log in to cPanel / Plesk" =
+  an enabled panel): Change password through `ServiceLifecycle::changePassword()`, and "Log in to the control panel" =
   `Client\PanelLoginController` (`filament.client.services.panel-login`, a new tab) → `ServiceLifecycle::loginUrl()` →
   `HostingProvisioner::loginUrl()` (WHM `create_user_session`; Plesk `create_session` for the subscription's customer
   only), a fresh one-time link per click, never stored or logged. Usage (disk space, this month's bandwidth, against
@@ -328,6 +339,11 @@ How the admin and client panels, users, access, security, branding, themes and l
   SVG uploads go through `App\Support\SvgLogo`: cleaned (enshrined/svg-sanitize, no scripts or outside references,
   served with a sandboxing CSP), must give a viewBox or px width / height (root size set from it), and emails get a
   PNG copy (`<name>.email.png`) made with Imagick, or without it drawn by the admin's browser on Settings → Company (`settings.email-logo`, `SvgLogo::storePng()`; System health → Logo in emails warns until it exists)
+  Logos in emails sit on a white rounded background drawn into the image, because Gmail's apps and Outlook darken an
+  email's colours in dark mode but never its images (a dark logo on a transparent background vanished, and a CSS
+  background would be darkened too): `App\Support\MailLogo` draws it (GD) for the company logo, once per upload, into
+  `storage/framework/cache/mail-logos/` (logos without transparency are used as they are); the GaiaCP logo has it in
+  `public/images/gaiacp/logo-email.png` (made by `MailLogo::onBackground()` from the plain one, shown 47px high)
 - Themes: `App\Themes\ThemeModule` (from a plugin, `Plugin::themeModules()`: colours, Bunny font, serif font, a
   stylesheet view, colours for pages outside Filament) and `App\Themes\Themes`. `current()` is, in the admin panel,
   `users.theme` from Profile while its plugin is on, else `gaiacp.theme.default` from Settings → General, else the first
@@ -361,14 +377,18 @@ How the admin and client panels, users, access, security, branding, themes and l
   order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included); avatars are
   `App\Filament\Avatars\InitialsAvatar` (an SVG data URL, nothing loaded from another site). The dashboard
   (`App\Filament\Pages\Dashboard`: greeting, every card half the width) has `App\Filament\Widgets\` BillingOverview (open balance),
-  ActivityChart (orders, completed orders and income per day / month, plain SVG), UpcomingRenewals,
-  ServerCapacity (accounts vs max) and NeedsAttention (cron stopped, pending orders, change requests, overdue notices, failures of the
+  ActivityChart (orders, completed orders and income per day / month, plain SVG), UpcomingRenewals (a plain widget: the
+  `SHOWN` most urgent services due within `DAYS` days in groups, Record payment per row through its `service` argument),
+  ServerCapacity (accounts vs max, uptime over 30 days from `monthRatios()` or the service's own, Nearly full from `NEARLY_FULL`), RecentActivity (the last `SHOWN` Activity log events of `KINDS`, a button per kind; for admins with the Activity log) and NeedsAttention (a row's `action` is a link or one of the card's own Filament actions: `completeOrders`, `retryQueue`; its first `SHOWN` rows, the rest unfold; cron stopped, pending orders, change requests, overdue notices, failures of the
   last `FAILURE_DAYS`, each only for admins with that area); their CSS is `resources/views/filament/dashboard/styles.blade.php`
   in Filament's colours, so it works with any theme or none. The cards are laid out by
-  `resources/views/filament/dashboard/cards.blade.php`: two `.gx-col` columns of the same width from 768 px at any
-  width, each filling down on its own (masonry), stacked on a phone (first column first). Each card sits in a `.gx-slot`
+  `resources/views/filament/dashboard/cards.blade.php`: the day's numbers (`App\Support\DashboardToday`, `today.blade.php`:
+  income, new orders, new clients, tickets waiting, each by its resource's `canAccess()`; not a card), a row across the
+  top (`.gx-top`, column 0, `DashboardLayout::TOP` = Needs attention; left out while empty, a dashed drop place while
+  dragging), then two `.gx-col` columns of the same width from 768 px at any
+  width, each filling down on its own (masonry), stacked on a phone (top row, then the first column). Each card sits in a `.gx-slot`
   with a handle (`.gx-grip`, Filament's `x-sortable` = SortableJS with one shared group, arrow keys too, left / right
-  change column) that calls `Dashboard::reorderDashboard([1 => keys, 2 => keys])` (no re-render). Show / hide cards
+  change column) that calls `Dashboard::reorderDashboard([0 => keys, 1 => keys, 2 => keys])` (no re-render). Show / hide cards
   (header action) only shows / hides cards. Both are kept per admin in `users.dashboard_layout`
   [{widget, column, visible}], read by `App\Support\DashboardLayout` (default columns: `SECOND_COLUMN`; unknown cards
   dropped, new ones appended to the column with fewer cards, cards the admin may not open never offered; a reorder
@@ -389,9 +409,10 @@ How the admin and client panels, users, access, security, branding, themes and l
   `users.panel_notifications`, client profile) or Settings → Client area → Notifications bell is off; no push. They are
   stored as `App\Notifications\ClientAlert`, and both panels use `App\Livewire\PanelNotifications`, which lists only
   those in the client area and all others in /admin, so an admin linked to a client keeps the two apart. Hidden while
-  an admin looks through the client's login. On a touch screen a notification is swiped away left or right
-  (`resources/views/filament/notification-swipe.blade.php`, both panels: calls the notification's own `close()`, which
-  deletes it from the bell's list and closes a pop-up).
+  an admin looks through the client's login. A notification is swiped away left or right, by touch or mouse
+  (`resources/views/filament/notification-swipe.blade.php`, both panels, pointer events: calls the notification's own
+  `close()`, which deletes it from the bell's list and closes a pop-up; the two neighbours on each side follow the drag
+  with a damped offset and spring back; no animations with reduced motion; the X stays for the keyboard).
   Each one also goes as a push to the admin's devices (`App\Push\WebPush::notify()`, after the commit and the
   response): Web Push with no library, VAPID ES256 and aes128gcm by hand with OpenSSL, the VAPID key pair made on
   first use in `settings` (`push.vapid`, encrypted; a new APP_KEY makes new keys and drops the devices). Devices are

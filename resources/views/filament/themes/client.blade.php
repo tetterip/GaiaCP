@@ -30,6 +30,66 @@
         --gcp-bad: var(--danger-400);
     }
 
+    /* The grey count of a menu line ("Hosting 3", App\Support\NavigationCount) at its right end, before the red / amber badge */
+    .fi-sidebar-item-label:has(> .gcp-nav-count) {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .gcp-nav-count {
+        margin-inline-start: auto;
+        min-width: 1.5rem;
+        height: 1.5rem;
+        padding: 0 .45rem;
+        border-radius: 999px;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(var(--gcp-soft), var(--gcp-soft)), var(--gcp-card);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
+        font-size: .75rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: var(--gcp-muted);
+    }
+
+    /* With a red / amber badge too, the grey pill sits over its start, and a danger / warning badge gets a warning triangle */
+    .fi-sidebar-item-btn:has(.gcp-nav-count) .fi-sidebar-item-badge-ctn {
+        margin-inline-start: -1.35rem;
+    }
+
+    .fi-sidebar-item-btn:has(.gcp-nav-count) .fi-sidebar-item-badge-ctn .fi-badge {
+        padding-inline-start: .8rem;
+    }
+
+    .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) {
+        border-radius: 999px;
+        outline: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+        outline-offset: -1px;
+    }
+
+    .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) .fi-badge-label-ctn {
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .fi-sidebar-item-badge-ctn .fi-badge:is(.fi-color-danger, .fi-color-warning) .fi-badge-label-ctn::before {
+        content: '';
+        display: inline-block;
+        width: .8rem;
+        height: .8rem;
+        flex-shrink: 0;
+        margin-inline-end: .25rem;
+        background: currentColor;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 20h20L12 3z'/%3E%3Cpath d='M12 10v4M12 17h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 20h20L12 3z'/%3E%3Cpath d='M12 10v4M12 17h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
     /* A card with the theme's hairline, radius and shadow */
     .gcp-card {
         border-radius: var(--gcp-radius);
@@ -39,7 +99,7 @@
         color: var(--gcp-text);
     }
 
-    /* Home: the To pay card beside the smaller ones, then shortcuts and lists */
+    /* Home: the To pay card beside My services, then the shortcuts (a phone) and the renewals (their styles further down) */
     .gcp-home-grid {
         display: grid;
         gap: 1.25rem;
@@ -47,15 +107,9 @@
 
     @media (min-width: 1024px) {
         .gcp-home-grid {
-            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             align-items: stretch;
         }
-    }
-
-    .gcp-home-side {
-        display: grid;
-        gap: 1.25rem;
-        align-content: start;
     }
 
     .gcp-home-grid .gx-hero {
@@ -63,23 +117,8 @@
         height: 100%;
     }
 
-    .gcp-home-stat .gx-big {
-        font-size: 2rem;
-    }
-
     .gcp-home-owed {
         color: var(--gcp-bad);
-    }
-
-    .gcp-home-shortcuts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: .5rem;
-    }
-
-    .gcp-home-shortcuts .fi-btn {
-        border-radius: 999px;
-        background: var(--gcp-card);
     }
 
     .gcp-home-list {
@@ -120,6 +159,455 @@
     .gcp-home-note {
         font-size: .875rem;
         color: var(--gcp-muted);
+    }
+
+    .gcp-home-arrow {
+        flex: none;
+        width: 1rem;
+        height: 1rem;
+        color: var(--gcp-muted);
+    }
+
+    /* Shortcuts: one row to swipe on a phone; a wide screen has the menu beside the page */
+    .gcp-home-tiles {
+        display: none;
+        gap: .75rem;
+    }
+
+    .gcp-home-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+        padding: .9rem .5rem;
+        border-radius: var(--gcp-radius-control);
+        background: var(--gcp-card);
+        box-shadow: 0 0 0 1px var(--gcp-line);
+        font-size: .875rem;
+        font-weight: 500;
+        text-align: center;
+        color: var(--gcp-ink);
+        transition: box-shadow .15s ease;
+    }
+
+    .gcp-home-tile:hover,
+    .gcp-home-tile:focus-visible {
+        box-shadow: 0 0 0 1px var(--gcp-accent);
+    }
+
+    .gcp-home-tile-icon {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 2rem;
+        height: 2rem;
+        border-radius: .6rem;
+        background: var(--gcp-soft);
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-tile-icon svg {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    @media (max-width: 1023px) {
+        .gcp-home-tiles {
+            display: flex;
+            overflow-x: auto;
+            margin-inline: -1rem;
+            padding: 2px 1rem;
+            scrollbar-width: none;
+        }
+
+        .gcp-home-tiles::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gcp-home-tile {
+            flex: none;
+            flex-direction: row;
+            padding: .6rem .85rem;
+            white-space: nowrap;
+        }
+    }
+
+    /* The lists: each row a link with its amount at the end */
+    .gcp-home-card {
+        gap: .6rem;
+    }
+
+    .gcp-home-rows {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gcp-home-row {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+        padding: .65rem .25rem;
+        border-top: 1px solid var(--gcp-line);
+    }
+
+    .gcp-home-row:first-child {
+        border-top: 0;
+    }
+
+    .gcp-home-row-text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.35;
+        font-size: .8rem;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-row-text strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-row:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-row-amount {
+        font-size: .9rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-row-pay {
+        padding: .25rem .7rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 600;
+        background: var(--gaia-button, var(--primary-600));
+        color: var(--gaia-button-ink, #fff);
+    }
+
+    .gcp-home-row .gcp-overdue {
+        color: var(--gcp-bad);
+    }
+
+    /* To pay: the amount over the notices, each with its Pay; one low line when everything is paid */
+    .gcp-home-pay {
+        gap: .9rem;
+    }
+
+    .gcp-home-pay-amount {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+    }
+
+    .gcp-home-dot-bad {
+        background: var(--gcp-bad);
+    }
+
+    .gcp-home-pay .gcp-overdue {
+        color: var(--gcp-bad);
+    }
+
+    .gcp-home-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem 1rem;
+        margin-top: auto;
+        padding-top: .75rem;
+        border-top: 1px solid var(--gcp-line);
+        font-size: .85rem;
+    }
+
+    .gcp-home-credit {
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-credit strong {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-credit:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-paid {
+        align-self: start;
+    }
+
+    .gcp-home-paid-line {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+    }
+
+    .gcp-home-paid-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        line-height: 1.4;
+    }
+
+    .gcp-home-paid-text strong {
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
+    /* My services: a row each with the way into its panel, then the count per kind */
+    .gcp-home-services .gx-head {
+        flex-wrap: nowrap;
+    }
+
+    .gcp-home-order {
+        margin-inline-start: auto;
+    }
+
+    .gcp-home-row-text .gcp-live {
+        display: inline-block;
+        margin-inline-end: .35rem;
+        vertical-align: middle;
+    }
+
+    a.gcp-home-row-text:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-home-row-open {
+        flex: none;
+        padding: .3rem .7rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 600;
+        white-space: nowrap;
+        background: var(--gcp-soft);
+        color: var(--gcp-accent);
+        transition: box-shadow .15s ease;
+    }
+
+    .gcp-home-row-open:hover,
+    .gcp-home-row-open:focus-visible {
+        box-shadow: 0 0 0 1px var(--gcp-accent);
+    }
+
+    .gcp-home-row-manage {
+        background: none;
+        color: var(--gcp-muted);
+        box-shadow: 0 0 0 1px var(--gcp-line);
+    }
+
+    .gcp-home-kinds {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .4rem .9rem;
+        margin-top: auto;
+        padding-top: .75rem;
+        border-top: 1px solid var(--gcp-line);
+        font-size: .85rem;
+    }
+
+    .gcp-home-kinds .gx-muted {
+        margin-inline-end: auto;
+    }
+
+    @media (max-width: 639px) {
+        .gcp-home-kinds .gx-muted {
+            flex-basis: 100%;
+        }
+    }
+
+    .gcp-home-kind {
+        color: var(--gcp-muted);
+    }
+
+    .gcp-home-kind strong {
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-home-kind:hover,
+    .gcp-home-kind:hover strong {
+        color: var(--gcp-accent);
+    }
+
+    /* "Does not renew automatically" on a domain whose auto renew is off */
+    .gcp-home-flag {
+        display: inline-block;
+        margin-inline-start: .35rem;
+        padding: 0 .45rem;
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 600;
+        background: var(--warning-50);
+        color: var(--warning-700);
+    }
+
+    .dark .gcp-home-flag {
+        background: color-mix(in oklab, var(--warning-500) 18%, transparent);
+        color: var(--warning-300);
+    }
+
+    .gcp-home-flag-info {
+        background: var(--primary-50);
+        color: var(--primary-700);
+    }
+
+    .dark .gcp-home-flag-info {
+        background: color-mix(in oklab, var(--primary-500) 18%, transparent);
+        color: var(--primary-300);
+    }
+
+    .gcp-home-flag-muted,
+    .dark .gcp-home-flag-muted {
+        background: color-mix(in oklab, currentColor 8%, transparent);
+        color: var(--gcp-muted, inherit);
+    }
+
+    .gcp-home-row > .gcp-home-flag {
+        flex: none;
+        margin-inline-start: 0;
+        white-space: nowrap;
+    }
+
+    /* The list of what waits for the client: one row per thing to do, with the page that settles it */
+    .gcp-home-wait-icon {
+        flex: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        color: var(--gcp-muted, currentColor);
+    }
+
+    .gcp-home-wait .gcp-home-row-text strong {
+        white-space: normal;
+    }
+
+    .gcp-home-wait-bad .gcp-home-wait-icon {
+        color: var(--danger-600);
+    }
+
+    .gcp-home-wait-warn .gcp-home-wait-icon {
+        color: var(--warning-600);
+    }
+
+    .gcp-home-wait-info .gcp-home-wait-icon {
+        color: var(--primary-600);
+    }
+
+    .dark .gcp-home-wait-bad .gcp-home-wait-icon {
+        color: var(--danger-400);
+    }
+
+    .dark .gcp-home-wait-warn .gcp-home-wait-icon {
+        color: var(--warning-400);
+    }
+
+    .dark .gcp-home-wait-info .gcp-home-wait-icon {
+        color: var(--primary-400);
+    }
+
+    /* A grid row with one card only (no renewals, or no Support card) */
+    @media (min-width: 1024px) {
+        .gcp-home-grid.gcp-home-grid-one {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .gcp-home-grid > .gcp-home-card {
+        height: 100%;
+    }
+
+    /* The domain and article searches on Home: a plain form that opens the search page on what was typed */
+    .gcp-home-search {
+        align-items: center;
+    }
+
+    .gcp-home-search-bar {
+        max-width: 40rem;
+    }
+
+    .gcp-home-support .gcp-home-search {
+        margin-top: auto;
+    }
+
+    /* The first card of a client with no service yet */
+    .gcp-home-start {
+        gap: .9rem;
+    }
+
+    .gcp-home-start .gcp-home-search {
+        max-width: 40rem;
+    }
+
+    .gcp-home-starters {
+        display: grid;
+        gap: .75rem;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+
+    .gcp-home-starter {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+        padding: .9rem 1rem;
+        border: 1px solid var(--gcp-line);
+        border-radius: .75rem;
+        transition: border-color .15s;
+    }
+
+    .gcp-home-starter:hover,
+    .gcp-home-starter:focus-visible {
+        border-color: var(--gcp-accent);
+    }
+
+    .gcp-home-starter-badge {
+        align-self: flex-start;
+        padding: 0 .45rem;
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 600;
+        background: var(--primary-50);
+        color: var(--primary-700);
+    }
+
+    .dark .gcp-home-starter-badge {
+        background: color-mix(in oklab, var(--primary-500) 18%, transparent);
+        color: var(--primary-300);
+    }
+
+    .gcp-home-starter-price {
+        margin-top: auto;
+        padding-top: .35rem;
+        font-weight: 600;
+    }
+
+    .gcp-home-start-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
+    .gcp-home-contact {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .gcp-home-contact svg {
+        flex: none;
+        width: 1.1rem;
+        height: 1.1rem;
     }
 
     /* Credit: the balance over the history */
@@ -303,6 +791,35 @@
         font-variant-numeric: tabular-nums;
     }
 
+    .gcp-cart-line-text {
+        min-width: 0;
+        flex: 1;
+    }
+
+    /* A cart item's billing cycle or domain term, changed in place */
+    .gcp-cart-line-choice {
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+        max-width: 18rem;
+        margin-top: .5rem;
+        font-size: .8rem;
+        color: var(--gray-500);
+    }
+
+    /* The cart in the top bar (CartDrawer): its items, then the total and Checkout pinned under them */
+    .gcp-cart-drawer-total {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: .75rem;
+        font-weight: 600;
+    }
+
+    .gcp-cart-drawer-checkout {
+        width: 100%;
+    }
+
     /* Downloads: each file's title, description and size, its button at the end (under them on phones) */
     .gcp-downloads {
         display: flex;
@@ -399,6 +916,120 @@
     .gcp-domain-note,
     .gcp-domain-suggest {
         margin-top: .75rem;
+    }
+
+    /* Spotlight TLDs (Settings → Domains): their results as cards above the other endings, two a row on phones */
+    .gcp-domain-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+        gap: .75rem;
+        margin-bottom: 1rem;
+    }
+
+    .gcp-domain-card {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        min-width: 0;
+        padding: 1rem;
+        border-radius: var(--gcp-radius-control);
+        background: var(--gcp-soft);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
+        color: var(--gcp-text);
+    }
+
+    .gcp-domain-card.is-free {
+        background: var(--gcp-card);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gcp-accent) 45%, var(--gcp-line));
+    }
+
+    .gcp-domain-card-name {
+        display: flex;
+        align-items: baseline;
+        min-width: 0;
+        line-height: 1.2;
+    }
+
+    .gcp-domain-card-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-domain-card-tld {
+        flex-shrink: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gcp-ink);
+    }
+
+    .gcp-domain-card.is-free .gcp-domain-card-tld {
+        color: var(--gcp-accent);
+    }
+
+    .gcp-domain-card .gcp-domain-status {
+        margin-top: 0;
+    }
+
+    .gcp-domain-card-end {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: .4rem;
+        margin-top: auto;
+    }
+
+    .gcp-domain-card-end .gcp-cart-line-amount {
+        font-weight: 600;
+        color: var(--gcp-ink);
+    }
+
+    @media (max-width: 40rem) {
+        .gcp-domain-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .5rem;
+        }
+
+        .gcp-domain-card {
+            padding: .75rem;
+        }
+
+        .gcp-domain-card-tld {
+            font-size: 1.25rem;
+        }
+
+        .gcp-domain-card-end .gcp-cart-line-amount {
+            font-size: .875rem;
+        }
+    }
+
+    /* The spotlight TLDs' prices under a domain search box (search page, public home page) */
+    .gcp-spotlight-prices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin: .75rem 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .gcp-spotlight-price {
+        display: inline-flex;
+        align-items: baseline;
+        gap: .4rem;
+        padding: .3rem .75rem;
+        border-radius: 999px;
+        background: var(--gcp-soft);
+        box-shadow: inset 0 0 0 1px var(--gcp-line);
+        font-size: .875rem;
+        color: var(--gcp-muted);
+    }
+
+    .gcp-spotlight-price strong {
+        color: var(--gcp-accent);
+        font-weight: 700;
     }
 
     /* Knowledge base (KnowledgeBase, KnowledgeBaseArticle, the tips on Open a ticket) */
@@ -1170,6 +1801,10 @@
         font-weight: 600;
         color: var(--gcp-ink);
         border-bottom: 1px solid var(--gcp-line);
+    }
+
+    .gcp-notice-lines th.gcp-end {
+        text-align: end;
     }
 
     .gcp-notice-lines td {

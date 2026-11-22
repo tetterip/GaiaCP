@@ -73,6 +73,22 @@ connections to your servers and registrars. Anything marked as a problem says wh
 prints the same (add `--connections` to test the servers and registrars too) and fails when something is wrong, so a
 monitoring script can run it.
 
+Its **Speed** group says what makes each page quicker. None of it needs a terminal:
+
+- **OPcache**: PHP keeps GaiaCP's code compiled. Turn it on in your hosting panel's PHP settings, with room for all of
+  GaiaCP's about 18,000 files (`opcache.max_accelerated_files=20000`; Plesk's default of 1,000 leaves most of them out).
+- **Cached config, routes, components**: click **Optimize now** on that line, then **Check again** a few seconds later.
+  On a live site you rarely need to: while cron runs, GaiaCP caches them by itself within a minute whenever they are
+  missing (an update clears them) or `.env` was changed. A new install does it at the end of the installer.
+- **Cache and sessions**: click **Use files** to keep them in files instead of the database, which saves a few queries
+  on every page. Everyone signed in, you and your clients too, is signed out once and signs in again. New installs
+  start with files. A server with Redis can use it instead (`CACHE_STORE=redis` and `SESSION_DRIVER=redis` in `.env`).
+
+Only super admins see these two buttons. If you prefer to run commands yourself, `php artisan gaiacp:optimize` does what
+Optimize now does, and `GAIACP_AUTO_OPTIMIZE=false` in `.env` stops the automatic caching. Inside the panel, a link to
+another page swaps only the page instead of loading everything again, and the page starts loading while the pointer
+rests on the link.
+
 ### Monitoring from outside
 
 System health can only warn you while GaiaCP runs. If the server, PHP or cron stops, nothing inside GaiaCP can tell

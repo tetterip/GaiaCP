@@ -27,7 +27,7 @@
         .row button { margin-top: 12px; }
         .terms { max-height: 240px; overflow: auto; font-size: 13px; border: 1px solid var(--line); border-radius: 8px; padding: 0 12px; margin-top: 8px; }
         @media (max-width: 560px) { .lines .cycle { display: none; } }
-        @media print { .answer, .print { display: none; } body { background: #fff; } main { padding: 0; } .card { border: 0; } }
+        @media print { :root { --text: #1f2a24; --muted: #66706a; --line: #e2e5e3; --card: #fff; } .answer, .print { display: none; } body { background: #fff; } main { padding: 0; } .card { border: 0; } }
     </style>
 @endsection
 
@@ -101,7 +101,7 @@
                 @endif
                 <div class="row">
                     <button type="submit">{{ __('Accept the quote') }}</button>
-                    <button type="button" class="secondary print" onclick="window.print()">{{ __('Print') }}</button>
+                    <button type="button" class="secondary print" id="print-quote">{{ __('Print') }}</button>
                 </div>
                 <p style="margin-top: 8px; font-size: 13px">{{ __('Accepting places the order: you get a payment notice by email with how to pay, and access to our client area.') }}</p>
             </form>
@@ -116,5 +116,6 @@
                 </form>
             </details>
         </div>
+        <script @nonce>document.getElementById('print-quote')?.addEventListener('click', () => window.print());</script>
     @endif
 @endsection

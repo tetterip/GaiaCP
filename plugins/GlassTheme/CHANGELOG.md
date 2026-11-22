@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.3] - 2026-11-20
+
+- Its script carries the page's nonce, so it runs under GaiaCP's Content-Security-Policy
+
 ## [1.2.2] - 2026-11-04
 
 - Readable colours (WCAG AA): links, tabs and selected buttons in the logo's own teal instead of a bright one (3.3:1,

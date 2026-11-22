@@ -10,9 +10,11 @@ use App\Filament\Concerns\TranslatesPageLabels;
 use App\Models\Client;
 use App\Models\CreditTransaction;
 use App\Support\Money;
+use App\Support\NavigationCount;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
+use Filament\Navigation\NavigationItem;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -49,6 +51,16 @@ class Credit extends Page implements HasTable
         $client = self::currentClient();
 
         return $client !== null && (ClientCredit::enabled() || $client->creditTransactions()->exists());
+    }
+
+    /** The menu line with the balance after it in grey (NavigationCount), while there is one. */
+    public static function getNavigationItems(): array
+    {
+        return array_map(fn (NavigationItem $item) => $item->label(new NavigationCount(static::getNavigationLabel(), function (): ?string {
+            $client = self::currentClient()?->fresh();
+
+            return $client !== null && $client->credit_cents > 0 ? Money::format((int) $client->credit_cents, $client->currencyCode()) : null;
+        })), parent::getNavigationItems());
     }
 
     public static function currentClient(): ?Client

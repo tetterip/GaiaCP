@@ -62,11 +62,13 @@ use App\Plugins\PluginManager;
 use App\Support\Branding;
 use App\Support\ClientAreaMaintenance as Maintenance;
 use App\Support\ClientMenu;
+use App\Support\ContentWidth;
 use App\Support\CookieConsent;
 use App\Support\Demo;
 use App\Support\PublicArea;
 use App\Support\Seo;
 use App\Support\ServerIncidents;
+use App\Support\SpaLinks;
 use App\Support\WelcomeTour;
 use App\Themes\Themes;
 use Filament\Actions\Action;
@@ -104,6 +106,10 @@ class ClientPanelProvider extends PanelProvider
         return $panel
             ->id('client')
             ->path('')
+            ->maxContentWidth(fn () => ContentWidth::current())
+            // A link to another page of this panel swaps only the page, fetched while the pointer rests on it (SpaLinks)
+            ->spa(hasPrefetching: true)
+            ->spaUrlExceptions(fn (): array => SpaLinks::exceptions('client'))
             ->authGuard('client')
             ->authPasswordBroker('clients')
             ->login(Login::class)
@@ -143,8 +149,8 @@ class ClientPanelProvider extends PanelProvider
             ->navigation(fn (NavigationBuilder $builder): NavigationBuilder|bool => filament()->auth()->check()
                 ? (ClientMenu::saved(ClientMenu::CLIENT) === null ? true : ClientMenu::build(ClientMenu::CLIENT, $builder))
                 : PublicArea::navigation($builder))
-            // The cart, with how many items are in it, while clients can order (Cart)
-            ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() && Cart::canAccess() ? view('filament.client.cart-icon')->render() : '')
+            // The cart, with how many items are in it, opening its items from the side, while clients can order (CartDrawer)
+            ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() && Cart::canAccess() ? Blade::render('@livewire(\'cart-drawer\')') : '')
             // A visitor's language, cart, Log in and Sign up
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): string => filament()->auth()->check() ? '' : view('filament.client.public-topbar')->render())
             // The bell (App\Notifications\ClientAlerts): Settings → Client area → Notifications, and each login's profile.
@@ -152,7 +158,7 @@ class ClientPanelProvider extends PanelProvider
             ->databaseNotifications(fn (): bool => config('gaiacp.client_area.notifications') && (bool) (filament()->auth()->user()?->panel_notifications ?? true) && ! ClientAreaAccess::viewing(), livewireComponent: PanelNotifications::class, position: DatabaseNotificationsPosition::Topbar)
             ->databaseNotificationsPolling('60s')
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.bell-ring')->render() : '')
-            // Swipe a notification away on a touch screen (the bell's list and pop-ups)
+            // Swipe a notification away, by touch or mouse (the bell's list and pop-ups)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.notification-swipe')->render())
             // The theme says where the client's menu sits: a card at the foot of the sidebar (Gaia, Flat) or the top bar
             ->userMenu(position: fn () => Themes::userMenuPosition())
