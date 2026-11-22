@@ -42,6 +42,7 @@ class ServicesListTest extends TestCase
     public function test_quick_filters_count_and_set_the_filters(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-17 10:00'));
+        config(['gaiacp.automation.suspend_after_days' => 14]);
         $active = Service::factory()->dueOn('2027-03-01')->create();
         $soon = Service::factory()->dueOn('2026-10-22')->create();
         $suspended = Service::factory()->dueOn('2027-03-01')->create(['status' => ServiceStatus::Suspended]);
@@ -75,6 +76,7 @@ class ServicesListTest extends TestCase
     public function test_hosting_opens_on_the_active_and_recently_suspended_accounts_soonest_due_first(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-11-22 10:00'));
+        config(['gaiacp.automation.suspend_after_days' => 60]);
         $later = Service::factory()->dueOn('2027-03-01')->create();
         $sooner = Service::factory()->dueOn('2026-12-01')->create();
         $recent = Service::factory()->dueOn('2026-10-01')->create(['status' => ServiceStatus::Suspended]);
@@ -110,9 +112,9 @@ class ServicesListTest extends TestCase
         Livewire::withQueryParams(['tab' => 'all'])->test(ListServices::class)->assertCanSeeTableRecords([$old, $domain]);
     }
 
-    public function test_hosting_opens_on_the_active_accounts_when_no_suspended_ones_are_kept(): void
+    public function test_hosting_opens_on_the_active_accounts_when_nothing_is_suspended_automatically(): void
     {
-        config(['gaiacp.automation.recently_suspended_days' => 0]);
+        config(['gaiacp.automation.suspend_after_days' => null]);
         $active = Service::factory()->create();
         $suspended = Service::factory()->create(['status' => ServiceStatus::Suspended, 'next_due_date' => today()->toDateString()]);
 

@@ -139,10 +139,11 @@ class ServicesTable
             ->maxSelectableRecords(ServiceBulkActions::MAX);
     }
 
-    /** Settings → Automation → Show suspended hosting for: how far back the Hosting list's first chip keeps them. */
+    /** How far back the Hosting list's first chip keeps suspended accounts: Settings → Automation → Suspend hosting
+     *  after (0 when it is empty, i.e. the active ones only). */
     public static function recentlySuspendedDays(): int
     {
-        return max(0, (int) config('gaiacp.automation.recently_suspended_days', 60));
+        return max(0, (int) config('gaiacp.automation.suspend_after_days'));
     }
 
     /** The line under the service: a hosting account's username, else the label when the domain is the title. */

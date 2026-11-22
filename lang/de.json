@@ -4302,10 +4302,7 @@
     "Spotlight TLDs": "Hervorgehobene TLDs",
     "The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.": "Die Endungen, die die meisten Ihrer Kunden kaufen, etwa .gr und .com. Die Domainsuche prüft sie zuerst und zeigt sie als Karten über den anderen Endungen, mit ihrem Preis; die öffentliche Startseite und die Suchseite zeigen ihre Preise unter dem Suchfeld.",
     "Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.": "Bis zu :count unter Domainpreise angebotene TLDs, in der Reihenfolge der Anzeige; zum Umsortieren ziehen. Leer: alle Endungen werden gleich aufgeführt.",
-    "Show suspended hosting for": "Gesperrtes Hosting anzeigen für",
-    "Services → Hosting opens on the active accounts and the suspended ones overdue by up to this many days. 0 = active only.": "Dienste → Hosting öffnet mit den aktiven Konten und den gesperrten, die bis zu so viele Tage überfällig sind. 0 = nur aktive.",
     "Active, and suspended up to :count days overdue": "Aktiv, und gesperrt bis zu :count Tage überfällig",
     "Active and recent": "Aktiv und kürzlich",
-    "Current": "Aktuell",
-    "Recently suspended days": "Tage kürzlich gesperrt"
+    "Current": "Aktuell"
 }

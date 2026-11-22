@@ -139,7 +139,7 @@ class ListServices extends ListRecords
     }
 
     /** The chip each tab opens on: Hosting shows the active accounts and the recently suspended ones (or only the
-     *  active ones when Settings → Automation keeps none), soonest due first. */
+     *  active ones when Settings → Automation → Suspend hosting after is empty), soonest due first. */
     public const TAB_DEFAULTS = ['hosting' => 'current'];
 
     /** Set by mount() so the table applies the tab's chip once its filters exist (not when the URL names filters). */
