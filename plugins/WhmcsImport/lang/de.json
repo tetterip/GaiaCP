@@ -10,6 +10,7 @@
     "Billable items": "Abrechenbare Posten",
     "Brings servers, products, clients, services, domains and unpaid invoices over from a WHMCS database.": "Übernimmt Server, Produkte, Kunden, Dienste, Domains und unbezahlte Rechnungen aus einer WHMCS-Datenbank.",
     "Check these after importing; the rest is imported as described.": "Prüfen Sie diese nach dem Import; der Rest wird wie beschrieben importiert.",
+    "Client logins": "Kundenzugänge",
     "Copies everything the dry run lists into GaiaCP. Records imported before are skipped, so it is safe to run again.": "Kopiert alles, was der Testlauf auflistet, in GaiaCP. Bereits importierte Datensätze werden übersprungen, daher kann es gefahrlos erneut ausgeführt werden.",
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Kunden, Produkte, Dienste, Domains und unbezahlte Rechnungen aus einer WHMCS-Datenbank kopieren.",
     "Created": "Erstellt",

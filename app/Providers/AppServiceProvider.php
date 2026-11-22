@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\PasswordBrokerManager;
+use App\Auth\UserProvider;
 use App\Database\MariaDbConnection;
 use App\Database\MySqlConnection;
 use App\Database\SQLiteConnection;
@@ -43,6 +44,7 @@ use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\NoPendingMigrations;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
@@ -96,6 +98,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // The users provider: Laravel's eloquent one, plus passwords imported from WHMCS
+        Auth::provider('gaiacp', fn ($app, array $config) => new UserProvider($app['hash'], $config['model']));
+
         // GaiaCP's own icons (resources/svg) as "gcp-<file>", e.g. gcp-good-news: the green tick of an empty list
         // that is good news (no tickets waiting, no failed jobs), coloured by filament.tables.
         $this->callAfterResolving(IconFactory::class, fn (IconFactory $icons) => $icons->add('gaiacp', ['path' => resource_path('svg'), 'prefix' => 'gcp']));

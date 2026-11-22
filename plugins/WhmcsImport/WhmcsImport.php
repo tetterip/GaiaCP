@@ -2,6 +2,7 @@
 
 namespace Plugins\WhmcsImport;
 
+use App\Auth\ImportedPassword;
 use App\Enums\AutoSetup;
 use App\Enums\BillingCycle;
 use App\Enums\ClientFieldAccess;
@@ -12,6 +13,7 @@ use App\Enums\DomainRegistrationType;
 use App\Enums\InvoiceStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
+use App\Enums\UserRole;
 use App\Models\ActivityLog;
 use App\Models\Client;
 use App\Models\ClientField;
@@ -23,6 +25,7 @@ use App\Models\ProductGroup;
 use App\Models\Registrar;
 use App\Models\Server;
 use App\Models\Service;
+use App\Models\User;
 use App\Plugins\PluginManager;
 use App\Providers\AppServiceProvider;
 use App\Support\ClientFields;
@@ -128,6 +131,7 @@ class WhmcsImport
         'server' => 'Servers',
         'product' => 'Products',
         'client' => 'Clients',
+        'login' => 'Client logins',
         'hosting' => 'Hosting and other services',
         'domain' => 'Domains',
         'billable' => 'Billable items',
@@ -176,6 +180,10 @@ class WhmcsImport
 
             foreach (['server' => 'servers', 'product' => 'products', 'client' => 'clients', 'hosting' => 'hosting', 'domain' => 'domains'] as $part => $method) {
                 $this->wants($part) ? $this->{$method}($whmcs) : $this->linkExisting(fn () => $this->{$method}($whmcs));
+            }
+
+            if ($this->wants('login')) {
+                $this->logins($whmcs);
             }
 
             if ($this->wants('billable')) {
@@ -439,6 +447,88 @@ class WhmcsImport
             $client->save();
 
             $this->link('client', $row->id, $client, 'created');
+        }
+    }
+
+    /**
+     * Each client's WHMCS login, so they log in to the client area with the email and password they had: a client
+     * login that is on (off for a Closed client), its email confirmed, no email sent. Its password is WHMCS's hash,
+     * kept in users.imported_password until the first login replaces it with GaiaCP's own; WHMCS
+     * never had the password in plain text and neither does GaiaCP. WHMCS 8 keeps logins in tblusers (the owner of each
+     * client account, tblusers_clients), older versions in tblclients.password. A client that already has a login here
+     * is left as it is, so this also gives logins to clients imported before, when run again. WHMCS's two-factor
+     * authentication is not carried over.
+     */
+    private function logins(Connection $whmcs): void
+    {
+        $schema = $whmcs->getSchemaBuilder();
+        $owners = collect();
+
+        if ($schema->hasTable('tblusers') && $schema->hasTable('tblusers_clients')) {
+            $owners = $whmcs->table('tblusers_clients')
+                ->join('tblusers', 'tblusers.id', '=', 'tblusers_clients.auth_user_id')
+                ->where('tblusers_clients.owner', 1)
+                ->orderBy('tblusers_clients.id')
+                ->get(['tblusers_clients.client_id', 'tblusers.email', 'tblusers.password'])
+                ->unique('client_id')
+                ->keyBy('client_id');
+        } elseif (! $schema->hasColumn('tblclients', 'password')) {
+            $this->report->problem('This WHMCS database has no client passwords (no tblusers table, no tblclients.password): no logins imported.');
+
+            return;
+        }
+
+        $columns = $owners->isEmpty() && $schema->hasColumn('tblclients', 'password') ? ['id', 'email', 'status', 'password'] : ['id', 'email', 'status'];
+
+        foreach ($whmcs->table('tblclients')->orderBy('id')->get($columns) as $row) {
+            $client = $this->find(Client::class, 'client', $row->id);
+
+            if (! $client instanceof Client) {
+                continue; // not imported: no email, or Clients left out and no client here with its email
+            }
+
+            $owner = $owners->get($row->id);
+            $email = trim((string) ($owner->email ?? $row->email));
+            $hash = trim((string) ($owner->password ?? $row->password ?? ''));
+
+            if ($client->user()->exists()) {
+                $this->report->count('login', 'existing');
+
+                continue;
+            }
+
+            if ($hash === '' || $email === '') {
+                $this->report->count('login', 'skipped');
+
+                continue;
+            }
+
+            if (! ImportedPassword::supported($hash)) {
+                $this->report->count('login', 'skipped');
+                $this->report->problem("Client {$client->name}: WHMCS password in a format GaiaCP can't check; they can use Forgot password.", 'passwords');
+
+                continue;
+            }
+
+            if (User::query()->whereRaw('lower(email) = ?', [mb_strtolower($email)])->exists()) {
+                $this->report->count('login', 'skipped');
+                $this->report->problem("Client {$client->name}: another user already logs in with {$email}; no login imported.", 'passwords');
+
+                continue;
+            }
+
+            $user = new User([
+                'name' => $client->name,
+                'email' => $email,
+                'role' => UserRole::Client,
+                'client_id' => $client->id,
+                'password' => Str::password(32), // unknown to everyone: the WHMCS password is checked through imported_password
+                'active' => strtolower((string) $row->status) !== 'closed',
+            ]);
+            $user->forceFill(['imported_password' => $hash, 'email_verified_at' => now()]);
+            $user->save();
+
+            $this->report->count('login', 'created');
         }
     }
 

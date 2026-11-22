@@ -420,7 +420,12 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `WhmcsCrypt` (WHMCS's password encryption, keyed by `cc_encryption_hash`), `WhmcsApi` (WHMCS's DecryptPassword for the rest, optional), `WhmcsConnection` (the read-only `whmcs`
   connection, `WHMCS_DB_*`, in the plugin's `config.php`). Imported rows are remembered in `whmcs_links` (entity + WHMCS id → local id) so a re-run skips
   them; records already here (same email, hostname, product name, domain) are linked, never updated. `WhmcsImport::PARTS`
-  can be left out (`run(parts:)`); a left-out part only links what is already here, in memory. Run by
+  can be left out (`run(parts:)`); a left-out part only links what is already here, in memory. Part `login` gives each
+  linked client without a user a client login (WHMCS 8 `tblusers` owner via `tblusers_clients`, else
+  `tblclients.password`): random `password`, WHMCS's hash in `users.imported_password` (hidden), checked by
+  `App\Auth\ImportedPassword` (password_hash formats, `md5(salt.pw):salt`, bare MD5) in `App\Auth\UserProvider` (the
+  `gaiacp` users driver, config/auth.php), which stores the password with GaiaCP's hash on the first match; any password
+  change empties `imported_password` (`User::booted()`). Run by
   `gaiacp:import-whmcs` (`ImportWhmcs`) and `WhmcsImportPage` (Settings → System → Import from WHMCS)
 - Debugging (Settings → Logs): `app/Support/ModuleLogger.php` is a Guzzle middleware every API client adds
   (`->withMiddleware(ModuleLogger::middleware(module, action, secrets))`): while Settings → Logging → Module log is on

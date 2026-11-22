@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- WHMCS import 1.1.0: clients log in to the client area with the email and password they had in WHMCS (new **Client
+  logins** part; logins on, no email sent). Only WHMCS's password hash is copied; the first login stores the password
+  with GaiaCP's own hash. Clients imported before get their logins by running the import again with only Client
+  logins ticked.
 - An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead of Record payment: one click,
   no payment form, sets its items up and moves each due date forward one cycle.
 - **Quarantine** in the service lists: a domain that has expired but is still inside its TLD's grace days (30 when

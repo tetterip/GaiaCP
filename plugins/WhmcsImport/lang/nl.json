@@ -10,6 +10,7 @@
     "Billable items": "Factureerbare items",
     "Brings servers, products, clients, services, domains and unpaid invoices over from a WHMCS database.": "Haalt servers, producten, klanten, diensten, domeinen en onbetaalde facturen over uit een WHMCS-database.",
     "Check these after importing; the rest is imported as described.": "Controleer deze na het importeren; de rest wordt geïmporteerd zoals beschreven.",
+    "Client logins": "Klantlogins",
     "Copies everything the dry run lists into GaiaCP. Records imported before are skipped, so it is safe to run again.": "Kopieert alles wat de proefrun noemt naar GaiaCP. Eerder geïmporteerde gegevens worden overgeslagen, dus opnieuw uitvoeren is veilig.",
     "Copy clients, products, services, domains and unpaid invoices from a WHMCS database.": "Klanten, producten, diensten, domeinen en onbetaalde facturen kopiëren uit een WHMCS-database.",
     "Created": "Aangemaakt",

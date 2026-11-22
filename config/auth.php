@@ -70,7 +70,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'gaiacp', // eloquent, plus passwords imported from WHMCS (App\Auth\UserProvider)
             'model' => env('AUTH_MODEL', User::class),
         ],
 
