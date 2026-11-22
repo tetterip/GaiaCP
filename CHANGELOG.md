@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
+
 ## [0.11.0] - 2026-11-21
 
 - Fixed (pre-release audit): two urgent tickets sent at the same moment could both pass the month's limit; a client's
