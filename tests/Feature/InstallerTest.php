@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Install\Installer;
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\Health\SpeedCaches;
 use Dotenv\Dotenv;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +87,8 @@ class InstallerTest extends TestCase
         $this->assertSame('open', $env[Installer::MARKER]);
         $this->assertSame('production', $env['APP_ENV']);
         $this->assertSame('false', $env['APP_DEBUG']);
+        $this->assertSame('file', $env['CACHE_STORE']); // System health → Speed starts fine
+        $this->assertSame('file', $env['SESSION_DRIVER']);
 
         $this->get('/install')->assertOk()
             ->assertSee('PHP version')
@@ -132,6 +135,7 @@ class InstallerTest extends TestCase
 
     public function test_finishing_creates_the_admin_saves_the_business_and_locks_the_installer(): void
     {
+        $this->mock(SpeedCaches::class)->shouldReceive('buildAfterResponse')->once(); // a live site caches its config at the end
         $this->get('/install?lang=el');
         $this->freshDatabase();
 

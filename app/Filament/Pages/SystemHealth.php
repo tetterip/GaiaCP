@@ -8,11 +8,13 @@ use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Concerns\LimitedToAdminArea;
 use App\Filament\Concerns\TranslatesPageLabels;
 use App\Support\Health\Check;
+use App\Support\Health\SpeedCaches;
 use App\Support\Health\Status;
 use App\Support\Health\SystemHealth as Health;
 use App\Support\Health\TableSizes;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\EmbeddedTable;
@@ -26,6 +28,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
+use RuntimeException;
 use UnitEnum;
 
 /**
@@ -80,6 +83,12 @@ class SystemHealth extends Page implements HasTable, SettingsCard
         ];
     }
 
+    /** Writes .env and the caches: super admins only, as for the other settings kept in .env. */
+    private static function canFixSpeed(): bool
+    {
+        return (bool) auth()->user()?->super_admin;
+    }
+
     private function recheck(): void
     {
         $this->checks = null;
@@ -113,6 +122,44 @@ class SystemHealth extends Page implements HasTable, SettingsCard
                     ->formatStateUsing(fn (Status $state) => $state->label())
                     ->badge()
                     ->color(fn (Status $state) => $state->color()),
+            ])
+            ->recordActions([
+                // Speed: what used to need `php artisan optimize` and an edit of .env (SpeedCaches)
+                Action::make('optimize')
+                    ->label('Optimize now')
+                    ->icon(Heroicon::OutlinedBolt)
+                    ->button()
+                    ->size('sm')
+                    ->visible(fn (array $record) => self::canFixSpeed() && $record['name'] === Health::CACHES_CHECK && $record['status'] !== Status::Ok)
+                    ->action(function (SpeedCaches $caches) {
+                        $caches->buildAfterResponse();
+                        Notification::make()
+                            ->title(__('Optimizing'))
+                            ->body(__('GaiaCP is caching its settings, routes and pages now. Click Check again in a few seconds.'))
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('useFiles')
+                    ->label('Use files')
+                    ->icon(Heroicon::OutlinedBolt)
+                    ->button()
+                    ->size('sm')
+                    ->visible(fn (array $record) => self::canFixSpeed() && $record['name'] === Health::DRIVERS_CHECK && $record['status'] !== Status::Ok)
+                    ->requiresConfirmation()
+                    ->modalHeading(__('Keep cache and sessions in files?'))
+                    ->modalDescription(__('Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.'))
+                    ->modalSubmitActionLabel(__('Use files and sign in again'))
+                    ->action(function (SpeedCaches $caches) {
+                        try {
+                            $caches->useFiles();
+                        } catch (RuntimeException $e) {
+                            Notification::make()->title(__('Not changed'))->body($e->getMessage())->danger()->send();
+
+                            return;
+                        }
+
+                        $this->redirect(filament()->getLoginUrl());
+                    }),
             ])
             ->defaultGroup(Group::make('group')->titlePrefixedWithLabel(false))
             ->groupingSettingsHidden()

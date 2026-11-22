@@ -178,7 +178,10 @@ class Updater
         (new RestoreBackup($backup, config('gaiacp.backups.zip_password')))->database();
     }
 
-    /** The new release's migrations, then no cache of the old code left. */
+    /**
+     * The new release's migrations, then no cache of the old code left. They are made again by a fresh process: the
+     * scheduler within a minute (SpeedCaches), or Optimize now on System health. This one still runs the old code.
+     */
     protected function migrate(): void
     {
         Artisan::call('migrate', ['--force' => true]);

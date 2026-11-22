@@ -119,7 +119,7 @@ class PanelSpeedTest extends TestCase
         $this->assertStringContainsString('Not cached: config', $checks['Cached config, routes, components']->value);
 
         config(['cache.default' => 'database', 'session.driver' => 'database']);
-        $this->assertStringContainsString('CACHE_STORE=file', app(SystemHealth::class)->checks()->firstWhere('name', 'Cache and sessions')->hint);
+        $this->assertStringContainsString('Click Use files', app(SystemHealth::class)->checks()->firstWhere('name', 'Cache and sessions')->hint);
 
         config(['cache.default' => 'file', 'session.driver' => 'file']);
         $this->assertSame(Status::Ok, app(SystemHealth::class)->checks()->firstWhere('name', 'Cache and sessions')->status);
