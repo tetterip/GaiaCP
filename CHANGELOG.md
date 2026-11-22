@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Fixed: a list's Filters panel was cut off at the bottom of the table, so under a short or empty list its lower
+  filters (Server on the Hosting page) could not be reached; it now opens over the page.
+
 ## [0.11.0] - 2026-11-21
 
 - Fixed (pre-release audit): two urgent tickets sent at the same moment could both pass the month's limit; a client's
