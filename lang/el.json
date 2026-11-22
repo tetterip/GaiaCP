@@ -4321,5 +4321,9 @@
     "Hosting quarantine days": "Ημέρες καραντίνας φιλοξενίας",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Ένας λογαριασμός σε αναστολή εμφανίζεται σε καραντίνα για τόσες ημέρες μετά την αυτόματη αναστολή· η σελίδα Υπηρεσίες → Φιλοξενία ανοίγει με τους ενεργούς λογαριασμούς και αυτούς. 0 = ποτέ. Τα domains χρησιμοποιούν τις ημέρες χάριτος του TLD τους.",
     "Order activated": "Η παραγγελία ενεργοποιήθηκε",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Η παραγγελία κοστίζει :total, οπότε δεν υπάρχει κάτι να πληρωθεί. Τα στοιχεία της ενεργοποιούνται και κάθε λήξη προχωρά έναν κύκλο."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Η παραγγελία κοστίζει :total, οπότε δεν υπάρχει κάτι να πληρωθεί. Τα στοιχεία της ενεργοποιούνται και κάθε λήξη προχωρά έναν κύκλο.",
+    "What's new": "Τι νέο υπάρχει",
+    "New in :version": "Νέα στην έκδοση :version",
+    "Open Domains": "Άνοιγμα των Domains",
+    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Τα domains που έληξαν αλλά είναι ακόμη μέσα στις ημέρες χάριτος, και η φιλοξενία που είναι σε αναστολή για λίγο καιρό, εμφανίζονται τώρα ως Καραντίνα. Οι σελίδες Φιλοξενία και Domains ανοίγουν με τα ενεργά και όσα είναι σε καραντίνα, ώστε πρώτα να βλέπεις ό,τι μπορεί ακόμη να σωθεί."
 }

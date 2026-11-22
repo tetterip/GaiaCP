@@ -85,7 +85,8 @@ Settings → Products & domains → **Domains**:
 ## Working with a domain
 
 **Services → Domains** lists your domains with their registrar expiry next to their due date; the expiry turns red
-when it falls before the due date. On a domain's page:
+when it falls before the due date. It opens on the active domains and those in **Quarantine** (expired but still
+inside the TLD's grace days), soonest due first; the rest are under **All**. On a domain's page:
 
 - **Registration** says what happens when it is set up: **Register**, **Transfer in** (with the EPP code), or
   **Registered elsewhere (track only)** for a domain at a registrar GaiaCP doesn't manage, which is billed but never

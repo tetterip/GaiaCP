@@ -4321,5 +4321,9 @@
     "Hosting quarantine days": "Hosting karantina günleri",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Askıya alınmış bir hesap, otomatik askıya almadan sonra bu kadar gün karantinada görünür; Hizmetler → Hosting etkin hesaplarla ve bunlarla açılır. 0 = asla. Alan adları TLD'lerinin ek süre günlerini kullanır.",
     "Order activated": "Sipariş etkinleştirildi",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Sipariş tutarı :total, bu yüzden ödenecek bir şey yok. Kalemleri kurulur ve her vade tarihi bir dönem ileri gider."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Sipariş tutarı :total, bu yüzden ödenecek bir şey yok. Kalemleri kurulur ve her vade tarihi bir dönem ileri gider.",
+    "What's new": "Yenilikler",
+    "New in :version": "Yeni: :version",
+    "Open Domains": "Alan adlarını aç",
+    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Süresi dolmuş ama hâlâ ek süre günlerinde olan alan adları ve kısa süredir askıya alınmış barındırma artık Karantina olarak görünüyor. Barındırma ve Alan adları, etkin olanlar ve karantinadakilerle açılır; böylece hâlâ kurtarılabilecek olanlar önce gelir."
 }

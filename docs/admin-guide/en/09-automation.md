@@ -102,7 +102,7 @@ GaiaCP tells you what needs you in several ways; pick the ones that suit you:
   actions; turn it off in Profile.
 - **Push notifications**: the bell's notifications on your phone or computer (Profile → Push notifications).
 - **System emails**: per admin, with Receive system emails on their user.
-- **Slack**, **Discord** and **Telegram** (plugins, Settings → Email & notifications): the events you pick posted to
+- **Slack**, **Discord** and **Telegram** (plugins from the plugin catalogue, Settings → Email & notifications): the events you pick posted to
   a channel or chat. The Telegram bot can also answer `/owed`, `/today`, `/tickets` and `/servers`.
 - **Webhooks**: the same events as signed JSON to your own scripts, Zapier, Make or n8n; see
   [Plugins and integrations](13-plugins-and-integrations.md).

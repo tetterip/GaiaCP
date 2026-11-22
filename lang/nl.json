@@ -4321,5 +4321,9 @@
     "Hosting quarantine days": "Dagen hostingquarantaine",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Een opgeschort account staat zoveel dagen na de automatische opschorting in quarantaine; Diensten → Hosting opent met de actieve accounts en deze. 0 = nooit. Domeinen gebruiken de respijtdagen van hun TLD.",
     "Order activated": "Bestelling geactiveerd",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "De bestelling komt op :total, er valt dus niets te betalen. De onderdelen worden ingericht en elke vervaldatum schuift één cyclus op."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "De bestelling komt op :total, er valt dus niets te betalen. De onderdelen worden ingericht en elke vervaldatum schuift één cyclus op.",
+    "What's new": "Wat is er nieuw",
+    "New in :version": "Nieuw in :version",
+    "Open Domains": "Domeinen openen",
+    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Verlopen domeinen die nog binnen hun respijtdagen vallen, en hosting die sinds kort is opgeschort, staan nu als Quarantaine. Hosting en Domeinen openen op de actieve en die in quarantaine, zodat eerst komt wat nog te redden is."
 }

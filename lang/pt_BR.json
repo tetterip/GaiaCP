@@ -4321,5 +4321,9 @@
     "Hosting quarantine days": "Dias de quarentena de hospedagem",
     "A suspended account shows as in quarantine for this many days after the automatic suspension; Services → Hosting opens on the active accounts and these. 0 = never. Domains use their TLD's grace days.": "Uma conta suspensa aparece em quarentena por estes dias após a suspensão automática; Serviços → Hospedagem abre com as contas ativas e estas. 0 = nunca. Domínios usam os dias de carência do seu TLD.",
     "Order activated": "Pedido ativado",
-    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "O pedido soma :total, então não há nada a pagar. Os itens são configurados e cada data de vencimento avança um ciclo."
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "O pedido soma :total, então não há nada a pagar. Os itens são configurados e cada data de vencimento avança um ciclo.",
+    "What's new": "Novidades",
+    "New in :version": "Novo na :version",
+    "Open Domains": "Abrir Domínios",
+    "Domains that expired but are still inside their grace days, and hosting suspended for a while, now show as Quarantine. Hosting and Domains open on the active ones and those in quarantine, so what can still be saved comes first.": "Domínios vencidos que ainda estão nos dias de carência, e hospedagem suspensa há pouco tempo, agora aparecem como Quarentena. Hospedagem e Domínios abrem nos ativos e nos em quarentena, para que venha primeiro o que ainda pode ser salvo."
 }
