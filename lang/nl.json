@@ -4309,5 +4309,7 @@
     "Optimizing": "Bezig met optimaliseren",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Pagina's worden iets sneller, omdat ze die niet meer uit de database lezen. Iedereen die is aangemeld, u en uw klanten ook, wordt één keer afgemeld en meldt zich opnieuw aan. Verder verandert er niets.",
     "Use files": "Bestanden gebruiken",
-    "Use files and sign in again": "Bestanden gebruiken en opnieuw aanmelden"
+    "Use files and sign in again": "Bestanden gebruiken en opnieuw aanmelden",
+    "Order activated": "Bestelling geactiveerd",
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "De bestelling komt op :total, er valt dus niets te betalen. De onderdelen worden ingericht en elke vervaldatum schuift één cyclus op."
 }

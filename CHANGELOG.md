@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead of Record payment: one click,
+  no payment form, sets its items up and moves each due date forward one cycle.
 - The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
 - Email to ticket and Webhooks now ship with GaiaCP as bundled plugins (never uninstalled, still off until switched
   on); they used to show as uploaded on the Plugins page.

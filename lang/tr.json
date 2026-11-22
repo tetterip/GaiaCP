@@ -4309,5 +4309,7 @@
     "Optimizing": "Optimize ediliyor",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Sayfalar biraz hızlanır, çünkü bunları artık veritabanından okumazlar. Oturum açmış herkes, siz ve müşterileriniz de, bir kez çıkış yapar ve yeniden giriş yapar. Başka hiçbir şey değişmez.",
     "Use files": "Dosyaları kullan",
-    "Use files and sign in again": "Dosyaları kullan ve yeniden giriş yap"
+    "Use files and sign in again": "Dosyaları kullan ve yeniden giriş yap",
+    "Order activated": "Sipariş etkinleştirildi",
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Sipariş tutarı :total, bu yüzden ödenecek bir şey yok. Kalemleri kurulur ve her vade tarihi bir dönem ileri gider."
 }

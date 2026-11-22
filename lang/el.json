@@ -4309,5 +4309,7 @@
     "Optimizing": "Βελτιστοποίηση",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Οι σελίδες γίνονται λίγο πιο γρήγορες, γιατί δεν τα διαβάζουν πια από τη βάση. Όλοι όσοι είναι συνδεδεμένοι, εσείς και οι πελάτες σας, αποσυνδέονται μία φορά και συνδέονται ξανά. Τίποτε άλλο δεν αλλάζει.",
     "Use files": "Χρήση αρχείων",
-    "Use files and sign in again": "Χρήση αρχείων και νέα σύνδεση"
+    "Use files and sign in again": "Χρήση αρχείων και νέα σύνδεση",
+    "Order activated": "Η παραγγελία ενεργοποιήθηκε",
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "Η παραγγελία κοστίζει :total, οπότε δεν υπάρχει κάτι να πληρωθεί. Τα στοιχεία της ενεργοποιούνται και κάθε λήξη προχωρά έναν κύκλο."
 }

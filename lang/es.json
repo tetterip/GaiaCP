@@ -4309,5 +4309,7 @@
     "Optimizing": "Optimizando",
     "Pages get a little quicker, because they no longer read them from the database. Everyone signed in, you and your clients too, is signed out once and signs in again. Nothing else changes.": "Las páginas son algo más rápidas, porque ya no los leen de la base de datos. Todas las personas conectadas, usted y sus clientes también, cierran sesión una vez y vuelven a entrar. Nada más cambia.",
     "Use files": "Usar archivos",
-    "Use files and sign in again": "Usar archivos y volver a iniciar sesión"
+    "Use files and sign in again": "Usar archivos y volver a iniciar sesión",
+    "Order activated": "Pedido activado",
+    "The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.": "El pedido suma :total, así que no hay nada que pagar. Sus elementos se configuran y cada fecha de vencimiento avanza un ciclo."
 }
