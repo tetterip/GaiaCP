@@ -280,21 +280,12 @@ class ModuleQueue
     /** A renewal is not idempotent at the registrar: read the domain first, and renew only if it still ends too soon. */
     private function renew(Service $service): void
     {
-        if ($this->domains->readsRegistrar($service)) {
-            $this->domains->sync($service);
-            $service->refresh();
-        }
-
-        if ($this->expiresBeforePaidUntil($service)) {
-            $this->domains->renew($service);
-        }
+        $this->domains->renewIfNeeded($service);
     }
 
     private function expiresBeforePaidUntil(Service $service): bool
     {
-        $expires = $service->domainDetails?->expires_at;
-
-        return $expires === null || $expires->lessThan($service->next_due_date);
+        return $this->domains->endsBefore($service, $service->next_due_date);
     }
 
     /** Overdue and not exempt from auto-suspension ("Do not suspend until"). */

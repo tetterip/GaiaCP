@@ -195,7 +195,7 @@ class DomainLifecycleTest extends TestCase
 
         app(RecordPayment::class)->handle($service->refresh(), 1500, CarbonImmutable::parse('2026-10-09'), 'bank_transfer');
 
-        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
+        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::RENEW], $this->registrarActions());
         $this->assertSame('2027-11-01', $service->refresh()->domainDetails->expires_at->toDateString());
     }
 

@@ -10,6 +10,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - The plugin catalogue's update button reads **Update to <version>** (in Greek it read «Αλλαγή»).
 - WHMCS import 1.1.1: its client login problems show in the admin's language.
 - Settings → Servers and Registrars list the active ones first, whatever column they are sorted by.
+- A domain payment reads the expiry at the registrar before renewing, and renews only if the domain still ends before
+  the paid period does: a domain already renewed by hand or imported from WHMCS with an old expiry is not renewed twice.
 
 ## [0.12.0] - 2026-11-22
 
