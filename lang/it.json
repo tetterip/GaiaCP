@@ -1067,6 +1067,8 @@
     "Run `php artisan gaiacp:backup` on the server to see the error, or use Back up now under Settings → Backups.": "Esegui `php artisan gaiacp:backup` sul server per vedere l'errore, o usa Esegui backup ora in Impostazioni → Backup.",
     "Search the guide": "Cerca nella guida",
     "Send welcome": "Invia benvenuto",
+    "To client": "Al cliente",
+    "Sent to the client": "Inviate al cliente",
     "Set up certificates on our own hosting": "Configura i certificati sul nostro hosting",
     "Settings → Product tags. The ones shown to clients are badges after Popular; all of them filter your lists.": "Impostazioni → Tag prodotto. Quelli visibili ai clienti sono badge dopo Popolare; tutti filtrano i tuoi elenchi.",
     "Setup code": "Codice di installazione",

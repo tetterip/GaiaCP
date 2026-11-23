@@ -140,6 +140,12 @@ class Client extends Model implements HasLocalePreference
         return $this->hasMany(ClientLogin::class);
     }
 
+    /** @return HasMany<EmailLog, $this> emails sent to the client, or to an admin about them (Settings → Email log) */
+    public function emailLogs(): HasMany
+    {
+        return $this->hasMany(EmailLog::class);
+    }
+
     /** @return HasMany<Ticket, $this> */
     public function tickets(): HasMany
     {

@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- A client's page has an **Emails** tab: every email sent to the client, or to you about them, with the date,
+  subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
+  Settings → Email log, once the client has an email.
+
 ## [0.10.0] - 2026-11-17
 
 - Security (audit before this release): Plesk 1.6.3 lets a client log in to Plesk, open its shortcuts or change the

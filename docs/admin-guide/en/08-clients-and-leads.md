@@ -24,6 +24,10 @@ pay (on time, watch, late) from the last 12 months. Below it are tabs for Detail
 Orders, Payment notices, Payments, Tickets and Activity, plus Invoices while invoices are on (or once they have one)
 and Sign-ins once they have a login.
 
+The **Emails** tab lists every email GaiaCP sent to the client, or to you about them, newest first: date, subject, the
+address and whether it was sent. A red count on the tab is the emails that failed; hover the status for the reason.
+Click a row to read the email as it was sent. It shows the same entries as Settings → Email log, for this client only.
+
 A service's page sits under its client: its path at the top reads Clients › client › Hosting (or Domains, Other
 services) › service, and **Open client** by the Client field goes back to them. In the services lists the client's name
 opens their page too.

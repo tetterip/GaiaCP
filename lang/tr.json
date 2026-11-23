@@ -1067,6 +1067,8 @@
     "Run `php artisan gaiacp:backup` on the server to see the error, or use Back up now under Settings → Backups.": "Hatayı görmek için sunucuda `php artisan gaiacp:backup` çalıştırın veya Ayarlar → Yedekler altındaki Şimdi yedekle'yi kullanın.",
     "Search the guide": "Kılavuzda ara",
     "Send welcome": "Hoş geldin gönder",
+    "To client": "Müşteriye",
+    "Sent to the client": "Müşteriye gönderilenler",
     "Set up certificates on our own hosting": "Sertifikaları kendi hosting'imizde kur",
     "Settings → Product tags. The ones shown to clients are badges after Popular; all of them filter your lists.": "Ayarlar → Ürün etiketleri. Müşterilere görünenler Popüler'den sonra rozettir; hepsi listelerinizi filtreler.",
     "Setup code": "Kurulum kodu",
