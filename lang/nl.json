@@ -1067,6 +1067,8 @@
     "Run `php artisan gaiacp:backup` on the server to see the error, or use Back up now under Settings → Backups.": "Voer `php artisan gaiacp:backup` uit op de server om de fout te zien, of gebruik Nu back-up maken onder Instellingen → Back-ups.",
     "Search the guide": "Zoeken in de handleiding",
     "Send welcome": "Welkomstmail sturen",
+    "To client": "Aan de klant",
+    "Sent to the client": "Naar de klant verzonden",
     "Set up certificates on our own hosting": "Certificaten op onze eigen hosting instellen",
     "Settings → Product tags. The ones shown to clients are badges after Popular; all of them filter your lists.": "Instellingen → Producttags. Die voor klanten zichtbaar zijn, zijn badges na Populair; alle filteren je lijsten.",
     "Setup code": "Installatiecode",

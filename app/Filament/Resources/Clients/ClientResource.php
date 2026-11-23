@@ -11,6 +11,7 @@ use App\Filament\Resources\Clients\Pages\EditClient;
 use App\Filament\Resources\Clients\Pages\ListClients;
 use App\Filament\Resources\Clients\RelationManagers\CreditRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\DomainsRelationManager;
+use App\Filament\Resources\Clients\RelationManagers\EmailsRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\HostingRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\InvoicesRelationManager;
 use App\Filament\Resources\Clients\RelationManagers\OrdersRelationManager;
@@ -113,6 +114,7 @@ class ClientResource extends Resource
             'payments' => PaymentsRelationManager::class,
             'credit' => CreditRelationManager::class,
             'tickets' => TicketsRelationManager::class,
+            'emails' => EmailsRelationManager::class,
             'sign-ins' => SignInsRelationManager::class,
             'activity' => ActivityLogsRelationManager::class,
         ];

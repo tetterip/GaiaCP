@@ -5,6 +5,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- A client's page has an **Emails** tab: every email sent to the client, or to you about them, with the date,
+  subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
+  Settings → Email log, once the client has an email.
+
 ## [0.12.1] - 2026-11-23
 
 - Help: Plugins and integrations rewritten (what ships, what starts on, where each is set up, what is in the catalogue);

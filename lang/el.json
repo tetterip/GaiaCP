@@ -1067,6 +1067,8 @@
     "Run `php artisan gaiacp:backup` on the server to see the error, or use Back up now under Settings → Backups.": "Τρέξε `php artisan gaiacp:backup` στον server για να δεις το σφάλμα, ή χρησιμοποίησε το «Αντίγραφο τώρα» στις Ρυθμίσεις → Αντίγραφα ασφαλείας.",
     "Search the guide": "Αναζήτηση στον οδηγό",
     "Send welcome": "Αποστολή καλωσορίσματος",
+    "To client": "Προς τον πελάτη",
+    "Sent to the client": "Στάλθηκαν στον πελάτη",
     "Set up certificates on our own hosting": "Ρύθμιση πιστοποιητικών στη δική μας φιλοξενία",
     "Settings → Product tags. The ones shown to clients are badges after Popular; all of them filter your lists.": "Ρυθμίσεις → Ετικέτες προϊόντων. Όσες φαίνονται στους πελάτες είναι σήματα μετά το Δημοφιλές· όλες φιλτράρουν τις λίστες σας.",
     "Setup code": "Κωδικός εγκατάστασης",
