@@ -162,7 +162,7 @@ class DomainOptionsTest extends TestCase
         $this->assertSame(['renewed' => 0, 'ended' => 0], $again);
         $this->assertSame('2027-11-01', $service->fresh()->next_due_date->toDateString());
         $this->assertSame(0, $service->payments()->sole()->amount_cents);
-        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
+        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::RENEW], $this->registrarActions());
     }
 
     public function test_free_domain_without_hosting_is_set_to_end(): void
@@ -223,7 +223,10 @@ class DomainOptionsTest extends TestCase
         app(RecordPayment::class)->handle($service, 1500, CarbonImmutable::parse('2026-10-20'), 'bank_transfer');
 
         $this->assertSame('παράδειγμα.gr', $service->fresh()->domain);
-        $this->assertSame([[TestRegistrar::RENEW, ['domain' => 'xn--hxajbheg2az3al.gr', 'years' => '1']]], $this->registrarCalls);
+        $this->assertSame([
+            [TestRegistrar::SYNC, ['domain' => 'xn--hxajbheg2az3al.gr']],
+            [TestRegistrar::RENEW, ['domain' => 'xn--hxajbheg2az3al.gr', 'years' => '1']],
+        ], $this->registrarCalls);
     }
 
     public function test_late_fees_are_added_to_an_expired_domains_notice_and_paid_with_it(): void
@@ -251,7 +254,7 @@ class DomainOptionsTest extends TestCase
         $this->assertSame(InvoiceStatus::Paid, $invoice->fresh()->status);
         $this->assertSame(6000, $service->payments()->sole()->amount_cents);
         $this->assertSame('2027-11-01', $service->fresh()->next_due_date->toDateString());
-        $this->assertSame([TestRegistrar::RENEW], $this->registrarActions());
+        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::RENEW], $this->registrarActions());
     }
 
     public function test_no_late_fees_when_switched_off_or_for_tracked_domains(): void

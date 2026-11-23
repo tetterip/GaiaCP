@@ -188,8 +188,9 @@ Read the file for the area you are changing before you change it; don't read the
   registrar side (`Service::domainDetails()` / `registration()`): chosen `registrar_id` (null = the TLD's
   registrar), `registration_type`, encrypted `epp_code`, `nameservers`, `expires_at` from sync. A domain's "Auto renew"
   is `!services.auto_terminate` (`Service::autoRenew()`), defaulting from Settings → Domains. The domain name
-  stays `services.domain` and is also its label (no label of its own; `Service` fills it in). Sync never moves `next_due_date`. A payment renews only when the known expiry falls
-  before the newly paid-through date, so the first payment after registering does not renew twice; tracked
+  stays `services.domain` and is also its label (no label of its own; `Service` fills it in). Sync never moves `next_due_date`. A payment renews only when the expiry, read from the registrar
+  first (`DomainLifecycle::renewIfNeeded()`; unreadable = no renewal, Module queue), falls more than 7 days before the
+  newly paid-through date, so a first payment after registering or an imported domain does not renew twice; tracked
   (`external`) domains are never renewed or synced.
 - Orders (`orders`) group services: the items are the services themselves (`services.order_id`), created pending
   by `PlaceOrder`; `services.first_payment_cents` holds a domain's registration/transfer price when it differs

@@ -128,7 +128,7 @@ never calls a panel API directly.
   (`ModuleQueue::fromLog()`, from `ActivityLog`'s `created` hook; a second failure updates it). Calls an admin watches
   fail (password, nameservers, login, contacts…) are not queued. A success event of the same action (`DONE`) closes it
   as done; `stillNeeded()` closes the ones the service no longer needs (set up = still pending; a suspension for
-  non-payment = still overdue and not exempt; renew = the known expiry before `next_due_date`), checked by `sweep()`
+  non-payment = still overdue and not exempt; renew = the known expiry more than 7 days before `next_due_date`), checked by `sweep()`
   on the page and the cron. Retry runs the action again (renew syncs first and renews only if still needed); the
   failure of a retry is logged with `properties.retry`, which the bell, `GaiaEvent` and Needs attention skip.
   `gaiacp:retry-module-queue` (every 15 minutes) retries set up, unsuspend and overdue suspensions
@@ -151,7 +151,10 @@ never calls a panel API directly.
   pre-select it (`domains.registrar_id`, the admin can change it) and offer only priced terms (`Tld::terms()`).
   `Registrar::forDomain()` = the TLD's preferred registrar (`Tld::match()`, longest TLD match, from the TLD table read once per request: `App\Support\TldLookup`) while active; `RegistrarFactory` builds the
   `DomainRegistrar` from the account's module (`PluginManager::enabledRegistrarModule()`). Only `DomainLifecycle` calls a registrar; `RecordPayment` renews an
-  active/suspended yearly domain through it, outside the transaction (a failure keeps the payment).
+  active/suspended yearly domain through it, outside the transaction (a failure keeps the payment), with
+  `renewIfNeeded()`: it reads the expiry at the registrar first and renews only if it ends more than
+  `EXPIRY_TOLERANCE_DAYS` (7) before the new `next_due_date` (`domain.renew_skipped` otherwise); an unreadable expiry
+  renews nothing and is logged as a failed `domain.renewed`, so it waits in the Module queue.
 - **TLD import and cost sync** (`App\Actions\ImportTldPrices`): a `DomainRegistrar` implementing `ListsTldPrices`
   returns `TldPrice`s (easy.gr action 33 for every TLD at its shortest term, EUR; Enom `PE_GetProductPrice` per TLD
   and ProductType 10/16/19, 1 year, USD). Settings → Domain pricing → Import from registrar (`ImportTldPricesAction`,

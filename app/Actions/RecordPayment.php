@@ -112,10 +112,11 @@ class RecordPayment
             }
         }
 
-        // A domain's payment renews it at the registrar; like the unsuspend, a failure keeps the payment.
+        // A domain's payment renews it at the registrar, once its expiry read there shows it still ends before the
+        // paid-through date; like the unsuspend, a failure keeps the payment.
         if ($renewDomain) {
             try {
-                $this->domains->renew($service);
+                $this->domains->renewIfNeeded($service);
             } catch (ProvisioningException $e) {
                 $this->renewalError = $e->getMessage(); // already in the activity log
             }

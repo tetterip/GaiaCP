@@ -25,6 +25,7 @@ use App\Provisioning\RegistrarFactory;
 use App\Support\DomainName;
 use App\Support\Locales;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Closure;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -455,10 +456,60 @@ class DomainLifecycle
             return false;
         }
 
-        $expires = $service->domainDetails?->expires_at;
-        $paidUntil = $service->billing_cycle->advance($service->next_due_date, $service->anchorDay());
+        return $this->endsBefore($service, $service->billing_cycle->advance($service->next_due_date, $service->anchorDay()));
+    }
 
-        return $expires === null || $expires->lessThan($paidUntil);
+    /** Days a registrar expiry may fall short of the paid-through date and still count as covering it (registrars and billing disagree by a day or so). */
+    public const EXPIRY_TOLERANCE_DAYS = 7;
+
+    /**
+     * Whether the domain's stored expiry ends before $paidUntil, by more than EXPIRY_TOLERANCE_DAYS. True when no expiry
+     * is known, so callers that can read the registrar should sync() first (renewIfNeeded()).
+     */
+    public function endsBefore(Service $service, CarbonInterface $paidUntil): bool
+    {
+        $expires = $service->domainDetails?->expires_at;
+
+        return $expires === null || $expires->lessThan(CarbonImmutable::parse($paidUntil->toDateString())->subDays(self::EXPIRY_TOLERANCE_DAYS));
+    }
+
+    /**
+     * Renews a domain whose payment just moved its due date, reading the registrar first: a renewal is not idempotent,
+     * and the stored expiry can be stale (imported from WHMCS, renewed at the registrar by hand, or not synced yet).
+     * It renews only if the domain still ends before the paid-through date (its next due date now). When the registrar
+     * can't be read, nothing is renewed: the failure is logged as a failed renewal, so it waits in the Module queue.
+     * Returns whether it renewed.
+     */
+    public function renewIfNeeded(Service $service): bool
+    {
+        $this->assertDomain($service);
+
+        if ($this->readsRegistrar($service)) {
+            $registrar = $this->account($service, 'domain.renewed');
+
+            try {
+                $expires = $this->registrars->forRegistrar($registrar)->expiryDate($this->name($service));
+                $service->registration()->update(['expires_at' => $expires, 'last_synced_at' => now()]);
+            } catch (ProvisioningException $e) {
+                $message = "Could not read the expiry date at the registrar, so it was not renewed: {$e->getMessage()}";
+                ActivityLog::record('provisioning.failed', "domain.renewed failed: {$message}", $service, properties: ['event' => 'domain.renewed', 'registrar_id' => $registrar->id]);
+
+                throw new ProvisioningException($message, previous: $e);
+            }
+
+            $service->unsetRelation('domainDetails');
+        }
+
+        if (! $this->endsBefore($service, $service->next_due_date)) {
+            $expires = $service->domainDetails?->expires_at?->toDateString();
+            ActivityLog::record('domain.renew_skipped', "{$service->domain} not renewed: it already expires on {$expires}, which covers the paid period to {$service->next_due_date->toDateString()}", $service, properties: ['expires_at' => $expires]);
+
+            return false;
+        }
+
+        $this->renew($service);
+
+        return true;
     }
 
     /** The name the registrar gets: punycode for an IDN. */
