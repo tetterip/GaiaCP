@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-23
+
 - Help: Plugins and integrations rewritten (what ships, what starts on, where each is set up, what is in the catalogue);
   the sidebar, plugin and log paths of other chapters corrected.
 - The plugin catalogue's update button reads **Update to <version>** (in Greek it read «Αλλαγή»).
