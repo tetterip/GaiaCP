@@ -8,6 +8,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - A client's page has an **Emails** tab: every email sent to the client, or to you about them, with the date,
   subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
   Settings → Email log, once the client has an email.
+- The text of a table row that opens a page (a payment notice's lines, clients, services) can be selected and copied
+  by dragging over it; a plain click still opens the row.
 
 ## [0.12.1] - 2026-11-23
 
