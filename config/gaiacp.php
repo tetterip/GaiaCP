@@ -94,6 +94,7 @@ return [
     'support' => [
         'client_tickets' => true, // clients open and answer tickets in the client area
         'client_priority' => true, // clients choose the priority (else Medium)
+        'urgent_per_month' => null, // urgent tickets each client may open a month, for a service that stopped working (null = off)
         'admin_emails' => true, // email the admins (Receive system emails) about new tickets and client replies
         'auto_close_days' => 7, // close a ticket that waits on the client this many days (null = never)
         'attachments_max_kb' => 5120,
@@ -116,6 +117,10 @@ return [
         'suspend_after_days' => env('GAIACP_SUSPEND_AFTER_DAYS') !== null && env('GAIACP_SUSPEND_AFTER_DAYS') !== ''
             ? (int) env('GAIACP_SUSPEND_AFTER_DAYS')
             : null,
+
+        // A suspended hosting account is "in quarantine" (App\Support\Quarantine) this many days after the automatic
+        // suspension, then past it: Services → Hosting opens on the active accounts and these. 0 = none is.
+        'hosting_quarantine_days' => 30,
 
         // Cancel a pending order (its items and payment notice) once it is this many days old with nothing paid or set
         // up; empty = never. Runs daily with the reminders.
@@ -197,6 +202,10 @@ return [
         // When an SSL certificate's domain is the client's hosting account on a cPanel or Plesk server, GaiaCP puts the
         // validation file (or DNS record) in place and installs the issued certificate there (App\Certificates\CertificateHosting).
         'ssl_own_hosting' => true,
+
+        // Spotlight TLDs (".gr", ".com", at most 8): the domain search checks them first and shows them as cards above
+        // the other endings, with their price; the public home page and the domain search show their prices too.
+        'spotlight' => [],
     ],
 
     // The captcha on the login, sign up and forgot password forms (Settings → General): a captcha plugin's key
@@ -246,6 +255,7 @@ return [
             'improve' => true, // Improve a text the admin wrote (spelling, tone, length)
             'translate' => true, // Translate a text into another language
             'domains' => false, // Suggest other names in the client area's domain search (clients and visitors press it)
+            'domain_ideas' => false, // Domain search: names from a description of the business (signed-in clients; visitors with domain_ideas_visitors)
             'products' => true, // Write a product's description from its details
             'outage' => true, // Write the server problem notice from what the monitors say
             'questions' => true, // Reports → Ask in plain words: read which ready-made question a question is
@@ -258,6 +268,8 @@ return [
             'language_files' => true, // Settings → Languages → Translate with AI: the panel's missing texts in a language
         ],
         'monthly_tokens' => null, // tokens (sent + received) all admins may use a calendar month; null = no limit
+        'domain_ideas_visitors' => false, // visitors get names from a description too, always after the captcha
+        'domains_per_day' => 200, // AI domain suggestions (both buttons) from clients and visitors a day; null = no limit
     ],
 
     // Cookie banner on the client area, /cart and sign up (Settings → Cookies, App\Support\CookieConsent)
@@ -402,8 +414,18 @@ return [
     // this install updates from. A private repository needs a token that can read it (fine-grained, Contents: read).
     // Pages opened over https tell browsers to stay on https for this address for this many seconds (HSTS, App\Http\
     // Middleware\SecurityHeaders). 0 turns it off, e.g. while testing a certificate; subdomains are never included.
+    // GAIACP_CSP: the Content-Security-Policy (App\Support\ContentSecurityPolicy). "enforce" blocks scripts that are not
+    // GaiaCP's own; "report" only has browsers report them (to the log, as "Content-Security-Policy would block"), "off" sends none.
     'security' => [
         'hsts' => (int) env('GAIACP_HSTS', 31536000),
+        'csp' => env('GAIACP_CSP', 'enforce'),
+    ],
+
+    // System health → Speed (App\Support\Health\SpeedCaches): on a live site (APP_ENV=production) the scheduler caches
+    // config, routes and Filament's components within a minute when they are missing (after an update) or .env changed
+    // since. GAIACP_AUTO_OPTIMIZE=false leaves that to you (php artisan optimize, or Optimize now on System health).
+    'speed' => [
+        'auto_optimize' => (bool) env('GAIACP_AUTO_OPTIMIZE', true),
     ],
 
     // Settings → Plugins: uploading a plugin zip installs PHP code that runs with GaiaCP's full access. A host can

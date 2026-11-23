@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Install\Installer;
 use Closure;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -37,7 +38,10 @@ class PrepareInstaller
         }
 
         // An app key before anything encrypts (the cookie middleware runs even on the redirect)
-        config(['session.driver' => 'file', 'cache.default' => 'file']);
+        config(['session.driver' => 'file', 'cache.default' => 'file', 'cache.limiter' => 'file']);
+        // The rate limiter was made at boot with the database store, which has no tables yet: the setup code's
+        // throttle would fail with a 500. One on files instead (the API's named limiter isn't needed here).
+        app()->instance(RateLimiter::class, new RateLimiter(app('cache')->store('file')));
         $this->installer->prepareEnvironment(marker: true);
 
         return $request->is('install', 'install/*') ? $next($request) : redirect('/install');

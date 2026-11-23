@@ -24,7 +24,7 @@
 > and read each release's notes before updating.
 
 <p align="center">
-  <img src="docs/screenshots/admin-dashboard.png" alt="The admin dashboard: open balance, orders and income, servers with their uptime, and what is due">
+  <img src="docs/screenshots/admin-dashboard.png" alt="The admin dashboard: today's numbers, what needs your attention, the open balance, income and renewals">
 </p>
 
 ## What is GaiaCP?
@@ -86,7 +86,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 - An AI assistant (Claude, ChatGPT, DeepSeek or Kimi with your own key, or a local model through Ollama; Kimi and Ollama from the plugin catalogue) that
   improves and translates the texts you write, drafts and summarises ticket replies, writes personal payment reminders,
   fills in missing translations and answers questions about your data in plain words
-- Webhooks, Slack, Discord and Telegram, a REST API, and an import from WHMCS
+- Webhooks, a REST API and an import from WHMCS; Slack, Discord and Telegram from the plugin catalogue
 - English and Greek built in, plus machine translations into German, Spanish, French, Italian, Dutch, Polish,
   Brazilian Portuguese and Turkish; other languages are uploaded from the panel
 
@@ -104,7 +104,7 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
   </tr>
   <tr>
     <td align="center">A client's page: balance, payment record and every service in tabs</td>
-    <td align="center">The client area: what to pay and what renews next</td>
+    <td align="center">The client area: what waits for the client, what to pay and their services</td>
   </tr>
   <tr>
     <td width="50%"><img src="docs/screenshots/public-home.png" alt="The public home page"></td>

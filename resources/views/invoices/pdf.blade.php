@@ -32,7 +32,7 @@
         .parties td { width: 50%; }
         .lines th { text-align: left; font-size: 8.5pt; color: #6b7280; border-bottom: 1px solid #d1d5db; padding: 4pt 4pt 4pt 0; }
         .lines td { border-bottom: 1px solid #e5e7eb; padding: 5pt 4pt 5pt 0; }
-        .lines .end { padding-right: 0; }
+        .lines .end, .lines th.end { text-align: right; padding-right: 0; }
         .period { color: #6b7280; font-size: 8.5pt; }
         .totals { width: 55%; margin: 10pt 0 0 45%; }
         .totals td { padding: 2pt 0; }

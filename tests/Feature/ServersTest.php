@@ -91,6 +91,18 @@ class ServersTest extends TestCase
         $this->assertMatchesRegularExpression('/<input[^>]*autocomplete="new-password"[^>]*type="password"|<input[^>]*type="password"[^>]*autocomplete="new-password"/s', $html);
     }
 
+    public function test_the_list_shows_active_servers_first_in_any_sort(): void
+    {
+        $old = Server::factory()->create(['name' => 'A old', 'active' => false]);
+        $live = Server::factory()->create(['name' => 'B live', 'active' => true]);
+        $other = Server::factory()->create(['name' => 'C other', 'active' => true]);
+
+        Livewire::test(ListServers::class)
+            ->assertCanSeeTableRecords([$live, $other, $old], inOrder: true)
+            ->sortTable('name', 'desc')
+            ->assertCanSeeTableRecords([$other, $live, $old], inOrder: true);
+    }
+
     public function test_the_list_shows_the_accounts_bar_ip_and_panel_links(): void
     {
         $full = Server::factory()->create(['name' => 'Full', 'max_accounts' => 120, 'ip_address' => '192.0.2.10', 'status_url' => 'https://status.example.com']);

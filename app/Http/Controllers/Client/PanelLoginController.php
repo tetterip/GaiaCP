@@ -14,7 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * The client area's "Log in to cPanel / Plesk" and its Quick shortcuts (?to=): a fresh one-time panel session on each
+ * The client area's "Log in to the control panel" and its Quick shortcuts (?to=): a fresh one-time panel session on each
  * click, so the link on the page carries nothing secret. Only the signed-in client's own services (ServiceResource's scope: another's is a 404).
  */
 class PanelLoginController extends Controller

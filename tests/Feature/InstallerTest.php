@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Install\Installer;
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\Health\SpeedCaches;
 use Dotenv\Dotenv;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
@@ -22,7 +24,8 @@ class InstallerTest extends TestCase
         $this->dir = sys_get_temp_dir().'/gaiacp-install-'.uniqid();
         mkdir($this->dir);
         $this->app->useEnvironmentPath($this->dir);
-        config(['gaiacp.install_lock' => $this->dir.'/installed']);
+        // The installer keeps its throttle in the file cache: a folder of its own, so no test inherits another's attempts
+        config(['gaiacp.install_lock' => $this->dir.'/installed', 'cache.stores.file.path' => $this->dir.'/cache']);
     }
 
     protected function tearDown(): void
@@ -84,6 +87,8 @@ class InstallerTest extends TestCase
         $this->assertSame('open', $env[Installer::MARKER]);
         $this->assertSame('production', $env['APP_ENV']);
         $this->assertSame('false', $env['APP_DEBUG']);
+        $this->assertSame('file', $env['CACHE_STORE']); // System health → Speed starts fine
+        $this->assertSame('file', $env['SESSION_DRIVER']);
 
         $this->get('/install')->assertOk()
             ->assertSee('PHP version')
@@ -103,7 +108,12 @@ class InstallerTest extends TestCase
 
     public function test_the_installer_speaks_greek_when_asked(): void
     {
-        $this->get('/install?lang=el')->assertOk()->assertSee('Εγκατάσταση GaiaCP');
+        $this->get('/install?lang=el')->assertOk()->assertSee('Εγκατάσταση GaiaCP')
+            // the language menu: the current code on its button, each language named in its own
+            ->assertSee('<details class="langs">', false)
+            ->assertSee('aria-label="Γλώσσα: Ελληνικά (EL)"', false)
+            ->assertSee('<a href="?lang=el" lang="el" aria-current="true">', false)
+            ->assertSee('<a href="?lang=en" lang="en">', false);
         $this->unlock()->get('/install/database')->assertOk()->assertSee('Σύνδεση και δημιουργία πινάκων');
     }
 
@@ -125,6 +135,7 @@ class InstallerTest extends TestCase
 
     public function test_finishing_creates_the_admin_saves_the_business_and_locks_the_installer(): void
     {
+        $this->mock(SpeedCaches::class)->shouldReceive('buildAfterResponse')->once(); // a live site caches its config at the end
         $this->get('/install?lang=el');
         $this->freshDatabase();
 
@@ -212,6 +223,24 @@ class InstallerTest extends TestCase
             $this->post('/install', ['code' => 'WRONG-'.$i])->assertSessionHasErrors('code');
         }
         $this->post('/install', ['code' => 'WRONG'])->assertStatus(429);
+    }
+
+    /** Before the install the database store has no tables (or no SQLite file), so the throttle must not use it. */
+    public function test_the_setup_code_works_before_there_is_a_database(): void
+    {
+        config([
+            'database.connections.missing' => ['driver' => 'sqlite', 'database' => $this->dir.'/missing.sqlite', 'prefix' => ''],
+            'cache.default' => 'database',
+            'cache.stores.database.connection' => 'missing',
+        ]);
+        $this->app->forgetInstance(RateLimiter::class);
+        app(RateLimiter::class); // made at boot, as on a server
+
+        $this->get('/install')->assertOk();
+        $code = trim((string) file_get_contents($this->dir.'/install-code.txt'));
+
+        $this->post('/install', ['code' => 'AAAA-BBBB-CCCC'])->assertSessionHasErrors('code');
+        $this->post('/install', ['code' => $code])->assertRedirect(route('install.database'));
     }
 
     public function test_the_command_installs_without_questions(): void

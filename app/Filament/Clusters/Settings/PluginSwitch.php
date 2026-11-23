@@ -12,8 +12,9 @@ use Filament\Schemas\Components\Section;
 
 /**
  * An On switch at the top of a plugin's settings page: the same state as its Enable / Disable under Settings →
- * Plugins, applied at once. The page stays open while the plugin is off, so it can be switched back on here.
- * Only admins who may open Settings → Plugins (super admins) can flip it.
+ * Plugins, applied at once. Like every page of a plugin it closes while the plugin is off (PluginManager::pageIsOn()),
+ * so turning it off goes to Settings → Plugins, where it is turned back on. Only admins who may open Settings →
+ * Plugins (super admins) can flip it.
  */
 trait PluginSwitch
 {
@@ -62,7 +63,7 @@ trait PluginSwitch
             ->title($this->pluginEnabled ? __(':plugin enabled', ['plugin' => $plugin->name()]) : __(':plugin disabled', ['plugin' => $plugin->name()]))
             ->send();
 
-        // A fresh page: this request's panel and routes were built with the plugin as it was.
-        $this->redirect(static::getUrl());
+        // A fresh page: this request's panel and routes were built with the plugin as it was. Off, this page is closed.
+        $this->redirect($this->pluginEnabled ? static::getUrl() : Plugins::getUrl());
     }
 }

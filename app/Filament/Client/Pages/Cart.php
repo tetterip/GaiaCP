@@ -3,6 +3,7 @@
 namespace App\Filament\Client\Pages;
 
 use App\Actions\ClientOrder;
+use App\Filament\Client\Concerns\ShowsCartLines;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Filament\Client\Resources\Services\ServiceResource;
 use App\Filament\Concerns\TranslatesPageLabels;
@@ -29,6 +30,7 @@ use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\On;
 
 /**
  * The client's cart: what they added on the Order page (or on the public order page before logging in), each with its
@@ -38,6 +40,7 @@ use Illuminate\Validation\ValidationException;
  */
 class Cart extends Page
 {
+    use ShowsCartLines;
     use TranslatesPageLabels;
 
     protected static ?string $title = 'Cart';
@@ -74,28 +77,14 @@ class Cart extends Page
         }
     }
 
-    /** @return list<array{key: string, title: string, details: list<string>, amount: ?string, error: ?string}> */
-    public function lines(): array
+    protected function cartClient(): ?Client
     {
-        $order = app(ClientOrder::class);
-
-        return collect(ClientOrder::cart())->map(function (array $line, string $key) use ($order) {
-            $item = $order->describe($line, $this->client());
-
-            return [
-                'key' => $key,
-                'title' => $item['title'],
-                'details' => $item['details'],
-                'amount' => $item['amount_cents'] === null ? null : Money::format($item['amount_cents'], $this->currency()),
-                'error' => $item['error'],
-            ];
-        })->values()->all();
+        return $this->client();
     }
 
-    public function removeLine(string $key): void
-    {
-        ClientOrder::removeFromCart($key);
-    }
+    /** A change in the top bar's cart (CartDrawer) shows here too. */
+    #[On('cart-updated')]
+    public function refreshCart(): void {}
 
     public function content(Schema $schema): Schema
     {

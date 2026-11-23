@@ -17,7 +17,7 @@ Zamiast hasła możesz nacisnąć **Wyślij mi link do logowania**: wyślemy Ci 
 W profilu (menu z Państwa imieniem, na dole menu lub w prawym górnym rogu) można zmienić adres e-mail, numer telefonu, język i hasło oraz włączyć uwierzytelnianie dwuskładnikowe dla większego bezpieczeństwa.
 
 <!-- if:notifications -->
-**Dzwonek** u góry strony informuje, co się wydarzyło od ostatniego sprawdzenia: nowe wezwanie do zapłaty, przypomnienie o płatności lub powiadomienie o zaległości, otrzymana przez nas płatność, usługa gotowa, zawieszona lub zakończona, domena przed odnowieniem, nowa cena, nasza odpowiedź na zgłoszenie lub prośbę. Liczba na nim pokazuje, ile jest nieprzeczytanych; kliknięcie powiadomienia otwiera jego stronę. Na telefonie lub tablecie wystarczy przesunąć powiadomienie w lewo lub w prawo, aby je usunąć. Aby je wyłączyć, prosimy wyłączyć **Powiadomienia** w profilu. E-maile nadal będą wysyłane jak dotychczas.
+**Dzwonek** u góry strony informuje, co się wydarzyło od ostatniego sprawdzenia: nowe wezwanie do zapłaty, przypomnienie o płatności lub powiadomienie o zaległości, otrzymana przez nas płatność, usługa gotowa, zawieszona lub zakończona, domena przed odnowieniem, nowa cena, nasza odpowiedź na zgłoszenie lub prośbę. Liczba na nim pokazuje, ile jest nieprzeczytanych; kliknięcie powiadomienia otwiera jego stronę. Wystarczy przesunąć powiadomienie w lewo lub w prawo, palcem lub przeciągając je myszą, aby je usunąć. Aby je wyłączyć, prosimy wyłączyć **Powiadomienia** w profilu. E-maile nadal będą wysyłane jak dotychczas.
 
 <!-- endif -->
 <!-- if:email_history -->
@@ -36,11 +36,13 @@ Przy pierwszym logowaniu krótki przewodnik pokazuje, co możesz tu zrobić. Men
 
 ## Strona główna
 
-Strona główna pokazuje, ile jest do zapłaty, ile usług jest aktywnych i co odnawia się najbliżej, z linkiem do każdej pozycji. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują.
+Strona główna pokazuje, ile jest do zapłaty, z przyciskiem **Zapłać** przy każdym wezwaniu do zapłaty (albo jedną linią, że wszystko jest opłacone), Państwa usługi z przyciskiem logującym do panelu każdego konta hostingowego oraz to, co odnawia się najbliżej; domena, która nie odnawia się automatycznie, jest tam oznaczona. Nasze ogłoszenia, np. o planowanych pracach na Państwa serwerze, pojawiają się u góry Strony głównej, dopóki obowiązują. Gdy coś czeka na Ciebie (wezwanie do zapłaty po terminie, zawieszona usługa, odpowiedź na zgłoszenie, oferta, certyfikat SSL do weryfikacji, domena, która wkrótce się kończy, konto bliskie limitu), Strona główna pokazuje to najpierw w sekcji **Czeka na Ciebie**, każde z przyciskiem, który to załatwia. Karta **Wsparcie** pokazuje Twoje otwarte zgłoszenia i czyja jest kolej, a domenę możesz wyszukać bezpośrednio ze Strony głównej. Dopóki nie masz pierwszej usługi, Strona główna pokazuje **Zacznij tutaj** z naszymi popularnymi produktami.
 
 ## Usługi i domeny
 
 **Usługi** wymieniają Państwa hosting i inne usługi z ich statusem, ceną i następnym terminem płatności. Menu dzieli je na **Hosting** i **Inne usługi**. Strona konta hostingowego pokazuje jego okres rozliczeniowy i ma przycisk **Otwórz stronę WWW**. **Domeny** wymieniają Państwa domeny z datą wygaśnięcia, serwerami nazw i informacją, czy odnawiają się automatycznie. Gdy usługi mają różne statusy, przyciski nad każdą listą pokazują tylko te o jednym statusie (Aktywna, Zawieszona, …), z ich liczbą. Praca wykonywana jednorazowo, np. przeniesienie strony, jest rozliczana raz i po opłaceniu ma status **Zakończone**.
+
+Przyciski nad każdą listą wyróżniają też to, co wymaga uwagi: w **Domenach** te, które wkrótce wygasają, te, które nie odnawiają się automatycznie, oraz każde rozszerzenie (.gr, .com, …), gdy mają Państwo więcej niż jedno; w **Innych usługach** każdy rodzaj usługi. Domeny i usługi są wymienione od tej, której termin mija najwcześniej. Liczba obok **Wezwań do zapłaty**, **Hostingu**, **Innych usług** lub **Domen** w menu oznacza, że coś na Państwa czeka: nieopłacone wezwania, zawieszone usługi lub domeny wkrótce wygasające bez automatycznego odnowienia. Mała szara liczba na końcu wierszy **Hosting**, **Inne usługi** i **Domeny** pokazuje po prostu, ile ich Państwo mają. W **Domenach** każda domena pokazuje swoje serwery nazw pod nazwą, a ta, której termin mija w ciągu 30 dni, pokazuje pod datą, ile dni zostało. Zaznaczcie kilka domen, aby zmienić ich serwery nazw albo włączyć lub wyłączyć automatyczne odnawianie dla wszystkich naraz (gdy pozwalamy na takie zmiany).
 
 <!-- if:hosting -->
 Przy aktywnym koncie hostingowym można:
@@ -148,7 +150,7 @@ Gdy wysyłamy ofertę, przychodzi e-mail z linkiem do niej, a **Oferty** (w Rozl
 
 ## Saldo
 
-**Saldo** pokazuje stan salda i jego historię. Aby je doładować, prosimy kliknąć **Doładuj saldo** i wpisać kwotę: tworzymy na nią wezwanie do zapłaty, które opłaca się jak każde inne. Po jego opłaceniu kwota zostaje dodana do salda. Saldo można doładować, gdy ma się aktywną usługę.
+**Saldo** pokazuje stan salda i jego historię. Dopóki mają Państwo saldo, menu pokazuje kwotę na szaro obok **Saldo**. Aby je doładować, prosimy kliknąć **Doładuj saldo** i wpisać kwotę: tworzymy na nią wezwanie do zapłaty, które opłaca się jak każde inne. Po jego opłaceniu kwota zostaje dodana do salda. Saldo można doładować, gdy ma się aktywną usługę.
 
 Saldo opłaca wezwania do zapłaty pozycja po pozycji: pozycja (odnowienie usługi) jest opłacana tylko wtedy, gdy saldo pokrywa ją w całości, a to, czego nie pokrywa, pozostaje na wezwaniu do zapłaty jak zwykle.
 <!-- if:credit_auto -->
@@ -162,7 +164,11 @@ Aby go użyć, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć *
 <!-- if:orders -->
 ## Zamawianie
 
-**Wyszukiwarka domen** (w menu, po Domenach) znajduje nazwę: wystarczy ją wpisać (mojsklep lub mojsklep.pl), a pojawi się z każdą obsługiwaną przez nas końcówką, z informacją, czy jest wolna, czy zajęta, i z ceną. **Dodaj do koszyka** dodaje wolną do koszyka (**Z SSL** dodaje do niej także certyfikat, jeśli go oferujemy); dla domeny, która należy do Państwa, ale jest gdzie indziej, **Moja: przenieś ją** otwiera zamówienie transferu. Najpierw może pojawić się prośba o potwierdzenie, że nie są Państwo robotem. „Prawdopodobnie dostępna” oznacza, że nie udało się wtedy zapytać rejestru; sprawdzimy ją ponownie przy rejestracji. Gdy to oferujemy, **Zaproponuj inne nazwy** pod wynikami wymienia wolne nazwy bliskie wyszukiwanej, zaproponowane przez AI, z tą samą końcówką.
+**Wyszukiwarka domen** (w menu, po Domenach) znajduje nazwę: wystarczy ją wpisać (mojsklep lub mojsklep.pl), a pojawi się z każdą obsługiwaną przez nas końcówką, z informacją, czy jest wolna, czy zajęta, i z ceną. **Dodaj do koszyka** dodaje wolną do koszyka (**Z SSL** dodaje do niej także certyfikat, jeśli go oferujemy); dla domeny, która należy do Państwa, ale jest gdzie indziej, **Moja: przenieś ją** otwiera zamówienie transferu. Najpierw może pojawić się prośba o potwierdzenie, że nie są Państwo robotem. „Prawdopodobnie dostępna” oznacza, że nie udało się wtedy zapytać rejestru; sprawdzimy ją ponownie przy rejestracji. Gdy to oferujemy, **Zaproponuj inne nazwy** pod wynikami wymienia wolne nazwy bliskie wyszukiwanej, zaproponowane przez AI, z tą samą końcówką. Nie macie jeszcze nazwy? Gdy to oferujemy, opiszcie firmę kilkoma słowami w tym samym polu (np. „cukiernia w Salonikach”): AI zaproponuje wolne nazwy, każdą z ceną. To, co wpiszecie, trafia do usługi AI bez adresów e-mail i numerów telefonów.
+
+<!-- if:domain_spotlight -->
+Końcówki wybierane przez większość klientów (np. .gr i .com) pojawiają się najpierw, na większych kartach, a ich ceny widać pod polem wyszukiwania jeszcze przed wyszukaniem.
+<!-- endif -->
 
 <!-- if:domain_prices -->
 **Zobacz ceny wszystkich końcówek domen** pod polem wyszukiwania wymienia każdą sprzedawaną końcówkę z ceną rejestracji, transferu i odnowienia.
@@ -170,7 +176,7 @@ Aby go użyć, prosimy otworzyć nieopłacone wezwanie do zapłaty i kliknąć *
 
 **Zamówienie** pokazuje, co można zamówić; otwiera je też **Zamów nową usługę** nad Usługami (**Zamów domenę** nad Domenami otwiera wyszukiwarkę domen). Gdy sprzedajemy kilka rodzajów usług, najpierw prosimy wybrać rodzaj (np. hosting współdzielony, VPS lub nazwy domen), a potem pakiet: **Porównaj pakiety** pod nimi pokazuje obok siebie, co obejmuje każdy, z ceną dla każdego okresu rozliczeniowego, a jego przyciski **Wybierz** również wybierają pakiet. Odznaki przy nazwie pakietu (np. Popularny lub Nowy) wskazują, co polecamy lub co jest nowe. Prosimy wybrać usługę i jej okres rozliczeniowy oraz oferowane opcje (np. lokalizację lub dodatkowe adresy IP); każda opcja pokazuje, ile dodaje do ceny. Dodatki do niej (np. codzienne kopie zapasowe) można zaznaczyć poniżej; są na tym samym wezwaniu do zapłaty i odnawiają się razem z usługą. Przy hostingu prosimy wskazać, czy mają już Państwo domenę, chcą zarejestrować nową, czy przenieść posiadaną gdzie indziej (potrzebny jest jej kod EPP). Można też zamówić samą domenę, wraz z certyfikatem SSL, gdy go oferujemy (zaznaczenie pod domeną). Po wpisaniu domeny do rejestracji lub transferu widać obok, czy jest wolna; zajętą domenę można tylko przenieść, a niezarejestrowaną tylko zarejestrować.
 
-Po kliknięciu **Dodaj do koszyka** otwiera się **Koszyk** (otwiera go też ikona koszyka u góry każdej strony, z liczbą pozycji). **Zamów coś jeszcze** pozwala dodać więcej, np. dwie domeny i trzy plany hostingowe, a kosz obok pozycji ją usuwa. Wszystko w koszyku staje się jednym zamówieniem z jednym wezwaniem do zapłaty.
+Po kliknięciu **Dodaj do koszyka** koszyk otwiera się z boku strony, więc mogą Państwo dalej wybierać; otwiera go też ikona koszyka u góry każdej strony, z liczbą pozycji. Można tam zmienić okres rozliczeniowy pozycji lub na ile lat rejestrowana jest domena, z ceną każdej opcji, albo usunąć ją ikoną kosza. **Do kasy** otwiera stronę **Koszyk**, gdzie dodają Państwo uwagę i składają zamówienie; **Zamów coś jeszcze** dodaje kolejne, np. dwie domeny i trzy pakiety hostingowe. Wszystko w koszyku staje się jednym zamówieniem z jednym wezwaniem do zapłaty.
 
 Jeśli mają Państwo **kod kuponu**, prosimy wpisać go w koszyku: przed złożeniem zamówienia widać, ile odejmuje (link z kodem wpisuje go automatycznie). Kupon może obniżać tylko pierwszą płatność albo także każde odnowienie i nigdy nie obniża opłaty instalacyjnej.
 
@@ -214,7 +220,11 @@ W Pomoc → **Pliki do pobrania** znajdziesz pliki, które Ci udostępniamy, tak
 <!-- if:tickets -->
 ## Zgłoszenia
 
-W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi.
+W menu Wsparcie → Zgłoszenia przycisk **Otwórz zgłoszenie** pozwala zadać nam dowolne pytanie: prosimy wybrać dział i usługę, której dotyczy, wpisać pytanie i załączyć pliki, np. zrzuty ekranu. Odpowiadamy w zgłoszeniu i e-mailem; aby odpisać, prosimy kliknąć w nim **Odpowiedz**. Prosimy zamknąć zgłoszenie, gdy nic więcej nie jest potrzebne. Zamknięte zgłoszenie otwiera się ponownie po odpowiedzi, a zgłoszenie, na które odpowiedzieliśmy, zamyka się samo, jeśli przez kilka dni nie otrzymamy odpowiedzi. Szara liczba obok **Zgłoszeń** w menu pokazuje, ile Państwa zgłoszeń nie jest zamkniętych; kolorowa, na ile odpowiedzieliśmy i czekamy na Państwa.
+<!-- endif -->
+
+<!-- if:urgent_tickets -->
+Jeśli któraś z Państwa usług przestała działać (strona lub poczta nie działa), włączcie **Pilne** przy otwieraniu zgłoszenia i wybierzcie tę usługę: dowiadujemy się o tym od razu. Pilnych zgłoszeń jest kilka w miesiącu, więc warto zostawić je na to, co nie może czekać; formularz pokazuje, ile zostało.
 <!-- endif -->
 <!-- if:ticket_mail -->
 Na e-maile dotyczące zgłoszeń można też odpowiadać z własnej skrzynki: odpowiedź zostaje dodana do zgłoszenia wraz z załącznikami. E-mail wysłany na nasz adres wsparcia otwiera nowe zgłoszenie.

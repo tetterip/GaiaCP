@@ -89,33 +89,61 @@ class Ticket extends Model
         return $this->client?->name ?? ($this->name ?: (string) $this->email);
     }
 
-    /** The thread id its emails carry (Message-ID, References), so an emailed answer finds the ticket again. */
+    /**
+     * The thread id its emails carry (Message-ID, References), so an emailed answer finds the ticket again. It holds the
+     * ticket's secret (emailToken()), so an answer can't be pointed at another ticket by writing its number.
+     */
     public function emailThreadId(): string
     {
-        return "ticket-{$this->id}@".self::emailHost();
+        return "ticket-{$this->id}.{$this->emailToken()}@".self::emailHost();
     }
 
     /** A new Message-ID for one of its emails. */
     public function newEmailMessageId(): string
     {
-        return "ticket-{$this->id}.".Str::lower(Str::random(12)).'@'.self::emailHost();
+        return "ticket-{$this->id}.{$this->emailToken()}.".Str::lower(Str::random(12)).'@'.self::emailHost();
+    }
+
+    /** The ticket's secret in its emails' ids: made from its id and APP_KEY, so nothing is stored and no one can guess it. */
+    public function emailToken(): string
+    {
+        return self::tokenFor((int) $this->id);
     }
 
     /**
-     * The ticket id in an answer's In-Reply-To / References, when it answers one of our ticket emails.
+     * The ticket an answer's In-Reply-To / References point to, when it answers one of our ticket emails, and whether
+     * the reference carries that ticket's secret (`signed`). Unsigned: an id without it, as emails sent before the secret was
+     * added have, or one written by hand. A signed reference wins over an unsigned one.
      *
      * @param  list<string>  $messageIds
+     * @return array{id: int, signed: bool}|null
      */
-    public static function idFromEmailReferences(array $messageIds): ?int
+    public static function fromEmailReferences(array $messageIds): ?array
     {
         $host = preg_quote(self::emailHost(), '/');
-        foreach ($messageIds as $id) {
-            if (preg_match('/^<?ticket-(\d+)(?:\.[a-z0-9]+)?@'.$host.'>?$/i', trim($id), $match)) {
-                return (int) $match[1];
+        $found = null;
+
+        foreach ($messageIds as $messageId) {
+            if (! preg_match('/^<?ticket-(\d{1,18})((?:\.[a-z0-9]+)*)@'.$host.'>?$/i', trim($messageId), $match)) {
+                continue;
             }
+
+            $id = (int) $match[1];
+            $token = strtolower(explode('.', ltrim($match[2], '.'))[0]);
+
+            if (strlen($token) === 16 && hash_equals(self::tokenFor($id), $token)) {
+                return ['id' => $id, 'signed' => true];
+            }
+
+            $found ??= ['id' => $id, 'signed' => false];
         }
 
-        return null;
+        return $found;
+    }
+
+    private static function tokenFor(int $id): string
+    {
+        return substr(hash_hmac('sha256', "ticket-email:{$id}", (string) config('app.key')), 0, 16);
     }
 
     private static function emailHost(): string

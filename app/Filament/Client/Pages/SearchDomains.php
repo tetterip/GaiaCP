@@ -33,6 +33,7 @@ use Livewire\Attributes\Url;
  * solved one lets the client search for VERIFIED_MINUTES; RateLimiter caps searches either way.
  * Visitors search too while Settings → Public area says so; they add to the cart only while the public order page is on.
  * With Settings → AI assistant → Suggest domain names on, Suggest other names lists free names close to the one searched.
+ * With Domain names from a description on, a few words about a business (describe()) list free names for it instead.
  */
 class SearchDomains extends Page
 {
@@ -68,13 +69,19 @@ class SearchDomains extends Page
     #[Url(as: 'q', except: '')]
     public string $query = '';
 
-    /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> */
+    /** @var list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> */
     public array $results = [];
 
     /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> the free names Suggest other names found */
     public array $suggestions = [];
 
+    /** @var list<array{domain: string, status: string, price: ?string, term: ?string, transfer: bool, with_ssl: ?string}> the free names found for a description */
+    public array $ideas = [];
+
     public ?string $unsupported = null;
+
+    /** Words that make the search box's text a description of a business rather than a name. */
+    public const DESCRIPTION_WORDS = 3;
 
     public static function canAccess(): bool
     {
@@ -93,7 +100,8 @@ class SearchDomains extends Page
 
     public function mount(): void
     {
-        if (filled($this->query) && ! $this->needsCaptcha()) {
+        // A description in the link is not sent to the AI service until the client presses Search
+        if (filled($this->query) && ! $this->needsCaptcha() && ! $this->isDescription()) {
             $this->search();
         }
     }
@@ -102,6 +110,7 @@ class SearchDomains extends Page
     {
         $this->resetErrorBag();
         $this->results = [];
+        $this->ideas = [];
         $this->unsupported = null;
         $candidates = DomainSearch::candidates($this->query);
 
@@ -109,10 +118,113 @@ class SearchDomains extends Page
             return;
         }
 
-        if ($candidates['domains'] === []) {
-            throw ValidationException::withMessages(['query' => __('Enter a name like example or example.gr, with letters, digits and hyphens.')]);
+        if ($this->isDescription() && $this->canDescribe()) {
+            $this->describe();
+
+            return;
         }
 
+        if ($candidates['domains'] === []) {
+            throw ValidationException::withMessages(['query' => $this->canDescribe()
+                ? __('Enter a name like example or example.gr, or describe your business in a few words.')
+                : __('Enter a name like example or example.gr, with letters, digits and hyphens.')]);
+        }
+
+        $this->passCaptcha();
+
+        if (! RateLimiter::attempt(DomainSearch::limiterKey(), self::PER_MINUTE, fn () => true)) {
+            throw ValidationException::withMessages(['query' => __('Too many searches. Try again in a minute.')]);
+        }
+
+        $this->suggestions = [];
+        $this->unsupported = $candidates['unsupported'];
+        $this->results = array_map(fn (string $domain) => [...$this->row($domain), 'spotlight' => in_array($domain, $candidates['spotlight'], true)], $candidates['domains']);
+    }
+
+    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> the results shown as cards: the domain typed and the spotlight TLDs */
+    public function spotlightResults(): array
+    {
+        return array_values(array_filter($this->results, fn (array $result) => $result['spotlight']));
+    }
+
+    /** @return list<array{domain: string, status: string, price: ?string, was: ?string, term: ?string, transfer: bool, with_ssl: ?string, spotlight: bool}> the other results, as lines */
+    public function otherResults(): array
+    {
+        return array_values(array_filter($this->results, fn (array $result) => ! $result['spotlight']));
+    }
+
+    /** @return list<array{tld: string, price: string, was: ?string}> the spotlight TLDs' prices, shown under the box before a search */
+    public function spotlightPrices(): array
+    {
+        return DomainSearch::spotlightPrices(Currencies::forClient(filament()->auth()->user()?->client));
+    }
+
+    /** Whether the search box's text describes a business (DESCRIPTION_WORDS words or more) rather than naming a domain. */
+    public function isDescription(): bool
+    {
+        return count(preg_split('/\s+/u', trim($this->query), -1, PREG_SPLIT_NO_EMPTY) ?: []) >= self::DESCRIPTION_WORDS;
+    }
+
+    /**
+     * Whether a description gets names (Settings → AI assistant → Domain names from a description): signed-in clients,
+     * and visitors only with Also for visitors without an account and a captcha plugin on (they always solve it first).
+     */
+    public function canDescribe(): bool
+    {
+        if (! Assistant::enabled('domain_ideas')) {
+            return false;
+        }
+
+        return ! self::visitor() || (config('gaiacp.ai.domain_ideas_visitors') && Captcha::active() !== null);
+    }
+
+    /**
+     * Names for the business described in the search box, with the first two spotlight TLDs (else the first ending sold
+     * and .com, when sold too), each checked like a search; only the free ones are listed. Counts in the same AI_PER_HOUR as Suggest other names.
+     */
+    private function describe(): void
+    {
+        $this->passCaptcha();
+
+        if (! RateLimiter::attempt('domain-ai:'.DomainSearch::limiterKey(), self::AI_PER_HOUR, fn () => true, 3600)) {
+            throw ValidationException::withMessages(['query' => __('You have asked for suggestions often. Try again in an hour.')]);
+        }
+
+        if (Assistant::domainsLimitReached()) {
+            throw ValidationException::withMessages(['query' => __('No suggestions right now. Try again later.')]);
+        }
+
+        try {
+            $labels = app(Assistant::class)->domainIdeas($this->query, app()->getLocale());
+        } catch (AiException $e) {
+            report($e);
+
+            throw ValidationException::withMessages(['query' => __('No suggestions right now. Try again later.')]);
+        }
+
+        $spotlight = collect(DomainSearch::spotlight())->map(fn (Tld $tld) => (string) $tld->getAttribute('tld'));
+        $endings = collect(DomainSearch::tlds())->map(fn (Tld $tld) => (string) $tld->getAttribute('tld'));
+        $endings = $spotlight->count() >= 2 ? $spotlight->take(2)
+            : collect([$endings->first(), $endings->contains('.com') ? '.com' : null])->filter()->unique();
+
+        $this->suggestions = [];
+        $this->ideas = collect($labels)
+            ->crossJoin($endings)
+            ->map(fn (array $pair) => $pair[0].$pair[1])
+            ->reject(fn (string $domain) => DomainName::problem($domain) !== null)
+            ->map(fn (string $domain) => $this->row($domain))
+            ->filter(fn (array $row) => DomainAvailability::from($row['status'])->orderable())
+            ->values()
+            ->all();
+
+        if ($this->ideas === []) {
+            throw ValidationException::withMessages(['query' => __('The names suggested are taken. Try describing it in other words.')]);
+        }
+    }
+
+    /** Asks for the captcha when the next search needs it; a solved one lets the client search for VERIFIED_MINUTES. */
+    private function passCaptcha(): void
+    {
         if ($this->needsCaptcha()) {
             if (! Captcha::verify((string) $this->captcha)) {
                 $message = filled($this->captcha) ? __('The check that you are not a robot failed. Please try again.') : __('Please complete the check that you are not a robot.');
@@ -125,20 +237,12 @@ class SearchDomains extends Page
             session()->put(self::VERIFIED, now()->addMinutes(self::VERIFIED_MINUTES)->timestamp);
             $this->captcha = null;
         }
-
-        if (! RateLimiter::attempt(DomainSearch::limiterKey(), self::PER_MINUTE, fn () => true)) {
-            throw ValidationException::withMessages(['query' => __('Too many searches. Try again in a minute.')]);
-        }
-
-        $this->suggestions = [];
-        $this->unsupported = $candidates['unsupported'];
-        $this->results = array_map(fn (string $domain) => $this->row($domain), $candidates['domains']);
     }
 
     /** Whether Suggest other names shows: on under Settings → AI assistant, after a search. */
     public function canSuggest(): bool
     {
-        return Assistant::enabled('domains') && $this->results !== [] && ! $this->needsCaptcha();
+        return Assistant::enabled('domains') && $this->results !== [] && ! $this->needsCaptcha() && ! Assistant::domainsLimitReached();
     }
 
     /**
@@ -210,7 +314,9 @@ class SearchDomains extends Page
     /** Whether the next search asks for the captcha: it is on for the domain search and none was solved lately. */
     public function needsCaptcha(): bool
     {
-        return Captcha::on('domain_search') && (int) session(self::VERIFIED, 0) <= now()->timestamp;
+        // Visitors who may describe their business always solve it first
+        return (Captcha::on('domain_search') || (self::visitor() && $this->canDescribe()))
+            && (int) session(self::VERIFIED, 0) <= now()->timestamp;
     }
 
     /** @return array<string, mixed>|null the captcha plugin's widget, while the next search needs it */
@@ -222,7 +328,7 @@ class SearchDomains extends Page
     /** Puts a free domain from the results in the cart, to register for its shortest term, with the SSL certificate offered with domains when $ssl. */
     public function add(string $domain, bool $ssl = false): void
     {
-        $result = collect([...$this->results, ...$this->suggestions])->firstWhere('domain', $domain);
+        $result = collect([...$this->results, ...$this->suggestions, ...$this->ideas])->firstWhere('domain', $domain);
 
         if ($result === null || ! $this->canOrder() || ! DomainAvailability::from($result['status'])->orderable()) {
             return;
@@ -243,6 +349,7 @@ class SearchDomains extends Page
         }
 
         Notification::make()->title(__(':domain is in your cart', ['domain' => $domain]))->success()->send();
+        $this->dispatch('cart-updated');
     }
 
     /** @return list<string> the domains already in the cart */

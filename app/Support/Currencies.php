@@ -4,9 +4,11 @@ namespace App\Support;
 
 use App\Models\Client;
 use App\Models\Currency;
+use App\Models\TaxInvoice;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Throwable;
 
 /**
@@ -100,12 +102,19 @@ final class Currencies
     }
 
     /**
-     * The sum of $column over every currency in $query, in the base currency.
+     * The sum of $column over every currency in $query, in the base currency. Both names go into the SQL as written,
+     * so they must be a column name (or TaxInvoice::signedTotalSql()): never a value from a request.
      *
      * @param  Builder|EloquentBuilder<*>  $query
      */
     public static function sumToBase(Builder|EloquentBuilder $query, string $column, string $currencyColumn = 'currency'): int
     {
+        foreach ([$column, $currencyColumn] as $name) {
+            if (! self::isColumn($name) && $name !== TaxInvoice::signedTotalSql()) {
+                throw new InvalidArgumentException("Not a column name: {$name}");
+            }
+        }
+
         $query = clone $query;
         $base = $query instanceof EloquentBuilder ? $query->toBase() : $query;
         $base->orders = null;
@@ -115,5 +124,11 @@ final class Currencies
             ->groupBy($currencyColumn)
             ->get()
             ->sum(fn ($row) => self::toBase((int) $row->sum_cents, $row->sum_currency));
+    }
+
+    /** A column name, optionally with its table: letters, digits and _ only. */
+    private static function isColumn(string $name): bool
+    {
+        return preg_match('/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)?$/', $name) === 1;
     }
 }

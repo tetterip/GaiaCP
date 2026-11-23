@@ -191,7 +191,7 @@ class DemoSeeder extends Seeder
     /** @return array{User, User} the demo admin and a support admin with fewer areas */
     private function admins(): array
     {
-        $admin = User::query()->create([
+        $admin = User::query()->forceCreate([
             'name' => 'Demo Admin',
             'email' => Demo::ADMIN_EMAIL,
             'password' => Hash::make(Demo::PASSWORD),
@@ -199,7 +199,7 @@ class DemoSeeder extends Seeder
             'super_admin' => true,
         ]);
 
-        $support = User::query()->create([
+        $support = User::query()->forceCreate([
             'name' => 'Eleni Support',
             'email' => 'support@odysseus-hosting.example',
             'password' => Hash::make(Str::random(32)),

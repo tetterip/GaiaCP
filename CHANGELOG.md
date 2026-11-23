@@ -9,6 +9,190 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
   Settings → Email log, once the client has an email.
 
+## [0.12.1] - 2026-11-23
+
+- Help: Plugins and integrations rewritten (what ships, what starts on, where each is set up, what is in the catalogue);
+  the sidebar, plugin and log paths of other chapters corrected.
+- The plugin catalogue's update button reads **Update to <version>** (in Greek it read «Αλλαγή»).
+- WHMCS import 1.1.1: its client login problems show in the admin's language.
+- Settings → Servers and Registrars list the active ones first, whatever column they are sorted by.
+- A domain payment reads the expiry at the registrar before renewing, and renews only if the domain still ends before
+  the paid period does: a domain already renewed by hand or imported from WHMCS with an old expiry is not renewed twice.
+
+## [0.12.0] - 2026-11-22
+
+- Security (outside audit before the release): a user's **super admin** switch and admin areas are no longer set by
+  mass assignment, only where an admin chooses them (Users, the installer); the plugin autoloader only loads class names
+  made of PHP identifiers.
+- Plugin API: `User`'s `super_admin` and `admin_areas` are no longer fillable; a plugin that sets them uses
+  `forceFill()`.
+- **What's new**: after an update, each admin sees once what the new version brings (its main features and one
+  sentence), with a link to the release notes, and again from the user menu → What's new. New
+  installs and new admins don't get it, and an admin's first visit keeps the welcome tour.
+- WHMCS import 1.1.0: clients log in to the client area with the email and password they had in WHMCS (new **Client
+  logins** part; logins on, no email sent). Only WHMCS's password hash is copied; the first login stores the password
+  with GaiaCP's own hash. Clients imported before get their logins by running the import again with only Client
+  logins ticked.
+- An order that comes to 0 (free products, a 100% coupon) shows **Activate** instead of Record payment: one click,
+  no payment form, sets its items up and moves each due date forward one cycle.
+- **Quarantine** in the service lists: a domain that has expired but is still inside its TLD's grace days (30 when
+  the TLD has none), and a hosting account for Settings → Automation → **Hosting quarantine** days after its automatic
+  suspension (30 by default, 0 = never), show a red Quarantine badge and have their own chip. Services → Hosting and
+  Domains open on **Active and in quarantine**, the soonest due first; the ones past quarantine show under All. The
+  other tabs still open on All, and a chip or filter you pick stays.
+- Fixed: a list's Filters panel was cut off at the bottom of the table, so under a short or empty list its lower
+  filters (Server on the Hosting page) could not be reached; it now opens over the page.
+- The Products list filters by **Group** (several at once; Other = products in no group) and by **Type**.
+- Email to ticket and Webhooks now ship with GaiaCP as bundled plugins (never uninstalled, still off until switched
+  on); they used to show as uploaded on the Plugins page.
+- Slack, Discord and Telegram moved out of GaiaCP into the plugin catalogue. An update keeps them where they are
+  installed, on or off as they were, with their settings, and they update from the catalogue from then on. A Git
+  checkout loses the folders on its next pull: install them again under Settings → System → Plugin catalogue.
+- System health → Speed is fixed from the panel, without a terminal: **Optimize now** caches the config, routes and
+  pages, and **Use files** keeps cache and sessions in files instead of the database (everyone signs in again once).
+  On a live site GaiaCP also caches them by itself within a minute after an update or a change to `.env` (while cron
+  runs), and new installs start with files and cached pages. Before, an update cleared these caches and left them
+  for you to make again.
+- Fixed: the dashboard's **Needs attention** links opened the whole list. "Domains to check at the registrar" now opens
+  just those domains (a **To check at the registrar** chip on Services → Domains), "Payment notices due today" just
+  those (a **Due today** chip), and the tickets, leads and quotes rows their tab again.
+- Fixed: every admin page failed with an error (500) after a plugin folder went away while its pages were cached,
+  for example a Git checkout that pulled the move of Slack, Discord and Telegram to the plugin catalogue. A cached
+  page list that no longer matches the plugins is now dropped and made again.
+- In Greek, the sign-in pages' "Remember me" now reads «Να με θυμάσαι» (was «Θυμήσου με»).
+
+## [0.11.0] - 2026-11-21
+
+- Fixed (pre-release audit): two urgent tickets sent at the same moment could both pass the month's limit; a client's
+  urgent tickets are now opened one at a time.
+- Fixed: on a phone, the Settings menu opened under the Save bar, which hid part of it; it now opens above it.
+- Spotlight TLDs (Settings → Domains): up to 8 TLDs, such as .gr and .com, in the order you pick. The domain search
+  checks them first and shows them as cards above the other endings, the domain typed first; their prices show under
+  the search box (search page, public home page), Domain prices lists them first, AI names from a description use the
+  first two, and Domain pricing marks them with a star.
+- Settings and log texts no longer name particular registrars or server panels, since they are plugins: Update
+  registrar costs daily, the client area's domain switches (contacts, private nameservers, registrar lock) and
+  hosting login, the module log and the Servers page describe them in general. The client area switch is now
+  **Log in to the control panel**.
+- Fixed: the WHMCS import, and its dry run, emailed the super admins a "server added" message for each WHMCS server
+  (the import runs as the signed-in admin); it no longer does. Clients were never emailed by it.
+- Fixed: Settings still listed the pages of disabled plugins (Slack, Discord, Telegram, CyberPanel, UptimeRobot and
+  others) in its menu, cards and search. Every page a plugin adds now closes while the plugin is off, by URL too;
+  turning one off with the On switch on its page goes to Settings → Plugins, where it is turned back on.
+- Fixed: the web installer gave a 500 error when the setup code was sent on a new copy with no database yet (its
+  attempts were counted in the database cache, whose tables don't exist before the install); they are kept in files.
+- Fixed: a select (Settings → Tax → Country and every other searchable select) showed two rings with a gap when it
+  had the focus; it shows only its frame's ring, like the text fields next to it.
+- Installer: the language is a small button with the current code (EN) that opens the list of languages, instead of
+  a row of all ten that no longer fit next to the logo and spilled off the screen on a phone.
+- System health → Speed: OPcache shows as on where the host disables `opcache_get_status()` (Plesk does), and warns
+  when it has room for fewer files than GaiaCP has (`opcache.max_accelerated_files` below 20000; Plesk's default is 1000).
+- Faster panels: a click on a link to another page of the admin or the client area swaps only the page instead of
+  loading everything again, and the page starts loading while the pointer rests on the link (downloads, panel logins,
+  language switches and the other panel still open as normal pages). Fewer database queries on each page: the client
+  area reads its products once per page (the Order page asked 42 times), the dashboard's renewals card no longer asks
+  once per row, and the setup guide reads its settings with one query. System health has a **Speed** group: OPcache,
+  the cached config / routes / components, and cache and sessions in the database.
+- Client area menu: **Hosting**, **Other services** and **Domains** show how many the client has there, as a small grey
+  number at the end of the line (none at 0; a line renamed in Settings → Client area → Menus keeps it). The red / amber number
+  after it still means only that something waits for the client. **Credit** shows the balance the same
+  way while there is one, and **Tickets** the tickets that are not closed.
+- Fixed: the Amount, Tax and Total headers of the invoice PDF and of the client's payment notice sat left of their
+  amounts; they are right-aligned like the amounts below them.
+- The quote, maintenance and unsubscribe pages stay readable in dark mode: links in the accent colour instead of the
+  browser's dark blue, and dark text on the light dark-mode buttons. A quote printed in dark mode uses light colours.
+- The search on Settings and Reports also finds a card by its English name and description in every other language
+  ("plugin" finds Πρόσθετα). An empty list that is good news (tickets, open upgrade and cancellation requests, failed
+  jobs, the error log) shows a green tick instead of a grey cross.
+- Security: a Content-Security-Policy on every page. Scripts run only when they carry the page's nonce (Filament's,
+  Livewire's and GaiaCP's own) or are loaded by such a script (captchas, the cookie banner's scripts), so a script or
+  onclick="" slipped into a page doesn't run. What it blocks goes to the log (System → Logs); `GAIACP_CSP=report` only
+  reports, `off` turns it off. Mastercard Gateway 1.0.1 and Glass theme 1.2.3 add the nonce to their scripts.
+- **Plugin API**: an inline `<script>` of a plugin needs the page's nonce (`<script @nonce>` in a Blade view, or
+  `Vite::cspNonce()`), and inline event handlers such as `onclick=""` no longer run. The catalogue's bank plugins'
+  form submit script is allowed by its hash until they are updated.
+- Security (Email to ticket 1.4.0): an answer joins its ticket by a secret code in the ticket emails' headers, not by
+  the ticket number alone, so on "Unless the mail server found the sender forged" no one can write into a client's ticket
+  by guessing its number; the number in the subject still works when the mail server confirmed the sender. A message
+  from an unconfirmed sender shows **Sender not confirmed** on the admin's ticket. New **Our mail server's name**: set,
+  only the Authentication-Results header with that name can confirm a sender, so a "pass" header the sender wrote
+  into the email never counts, even when the mail server adds none of its own.
+- Security hardening from an outside audit: a Content-Security-Policy report can no longer put line breaks or other
+  control characters into the log (forged log lines); a client's "I've paid" takes only a payment method GaiaCP
+  offers; the Mastercard Gateway payment page escapes the session id in its script; a total over several currencies
+  takes only column names. The admin guide says what the AI features send to the AI service.
+- Security: Settings → Company stores only a logo the upload field has just saved (or keeps the saved one), and a
+  logo name with `..` or an absolute path is never served or deleted.
+- Fixed: in dark mode in Gmail's apps (and Outlook) the logo at the top of emails was dark on dark and could not be read.
+  The GaiaCP logo and the company logo in emails now sit on a white rounded background.
+- AI services (DeepSeek 1.0.3, OpenAI): with the Model field empty, the first suggested model your key has is used (read by
+  Test connection), so a retired default such as deepseek-chat is never asked; DeepSeek now suggests deepseek-flash first.
+- Fixed: with product groups set up, Add to cart for a domain alone (the Domain names group) on the client Order page
+  and the public cart did nothing; the hidden product cards left the order without "A domain name only".
+- Client area Domains: tick several domains to change their nameservers or turn auto renew on or off for all of them
+  (each behind its Settings → Client area switch, as on a domain's page); one summary says which were changed or left out.
+- Domain search: names from a description (Settings → AI assistant → Domain names from a description, off by default).
+  A client types a few words about their business and gets free names with the first ending sold and .com, each with
+  its price (sent without email addresses or phone numbers; same 5 an hour). Signed-in clients only unless **Also for visitors
+  without an account** (always with the captcha). New **Domain suggestions a day** (200) caps both AI buttons for clients and visitors.
+- Urgent tickets (Settings → Support → Urgent tickets per client each month, off by default): a client switches on
+  **Urgent** for an active service that stopped working; the ticket gets the new Urgent priority, the bell and push say
+  "Urgent ticket", and the new `ticket.urgent` event can be posted alone to Slack, Discord, Telegram or a webhook.
+  The High priority's colour is now amber, so Urgent stands out in red.
+- Client area Domains: each row shows the domain's nameservers under its name and, for one ending within 30 days,
+  how many days are left (or how long ago it was due) under its due date; Expires is hidden on phones.
+- Client area cart, quicker: **Add to cart** opens the cart from the side of the page instead of leaving it, and the
+  cart icon in the top bar opens the same panel, with the first payment and **Checkout** (the Cart page, for the note,
+  coupon and terms). Each item's billing cycle and a domain's term can be changed right there, each choice with the
+  item's price; a domain added from Domain search was always put in for its shortest term.
+- Pages that are a table (Clients, Services, Domains, payment notices, reports, the client area's lists…) use the
+  whole width of the screen in both panels, so their columns are no longer squeezed into the middle. Home, forms and
+  custom pages keep their width.
+- Client area lists, quicker to sort through: **Domains** has chips for the ones expiring within 30 days, the ones with
+  auto renew off and each extension (.gr, .com, .com.gr…) when the client has more than one, and lists the domain due
+  first on top (terminated ones last; it was alphabetical). **Other services** has a chip per kind (SSL, Maintenance…)
+  when there are two or more. The menu shows a number only where something waits for the client: unpaid notices on
+  Payment notices, suspended services on Hosting and Other services, and domains ending within 30 days with auto renew
+  off on Domains.
+- Notifications can be swiped away with the mouse or a trackpad too, in the bell's list and the pop-ups of both panels
+  (it was touch only): drag one left or right. The notifications next to it follow the drag by a few pixels and settle
+  back when it is let go. The X still removes one from the keyboard.
+- Dashboard, fewer clicks: three **Needs attention** lines have a button for the thing that needs no choice, Complete
+  order on the pending orders, Retry on the module queue (terminations stay in the queue) and Reply on the tickets
+  waiting, which opens the oldest. A new **Recent activity** card shows the last eight payments, orders, new clients,
+  cancellations and ticket replies from the Activity log, with a button per kind. The **Servers** card shows each
+  server's uptime over 30 days beside its name and marks one at 85% of its accounts Nearly full (Full at the maximum).
+- Dashboard, easier to read: **Renewals** is a compact list in groups (past due, in 7 days, later) with the amount, the
+  due date and Record payment on each row, so a phone shows all of it without scrolling sideways (it was the services
+  table squeezed into half the page); **Needs attention** shows its first six lines and unfolds the rest; the chart's
+  title stays on one line, its axis reads "€600" and a change past 999% is left out; the Support counts are one low row.
+- Dashboard, the day at a glance: four boxes across the top show the income recorded today, new orders, new clients and
+  the tickets waiting, each next to yesterday's and opening its list. **Needs attention** starts across the top, over
+  both columns (drag it back into a column if you prefer; a layout you had saved gets it moved there once), puts the
+  urgent lines first and shows the failures of one kind as a single line with their count ("4 panel or registrar calls
+  failed") instead of one line each. **Open balance**: "Due in 7 days" now counts unpaid payment notices like the rest
+  of the card (it counted services by their next due date), and a new line shows what the renewals of the next 30 days
+  should bring, opening the Income forecast report.
+- Client area Home, what needs the client first: **Waiting for you** lists, only when there is something, the overdue
+  payment notices, suspended services, answered tickets, quotes waiting for an answer, SSL certificates waiting for
+  validation, domains ending within 30 days with auto renew off, accounts that got a usage warning this month and a
+  pending change of their details, each with the page that settles it. A **Support** card shows their open tickets
+  (Answered / Waiting for us) with New ticket and, while the knowledge base is on, a search of the articles; the
+  contact email line stays only while tickets are off. Home has the domain search field while clients search for
+  domains, and a client with no service yet sees **Start here**: the domain search, the products marked Popular and
+  Complete your profile when their address is missing
+- Client area Home, the things clients come for: **My services** lists their services (hosting first, a suspended one
+  on top) with a button that logs them in to the control panel of each hosting account, where Settings → Client area
+  lets them, and the count per kind under it. **To pay** holds the unpaid notices, each with its Pay, and the credit;
+  with nothing to pay it is one line, "Everything is paid", with the next renewal. **Coming up for renewal** names the
+  billing cycle and now lists a domain whose auto renew is off, marked "Does not renew automatically". The shortcuts
+  are what a client comes to do (Order, New ticket, Register a domain, Add funds, Your profile) and show on a phone
+  only, where the menu is folded away.
+- Client area Home, easier to read: **Active services** counts hosting, domains and other services, each opening its
+  list; the shortcuts are tiles (one row to swipe on a phone); the notices to pay and the coming renewals sit side by
+  side, each row a link, with the domain first; **Past due** shows only when something is.
+- The client area's search field no longer reads "Search clients, services, domains…".
+
 ## [0.10.0] - 2026-11-17
 
 - Security (audit before this release): Plesk 1.6.3 lets a client log in to Plesk, open its shortcuts or change the

@@ -7,12 +7,15 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class RegistrarsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            // Active registrars always come first; the chosen sort orders each group.
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('active'))
             ->columns([
                 TextColumn::make('name')
                     ->searchable()

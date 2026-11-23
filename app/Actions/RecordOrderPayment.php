@@ -45,6 +45,12 @@ class RecordOrderPayment
         return RecordServicePayment::suggested($service);
     }
 
+    /** What the items with no payment yet come to; 0 for a free order (a 100% coupon, free products). */
+    public function total(Order $order): int
+    {
+        return $this->unpaid($order)->sum(fn (Service $service) => self::amount($service));
+    }
+
     /** @return Collection<int, Service> items with no payment yet */
     public function unpaid(Order $order)
     {

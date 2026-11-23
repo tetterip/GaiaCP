@@ -29,7 +29,12 @@ Settings → Support also holds:
   clients can pick each one;
 - **Canned replies**: ready answers with placeholders such as `{client_first_name}` and `{ticket_number}`;
 - who is emailed, the files clients may attach (size and types), whether clients may set the priority, and after how
-  many days the files of closed tickets are deleted to free disk space (empty: kept).
+  many days the files of closed tickets are deleted to free disk space (empty: kept);
+- **Urgent tickets per client each month** (empty: off): a client marks a ticket urgent for an active service that
+  stopped working. It comes in with the Urgent priority, the bell and push notification say "Urgent ticket", and the
+  **Urgent ticket opened** event can be posted alone to Slack, Discord or Telegram (Settings → each one's events), so
+  you hear about a site that is down at once. The limit keeps it for what really can't wait; the month's count starts
+  again on the 1st.
 
 The dashboard's Support card lists the tickets waiting for an answer.
 
@@ -44,7 +49,17 @@ counts as from someone who isn't a client, whatever address it shows. **Email co
 when the mail server confirmed the sender": only an email your server confirmed (DMARC, DKIM or SPF pass) joins a
 client's ticket, since anyone can write a client's address as the sender. If your mail server adds no such check, email
 from clients opens tickets without a client; "Unless the mail server found the sender forged" accepts it (mailboxes set
-up before version 0.7.0 keep this one).
+up before version 0.7.0 keep this one). An answer finds its ticket by a secret code in the ticket emails' hidden
+headers, which the client's email app keeps when they press Reply; the ticket number in the subject is enough only when
+your mail server confirmed the sender, so no one can write into another client's ticket by guessing its number. A
+message from a sender your server didn't confirm shows **Sender not confirmed** on the ticket.
+
+A "pass" counts only from your own mail server, and a sender can write an Authentication-Results header of their own
+into the email. Fill in **Our mail server's name** with the name your server (or mail provider) writes at the start of
+its header, before the first `;` (open the source of an email you received, for example `mx.example.com`; several
+separated by commas): then only that header can confirm a sender. Left empty, the topmost header counts, which is safe
+only when your mail server always checks incoming email and adds its own header. Check that it does before choosing
+"Only when the mail server confirmed the sender": the check is only as good as your mail server's.
 
 ## Knowledge base
 

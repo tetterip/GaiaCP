@@ -8,6 +8,7 @@ use App\Models\ActivityLog;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditUser extends EditRecord
 {
@@ -29,6 +30,15 @@ class EditUser extends EditRecord
         }
 
         return $data;
+    }
+
+    /** @param  array<string, mixed>  $data */
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        // super_admin and admin_areas are not mass assignable (User): this form is where a super admin sets them
+        $record->forceFill($data)->save();
+
+        return $record;
     }
 
     protected function afterSave(): void

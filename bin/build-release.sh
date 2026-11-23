@@ -39,7 +39,8 @@ rm -f "$STAGE"/bootstrap/cache/*.php "$STAGE/.env"
 find "$STAGE/vendor" -name .git -prune -exec rm -rf {} +
 find "$STAGE" -mindepth 1 -maxdepth 1 -type d -empty -delete
 
-# Release notes: the "## [<version>]" section of CHANGELOG.md
+# Release notes: the short notes written for this version (docs/release-notes/<version>.md) with a link to the
+# full list, else the "## [<version>]" section of CHANGELOG.md. The changelog needs the section either way.
 awk -v v="$VERSION" '
     index($0, "## [" v "]") == 1 { found = 1; next }
     found && /^## \[/ { exit }
@@ -48,6 +49,12 @@ awk -v v="$VERSION" '
 if ! grep -q '[^[:space:]]' "$BUILD/RELEASE_NOTES.md"; then
     echo "CHANGELOG.md has no section for $VERSION (## [$VERSION] - date)" >&2
     exit 1
+fi
+if [ -f "docs/release-notes/$VERSION.md" ]; then
+    {
+        cat "docs/release-notes/$VERSION.md"
+        printf '\nEvery change in this version: [CHANGELOG.md](https://github.com/tetterip/GaiaCP/blob/v%s/CHANGELOG.md)\n' "$VERSION"
+    } > "$BUILD/RELEASE_NOTES.md"
 fi
 
 (cd "$TMP" && zip -qr -X "$BUILD/$NAME.zip" "$NAME")

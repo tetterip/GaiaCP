@@ -17,7 +17,7 @@
                 <span>{{ __('Thank you for your answer.') }}</span>
             @endif
             @if ($ticket = $this->ticketUrl())
-                <span class="gcp-kb-meta">{{ __('Still need help?') }} <a href="{{ $ticket }}" class="gcp-kb-inline">{{ __('Open a ticket') }}</a></span>
+                <span class="gcp-kb-meta">{{ __('Still need help?') }} <a {{ \Filament\Support\generate_href_html($ticket) }} class="gcp-kb-inline">{{ __('Open a ticket') }}</a></span>
             @endif
         </div>
     </x-filament::section>

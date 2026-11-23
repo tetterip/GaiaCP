@@ -19,7 +19,7 @@
                         <td>{{ $payment->paid_on->format(\App\Providers\AppServiceProvider::dateFormat()) }}</td>
                         <td>{{ $payment->service->client->name }}</td>
                         <td>
-                            <a href="{{ \App\Filament\Resources\Services\ServiceResource::getUrl('edit', ['record' => $payment->service_id]) }}" class="text-primary-600 hover:underline dark:text-primary-400">{{ $payment->service->label }}</a>
+                            <a {{ \Filament\Support\generate_href_html(\App\Filament\Resources\Services\ServiceResource::getUrl('edit', ['record' => $payment->service_id])) }} class="text-primary-600 hover:underline dark:text-primary-400">{{ $payment->service->label }}</a>
                             @if ($payment->service->domain && $payment->service->domain !== $payment->service->label)
                                 <span style="color: var(--gray-500)">· {{ $payment->service->domain }}</span>
                             @endif

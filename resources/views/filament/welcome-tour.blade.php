@@ -20,14 +20,22 @@
         spot: null,
         card: '',
         openedSidebar: false,
+        onMove: null,
 
         init() {
-            window.addEventListener('resize', () => this.place())
-            window.addEventListener('scroll', () => this.place(), true)
+            // Taken off again in destroy(): in SPA mode each page brings a new tour
+            this.onMove = () => this.place()
+            window.addEventListener('resize', this.onMove)
+            window.addEventListener('scroll', this.onMove, true)
 
             if (this.$el.dataset.opensNow === 'yes') {
                 this.$nextTick(() => this.start())
             }
+        },
+
+        destroy() {
+            window.removeEventListener('resize', this.onMove)
+            window.removeEventListener('scroll', this.onMove, true)
         },
 
         start() {

@@ -129,6 +129,10 @@ runs on, can do whatever those logins allow. Limit what that is:
   Backups too.
 - **Turn off plugin uploads** you don't need (`GAIACP_PLUGIN_UPLOADS=false` in `.env`): an uploaded plugin runs with
   GaiaCP's full access.
+- **Keep the Content-Security-Policy on**: every page tells the browser to run only GaiaCP's own scripts, so a script
+  slipped into a page (a client's name, a ticket) does nothing. If a plugin or a script you added stops working,
+  Settings → Logs → Error log shows "Content-Security-Policy blocked" with what was stopped; `GAIACP_CSP=report` in `.env` only
+  reports it while you look into it, and the plugin's author can add the page's nonce to its scripts.
 - If something looks wrong, the activity log shows who did what; change the affected server tokens in the panels
   themselves, then in GaiaCP.
 

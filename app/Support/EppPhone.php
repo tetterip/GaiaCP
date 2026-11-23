@@ -5,7 +5,7 @@ namespace App\Support;
 /**
  * Phone numbers in the EPP format registrars take: "+30.2101234567" (calling code, a dot, the number). A number
  * without a country code is taken as the client's country's (else Settings → General → Country's), without its
- * leading trunk 0. Used by the registrar plugins (easy.gr, Enom).
+ * leading trunk 0. Used by the registrar plugins.
  */
 final class EppPhone
 {

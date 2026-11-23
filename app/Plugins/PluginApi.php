@@ -14,6 +14,7 @@ use App\Ai\Answer;
 use App\Ai\ChatCompletionsPlugin;
 use App\Ai\ChatCompletionsSettings;
 use App\Ai\Prompt;
+use App\Auth\ImportedPassword;
 use App\Captcha\CaptchaModule;
 use App\Certificates\CertificateModule;
 use App\Certificates\CertificateOrder;
@@ -104,6 +105,7 @@ use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\TldPrice;
 use App\SignIn\SignIn;
 use App\Support\ClientFields;
+use App\Support\ConnectionChanges;
 use App\Support\Currencies;
 use App\Support\Demo;
 use App\Support\DomainName;
@@ -233,6 +235,7 @@ final class PluginApi
 
     /** @var list<class-string> used by bundled plugins only; may change in any release */
     public const INTERNAL = [
+        ImportedPassword::class,
         CertificateLifecycle::class,
         ClientAreaAccess::class,
         ClientSignup::class,
@@ -255,6 +258,7 @@ final class PluginApi
         UptimeHistory::class,
         SignIn::class,
         ClientFields::class,
+        ConnectionChanges::class,
         Demo::class,
         Settings::class,
         Tax::class,

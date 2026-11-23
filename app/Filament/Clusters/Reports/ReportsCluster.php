@@ -2,6 +2,7 @@
 
 namespace App\Filament\Clusters\Reports;
 
+use App\Filament\Clusters\Concerns\SearchesCardsInEnglishToo;
 use App\Filament\Concerns\TranslatesPageLabels;
 use BackedEnum;
 use Filament\Clusters\Cluster;
@@ -17,6 +18,7 @@ use UnitEnum;
  */
 class ReportsCluster extends Cluster
 {
+    use SearchesCardsInEnglishToo;
     use TranslatesPageLabels;
 
     /** Sub-navigation and card groups, in order. */
@@ -61,7 +63,21 @@ class ReportsCluster extends Cluster
         return __('Income received and expected, and lists of domains and services to filter and export.');
     }
 
-    /** @return Collection<string, Collection<int, array{label: string, description: string, icon: mixed, url: string}>> */
+    /**
+     * What the search box matches for a card: its group, name and description in the admin's language and in English.
+     *
+     * @param  string  $component  a report page implementing ReportCard
+     */
+    public static function searchText(string $component): string
+    {
+        return static::inAdminLanguageAndEnglish(fn (): string => implode(' ', [
+            (string) $component::getNavigationGroup(),
+            $component::getNavigationLabel(),
+            $component::reportDescription(),
+        ]));
+    }
+
+    /** The cards by group, each with label, description, icon, url and search (the texts the search box matches). */
     public function cards(): Collection
     {
         return collect(static::getClusteredComponents())
@@ -73,6 +89,7 @@ class ReportsCluster extends Cluster
                 'description' => $component::reportDescription(),
                 'icon' => $component::getNavigationIcon(),
                 'url' => $component::getUrl(),
+                'search' => static::searchText($component),
             ])
             ->groupBy('group')
             ->sortBy(fn ($cards, string $group) => array_search($group, array_map(fn (string $g) => __($g), self::GROUPS), true));

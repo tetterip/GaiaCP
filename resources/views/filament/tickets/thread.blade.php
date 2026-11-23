@@ -26,6 +26,8 @@
     .gx-msg-tag { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--gray-500); }
     .gx-msg-note .gx-msg-tag { color: var(--warning-700); }
     .dark .gx-msg-note .gx-msg-tag { color: var(--warning-400); }
+    .gx-msg-unconfirmed { color: var(--danger-600); }
+    .dark .gx-msg-unconfirmed { color: var(--danger-400); }
     .gx-msg-date { margin-left: auto; color: var(--gray-500); font-variant-numeric: tabular-nums; }
     .gx-msg-body { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.55; font-size: .92rem; }
     .gx-msg-files { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .7rem; }
@@ -51,6 +53,9 @@
                         {{ __('Support') }}
                     @endif
                 </span>
+                @if ($panel === 'admin' && $message->sender_unconfirmed)
+                    <span class="gx-msg-tag gx-msg-unconfirmed" title="{{ __('The mail server did not confirm that this email comes from its sender address (DMARC, DKIM or SPF), so anyone could have written it.') }}">{{ __('Sender not confirmed') }}</span>
+                @endif
                 <time class="gx-msg-date">{{ $date($message->created_at) }}</time>
             </header>
             <div class="gx-msg-body">{{ $message->body }}</div>

@@ -218,6 +218,21 @@ class Tickets
     }
 
     /** @return list<string> the extensions a ticket may carry (Settings → Support) */
+    /** Urgent tickets a client may open each month (Settings → Support), 0 when they are off. */
+    public static function urgentLimit(): int
+    {
+        return max(0, (int) config('gaiacp.support.urgent_per_month'));
+    }
+
+    /** How many urgent tickets the client may still open this calendar month (Region's timezone). */
+    public static function urgentLeft(Client $client): int
+    {
+        $used = Ticket::query()->where('client_id', $client->id)->where('priority', TicketPriority::Urgent)
+            ->where('created_at', '>=', now()->startOfMonth())->count();
+
+        return max(0, self::urgentLimit() - $used);
+    }
+
     public static function allowedExtensions(): array
     {
         return array_values(array_filter(array_map(fn (string $ext) => strtolower(trim($ext, " .\t")), explode(',', (string) config('gaiacp.support.attachment_types')))));
@@ -243,6 +258,11 @@ class Tickets
         $via ??= $messageId !== null ? 'email' : null;
         ActivityLog::record($fromClient ? 'ticket.opened' : 'ticket.opened_by_admin', "Ticket {$ticket->number} opened: {$ticket->subject}".($via !== null ? " (by {$via})" : ''),
             $ticket->service, $ticket->client, ['ticket_id' => $ticket->id]);
+
+        if ($fromClient && $ticket->priority === TicketPriority::Urgent) {
+            // For the chat and webhook plugins that post only what can't wait; the bell rings once, for ticket.opened
+            ActivityLog::record('ticket.urgent', "Ticket {$ticket->number} is urgent", $ticket->service, $ticket->client, ['ticket_id' => $ticket->id]);
+        }
 
         if ($fromClient) {
             $this->notifyAdmins($ticket, $ticket->messages()->first(), new: true);

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\PasswordBrokerManager;
+use App\Auth\UserProvider;
 use App\Database\MariaDbConnection;
 use App\Database\MySqlConnection;
 use App\Database\SQLiteConnection;
@@ -18,12 +19,14 @@ use App\Support\Currencies;
 use App\Support\DateQueries;
 use App\Support\Demo;
 use App\Support\Locales;
+use App\Support\OrderableProducts;
 use App\Support\Region;
 use App\Support\Seo;
 use App\Support\Settings;
 use App\Support\TldLookup;
 use App\Support\Translations;
 use App\Support\Version;
+use BladeUI\Icons\Factory as IconFactory;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Auth\Notifications\ResetPassword as FilamentResetPassword;
@@ -41,6 +44,8 @@ use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Database\Events\NoPendingMigrations;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
@@ -80,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(Currencies::class); // Settings → Currencies, read once per request
         $this->app->scoped(Translations::class); // the languages found, read once per request
         $this->app->scoped(ClientFields::class); // Settings → Client fields, read once per request
+        $this->app->scoped(OrderableProducts::class); // the products a client can order, read once per request
         $this->app->scoped(TldLookup::class); // the TLD table, read once per request (Tld::match())
         $this->app->make(PluginManager::class)->registerConfig($this->app);
 
@@ -92,6 +98,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // The users provider: Laravel's eloquent one, plus passwords imported from WHMCS
+        Auth::provider('gaiacp', fn ($app, array $config) => new UserProvider($app['hash'], $config['model']));
+
+        // GaiaCP's own icons (resources/svg) as "gcp-<file>", e.g. gcp-good-news: the green tick of an empty list
+        // that is good news (no tickets waiting, no failed jobs), coloured by filament.tables.
+        $this->callAfterResolving(IconFactory::class, fn (IconFactory $icons) => $icons->add('gaiacp', ['path' => resource_path('svg'), 'prefix' => 'gcp']));
+
+        // nonce="…" for an inline <script> of a view, so the Content-Security-Policy lets it run (App\Support\ContentSecurityPolicy)
+        Blade::directive('nonce', fn () => '<?php if (filled($__cspNonce = \\App\\Support\\ContentSecurityPolicy::nonce())) echo \'nonce="\'.e($__cspNonce).\'"\'; ?>');
+
         // Save / Create stay at the foot of the screen on long forms (styled by filament/sticky-actions), on the right
         // with Save rightmost, like the Settings pages' Save bar
         BasePage::stickyFormActions();

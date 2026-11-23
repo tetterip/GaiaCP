@@ -2,6 +2,21 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.1] - 2026-11-22
+
+- The client login problems of a dry run or import show in the admin's language
+
+## [1.1.0] - 2026-11-22
+
+- Client logins: each client gets a client area login with their WHMCS email and password (WHMCS 8 users, or the
+  client's password in older WHMCS), turned on, without an email. Run with only Client logins ticked to add them to
+  clients imported before
+
+## [1.0.13] - 2026-11-21
+
+- A dry run, or an import started from Settings, no longer emails the super admins a "server added" message for each
+  WHMCS server: the dry run saves nothing, and the import reports its servers itself
+
 ## [1.0.12] - 2026-11-07
 
 - "1 problem" or "3 problems" in every language, instead of "problem(s)"

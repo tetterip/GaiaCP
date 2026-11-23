@@ -85,6 +85,52 @@ class Themes
         return is_string($color) && preg_match('/^#[0-9a-fA-F]{6}$/', $color) === 1 ? strtolower($color) : null;
     }
 
+    /** White or near-black, whichever reads better on a #rrggbb background: the text of a filled button. */
+    public static function textOn(string $background): string
+    {
+        return self::contrast('#ffffff', $background) >= self::contrast('#111111', $background) ? '#ffffff' : '#111111';
+    }
+
+    /**
+     * $color, mixed with white (or black) step by step until it reads at 4.5:1 on $background (WCAG 1.4.3): a link in
+     * the brand colour on a dark card, where a dark brand colour would vanish.
+     */
+    public static function readableOn(string $color, string $background): string
+    {
+        $towards = self::luminance($background) < 0.2 ? [255, 255, 255] : [0, 0, 0];
+        $rgb = array_map(hexdec(...), str_split(ltrim($color, '#'), 2));
+
+        for ($step = 0; $step <= 10; $step++) {
+            $mixed = array_map(fn (int $from, int $to): int => (int) round($from + ($to - $from) * $step / 10), $rgb, $towards);
+            $hex = '#'.implode('', array_map(fn (int $v): string => sprintf('%02x', $v), $mixed));
+
+            if (self::contrast($hex, $background) >= 4.5) {
+                return $hex;
+            }
+        }
+
+        return $towards === [0, 0, 0] ? '#000000' : '#ffffff';
+    }
+
+    /** WCAG contrast ratio of two #rrggbb colours. */
+    public static function contrast(string $a, string $b): float
+    {
+        [$x, $y] = [self::luminance($a), self::luminance($b)];
+
+        return (max($x, $y) + 0.05) / (min($x, $y) + 0.05);
+    }
+
+    private static function luminance(string $hex): float
+    {
+        [$r, $g, $b] = array_map(function (string $part): float {
+            $v = hexdec($part) / 255;
+
+            return $v <= 0.03928 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4;
+        }, str_split(ltrim($hex, '#'), 2));
+
+        return 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
+    }
+
     /** @return class-string the Filament font provider for a font, or the local one (Inter) without */
     public static function fontProvider(?string $font): string
     {

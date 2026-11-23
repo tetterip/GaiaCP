@@ -1,4 +1,5 @@
-{{-- The cart's items (Cart, PublicOrder): name, what goes with it, first payment and Remove. --}}
+{{-- The cart's items (Cart, PublicOrder, CartDrawer; ShowsCartLines): name, what goes with it, the billing cycle and domain
+     term to change in place, first payment and Remove. --}}
 @php
     $lines = $this->lines();
 @endphp
@@ -13,6 +14,21 @@
                 @if ($line['error'])
                     <div class="gcp-cart-line-error">{{ $line['error'] }}</div>
                 @endif
+                @foreach ($line['choices'] as $choice)
+                    <label class="gcp-cart-line-choice">
+                        <span>{{ $choice['label'] }}</span>
+                        <x-filament::input.wrapper>
+                            <x-filament::input.select
+                                wire:change="changeLine('{{ $line['key'] }}', '{{ $choice['field'] }}', $event.target.value)"
+                                wire:loading.attr="disabled"
+                            >
+                                @foreach ($choice['options'] as $value => $label)
+                                    <option value="{{ $value }}" @selected((string) $value === $choice['value'])>{{ $label }}</option>
+                                @endforeach
+                            </x-filament::input.select>
+                        </x-filament::input.wrapper>
+                    </label>
+                @endforeach
             </div>
             <div class="gcp-cart-line-end">
                 @if ($line['amount'])

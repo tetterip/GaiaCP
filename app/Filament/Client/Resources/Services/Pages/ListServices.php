@@ -52,9 +52,36 @@ class ListServices extends ListRecords
             ]);
     }
 
+    /** All and one per status, then one per kind of service (SSL, Maintenance…) while Other services holds two or more. */
     protected function statusChipDefinitions(): array
     {
-        return $this->chipsPerStatus(__('All'), [ServiceStatus::Active, ServiceStatus::Suspended, ServiceStatus::Pending, ServiceStatus::Terminated]);
+        $none = ['status' => ['value' => null], 'type' => ['value' => null]];
+        $chips = [];
+
+        foreach ($this->chipsPerStatus(__('All'), [ServiceStatus::Active, ServiceStatus::Suspended, ServiceStatus::Pending, ServiceStatus::Terminated]) as $key => $chip) {
+            $chips[$key] = ['filters' => array_replace($none, $chip['filters'])] + $chip;
+        }
+
+        if ($this->kind === 'hosting') {
+            return $chips;
+        }
+
+        $types = $this->chipsQuery()->distinct()->pluck('type')
+            ->map(fn ($type) => $type instanceof ServiceType ? $type : ServiceType::from($type))
+            ->sortBy(fn (ServiceType $type) => $type->getLabel())
+            ->values();
+
+        if ($types->count() > 1) {
+            foreach ($types as $type) {
+                $chips['type-'.$type->value] = [
+                    'label' => $type->getLabel(),
+                    'filters' => array_replace($none, ['type' => ['value' => $type->value]]),
+                    'query' => fn (Builder $query) => $query->where('type', $type),
+                ];
+            }
+        }
+
+        return $chips;
     }
 
     protected function chipsQuery(): Builder

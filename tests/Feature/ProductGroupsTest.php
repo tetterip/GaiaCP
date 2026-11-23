@@ -179,6 +179,28 @@ class ProductGroupsTest extends TestCase
         $this->assertSame(1, ClientOrder::cartCount());
     }
 
+    public function test_a_domain_alone_from_the_domain_names_group_goes_in_the_cart(): void
+    {
+        // The product cards are hidden in this group, so the order is "A domain name only" without them
+        $this->page()
+            ->fillForm(['group' => OrderCatalogue::DOMAINS])
+            ->fillForm(['domain_option' => ClientOrder::REGISTER, 'domain' => 'maria-new.gr', 'years' => 1])
+            ->call('addToCart')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(1, ClientOrder::cartCount());
+
+        // The public cart's page too
+        config(['gaiacp.client_area.public_orders' => true]);
+        auth('client')->logout();
+        Livewire::withQueryParams([])->test(PublicOrder::class, ['group' => OrderCatalogue::DOMAINS])
+            ->fillForm(['domain_option' => ClientOrder::REGISTER, 'domain' => 'maria-other.gr', 'years' => 1])
+            ->call('addToCart')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(2, ClientOrder::cartCount());
+    }
+
     public function test_the_public_home_page_and_menu_show_the_groups(): void
     {
         config(['gaiacp.public_area.home' => true, 'gaiacp.client_area.public_orders' => true]);

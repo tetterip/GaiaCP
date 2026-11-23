@@ -9,6 +9,7 @@ class WhmcsImportReport
         'server' => 'Servers',
         'product' => 'Products',
         'client' => 'Clients',
+        'login' => 'Client logins',
         'hosting' => 'Hosting and other services',
         'domain' => 'Domains',
         'invoice' => 'Unpaid invoices → payment notices',

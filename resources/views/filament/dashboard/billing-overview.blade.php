@@ -15,9 +15,13 @@
             <div class="gx-box">
                 <div class="gx-box-label">{{ __('Due in 7 days') }}</div>
                 <div class="gx-box-value">{{ $week }}</div>
-                <div class="gx-box-sub">{{ trans_choice(':count service|:count services', $weekCount) }}</div>
+                <div class="gx-box-sub">{{ trans_choice(':count notice|:count notices', $weekCount) }}</div>
             </div>
         </div>
+        <{{ $forecastUrl ? 'a' : 'div' }} @if ($forecastUrl) {{ \Filament\Support\generate_href_html($forecastUrl) }} @endif class="gx-expected">
+            <span class="gx-muted">{{ trans_choice('Expected in the next :days days, from :count renewal|Expected in the next :days days, from :count renewals', $expectedCount, ['days' => \App\Filament\Widgets\BillingOverview::FORECAST_DAYS]) }}</span>
+            <span class="gx-strong gx-tnum">{{ $expected }}</span>
+        </{{ $forecastUrl ? 'a' : 'div' }}>
         <div class="gx-actions gx-actions-split">
             <x-filament::button tag="a" :href="$noticesUrl">{{ __('Payment notices') }}</x-filament::button>
             @if ($paymentsUrl)

@@ -27,6 +27,7 @@ use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Filament\Pages\EmailTemplates;
 use App\Filament\Pages\ErrorLog;
 use App\Filament\Pages\FailedJobs;
+use App\Filament\Pages\Plugins;
 use App\Filament\Pages\SystemHealth;
 use App\Filament\Resources\CannedReplies\CannedReplyResource;
 use App\Filament\Resources\ClientFields\ClientFieldResource;
@@ -42,6 +43,7 @@ use App\Mail\RenewalReminderMail;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\User;
+use App\Plugins\PluginManager;
 use App\Support\Settings;
 use Carbon\CarbonImmutable;
 use Filament\Facades\Filament;
@@ -53,7 +55,6 @@ use Plugins\Blacklists\BlacklistsSettings;
 use Plugins\Claude\ClaudeSettings;
 use Plugins\CyberPanel\CyberPanelSettings;
 use Plugins\DeepSeek\DeepSeekSettings;
-use Plugins\Discord\DiscordSettings;
 use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\MastercardGateway\MastercardSettings;
@@ -63,9 +64,7 @@ use Plugins\PayPal\PayPalSettings;
 use Plugins\Proxmox\ProxmoxSettings;
 use Plugins\Recaptcha\RecaptchaSettings;
 use Plugins\SiteChecks\SiteChecksSettings;
-use Plugins\Slack\SlackSettings;
 use Plugins\Stripe\StripeSettings;
-use Plugins\Telegram\TelegramSettings;
 use Plugins\TicketMail\TicketMailSettings;
 use Plugins\Turnstile\TurnstileSettings;
 use Plugins\UptimeKuma\UptimeKumaSettings;
@@ -84,7 +83,7 @@ class SettingsTest extends TestCase
         SupportSettings::class, TicketDepartmentResource::class, CannedReplyResource::class, TicketMailSettings::class,
         MailSettings::class, EmailTemplates::class,
         AutomationSettings::class, BackupSettings::class, SystemHealth::class,
-        LoggingSettings::class, ModuleLogResource::class, EmailLogResource::class, ErrorLog::class, FailedJobs::class, SlackSettings::class, DiscordSettings::class, TelegramSettings::class,
+        LoggingSettings::class, ModuleLogResource::class, EmailLogResource::class, ErrorLog::class, FailedJobs::class,
         LoginSecuritySettings::class, IpBanResource::class,
         CyberPanelSettings::class,
     ];
@@ -95,6 +94,8 @@ class SettingsTest extends TestCase
     public function test_settings_shows_a_card_per_page_and_each_page_has_the_sub_navigation(): void
     {
         $this->actingAs(User::factory()->create());
+        // A plugin's pages show only while it is on (PluginsTest)
+        app(PluginManager::class)->all()->each(fn ($plugin) => app(PluginManager::class)->enable($plugin));
 
         $this->get('/admin')->assertOk()->assertSee(SettingsCluster::getUrl());
 
@@ -112,6 +113,22 @@ class SettingsTest extends TestCase
             ->assertSee(MailSettings::getUrl())
             ->assertSee(ServerResource::getUrl())
             ->assertSeeInOrder(['General', 'General', 'Languages', 'Company', 'Client fields', 'Billing', 'Payment methods', 'Currencies', 'Invoices', 'Tax', 'Client credit', 'Automation', 'Sales', 'Products &amp; domains', 'Products', 'Product options', 'Domain pricing', 'Domains', 'Registrars', 'Servers', 'Client area', 'Client area', 'Public area', 'Menus', 'Cookies', 'Support', 'Ticket departments', 'Canned replies', 'Email to ticket', 'Email &amp; notifications', 'Mail', 'Email templates', 'Integrations', 'AI assistant', 'AI assistant', 'Security', 'Admin users', 'Login security', 'System', 'Plugins', 'Updates', 'Backups', 'System health', 'Logs', 'Logging', 'Module log', 'Email log', 'Error log'], false);
+    }
+
+    public function test_settings_search_also_matches_the_english_names_in_another_language(): void
+    {
+        $this->actingAs(User::factory()->create(['locale' => 'el']));
+        app()->setLocale('el');
+
+        $search = SettingsCluster::searchText(Plugins::class);
+
+        $this->assertStringContainsString('Πρόσθετα', $search);
+        $this->assertStringContainsString('Plugins', $search);
+        $this->assertSame('el', app()->getLocale());
+
+        $this->get(SettingsCluster::getUrl())->assertOk()
+            ->assertSee('Πρόσθετα')
+            ->assertSee('System Plugins Server panels, registrars and integrations', false); // in the card's search text
     }
 
     public function test_every_stored_setting_is_on_exactly_one_page(): void
@@ -245,7 +262,9 @@ class SettingsTest extends TestCase
         $this->get(CompanySettings::getUrl())->assertOk()
             ->assertSee(CompanySettings::settingsDescription())
             ->assertSee('gx-save-bar', false)
-            ->assertSee('You have unsaved changes');
+            ->assertSee('You have unsaved changes')
+            // the Settings menu on a phone (a dropdown) opens above the Save bar, not under it
+            ->assertSee('.fi-page:has(.gx-save-bar) .fi-dropdown-panel', false);
 
         $this->assertSame(
             [SettingsCluster::getUrl() => 'Settings', 'General'],

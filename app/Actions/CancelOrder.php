@@ -18,6 +18,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Support\Currencies;
 use App\Support\Money;
+use App\Support\OrderableProducts;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -111,6 +112,7 @@ class CancelOrder
 
             $order->services()->whereNotNull('product_id')->pluck('product_id')->countBy()
                 ->each(fn (int $count, int $product) => Product::query()->whereKey($product)->whereNotNull('stock')->increment('stock', $count));
+            OrderableProducts::flush();
             $order->services()->update(['status' => ServiceStatus::Cancelled]);
             $order->update(['status' => OrderStatus::Cancelled]);
             // A notice paid in part (payments kept) is closed for what was paid, so that part keeps its invoice

@@ -24,7 +24,8 @@ class ServersTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->withAccountsCount())
+            // Active servers always come first; the chosen sort orders each group.
+            ->modifyQueryUsing(fn (Builder $query) => $query->withAccountsCount()->orderByDesc('active'))
             ->columns([
                 // The monitor's status sits under the name and the panel type under the hostname, so the list stays narrow.
                 TextColumn::make('name')

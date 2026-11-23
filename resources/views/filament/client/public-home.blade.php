@@ -26,12 +26,13 @@
                 </x-filament::input.wrapper>
                 <x-filament::button type="submit" icon="heroicon-o-magnifying-glass">{{ __('Search') }}</x-filament::button>
             </form>
+            @include('filament.client.spotlight-prices', ['prices' => \App\Support\DomainSearch::spotlightPrices(\App\Support\Currencies::forClient(filament()->auth()->user()?->client))])
         @endif
     </section>
 
     @foreach ($sections as $group)
         <section class="gcp-public-group">
-            <h2 class="gcp-public-group-title">{!! ProductIcons::svg($group['icon']) !!}<a href="{{ $group['url'] }}">{{ $group['name'] }}</a></h2>
+            <h2 class="gcp-public-group-title">{!! ProductIcons::svg($group['icon']) !!}<a {{ \Filament\Support\generate_href_html($group['url']) }}>{{ $group['name'] }}</a></h2>
             @if (filled($group['description']))
                 <p class="gcp-home-note">{{ $group['description'] }}</p>
             @endif
@@ -77,11 +78,11 @@
 
     @if ($news->isNotEmpty())
         <section class="gcp-public-group">
-            <h2 class="gcp-public-group-title">{!! ProductIcons::svg('chat') !!}<a href="{{ Announcements::getUrl() }}">{{ __('News') }}</a></h2>
+            <h2 class="gcp-public-group-title">{!! ProductIcons::svg('chat') !!}<a {{ \Filament\Support\generate_href_html(Announcements::getUrl()) }}>{{ __('News') }}</a></h2>
             <div class="gcp-public-cards">
                 @foreach ($news as $announcement)
                     <div class="gcp-card gcp-public-product">
-                        <a class="gcp-news-title" href="{{ AnnouncementPage::getUrl(['slug' => $announcement->slug]) }}">{{ $announcement->title() }}</a>
+                        <a class="gcp-news-title" {{ \Filament\Support\generate_href_html(AnnouncementPage::getUrl(['slug' => $announcement->slug])) }}>{{ $announcement->title() }}</a>
                         <p class="gcp-home-note">{{ $announcement->published_at->timezone(config('app.timezone'))->format(\App\Providers\AppServiceProvider::dateFormat()) }}</p>
                         <p class="gcp-news-excerpt">{{ $announcement->excerpt(160) }}</p>
                     </div>

@@ -30,12 +30,12 @@
                 <a href="{{ \App\Support\Version::ISSUES_URL }}" target="_blank" rel="noopener" title="{{ __('Report a problem or ask a question') }}" aria-label="{{ __('Report a problem or ask a question') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7V6a4 4 0 0 1 8 0v1M7 9h10v5a5 5 0 0 1-10 0V9ZM12 13v6M3 13h4M17 13h4M4 8l3 2M20 8l-3 2M4 19l3-2M20 19l-3-2"/></svg></a>
             </span>
         @endif
-        @if (filament()->getId() === 'client' && \App\Support\CookieConsent::enabled())<a href="#" onclick="window.gaiacpCookieSettings?.(); return false;">{{ __('Cookie settings') }}</a>@endif
+        @if (filament()->getId() === 'client' && \App\Support\CookieConsent::enabled())<a href="#" x-data x-on:click.prevent="window.gaiacpCookieSettings?.()">{{ __('Cookie settings') }}</a>@endif
     </footer>
 @else
     <footer class="gcp-footer gcp-footer-login">
         <span>{{ __('Powered by') }}</span>
         @include('filament.gaiacp-mark')
-        @if (filament()->getId() === 'client' && \App\Support\CookieConsent::enabled())<a href="#" onclick="window.gaiacpCookieSettings?.(); return false;">{{ __('Cookie settings') }}</a>@endif
+        @if (filament()->getId() === 'client' && \App\Support\CookieConsent::enabled())<a href="#" x-data x-on:click.prevent="window.gaiacpCookieSettings?.()">{{ __('Cookie settings') }}</a>@endif
     </footer>
 @endif

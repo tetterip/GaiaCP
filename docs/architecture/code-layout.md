@@ -342,7 +342,8 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   (client · domain · order · ticket · server · amount) and admin link. `gaiacp:send-chat-messages` (every minute,
   `ChatSender`) posts them, retries after 1, 5, 30 minutes, then fails with `chat.failed`, and deletes old rows
   (`debug.module_log_days`). `ChatSettingsPage` is their settings page (On switch, URL checked against the prefixes,
-  events, Send a test message). `plugins/Slack` (Block Kit mrkdwn section) and `plugins/Discord` (one embed coloured
+  events, Send a test message). The chat plugins are in the plugin catalogue (gaiacp-plugins; core tests use
+  `Tests\Support\TestChat`): `plugins/Slack` (Block Kit mrkdwn section) and `plugins/Discord` (one embed coloured
   by `ChatLine::level`, mentions off). `plugins/Telegram` is a chat plugin too: its "webhook URL" is the Bot API's
   `sendMessage` built from the encrypted `telegram.bot_token`, and the body carries `telegram.chat_id` (HTML parse
   mode). With `telegram.commands` on, saving the settings calls `setWebhook` (`POST /webhooks/telegram`, secret
@@ -402,7 +403,11 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `LookupAction` is the lookup button on the ΑΦΜ field of the client form (`clientVatNumberActions()`), which only fills fields
   (saved with Save). Request shape follows a working WooCommerce invoicing plugin
 - `app/Support/Health/`: `SystemHealth` (the checks behind `Pages/SystemHealth`, Settings → System health, and
-  `gaiacp:health`), `SchedulerMonitor` (last cron `schedule:run` and last run of each daily job, in the cache, fed by
+  `gaiacp:health`), `SpeedCaches` (its Speed fixes without a terminal: Optimize now = `optimize` plus Filament's
+  components and icons, which Filament adds to `optimize` only on the command line, built after the response; Use files =
+  CACHE_STORE / SESSION_DRIVER=file in .env; `gaiacp:optimize`, scheduled every minute on an installed production site
+  when a cache file is missing or .env is newer than the cached config, `gaiacp.speed.auto_optimize`; a failure clears
+  the partial caches and waits a day), `SchedulerMonitor` (last cron `schedule:run` and last run of each daily job, in the cache, fed by
   `app/Listeners/RecordCommandRuns`). A new daily command goes in `SchedulerMonitor::DAILY_COMMANDS` too. `Heartbeat`
   (`gaiacp:heartbeat`, every 5 minutes): GET to `automation.ping_url` while all is well, `automation.ping_fail_url`
   (`{message}` = what failed) after a failed daily job (26 h) or backup; both encrypted settings, last result in the cache. Cron
@@ -415,7 +420,12 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `WhmcsCrypt` (WHMCS's password encryption, keyed by `cc_encryption_hash`), `WhmcsApi` (WHMCS's DecryptPassword for the rest, optional), `WhmcsConnection` (the read-only `whmcs`
   connection, `WHMCS_DB_*`, in the plugin's `config.php`). Imported rows are remembered in `whmcs_links` (entity + WHMCS id → local id) so a re-run skips
   them; records already here (same email, hostname, product name, domain) are linked, never updated. `WhmcsImport::PARTS`
-  can be left out (`run(parts:)`); a left-out part only links what is already here, in memory. Run by
+  can be left out (`run(parts:)`); a left-out part only links what is already here, in memory. Part `login` gives each
+  linked client without a user a client login (WHMCS 8 `tblusers` owner via `tblusers_clients`, else
+  `tblclients.password`): random `password`, WHMCS's hash in `users.imported_password` (hidden), checked by
+  `App\Auth\ImportedPassword` (password_hash formats, `md5(salt.pw):salt`, bare MD5) in `App\Auth\UserProvider` (the
+  `gaiacp` users driver, config/auth.php), which stores the password with GaiaCP's hash on the first match; any password
+  change empties `imported_password` (`User::booted()`). Run by
   `gaiacp:import-whmcs` (`ImportWhmcs`) and `WhmcsImportPage` (Settings → System → Import from WHMCS)
 - Debugging (Settings → Logs): `app/Support/ModuleLogger.php` is a Guzzle middleware every API client adds
   (`->withMiddleware(ModuleLogger::middleware(module, action, secrets))`): while Settings → Logging → Module log is on
@@ -445,7 +455,7 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   inside its group's range and `SettingsCard::settingsDescription()` for its card. A payment plugin's settings page uses
   `PaymentMethodPage`: listed on Settings → Payment methods (`PaymentMethodsSettings`, every plugin with payment modules)
   and nested under it in the sub-navigation, with no card of its own. `PluginSwitch` puts an On switch (= the plugin's
-  Enable / Disable, super admins only) above a plugin's settings form; such a page stays open while the plugin is off. Old `/admin/products` etc. URLs
+  Enable / Disable, super admins only) above a plugin's settings form. Every page a plugin adds (`pages()`, `settingsPage()`) is closed while it is off: menu, cards, search and URL, through `LimitedToAdminArea` and `PluginManager::pageIsOn()`; switching it off there goes to Settings → Plugins. Old `/admin/products` etc. URLs
   redirect (`routes/web.php`)
 - Messages to clients: `ClientMessage` (`texts` per locale falling back to the default one, `filters`, `clients()` /
   `emailClients()`, `scopeShowing()`), `ClientMessageRecipient` (one row per client fixed by Send),
@@ -528,8 +538,13 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   keeps the installer's session in files and sends every page to `/install`; installed, `/install` is a 404. Past the
   first page the web installer needs the setup code (`Installer::setupCode()`, `storage/app/private/install-code.txt`,
   made on the first visit, deleted by `lock()`; tried on `POST /install`, 10 a minute, then session `install.unlocked`).
-  `App\Http\Middleware\SecurityHeaders` (every response): frame-ancestors / X-Frame-Options, nosniff, Referrer-Policy,
-  Permissions-Policy, and HSTS over https (`gaiacp.security.hsts`)
+  `App\Http\Middleware\SecurityHeaders` (every response): the Content-Security-Policy (`App\Support\ContentSecurityPolicy`,
+  `gaiacp.security.csp` enforce / report / off: scripts only with the page's nonce, `Vite::useCspNonce()` before the page
+  is drawn, which Filament and Livewire add themselves and views add with `@nonce`; 'strict-dynamic' lets those scripts
+  load others (captchas, cookie banner scripts); 'unsafe-eval' for Alpine; inline handlers such as onclick are blocked,
+  use x-on: or a script; `KNOWN_SCRIPTS` hashes older catalogue plugins' inline scripts; reports to `POST /csp-report`,
+  `CspReportController`, logged), frame-ancestors / X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy, and
+  HSTS over https (`gaiacp.security.hsts`). A response with its own policy (SVG logo, email preview) keeps it
 - Setup guide (Settings → General → Setup guide, `/admin/settings/setup`, super admins): `App\Support\SetupGuide` lists
   the steps after `/install` (business, region, mail, payment methods, tax, server, domain prices, product, client area
   and terms, backups, cron, two-factor), each opening an existing page. A step is done when what it sets up is there
@@ -541,6 +556,11 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   shows them beside what each points at (`target`: a selector or `nav:` / `navgroup:` + a menu item's URL), dimming the
   rest; on a phone it opens the side menu for menu targets, and an absent target puts the card in the middle. It opens by itself once per user and panel (`users.admin_tour_seen_at` /
   `client_tour_seen_at`, set when it opens; never while an admin looks as the client) and from the user menu → Tour.
+- What's new (admins only): `App\Support\WhatsNew::versions()` holds each release's sentence (the first line of its
+  release notes) and main features (an icon and a few words each, drawn as the window's picture), with a link to the
+  release notes on GitHub; `filament.whats-new` (`BODY_END` hook) shows the
+  current version's once per admin (`users.whats_new_version`, set when it opens; new users start at the version of
+  that day, and an admin's first visit gets the welcome tour instead) and from the user menu → What's new.
   Settings → Client area → Welcome tour (`client_area.welcome_tour`) turns off the client one. Users from before it
   count as having seen it (migration)
 - Document root on GaiaCP's own folder (shared hosting, subfolders): the root `.htaccess` answers 404 for anything that

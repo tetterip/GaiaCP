@@ -158,7 +158,7 @@ their own prices in a currency or follow the rate. A service and its notices sta
 
 ## Quotes
 
-Billing → **Quotes** are offers to a lead or a client. See [Orders and quotes](07-orders-and-quotes.md).
+**Quotes** (in the main menu) are offers to a lead or a client. See [Orders and quotes](07-orders-and-quotes.md).
 
 ## Reports
 

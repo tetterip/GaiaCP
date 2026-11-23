@@ -6,7 +6,7 @@ copy of the price, cycle, server and package, so changing a product never change
 
 ## Types
 
-- **Hosting**: an account on one of your servers (cPanel / WHM, Plesk, HestiaCP, DirectAdmin). Set up the servers
+- **Hosting**: an account on one of your servers (cPanel / WHM, Plesk, HestiaCP, DirectAdmin and the other panels). Set up the servers
   first: [Servers](04-servers.md).
 - **Domain**: a domain name at a registrar. Domains are priced per TLD under Domain pricing, not as products; see
   [Domains and SSL](05-domains-and-ssl.md).
@@ -27,7 +27,8 @@ copy of the price, cycle, server and package, so changing a product never change
 - **Setup**: when a new service of this product is set up: as soon as the order is placed, when the first payment is
   recorded, when you complete the order (the default), or never by itself (you use the Account or Registrar menu).
 - **Hidden**: not offered in New order, but still available on a single new service.
-- **Retired**: offered nowhere any more; services that have it keep it.
+- **Retired**: offered nowhere any more; services that have it keep it. The Products list hides retired products
+  until you change its **Retired** filter; it also filters by **Group** (Other = no group), **Type** and **Tags**.
 - **Show in client area**: off, clients can never order it and its services are hidden from them.
 - **Limits**: **Quantity available** is how many more can be ordered, for a few dedicated servers or a launch offer.
   Each order takes one and a cancelled order gives it back; at 0 clients see the product as **Out of stock** and can't

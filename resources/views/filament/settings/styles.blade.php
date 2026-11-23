@@ -15,6 +15,13 @@
         z-index: 21;
     }
 
+    /* Dropdowns outside the form (the Settings menu on a phone, the header's actions) also open above the Save bar:
+       Filament gives them the same z-index (20), and the Save bar comes later in the page. Still under the topbar
+       and the open sidebar (30). */
+    .fi-page:has(.gx-save-bar) .fi-dropdown-panel {
+        z-index: 25;
+    }
+
     .gx-save-bar {
         align-items: center;
         padding: .7rem .8rem .7rem 1.25rem;

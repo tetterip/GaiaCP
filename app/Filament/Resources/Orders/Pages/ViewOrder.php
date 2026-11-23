@@ -9,6 +9,7 @@ use App\Credit\ClientCredit;
 use App\Enums\AutoSetup;
 use App\Enums\DomainRegistrationType;
 use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
 use App\Filament\Forms\PackageSelect;
@@ -52,6 +53,7 @@ class ViewOrder extends ViewRecord
     {
         return [
             $this->recordPayment(),
+            $this->activate(),
             $this->tax(),
             $this->complete(),
             $this->cancel(),
@@ -113,7 +115,7 @@ class ViewOrder extends ViewRecord
             ->label('Record payment')
             ->icon(Heroicon::OutlinedBanknotes)
             ->color('success')
-            ->visible(fn (Order $record) => $record->status !== OrderStatus::Cancelled && app(RecordOrderPayment::class)->unpaid($record)->isNotEmpty())
+            ->visible(fn (Order $record) => self::owes($record) && app(RecordOrderPayment::class)->total($record) > 0)
             ->modalDescription(function (Order $record) {
                 $unpaid = app(RecordOrderPayment::class)->unpaid($record);
 
@@ -154,6 +156,62 @@ class ViewOrder extends ViewRecord
                         ->send();
                 }
             });
+    }
+
+    /**
+     * An order that comes to 0 (a 100% coupon, free products) needs no payment form: one click moves each due date
+     * forward one cycle (a 0 payment per item, as free domain renewals do, so the free first period counts as used)
+     * and sets up what is still pending, like Complete order.
+     */
+    private function activate(): Action
+    {
+        return Action::make('activateOrder')
+            ->label('Activate')
+            ->icon(Heroicon::OutlinedCheckCircle)
+            ->color('success')
+            ->visible(fn (Order $record) => self::owes($record) && app(RecordOrderPayment::class)->total($record) === 0)
+            ->requiresConfirmation()
+            ->modalHeading(__('Activate'))
+            ->modalDescription(fn (Order $record) => __('The order comes to :total, so there is nothing to pay. Its items are set up and each due date moves forward one cycle.', [
+                'total' => Money::format(0, $record->currency()),
+            ]).(self::pending($record)->contains(fn (Service $service) => $service->type === ServiceType::Domain && self::choosable($service))
+                ? ' '.__('Registrations and transfers charge your registrar account.')
+                : ''))
+            ->modalSubmitActionLabel(__('Activate'))
+            ->action(function (Order $record) {
+                $recorder = app(RecordOrderPayment::class);
+                $recorder->handle($record, CarbonImmutable::today(), PaymentMethod::Other->value);
+
+                $failures = $recorder->setupErrors;
+
+                if ($record->refresh()->status === OrderStatus::Pending) {
+                    try {
+                        $labels = Service::query()->whereKey(array_keys($pending = app(CompleteOrder::class)->handle($record)))->pluck('label', 'id');
+                        $failures = collect($pending)->mapWithKeys(fn (string $error, int $id) => [$labels[$id] => $error])->all();
+                    } catch (ProvisioningException $e) {
+                        $failures = [__('Order') => $e->getMessage()];
+                    }
+                }
+
+                if ($failures === []) {
+                    Notification::make()->title(__('Order activated'))->success()->send();
+                } else {
+                    Notification::make()
+                        ->title(__('Some items are still pending'))
+                        ->body(collect($failures)->map(fn (string $error, string $label) => "{$label}: ".Str::finish(rtrim($error), '.'))->join("\n").' '.__('Fix them and run "Complete order" again; finished items are skipped.'))
+                        ->danger()
+                        ->persistent()
+                        ->send();
+                }
+
+                $this->refreshFormData(['status']);
+            });
+    }
+
+    /** The order is not cancelled and has items with no payment yet. */
+    private static function owes(Order $order): bool
+    {
+        return $order->status !== OrderStatus::Cancelled && app(RecordOrderPayment::class)->unpaid($order)->isNotEmpty();
     }
 
     /**

@@ -176,20 +176,20 @@ class ClientAreaSettings extends SettingsFormPage
                             ->helperText(__('Off, the domain gets no more payment notices and ends at its due date, as when you turn it off on the domain.')),
                         Toggle::make('client_area.domain_contacts')
                             ->label('Change contact details')
-                            ->helperText(__('The domain\'s owner, administrative, technical and billing contacts at the registrar, read and saved there at once (easy.gr, Enom).')),
+                            ->helperText(__('The domain\'s owner, administrative, technical and billing contacts at the registrar, read and saved there at once. Only at registrars that support it.')),
                         Toggle::make('client_area.domain_child_nameservers')
                             ->label('Private nameservers')
-                            ->helperText(__('Register, change or delete nameservers named after the domain (ns1.their-domain.gr) with their IP address (easy.gr, Enom).')),
+                            ->helperText(__('Register, change or delete nameservers named after the domain (ns1.their-domain.gr) with their IP address. Only at registrars that support it.')),
                         Toggle::make('client_area.domain_lock')
                             ->label('Registrar lock')
-                            ->helperText(__('Lock or unlock the domain against transfers to another provider (Enom; easy.gr has no lock to change).')),
+                            ->helperText(__('Lock or unlock the domain against transfers to another provider. Only at registrars that support it.')),
                     ]),
                 Section::make(__('Hosting'))
                     ->description(__('Only on the client\'s active hosting accounts on a server. Every change and login link is in the activity log.'))
                     ->schema([
                         Toggle::make('client_area.hosting_login')
-                            ->label('Log in to cPanel / Plesk')
-                            ->helperText(__('A button that opens the control panel already signed in, without the panel password. On Plesk, only for subscriptions a Plesk customer owns. HestiaCP and DirectAdmin have no such link: there it opens the login page.')),
+                            ->label('Log in to the control panel')
+                            ->helperText(__('A button that opens the control panel already signed in, without the panel password. A panel with no such link opens its login page.')),
                         Toggle::make('client_area.hosting_usage')
                             ->label('Show usage')
                             ->helperText(__('Disk space and this month\'s bandwidth against the package\'s limits, read from the server. Read only.')),

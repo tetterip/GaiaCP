@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Actions\CompleteOrder;
+use App\Actions\ModuleQueue;
 use App\Enums\DomainRegistrationType;
 use App\Enums\OrderStatus;
 use App\Enums\QuoteStatus;
@@ -34,12 +36,21 @@ use App\Models\Service;
 use App\Models\Ticket;
 use App\Models\UpgradeRequest;
 use App\Monitoring\MonitorStatus;
+use App\Provisioning\ProvisioningException;
 use App\Support\Currencies;
 use App\Support\Health\SchedulerMonitor;
 use App\Support\Money;
 use App\Support\StoredTime;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Widgets\Widget;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * What waits on an admin today, each item only for those who may open it: cron stopped (System health), servers down,
@@ -47,11 +58,18 @@ use Illuminate\Support\Collection;
  * leads to contact today, overdue payment notices and those due today, domains to check at the registrar (auto renew on
  * and the registrar's expiry within DOMAIN_DAYS, or well before the paid-through date), sent quotes ending within
  * QUOTE_DAYS, and what failed in the last FAILURE_DAYS days (panel / registrar calls, backups, emails, updates, online
- * payments that matched no notice). With nothing to show the card is left off the dashboard (isEmpty()).
+ * payments that matched no notice; one row per kind with their count). The urgent rows come first; the first SHOWN show,
+ * the rest unfold. With nothing to show the card is left off the dashboard (isEmpty()). It starts in the row across the
+ * top of the dashboard (DashboardLayout::TOP), where its rows sit in two columns on a wide screen.
  */
-class NeedsAttention extends Widget
+class NeedsAttention extends Widget implements HasActions, HasSchemas
 {
     use FitsDashboard;
+    use InteractsWithActions;
+    use InteractsWithSchemas;
+
+    /** The rows shown at first; the rest wait under "Show … more". */
+    public const SHOWN = 6;
 
     public const FAILURE_DAYS = 3;
 
@@ -73,7 +91,9 @@ class NeedsAttention extends Widget
     protected string $view = 'filament.dashboard.needs-attention';
 
     /**
-     * @return list<array{icon: string, tone: string, title: string, sub: ?string, url: ?string}>
+     * A row's `action` is the one thing done right on it: a link (`url`) or one of the card's own actions (`call`).
+     *
+     * @return list<array{icon: string, tone: string, title: string, sub: ?string, url: ?string, action?: array{label: string, url?: string, call?: string}|null}>
      */
     public static function items(): array
     {
@@ -109,6 +129,7 @@ class NeedsAttention extends Widget
                 'title' => trans_choice(':count order waiting for Complete order|:count orders waiting for Complete order', (clone $pending)->count()),
                 'sub' => __('Oldest :time', ['time' => (clone $pending)->oldest()->value('created_at')?->diffForHumans()]),
                 'url' => OrderResource::getUrl(parameters: ['filters' => ['status' => ['value' => OrderStatus::Pending->value]]]),
+                'action' => ['label' => (clone $pending)->count() === 1 ? __('Complete it') : __('Complete them'), 'call' => 'completeOrders'],
             ];
         }
 
@@ -150,7 +171,9 @@ class NeedsAttention extends Widget
                 'tone' => 'warn',
                 'title' => trans_choice(':count ticket waiting for a reply over :hours hours|:count tickets waiting for a reply over :hours hours', (clone $tickets)->count(), ['hours' => self::TICKET_HOURS]),
                 'sub' => __('Oldest :time', ['time' => StoredTime::parse((clone $tickets)->min('last_reply_at'))?->diffForHumans()]),
-                'url' => TicketResource::getUrl(parameters: ['activeTab' => 'waiting']),
+                'url' => TicketResource::getUrl(parameters: ['tab' => 'waiting']),
+                // Straight to the one that waited longest, where the reply box is
+                'action' => ['label' => __('Reply'), 'url' => TicketResource::getUrl('view', ['record' => (clone $tickets)->orderBy('last_reply_at')->value('id')])],
             ];
         }
 
@@ -162,7 +185,7 @@ class NeedsAttention extends Widget
                 'tone' => 'info',
                 'title' => trans_choice(':count lead to contact today|:count leads to contact today', $count),
                 'sub' => $first->map(fn (Lead $lead) => $lead->displayName())->join(', ').($count > 3 ? '…' : ''),
-                'url' => $count === 1 ? LeadResource::getUrl('edit', ['record' => $first->first()]) : LeadResource::getUrl(parameters: ['activeTab' => 'to_contact']),
+                'url' => $count === 1 ? LeadResource::getUrl('edit', ['record' => $first->first()]) : LeadResource::getUrl(parameters: ['tab' => 'to_contact']),
             ];
         }
 
@@ -184,7 +207,7 @@ class NeedsAttention extends Widget
                 'sub' => Money::format(Currencies::sumToBase($dueToday, 'total_cents'), Currencies::base()),
                 'url' => ($first = (clone $dueToday)->value('id')) && (clone $dueToday)->count() === 1
                     ? InvoiceResource::getUrl('view', ['record' => $first])
-                    : InvoiceResource::getUrl(parameters: ['filters' => ['status' => ['value' => 'unpaid']]]),
+                    : InvoiceResource::getUrl(parameters: ['filters' => ['due_today' => ['isActive' => true]]]),
             ];
         }
 
@@ -196,7 +219,7 @@ class NeedsAttention extends Widget
                 'sub' => $domains->take(3)->pluck('domain')->join(', ').($domains->count() > 3 ? '…' : ''),
                 'url' => $domains->count() === 1
                     ? ServiceResource::getUrl('edit', ['record' => $domains->first()])
-                    : ServiceResource::getUrl(parameters: ['activeTab' => 'domains']),
+                    : ServiceResource::getUrl(parameters: ['tab' => 'domains', 'filters' => ['registrar_check' => ['isActive' => true]]]),
             ];
         }
 
@@ -206,7 +229,7 @@ class NeedsAttention extends Widget
                 'tone' => 'info',
                 'title' => trans_choice(':count quote ending within :days days|:count quotes ending within :days days', (clone $quotes)->count(), ['days' => self::QUOTE_DAYS]),
                 'sub' => (clone $quotes)->orderBy('valid_until')->limit(3)->pluck('number')->join(', '),
-                'url' => QuoteResource::getUrl(parameters: ['activeTab' => 'open']),
+                'url' => QuoteResource::getUrl(parameters: ['tab' => 'open']),
             ];
         }
 
@@ -217,21 +240,45 @@ class NeedsAttention extends Widget
                 'title' => trans_choice(':count failed action in the module queue|:count failed actions in the module queue', (clone $queue)->count()),
                 'sub' => __('Last failed :time', ['time' => StoredTime::parse((clone $queue)->max('last_attempt_at'))?->diffForHumans()]),
                 'url' => ModuleQueueItemResource::getUrl(),
+                'action' => self::retryable()->exists() ? ['label' => __('Retry'), 'call' => 'retryQueue'] : null,
             ];
         }
 
         if (ActivityLogResource::canAccess()) {
-            $failures = ActivityLog::query()->with('service')
+            // One row per kind of failure, however many there were (a server that is down fails every call to it).
+            $failures = ActivityLog::query()
                 ->whereIn('event', self::FAILURES)
                 ->whereNull('properties->retry') // a module queue retry that failed again shows once, in the item above
-                ->where('created_at', '>=', now()->subDays(self::FAILURE_DAYS))
-                ->latest('id')->limit(4)->get();
+                ->where('created_at', '>=', now()->subDays(self::FAILURE_DAYS));
 
-            foreach ($failures as $log) {
+            $counts = (clone $failures)->toBase()->selectRaw('event, count(*) as failures, max(id) as latest')->groupBy('event')->orderByDesc('latest')->get();
+            $latest = ActivityLog::query()->with('service')->findMany($counts->pluck('latest'))->keyBy('id');
+
+            foreach ($counts as $row) {
+                $log = $latest[$row->latest] ?? null;
+                if (! $log) {
+                    continue;
+                }
+
+                $count = (int) $row->failures;
+                $list = ActivityLogResource::getUrl(parameters: ['filters' => ['event' => ['value' => $log->event]]]);
+                $domains = $log->event === 'provisioning.failed' && $count > 1
+                    ? Service::query()->whereIn('id', (clone $failures)->where('event', $log->event)->whereNotNull('service_id')->latest('id')->limit(20)->pluck('service_id'))
+                        ->whereNotNull('domain')->limit(3)->pluck('domain')
+                    : collect();
+
                 $items[] = [
                     'icon' => $log->event === 'email.failed' ? 'heroicon-o-envelope' : 'heroicon-o-exclamation-triangle',
                     'tone' => 'bad',
-                    'title' => match ($log->event) {
+                    'title' => $count > 1
+                        ? match ($log->event) {
+                            'backup.failed' => __(':count backups failed', ['count' => $count]),
+                            'email.failed' => __(':count emails not sent', ['count' => $count]),
+                            'update.failed' => __(':count updates failed', ['count' => $count]),
+                            'payment.online_unmatched' => __(':count online payments to match by hand', ['count' => $count]),
+                            default => __(':count panel or registrar calls failed', ['count' => $count]),
+                        }
+                    : match ($log->event) {
                         'backup.failed' => __('Backup failed'),
                         'email.failed' => __('Email not sent'),
                         'update.failed' => __('Update failed'),
@@ -240,15 +287,95 @@ class NeedsAttention extends Widget
                             ? __('Panel or registrar call failed: :name', ['name' => $log->service->domain])
                             : __('Panel or registrar call failed'),
                     },
-                    'sub' => $log->created_at->diffForHumans(),
-                    'url' => $log->service_id && ServiceResource::canAccess()
+                    'sub' => $count > 1
+                        ? ($domains->isNotEmpty() ? $domains->join(', ').($count > $domains->count() ? '…' : '').' · ' : '').__('Last :time', ['time' => $log->created_at->diffForHumans()])
+                        : $log->created_at->diffForHumans(),
+                    'url' => $count === 1 && $log->service_id && ServiceResource::canAccess()
                         ? ServiceResource::getUrl('edit', ['record' => $log->service_id])
-                        : ActivityLogResource::getUrl(parameters: ['filters' => ['event' => ['value' => $log->event]]]),
+                        : $list,
                 ];
             }
         }
 
+        // The urgent rows (red) first, then what waits on an answer, then the rest; each keeps its place among its own.
+        $order = ['bad' => 0, 'warn' => 1];
+        $items = collect($items)->sortBy(fn (array $item) => $order[$item['tone']] ?? 2)->values()->all();
+
         return $items;
+    }
+
+    /**
+     * Complete order on every pending order, right from its row: each item on the registrar and server it would get by
+     * itself, as the Orders list's bulk action does (an order that needs a choice is completed from its own page).
+     */
+    public function completeOrdersAction(): Action
+    {
+        return Action::make('completeOrders')
+            ->label(__('Complete order'))
+            ->requiresConfirmation()
+            ->modalHeading(fn () => trans_choice('Complete :count order|Complete :count orders', Order::query()->where('status', OrderStatus::Pending)->count()))
+            ->modalDescription(__('Each item is set up as Complete order would, on the registrar and server it would get by itself; registrations and transfers charge your registrar account. An item that fails stays pending and is named below.'))
+            ->modalSubmitActionLabel(__('Complete them'))
+            ->visible(fn () => OrderResource::canAccess())
+            ->action(function () {
+                $done = 0;
+                $problems = [];
+
+                foreach (Order::query()->where('status', OrderStatus::Pending)->oldest()->get() as $order) {
+                    try {
+                        $failures = app(CompleteOrder::class)->handle($order);
+                    } catch (ProvisioningException $e) {
+                        $failures = [0 => $e->getMessage()];
+                    }
+
+                    if ($failures === []) {
+                        $done++;
+
+                        continue;
+                    }
+
+                    $labels = Service::query()->whereKey(array_keys($failures))->pluck('label', 'id');
+                    $problems[] = __('Order #:id', ['id' => $order->id]).': '.collect($failures)
+                        ->map(fn (string $error, int $id) => (isset($labels[$id]) ? "{$labels[$id]}: " : '').Str::finish(rtrim($error), '.'))->join(' ');
+                }
+
+                $notification = Notification::make()
+                    ->title(trans_choice(':count order completed|:count orders completed', $done))
+                    ->body($problems === [] ? null : implode("\n", $problems))
+                    ->status($problems === [] ? 'success' : 'warning');
+
+                // What failed stays on screen until read
+                ($problems === [] ? $notification : $notification->persistent())->send();
+            });
+    }
+
+    /** Retry on the module queue's row: every open item tried again now, except terminations (those ask for a password, in the queue). */
+    public function retryQueueAction(): Action
+    {
+        return Action::make('retryQueue')
+            ->label(__('Retry'))
+            ->requiresConfirmation()
+            ->modalHeading(__('Retry'))
+            ->modalDescription(__('Every open item is tried again now, domain renewals too. Terminations wait in the module queue.'))
+            ->modalSubmitActionLabel(__('Retry'))
+            ->visible(fn () => ModuleQueueItemResource::canAccess())
+            ->action(function () {
+                $queue = app(ModuleQueue::class);
+                $items = self::retryable()->with('service')->orderBy('id')->get();
+                $fixed = $items->filter(fn (ModuleQueueItem $item) => $queue->retry($item))->count();
+                $failed = $items->count() - $fixed;
+
+                Notification::make()
+                    ->title(__(':fixed done, :failed still failing', ['fixed' => $fixed, 'failed' => $failed]))
+                    ->status($failed > 0 ? 'warning' : 'success')
+                    ->send();
+            });
+    }
+
+    /** @return Builder<ModuleQueueItem> the open queue items Retry tries from the dashboard */
+    private static function retryable(): Builder
+    {
+        return ModuleQueueItem::query()->open()->where('action', '!=', ModuleQueueItem::TERMINATE);
     }
 
     /** Nothing waits: the dashboard leaves the card off (it stays under Show / hide cards). */
@@ -265,8 +392,23 @@ class NeedsAttention extends Widget
      */
     public static function domainsToCheck(): Collection
     {
-        return Service::query()
+        return self::domainsToCheckQuery()
             ->select('services.*')
+            ->join('domains', 'domains.service_id', '=', 'services.id')
+            ->orderBy('domains.expires_at')
+            ->get();
+    }
+
+    /**
+     * The domains of domainsToCheck() as a query on services, without a join, so the Services list can filter on it
+     * (ServicesTable's registrar_check filter, where the dashboard row leads).
+     *
+     * @return Builder<Service>
+     */
+    public static function domainsToCheckQuery(): Builder
+    {
+        return Service::query()->whereIn('services.id', Service::query()
+            ->select('services.id')
             ->join('domains', 'domains.service_id', '=', 'services.id')
             ->where('services.type', ServiceType::Domain)
             ->where('services.status', ServiceStatus::Active)
@@ -275,9 +417,7 @@ class NeedsAttention extends Widget
             ->whereNotNull('domains.expires_at')
             ->where(fn ($query) => $query
                 ->whereOnDate('domains.expires_at', '<=', today()->addDays(self::DOMAIN_DAYS))
-                ->orWhereRaw('domains.expires_at < '.self::minusDays('services.next_due_date', self::DOMAIN_SLACK_DAYS)))
-            ->orderBy('domains.expires_at')
-            ->get();
+                ->orWhereRaw('domains.expires_at < '.self::minusDays('services.next_due_date', self::DOMAIN_SLACK_DAYS))));
     }
 
     /** A date column less some days, in the connection's SQL (SQLite in development and tests, MySQL / MariaDB in production). */

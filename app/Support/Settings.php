@@ -50,6 +50,7 @@ class Settings
         'reminders.overdue_days',
         'reminders.bcc',
         'automation.suspend_after_days',
+        'automation.hosting_quarantine_days',
         'automation.cancel_unpaid_orders_days',
         'automation.compare_servers',
         'automation.price_change_notice_days',
@@ -76,6 +77,7 @@ class Settings
         'domains.ssl_product',
         'domains.ssl_discount',
         'domains.ssl_own_hosting',
+        'domains.spotlight',
         'client_area.domain_nameservers',
         'client_area.domain_epp',
         'client_area.domain_auto_renew',
@@ -175,6 +177,7 @@ class Settings
         'debug.notification_days',
         'support.client_tickets',
         'support.client_priority',
+        'support.urgent_per_month',
         'support.admin_emails',
         'support.auto_close_days',
         'support.attachments_max_kb',
@@ -189,6 +192,7 @@ class Settings
         'ai.features.improve',
         'ai.features.translate',
         'ai.features.domains',
+        'ai.features.domain_ideas',
         'ai.features.products',
         'ai.features.outage',
         'ai.features.questions',
@@ -200,6 +204,8 @@ class Settings
         'ai.features.clients',
         'ai.features.language_files',
         'ai.monthly_tokens',
+        'ai.domain_ideas_visitors',
+        'ai.domains_per_day',
     ];
 
     /** Secrets: stored encrypted with the app key, never sent back to the form (plus the plugins', see encrypted()). */

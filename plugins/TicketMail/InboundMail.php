@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
- * One email from the support mailbox. An answer to a ticket email (the ticket's id in In-Reply-To / References, or
- * [T-000123] in the subject) joins that ticket when it comes from the ticket's client or sender; anything else opens a
+ * One email from the support mailbox. An answer to a ticket email joins that ticket when it comes from the ticket's
+ * client or sender and carries the ticket's secret in In-Reply-To / References (or, from a sender the mail server
+ * confirmed, the ticket's id there or [T-000123] in the subject); anything else opens a
  * ticket, from the client with that address or (Settings → Email to ticket) from an unknown sender. A message the
  * receiving server marks as failing DMARC or SPF (Authentication-Results) counts as from an unknown sender. Automatic replies,
  * our own emails and a message already added are skipped, so reading a message twice changes nothing.
@@ -59,9 +60,14 @@ class InboundMail
             || ($sender !== self::VERIFIED && config('gaiacp.ticket_mail.sender_check') === 'verified');
         $client = $forged ? null : self::clientFor($email);
 
-        $ticket = $forged ? null : $this->ticketFor($message);
-        if ($ticket !== null && ($ticket->email === $email || ($ticket->client_id !== null && $ticket->client_id === $client?->id))) {
-            $this->tickets->replyFromEmail($ticket, $this->body($message), $this->files($message), $messageId ?: null);
+        // An answer joins its ticket by the ticket's secret in the thread headers (Ticket::emailThreadId()); a bare
+        // number (the subject's [T-000123], or the headers of an email sent before the secret) only when the mail
+        // server confirmed the sender, since anyone can write a client's address and guess a number
+        [$ticket, $signed] = $forged ? [null, false] : $this->ticketFor($message);
+        if ($ticket !== null && ($signed || $sender === self::VERIFIED)
+            && ($ticket->email === $email || ($ticket->client_id !== null && $ticket->client_id === $client?->id))) {
+            $added = $this->tickets->replyFromEmail($ticket, $this->body($message), $this->files($message), $messageId ?: null);
+            $this->markUnconfirmed($added, $sender);
 
             return [self::REPLIED, $ticket->number];
         }
@@ -78,8 +84,17 @@ class InboundMail
         $subject = trim(preg_replace('/\s+/u', ' ', (string) $message->subject()) ?? '');
         $ticket = $this->tickets->openFromEmail($client, $email, $from?->name(), Str::limit($subject !== '' ? $subject : '(no subject)', 250, ''),
             $this->body($message), $this->department($message), $this->files($message), $messageId ?: null);
+        $this->markUnconfirmed($ticket->messages()->first(), $sender);
 
         return [self::OPENED, $ticket->number];
+    }
+
+    /** A message from a sender the mail server didn't confirm says so to the admins (only on "forged", as "verified" never lets one count as the client's). */
+    private function markUnconfirmed(?TicketMessage $message, string $sender): void
+    {
+        if ($message !== null && $sender !== self::VERIFIED) {
+            $message->update(['sender_unconfirmed' => true]);
+        }
     }
 
     /** The client with this address, or with a client-area login that has it. */
@@ -89,16 +104,17 @@ class InboundMail
             ?? User::query()->where('role', UserRole::Client)->whereRaw('lower(email) = ?', [$email])->whereNotNull('client_id')->first()?->client;
     }
 
-    private function ticketFor(MessageInterface $message): ?Ticket
+    /** @return array{0: ?Ticket, 1: bool} the ticket it answers, and whether by the ticket's secret */
+    private function ticketFor(MessageInterface $message): array
     {
         $references = preg_split('/\s+/', trim((string) $message->header('References')?->getRawValue())) ?: [];
-        $id = Ticket::idFromEmailReferences([...$message->inReplyTo(), ...array_reverse($references)]);
+        $found = Ticket::fromEmailReferences([...$message->inReplyTo(), ...array_reverse($references)]);
 
-        if ($id === null && preg_match('/\[#?T-(\d{1,9})\]/i', (string) $message->subject(), $match)) {
-            $id = (int) $match[1];
+        if ($found === null && preg_match('/\[#?T-(\d{1,9})\]/i', (string) $message->subject(), $match)) {
+            $found = ['id' => (int) $match[1], 'signed' => false];
         }
 
-        return $id !== null ? Ticket::query()->find($id) : null;
+        return $found !== null ? [Ticket::query()->find($found['id']), $found['signed']] : [null, false];
     }
 
     /** Why this is an automatic email nobody should answer (out of office, bounce, list, our own), or null. */
@@ -112,29 +128,54 @@ class InboundMail
      * What the mail servers that received it say of the From address, in their Authentication-Results headers:
      * - forged: dmarc=fail, or spf=fail / softfail without a passing DKIM signature of the From domain, in any header
      *   (a sender can add a header of their own, but writing "fail" there only hurts them);
-     * - verified: the topmost header (the last server's, which is ours) says dmarc=pass, a DKIM signature of the From
-     *   domain passed, or SPF passed for it. Only the topmost counts, as a sender can write a "pass" header below it;
+     * - verified: the header of our own mail server says dmarc=pass, a DKIM signature of the From domain passed, or SPF
+     *   passed for it. With Settings → Email to ticket → Our mail server's name set, that is the topmost header whose
+     *   name (authserv-id, before the first ";") is one of those names, so a "pass" written by the sender under any other
+     *   name counts for nothing; without it, the topmost header, as a sender can write a "pass" header below it;
      * - unconfirmed: neither.
      * A DKIM signature or SPF pass of another domain says nothing of the From address (anyone can sign their own).
      */
     public static function senderCheck(MessageInterface $message, string $email): string
     {
         $domain = strtolower((string) substr(strrchr($email, '@') ?: '', 1));
+        $trusted = self::trustedServers();
         $verdict = self::UNCONFIRMED;
+        $decided = false;
 
         for ($i = 0; $i < 10 && ($header = $message->header('Authentication-Results', $i)) !== null; $i++) {
-            $results = self::results((string) $header->getRawValue(), $domain);
+            $value = (string) $header->getRawValue();
+            $results = self::results($value, $domain);
 
             if ($results['dmarc'] === 'fail' || (in_array($results['spf'], ['fail', 'softfail'], true) && ! $results['dkim'])) {
                 return self::FORGED;
             }
 
-            if ($i === 0 && ($results['dmarc'] === 'pass' || $results['dkim'] || ($results['spf'] === 'pass' && $results['spf_aligned']))) {
-                $verdict = self::VERIFIED;
+            // Ours: the topmost one, or the topmost one with our server's name
+            if (! $decided && ($trusted === [] || in_array(self::serverName($value), $trusted, true))) {
+                $decided = true;
+
+                if ($results['dmarc'] === 'pass' || $results['dkim'] || ($results['spf'] === 'pass' && $results['spf_aligned'])) {
+                    $verdict = self::VERIFIED;
+                }
             }
         }
 
         return $verdict;
+    }
+
+    /** @return list<string> Settings → Email to ticket → Our mail server's name, lower case; empty = not set */
+    public static function trustedServers(): array
+    {
+        return array_values(array_filter(array_map('strtolower',
+            preg_split('/[\s,;]+/', (string) config('gaiacp.ticket_mail.trusted_servers'), -1, PREG_SPLIT_NO_EMPTY) ?: [])));
+    }
+
+    /** The authserv-id: the name the server that wrote the header gave itself, before the first ";" (an optional version after it dropped). */
+    public static function serverName(string $value): string
+    {
+        $id = trim(explode(';', (string) preg_replace('/\([^)]*\)/', ' ', $value), 2)[0]);
+
+        return strtolower(preg_split('/\s+/', $id, 2)[0] ?? '');
     }
 
     /** @return array{dmarc: ?string, spf: ?string, spf_aligned: bool, dkim: bool} dkim: a signature of $domain passed */

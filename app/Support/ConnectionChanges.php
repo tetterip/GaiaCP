@@ -14,12 +14,35 @@ use Throwable;
 /**
  * A server's or registrar's login (address, user, API token or password) added or changed by an admin: logged, and
  * emailed to the super admins with Receive system emails on, so a change made from a stolen admin session does not go
- * unnoticed. Changes made without a signed-in admin (installer, WHMCS import, seeders, tests) are left alone.
+ * unnoticed. Changes made without a signed-in admin (installer, seeders, tests) or inside quietly() (the WHMCS import,
+ * whose dry run saves nothing) are left alone.
  */
 final class ConnectionChanges
 {
     /** Server fields that say where and as whom GaiaCP logs in. */
     public const SERVER_FIELDS = ['hostname', 'port', 'username', 'api_token', 'type', 'verify_tls'];
+
+    private static int $quiet = 0;
+
+    /**
+     * Run $callback without logging or emailing the logins it adds or changes: for an import the admin started, which
+     * reports what it did itself (and may be a dry run that is rolled back).
+     *
+     * @template T
+     *
+     * @param  callable(): T  $callback
+     * @return T
+     */
+    public static function quietly(callable $callback): mixed
+    {
+        self::$quiet++;
+
+        try {
+            return $callback();
+        } finally {
+            self::$quiet--;
+        }
+    }
 
     public static function serverSaved(Server $server): void
     {
@@ -39,7 +62,7 @@ final class ConnectionChanges
     {
         $by = auth()->user();
 
-        if (! $by instanceof User || $by->role !== UserRole::Admin) {
+        if (self::$quiet > 0 || ! $by instanceof User || $by->role !== UserRole::Admin) {
             return;
         }
 

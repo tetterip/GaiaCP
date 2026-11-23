@@ -5,6 +5,7 @@ namespace Tests\Feature\Registrar;
 use App\Filament\Clusters\Settings\SettingsCluster;
 use App\Filament\Resources\Registrars\Pages\CreateRegistrar;
 use App\Filament\Resources\Registrars\Pages\EditRegistrar;
+use App\Filament\Resources\Registrars\Pages\ListRegistrars;
 use App\Filament\Resources\Registrars\RegistrarResource;
 use App\Filament\Resources\Tlds\TldResource;
 use App\Models\Registrar;
@@ -35,6 +36,19 @@ class RegistrarSettingsTest extends TestCase
         $this->get(SettingsCluster::getUrl())->assertOk()->assertSee(RegistrarResource::getUrl())->assertSee(TldResource::getUrl());
         $this->get(RegistrarResource::getUrl())->assertOk()->assertSee('Test registrar')->assertSee('Email Notifications');
         $this->get(RegistrarResource::getUrl('create'))->assertOk()->assertDontSee('TLDs and prices');
+    }
+
+    public function test_the_list_shows_active_registrars_first_in_any_sort(): void
+    {
+        Registrar::query()->delete();
+        $old = Registrar::factory()->create(['name' => 'A old', 'active' => false]);
+        $live = Registrar::factory()->create(['name' => 'B live', 'active' => true]);
+        $other = Registrar::factory()->create(['name' => 'C other', 'active' => true]);
+
+        Livewire::test(ListRegistrars::class)
+            ->assertCanSeeTableRecords([$live, $other, $old], inOrder: true)
+            ->sortTable('name', 'desc')
+            ->assertCanSeeTableRecords([$other, $live, $old], inOrder: true);
     }
 
     public function test_create_a_registrar_account(): void

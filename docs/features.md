@@ -154,11 +154,11 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   does nothing twice. 120 calls a minute per key (`GAIACP_API_PER_MINUTE`). Settings → API keys → Documentation
   lists every call, with `openapi.json` for Postman or a code generator; how to use it, with examples:
   [using-the-api.md](using-the-api.md)
-- Slack and Discord (plugins, off until switched on under Settings → Slack / Discord, super admins): the events you
+- Slack and Discord (plugins from the plugin catalogue, off until switched on under Settings → Slack / Discord, super admins): the events you
   pick (by default new orders, payments, tickets, client replies, servers down and up, failed panel calls) posted to a
   channel through its webhook (stored encrypted), one short message each with a link to its page in the admin area,
   in the app's language. Sent within a minute, retried after 1, 5 and 30 minutes; Send a test message checks it
-- Telegram bot (plugin, off until switched on under Settings → Telegram, super admins): the same events as Slack /
+- Telegram bot (plugin from the plugin catalogue, off until switched on under Settings → Telegram, super admins): the same events as Slack /
   Discord sent to one Telegram chat (a person or a group of admins), and, when Answer commands is on, read-only
   answers in that chat only to /owed (who owes, from overdue payment notices), /today (payments, orders and tickets),
   /tickets (waiting for an answer) and /servers (status and 24-hour uptime). Find chat ID reads it from the bot
@@ -171,7 +171,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   limit covers all admins, and each answer's tokens are kept (not the text). It also writes a product's description
   from its details (no prices), the client area's server problem notice from what the monitors say (public server
   names only), and, off until switched on, suggests free domain names close to a taken one in the client area's
-  domain search (only the name sent, 5 presses an hour per client or address). Reports → Ask in plain words answers
+  domain search (only the name sent, 5 presses an hour per client or address), and free names for a business described
+  in a few words (without emails or phone numbers; visitors only when allowed, always with the captcha; a daily cap
+  covers both). Reports → Ask in plain words answers
   questions such as "who owes more than €100?" from the data, read-only: the AI service only picks one of GaiaCP's
   ready-made questions and its dates or amounts, and never sees the answer; System → Help answers "how do I…" from
   the admin guide's closest sections. On a ticket it drafts a reply (from the conversation, the client's services and
@@ -211,7 +213,9 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   notes the client never sees, assign, move and close them, and open one for a client. The client is emailed each
   answer; the admins get an email and the bell for new tickets and replies. A ticket waiting on the client closes by
   itself after Settings → Support → Close tickets after (7 days). Departments, canned replies, file size and types are
-  under Settings → Support; the dashboard's Support card lists the tickets waiting for an answer. With the Email to
+  under Settings → Support; the dashboard's Support card lists the tickets waiting for an answer. Clients may mark a
+  few tickets a month Urgent for an active service that stopped working (Settings → Support, off by default; its own
+  event for the chat plugins and webhooks). With the Email to
   ticket plugin a support mailbox is read over IMAP every minute: answers to ticket emails join their ticket and new
   emails open one (from someone who isn't a client, a ticket without a client, or ignored). A mail provider
   (Mailgun, SendGrid, Postmark) can post the emails to a secret webhook address instead
@@ -311,7 +315,7 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
     self-service (password, one-click cPanel / Plesk login and Quick shortcuts to their pages, Open website, disk and
     bandwidth usage, the server's uptime); ✅ client orders (a cart of products with their domains and
     domains on their own, one order and payment notice, through the same steps as New order); ✅ domain search (the name with
-    each TLD sold, free or taken, with its price, from the registrar, RDAP or DNS); ✅ "View in the client area" in client emails, Home
+    each TLD sold, free or taken, with its price, from the registrar, RDAP or DNS; spotlight TLDs first, as cards); ✅ "View in the client area" in client emails, Home
     shortcuts and a Help page for clients (EN / EL); ✅ sign up (off until switched on; the email address is confirmed
     first) and "Continue with Google" (a plugin); ✅ maintenance mode (Settings → Client area: a message or a redirect
     while the client area is closed); ✅ terms of service (a link or text and a version, accepted on client orders and

@@ -279,7 +279,11 @@ class ClientOrderTest extends TestCase
             ->fillForm(['product' => (string) $this->hosting->id, 'billing_cycle' => 'monthly', 'domain_option' => 'register', 'domain' => 'one.gr', 'years' => 1])
             ->call('addToCart')
             ->assertHasNoFormErrors()
-            ->assertRedirect(Cart::getUrl(panel: 'client'));
+            // The cart opens from the side and the form is ready for the next item
+            ->assertNoRedirect()
+            ->assertDispatched('open-cart')
+            ->assertDispatched('cart-updated')
+            ->assertFormSet(['product' => null]);
 
         Livewire::test(OrderPage::class)
             ->assertSee('Your cart has 1 item.')

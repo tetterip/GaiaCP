@@ -65,6 +65,11 @@ for less than it costs, the bell rings for the admins of products and domain set
 Settings → Products & domains → **Domains**:
 
 - **Default nameservers** for new registrations.
+- **Spotlight TLDs**: up to 8 of the TLDs you offer (such as .gr and .com), in the order you want; drag a TLD to
+  move it. The domain search checks them first and shows them as cards above the other endings, each with whether it
+  is free, its price and Add to cart; the domain the client typed is the first card. Their prices also show under the
+  search box (search page and public home page), Domain prices lists them first, AI names from a description use the
+  first two, and Domain pricing marks them with a star. Empty: every ending is listed the same way.
 - **Auto renew new domains**: the default of each domain's Auto renew switch. A domain that doesn't auto renew gets no
   payment notices and is marked Terminated on its due date.
 - **Renew at the registrar when a payment is recorded** (on by default). Off, a payment only moves the due date.
@@ -80,7 +85,8 @@ Settings → Products & domains → **Domains**:
 ## Working with a domain
 
 **Services → Domains** lists your domains with their registrar expiry next to their due date; the expiry turns red
-when it falls before the due date. On a domain's page:
+when it falls before the due date. It opens on the active domains and those in **Quarantine** (expired but still
+inside the TLD's grace days), soonest due first; the rest are under **All**. On a domain's page:
 
 - **Registration** says what happens when it is set up: **Register**, **Transfer in** (with the EPP code), or
   **Registered elsewhere (track only)** for a domain at a registrar GaiaCP doesn't manage, which is billed but never
@@ -100,7 +106,10 @@ registrar, so keep them complete.
 **Recording a payment on an active or suspended domain renews it** at its registrar for one billing cycle. The payment
 stands even if the renewal fails: you get a notice and the error is in the Activity log, so renew it by hand once the
 problem is fixed. A domain's first payment after registering doesn't renew it again (registering covers the first
-term). Reversing or refunding a payment doesn't undo a renewal: the Reverse window says so for a domain.
+term). Before renewing, GaiaCP reads the domain's expiry at the registrar: when it already ends at the end of the
+paid period (within 7 days), for example because you renewed or registered it by hand or it came from WHMCS with an old
+expiry date, it isn't renewed again. When the expiry can't be read, nothing is renewed and the renewal waits in the Module
+queue. Reversing or refunding a payment doesn't undo a renewal: the Reverse window says so for a domain.
 
 Every night at 04:00 GaiaCP reads every domain's expiry date and nameservers. The sync never moves the due date: if a
 domain was renewed elsewhere, change the due date yourself. The admins' daily summary lists syncs that changed
@@ -115,7 +124,7 @@ public RDAP / DNS records) before they order.
 
 SSL certificates are sold through the **GoGetSSL** plugin (off by default):
 
-1. Switch it on under Settings → Plugins and fill in Settings → **GoGetSSL**: your API username and password and how
+1. Switch it on under Settings → System → Plugins and fill in Settings → **GoGetSSL**: your API username and password and how
    new certificates are validated by default (DNS record, a file on the website, or email). **Test connection** shows
    your balance. Orders are paid from your GoGetSSL balance, so keep it topped up. There is no test system: to try an
    order, buy the cheapest certificate and cancel it within its refund days.

@@ -7,6 +7,7 @@ use App\Models\ActivityLog;
 use App\Models\User;
 use App\Support\Currencies;
 use App\Support\Health\Check;
+use App\Support\Health\SpeedCaches;
 use App\Support\Health\Status;
 use App\Support\Health\SystemHealth;
 use App\Support\Region;
@@ -170,7 +171,9 @@ class Installer
             if (@file_put_contents($this->envFile(), is_file($example) ? (string) file_get_contents($example) : '') === false) {
                 throw new RuntimeException("Could not write {$this->envFile()}.");
             }
-            $this->writeEnv(['APP_ENV' => 'production', 'APP_DEBUG' => 'false', 'LOG_LEVEL' => 'warning']);
+            // Cache and sessions in files (as the web installer already keeps its own): one server needs no more, and
+            // each page then skips a few queries (System health → Speed)
+            $this->writeEnv(['APP_ENV' => 'production', 'APP_DEBUG' => 'false', 'LOG_LEVEL' => 'warning', 'CACHE_STORE' => 'file', 'SESSION_DRIVER' => 'file']);
         }
 
         $this->writeEnv(['APP_KEY' => $key] + ($marker ? [self::MARKER => 'open'] : []));
@@ -304,7 +307,7 @@ class Installer
 
     public function createAdmin(string $name, string $email, string $password, ?string $locale = null): User
     {
-        $user = User::create([
+        $user = User::query()->forceCreate([
             'name' => $name,
             'email' => $email,
             'locale' => $locale,
@@ -319,13 +322,20 @@ class Installer
         return $user;
     }
 
-    /** Locks the installer: the lock file, and the web installer's .env line goes. */
+    /**
+     * Locks the installer: the lock file, and the web installer's .env line goes. A live site then caches its config,
+     * routes and Filament's components (after the response, in the browser), so System health starts without that warning.
+     */
     public function finish(): void
     {
         $this->lock();
 
         if (is_file($this->envFile())) {
             $this->writeEnv([self::MARKER => null]);
+        }
+
+        if (($this->readEnv()['APP_ENV'] ?? null) === 'production' && config('gaiacp.speed.auto_optimize', true)) {
+            app(SpeedCaches::class)->buildAfterResponse();
         }
     }
 

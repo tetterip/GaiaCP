@@ -7,9 +7,13 @@ use App\Enums\ServiceType;
 use App\Filament\Clusters\Settings\SettingsFormPage;
 use App\Filament\Forms\NameserversInput;
 use App\Models\Product;
+use App\Models\Tld;
 use App\Support\DomainName;
+use App\Support\DomainSearch;
 use BackedEnum;
+use Closure;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -38,12 +42,12 @@ class DomainSettings extends SettingsFormPage
 
     public static function settingsDescription(): string
     {
-        return __('Nameservers, auto renew, free domains, IDN, late renewal fees and an SSL certificate offered with domains.');
+        return __('Nameservers, spotlight TLDs, auto renew, free domains, IDN, late renewal fees and an SSL certificate offered with domains.');
     }
 
     public static function keys(): array
     {
-        return ['domains.nameservers', 'domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.sync_costs', 'domains.ssl_product', 'domains.ssl_discount', 'domains.ssl_own_hosting'];
+        return ['domains.nameservers', 'domains.auto_renew', 'domains.renew_on_payment', 'domains.free_renew_requires_product', 'domains.idn', 'domains.late_fees', 'domains.sync_costs', 'domains.ssl_product', 'domains.ssl_discount', 'domains.ssl_own_hosting', 'domains.spotlight'];
     }
 
     public function form(Schema $schema): Schema
@@ -57,6 +61,25 @@ class DomainSettings extends SettingsFormPage
                         NameserversInput::make('domains.nameservers')
                             ->label('Default nameservers')
                             ->helperText(__('Used when a new domain is registered without nameservers of its own. Two to four.')),
+                    ]),
+                Section::make(__('Spotlight TLDs'))
+                    ->description(__('The endings most of your clients buy, such as .gr and .com. The domain search checks them first and shows them as cards above the other endings, with their price; the public home page and the search page show their prices under the search box.'))
+                    ->schema([
+                        TagsInput::make('domains.spotlight')
+                            ->hiddenLabel()
+                            ->placeholder(__('Add a TLD, e.g. .gr'))
+                            ->suggestions(fn () => Tld::query()->active()->orderBy('tld')->pluck('tld')->all())
+                            ->reorderable()
+                            ->splitKeys(['Tab', ',', ' '])
+                            ->rules(['array', 'max:'.DomainSearch::SPOTLIGHT_MAX])
+                            ->nestedRecursiveRules([fn () => function (string $attribute, mixed $value, Closure $fail): void {
+                                $tld = '.'.ltrim(mb_strtolower(trim((string) $value)), '.');
+
+                                if (! Tld::query()->active()->where('tld', $tld)->exists()) {
+                                    $fail(__(':tld is not offered under Domain pricing.', ['tld' => $tld]));
+                                }
+                            }])
+                            ->helperText(__('Up to :count TLDs offered under Domain pricing, in the order to show them; drag to reorder. Empty: every ending is listed the same way.', ['count' => DomainSearch::SPOTLIGHT_MAX])),
                     ]),
                 Section::make(__('Renewals'))
                     ->schema([
@@ -74,7 +97,7 @@ class DomainSettings extends SettingsFormPage
                             ->helperText(__('Once a domain has expired, its unpaid payment notice gets the TLD\'s grace fee, and the redemption fee on top after the grace period. Prices per TLD under Registrars.')),
                         Toggle::make('domains.sync_costs')
                             ->label('Update registrar costs daily')
-                            ->helperText(__('Every night, the registrars that can tell their prices (easy.gr, Enom) update the cost of the TLDs they are the preferred registrar of. Your selling prices never change by themselves: the bell rings when a TLD starts to sell for less than it costs.')),
+                            ->helperText(__('Every night, the registrars that can report their prices update the cost of the TLDs they are the preferred registrar of. Your selling prices never change by themselves: the bell rings when a TLD starts to sell for less than it costs.')),
                     ]),
                 Section::make(__('SSL with domains'))
                     ->description(__('Offered when a client orders a domain on its own (domain search, Order page, public order page): a certificate for the same name, its own service in the same order and payment notice.'))
@@ -112,6 +135,11 @@ class DomainSettings extends SettingsFormPage
     protected function forStorage(array $values): array
     {
         $values['domains.nameservers'] = DomainName::nameservers($values['domains.nameservers'] ?? []);
+
+        $values['domains.spotlight'] = collect($values['domains.spotlight'] ?? [])
+            ->map(fn ($tld) => '.'.ltrim(mb_strtolower(trim((string) $tld)), '.'))
+            ->reject(fn (string $tld) => $tld === '.')
+            ->unique()->take(DomainSearch::SPOTLIGHT_MAX)->values()->all();
 
         $values['domains.ssl_product'] = filled($values['domains.ssl_product'] ?? null) ? (int) $values['domains.ssl_product'] : null;
         $values['domains.ssl_discount'] = max(0, min(100, (int) ($values['domains.ssl_discount'] ?? 0)));

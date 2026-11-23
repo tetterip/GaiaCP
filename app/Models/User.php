@@ -8,6 +8,7 @@ use App\Enums\AdminArea;
 use App\Enums\UserRole;
 use App\Models\Concerns\StoresTimesInUtc;
 use App\Support\Locales;
+use App\Support\Version;
 use Database\Factories\UserFactory;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
@@ -27,8 +28,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'super_admin', 'admin_areas', 'active', 'system_emails', 'panel_notifications', 'keyboard_shortcuts'])]
-#[Hidden(['password', 'remember_token'])]
+// super_admin and admin_areas grant access, so they are never mass assigned: set them with forceFill() where an admin chose them
+#[Fillable(['name', 'email', 'locale', 'theme', 'password', 'role', 'client_id', 'active', 'system_emails', 'panel_notifications', 'keyboard_shortcuts'])]
+#[Hidden(['password', 'imported_password', 'remember_token'])]
 /**
  * Two-factor authentication is opt-in per user from the profile page (authenticator app plus
  * recovery codes); `php artisan gaiacp:disable-2fa <email>` turns it off for a locked-out user.
@@ -109,7 +111,17 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 
     protected static function booted(): void
     {
+        // A new password (changed, reset, set by an admin) ends the one imported from WHMCS (App\Auth\UserProvider)
+        static::saving(function (self $user): void {
+            if ($user->isDirty('password') && ! $user->isDirty('imported_password')) {
+                $user->imported_password = null;
+            }
+        });
+
         static::creating(function (self $user): void {
+            // A new user has nothing to catch up on: What's new opens from the next release on (App\Support\WhatsNew)
+            $user->whats_new_version ??= Version::current();
+
             if ($user->role === UserRole::Admin && ! static::query()->admins()->where('super_admin', true)->exists()) {
                 $user->super_admin = true;
             }

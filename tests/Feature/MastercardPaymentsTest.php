@@ -173,6 +173,17 @@ class MastercardPaymentsTest extends TestCase
         $this->get('/mastercard/pay/'.$payment->order_id)->assertNotFound();
     }
 
+    public function test_a_session_id_can_never_close_the_pages_script(): void
+    {
+        $payment = $this->start();
+        $payment->forceFill(['session_id' => 'S</script><script>alert(1)</script>'])->save();
+
+        $html = (string) $this->get('/mastercard/pay/'.$payment->order_id)->assertOk()->getContent();
+
+        $this->assertStringNotContainsString('<script>alert(1)', $html);
+        $this->assertStringContainsString('"S\u003C\/script\u003E\u003Cscript\u003Ealert(1)\u003C\/script\u003E"', $html);
+    }
+
     public function test_coming_back_paid_records_it_once_after_reading_the_order(): void
     {
         $payment = $this->start();
