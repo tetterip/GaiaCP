@@ -115,6 +115,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() ? view('filament.bell-ring')->render() : '')
             // Swipe a notification away, by touch or mouse (the bell's list and pop-ups)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.notification-swipe')->render())
+            // Text in a table row that opens a page can be selected and copied
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.selectable-rows')->render())
             // The theme says whether the admin's menu is in the top bar or at the foot of the sidebar
             ->userMenu(position: fn () => Themes::userMenuPosition())
             ->defaultAvatarProvider(InitialsAvatar::class)
