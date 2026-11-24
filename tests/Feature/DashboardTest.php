@@ -178,12 +178,29 @@ class DashboardTest extends TestCase
             ->call('setPeriod', '7d')
             ->assertSeeHtml('wire:key="activity-plot-7d"');
 
-        // Only the lit squares light up one by one: 1 of 2 accounts fills half of them
+        // The accounts line grows to its share: 1 of 2 accounts fills half of it, green
         $server = Server::factory()->create(['max_accounts' => 2]);
         Service::factory()->create(['server_id' => $server->id, 'status' => 'active', 'type' => 'hosting']);
         $html = Livewire::test(ServerCapacity::class)->html();
-        $this->assertSame(ServerCapacity::SQUARES / 2, preg_match_all('/\sdata-on\s/', $html));
+        $this->assertStringContainsString('class="gx-line-fill" style="display: block; height: 100%; width: 50%; border-radius: inherit; background: var(--success-500);"', $html);
+        $this->assertStringContainsString('.gx-line-fill', view('filament.dashboard.styles')->render());
         $this->assertStringContainsString('prefers-reduced-motion: reduce', view('filament.dashboard.styles')->render());
+    }
+
+    public function test_the_accounts_line_turns_orange_then_red_and_comes_before_uptime(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $server = Server::factory()->create(['max_accounts' => 20]);
+        Service::factory()->count(14)->create(['server_id' => $server->id, 'status' => 'active', 'type' => 'hosting']);
+        $this->assertStringContainsString('width: 70%; border-radius: inherit; background: var(--warning-500);', Livewire::test(ServerCapacity::class)->html());
+
+        Service::factory()->count(3)->create(['server_id' => $server->id, 'status' => 'active', 'type' => 'hosting']);
+        $this->assertStringContainsString('width: 85%; border-radius: inherit; background: var(--danger-500);', Livewire::test(ServerCapacity::class)->html());
+
+        // Accounts first, then uptime, then CPU
+        $view = file_get_contents(resource_path('views/filament/dashboard/server-capacity.blade.php'));
+        $this->assertLessThan(strpos($view, 'servers.uptime-bar'), strpos($view, 'servers.accounts-bar'));
+        $this->assertLessThan(strpos($view, 'servers.cpu-bar'), strpos($view, 'servers.uptime-bar'));
     }
 
     public function test_the_servers_squares_fill_the_card_but_stay_small_in_a_table_column(): void
@@ -191,12 +208,14 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->create());
         $server = Server::factory()->create(['max_accounts' => 10]);
 
-        // On the card the squares grow with its width (side by side once wide enough); no fixed width
-        $html = Livewire::test(ServerCapacity::class)->html();
-        $this->assertStringContainsString('gx-server-bars', $html);
+        // On the card (the uptime bar) the squares grow with its width (side by side once wide enough); no fixed width
+        $this->assertStringContainsString('gx-server-bars', Livewire::test(ServerCapacity::class)->html());
+        $html = view('filament.servers.meter', ['caption' => 'Uptime', 'value' => '100%', 'label' => 'Uptime', 'cells' => array_fill(0, 24, ['color' => null]), 'fill' => true])->render();
         $this->assertStringContainsString('<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; column-gap: 2px;', $html);
         // Whole pixels, so every square is the same width, and the caption row is as wide as the squares
         $this->assertStringContainsString('round(down, calc((100% - 46px) / 24), 1px)', $html);
+        // and the pixels rounding leaves over go into the gaps, so each row still reaches the right edge
+        $this->assertStringContainsString('column-gap: 2px; justify-content: space-between;', $html);
         $this->assertStringContainsString('grid-template-columns: subgrid;', $html);
 
         // The servers list keeps fixed 10px squares, the same in every column

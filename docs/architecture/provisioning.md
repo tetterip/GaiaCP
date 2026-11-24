@@ -290,7 +290,7 @@ never calls a panel API directly.
   of its API and are untested
 - Servers also keep optional `max_accounts`, `monthly_cost_cents` (base currency), `ip_address`, `status_url`.
   `Server::accounts()` = active / suspended hosting (`withAccountsCount()`, `accountsText()` "33/120 (28%)",
-  `optionLabel()` in the order / service pickers); the accounts bar (list and dashboard) is `filament/servers/accounts-bar`, drawn like the uptime bar by the shared square meter `filament/servers/meter`.
+  `optionLabel()` in the order / service pickers); the accounts bar (list and dashboard) is `filament/servers/accounts-bar`, a thin line that turns orange from 70% and red from `ServerCapacity::NEARLY_FULL`; the uptime bar uses the shared meter `filament/servers/meter`.
   "Log in to control panel" = `Admin\ServerPanelLoginController` (`filament.admin.server-panel-login`, super admins) →
   `App\Actions\ServerPanelLogin` (logs `server.panel_login`) → `HostingProvisioner::adminLoginUrl()`.
   `IncomeForecast::serverCosts()` (active servers) gives Income forecast's and Server revenue's profit columns

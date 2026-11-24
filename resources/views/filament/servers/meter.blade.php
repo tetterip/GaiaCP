@@ -17,13 +17,14 @@
     $square = 10;
     if ($fill) {
         // Whole pixels, so no square comes out 1px wider than its neighbours; the caption row takes the same width
-        // as the squares (subgrid). Browsers without round() keep the fractional widths above.
+        // as the squares (subgrid). The pixels left over by rounding down are spread over the gaps (space-between), so the
+        // row still reaches the right edge, under its value. Browsers without round() keep the fractional widths above.
         $whole = 'repeat('.$columns.', round(down, calc((100% - '.(($columns - 1) * 2).'px) / '.$columns.'), 1px))';
         $tracks = "{$tracks}; grid-template-columns: {$whole}";
     }
 @endphp
 {{-- Inline styles in Filament's colour variables: the list and the dashboard share it and there is no compiled theme. --}}
-<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; {{ $fill ? 'column-gap: 2px; grid-template-columns: '.$tracks.';' : 'width: max-content; max-width: 100%;' }}">
+<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; {{ $fill ? 'column-gap: 2px; justify-content: space-between; grid-template-columns: '.$tracks.';' : 'width: max-content; max-width: 100%;' }}">
     <div style="grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font-size: .75rem; line-height: 1rem;">
         @if ($caption)
             <span style="opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $caption }}</span>

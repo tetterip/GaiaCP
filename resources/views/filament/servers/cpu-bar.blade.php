@@ -9,7 +9,8 @@
      */
     $now = \App\Monitoring\LoadHistory::percent($history['now']);
     $columns = count($history['hours']);
-    // Whole pixels, as the uptime and accounts rows (filament.servers.meter), so the three line up
+    // Whole pixels, as the uptime and accounts rows (filament.servers.meter), so the three line up; the pixels left over
+    // are spread over the gaps, so the chart reaches the right edge
     $whole = 'repeat('.$columns.', round(down, calc((100% - '.(($columns - 1) * 2).'px) / '.$columns.'), 1px))';
 @endphp
 <div class="gx-cpu" style="display: grid; gap: .3rem; min-width: 0;" @if ($history['load'] !== null) title="{{ __('Load average: :load', ['load' => \Illuminate\Support\Number::format($history['load'], 2)]) }}" @endif>
@@ -20,7 +21,7 @@
         <span style="font-variant-numeric: tabular-nums; white-space: nowrap;">{{ $now ?? '—' }}</span>
     </div>
     <div class="gx-cpu-chart" role="img" aria-label="{{ __('CPU: :percent', ['percent' => $now ?? '—']) }}"
-        style="display: grid; grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr)); grid-template-columns: {{ $whole }}; gap: 2px; height: 2.25rem; align-items: end;">
+        style="display: grid; grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr)); grid-template-columns: {{ $whole }}; justify-content: space-between; gap: 2px; height: 2.25rem; align-items: end;">
         @foreach ($history['hours'] as $hour)
             @php
                 $title = $hour['average'] === null
