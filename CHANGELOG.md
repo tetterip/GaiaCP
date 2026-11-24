@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Dashboard → Servers: the uptime, CPU and accounts rows reach the right edge of the card, under their numbers, and a
+  line separates one server from the next.
 - **Refunds and chargebacks from Stripe and PayPal**: a refund made in their dashboards, or a chargeback (a client
   disputing the payment with their bank or PayPal), rings the bell and goes in the activity log, and the payment shows
   *Chargeback open / won / lost* or *Refunded at the provider*. Nothing changes on its own: you decide whether to

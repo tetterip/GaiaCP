@@ -596,6 +596,16 @@
         gap: .6rem;
     }
 
+    /* A line between servers, so each one's rows read as one block */
+    .gx-server + .gx-server {
+        padding-top: 1.1rem;
+        border-top: 1px solid var(--theme-line, var(--gray-200));
+    }
+
+    .dark .gx-server + .gx-server {
+        border-top-color: var(--theme-line, color-mix(in oklab, var(--color-white) 10%, transparent));
+    }
+
     /* The squares fill the card: stacked on a narrow card, side by side once each still gets 22rem */
     .gx-server-bars {
         display: grid;

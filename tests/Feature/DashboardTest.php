@@ -197,6 +197,8 @@ class DashboardTest extends TestCase
         $this->assertStringContainsString('<div class="gx-meter" style="display: grid; gap: .3rem; min-width: 0; column-gap: 2px;', $html);
         // Whole pixels, so every square is the same width, and the caption row is as wide as the squares
         $this->assertStringContainsString('round(down, calc((100% - 46px) / 24), 1px)', $html);
+        // and the pixels rounding leaves over go into the gaps, so each row still reaches the right edge
+        $this->assertStringContainsString('column-gap: 2px; justify-content: space-between;', $html);
         $this->assertStringContainsString('grid-template-columns: subgrid;', $html);
 
         // The servers list keeps fixed 10px squares, the same in every column
