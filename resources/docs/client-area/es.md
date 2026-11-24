@@ -238,7 +238,7 @@ En Soporte → Anuncios publicamos noticias sobre nuestros servicios: servicios 
 <!-- if:server_status -->
 ## Estado de los servidores
 
-Soporte → Estado de los servidores muestra si nuestros servidores funcionan ahora mismo, con los cuadros de los últimos 30 días y 24 horas. Cuando uno tiene un problema, aparece arriba con lo que sabemos de él.
+Soporte → Estado de los servidores muestra si nuestros servidores funcionan ahora mismo, con una marca para cada uno de los últimos 30 días y 24 horas: un círculo verde cuando funcionó, un triángulo amarillo cuando tuvo problemas y un triángulo rojo invertido cuando estuvo caído. Cuando uno tiene un problema, aparece arriba con lo que sabemos de él.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Contáctenos

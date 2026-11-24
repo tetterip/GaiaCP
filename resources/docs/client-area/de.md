@@ -238,7 +238,7 @@ Unter Support → Ankündigungen veröffentlichen wir Neuigkeiten zu unseren Die
 <!-- if:server_status -->
 ## Serverstatus
 
-Support → Serverstatus zeigt, ob unsere Server gerade funktionieren, mit den Quadraten der letzten 30 Tage und 24 Stunden. Hat einer ein Problem, steht er oben mit dem, was wir darüber wissen.
+Support → Serverstatus zeigt, ob unsere Server gerade funktionieren, mit einem Zeichen für jeden der letzten 30 Tage und jede der letzten 24 Stunden: ein grüner Kreis, wenn er lief, ein gelbes Dreieck bei Problemen, ein rotes umgedrehtes Dreieck, wenn er ausgefallen war. Hat einer ein Problem, steht er oben mit dem, was wir darüber wissen.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Kontaktieren Sie uns

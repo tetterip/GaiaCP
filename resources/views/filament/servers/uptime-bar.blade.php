@@ -4,7 +4,8 @@
      * @var ?string $caption
      */
     $percent = \App\Monitoring\UptimeHistory::percent($history['uptime']);
-    // A square per hour (24h) or day (30d), coloured by its worst status.
+    // A shape per hour (24h) or day (30d) by its worst status, so it never reads like the accounts' squares:
+    // a circle when up, an upright triangle with problems, an upside-down one when down, a small dot when not checked.
     $cells = array_map(fn (array $dot) => [
         'color' => match ($dot['status']?->color()) {
             'success' => 'var(--success-500)',
@@ -12,6 +13,12 @@
             'warning' => 'var(--warning-500)',
             'gray' => 'var(--gray-400)',
             default => null,
+        },
+        'shape' => match ($dot['status']?->color()) {
+            'danger' => 'down',
+            'warning' => 'warn',
+            null => 'none',
+            default => 'up',
         },
         'title' => $dot['status'] === null
             ? __(':time: not checked', ['time' => $dot['label']])

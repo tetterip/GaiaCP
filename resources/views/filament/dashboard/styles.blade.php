@@ -560,6 +560,15 @@
         to { clip-path: inset(-20% 0 -20% 0); }
     }
 
+    /* The uptime's shapes pop in instead of filling a grey square */
+    .gx-servers .gx-meter [role="img"] > span[data-on][data-shape] {
+        animation-name: gx-pop;
+    }
+
+    @keyframes gx-pop {
+        from { opacity: 0; transform: scale(.4); }
+    }
+
     @keyframes gx-light {
         from { background: rgb(127 127 127 / .2); }
     }
