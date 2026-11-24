@@ -4329,5 +4329,18 @@
     "WHMCS logins": "Accessi da WHMCS",
     "Free orders in one click": "Ordini gratuiti in un clic",
     "Speed from the panel": "Velocità dal pannello",
-    "Release notes": "Note di rilascio"
+    "Release notes": "Note di rilascio",
+    ":time: :average on average, highest :highest": ":time: :average in media, massimo :highest",
+    ":time: not read": ":time: non letto",
+    "CPU at :percent for :minutes minutes": "CPU al :percent da :minutes minuti",
+    "CPU warning": "Avviso CPU",
+    "CPU, 24 hours": "CPU, 24 ore",
+    "CPU: :percent": "CPU: :percent",
+    "Cpu cores": "Core del processore",
+    "Cpu warning percent": "Avviso CPU",
+    "Every 5 minutes, reads how busy each server's CPU is from its panel (the dashboard's Servers card). When it stays at or above this share for 15 minutes, the bell rings once. Leave empty to not warn.": "Ogni 5 minuti legge dal pannello quanto è occupata la CPU di ogni server (scheda Server della dashboard). Se resta a questa percentuale o oltre per 15 minuti, la campanella suona una volta. Lasciare vuoto per non avvisare.",
+    "For the CPU share on the dashboard when the panel gives only the load average (cPanel, DirectAdmin, HestiaCP). Filled in by itself when the panel says.": "Per la percentuale di CPU nella dashboard quando il pannello fornisce solo il carico medio (cPanel, DirectAdmin, HestiaCP). Si compila da solo quando il pannello lo indica.",
+    "Load average: :load": "Carico medio: :load",
+    "Processor cores": "Core del processore",
+    "Server :name is busy": "Il server :name è sotto carico"
 }

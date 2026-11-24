@@ -4329,5 +4329,18 @@
     "WHMCS logins": "Συνδέσεις από WHMCS",
     "Free orders in one click": "Δωρεάν παραγγελίες με ένα κλικ",
     "Speed from the panel": "Ταχύτητα από τον πίνακα",
-    "Release notes": "Σημειώσεις έκδοσης"
+    "Release notes": "Σημειώσεις έκδοσης",
+    ":time: :average on average, highest :highest": ":time: κατά μέσο όρο :average, το πολύ :highest",
+    ":time: not read": ":time: δεν διαβάστηκε",
+    "CPU at :percent for :minutes minutes": "CPU στο :percent για :minutes λεπτά",
+    "CPU warning": "Ειδοποίηση CPU",
+    "CPU, 24 hours": "CPU, 24 ώρες",
+    "CPU: :percent": "CPU: :percent",
+    "Cpu cores": "Πυρήνες επεξεργαστή",
+    "Cpu warning percent": "Ειδοποίηση CPU",
+    "Every 5 minutes, reads how busy each server's CPU is from its panel (the dashboard's Servers card). When it stays at or above this share for 15 minutes, the bell rings once. Leave empty to not warn.": "Κάθε 5 λεπτά διαβάζει από τον πίνακα ελέγχου πόσο απασχολημένη είναι η CPU κάθε server (κάρτα Servers της αρχικής). Όταν μένει σε αυτό το ποσοστό ή πάνω για 15 λεπτά, χτυπά μία φορά το καμπανάκι. Αφήστε κενό για να μη γίνεται ειδοποίηση.",
+    "For the CPU share on the dashboard when the panel gives only the load average (cPanel, DirectAdmin, HestiaCP). Filled in by itself when the panel says.": "Για το ποσοστό CPU στην αρχική, όταν ο πίνακας ελέγχου δίνει μόνο τον μέσο φόρτο (cPanel, DirectAdmin, HestiaCP). Συμπληρώνεται μόνο του όταν τους αναφέρει ο πίνακας.",
+    "Load average: :load": "Μέσος φόρτος: :load",
+    "Processor cores": "Πυρήνες επεξεργαστή",
+    "Server :name is busy": "Ο server :name είναι φορτωμένος"
 }

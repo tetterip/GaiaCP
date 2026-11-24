@@ -106,6 +106,8 @@ Read the file for the area you are changing before you change it; don't read the
 - `php artisan gaiacp:heartbeat [--dry-run]`: ping Settings → Automation → Ping URL (every 5 minutes; the failure URL when
   a daily job or the last backup failed), so an outside monitor alerts when cron stops
 - `php artisan gaiacp:check-monitors`: read every linked server's status from its monitoring service (every 5 minutes)
+- `php artisan gaiacp:check-load`: read each active server's CPU from its panel for the dashboard; the bell when one stays
+  over Settings → Automation → CPU warning for 15 minutes (every 5 minutes)
 - `php artisan gaiacp:sync-domains`: read every managed domain's expiry and nameservers (daily at 04:00)
 - `php artisan gaiacp:sync-tld-costs [--dry-run]`: update the TLDs' registrar costs from registrars that list prices
   (Settings → Domains → Update registrar costs daily, at 04:15; never changes selling prices)

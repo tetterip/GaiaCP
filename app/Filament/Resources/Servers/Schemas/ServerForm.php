@@ -162,6 +162,12 @@ class ServerForm
                             ->integer()
                             ->minValue(1)
                             ->helperText(__('Empty = no limit.')),
+                        TextInput::make('cpu_cores')
+                            ->label('Processor cores')
+                            ->integer()
+                            ->minValue(1)
+                            ->maxValue(1024)
+                            ->helperText(__('For the CPU share on the dashboard when the panel gives only the load average (cPanel, DirectAdmin, HestiaCP). Filled in by itself when the panel says.')),
                         TextInput::make('monthly_cost_cents')
                             ->label('Monthly cost')
                             ->prefix(fn () => Currencies::base())

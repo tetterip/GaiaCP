@@ -10,6 +10,8 @@ use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Support\DomainName;
 
 /**
@@ -17,7 +19,7 @@ use App\Support\DomainName;
  * service's username, on a Virtualmin plan (the service's package) with the plan's features. The password is the
  * Virtualmin / Usermin login and the user's FTP and SSH password. The calls are those of Blesta's Virtualmin module.
  */
-class VirtualminProvisioner implements HostingProvisioner, ListsAccounts
+class VirtualminProvisioner implements HostingProvisioner, ListsAccounts, ReportsLoad
 {
     public function __construct(
         private VirtualminClient $virtualmin,
@@ -29,6 +31,41 @@ class VirtualminProvisioner implements HostingProvisioner, ListsAccounts
         $plans = $this->virtualmin->list('list-plans', timeout: 15);
 
         return sprintf('Virtualmin, %d plan%s', count($plans), count($plans) === 1 ? '' : 's');
+    }
+
+    /**
+     * `virtualmin info --search cpu`: Webmin's CPU times (user, kernel, idle, io, vm, in %), collected every few
+     * minutes, as text ("cpu:" then a "* N" line each). The share in use is everything but idle.
+     */
+    public function load(): ServerLoad
+    {
+        $output = (string) ($this->virtualmin->run('info', ['search' => 'cpu'], timeout: 15)['output'] ?? '');
+
+        return new ServerLoad(null, percent: self::busy($output));
+    }
+
+    /** The share of CPU time not idle, from `info`'s text, or null when it has no cpu section. */
+    public static function busy(string $output): ?float
+    {
+        $values = [];
+        $inside = false;
+        foreach (preg_split('/\R/', $output) ?: [] as $line) {
+            if (preg_match('/^cpu:\s*$/', $line)) {
+                $inside = true;
+
+                continue;
+            }
+            if ($inside && preg_match('/^\s+\*\s*(\d+(?:\.\d+)?)/', $line, $m)) {
+                $values[] = (float) $m[1];
+
+                continue;
+            }
+            if ($inside && preg_match('/^\S/', $line)) {
+                break;
+            }
+        }
+
+        return isset($values[2]) ? 100 - $values[2] : null;
     }
 
     public function packages(): array

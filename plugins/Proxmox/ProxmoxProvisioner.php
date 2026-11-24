@@ -13,6 +13,8 @@ use App\Provisioning\ListsAccounts;
 use App\Provisioning\MachineDetails;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Support\DomainName;
 
 /**
@@ -26,7 +28,7 @@ use App\Support\DomainName;
  * machine only, to open its console in the Proxmox web interface. API tokens cannot change a password, so a new
  * password replaces that user.
  */
-class ProxmoxProvisioner implements ControlsPower, DescribesMachine, HostingProvisioner, ListsAccounts
+class ProxmoxProvisioner implements ControlsPower, DescribesMachine, HostingProvisioner, ListsAccounts, ReportsLoad
 {
     private const TAG = 'gaiacp';
 
@@ -46,6 +48,26 @@ class ProxmoxProvisioner implements ControlsPower, DescribesMachine, HostingProv
         $version = (array) $this->proxmox->get('/version');
 
         return 'Proxmox VE '.(($version['version'] ?? '') ?: 'unknown version');
+    }
+
+    /** The cluster's online nodes (GET /nodes): their CPU use (0-1) weighted by their cores, and the cores together. */
+    public function load(): ServerLoad
+    {
+        $used = 0.0;
+        $cores = 0;
+        foreach ((array) $this->proxmox->get('/nodes') as $node) {
+            if (! is_array($node) || ($node['status'] ?? 'online') !== 'online' || ! isset($node['cpu'], $node['maxcpu'])) {
+                continue;
+            }
+            $used += (float) $node['cpu'] * (int) $node['maxcpu'];
+            $cores += (int) $node['maxcpu'];
+        }
+
+        if ($cores === 0) {
+            throw new ProvisioningException('Proxmox: no online node reported its CPU.');
+        }
+
+        return new ServerLoad(null, $cores, $used / $cores * 100);
     }
 
     /** The names of the cluster's KVM templates, each one a package. */

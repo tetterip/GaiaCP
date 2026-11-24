@@ -11,9 +11,11 @@ use App\Provisioning\ListsAccounts;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Support\DomainName;
 
-class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts
+class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts, ReportsLoad
 {
     public function __construct(private WhmClient $whm) {}
 
@@ -22,6 +24,14 @@ class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, Lis
         $data = $this->whm->call('version');
 
         return 'WHM '.($data['version'] ?? 'unknown version');
+    }
+
+    /** WHM's load average of the last minute (systemloadavg); it does not say how many cores the server has. */
+    public function load(): ServerLoad
+    {
+        $data = $this->whm->call('systemloadavg', timeout: 10);
+
+        return new ServerLoad(ServerLoad::number($data['one'] ?? null));
     }
 
     public function packages(): array

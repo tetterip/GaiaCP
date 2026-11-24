@@ -41,7 +41,7 @@ class AutomationSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.hosting_quarantine_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.payment_claim_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
+        return ['reminders.send_at', 'reminders.before_days', 'reminders.overdue_days', 'reminders.bcc', 'automation.suspend_after_days', 'automation.hosting_quarantine_days', 'automation.cancel_unpaid_orders_days', 'automation.price_change_notice_days', 'automation.usage_warning_percent', 'automation.cpu_warning_percent', 'automation.module_retries', 'automation.client_messages_per_minute', 'automation.compare_servers', 'automation.daily_summary', 'automation.change_request_email', 'automation.cancellation_request_email', 'automation.upgrade_request_email', 'automation.payment_claim_email', 'automation.new_order_email', 'automation.new_client_email', 'automation.exchange_rates', 'automation.ping_url', 'automation.ping_fail_url'];
     }
 
     public function form(Schema $schema): Schema
@@ -111,6 +111,13 @@ class AutomationSettings extends SettingsFormPage
                             ->minValue(1)
                             ->maxValue(100)
                             ->helperText(__('At 06:00, reads the disk space and bandwidth of every active hosting account; one that reaches this share of its package\'s limit gets the Usage Warning email (Email templates), and the bell rings, once a month for each. Leave empty to not check.')),
+                        TextInput::make('automation.cpu_warning_percent')
+                            ->label('CPU warning')
+                            ->suffix('%')
+                            ->integer()
+                            ->minValue(10)
+                            ->maxValue(100)
+                            ->helperText(__('Every 5 minutes, reads how busy each server\'s CPU is from its panel (the dashboard\'s Servers card). When it stays at or above this share for 15 minutes, the bell rings once. Leave empty to not warn.')),
                         TextInput::make('automation.module_retries')
                             ->label('Retry failed actions')
                             ->suffix(__('times'))
@@ -238,7 +245,7 @@ class AutomationSettings extends SettingsFormPage
         $values['automation.hosting_quarantine_days'] = max(0, (int) ($values['automation.hosting_quarantine_days'] ?? 30));
         $values['automation.client_messages_per_minute'] = max(1, (int) ($values['automation.client_messages_per_minute'] ?? 30));
 
-        foreach (['automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.usage_warning_percent'] as $key) {
+        foreach (['automation.suspend_after_days', 'automation.cancel_unpaid_orders_days', 'automation.usage_warning_percent', 'automation.cpu_warning_percent'] as $key) {
             $days = $values[$key] ?? null;
             $values[$key] = $days === null || $days === '' ? null : (int) $days;
         }

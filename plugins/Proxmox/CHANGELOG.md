@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.0] - 2026-11-24
+
+- CPU on the dashboard: the CPU use of the cluster's online nodes (`GET /nodes`, `ReportsLoad`), read every 5 minutes (not yet tried on a real server)
+
 ## [1.1.3] - 2026-11-07
 
 - "1 address added" or "3 addresses added" in every language, instead of "address(es)"

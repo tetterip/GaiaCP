@@ -8,6 +8,7 @@ use App\Models\ActivityLog;
 use App\Models\EmailLog;
 use App\Models\IpBan;
 use App\Models\ModuleLog;
+use App\Monitoring\ServerLoadCheck;
 use App\Monitoring\UptimeHistory;
 use App\Support\LogCleanup;
 use Illuminate\Console\Attributes\Description;
@@ -38,6 +39,9 @@ class PruneLogs extends Command
 
         // Server statuses older than the uptime bar's longest range
         $checks = DB::table('server_monitor_checks')->where('checked_at', '<', now()->utc()->subDays(UptimeHistory::KEEP_DAYS))->delete();
+
+        // CPU readings older than the dashboard's 24-hour bar needs
+        $checks += DB::table('server_load_readings')->where('checked_at', '<', now()->utc()->subDays(ServerLoadCheck::KEEP_DAYS))->delete();
 
         // Client area devices not seen for longer than a session lasts, and sign-ins older than half a year
         $signIns = app(ClientSessions::class)->prune();

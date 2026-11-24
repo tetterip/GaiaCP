@@ -75,7 +75,9 @@ trait FakesPlesk
 
         switch ($key) {
             case 'server.get':
-                return [$ok.'<stat><version><plesk_version>18.0.70</plesk_version></version></stat>'];
+                return [$ok.'<stat><version><plesk_version>18.0.70</plesk_version></version>'
+                    .'<other><cpu>Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz (4 core(s))</cpu><uptime>86400</uptime><inside_vz>false</inside_vz></other>'
+                    .'<load_avg><l1>150</l1><l5>120</l5><l15>90</l15></load_avg></stat>'];
 
             case 'ip.get':
                 return [$ok.'<addresses><ip_info><ip_address>fe80::1</ip_address><type>shared</type></ip_info><ip_info><ip_address>203.0.113.5</ip_address><type>shared</type></ip_info></addresses>'];

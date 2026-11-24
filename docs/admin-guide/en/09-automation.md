@@ -32,7 +32,8 @@ At the time set in Settings → Billing → **Automation** → Daily run at (09:
 
 The same page has **BCC every client email to** (a copy of each client email for your records), the **Price change
 notice** days, the **Usage warning** share (hosting accounts near their disk or bandwidth limit get an email
-suggesting a bigger package, once a month), how many **Messages to clients** go out a minute, and which admin emails
+suggesting a bigger package, once a month), the **CPU warning** share (the bell rings when a server's CPU stays at or
+above it for 15 minutes, see [CPU on the dashboard](04-servers.md#cpu-on-the-dashboard)), how many **Messages to clients** go out a minute, and which admin emails
 are sent (new order, new client, change requests, cancellation and upgrade requests).
 
 ## Other scheduled jobs
@@ -41,7 +42,7 @@ are sent (new order, new client, change requests, cancellation and upgrade reque
 |---|---|
 | Every minute | Queued messages to clients, webhooks, Slack / Discord / Telegram messages, the support mailbox |
 | Every 15 minutes | Failed set ups, unsuspends and suspensions in the module queue tried again |
-| Every 5 minutes | Server status from the monitoring service; the heartbeat ping (Settings → Automation → Ping URL) |
+| Every 5 minutes | Server status from the monitoring service; each server's CPU from its panel; the heartbeat ping (Settings → Automation → Ping URL) |
 | Hourly | SSL certificates, IP blacklists |
 | 00:20 | Quotes past their date marked Expired |
 | 03:30 | Old module and email log rows deleted (Settings → Logs → Logging) |
