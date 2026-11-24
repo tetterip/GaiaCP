@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Actions\ClientOrder;
+use App\Ai\Assistant;
 use App\Enums\BillingCycle;
 use App\Enums\ServiceType;
 use App\Enums\UserRole;
@@ -253,6 +254,9 @@ class AiWritingTest extends TestCase
         $this->assertStringNotContainsString('2310', $sent, 'no phone numbers');
         $this->assertStringNotContainsString('info@example.gr', $sent, 'no email addresses');
         $this->assertSame(1, AiUsage::query()->where('feature', 'domain_ideas')->count());
+        // Room for the model's thinking as well as the names: 500 tokens cut Claude Opus 5.5 off before it answered
+        $request = Http::recorded(fn (Request $request) => str_contains($request->url(), 'anthropic'))->sole()[0];
+        $this->assertSame(Assistant::SHORT_ANSWER_TOKENS, $request['max_tokens']);
     }
 
     public function test_descriptions_are_off_by_default_closed_to_visitors_and_limited_a_day(): void
