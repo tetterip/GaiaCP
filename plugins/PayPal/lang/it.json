@@ -37,5 +37,6 @@
     "We need to record it by hand; we will do so shortly. There is no need to pay again.": "Dobbiamo registrarlo a mano; lo faremo a breve. Non è necessario pagare di nuovo.",
     "Webhook": "Webhook",
     "Webhook url": "URL del webhook",
-    "Your PayPal payment went through.": "Il Suo pagamento con PayPal è andato a buon fine."
+    "Your PayPal payment went through.": "Il Suo pagamento con PayPal è andato a buon fine.",
+    "PayPal did not give the money back: :status": "PayPal non ha restituito il denaro: :status"
 }

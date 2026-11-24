@@ -37,5 +37,6 @@
     "We need to record it by hand; we will do so shortly. There is no need to pay again.": "Θα την καταχωρίσουμε εμείς σύντομα. Δεν χρειάζεται να πληρώσετε ξανά.",
     "Webhook": "Webhook",
     "Webhook url": "Διεύθυνση webhook",
-    "Your PayPal payment went through.": "Η πληρωμή σας με PayPal ολοκληρώθηκε."
+    "Your PayPal payment went through.": "Η πληρωμή σας με PayPal ολοκληρώθηκε.",
+    "PayPal did not give the money back: :status": "Το PayPal δεν επέστρεψε τα χρήματα: :status"
 }

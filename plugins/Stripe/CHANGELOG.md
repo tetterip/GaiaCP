@@ -2,6 +2,11 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.0] - 2026-11-24
+
+- Refunds and chargebacks: a refund made in Stripe's dashboard (`charge.refunded`) and a chargeback (`charge.dispute.created` / `closed`) of a payment GaiaCP took ring the bell and go in the activity log; nothing is changed on its own. Tick the three new events on the webhook endpoint (Settings → Stripe lists them)
+- Refund payment can give a card payment back at Stripe (Give it back at Stripe now), recorded only once Stripe took the refund
+
 ## [1.0.9] - 2026-11-12
 
 - Every hour it asks Stripe about the checkouts still open, so a payment is recorded even when the webhook never came and the client closed the page before coming back; an expired one is closed
