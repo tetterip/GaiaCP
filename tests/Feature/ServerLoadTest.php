@@ -218,6 +218,7 @@ class ServerLoadTest extends TestCase
     public function test_the_dashboard_shows_the_cpu_bar_per_hour(): void
     {
         $this->actingAs(User::factory()->create());
+        $this->travelTo(now()->startOfHour()->addMinutes(30)); // the two readings 2 hours ago fall in the same hour
         $server = Server::factory()->create(['name' => 'nl1']);
         DB::table('server_load_readings')->insert([
             ['server_id' => $server->id, 'percent' => 20, 'load' => 0.8, 'checked_at' => now()->subHours(2)->utc()],
