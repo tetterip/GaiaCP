@@ -4362,5 +4362,8 @@
     "Refunded at the provider: :amount": "Terugbetaald bij de provider: :amount",
     "The payment stays paid.": "De betaling blijft betaald.",
     "The payment was not refunded": "De betaling is niet terugbetaald",
-    "This payment can't be refunded at the payment provider.": "Deze betaling kan niet bij de betaalprovider worden terugbetaald."
+    "This payment can't be refunded at the payment provider.": "Deze betaling kan niet bij de betaalprovider worden terugbetaald.",
+    "Provider fee": "Providerkosten",
+    "Provider fees": "Providerkosten",
+    "Fee cents": "Providerkosten"
 }

@@ -4362,5 +4362,8 @@
     "Refunded at the provider: :amount": "Rimborsato presso il fornitore: :amount",
     "The payment stays paid.": "Il pagamento resta pagato.",
     "The payment was not refunded": "Il pagamento non è stato rimborsato",
-    "This payment can't be refunded at the payment provider.": "Questo pagamento non può essere rimborsato presso il fornitore di pagamento."
+    "This payment can't be refunded at the payment provider.": "Questo pagamento non può essere rimborsato presso il fornitore di pagamento.",
+    "Provider fee": "Commissione del fornitore",
+    "Provider fees": "Commissioni dei fornitori",
+    "Fee cents": "Commissione del fornitore"
 }

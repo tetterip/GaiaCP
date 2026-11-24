@@ -44,6 +44,28 @@ final class IncomeReport
         return $months;
     }
 
+    /**
+     * What payment providers kept of the year's payments (Stripe, PayPal fees), in the base currency at today's rate.
+     *
+     * @return array<int, int> month (1-12) => cents
+     */
+    public function monthlyFees(int $year): array
+    {
+        $months = array_fill_keys(range(1, 12), 0);
+        $rows = self::paidBetween(Payment::query()->toBase(), CarbonImmutable::create($year), CarbonImmutable::create($year)->endOfYear())
+            ->whereNotNull('fee_cents')
+            ->select('paid_on', 'currency')
+            ->selectRaw('sum(fee_cents) as fees')
+            ->groupBy('paid_on', 'currency')
+            ->get();
+
+        foreach ($rows as $row) {
+            $months[CarbonImmutable::parse($row->paid_on)->month] += Currencies::toBase((int) $row->fees, $row->currency);
+        }
+
+        return $months;
+    }
+
     /** @return array<int, array{count: int, cents: int}> day of month => payments received that day */
     public function daily(int $year, int $month): array
     {

@@ -4362,5 +4362,8 @@
     "Refunded at the provider: :amount": "Zwrócono u operatora: :amount",
     "The payment stays paid.": "Płatność pozostaje opłacona.",
     "The payment was not refunded": "Płatność nie została zwrócona",
-    "This payment can't be refunded at the payment provider.": "Tej płatności nie można zwrócić u operatora płatności."
+    "This payment can't be refunded at the payment provider.": "Tej płatności nie można zwrócić u operatora płatności.",
+    "Provider fee": "Prowizja operatora",
+    "Provider fees": "Prowizje operatorów",
+    "Fee cents": "Prowizja operatora"
 }

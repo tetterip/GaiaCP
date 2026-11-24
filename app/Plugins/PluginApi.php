@@ -76,6 +76,7 @@ use App\Monitoring\MonitorStatus;
 use App\Monitoring\ServerMonitoring;
 use App\Monitoring\UptimeHistory;
 use App\Payments\PaymentModule;
+use App\Payments\ProviderFees;
 use App\Payments\ProviderReports;
 use App\Payments\RefundsAtProvider;
 use App\Providers\AppServiceProvider;
@@ -180,6 +181,7 @@ final class PluginApi
         PaymentModule::class,
         RefundsAtProvider::class,
         ProviderReports::class,
+        ProviderFees::class,
         RecordInvoicePayment::class,
         PaymentClaims::class,
         PaymentNoticeResource::class,

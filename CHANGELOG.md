@@ -12,8 +12,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   (their settings pages list them).
 - **Refund payment at Stripe or PayPal**: Refund payment on a Stripe or PayPal payment offers *Give it back at … now*,
   which refunds it there first and records it only once the provider took it (API: `"to": "provider"`).
+- **Provider fees**: what Stripe and PayPal keep of each payment is stored on it. Billing → Payments has a *Provider
+  fee* column with its total, Annual income a *Provider fees* column (once there are any), and the monthly
+  transactions export a fee per payment.
 - Plugin API: a payment module may implement `App\Payments\RefundsAtProvider` to refund at the gateway, and report
-  refunds and chargebacks with `App\Payments\ProviderReports`.
+  refunds and chargebacks with `App\Payments\ProviderReports`, and store a gateway's fee with
+  `App\Payments\ProviderFees`.
 
 - The dashboard's Servers card shows each server's **CPU**: the latest share and a square per hour for the last 24
   hours, read from the panel every 5 minutes (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Proxmox).

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'service_id', 'client_id', 'refund_of', 'amount_cents', 'currency', 'paid_on', 'method', 'reference',
+    'service_id', 'client_id', 'refund_of', 'amount_cents', 'fee_cents', 'currency', 'paid_on', 'method', 'reference',
     'due_date_before', 'due_date_after', 'recorded_by', 'notes',
 ])]
 class Payment extends Model
@@ -25,6 +25,7 @@ class Payment extends Model
     {
         return [
             'amount_cents' => 'integer',
+            'fee_cents' => 'integer',
             'paid_on' => 'immutable_date',
             'due_date_before' => 'immutable_date',
             'due_date_after' => 'immutable_date',

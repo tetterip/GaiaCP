@@ -4362,5 +4362,8 @@
     "Refunded at the provider: :amount": "Sağlayıcıda iade edildi: :amount",
     "The payment stays paid.": "Ödeme ödenmiş olarak kalır.",
     "The payment was not refunded": "Ödeme iade edilmedi",
-    "This payment can't be refunded at the payment provider.": "Bu ödeme, ödeme sağlayıcısında iade edilemez."
+    "This payment can't be refunded at the payment provider.": "Bu ödeme, ödeme sağlayıcısında iade edilemez.",
+    "Provider fee": "Sağlayıcı ücreti",
+    "Provider fees": "Sağlayıcı ücretleri",
+    "Fee cents": "Sağlayıcı ücreti"
 }

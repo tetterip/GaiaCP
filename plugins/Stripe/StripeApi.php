@@ -74,6 +74,12 @@ class StripeApi
         return $this->send('get_checkout', fn (PendingRequest $http) => $http->get(self::BASE_URL.'/checkout/sessions/'.rawurlencode($id)));
     }
 
+    /** @return array<string, mixed> a PaymentIntent, with its latest charge's balance transaction (the fee) */
+    public function paymentIntentWithFee(string $id): array
+    {
+        return $this->send('get_payment_intent', fn (PendingRequest $http) => $http->get(self::BASE_URL.'/payment_intents/'.rawurlencode($id).'?expand[]=latest_charge.balance_transaction'));
+    }
+
     /**
      * Gives money of a PaymentIntent back. The idempotency key makes a repeated call (after a timeout) return the
      * first refund instead of giving the money back twice.

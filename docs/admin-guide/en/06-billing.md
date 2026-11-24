@@ -122,7 +122,8 @@ the due date back, takes off a discount it gave and takes out of the balance wha
 domain renewal.
 
 Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe, PayPal or a bank's card page are recorded by
-themselves once the provider confirms them.
+themselves once the provider confirms them, with what the provider kept of each in the **Provider fee** column (Stripe
+and PayPal; the reports' Annual income adds a Provider fees column once there are any).
 
 Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`, with an API key that has `payments.delete`)
 records it as a payment of minus that amount on the day you choose, so income reports count it then, and issues a

@@ -4362,5 +4362,8 @@
     "Refunded at the provider: :amount": "Επιστράφηκε στον πάροχο: :amount",
     "The payment stays paid.": "Η πληρωμή μένει πληρωμένη.",
     "The payment was not refunded": "Η πληρωμή δεν επιστράφηκε",
-    "This payment can't be refunded at the payment provider.": "Αυτή η πληρωμή δεν μπορεί να επιστραφεί μέσω του παρόχου πληρωμών."
+    "This payment can't be refunded at the payment provider.": "Αυτή η πληρωμή δεν μπορεί να επιστραφεί μέσω του παρόχου πληρωμών.",
+    "Provider fee": "Προμήθεια παρόχου",
+    "Provider fees": "Προμήθειες παρόχων",
+    "Fee cents": "Προμήθεια παρόχου"
 }

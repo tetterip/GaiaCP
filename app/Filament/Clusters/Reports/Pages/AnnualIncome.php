@@ -59,6 +59,9 @@ class AnnualIncome extends IncomeReportPage
         $income = app(IncomeReport::class);
         $current = $income->monthly($this->year);
         $previous = $income->monthly($this->year - 1);
+        $fees = $income->monthlyFees($this->year);
+        // Only once a payment provider reported a fee this year (Stripe, PayPal)
+        $withFees = array_sum($fees) > 0;
         $max = max(array_column($current, 'cents'));
         $rows = $csv = [];
 
@@ -68,27 +71,28 @@ class AnnualIncome extends IncomeReportPage
             $future = CarbonImmutable::create($this->year, $month)->isAfter(today());
 
             $rows[] = [
-                'cells' => [$name, (string) $row['count'], static::bar($row['cents'], $max), static::money($before), $this->change($row['cents'], $before)],
+                'cells' => [$name, (string) $row['count'], static::bar($row['cents'], $max), ...($withFees ? [static::money($fees[$month])] : []), static::money($before), $this->change($row['cents'], $before)],
                 'muted' => $future,
             ];
-            $csv[] = [$name, $row['count'], static::decimal($row['cents']), static::decimal($before), $this->change($row['cents'], $before)];
+            $csv[] = [$name, $row['count'], static::decimal($row['cents']), ...($withFees ? [static::decimal($fees[$month])] : []), static::decimal($before), $this->change($row['cents'], $before)];
         }
 
         $total = array_sum(array_column($current, 'cents'));
         $totalBefore = array_sum(array_column($previous, 'cents'));
         $count = array_sum(array_column($current, 'count'));
-        $csv[] = [__('Total'), $count, static::decimal($total), static::decimal($totalBefore), $this->change($total, $totalBefore)];
+        $csv[] = [__('Total'), $count, static::decimal($total), ...($withFees ? [static::decimal(array_sum($fees))] : []), static::decimal($totalBefore), $this->change($total, $totalBefore)];
 
         return [
             'columns' => [
                 ['label' => __('Month')],
                 ['label' => __('Payments'), 'end' => true],
                 ['label' => (string) $this->year, 'end' => true],
+                ...($withFees ? [['label' => __('Provider fees'), 'end' => true]] : []),
                 ['label' => (string) ($this->year - 1), 'end' => true],
                 ['label' => __('Change'), 'end' => true],
             ],
             'rows' => $rows,
-            'totals' => [__('Total'), (string) $count, static::money($total), static::money($totalBefore), $this->change($total, $totalBefore)],
+            'totals' => [__('Total'), (string) $count, static::money($total), ...($withFees ? [static::money(array_sum($fees))] : []), static::money($totalBefore), $this->change($total, $totalBefore)],
             'csv' => $csv,
         ];
     }
