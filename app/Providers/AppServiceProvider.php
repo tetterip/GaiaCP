@@ -167,9 +167,16 @@ class AppServiceProvider extends ServiceProvider
             ->defaultDateDisplayFormat(self::dateFormat())
             ->defaultDateTimeDisplayFormat(self::dateFormat().' H:i'));
 
+        // The calendar opens as before, and the date can also be typed in the display format
+        // (resources/views/filament/typeable-dates.blade.php reads data-typeable-date).
         DatePicker::configureUsing(fn (DatePicker $picker) => $picker
             ->native(false)
             ->displayFormat(self::dateFormat())
-            ->firstDayOfWeek(1));
+            ->firstDayOfWeek(1)
+            ->extraTriggerAttributes(fn (DatePicker $picker): array => $picker->isDisabled() || $picker->isReadOnly() ? [] : [
+                'data-typeable-date' => convert_date_format($picker->getDisplayFormat())->to('day.js'),
+                'inputmode' => 'numeric',
+                'autocomplete' => 'off',
+            ], merge: true));
     }
 }
