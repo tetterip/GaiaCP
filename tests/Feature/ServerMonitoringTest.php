@@ -315,6 +315,19 @@ class ServerMonitoringTest extends TestCase
         $this->get(Dashboard::getUrl())->assertOk()->assertSee('gx-status-danger', false)->assertSee('gx-uptime', false);
     }
 
+    public function test_the_lists_accounts_and_uptime_squares_are_the_same_size(): void
+    {
+        $this->actingAs($this->admin);
+        $this->server(['max_accounts' => 120]);
+
+        // Fixed 10px squares in both columns (10 accounts, 12 uptime hours a row), not shares of different widths.
+        Livewire::test(ListServers::class)
+            ->assertSee('grid-template-columns: repeat(10, 10px)', false)
+            ->assertSee('grid-template-columns: repeat(12, 10px)', false)
+            ->set('uptimeRange', '30d')
+            ->assertSee('grid-template-columns: repeat(15, 10px)', false);
+    }
+
     public function test_settings_test_connection_uses_what_is_typed(): void
     {
         $this->actingAs($this->admin);
