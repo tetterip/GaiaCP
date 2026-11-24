@@ -10,6 +10,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   Settings → Email log, once the client has an email.
 - The text of a table row that opens a page (a payment notice's lines, clients, services) can be selected and copied
   by dragging over it; a plain click still opens the row.
+- A date can be typed in its field (`09/04/2028`, `9.4.28`, `090428`, in the Region's format) as well as picked from
+  the calendar.
 
 ## [0.12.1] - 2026-11-23
 

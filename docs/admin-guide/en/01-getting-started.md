@@ -70,6 +70,10 @@ Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a pa
 `n` then a letter starts a new record. If you use speech input, or the single keys get in your way, turn them off in
 **Profile** → **Keyboard shortcuts**; the user menu → **Keyboard shortcuts** still shows the list.
 
+A date can be picked from the calendar or typed in its field, in the format of Settings → General → Region
+(`09/04/2028`, `9.4.28` or just `090428`). It is kept on Enter or when you leave the field; a date that does not exist
+puts the old one back.
+
 The version number at the foot of every page (or the user menu → **About GaiaCP**) opens a short About: the version,
 what it runs on (PHP, Laravel, Filament), the licence and links to this guide, Updates and GitHub. Handy when you report a
 problem.
