@@ -99,6 +99,8 @@ still let you pick another. When every server is full, setup stops and asks you 
 
 A hosting service's page has an **Account** menu:
 
+- **Log in to cPanel / Plesk / …**: opens the client's own account on the panel in a new tab, signed in, as the client
+  area's button does (active accounts only).
 - **Create on server**: creates the account with the service's domain and package. The username (from the domain) and
   password are generated when left empty and kept encrypted on the service. It also works on an active account, to
   recreate it on another server after a move (the old server is left alone).
@@ -113,6 +115,12 @@ no harm. When a call fails, the service is left as it was, the error shows on sc
 and the dashboard's Needs attention. Turn on Settings → Logs → Logging → **Module log** to see each request and answer
 (passwords masked) when you need to find out why. **Download** on the module log saves the entries it shows as a
 JSON file, to attach to a bug report.
+
+The **On the server** section on the service asks the panel, when the page opens, whether the account is **Active**,
+**Suspended** or **Not found** there, next to the status stored in GaiaCP (**Check again** asks once more). When the two
+differ, a red box says what that means for the client and offers to fix either side: for example Unsuspend on the server,
+or Mark as suspended in GaiaCP (which changes only GaiaCP and emails nobody). A missing account offers Create on server;
+a server that does not answer shows **Unknown** with its error.
 
 The **Usage** section on the service shows disk space and this month's bandwidth against the package's limits, read
 from the panel.

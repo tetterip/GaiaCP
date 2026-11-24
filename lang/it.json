@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Questo pagamento non può essere rimborsato presso il fornitore di pagamento.",
     "Provider fee": "Commissione del fornitore",
     "Provider fees": "Commissioni dei fornitori",
-    "Fee cents": "Commissione del fornitore"
+    "Fee cents": "Commissione del fornitore",
+    "Checking the account on the server…": "Verifica dell'account sul server…",
+    "Unsuspended on the server": "Riattivato sul server",
+    "Status updated to match the server": "Stato aggiornato in base al server",
+    "Not found": "Non trovato",
+    "The server did not answer: :error": "Il server non ha risposto: :error",
+    "Same as in GaiaCP": "Come in GaiaCP",
+    "Does not match GaiaCP.": "Non corrisponde a GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "In GaiaCP il servizio è attivo, ma su :server l'account :username è sospeso: il sito e l'email del cliente non funzionano.",
+    "Unsuspend :username on :server?": "Riattivare :username su :server?",
+    "Mark as suspended in GaiaCP": "Segna come sospeso in GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "In GaiaCP il servizio è sospeso, ma su :server l'account :username è attivo: il cliente ha ancora sito ed email.",
+    "Suspend :username on :server?": "Sospendere :username su :server?",
+    "Mark as active in GaiaCP": "Segna come attivo in GaiaCP",
+    "The account :username does not exist on :server.": "L'account :username non esiste su :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Potrebbe essere stato eliminato o spostato su un altro server: in tal caso scegli quel server in Account hosting e salva.",
+    "Create :username on :server with the password stored here?": "Creare :username su :server con la password salvata qui?",
+    "Read from the panel when the page opens; kept for a minute.": "Letto dal pannello all'apertura della pagina; conservato per un minuto."
 }

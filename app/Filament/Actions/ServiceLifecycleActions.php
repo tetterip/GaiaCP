@@ -9,6 +9,7 @@ use App\Filament\Client\Actions\HostingSelfService;
 use App\Filament\Forms\PackageSelect;
 use App\Filament\Forms\PasswordInput;
 use App\Models\Service;
+use App\Plugins\PluginManager;
 use App\Provisioning\ControlsPower;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
@@ -32,6 +33,7 @@ class ServiceLifecycleActions
     public static function make(): ActionGroup
     {
         return ActionGroup::make([
+            self::panelLogin(),
             self::create(),
             self::changePackage(),
             self::changePassword(),
@@ -44,6 +46,17 @@ class ServiceLifecycleActions
             ->icon(Heroicon::OutlinedServerStack)
             ->button()
             ->color('gray');
+    }
+
+    /** The client's account on its panel, in a new tab (as the client area's "Log in to …"). */
+    private static function panelLogin(): Action
+    {
+        return Action::make('panelLogin')
+            ->label(fn (Service $record) => __('Log in to :panel', ['panel' => HostingSelfService::panelName($record)]))
+            ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
+            ->visible(fn (Service $record) => self::onPanel($record) && $record->status === ServiceStatus::Active && filled($record->username)
+                && app(PluginManager::class)->serverModules()->has($record->server?->type))
+            ->url(fn (Service $record) => route('filament.admin.service-panel-login', ['service' => $record->id]), shouldOpenInNewTab: true);
     }
 
     private static function create(): Action

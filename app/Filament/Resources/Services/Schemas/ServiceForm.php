@@ -16,6 +16,7 @@ use App\Filament\Forms\PasswordInput;
 use App\Filament\Forms\ProductOptionFields;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Livewire\HostingUsage;
+use App\Livewire\ServerAccountState;
 use App\Models\Client;
 use App\Models\Domain;
 use App\Models\Product;
@@ -160,6 +161,17 @@ class ServiceForm
                             ->formatStateUsing(fn (?Service $record) => $record?->password)
                             ->dehydrated(fn (?string $state) => filled($state))
                             ->helperText(__('Leave empty for a new account: a strong one is generated. Stored encrypted. Editing it here does not change it on the server: use Account → Change password.')),
+                    ]),
+
+                // The account on its server beside the status above, which can be edited by hand
+                Section::make(__('On the server'))
+                    ->description(__('Read from the panel when the page opens; kept for a minute.'))
+                    ->columnSpanFull()
+                    ->visible(fn (?Service $record, string $operation) => $operation === 'edit' && ServerAccountState::shows($record))
+                    ->schema([
+                        Livewire::make(ServerAccountState::class, fn (Service $record) => ['service' => $record])
+                            ->key('serverAccountState')
+                            ->lazy(),
                     ]),
 
                 Section::make(__('Usage'))

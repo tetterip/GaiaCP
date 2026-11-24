@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Deze betaling kan niet bij de betaalprovider worden terugbetaald.",
     "Provider fee": "Providerkosten",
     "Provider fees": "Providerkosten",
-    "Fee cents": "Providerkosten"
+    "Fee cents": "Providerkosten",
+    "Checking the account on the server…": "Account op de server controleren…",
+    "Unsuspended on the server": "Op de server weer actief",
+    "Status updated to match the server": "Status aangepast aan de server",
+    "Not found": "Niet gevonden",
+    "The server did not answer: :error": "De server antwoordde niet: :error",
+    "Same as in GaiaCP": "Hetzelfde als in GaiaCP",
+    "Does not match GaiaCP.": "Komt niet overeen met GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "In GaiaCP is de dienst actief, maar op :server is het account :username opgeschort: de website en e-mail van de klant werken niet.",
+    "Unsuspend :username on :server?": ":username op :server weer activeren?",
+    "Mark as suspended in GaiaCP": "Als opgeschort markeren in GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "In GaiaCP is de dienst opgeschort, maar op :server is het account :username actief: de klant heeft nog website en e-mail.",
+    "Suspend :username on :server?": ":username op :server opschorten?",
+    "Mark as active in GaiaCP": "Als actief markeren in GaiaCP",
+    "The account :username does not exist on :server.": "Het account :username bestaat niet op :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Het is misschien verwijderd of naar een andere server verplaatst: kies dan die server onder Hostingaccount en sla op.",
+    "Create :username on :server with the password stored here?": ":username op :server aanmaken met het hier opgeslagen wachtwoord?",
+    "Read from the panel when the page opens; kept for a minute.": "Bij het openen van de pagina uit het paneel gelezen; een minuut bewaard."
 }

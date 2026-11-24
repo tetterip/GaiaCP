@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Este pagamento não pode ser reembolsado no provedor de pagamento.",
     "Provider fee": "Taxa do provedor",
     "Provider fees": "Taxas dos provedores",
-    "Fee cents": "Taxa do provedor"
+    "Fee cents": "Taxa do provedor",
+    "Checking the account on the server…": "Verificando a conta no servidor…",
+    "Unsuspended on the server": "Reativada no servidor",
+    "Status updated to match the server": "Status atualizado conforme o servidor",
+    "Not found": "Não encontrada",
+    "The server did not answer: :error": "O servidor não respondeu: :error",
+    "Same as in GaiaCP": "Igual ao GaiaCP",
+    "Does not match GaiaCP.": "Não corresponde ao GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "No GaiaCP o serviço está ativo, mas em :server a conta :username está suspensa: o site e o e-mail do cliente não funcionam.",
+    "Unsuspend :username on :server?": "Reativar :username em :server?",
+    "Mark as suspended in GaiaCP": "Marcar como suspensa no GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "No GaiaCP o serviço está suspenso, mas em :server a conta :username está ativa: o cliente ainda tem site e e-mail.",
+    "Suspend :username on :server?": "Suspender :username em :server?",
+    "Mark as active in GaiaCP": "Marcar como ativa no GaiaCP",
+    "The account :username does not exist on :server.": "A conta :username não existe em :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Pode ter sido excluída ou movida para outro servidor: nesse caso escolha esse servidor em Conta de hospedagem e salve.",
+    "Create :username on :server with the password stored here?": "Criar :username em :server com a senha salva aqui?",
+    "Read from the panel when the page opens; kept for a minute.": "Lido do painel ao abrir a página; mantido por um minuto."
 }

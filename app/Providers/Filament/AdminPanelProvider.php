@@ -10,6 +10,7 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\ResetPassword;
 use App\Http\Controllers\Admin\ServerPanelLoginController;
+use App\Http\Controllers\Admin\ServicePanelLoginController;
 use App\Http\Controllers\Admin\TicketAttachmentController;
 use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\AlertWhenCronStops;
@@ -134,6 +135,10 @@ class AdminPanelProvider extends PanelProvider
                 Route::get('servers/{server}/panel-login', ServerPanelLoginController::class)
                     ->whereNumber('server')
                     ->name('server-panel-login');
+                // A hosting service's Account → Log in to the client's panel (a new tab)
+                Route::get('services/{service}/panel-login', ServicePanelLoginController::class)
+                    ->whereNumber('service')
+                    ->name('service-panel-login');
                 Route::get('ticket-files/{attachment}', TicketAttachmentController::class)
                     ->whereNumber('attachment')
                     ->name('ticket-file');

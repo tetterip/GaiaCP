@@ -38,6 +38,9 @@ class ServiceLifecycle
     /** How long a usage reading is kept before the panel is asked again. */
     public const USAGE_MINUTES = 15;
 
+    /** The suspension reason of a service marked suspended because its account was suspended on the server. */
+    public const SUSPENDED_ON_SERVER = 'Suspended on the server';
+
     public function __construct(
         private ProvisionerFactory $provisioners,
         private UsernameGenerator $usernames,
@@ -268,6 +271,57 @@ class ServiceLifecycle
     }
 
     /**
+     * Whether the account exists on its server and is active or suspended there, read from the panel at most once a
+     * minute ($fresh reads it now). Shown on the admin's service page beside the status stored here, which can be
+     * edited by hand. Only a reading, so it is not logged; a failure throws ProvisioningException.
+     */
+    public function serverState(Service $service, bool $fresh = false): AccountState
+    {
+        if (! $this->onPanel($service) || blank($service->username)) {
+            throw new ProvisioningException('Only hosting services with a server and a username have an account there.');
+        }
+
+        $key = "service-server-state:{$service->id}";
+
+        if ($fresh) {
+            Cache::forget($key);
+        }
+
+        // Kept as the case's name: the cache unserializes no objects (cache.serializable_classes).
+        $name = Cache::remember($key, 60, fn (): string => $this->provisioners->forService($service)->accountState($service)->name);
+
+        return constant(AccountState::class.'::'.$name);
+    }
+
+    /**
+     * The service page's "Mark as … here": the status stored here takes the account's state on the server, without
+     * touching the server or emailing the client. Nothing changes when they already agree or the account is missing.
+     */
+    public function followServer(Service $service): void
+    {
+        if (! in_array($service->status, [ServiceStatus::Active, ServiceStatus::Suspended], true)) {
+            throw new ProvisioningException('Only active or suspended services follow the server.');
+        }
+
+        $state = $this->serverState($service, fresh: true);
+        $status = match ($state) {
+            AccountState::Active => ServiceStatus::Active,
+            AccountState::Suspended => ServiceStatus::Suspended,
+            AccountState::Missing => null,
+        };
+
+        if ($status === null || $status === $service->status) {
+            return;
+        }
+
+        $service->update([
+            'status' => $status,
+            'suspension_reason' => $status === ServiceStatus::Suspended ? ($service->suspension_reason ?: self::SUSPENDED_ON_SERVER) : null,
+        ]);
+        ActivityLog::record('service.status_matched', "Status set to {$status->value} to match the account on {$service->server->name}", $service);
+    }
+
+    /**
      * Disk space and bandwidth of an active or suspended account, read from the panel at most every USAGE_MINUTES
      * ($fresh reads it now). Only a reading, so it is not logged; a failure throws ProvisioningException.
      */
@@ -428,6 +482,8 @@ class ServiceLifecycle
         } finally {
             // A power action, suspension or package change changes the machine: read it again next time
             Cache::forget("service-machine:{$service->id}");
+            // ... and the account's state on the server
+            Cache::forget("service-server-state:{$service->id}");
         }
     }
 }

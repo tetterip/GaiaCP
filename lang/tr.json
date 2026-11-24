@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Bu ödeme, ödeme sağlayıcısında iade edilemez.",
     "Provider fee": "Sağlayıcı ücreti",
     "Provider fees": "Sağlayıcı ücretleri",
-    "Fee cents": "Sağlayıcı ücreti"
+    "Fee cents": "Sağlayıcı ücreti",
+    "Checking the account on the server…": "Sunucudaki hesap kontrol ediliyor…",
+    "Unsuspended on the server": "Sunucuda askı kaldırıldı",
+    "Status updated to match the server": "Durum sunucuya göre güncellendi",
+    "Not found": "Bulunamadı",
+    "The server did not answer: :error": "Sunucu yanıt vermedi: :error",
+    "Same as in GaiaCP": "GaiaCP ile aynı",
+    "Does not match GaiaCP.": "GaiaCP ile eşleşmiyor.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "GaiaCP'de hizmet aktif, ancak :server üzerinde :username hesabı askıda: müşterinin web sitesi ve e-postası çalışmıyor.",
+    "Unsuspend :username on :server?": ":server üzerinde :username askısı kaldırılsın mı?",
+    "Mark as suspended in GaiaCP": "GaiaCP'de askıda olarak işaretle",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "GaiaCP'de hizmet askıda, ancak :server üzerinde :username hesabı aktif: müşterinin web sitesi ve e-postası hâlâ çalışıyor.",
+    "Suspend :username on :server?": ":server üzerinde :username askıya alınsın mı?",
+    "Mark as active in GaiaCP": "GaiaCP'de aktif olarak işaretle",
+    "The account :username does not exist on :server.": ":username hesabı :server üzerinde yok.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Silinmiş ya da başka bir sunucuya taşınmış olabilir: o zaman Barındırma hesabı altında o sunucuyu seçip kaydedin.",
+    "Create :username on :server with the password stored here?": ":username, :server üzerinde burada kayıtlı parolayla oluşturulsun mu?",
+    "Read from the panel when the page opens; kept for a minute.": "Sayfa açılınca panelden okunur; bir dakika saklanır."
 }

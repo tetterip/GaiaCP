@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Αυτή η πληρωμή δεν μπορεί να επιστραφεί μέσω του παρόχου πληρωμών.",
     "Provider fee": "Προμήθεια παρόχου",
     "Provider fees": "Προμήθειες παρόχων",
-    "Fee cents": "Προμήθεια παρόχου"
+    "Fee cents": "Προμήθεια παρόχου",
+    "Checking the account on the server…": "Έλεγχος του λογαριασμού στον server…",
+    "Unsuspended on the server": "Η αναστολή άρθηκε στον server",
+    "Status updated to match the server": "Η κατάσταση άλλαξε ώστε να ταιριάζει με τον server",
+    "Not found": "Δεν βρέθηκε",
+    "The server did not answer: :error": "Ο server δεν απάντησε: :error",
+    "Same as in GaiaCP": "Ίδιο με το GaiaCP",
+    "Does not match GaiaCP.": "Δεν ταιριάζει με το GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "Στο GaiaCP η υπηρεσία είναι ενεργή, αλλά στον :server ο λογαριασμός :username είναι σε αναστολή: το site και το email του πελάτη δεν λειτουργούν.",
+    "Unsuspend :username on :server?": "Άρση αναστολής του :username στον :server;",
+    "Mark as suspended in GaiaCP": "Σήμανση ως σε αναστολή στο GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "Στο GaiaCP η υπηρεσία είναι σε αναστολή, αλλά στον :server ο λογαριασμός :username είναι ενεργός: ο πελάτης έχει ακόμα site και email.",
+    "Suspend :username on :server?": "Αναστολή του :username στον :server;",
+    "Mark as active in GaiaCP": "Σήμανση ως ενεργή στο GaiaCP",
+    "The account :username does not exist on :server.": "Ο λογαριασμός :username δεν υπάρχει στον :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Μπορεί να διαγράφηκε ή να μεταφέρθηκε σε άλλον server: τότε διαλέξτε εκείνον τον server στον Λογαριασμό φιλοξενίας και αποθηκεύστε.",
+    "Create :username on :server with the password stored here?": "Δημιουργία του :username στον :server με τον κωδικό που είναι αποθηκευμένος εδώ;",
+    "Read from the panel when the page opens; kept for a minute.": "Διαβάζεται από το panel όταν ανοίγει η σελίδα· κρατιέται για ένα λεπτό."
 }
