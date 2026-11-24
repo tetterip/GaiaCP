@@ -123,7 +123,7 @@ Everything GaiaCP does today, what it leaves out on purpose, and the order it wa
 - Plugins (Settings → System → Plugins): cPanel / WHM, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Proxmox VE (the last three off by default), Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications, VIES VAT check (EU VAT numbers checked from the client form, and the reverse
   charge: no VAT for EU businesses in another EU country), the WHMCS import, Bank transfer (the first
   payment method plugin: its bank details are printed on payment notices), Stripe (card payments in the client area,
-Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Nexi XPay and Mastercard Gateway (off by default), Google sign-in ("Continue with Google"
+Settings → Stripe for the keys and the webhook), PayPal (off by default, Settings → PayPal), Nexi XPay and Mastercard Gateway (off by default), Other ways to pay (off by default: your own offline methods such as a cheque, cash or Revolut, each with instructions on the notices), Google sign-in ("Continue with Google"
   in the client area and, when ticked, on /admin, with your own Google OAuth client), Google reCAPTCHA and Cloudflare Turnstile (the captcha
   Settings → General puts on the login, sign up and forgot password forms), Uptime Kuma, UptimeRobot and Better Stack (server monitoring, below), IP blacklist check and Site checks (below) and
   the admin panel themes Gaia, Flat and Glass are bundled plugins,

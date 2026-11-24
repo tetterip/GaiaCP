@@ -151,7 +151,7 @@ class ReportsTest extends TestCase
         $rows = $this->csv(Livewire::test(MonthlyTransactions::class)->instance()->csv());
 
         $this->assertCount(2, $rows);
-        $this->assertSame(['02/10/2026', $service->client->name, 'Web hosting', 'shop.gr', 'Bank transfer', '', '60.00'], $rows[1]);
+        $this->assertSame(['02/10/2026', $service->client->name, 'Web hosting', 'shop.gr', 'Bank transfer', '', '60.00', ''], $rows[1]);
     }
 
     public function test_income_by_product_follows_the_period(): void

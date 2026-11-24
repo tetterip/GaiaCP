@@ -42,6 +42,13 @@ class PaymentsTable
                     ->sortable()
                     // Every currency, in the base one at today's rate.
                     ->summarize(Summarizer::make()->label('Total')->using(fn (QueryBuilder $query) => Currencies::sumToBase($query, 'amount_cents'))->formatStateUsing(fn ($state) => Money::format((int) $state))),
+                // What Stripe or PayPal kept of it
+                TextColumn::make('fee_cents')
+                    ->label('Provider fee')
+                    ->formatStateUsing(fn (Payment $record) => Money::format((int) $record->fee_cents, $record->currency))
+                    ->placeholder('—')
+                    ->toggleable()
+                    ->summarize(Summarizer::make()->label('Total')->using(fn (QueryBuilder $query) => Currencies::sumToBase($query->whereNotNull('fee_cents'), 'fee_cents'))->formatStateUsing(fn ($state) => Money::format((int) $state))),
                 TextColumn::make('method')
                     ->formatStateUsing(fn (?string $state) => PaymentMethods::label($state))
                     ->badge(),

@@ -116,6 +116,12 @@ class StripePlugin extends Plugin implements PaymentModule, RefundsAtProvider
             ->withoutOverlapping(55)
             ->onOneServer();
 
+        $schedule->call(fn () => StripeApi::configured() ? app(StripeCheckouts::class)->fees() : 0)
+            ->name('stripe:fetch-fees')
+            ->hourlyAt(25)
+            ->withoutOverlapping(55)
+            ->onOneServer();
+
         $schedule->call(fn () => StripeApi::configured() ? app(StripeCheckouts::class)->recheck() : 0)
             ->name('stripe:recheck-checkouts')
             ->hourlyAt(20)

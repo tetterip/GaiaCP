@@ -1,0 +1,12 @@
+{
+    "Add a way to pay": "Ödeme yolu ekle",
+    "Cash at our office": "Ofisimizde nakit",
+    "Each one is a payment method of its own: its instructions show on payment notices and their emails, and you pick it when you record a payment. In the instructions, {number} becomes the payment notice's number (the reference to write) and {amount} its total.": "Her biri ayrı bir ödeme yöntemidir: talimatları ödeme bildirimlerinde ve e-postalarında görünür, ödeme kaydederken onu seçersiniz. Talimatlarda {number} ödeme bildiriminin numarasına (yazılacak açıklama), {amount} toplamına dönüşür.",
+    "Instructions": "Talimatlar",
+    "Methods": "Yollar",
+    "Off: no longer offered or shown; payments made with it keep it.": "Kapalı: artık sunulmaz ve gösterilmez; onunla yapılan ödemeler onu korur.",
+    "Other ways to pay": "Diğer ödeme yolları",
+    "Pay at our office, Mon–Fri 9:00–17:00. Mention {number}.": "Ofisimizde ödeyin, Pzt–Cum 9:00–17:00. {number} belirtin.",
+    "Your own ways to pay without a gateway (cheque, cash at the office, IRIS to a phone number, Revolut), each with instructions shown on payment notices.": "Ödeme altyapısı olmadan kendi ödeme yollarınız (çek, ofiste nakit, telefon numarasına IRIS, Revolut), her biri ödeme bildirimlerinde talimatlarla.",
+    "Your own ways to pay without a gateway, each with instructions for the client.": "Ödeme altyapısı olmadan kendi ödeme yollarınız, her biri müşteri için talimatlarla."
+}

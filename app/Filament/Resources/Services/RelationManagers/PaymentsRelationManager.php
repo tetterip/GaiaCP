@@ -47,6 +47,11 @@ class PaymentsRelationManager extends RelationManager
                         $record->refunds->isNotEmpty() => __('Refunded'),
                         default => null,
                     }),
+                TextColumn::make('fee_cents')
+                    ->label('Provider fee')
+                    ->formatStateUsing(fn (Payment $record) => Money::format((int) $record->fee_cents, $record->currency))
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('method')
                     ->badge(),
                 TextColumn::make('reference')

@@ -103,6 +103,12 @@ When a client pays by bank transfer or cash, record it:
 - or on the service (**Record payment**), shown while something is owed. To take a payment ahead of time, use
   **Price → Record early payment**.
 
+Other ways clients pay you without a gateway (a cheque, cash at the office, IRIS to a phone number, Revolut, Wise) go
+under Settings → Payment methods → **Other ways to pay** (switch the plugin on first). Each has a name and instructions,
+shown with the payment notices and their emails; `{number}` in them becomes the notice's number (the reference to
+write) and `{amount}` its total. Pick the method when you record the payment. A method payments were recorded with
+can only be switched off, so those payments keep its name.
+
 Recording a payment moves the service's due date forward one cycle, renews a domain at its registrar, and unsuspends a
 hosting account that was suspended for not paying. If the panel fails to unsuspend, the payment is still kept; use
 Account → Unsuspend once the server answers.
@@ -122,7 +128,8 @@ the due date back, takes off a discount it gave and takes out of the balance wha
 domain renewal.
 
 Billing → **Payments** lists every payment, by hand or by card. Payments with Stripe, PayPal or a bank's card page are recorded by
-themselves once the provider confirms them.
+themselves once the provider confirms them, with what the provider kept of each in the **Provider fee** column (Stripe
+and PayPal; the reports' Annual income adds a Provider fees column once there are any).
 
 Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`, with an API key that has `payments.delete`)
 records it as a payment of minus that amount on the day you choose, so income reports count it then, and issues a

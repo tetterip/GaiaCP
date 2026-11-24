@@ -71,6 +71,7 @@ can be added.
   adds "Give it back at …" to Refund payment. Tell GaiaCP about refunds made at the gateway and chargebacks with
   `App\Payments\ProviderReports` (`refunded($method, $reference, $totalCents, $currency)`, `disputed(…)`,
   `disputeClosed(…)`), after checking the report came from the gateway: bell and log, nothing changed on its own.
+  Store what the gateway kept of a payment with `App\Payments\ProviderFees::record($method, $reference, $feeCents, $currency)`.
 - `App\Captcha\CaptchaModule`.
 - `App\Monitoring\MonitoringModule`, `App\Monitoring\ServerMonitoring`, `App\Monitoring\Monitor`,
   `App\Monitoring\MonitorStatus`, `App\Monitoring\MonitoringException`.

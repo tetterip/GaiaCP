@@ -50,6 +50,7 @@ use Plugins\MastercardGateway\MastercardGatewayPlugin;
 use Plugins\Namecheap\NamecheapPlugin;
 use Plugins\NameSilo\NameSiloPlugin;
 use Plugins\NexiXpay\NexiXpayPlugin;
+use Plugins\OfflineMethods\OfflineMethodsPlugin;
 use Plugins\OpenAi\OpenAiPlugin;
 use Plugins\Openprovider\OpenproviderPlugin;
 use Plugins\PayPal\PayPalPlugin;
@@ -84,7 +85,7 @@ use Throwable;
 class PluginManager
 {
     /** @var list<class-string<Plugin>> shipped with GaiaCP */
-    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, VirtualminPlugin::class, ProxmoxPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, OpenproviderPlugin::class, ResellerClubPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, NexiXpayPlugin::class, MastercardGatewayPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, TicketMailPlugin::class, WebhooksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, OpenAiPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
+    public const BUILT_IN = [CpanelPlugin::class, PleskPlugin::class, HestiaPlugin::class, DirectAdminPlugin::class, CyberPanelPlugin::class, VirtualminPlugin::class, ProxmoxPlugin::class, EnomPlugin::class, NamecheapPlugin::class, NameSiloPlugin::class, OpenproviderPlugin::class, ResellerClubPlugin::class, EmailRegistrarPlugin::class, GoGetSslPlugin::class, ViesPlugin::class, WhmcsImportPlugin::class, BankTransferPlugin::class, StripePlugin::class, PayPalPlugin::class, NexiXpayPlugin::class, MastercardGatewayPlugin::class, OfflineMethodsPlugin::class, GoogleLoginPlugin::class, RecaptchaPlugin::class, TurnstilePlugin::class, UptimeKumaPlugin::class, UptimeRobotPlugin::class, BetterStackPlugin::class, BlacklistsPlugin::class, SiteChecksPlugin::class, TicketMailPlugin::class, WebhooksPlugin::class, ClaudePlugin::class, DeepSeekPlugin::class, OpenAiPlugin::class, GaiaThemePlugin::class, FlatThemePlugin::class, GlassThemePlugin::class];
 
     /** @var array<string, Plugin> */
     private array $plugins = [];

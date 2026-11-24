@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.0] - 2026-11-24
+
+- PayPal's fee of each payment (`paypal_fee` of the capture) is stored on the payment, for Billing → Payments and the income reports
+
 ## [1.1.0] - 2026-11-24
 
 - Refunds and disputes: a refund or reversal made at PayPal (`PAYMENT.CAPTURE.REFUNDED` / `REVERSED`) and a dispute (`CUSTOMER.DISPUTE.CREATED` / `UPDATED` / `RESOLVED`) of a payment GaiaCP took ring the bell and go in the activity log, after reading them from PayPal's API; nothing is changed on its own. Tick the new events on the app's webhook (Settings → PayPal lists them)
