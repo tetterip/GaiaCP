@@ -12,6 +12,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   by dragging over it; a plain click still opens the row.
 - A date can be typed in its field (`09/04/2028`, `9.4.28`, `090428`, in the Region's format) as well as picked from
   the calendar.
+- AI domain names for a described business (and other short AI answers) no longer fail with "No suggestions right
+  now": the answer's token limit left no room for the thinking of models such as Claude Opus 5.5.
 
 ## [0.12.1] - 2026-11-23
 
