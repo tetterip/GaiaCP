@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.0] - 2026-11-24
+
+- CPU on the dashboard: the share of CPU time in use from `virtualmin info --search cpu` (`ReportsLoad`), read every 5 minutes (not yet tried on a real server)
+
 ## [1.0.0] - 2026-11-12
 
 - Hosting accounts on Virtualmin as its master administrator (`root`, port 10000), through its remote API

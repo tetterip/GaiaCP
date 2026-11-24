@@ -52,6 +52,8 @@ See [Keeping GaiaCP safe](12-admins-and-security.md#keeping-gaiacp-safe) for the
 The optional **Capacity and costs** fields help you run the servers:
 
 - **Maximum accounts**: the Servers list shows accounts against it ("33/120") and new orders skip a full server.
+- **Processor cores**: for the CPU share on the dashboard (see [CPU on the dashboard](#cpu-on-the-dashboard)) when
+  the panel gives only the load average. Plesk, CyberPanel and Proxmox fill it in by themselves.
 - **Monthly cost**: Reports → Income forecast and Server revenue show the profit after it.
 - **IP address**: used for new accounts where the panel needs one, by Site checks and by the IP blacklist check.
 - **Status page URL**: opened from the Servers list.
@@ -164,6 +166,22 @@ API key). On the server, pick the monitoring service and the monitor. Every 5 mi
 - super admins get the bell when a server goes down and when it is back;
 - clients with services on it see a notice at the top of the client area while it is down or in maintenance (Settings
   → Client area → Server problems, with your own message).
+
+## CPU on the dashboard
+
+Every 5 minutes GaiaCP also asks each active server's panel how busy its processors are, and the dashboard's Servers
+card shows a **CPU, 24 hours** bar under each one: the latest share beside the caption, and a square per hour in the
+colour of that hour's average (green, amber from 70%, red from the CPU warning). Point at a square for the hour's
+average and highest share.
+
+- Proxmox and Virtualmin measure the share themselves. cPanel, Plesk, DirectAdmin, HestiaCP and CyberPanel give the
+  **load average**, which GaiaCP divides by the processor cores: a load of 2 on 4 cores is 50%. This is the usual
+  reading of a server's CPU, but not quite the same as the CPU % of `top`. A load higher than the cores shows as 100%.
+- cPanel, DirectAdmin and HestiaCP don't say how many cores the server has: type them in **Processor cores** on the
+  server, or the bar stays empty ("—").
+- When a server stays at or above Settings → Automation → **CPU warning** (90% by default) for 15 minutes, super
+  admins get the bell, once until it calms down. Leave the setting empty to not be warned.
+- These reads stay out of the module log unless they fail. A panel that doesn't answer shows "—".
 
 Two more plugins watch your servers:
 

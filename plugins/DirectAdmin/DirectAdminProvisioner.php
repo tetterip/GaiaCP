@@ -10,6 +10,8 @@ use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Support\DomainName;
 
 /**
@@ -17,7 +19,7 @@ use App\Support\DomainName;
  * admin or a reseller) on one of its user packages, with the service's domain as the user's domain, on the server's
  * "IP for new accounts" or else the login's first IP. The user's password is its DirectAdmin login.
  */
-class DirectAdminProvisioner implements HostingProvisioner, ListsAccounts
+class DirectAdminProvisioner implements HostingProvisioner, ListsAccounts, ReportsLoad
 {
     public function __construct(
         private DirectAdminClient $da,
@@ -30,6 +32,14 @@ class DirectAdminProvisioner implements HostingProvisioner, ListsAccounts
         $users = $this->list($this->da->get('SHOW_USERS'));
 
         return sprintf('DirectAdmin, %d account(s) owned by %s', count($users), $this->server->username);
+    }
+
+    /** CMD_API_LOAD_AVERAGE (one=…&five=…&fifteen=…); it does not give the cores. */
+    public function load(): ServerLoad
+    {
+        $data = $this->da->get('LOAD_AVERAGE', timeout: 10);
+
+        return new ServerLoad(ServerLoad::number($data['one'] ?? null));
     }
 
     public function packages(): array

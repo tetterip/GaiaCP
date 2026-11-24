@@ -102,6 +102,15 @@ never calls a panel API directly.
   total), read leniently. Paths follow the open-source WHMCS module (webdighost/enhance-whmcs) and Paymenter's
   extension and Blesta's Enhance module, since apidocs.enhance.com was unreachable; the usage call is a guess. Untested on a real
   server
+- **CPU load** (`App\Provisioning\ReportsLoad`, every bundled panel): `load()` gives a `ServerLoad` (load average
+  of the last minute, cores when the panel says, or the share in use). cPanel `systemloadavg`; Plesk `server get stat`
+  (`load_avg/l1` in hundredths, cores from "(N core(s))" in `other/cpu`); HestiaCP `v-list-sys-info` LOADAVERAGE;
+  DirectAdmin `CMD_API_LOAD_AVERAGE`; CyberPanel cloud API `systemStatus` (`cpuOne`, `cores`); Virtualmin `info
+  --search cpu` (100 − idle); Proxmox `GET /nodes` (online nodes' `cpu` weighted by `maxcpu`). `App\Monitoring\ServerLoadCheck`
+  (gaiacp:check-load, every 5 minutes, calls kept out of the module log by `ModuleLogger::quietly()` unless they fail)
+  stores `server_load_readings` (pruned after 2 days), fills `servers.cpu_cores` from the panel, and logs
+  `server.cpu_high` (bell) after 3 readings at or over `automation.cpu_warning_percent`, `server.cpu_normal` when it
+  drops (`servers.cpu_alerted_at`). `LoadHistory` draws the dashboard's bar. Untested on real servers
 - **Account list** (`App\Provisioning\ListsAccounts`, every panel): `accounts()` gives every hosting account as a
   `PanelAccount` (username, domain, package, suspended). cPanel `listaccts` with no search; Plesk `webspace get` with an
   empty filter (`gen_info`, `hosting` for the FTP login, `subscriptions` for the plan guid, named from `service-plan

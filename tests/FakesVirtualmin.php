@@ -58,6 +58,9 @@ trait FakesVirtualmin
         $missing = fn () => $this->virtualminFail("Virtual server {$domain} does not exist");
 
         switch ($program) {
+            case 'info':
+                return $this->virtualminOk(['output' => "cpu: \n    * 23\n    * 4\n    * 70\n    * 3\n    * 0\n"]);
+
             case 'list-plans':
                 return $this->virtualminOk(['data' => array_map(fn (string $plan, int $i) => ['name' => (string) $i, 'values' => ['name' => [$plan], 'id' => [(string) $i]]], $this->virtualminPlans, array_keys($this->virtualminPlans))]);
 

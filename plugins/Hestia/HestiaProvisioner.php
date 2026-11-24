@@ -10,13 +10,15 @@ use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Support\DomainName;
 
 /**
  * HestiaCP: one HestiaCP user per hosting service (the service's username) on a package, with the service's domain
  * added as its web, DNS and mail domain. The user's password is both the HestiaCP login and the SFTP / SSH password.
  */
-class HestiaProvisioner implements HostingProvisioner, ListsAccounts
+class HestiaProvisioner implements HostingProvisioner, ListsAccounts, ReportsLoad
 {
     /** HestiaCP's own package for the admin user, never one to sell. */
     private const SYSTEM_PACKAGE = 'system';
@@ -31,6 +33,14 @@ class HestiaProvisioner implements HostingProvisioner, ListsAccounts
         $info = $this->hestia->list('v-list-sys-info')['sysinfo'] ?? [];
 
         return 'HestiaCP '.(($info['HESTIA'] ?? '') ?: 'unknown version');
+    }
+
+    /** v-list-sys-info's LOADAVERAGE ("0.15 / 0.10 / 0.05"), the last minute first; it does not give the cores. */
+    public function load(): ServerLoad
+    {
+        $info = $this->hestia->list('v-list-sys-info', timeout: 10)['sysinfo'] ?? [];
+
+        return new ServerLoad(ServerLoad::number($info['LOADAVERAGE'] ?? null));
     }
 
     public function packages(): array

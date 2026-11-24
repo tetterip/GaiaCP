@@ -77,6 +77,8 @@ trait FakesDirectAdmin
         $user = (string) ($params['user'] ?? $params['username'] ?? $params['select0'] ?? '');
 
         switch ($command) {
+            case 'LOAD_AVERAGE':
+                return $this->daOk(['one' => '0.80', 'five' => '0.60', 'fifteen' => '0.40']);
             case 'SHOW_USERS':
                 return $this->daList(array_keys($this->daUsers));
             case 'PACKAGES_USER':

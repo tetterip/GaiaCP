@@ -199,6 +199,11 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   goes down and when it is back up (with how long it was down). Other services can be
   added as plugins. While a server is down or in maintenance, its clients see a notice at the top of the client area
   naming their services on it (Settings → Client area → Server problems, on by default, with your own message)
+- Server CPU: every 5 minutes (`gaiacp:check-load`) each active server's panel is asked how busy its processors are
+  (`ReportsLoad`: cPanel, Plesk, HestiaCP, DirectAdmin and CyberPanel give the load average, divided by the processor
+  cores; Proxmox and Virtualmin the share in use). The dashboard's Servers card shows a CPU bar per server (the latest
+  share and a square per hour for 24 hours), and super admins get a bell notification when one stays at or above
+  Settings → Automation → CPU warning (90%) for 15 minutes
 - IP blacklist check (a plugin, Settings → IP blacklist check): every hour each active server's IP (its IP address
   field, else its hostname's) is looked up in DNS blacklists (Spamhaus ZEN, SpamCop, Barracuda, PSBL by default);
   super admins get a bell notification when one is listed and when it is removed again. A list that refuses to

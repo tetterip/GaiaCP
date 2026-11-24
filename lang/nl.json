@@ -4329,5 +4329,18 @@
     "WHMCS logins": "WHMCS-aanmeldingen",
     "Free orders in one click": "Gratis bestellingen in één klik",
     "Speed from the panel": "Snelheid vanuit het paneel",
-    "Release notes": "Release-opmerkingen"
+    "Release notes": "Release-opmerkingen",
+    ":time: :average on average, highest :highest": ":time: gemiddeld :average, hoogste :highest",
+    ":time: not read": ":time: niet gelezen",
+    "CPU at :percent for :minutes minutes": "CPU op :percent gedurende :minutes minuten",
+    "CPU warning": "CPU-waarschuwing",
+    "CPU, 24 hours": "CPU, 24 uur",
+    "CPU: :percent": "CPU: :percent",
+    "Cpu cores": "Processorkernen",
+    "Cpu warning percent": "CPU-waarschuwing",
+    "Every 5 minutes, reads how busy each server's CPU is from its panel (the dashboard's Servers card). When it stays at or above this share for 15 minutes, the bell rings once. Leave empty to not warn.": "Leest elke 5 minuten uit het paneel hoe druk de CPU van elke server is (kaart Servers op het dashboard). Blijft die 15 minuten op of boven dit percentage, dan gaat de bel één keer. Leeg laten om niet te waarschuwen.",
+    "For the CPU share on the dashboard when the panel gives only the load average (cPanel, DirectAdmin, HestiaCP). Filled in by itself when the panel says.": "Voor het CPU-percentage op het dashboard als het paneel alleen de gemiddelde belasting geeft (cPanel, DirectAdmin, HestiaCP). Wordt vanzelf ingevuld als het paneel het meldt.",
+    "Load average: :load": "Gemiddelde belasting: :load",
+    "Processor cores": "Processorkernen",
+    "Server :name is busy": "Server :name is druk"
 }

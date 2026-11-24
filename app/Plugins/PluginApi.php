@@ -100,6 +100,8 @@ use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarModule;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Provisioning\ServerModule;
 use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\TldPrice;
@@ -151,6 +153,8 @@ final class PluginApi
         ControlsPower::class,
         DescribesMachine::class,
         MachineDetails::class,
+        ReportsLoad::class,
+        ServerLoad::class,
         InstallsCertificates::class,
         LimitsUsernameLength::class,
 

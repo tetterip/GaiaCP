@@ -31,9 +31,32 @@ class ModuleLogger
     /** Longest request or response body kept, in bytes. */
     private const MAX_BODY = 65536;
 
+    /** Calls made inside quietly(): only their failures are kept. */
+    private static int $quiet = 0;
+
     public static function enabled(): bool
     {
         return (bool) config('gaiacp.debug.module_log');
+    }
+
+    /**
+     * Runs a frequent read (the CPU load every 5 minutes) without filling the module log: a call that answers is not
+     * kept, a failed one is.
+     *
+     * @template T
+     *
+     * @param  callable(): T  $callback
+     * @return T
+     */
+    public static function quietly(callable $callback): mixed
+    {
+        self::$quiet++;
+
+        try {
+            return $callback();
+        } finally {
+            self::$quiet--;
+        }
     }
 
     /**
@@ -49,7 +72,12 @@ class ModuleLogger
             }
 
             $started = hrtime(true);
-            $write = function (?ResponseInterface $response, ?Throwable $error) use ($request, $module, $action, $secrets, $secretResponseKeys, $started): void {
+            $quiet = self::$quiet > 0;
+            $write = function (?ResponseInterface $response, ?Throwable $error) use ($request, $module, $action, $secrets, $secretResponseKeys, $started, $quiet): void {
+                if ($quiet && $error === null && $response !== null && $response->getStatusCode() < 400) {
+                    return;
+                }
+
                 rescue(fn () => self::write($module, $action, $request, $response, $error, $secrets, $secretResponseKeys, (int) round((hrtime(true) - $started) / 1e6)), report: false);
             };
 

@@ -79,6 +79,7 @@ class AdminAlerts
         'quote.declined' => AdminArea::Sales,
         'server.down' => null,
         'server.up' => null,
+        'server.cpu_high' => null,
         'server.accounts_differ' => null,
         'monitoring.failed' => null,
         'blacklist.listed' => null,
@@ -278,6 +279,12 @@ class AdminAlerts
                     ? __('Down for :time', ['time' => CarbonInterval::seconds((int) $log->properties['down_seconds'])->cascade()->forHumans(['short' => true, 'parts' => 2])])
                     : null,
                 'heroicon-o-signal', 'success',
+                ServerResource::getUrl(panel: 'admin'),
+            ],
+            'server.cpu_high' => [
+                __('Server :name is busy', ['name' => self::serverName($log)]),
+                __('CPU at :percent for :minutes minutes', ['percent' => ((int) round((float) ($log->properties['percent'] ?? 0))).'%', 'minutes' => (int) ($log->properties['minutes'] ?? 15)]),
+                'heroicon-o-cpu-chip', 'warning',
                 ServerResource::getUrl(panel: 'admin'),
             ],
             'server.accounts_differ' => [

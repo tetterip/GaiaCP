@@ -57,6 +57,8 @@ trait FakesWhm
             switch ($function) {
                 case 'version':
                     return $ok(['version' => '11.130.0.4']);
+                case 'systemloadavg':
+                    return $ok(['one' => '1.50', 'five' => '1.20', 'fifteen' => '0.90']);
                 case 'listpkgs':
                     return $ok(['pkg' => [['name' => 'basic'], ['name' => 'pro']]]);
                 case 'listaccts':

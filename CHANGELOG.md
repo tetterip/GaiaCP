@@ -5,6 +5,14 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The dashboard's Servers card shows each server's **CPU**: the latest share and a square per hour for the last 24
+  hours, read from the panel every 5 minutes (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Proxmox).
+  Panels that give only the load average need the server's **Processor cores** (a new field; Plesk, CyberPanel and
+  Proxmox fill it in). The bell rings when a server stays at or above Settings → Automation → **CPU warning** (90%)
+  for 15 minutes.
+- Plugin API: a server panel may implement `App\Provisioning\ReportsLoad` (optional, with `App\Provisioning\ServerLoad`)
+  to show its CPU on the dashboard.
+
 - A client's page has an **Emails** tab: every email sent to the client, or to you about them, with the date,
   subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
   Settings → Email log, once the client has an email.

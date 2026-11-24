@@ -147,6 +147,9 @@ trait FakesCyberPanel
         switch ($controller) {
             case 'verifyLogin':
                 return Http::response(['status' => 1, 'error_message' => null]);
+            case 'systemStatus':
+                return Http::response(['status' => 1, 'error_message' => 'None', 'data' => '[]', 'cpuNow' => '12.5', 'cpuOne' => '3.00',
+                    'cpuFive' => '2.00', 'cpuFifteen' => '1.00', 'cores' => 6]);
             case 'fetchWebsites':
                 $all = [];
                 foreach ($this->cpWebsites as $domain => $site) {

@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.7.0] - 2026-11-24
+
+- CPU on the dashboard: the load average and processor cores from the server statistics (`server get stat`, `ReportsLoad`), read every 5 minutes (not yet tried on a real server)
+
 ## [1.6.3] - 2026-11-17
 
 - Security: Log in to Plesk, its shortcuts and changing the Plesk login's password work only when the Plesk customer that owns the subscription is the client's own (made by GaiaCP for them, or made by hand and holding no other client's subscription). A subscription moved to another client stays under the old client's Plesk customer, so its new client no longer gets that login

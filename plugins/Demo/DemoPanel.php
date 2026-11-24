@@ -12,12 +12,14 @@ use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 
 /**
  * A demo server's "panel": an account is what GaiaCP stores about the service (pending or terminated = none,
  * suspended = suspended, else active), so creating, suspending and removing always work and change nothing else.
  */
-class DemoPanel implements HostingProvisioner, ListsAccounts
+class DemoPanel implements HostingProvisioner, ListsAccounts, ReportsLoad
 {
     private const GB = 1024 * 1024 * 1024;
 
@@ -26,6 +28,21 @@ class DemoPanel implements HostingProvisioner, ListsAccounts
     public function testConnection(): string
     {
         return 'Demo panel 1.0';
+    }
+
+    /** A made-up CPU: busier in the working day, a little different per server and per reading. */
+    public function load(): ServerLoad
+    {
+        return new ServerLoad(null, 8, self::percentAt($this->server->id, now()));
+    }
+
+    public static function percentAt(int $server, \DateTimeInterface $at): float
+    {
+        $hour = (int) $at->format('G') + (int) $at->format('i') / 60;
+        $day = 12 + 30 * max(0.0, sin(($hour - 7) / 14 * M_PI));
+        $wobble = 6 * sin($at->getTimestamp() / 1700 + $server * 2.1);
+
+        return round(max(2.0, min(98.0, $day + $wobble + $server * 7 % 15)), 1);
     }
 
     public function packages(): array

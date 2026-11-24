@@ -29,6 +29,9 @@
                         @if ($server['uptime'])
                             @include('filament.servers.uptime-bar', ['history' => $server['uptime'], 'caption' => __('Uptime, 24 hours'), 'fill' => true])
                         @endif
+                        @if ($server['cpu'])
+                            @include('filament.servers.cpu-bar', ['history' => $server['cpu'], 'caption' => __('CPU, 24 hours'), 'fill' => true])
+                        @endif
                         @include('filament.servers.accounts-bar', ['server' => $server['server'], 'squares' => \App\Filament\Widgets\ServerCapacity::SQUARES, 'caption' => __('Accounts'), 'fill' => true])
                     </div>
                 </div>

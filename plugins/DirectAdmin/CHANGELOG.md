@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.0] - 2026-11-24
+
+- CPU on the dashboard: the load average from `CMD_API_LOAD_AVERAGE` (`ReportsLoad`), read every 5 minutes; the processor cores come from the server form (not yet tried on a real server)
+
 ## [1.2.0] - 2026-11-12
 
 - Log in opens DirectAdmin already signed in: a one-time link from its JSON API (`POST /api/login`), else the login page as before

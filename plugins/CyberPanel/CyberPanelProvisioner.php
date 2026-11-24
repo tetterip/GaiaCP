@@ -10,6 +10,8 @@ use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Support\DomainName;
 
 /**
@@ -17,7 +19,7 @@ use App\Support\DomainName;
  * service's username, created with it by the server's `admin` login on one of its packages. The owner's password is
  * the CyberPanel login; FTP, databases and mail keep their own. Suspending suspends the website.
  */
-class CyberPanelProvisioner implements HostingProvisioner, ListsAccounts
+class CyberPanelProvisioner implements HostingProvisioner, ListsAccounts, ReportsLoad
 {
     /** fetchWebsites answers ten websites a page. */
     private const PAGE_SIZE = 10;
@@ -39,6 +41,17 @@ class CyberPanelProvisioner implements HostingProvisioner, ListsAccounts
         $this->cp->cloud('verifyLogin');
 
         return trim(sprintf('CyberPanel %s%s', $version['currentVersion'] ?? '', filled($version['build'] ?? null) ? '.'.$version['build'] : ''));
+    }
+
+    /** The cloud API's systemStatus (CyberPanel's Top processes page): cpuOne = load average of the last minute, cores. */
+    public function load(): ServerLoad
+    {
+        $data = $this->cp->cloud('systemStatus', timeout: 15);
+
+        return new ServerLoad(
+            ServerLoad::number($data['cpuOne'] ?? null),
+            isset($data['cores']) && (int) $data['cores'] > 0 ? (int) $data['cores'] : null,
+        );
     }
 
     public function packages(): array

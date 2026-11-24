@@ -64,7 +64,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
   domain endings and their costs imported from the registrar, with a warning when one sells at a loss
 - A module queue: a set up, suspension or renewal that fails on a server or at a registrar waits there and is retried
 - SSL certificates sold and reissued through **GoGetSSL**, validated and installed on your own cPanel / Plesk hosting
-- A comparison of each server's accounts with what you bill, and uptime from Uptime Kuma, UptimeRobot, Better Stack
+- A comparison of each server's accounts with what you bill, each server's CPU on the dashboard, and uptime from Uptime Kuma, UptimeRobot, Better Stack
   or HetrixTools (from the plugin catalogue)
 
 **Your clients**
