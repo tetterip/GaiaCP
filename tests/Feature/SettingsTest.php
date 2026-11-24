@@ -59,6 +59,7 @@ use Plugins\GoGetSsl\GoGetSslSettings;
 use Plugins\GoogleLogin\GoogleLoginSettings;
 use Plugins\MastercardGateway\MastercardSettings;
 use Plugins\NexiXpay\NexiXpaySettings;
+use Plugins\OfflineMethods\OfflineMethodsSettings;
 use Plugins\OpenAi\OpenAiSettings;
 use Plugins\PayPal\PayPalSettings;
 use Plugins\Proxmox\ProxmoxSettings;
@@ -89,7 +90,7 @@ class SettingsTest extends TestCase
     ];
 
     /** Listed on Settings → Payment methods and under it in the menu, without a card of their own. */
-    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, NexiXpaySettings::class, MastercardSettings::class];
+    private const PAYMENT_PAGES = [BankTransferSettings::class, StripeSettings::class, PayPalSettings::class, NexiXpaySettings::class, MastercardSettings::class, OfflineMethodsSettings::class];
 
     public function test_settings_shows_a_card_per_page_and_each_page_has_the_sub_navigation(): void
     {

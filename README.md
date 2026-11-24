@@ -52,7 +52,7 @@ every ten minutes, so click anything you like. Nothing leaves the server: no ema
 **Billing**
 - Payment notices (proformas) made and emailed before each due date, with reminders and overdue notices
 - Automatic suspension of unpaid hosting, and unsuspension once it is paid
-- Card payments through Stripe Checkout, PayPal, Nexi XPay, Mastercard Gateway, Alpha Bank, Eurobank, Piraeus Bank and IRIS (Greek instant payments, QR code on notices; these four from the plugin catalogue), bank transfer, client credit, tax and EU reverse charge, several currencies
+- Card payments through Stripe Checkout, PayPal, Nexi XPay, Mastercard Gateway, Alpha Bank, Eurobank, Piraeus Bank and IRIS (Greek instant payments, QR code on notices; these four from the plugin catalogue), bank transfer, your own offline ways to pay (cheque, cash, Revolut…), client credit, tax and EU reverse charge, several currencies
 - Optional numbered invoices and credit notes as PDF, issued when a notice is paid, with a CSV export for your accountant
 - Coupons, sale prices on products and domain endings, quotes, upgrades and downgrades, price changes with notice,
   add-ons and product options

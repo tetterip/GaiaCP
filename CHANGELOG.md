@@ -15,6 +15,10 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - **Provider fees**: what Stripe and PayPal keep of each payment is stored on it. Billing → Payments has a *Provider
   fee* column with its total, Annual income a *Provider fees* column (once there are any), and the monthly
   transactions export a fee per payment.
+- **Other ways to pay** (new plugin, off by default): your own ways to be paid without a gateway, such as a cheque,
+  cash at the office, IRIS to a phone number, Revolut or Wise. Each has a name and instructions for the client
+  (`{number}` and `{amount}` fill in the notice's number and total), shown with the payment notices and their emails, and
+  is picked when you record a payment. One already used for payments can be switched off but not removed.
 - Plugin API: a payment module may implement `App\Payments\RefundsAtProvider` to refund at the gateway, and report
   refunds and chargebacks with `App\Payments\ProviderReports`, and store a gateway's fee with
   `App\Payments\ProviderFees`.

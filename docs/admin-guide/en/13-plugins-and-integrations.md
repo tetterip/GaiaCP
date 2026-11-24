@@ -52,7 +52,7 @@ To write your own: the [plugin tutorial](../../plugin-tutorial.md) and the [refe
 | | CyberPanel, Virtualmin, Proxmox VE | off | the same; CyberPanel and Proxmox also under Settings → Integrations |
 | Registrars | Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications | on | Settings → Products & domains → Registrars |
 | Payment methods | Bank transfer, Stripe | on | Settings → Billing → Payment methods |
-| | PayPal, Nexi XPay, Mastercard Gateway | off | the same |
+| | PayPal, Nexi XPay, Mastercard Gateway, Other ways to pay | off | the same |
 | Tax | VIES VAT check | off | Settings → Billing → VIES VAT check |
 | SSL certificates | GoGetSSL | off | Settings → Integrations → GoGetSSL |
 | Monitoring | Uptime Kuma, UptimeRobot, Better Stack, IP blacklist check, Site checks | on | Settings → Integrations |

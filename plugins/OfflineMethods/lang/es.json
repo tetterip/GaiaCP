@@ -1,0 +1,12 @@
+{
+    "Add a way to pay": "Añadir una forma de pago",
+    "Cash at our office": "Efectivo en nuestra oficina",
+    "Each one is a payment method of its own: its instructions show on payment notices and their emails, and you pick it when you record a payment. In the instructions, {number} becomes the payment notice's number (the reference to write) and {amount} its total.": "Cada una es un método de pago propio: sus instrucciones aparecen en los avisos de pago y sus correos, y la elige al registrar un pago. En las instrucciones, {number} pasa a ser el número del aviso de pago (la referencia que se debe indicar) y {amount} su total.",
+    "Instructions": "Instrucciones",
+    "Methods": "Formas",
+    "Off: no longer offered or shown; payments made with it keep it.": "Desactivada: ya no se ofrece ni se muestra; los pagos hechos con ella la conservan.",
+    "Other ways to pay": "Otras formas de pago",
+    "Pay at our office, Mon–Fri 9:00–17:00. Mention {number}.": "Pague en nuestra oficina, lun–vie 9:00–17:00. Indique {number}.",
+    "Your own ways to pay without a gateway (cheque, cash at the office, IRIS to a phone number, Revolut), each with instructions shown on payment notices.": "Sus propias formas de pago sin pasarela (cheque, efectivo en la oficina, IRIS a un teléfono, Revolut), cada una con instrucciones en los avisos de pago.",
+    "Your own ways to pay without a gateway, each with instructions for the client.": "Sus propias formas de pago sin pasarela, cada una con instrucciones para el cliente."
+}
