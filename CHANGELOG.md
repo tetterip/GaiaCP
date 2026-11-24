@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- A hosting service's page has an **On the server** section: whether the account is active, suspended or missing on
+  its server, read from the panel when the page opens, next to the status in GaiaCP. When they differ, a red box says
+  what it means for the client and offers to fix either side (Unsuspend / Suspend on the server, or mark it so in
+  GaiaCP without emailing the client); a missing account offers Create on server.
+- Account → **Log in to cPanel / Plesk / …** on an active hosting service: the client's own account on the panel, in a
+  new tab, signed in.
 - Dashboard → Servers: accounts come first, then uptime, then CPU, and every row reaches the right edge of the card,
   under its number; a line separates one server from the next. The accounts are a thin line, here and in the servers
   list, that grows with the share and turns from green to orange (70%) and red (85%).

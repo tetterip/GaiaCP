@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Diese Zahlung kann nicht beim Zahlungsanbieter erstattet werden.",
     "Provider fee": "Anbietergebühr",
     "Provider fees": "Anbietergebühren",
-    "Fee cents": "Anbietergebühr"
+    "Fee cents": "Anbietergebühr",
+    "Checking the account on the server…": "Konto auf dem Server wird geprüft…",
+    "Unsuspended on the server": "Auf dem Server entsperrt",
+    "Status updated to match the server": "Status an den Server angepasst",
+    "Not found": "Nicht gefunden",
+    "The server did not answer: :error": "Der Server hat nicht geantwortet: :error",
+    "Same as in GaiaCP": "Wie in GaiaCP",
+    "Does not match GaiaCP.": "Stimmt nicht mit GaiaCP überein.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "In GaiaCP ist der Dienst aktiv, aber auf :server ist das Konto :username gesperrt: Website und E-Mail des Kunden funktionieren nicht.",
+    "Unsuspend :username on :server?": ":username auf :server entsperren?",
+    "Mark as suspended in GaiaCP": "In GaiaCP als gesperrt markieren",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "In GaiaCP ist der Dienst gesperrt, aber auf :server ist das Konto :username aktiv: Der Kunde hat weiterhin Website und E-Mail.",
+    "Suspend :username on :server?": ":username auf :server sperren?",
+    "Mark as active in GaiaCP": "In GaiaCP als aktiv markieren",
+    "The account :username does not exist on :server.": "Das Konto :username existiert auf :server nicht.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Es wurde vielleicht gelöscht oder auf einen anderen Server verschoben: Wählen Sie dann diesen Server unter Hosting-Konto und speichern Sie.",
+    "Create :username on :server with the password stored here?": ":username auf :server mit dem hier gespeicherten Passwort anlegen?",
+    "Read from the panel when the page opens; kept for a minute.": "Beim Öffnen der Seite aus dem Panel gelesen; eine Minute lang gespeichert."
 }

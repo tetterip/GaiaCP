@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Este pago no se puede reembolsar en el proveedor de pagos.",
     "Provider fee": "Comisión del proveedor",
     "Provider fees": "Comisiones de proveedores",
-    "Fee cents": "Comisión del proveedor"
+    "Fee cents": "Comisión del proveedor",
+    "Checking the account on the server…": "Comprobando la cuenta en el servidor…",
+    "Unsuspended on the server": "Reactivada en el servidor",
+    "Status updated to match the server": "Estado actualizado según el servidor",
+    "Not found": "No encontrada",
+    "The server did not answer: :error": "El servidor no respondió: :error",
+    "Same as in GaiaCP": "Igual que en GaiaCP",
+    "Does not match GaiaCP.": "No coincide con GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "En GaiaCP el servicio está activo, pero en :server la cuenta :username está suspendida: el sitio web y el correo del cliente no funcionan.",
+    "Unsuspend :username on :server?": "¿Reactivar :username en :server?",
+    "Mark as suspended in GaiaCP": "Marcar como suspendida en GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "En GaiaCP el servicio está suspendido, pero en :server la cuenta :username está activa: el cliente sigue teniendo sitio web y correo.",
+    "Suspend :username on :server?": "¿Suspender :username en :server?",
+    "Mark as active in GaiaCP": "Marcar como activa en GaiaCP",
+    "The account :username does not exist on :server.": "La cuenta :username no existe en :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Puede que se haya eliminado o movido a otro servidor: en ese caso elija ese servidor en Cuenta de hosting y guarde.",
+    "Create :username on :server with the password stored here?": "¿Crear :username en :server con la contraseña guardada aquí?",
+    "Read from the panel when the page opens; kept for a minute.": "Se lee del panel al abrir la página; se guarda durante un minuto."
 }

@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Tej płatności nie można zwrócić u operatora płatności.",
     "Provider fee": "Prowizja operatora",
     "Provider fees": "Prowizje operatorów",
-    "Fee cents": "Prowizja operatora"
+    "Fee cents": "Prowizja operatora",
+    "Checking the account on the server…": "Sprawdzanie konta na serwerze…",
+    "Unsuspended on the server": "Odblokowano na serwerze",
+    "Status updated to match the server": "Status zaktualizowany zgodnie z serwerem",
+    "Not found": "Nie znaleziono",
+    "The server did not answer: :error": "Serwer nie odpowiedział: :error",
+    "Same as in GaiaCP": "Tak samo jak w GaiaCP",
+    "Does not match GaiaCP.": "Nie zgadza się z GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "W GaiaCP usługa jest aktywna, ale na :server konto :username jest zawieszone: strona i poczta klienta nie działają.",
+    "Unsuspend :username on :server?": "Odblokować :username na :server?",
+    "Mark as suspended in GaiaCP": "Oznacz jako zawieszoną w GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "W GaiaCP usługa jest zawieszona, ale na :server konto :username jest aktywne: klient nadal ma stronę i pocztę.",
+    "Suspend :username on :server?": "Zawiesić :username na :server?",
+    "Mark as active in GaiaCP": "Oznacz jako aktywną w GaiaCP",
+    "The account :username does not exist on :server.": "Konto :username nie istnieje na :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Mogło zostać usunięte lub przeniesione na inny serwer: wtedy wybierz ten serwer w Konto hostingowe i zapisz.",
+    "Create :username on :server with the password stored here?": "Utworzyć :username na :server z zapisanym tutaj hasłem?",
+    "Read from the panel when the page opens; kept for a minute.": "Odczytywane z panelu przy otwarciu strony; przechowywane przez minutę."
 }

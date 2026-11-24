@@ -4365,5 +4365,22 @@
     "This payment can't be refunded at the payment provider.": "Ce paiement ne peut pas être remboursé chez le prestataire de paiement.",
     "Provider fee": "Frais du prestataire",
     "Provider fees": "Frais des prestataires",
-    "Fee cents": "Frais du prestataire"
+    "Fee cents": "Frais du prestataire",
+    "Checking the account on the server…": "Vérification du compte sur le serveur…",
+    "Unsuspended on the server": "Réactivé sur le serveur",
+    "Status updated to match the server": "Statut mis à jour selon le serveur",
+    "Not found": "Introuvable",
+    "The server did not answer: :error": "Le serveur n'a pas répondu : :error",
+    "Same as in GaiaCP": "Identique à GaiaCP",
+    "Does not match GaiaCP.": "Ne correspond pas à GaiaCP.",
+    "In GaiaCP the service is active, but on :server the account :username is suspended: the client's website and email do not work.": "Dans GaiaCP le service est actif, mais sur :server le compte :username est suspendu : le site et les e-mails du client ne fonctionnent pas.",
+    "Unsuspend :username on :server?": "Réactiver :username sur :server ?",
+    "Mark as suspended in GaiaCP": "Marquer comme suspendu dans GaiaCP",
+    "In GaiaCP the service is suspended, but on :server the account :username is active: the client still has their website and email.": "Dans GaiaCP le service est suspendu, mais sur :server le compte :username est actif : le client a toujours son site et ses e-mails.",
+    "Suspend :username on :server?": "Suspendre :username sur :server ?",
+    "Mark as active in GaiaCP": "Marquer comme actif dans GaiaCP",
+    "The account :username does not exist on :server.": "Le compte :username n'existe pas sur :server.",
+    "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Il a peut-être été supprimé ou déplacé vers un autre serveur : choisissez alors ce serveur sous Compte d'hébergement et enregistrez.",
+    "Create :username on :server with the password stored here?": "Créer :username sur :server avec le mot de passe enregistré ici ?",
+    "Read from the panel when the page opens; kept for a minute.": "Lu depuis le panneau à l'ouverture de la page ; conservé une minute."
 }
