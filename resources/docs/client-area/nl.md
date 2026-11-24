@@ -238,7 +238,7 @@ Onder Support → Mededelingen plaatsen we nieuws over onze diensten: nieuwe die
 <!-- if:server_status -->
 ## Serverstatus
 
-Support → Serverstatus toont of onze servers op dit moment werken, met de vakjes van de laatste 30 dagen en 24 uur. Heeft er een een probleem, dan staat die bovenaan met wat we erover weten.
+Support → Serverstatus toont of onze servers op dit moment werken, met een teken voor elk van de laatste 30 dagen en 24 uur: een groene cirkel als hij werkte, een gele driehoek bij problemen, een rode omgekeerde driehoek als hij plat lag. Heeft er een een probleem, dan staat die bovenaan met wat we erover weten.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Contact

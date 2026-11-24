@@ -238,7 +238,7 @@ Dans Support → Annonces, nous publions les actualités de nos services : nouve
 <!-- if:server_status -->
 ## État des serveurs
 
-Support → État des serveurs indique si nos serveurs fonctionnent en ce moment, avec les carrés des 30 derniers jours et des 24 dernières heures. Quand l'un d'eux a un problème, il apparaît en haut avec ce que nous en savons.
+Support → État des serveurs indique si nos serveurs fonctionnent en ce moment, avec une marque pour chacun des 30 derniers jours et des 24 dernières heures : un cercle vert quand il fonctionnait, un triangle jaune en cas de problèmes, un triangle rouge à l'envers quand il était hors service. Quand l'un d'eux a un problème, il apparaît en haut avec ce que nous en savons.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Nous contacter

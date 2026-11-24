@@ -5,7 +5,8 @@
      * @var ?string $caption what the squares show (null where a column header already says it)
      * @var string $value the number next to the caption
      * @var string $label the squares' accessible name
-     * @var list<array{color: ?string, title?: ?string}> $cells one square each, oldest / first on the left; a null colour is empty
+     * @var list<array{color: ?string, title?: ?string, shape?: string}> $cells one square each, oldest / first on the left; a null
+     *                  colour is empty; a shape (up, warn, down, none: the uptime bar) draws that shape in the square instead
      * @var int $rows lines the squares wrap onto (2 in a narrow table column), read left to right like a calendar
      * @var bool $fill the squares grow to the full width (dashboard, client hosting page) instead of staying
      *                  10px, so bars side by side in the servers list have squares of one size
@@ -31,8 +32,18 @@
     </div>
     <div role="img" aria-label="{{ $label }}" style="grid-column: 1 / -1; display: grid; grid-template-columns: {{ $fill ? 'subgrid' : 'repeat('.$columns.', '.$square.'px)' }}; gap: 2px;">
         @foreach ($cells as $cell)
-            <span @if ($cell['title'] ?? null) title="{{ $cell['title'] }}" @endif @if ($cell['color'] ?? null) data-on @endif
-                style="--gx-i: {{ $loop->index }}; aspect-ratio: 1; border-radius: 2px; background: {{ $cell['color'] ?? 'rgb(127 127 127 / .2)' }};"></span>
+            @if ($cell['shape'] ?? null)
+                <span @if ($cell['title'] ?? null) title="{{ $cell['title'] }}" @endif @if ($cell['color'] ?? null) data-on @endif data-shape="{{ $cell['shape'] }}"
+                    style="--gx-i: {{ $loop->index }}; aspect-ratio: 1; display: grid; place-items: center;"><svg viewBox="0 0 20 20" aria-hidden="true" style="width: 80%; height: 80%; overflow: visible; fill: {{ $cell['color'] ?? 'rgb(127 127 127 / .35)' }}; stroke: {{ $cell['color'] ?? 'none' }};">@switch($cell['shape'])
+                    @case('down')<path d="M2.5 4h15l-7.5 12.5z" stroke-width="3.5" stroke-linejoin="round"/>@break
+                    @case('warn')<path d="M2.5 16h15l-7.5-12.5z" stroke-width="3.5" stroke-linejoin="round"/>@break
+                    @case('up')<circle cx="10" cy="10" r="7.75" stroke="none"/>@break
+                    @default<circle cx="10" cy="10" r="3.75" stroke="none"/>
+                @endswitch</svg></span>
+            @else
+                <span @if ($cell['title'] ?? null) title="{{ $cell['title'] }}" @endif @if ($cell['color'] ?? null) data-on @endif
+                    style="--gx-i: {{ $loop->index }}; aspect-ratio: 1; border-radius: 2px; background: {{ $cell['color'] ?? 'rgb(127 127 127 / .2)' }};"></span>
+            @endif
         @endforeach
     </div>
 </div>

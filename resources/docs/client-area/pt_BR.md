@@ -238,7 +238,7 @@ Em Suporte → Comunicados publicamos novidades sobre os nossos serviços: novos
 <!-- if:server_status -->
 ## Status dos servidores
 
-Suporte → Status dos servidores mostra se os nossos servidores estão funcionando agora, com os quadrados dos últimos 30 dias e das últimas 24 horas. Quando um tem um problema, ele aparece no topo com o que sabemos a respeito.
+Suporte → Status dos servidores mostra se os nossos servidores estão funcionando agora, com uma marca para cada um dos últimos 30 dias e das últimas 24 horas: um círculo verde quando funcionou, um triângulo amarelo quando teve problemas e um triângulo vermelho invertido quando ficou fora do ar. Quando um tem um problema, ele aparece no topo com o que sabemos a respeito.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Fale conosco

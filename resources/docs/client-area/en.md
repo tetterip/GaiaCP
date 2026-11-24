@@ -238,7 +238,7 @@ Under Support → Announcements we post news about our services: new services, p
 <!-- if:server_status -->
 ## Server status
 
-Support → Server status shows whether our servers work right now, with the squares of the last 30 days and 24 hours. When one has a problem, it is at the top with what we know about it.
+Support → Server status shows whether our servers work right now, with a mark for each of the last 30 days and 24 hours: a green circle when it worked, a yellow triangle when it had problems, a red upside-down triangle when it was down. When one has a problem, it is at the top with what we know about it.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Contact us
