@@ -544,6 +544,13 @@
         animation-delay: calc(var(--gx-i, 0) * 45ms + 150ms);
     }
 
+    /* The CPU columns grow from the base, like the chart's bars */
+    .gx-cpu-fill {
+        transform-origin: bottom;
+        animation: gx-grow .4s cubic-bezier(.2, .8, .3, 1) backwards;
+        animation-delay: calc(var(--gx-i, 0) * 30ms + 150ms);
+    }
+
     @keyframes gx-grow {
         from { transform: scaleY(0); }
     }
@@ -561,6 +568,7 @@
         .gx-bar-orders,
         .gx-bar-completed,
         .gx-income,
+        .gx-cpu-fill,
         .gx-servers .gx-meter [role="img"] > span[data-on] {
             animation: none;
         }
