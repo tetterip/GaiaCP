@@ -14,17 +14,14 @@ use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Each active server with a dot for its monitor's status and its uptime over 30 days beside its name, its uptime for
- * the last 24 hours and its hosting accounts against the maximum, both as a row of squares (`filament.servers.meter`),
- * a warning once its accounts reach NEARLY_FULL of the maximum, and, for a panel that reports it (ReportsLoad), its CPU
+ * Each active server with a dot for its monitor's status and its uptime over 30 days beside its name, then its hosting
+ * accounts against the maximum as a thin line that turns orange and red as it fills (`filament.servers.accounts-bar`),
+ * its uptime for the last 24 hours as a row of marks (`filament.servers.meter`), a warning once its accounts reach NEARLY_FULL of the maximum, and, for a panel that reports it (ReportsLoad), its CPU
  * over the last 24 hours (`filament.servers.cpu-bar`, App\Monitoring\LoadHistory).
  */
 class ServerCapacity extends Widget
 {
     use FitsDashboard;
-
-    /** The accounts bar has as many squares as the 24-hour uptime bar, so the two line up. */
-    public const SQUARES = 24;
 
     /** The share of a server's maximum accounts from which the card warns. */
     public const NEARLY_FULL = 0.85;
