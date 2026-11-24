@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 /**
  * PayPal's two ways back: the client's browser after approving (return), and PayPal's webhook (webhook). Neither is
  * believed: both only name an order GaiaCP opened, and PayPalPayments::sync() reads that order from PayPal's API with
- * the app's own keys before taking or recording anything. So the webhook needs no signing secret.
+ * the app's own keys before taking or recording anything. So the webhook needs no signing secret. Refunds and
+ * disputes are read from the API the same way (PayPalReports).
  */
 class PayPalController
 {
@@ -22,13 +23,28 @@ class PayPalController
         'CHECKOUT.ORDER.APPROVED',
         'PAYMENT.CAPTURE.COMPLETED',
         'PAYMENT.CAPTURE.DENIED',
+        'PAYMENT.CAPTURE.REFUNDED',
+        'PAYMENT.CAPTURE.REVERSED',
+        'CUSTOMER.DISPUTE.CREATED',
+        'CUSTOMER.DISPUTE.UPDATED',
+        'CUSTOMER.DISPUTE.RESOLVED',
     ];
 
-    public function webhook(Request $request, PayPalPayments $payments): JsonResponse
+    public function webhook(Request $request, PayPalPayments $payments, PayPalReports $reports): JsonResponse
     {
         abort_unless(app(PluginManager::class)->enabled('paypal') && PayPalApi::configured(), 404);
 
         $type = (string) $request->json('event_type');
+
+        if (in_array($type, [...PayPalReports::REFUND_EVENTS, ...PayPalReports::DISPUTE_EVENTS], true)) {
+            try {
+                $reports->handle($type, (array) $request->json('resource', []));
+            } catch (PayPalException) {
+                return response()->json(status: 503); // PayPal sends it again later
+            }
+
+            return response()->json(['received' => true]);
+        }
 
         $orderId = match (true) {
             str_starts_with($type, 'CHECKOUT.ORDER.') => $request->json('resource.id'),

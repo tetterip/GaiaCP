@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 /**
- * The few calls of PayPal's REST API that payments need (Orders v2), with the app keys of the mode in use. Calls are in
+ * The few calls of PayPal's REST API that payments need (Orders v2, refunds, disputes), with the app keys of the mode in use. Calls are in
  * the module log (paypal) with the keys and token masked. No PayPal SDK: JSON requests.
  */
 class PayPalApi
@@ -85,6 +85,39 @@ class PayPalApi
             ->withHeaders(['PayPal-Request-Id' => 'capture-'.$id])
             ->withBody('{}', 'application/json')
             ->post(self::baseUrl().'/v2/checkout/orders/'.rawurlencode($id).'/capture'));
+    }
+
+    /**
+     * Gives money of a capture back. The same request id makes a repeated call (after a timeout) return the first
+     * refund instead of giving the money back twice.
+     *
+     * @return array<string, mixed> the refund
+     */
+    public function refund(string $captureId, string $value, string $currency, string $requestId): array
+    {
+        return $this->send('refund', fn (PendingRequest $http) => $http
+            ->withHeaders(['PayPal-Request-Id' => $requestId])
+            ->post(self::baseUrl().'/v2/payments/captures/'.rawurlencode($captureId).'/refund', [
+                'amount' => ['value' => $value, 'currency_code' => $currency],
+            ]));
+    }
+
+    /** @return array<string, mixed> a refund, with the link up to its capture */
+    public function refundDetails(string $id): array
+    {
+        return $this->send('get_refund', fn (PendingRequest $http) => $http->get(self::baseUrl().'/v2/payments/refunds/'.rawurlencode($id)));
+    }
+
+    /** @return array<string, mixed> */
+    public function captureDetails(string $id): array
+    {
+        return $this->send('get_capture', fn (PendingRequest $http) => $http->get(self::baseUrl().'/v2/payments/captures/'.rawurlencode($id)));
+    }
+
+    /** @return array<string, mixed> a dispute (chargeback or PayPal claim), with the capture it is about */
+    public function dispute(string $id): array
+    {
+        return $this->send('get_dispute', fn (PendingRequest $http) => $http->get(self::baseUrl().'/v1/customer/disputes/'.rawurlencode($id)));
     }
 
     /** Proves the keys work (Settings → PayPal → Check the keys): PayPal gives a token only for a valid app. */

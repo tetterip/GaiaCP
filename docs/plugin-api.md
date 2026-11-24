@@ -67,6 +67,10 @@ can be added.
   For a payment GaiaCP can't see (a transfer), `App\Actions\PaymentClaims` takes the client's "I've paid": `canClaim()`,
   `claim($invoice, $methodKey)` (bell + admins' email, nothing recorded), `waiting()`. When several payment plugins
   offer a button for a notice, the client area shows them under one **Pay online** menu.
+  Optional: `App\Payments\RefundsAtProvider` (`canRefundAtProvider()`, `refundAtProvider()` with an idempotency key)
+  adds "Give it back at …" to Refund payment. Tell GaiaCP about refunds made at the gateway and chargebacks with
+  `App\Payments\ProviderReports` (`refunded($method, $reference, $totalCents, $currency)`, `disputed(…)`,
+  `disputeClosed(…)`), after checking the report came from the gateway: bell and log, nothing changed on its own.
 - `App\Captcha\CaptchaModule`.
 - `App\Monitoring\MonitoringModule`, `App\Monitoring\ServerMonitoring`, `App\Monitoring\Monitor`,
   `App\Monitoring\MonitorStatus`, `App\Monitoring\MonitoringException`.

@@ -39,5 +39,6 @@
     "Webhook": "Webhook",
     "Webhook signing secret": "Signing secret van webhook",
     "Webhook url": "Webhook-URL",
-    "Your card payment went through.": "Uw kaartbetaling is gelukt."
+    "Your card payment went through.": "Uw kaartbetaling is gelukt.",
+    "Stripe did not give the money back: :status": "Stripe heeft het geld niet teruggegeven: :status"
 }

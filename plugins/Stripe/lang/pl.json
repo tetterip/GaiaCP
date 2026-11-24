@@ -39,5 +39,6 @@
     "Webhook": "Webhook",
     "Webhook signing secret": "Sekret podpisu webhooka",
     "Webhook url": "URL webhooka",
-    "Your card payment went through.": "Płatność kartą została zrealizowana."
+    "Your card payment went through.": "Płatność kartą została zrealizowana.",
+    "Stripe did not give the money back: :status": "Stripe nie zwrócił pieniędzy: :status"
 }

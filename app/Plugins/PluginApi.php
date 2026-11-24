@@ -76,6 +76,8 @@ use App\Monitoring\MonitorStatus;
 use App\Monitoring\ServerMonitoring;
 use App\Monitoring\UptimeHistory;
 use App\Payments\PaymentModule;
+use App\Payments\ProviderReports;
+use App\Payments\RefundsAtProvider;
 use App\Providers\AppServiceProvider;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
@@ -176,6 +178,8 @@ final class PluginApi
 
         // Payments, captcha, monitoring, SSL certificates, chat, AI, themes
         PaymentModule::class,
+        RefundsAtProvider::class,
+        ProviderReports::class,
         RecordInvoicePayment::class,
         PaymentClaims::class,
         PaymentNoticeResource::class,

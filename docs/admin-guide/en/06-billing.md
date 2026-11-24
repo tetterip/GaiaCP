@@ -127,9 +127,19 @@ themselves once the provider confirms them.
 Gave money back? **Refund** on any payment in the service's Payments tab (or `POST /api/v1/payments/{id}/refund`, with an API key that has `payments.delete`)
 records it as a payment of minus that amount on the day you choose, so income reports count it then, and issues a
 credit note if an invoice was issued for it. Choose whether the money went back outside GaiaCP or into the client's
-balance (a payment made from credit always goes back there). GaiaCP sends nothing to Stripe, PayPal or the bank:
-refund it there yourself. The due date and the service stay as they are, so cancel or terminate the service if it
-ends. A one-time service whose payment you reverse is owed again.
+balance (a payment made from credit always goes back there). A payment made with Stripe or PayPal also offers **Give
+it back at Stripe / PayPal now**: GaiaCP refunds it there first and records it only once the provider took it. For any
+other way (bank transfer, a bank's card page) GaiaCP sends nothing: refund it there yourself. The due date and the
+service stay as they are, so cancel or terminate the service if it ends. A one-time service whose payment you reverse
+is owed again.
+
+**Refunds and chargebacks at Stripe or PayPal.** When you give money back in Stripe's or PayPal's own dashboard, or a
+client disputes a payment with their bank or PayPal (a chargeback), the bell rings and the activity log keeps a line;
+the payment shows *Refunded at the provider*, *Chargeback open*, *Chargeback won* or *Chargeback lost* under its
+reference. GaiaCP changes nothing on its own, since a chargeback is often won: answer it at the provider, and once it is
+final use **Refund** (choose *Paid back outside GaiaCP*, the money is already back) and suspend or cancel the service
+if it ends. A refund you made with Give it back at … rings no bell. This needs the refund and dispute events ticked on
+the Stripe and PayPal webhooks (Settings → Stripe / PayPal list them).
 
 ## Billing cycles and due dates
 

@@ -39,5 +39,6 @@
     "Webhook": "Webhook",
     "Webhook signing secret": "Webhook imzalama anahtarı",
     "Webhook url": "Webhook URL'si",
-    "Your card payment went through.": "Kartla ödemeniz gerçekleşti."
+    "Your card payment went through.": "Kartla ödemeniz gerçekleşti.",
+    "Stripe did not give the money back: :status": "Stripe parayı iade etmedi: :status"
 }

@@ -3,7 +3,9 @@
 namespace Plugins\Stripe;
 
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Payments\PaymentModule;
+use App\Payments\RefundsAtProvider;
 use App\Plugins\Plugin;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -12,8 +14,11 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Livewire\Component;
 
-/** Card payments with Stripe Checkout: "Pay by card" on the client area's unpaid payment notices (StripeCheckouts). */
-class StripePlugin extends Plugin implements PaymentModule
+/**
+ * Card payments with Stripe Checkout: "Pay by card" on the client area's unpaid payment notices (StripeCheckouts).
+ * Refund payment can give one back at Stripe; refunds and chargebacks made at Stripe ring the bell (StripeReports).
+ */
+class StripePlugin extends Plugin implements PaymentModule, RefundsAtProvider
 {
     public function id(): string
     {
@@ -53,6 +58,29 @@ class StripePlugin extends Plugin implements PaymentModule
     public function paysOnline(): bool
     {
         return true;
+    }
+
+    /** A payment of a checkout GaiaCP opened, in the mode in use now (each mode's key only reaches its own payments). */
+    public function canRefundAtProvider(Payment $payment): bool
+    {
+        return $payment->method === 'stripe' && StripeApi::configured() && str_starts_with((string) $payment->reference, 'pi_')
+            && StripeCheckout::query()->where('payment_intent', $payment->reference)->where('livemode', StripeApi::mode() === 'live')->exists();
+    }
+
+    public function refundAtProvider(Payment $payment): string
+    {
+        $refund = app(StripeApi::class)->refund(
+            (string) $payment->reference,
+            StripeCheckouts::stripeAmount($payment->amount_cents, $payment->currency),
+            'gaiacp-refund-payment-'.$payment->id,
+            ['payment_id' => $payment->id],
+        );
+
+        if (blank($refund['id'] ?? null) || in_array($refund['status'] ?? null, ['failed', 'canceled'], true)) {
+            throw new StripeException(__('Stripe did not give the money back: :status', ['status' => $refund['failure_reason'] ?? $refund['status'] ?? 'no refund']));
+        }
+
+        return (string) $refund['id'];
     }
 
     public function settingsPage(): ?string

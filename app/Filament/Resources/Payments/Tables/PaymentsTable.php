@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Payments\Tables;
 
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\Payment;
+use App\Models\ProviderPaymentState;
 use App\Payments\PaymentMethods;
 use App\Support\Currencies;
 use App\Support\Money;
@@ -46,6 +47,7 @@ class PaymentsTable
                     ->badge(),
                 TextColumn::make('reference')
                     ->searchable()
+                    ->description(fn (Payment $record) => ProviderPaymentState::note($record))
                     ->placeholder('—'),
             ])
             ->defaultSort('paid_on', 'desc')

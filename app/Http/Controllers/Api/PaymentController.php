@@ -90,7 +90,7 @@ class PaymentController extends ApiController
     public function refund(Request $request, Payment $payment, RefundPayment $refunds): JsonResponse
     {
         $data = $request->validate([
-            'to' => ['required', Rule::in([RefundPayment::TO_CREDIT, RefundPayment::ELSEWHERE])],
+            'to' => ['required', Rule::in([RefundPayment::TO_CREDIT, RefundPayment::ELSEWHERE, RefundPayment::AT_PROVIDER])],
             'refunded_on' => ['sometimes', 'date_format:Y-m-d', 'before_or_equal:today'],
             'notes' => ['nullable', 'string', 'max:5000'],
         ]);
@@ -103,7 +103,15 @@ class PaymentController extends ApiController
             return $this->conflict('Client credit is off (Settings → Billing → Client credit): refund it with "to": "elsewhere".');
         }
 
-        $refund = $refunds->handle($payment, $data['to'], CarbonImmutable::parse($data['refunded_on'] ?? today()->toDateString()), $data['notes'] ?? null);
+        if ($data['to'] === RefundPayment::AT_PROVIDER && RefundPayment::provider($payment) === null) {
+            return $this->conflict('This payment can\'t be given back at its payment provider (only Stripe and PayPal payments, with the plugin on and its keys set).');
+        }
+
+        try {
+            $refund = $refunds->handle($payment, $data['to'], CarbonImmutable::parse($data['refunded_on'] ?? today()->toDateString()), $data['notes'] ?? null);
+        } catch (RuntimeException $e) {
+            return $this->conflict($e->getMessage());
+        }
 
         return (new PaymentResource($refund))->response()->setStatusCode(201);
     }
