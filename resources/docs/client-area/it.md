@@ -238,7 +238,7 @@ In Supporto → Annunci pubblichiamo novità sui nostri servizi: nuovi servizi, 
 <!-- if:server_status -->
 ## Stato dei server
 
-Supporto → Stato dei server mostra se i nostri server funzionano in questo momento, con i quadratini degli ultimi 30 giorni e delle ultime 24 ore. Quando uno ha un problema, appare in cima con ciò che sappiamo.
+Supporto → Stato dei server mostra se i nostri server funzionano in questo momento, con un segno per ciascuno degli ultimi 30 giorni e delle ultime 24 ore: un cerchio verde quando funzionava, un triangolo giallo quando aveva problemi, un triangolo rosso capovolto quando era fuori servizio. Quando uno ha un problema, appare in cima con ciò che sappiamo.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Contattaci

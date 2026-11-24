@@ -199,9 +199,9 @@ class DashboardTest extends TestCase
         $this->assertStringContainsString('round(down, calc((100% - 46px) / 24), 1px)', $html);
         $this->assertStringContainsString('grid-template-columns: subgrid;', $html);
 
-        // The servers list keeps its 12px squares
+        // The servers list keeps fixed 10px squares, the same in every column
         $column = view('filament.servers.meter', ['caption' => null, 'value' => '1/10', 'label' => 'Accounts', 'cells' => array_fill(0, 10, ['color' => null])])->render();
-        $this->assertStringContainsString('max-width: 140px', $column);
+        $this->assertStringContainsString('grid-template-columns: repeat(10, 10px)', $column);
     }
 
     public function test_needs_attention_lists_what_waits_and_only_what_the_admin_may_open(): void
