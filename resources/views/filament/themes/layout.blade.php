@@ -414,6 +414,23 @@
         font-size: .8rem;
     }
 
+    /* On a phone, where Filament hides the breadcrumbs, one link back to the list (App\Support\BackLink) */
+    .fi-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .25rem;
+        margin-bottom: .25rem;
+        font-size: .85rem;
+        font-weight: 500;
+        color: var(--theme-accent);
+    }
+
+    @media (min-width: 640px) {
+        .fi-back-link {
+            display: none;
+        }
+    }
+
     .fi :focus-visible {
         outline-color: var(--theme-accent);
     }
