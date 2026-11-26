@@ -3,6 +3,10 @@
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP and loads only in
 the public demo (`GAIACP_DEMO=true`).
 
+## [1.2.0] - 2026-11-26
+
+- Made-up disk space and bandwidth for the demo packages (`DescribesPackages`)
+
 ## [1.1.0] - 2026-11-24
 
 - A made-up CPU for the dashboard's CPU bar (`ReportsLoad`), busier in the working day; a day of readings is seeded

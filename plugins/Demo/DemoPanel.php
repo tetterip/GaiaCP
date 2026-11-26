@@ -8,8 +8,10 @@ use App\Models\Server;
 use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
+use App\Provisioning\DescribesPackages;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
+use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\ReportsLoad;
@@ -19,7 +21,7 @@ use App\Provisioning\ServerLoad;
  * A demo server's "panel": an account is what GaiaCP stores about the service (pending or terminated = none,
  * suspended = suspended, else active), so creating, suspending and removing always work and change nothing else.
  */
-class DemoPanel implements HostingProvisioner, ListsAccounts, ReportsLoad
+class DemoPanel implements DescribesPackages, HostingProvisioner, ListsAccounts, ReportsLoad
 {
     private const GB = 1024 * 1024 * 1024;
 
@@ -47,7 +49,16 @@ class DemoPanel implements HostingProvisioner, ListsAccounts, ReportsLoad
 
     public function packages(): array
     {
-        return ['basic', 'pro', 'business'];
+        return array_keys($this->packageLimits());
+    }
+
+    public function packageLimits(): array
+    {
+        return [
+            'basic' => PackageLimits::fromMegabytes(2048, 20480),
+            'pro' => PackageLimits::fromMegabytes(10240, 102400),
+            'business' => PackageLimits::fromMegabytes(30720, 'unlimited'),
+        ];
     }
 
     public function accountState(Service $service): AccountState

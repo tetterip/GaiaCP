@@ -4382,5 +4382,12 @@
     "The account :username does not exist on :server.": "Ο λογαριασμός :username δεν υπάρχει στον :server.",
     "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Μπορεί να διαγράφηκε ή να μεταφέρθηκε σε άλλον server: τότε διαλέξτε εκείνον τον server στον Λογαριασμό φιλοξενίας και αποθηκεύστε.",
     "Create :username on :server with the password stored here?": "Δημιουργία του :username στον :server με τον κωδικό που είναι αποθηκευμένος εδώ;",
-    "Read from the panel when the page opens; kept for a minute.": "Διαβάζεται από το panel όταν ανοίγει η σελίδα· κρατιέται για ένα λεπτό."
+    "Read from the panel when the page opens; kept for a minute.": "Διαβάζεται από το panel όταν ανοίγει η σελίδα· κρατιέται για ένα λεπτό.",
+    ":size disk": ":size δίσκος",
+    ":size bandwidth": ":size κίνηση",
+    "unlimited": "απεριόριστο",
+    "Another product changes the label and package with it; the price stays. To change the price too, use Price → Upgrade / downgrade.": "Με άλλο προϊόν αλλάζουν μαζί η ονομασία και το πακέτο· η τιμή μένει. Για να αλλάξει και η τιμή, χρησιμοποίησε Τιμή → Αναβάθμιση / υποβάθμιση.",
+    "Not saved: the server did not take the new package": "Δεν αποθηκεύτηκε: ο server δεν δέχτηκε το νέο πακέτο",
+    "Package / service plan on the panel. Saving a new one also sets it on the server.": "Πακέτο / service plan στο panel. Αν αποθηκεύσεις άλλο, αλλάζει και στον server.",
+    "Package :package set on the server.": "Το πακέτο :package ορίστηκε στον server."
 }

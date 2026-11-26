@@ -156,7 +156,7 @@ class CompareServerAccounts
             $differences[] = $account->suspended ? 'Suspended on the server, active in GaiaCP' : 'Active on the server, suspended in GaiaCP';
         }
 
-        if (filled($service->package) && filled($account->package) && strcasecmp($service->package, $account->package) !== 0) {
+        if (filled($service->package) && filled($account->package) && ! self::samePackage($service->package, $account->package)) {
             $differences[] = 'Package';
         }
 
@@ -165,6 +165,12 @@ class CompareServerAccounts
         }
 
         return $differences;
+    }
+
+    /** The same package, or the server's reseller-prefixed name of it ("pyrgi" and "ttrpeu_pyrgi"). */
+    private static function samePackage(string $service, string $server): bool
+    {
+        return strcasecmp($service, $server) === 0 || str_ends_with(strtolower($server), '_'.strtolower($service));
     }
 
     private static function sameDomain(string $a, string $b): bool

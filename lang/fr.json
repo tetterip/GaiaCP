@@ -4382,5 +4382,12 @@
     "The account :username does not exist on :server.": "Le compte :username n'existe pas sur :server.",
     "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Il a peut-être été supprimé ou déplacé vers un autre serveur : choisissez alors ce serveur sous Compte d'hébergement et enregistrez.",
     "Create :username on :server with the password stored here?": "Créer :username sur :server avec le mot de passe enregistré ici ?",
-    "Read from the panel when the page opens; kept for a minute.": "Lu depuis le panneau à l'ouverture de la page ; conservé une minute."
+    "Read from the panel when the page opens; kept for a minute.": "Lu depuis le panneau à l'ouverture de la page ; conservé une minute.",
+    ":size disk": ":size de disque",
+    ":size bandwidth": ":size de trafic",
+    "unlimited": "illimité",
+    "Another product changes the label and package with it; the price stays. To change the price too, use Price → Upgrade / downgrade.": "Un autre produit change avec lui le libellé et le forfait ; le prix reste. Pour changer aussi le prix, utilisez Prix → Montée / baisse de gamme.",
+    "Not saved: the server did not take the new package": "Non enregistré : le serveur n'a pas accepté le nouveau forfait",
+    "Package / service plan on the panel. Saving a new one also sets it on the server.": "Forfait / plan de service sur le panneau. En enregistrer un nouveau l'applique aussi sur le serveur.",
+    "Package :package set on the server.": "Forfait :package appliqué sur le serveur."
 }

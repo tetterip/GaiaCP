@@ -8,7 +8,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 
 /**
- * The package / service plan picker: a normal searchable dropdown with the server's packages,
+ * The package / service plan picker: a normal searchable dropdown with the server's packages (with their disk space
+ * and bandwidth where the panel gives them),
  * plus the current value, and "create" for a name the server did not return (unreachable server).
  */
 class PackageSelect
@@ -20,13 +21,14 @@ class PackageSelect
             ->label('Package')
             ->searchable()
             ->options(function (Select $component, ?string $state) use ($serverId) {
-                $packages = PackageOptions::forServer($component->evaluate($serverId));
+                // "basic · 5 GB disk · 50 GB bandwidth" where the panel says how big each one is
+                $packages = PackageOptions::labels($component->evaluate($serverId));
 
-                if (filled($state) && ! in_array($state, $packages, true)) {
-                    $packages[] = $state;
+                if (filled($state) && ! isset($packages[$state])) {
+                    $packages[$state] = $state;
                 }
 
-                return array_combine($packages, $packages);
+                return $packages;
             })
             ->createOptionForm([
                 TextInput::make('name')

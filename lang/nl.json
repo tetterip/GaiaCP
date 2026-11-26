@@ -4382,5 +4382,12 @@
     "The account :username does not exist on :server.": "Het account :username bestaat niet op :server.",
     "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Het is misschien verwijderd of naar een andere server verplaatst: kies dan die server onder Hostingaccount en sla op.",
     "Create :username on :server with the password stored here?": ":username op :server aanmaken met het hier opgeslagen wachtwoord?",
-    "Read from the panel when the page opens; kept for a minute.": "Bij het openen van de pagina uit het paneel gelezen; een minuut bewaard."
+    "Read from the panel when the page opens; kept for a minute.": "Bij het openen van de pagina uit het paneel gelezen; een minuut bewaard.",
+    ":size disk": ":size schijf",
+    ":size bandwidth": ":size dataverkeer",
+    "unlimited": "onbeperkt",
+    "Another product changes the label and package with it; the price stays. To change the price too, use Price → Upgrade / downgrade.": "Een ander product wijzigt het label en het pakket mee; de prijs blijft. Om ook de prijs te wijzigen, gebruik Prijs → Upgrade / downgrade.",
+    "Not saved: the server did not take the new package": "Niet opgeslagen: de server heeft het nieuwe pakket niet aangenomen",
+    "Package / service plan on the panel. Saving a new one also sets it on the server.": "Pakket / serviceplan op het paneel. Een nieuw pakket opslaan stelt het ook op de server in.",
+    "Package :package set on the server.": "Pakket :package ingesteld op de server."
 }

@@ -21,7 +21,9 @@ copy of the price, cycle, server and package, so changing a product never change
 - **Name**: the label clients see on their services and in reminders.
 - **Default cycle**: the billing cycle picked first on a new service or order.
 - **Servers** and **Package** (hosting): the servers that have this package, and its name on the panel (the
-  service plan on Plesk). A new order goes to the least full active server; see [Servers](04-servers.md).
+  service plan on Plesk). A new order goes to the least full active server; see [Servers](04-servers.md). The package
+  list shows each package's disk space and bandwidth (cPanel, Plesk, HestiaCP). On cPanel reseller logins, a package
+  without its reseller prefix (`pyrgi`) is found as `ttrpgr_pyrgi` on one server and `ttrpeu_pyrgi` on another.
 - **Pricing**: switch on each cycle you offer (monthly to triennially) with its price and an optional **setup fee**,
   charged once with the first payment.
 - **Setup**: when a new service of this product is set up: as soon as the order is placed, when the first payment is
@@ -113,6 +115,10 @@ On a service, **Price → Upgrade / downgrade** moves it to another product of t
 on the server at once; the new price applies from the next due date, unless you tick **charge the difference now**,
 which bills the days left at the new price (or puts a downgrade's difference into client credit, when that is on).
 Clients can ask for it from their service; you approve or decline under Services → **Upgrade requests**.
+
+Picking another **Product** in the service form instead changes the label (when it was the old product's name) and
+the package with it, but not the price. Saving a new package on an active or suspended account also sets it on the
+server; when the server refuses, nothing is saved.
 
 ## Changing prices
 

@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.8.0] - 2026-11-26
+
+- Package sizes: the package pickers show each package's disk space and bandwidth from WHM's `listpkgs` (`QUOTA`, `BWLIMIT`; `DescribesPackages`)
+
 ## [1.7.0] - 2026-11-24
 
 - CPU on the dashboard: the server's load average from WHM (`systemloadavg`, `ReportsLoad`), read every 5 minutes; the processor cores come from the server form (not yet tried on a real server)

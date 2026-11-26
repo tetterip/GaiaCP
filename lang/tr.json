@@ -4382,5 +4382,12 @@
     "The account :username does not exist on :server.": ":username hesabı :server üzerinde yok.",
     "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Silinmiş ya da başka bir sunucuya taşınmış olabilir: o zaman Barındırma hesabı altında o sunucuyu seçip kaydedin.",
     "Create :username on :server with the password stored here?": ":username, :server üzerinde burada kayıtlı parolayla oluşturulsun mu?",
-    "Read from the panel when the page opens; kept for a minute.": "Sayfa açılınca panelden okunur; bir dakika saklanır."
+    "Read from the panel when the page opens; kept for a minute.": "Sayfa açılınca panelden okunur; bir dakika saklanır.",
+    ":size disk": ":size disk",
+    ":size bandwidth": ":size trafik",
+    "unlimited": "sınırsız",
+    "Another product changes the label and package with it; the price stays. To change the price too, use Price → Upgrade / downgrade.": "Başka bir ürün etiketi ve paketi de değiştirir; fiyat aynı kalır. Fiyatı da değiştirmek için Fiyat → Yükselt / düşür'ü kullanın.",
+    "Not saved: the server did not take the new package": "Kaydedilmedi: sunucu yeni paketi kabul etmedi",
+    "Package / service plan on the panel. Saving a new one also sets it on the server.": "Paneldeki paket / hizmet planı. Yenisini kaydetmek onu sunucuda da ayarlar.",
+    "Package :package set on the server.": ":package paketi sunucuda ayarlandı."
 }
