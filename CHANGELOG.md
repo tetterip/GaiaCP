@@ -5,6 +5,8 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-11-26
+
 - **Changing a hosting plan is easier**: on a service, picking another product changes its label and package with
   it (the label only when it was the old product's name), and saving a new package on an active or suspended account
   also sets it on the server; when the server refuses, nothing is saved. The package lists show each package's disk

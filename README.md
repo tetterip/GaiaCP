@@ -107,6 +107,14 @@ The full list, and what is planned, is in [docs/features.md](docs/features.md).
     <td align="center">The client area: what waits for the client, what to pay and their services</td>
   </tr>
   <tr>
+    <td width="50%"><img src="docs/screenshots/servers-card.png" alt="The dashboard's Servers card with accounts, uptime and CPU"></td>
+    <td width="50%"><img src="docs/screenshots/admin-service.png" alt="A hosting service: its account on the server and its usage"></td>
+  </tr>
+  <tr>
+    <td align="center">Your servers at a glance: accounts, uptime and CPU</td>
+    <td align="center">A hosting account: its state on the server and its usage</td>
+  </tr>
+  <tr>
     <td width="50%"><img src="docs/screenshots/public-home.png" alt="The public home page"></td>
     <td width="50%"><img src="docs/screenshots/order.png" alt="Ordering a hosting package"></td>
   </tr>
