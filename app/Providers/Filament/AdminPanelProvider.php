@@ -196,6 +196,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WelcomeTour::enabled() ? view('filament.welcome-tour', ['opensNow' => WelcomeTour::opensNow()])->render() : '')
             // What's new: this version's highlights, once per admin after an update, then from the user menu (App\Support\WhatsNew)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WhatsNew::enabled() ? view('filament.whats-new', ['opensNow' => WhatsNew::opensNow()])->render() : '')
+            // "‹ Payment notices" over a page's title on a phone, where Filament hides the breadcrumbs (App\Support\BackLink)
+            ->renderHook(PanelsRenderHook::PAGE_HEADER_HEADING_BEFORE, fn (): string => view('filament.back-link')->render())
             ->renderHook(PanelsRenderHook::FOOTER, fn (): string => view('filament.footer')->render())
             // The public demo: what it is and when it is put back, and the demo login on the login page (App\Support\Demo)
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => Demo::enabled() ? view('filament.demo.bar')->render() : '')
