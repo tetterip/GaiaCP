@@ -14,7 +14,7 @@ use Filament\Forms\Components\TextInput;
  */
 class PackageSelect
 {
-    /** @param  Closure  $serverId  evaluated like any Filament closure (Get $get, $record, …) */
+    /** @param  Closure  $serverId  evaluated like any Filament closure (Get $get, $record, …): a server, or a product's servers */
     public static function make(Closure $serverId, string $name = 'package'): Select
     {
         return Select::make($name)
@@ -22,7 +22,8 @@ class PackageSelect
             ->searchable()
             ->options(function (Select $component, ?string $state) use ($serverId) {
                 // "basic · 5 GB disk · 50 GB bandwidth" where the panel says how big each one is
-                $packages = PackageOptions::labels($component->evaluate($serverId));
+                $servers = $component->evaluate($serverId);
+                $packages = is_array($servers) ? PackageOptions::commonLabels($servers) : PackageOptions::labels($servers);
 
                 if (filled($state) && ! isset($packages[$state])) {
                     $packages[$state] = $state;

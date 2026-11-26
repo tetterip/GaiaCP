@@ -159,6 +159,18 @@ class HostingPlanChangeTest extends TestCase
         $this->assertSame('pyrgi', $service->fresh()->package);
     }
 
+    public function test_a_product_on_two_reseller_servers_offers_the_packages_both_have_without_the_prefix(): void
+    {
+        $this->fakeWhm();
+        // The fake answers the same list on every server
+        $this->whmPackages = [['name' => 'default'], ['name' => 'ttrpgr_pyrgi', 'QUOTA' => '5120', 'BWLIMIT' => 'unlimited'], ['name' => 'ttrpeu_pyrgi', 'QUOTA' => '5120', 'BWLIMIT' => 'unlimited']];
+        $gr = Server::factory()->create(['username' => 'ttrpgr']);
+        $eu = Server::factory()->create(['username' => 'ttrpeu']);
+
+        $this->assertSame(['default' => 'default', 'pyrgi' => 'pyrgi · 5 GB disk · unlimited bandwidth'], PackageOptions::commonLabels([$gr->id, $eu->id]));
+        $this->assertArrayHasKey('ttrpgr_pyrgi', PackageOptions::commonLabels([$gr->id]), 'one server lists its own names');
+    }
+
     public function test_compare_with_the_server_takes_the_reseller_prefix_as_the_same_package(): void
     {
         $this->fakeWhm();

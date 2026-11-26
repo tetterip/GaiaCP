@@ -8,7 +8,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 - **Changing a hosting plan is easier**: on a service, picking another product changes its label and package with
   it (the label only when it was the old product's name), and saving a new package on an active or suspended account
   also sets it on the server; when the server refuses, nothing is saved. The package lists show each package's disk
-  space and bandwidth (cPanel, Plesk, HestiaCP).
+  space and bandwidth (cPanel, Plesk, HestiaCP). A product on several servers lists the packages all of them have; on
+  cPanel reseller logins without the reseller's prefix, so `pyrgi` is set up as `ttrpgr_pyrgi` or `ttrpeu_pyrgi`.
+- Composer: league/csv, symfony/routing, http-kernel, mailer and html-sanitizer updated for new security advisories.
 - Fixed: Account → Change package did nothing on the server, yet said it had, when the service already named that
   package (after it was changed in the service form). It now always sets it on the server.
 - Plugin API: a server panel may implement `App\Provisioning\DescribesPackages` (optional, with

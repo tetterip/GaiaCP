@@ -22,8 +22,9 @@ copy of the price, cycle, server and package, so changing a product never change
 - **Default cycle**: the billing cycle picked first on a new service or order.
 - **Servers** and **Package** (hosting): the servers that have this package, and its name on the panel (the
   service plan on Plesk). A new order goes to the least full active server; see [Servers](04-servers.md). The package
-  list shows each package's disk space and bandwidth (cPanel, Plesk, HestiaCP). On cPanel reseller logins, a package
-  without its reseller prefix (`pyrgi`) is found as `ttrpgr_pyrgi` on one server and `ttrpeu_pyrgi` on another.
+  list shows each package's disk space and bandwidth (cPanel, Plesk, HestiaCP). With several servers it lists the
+  packages all of them have; on cPanel reseller logins without the reseller's prefix, so `pyrgi` is set up as
+  `ttrpgr_pyrgi` on one server and `ttrpeu_pyrgi` on another.
 - **Pricing**: switch on each cycle you offer (monthly to triennially) with its price and an optional **setup fee**,
   charged once with the first payment.
 - **Setup**: when a new service of this product is set up: as soon as the order is placed, when the first payment is

@@ -35,6 +35,49 @@ class PackageOptions
         return $labels;
     }
 
+    /**
+     * For a product on several servers: the packages every one of them has, by the name the product stores. A cPanel
+     * reseller login's "{login}_" prefix is left out (CpanelProvisioner::panelPackage() puts it back), so ttrpgr_pyrgi
+     * on one server and ttrpeu_pyrgi on another are both "pyrgi". Sizes are the first server's.
+     *
+     * @param  list<int|string>  $serverIds
+     * @return array<string, string>
+     */
+    public static function commonLabels(array $serverIds): array
+    {
+        $serverIds = array_values(array_unique(array_filter($serverIds)));
+
+        if (count($serverIds) < 2) {
+            return self::labels($serverIds[0] ?? null);
+        }
+
+        $common = null;
+        foreach ($serverIds as $serverId) {
+            $names = [];
+            foreach (self::limits($serverId) as $name => $limits) {
+                $names[self::withoutResellerPrefix(Server::find($serverId), (string) $name)] = $limits;
+            }
+            $common = $common === null ? $names : array_intersect_key($common, $names);
+        }
+
+        $labels = [];
+        foreach ($common as $name => $limits) {
+            $labels[(string) $name] = ($label = $limits?->label()) === null ? (string) $name : "{$name} · {$label}";
+        }
+
+        return $labels;
+    }
+
+    /** "ttrpgr_pyrgi" on a cPanel server whose login is ttrpgr is "pyrgi"; any other name stays as it is. */
+    private static function withoutResellerPrefix(?Server $server, string $name): string
+    {
+        $login = (string) $server?->username;
+
+        return $server?->type === 'cpanel' && $login !== '' && $login !== 'root' && str_starts_with($name, "{$login}_")
+            ? substr($name, strlen($login) + 1)
+            : $name;
+    }
+
     /** The label of one package, or its bare name when the server does not list it. */
     public static function label(int|string|null $serverId, ?string $package): ?string
     {
