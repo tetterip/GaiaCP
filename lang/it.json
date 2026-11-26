@@ -4382,5 +4382,13 @@
     "The account :username does not exist on :server.": "L'account :username non esiste su :server.",
     "It may have been deleted, or moved to another server: then pick that server under Hosting account and save.": "Potrebbe essere stato eliminato o spostato su un altro server: in tal caso scegli quel server in Account hosting e salva.",
     "Create :username on :server with the password stored here?": "Creare :username su :server con la password salvata qui?",
-    "Read from the panel when the page opens; kept for a minute.": "Letto dal pannello all'apertura della pagina; conservato per un minuto."
+    "Read from the panel when the page opens; kept for a minute.": "Letto dal pannello all'apertura della pagina; conservato per un minuto.",
+    ":size disk": ":size di disco",
+    ":size bandwidth": ":size di traffico",
+    "unlimited": "illimitato",
+    "Another product changes the label and package with it; the price stays. To change the price too, use Price → Upgrade / downgrade.": "Un altro prodotto cambia con sé etichetta e pacchetto; il prezzo resta. Per cambiare anche il prezzo, usa Prezzo → Upgrade / downgrade.",
+    "Not saved: the server did not take the new package": "Non salvato: il server non ha accettato il nuovo pacchetto",
+    "Package / service plan on the panel. Saving a new one also sets it on the server.": "Pacchetto / piano di servizio sul pannello. Salvandone uno nuovo viene impostato anche sul server.",
+    "Package :package set on the server.": "Pacchetto :package impostato sul server.",
+    "The packages every server has. A cPanel reseller prefix is left out: pyrgi is ttrpgr_pyrgi on one server and ttrpeu_pyrgi on another.": "I pacchetti presenti su ogni server. Il prefisso del rivenditore cPanel viene omesso: pyrgi è ttrpgr_pyrgi su un server e ttrpeu_pyrgi su un altro."
 }

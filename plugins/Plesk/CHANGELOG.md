@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.8.0] - 2026-11-26
+
+- Package sizes: the package pickers show each service plan's disk space and traffic from `service-plan get` (limits `disk_space`, `max_traffic`; `DescribesPackages`; not yet tried on a real server)
+
 ## [1.7.0] - 2026-11-24
 
 - CPU on the dashboard: the load average and processor cores from the server statistics (`server get stat`, `ReportsLoad`), read every 5 minutes (not yet tried on a real server)

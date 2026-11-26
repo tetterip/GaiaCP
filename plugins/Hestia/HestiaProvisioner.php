@@ -6,8 +6,10 @@ use App\Models\Server;
 use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
+use App\Provisioning\DescribesPackages;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\ListsAccounts;
+use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\ReportsLoad;
@@ -18,7 +20,7 @@ use App\Support\DomainName;
  * HestiaCP: one HestiaCP user per hosting service (the service's username) on a package, with the service's domain
  * added as its web, DNS and mail domain. The user's password is both the HestiaCP login and the SFTP / SSH password.
  */
-class HestiaProvisioner implements HostingProvisioner, ListsAccounts, ReportsLoad
+class HestiaProvisioner implements DescribesPackages, HostingProvisioner, ListsAccounts, ReportsLoad
 {
     /** HestiaCP's own package for the admin user, never one to sell. */
     private const SYSTEM_PACKAGE = 'system';
@@ -45,9 +47,21 @@ class HestiaProvisioner implements HostingProvisioner, ListsAccounts, ReportsLoa
 
     public function packages(): array
     {
-        $packages = array_keys($this->hestia->list('v-list-user-packages', timeout: 8));
+        return array_map('strval', array_keys($this->packageLimits()));
+    }
 
-        return array_values(array_filter(array_map('strval', $packages), fn (string $name) => $name !== self::SYSTEM_PACKAGE));
+    /** v-list-user-packages: DISK_QUOTA and BANDWIDTH in MB, or "unlimited"; the panel's own system package left out. */
+    public function packageLimits(): array
+    {
+        $packages = [];
+
+        foreach ($this->hestia->list('v-list-user-packages', timeout: 8) as $name => $package) {
+            if ((string) $name !== self::SYSTEM_PACKAGE) {
+                $packages[(string) $name] = PackageLimits::fromMegabytes(is_array($package) ? ($package['DISK_QUOTA'] ?? null) : null, is_array($package) ? ($package['BANDWIDTH'] ?? null) : null);
+            }
+        }
+
+        return $packages;
     }
 
     public function accountState(Service $service): AccountState

@@ -429,9 +429,15 @@ class ServiceLifecycle
         }, null, report: false);
     }
 
+    /**
+     * Set the package on the panel, then on the service. The panel is told even when the service already names that
+     * package: the stored one can be edited by hand (the service form), so it says nothing about the server.
+     */
     public function changePackage(Service $service, string $package): void
     {
-        if ($package === $service->package) {
+        $onPanel = $this->onPanel($service);
+
+        if ($package === $service->package && ! $onPanel) {
             return;
         }
 
@@ -439,11 +445,18 @@ class ServiceLifecycle
             throw new ProvisioningException('Only active or suspended services can change package.');
         }
 
-        if ($this->onPanel($service)) {
+        if ($onPanel) {
             $this->panel($service, 'account.package_changed', fn (HostingProvisioner $panel) => $panel->changePackage($service, $package));
         }
 
         $old = $service->package;
+
+        if ($package === $old) {
+            ActivityLog::record('service.package_changed', "Package {$package} set on the server", $service);
+
+            return;
+        }
+
         $service->update(['package' => $package]);
         ActivityLog::record('service.package_changed', "Package changed from {$old} to {$package}", $service);
     }

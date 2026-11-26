@@ -14,6 +14,7 @@ use App\Filament\Forms\NameserversInput;
 use App\Filament\Forms\PackageSelect;
 use App\Filament\Forms\PasswordInput;
 use App\Filament\Forms\ProductOptionFields;
+use App\Filament\Resources\Services\Pages\EditService;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Livewire\HostingUsage;
 use App\Livewire\ServerAccountState;
@@ -103,8 +104,12 @@ class ServiceForm
                                 ->orderBy('name'))
                             ->placeholder(__('None (custom)'))
                             ->live()
-                            ->afterStateUpdated(fn (Get $get, Set $set, ?string $state, string $operation) => $operation === 'create' ? self::fillFromProduct($get, $set, $state) : null)
-                            ->helperText(__('Fills in type, label, price, cycle, server and package. You can still change them.')),
+                            ->afterStateUpdated(fn (Get $get, Set $set, ?string $state, ?string $old, string $operation) => $operation === 'create'
+                                ? self::fillFromProduct($get, $set, $state)
+                                : self::followProduct($get, $set, $state, $old))
+                            ->helperText(fn (string $operation) => $operation === 'create'
+                                ? __('Fills in type, label, price, cycle, server and package. You can still change them.')
+                                : __('Another product changes the label and package with it; the price stays. To change the price too, use Price → Upgrade / downgrade.')),
                         TextInput::make('label')
                             // A domain is called by its name: the model sets it from the domain.
                             ->required(fn (Get $get) => self::type($get) !== ServiceType::Domain)
@@ -151,7 +156,9 @@ class ServiceForm
                             ->live()
                             ->required($isHosting),
                         PackageSelect::make(fn (Get $get) => $get('server_id'))
-                            ->helperText(__('Package / service plan name on the panel.')),
+                            ->helperText(fn (?Service $record) => EditService::setsPackageOnServer($record)
+                                ? __('Package / service plan on the panel. Saving a new one also sets it on the server.')
+                                : __('Package / service plan name on the panel.')),
                         TextInput::make('username')
                             ->maxLength(fn (Get $get) => UsernameGenerator::maxLength(Server::find($get('server_id'))?->type))
                             ->regex('/^[a-z][a-z0-9]*$/')
@@ -353,6 +360,28 @@ class ServiceForm
                     ->rows(3)
                     ->columnSpanFull(),
             ]);
+    }
+
+    /**
+     * Another product picked on an existing service: the label follows when it was the old product's name (or empty),
+     * the package when the new product has one. Price, cycle and server stay (Upgrade / downgrade changes the price).
+     */
+    private static function followProduct(Get $get, Set $set, ?string $productId, ?string $oldProductId): void
+    {
+        $product = $productId ? Product::find($productId) : null;
+
+        if (! $product) {
+            return;
+        }
+
+        $old = $oldProductId ? Product::find($oldProductId) : null;
+        if (blank($get('label')) || ($old !== null && $get('label') === $old->name)) {
+            $set('label', $product->name);
+        }
+
+        if (filled($product->package) && self::type($get)?->needsServer()) {
+            $set('package', $product->package);
+        }
     }
 
     private static function fillFromProduct(Get $get, Set $set, ?string $productId): void

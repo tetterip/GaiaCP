@@ -104,7 +104,7 @@ A hosting service's page has an **Account** menu:
 - **Create on server**: creates the account with the service's domain and package. The username (from the domain) and
   password are generated when left empty and kept encrypted on the service. It also works on an active account, to
   recreate it on another server after a move (the old server is left alone).
-- **Change package**, **Change password**.
+- **Change package** (always sent to the server, even when the service already names that package), **Change password**.
 - **Suspend** and **Unsuspend**: these check the panel first, so they work even if the status was edited by hand.
 - **Terminate**: deletes the account and its files on the server. You type the username to confirm.
 - On a Proxmox VPS: **Start**, **Shut down**, **Restart** and **Force stop** (cuts the power, for a VPS that no longer

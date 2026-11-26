@@ -35,7 +35,6 @@ use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 
 class ProductForm
 {
@@ -90,8 +89,10 @@ class ProductForm
                                 ? __('Switch on an SSL provider under Settings → Plugins (GoGetSSL) and fill in its login.')
                                 : __('The certificate ordered from the provider. Its validity (12 months, say) must fit the billing cycles you enable.'))
                             ->visible(fn (Get $get) => in_array($get('type'), [ServiceType::Ssl, ServiceType::Ssl->value], true)),
-                        PackageSelect::make(fn (Get $get) => Arr::first((array) $get('servers')))
-                            ->helperText(__('Package / service plan name on the panel.'))
+                        PackageSelect::make(fn (Get $get) => array_values((array) $get('servers')))
+                            ->helperText(fn (Get $get) => count((array) $get('servers')) > 1
+                                ? __('The packages every server has. A cPanel reseller prefix is left out: pyrgi is ttrpgr_pyrgi on one server and ttrpeu_pyrgi on another.')
+                                : __('Package / service plan name on the panel.'))
                             ->visible($isHosting),
                         AiTextActions::on(Textarea::make('description')
                             ->rows(3)

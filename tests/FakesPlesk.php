@@ -87,7 +87,9 @@ trait FakesPlesk
                 $plans = $name === null ? $this->pleskPlans : array_intersect_key($this->pleskPlans, [$name => true]);
 
                 return $plans
-                    ? array_map(fn ($n, $g) => "{$ok}<id>1</id><name>{$n}</name><guid>{$g}</guid>", array_keys($plans), $plans)
+                    ? array_map(fn ($n, $g) => "{$ok}<id>1</id><name>{$n}</name><guid>{$g}</guid><limits><overuse>block</overuse>"
+                        .'<limit><name>disk_space</name><value>'.($n === 'Starter' ? 2 * 1024 ** 3 : -1).'</value></limit>'
+                        .'<limit><name>max_traffic</name><value>-1</value></limit></limits>', array_keys($plans), $plans)
                     : $notFound;
 
             case 'customer.get':

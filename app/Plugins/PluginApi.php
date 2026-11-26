@@ -85,6 +85,7 @@ use App\Provisioning\AccountUsage;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\ControlsPower;
 use App\Provisioning\DescribesMachine;
+use App\Provisioning\DescribesPackages;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
@@ -100,6 +101,7 @@ use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ManagesRegistrarLock;
 use App\Provisioning\ManualRegistrar;
 use App\Provisioning\OffersShortcuts;
+use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarModule;
@@ -156,6 +158,8 @@ final class PluginApi
         ControlsPower::class,
         DescribesMachine::class,
         MachineDetails::class,
+        DescribesPackages::class,
+        PackageLimits::class,
         ReportsLoad::class,
         ServerLoad::class,
         InstallsCertificates::class,

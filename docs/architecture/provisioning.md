@@ -102,6 +102,13 @@ never calls a panel API directly.
   total), read leniently. Paths follow the open-source WHMCS module (webdighost/enhance-whmcs) and Paymenter's
   extension and Blesta's Enhance module, since apidocs.enhance.com was unreachable; the usage call is a guess. Untested on a real
   server
+- **Package sizes** (`App\Provisioning\DescribesPackages`, cPanel, Plesk, HestiaCP, Demo): `packageLimits()` gives each
+  package's `PackageLimits` (disk, bandwidth in bytes; null = unlimited) for the package pickers
+  (`PackageOptions::labels()`, cached 10 minutes). cPanel `listpkgs` QUOTA / BWLIMIT; Plesk `service-plan get` limits
+  `disk_space` / `max_traffic`; HestiaCP `v-list-user-packages` DISK_QUOTA / BANDWIDTH. cPanel on a reseller login
+  (`CpanelProvisioner::panelPackage()`): a package the server does not list as it is, but lists as
+  `{login}_{package}`, is created / changed as that, so one product's `pyrgi` works on two resellers (as WHMCS did);
+  Compare with the server counts `ttrpgr_pyrgi` as the same package as `pyrgi`.
 - **CPU load** (`App\Provisioning\ReportsLoad`, every bundled panel): `load()` gives a `ServerLoad` (load average
   of the last minute, cores when the panel says, or the share in use). cPanel `systemloadavg`; Plesk `server get stat`
   (`load_avg/l1` in hundredths, cores from "(N core(s))" in `other/cpu`); HestiaCP `v-list-sys-info` LOADAVERAGE;

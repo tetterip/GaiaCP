@@ -31,7 +31,10 @@ class PackageSelectTest extends TestCase
 
         Livewire::test(CreateProduct::class)
             ->fillForm(['type' => 'hosting', 'servers' => [$server->id]])
-            ->assertFormFieldExists('package', fn (Select $field) => $field->getOptions() === ['basic' => 'basic', 'pro' => 'pro']);
+            ->assertFormFieldExists('package', fn (Select $field) => $field->getOptions() === [
+                'basic' => 'basic · 1 GB disk · 10 GB bandwidth',
+                'pro' => 'pro · unlimited disk · unlimited bandwidth',
+            ]);
     }
 
     public function test_a_package_the_server_does_not_list_stays_selectable(): void

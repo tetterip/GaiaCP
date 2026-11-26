@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.4.0] - 2026-11-26
+
+- Package sizes: the package pickers show each package's disk quota and bandwidth from `v-list-user-packages` (`DescribesPackages`)
+
 ## [1.3.0] - 2026-11-24
 
 - CPU on the dashboard: the load average from `v-list-sys-info` (`ReportsLoad`), read every 5 minutes; the processor cores come from the server form (not yet tried on a real server)

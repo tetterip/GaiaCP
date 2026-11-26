@@ -45,7 +45,8 @@ can be added.
   provisioner answers.
 - `App\Provisioning\ProvisioningException`: thrown when the panel refuses or can't be reached.
 - Optional: `App\Provisioning\OffersShortcuts`, `App\Provisioning\ListsAccounts`, `App\Provisioning\ControlsPower`,
-  `App\Provisioning\DescribesMachine` (with `App\Provisioning\MachineDetails`), `App\Provisioning\InstallsCertificates`,
+  `App\Provisioning\DescribesMachine` (with `App\Provisioning\MachineDetails`), `App\Provisioning\DescribesPackages`
+  (with `App\Provisioning\PackageLimits`: each package's disk space and bandwidth in the package pickers), `App\Provisioning\InstallsCertificates`,
   `App\Provisioning\LimitsUsernameLength`, `App\Provisioning\SharesPanelLogin`, `App\Provisioning\ReportsLoad` (with
   `App\Provisioning\ServerLoad`: the CPU on the dashboard).
 
