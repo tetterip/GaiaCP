@@ -35,6 +35,14 @@ final readonly class ServerLoad
         return round(max(0.0, min(100.0, $this->load / $cores * 100)), 1);
     }
 
+    /** The 5-minute load of a "0.15 / 0.10 / 0.05" text (1, 5 and 15 minutes), or its only number. */
+    public static function fiveMinutes(mixed $value): ?float
+    {
+        $parts = is_string($value) ? preg_split('#\s*/\s*#', trim($value)) : [];
+
+        return self::number(count($parts) >= 2 ? $parts[1] : $value);
+    }
+
     /** "0.15 / 0.10 / 0.05" style load text, or a number: the first number in it. */
     public static function number(mixed $value): ?float
     {

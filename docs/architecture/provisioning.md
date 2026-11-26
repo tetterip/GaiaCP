@@ -110,8 +110,8 @@ never calls a panel API directly.
   `{login}_{package}`, is created / changed as that, so one product's `pyrgi` works on two resellers (as WHMCS did);
   Compare with the server counts `ttrpgr_pyrgi` as the same package as `pyrgi`.
 - **CPU load** (`App\Provisioning\ReportsLoad`, every bundled panel): `load()` gives a `ServerLoad` (load average
-  of the last minute, cores when the panel says, or the share in use). cPanel `systemloadavg`; Plesk `server get stat`
-  (`load_avg/l1` in hundredths, cores from "(N core(s))" in `other/cpu`); HestiaCP `v-list-sys-info` LOADAVERAGE;
+  of the last 5 minutes where the panel gives it, cores when the panel says, or the share in use). cPanel `systemloadavg`; Plesk `server get stat`
+  (`load_avg/l5` in hundredths, cores from "(N core(s))" in `other/cpu`); HestiaCP `v-list-sys-info` LOADAVERAGE;
   DirectAdmin `CMD_API_LOAD_AVERAGE`; CyberPanel cloud API `systemStatus` (`cpuOne`, `cores`); Virtualmin `info
   --search cpu` (100 − idle); Proxmox `GET /nodes` (online nodes' `cpu` weighted by `maxcpu`). `App\Monitoring\ServerLoadCheck`
   (gaiacp:check-load, every 5 minutes, calls kept out of the module log by `ModuleLogger::quietly()` unless they fail)

@@ -183,10 +183,12 @@ tall as that hour's average and in its colour (green, amber from 70%, red from t
 the hour's average and highest share.
 
 - Proxmox and Virtualmin measure the share themselves. cPanel, Plesk, DirectAdmin, HestiaCP and CyberPanel give the
-  **load average**, which GaiaCP divides by the processor cores: a load of 2 on 4 cores is 50%. This is the usual
-  reading of a server's CPU, but not quite the same as the CPU % of `top`. A load higher than the cores shows as 100%.
+  **load average** of the last 5 minutes, which GaiaCP divides by the processor cores: a load of 2 on 4 cores is 50%.
+  The load also counts processes waiting for the disk, so it reads higher than the CPU usage graph of the panel's own
+  monitoring (often by a third or more on a busy hosting server). A load higher than the cores shows as 100%.
 - cPanel, DirectAdmin and HestiaCP don't say how many cores the server has: type them in **Processor cores** on the
-  server, or the chart stays empty ("—").
+  server. Until then the card shows the load itself ("Load 1.20") and an empty chart; the readings already kept get
+  their share once the cores are entered.
 - When a server stays at or above Settings → Automation → **CPU warning** (90% by default) for 15 minutes, super
   admins get the bell, once until it calms down. Leave the setting empty to not be warned.
 - These reads stay out of the module log unless they fail. A panel that doesn't answer shows "—".

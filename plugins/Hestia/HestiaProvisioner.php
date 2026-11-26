@@ -37,12 +37,13 @@ class HestiaProvisioner implements DescribesPackages, HostingProvisioner, ListsA
         return 'HestiaCP '.(($info['HESTIA'] ?? '') ?: 'unknown version');
     }
 
-    /** v-list-sys-info's LOADAVERAGE ("0.15 / 0.10 / 0.05"), the last minute first; it does not give the cores. */
+    /** v-list-sys-info's LOADAVERAGE ("0.15 / 0.10 / 0.05": 1, 5 and 15 minutes); it does not give the cores. */
     public function load(): ServerLoad
     {
         $info = $this->hestia->list('v-list-sys-info', timeout: 10)['sysinfo'] ?? [];
 
-        return new ServerLoad(ServerLoad::number($info['LOADAVERAGE'] ?? null));
+        // The 5-minute load, as often as GaiaCP reads it (the 1-minute one jumps with each short burst)
+        return new ServerLoad(ServerLoad::fiveMinutes($info['LOADAVERAGE'] ?? null));
     }
 
     public function packages(): array

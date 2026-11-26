@@ -28,12 +28,13 @@ class CpanelProvisioner implements DescribesPackages, HostingProvisioner, Instal
         return 'WHM '.($data['version'] ?? 'unknown version');
     }
 
-    /** WHM's load average of the last minute (systemloadavg); it does not say how many cores the server has. */
+    /** WHM's load average of the last 5 minutes (systemloadavg); it does not say how many cores the server has. */
     public function load(): ServerLoad
     {
         $data = $this->whm->call('systemloadavg', timeout: 10);
 
-        return new ServerLoad(ServerLoad::number($data['one'] ?? null));
+        // The 5-minute load, as often as GaiaCP reads it (the 1-minute one jumps with each short burst)
+        return new ServerLoad(ServerLoad::number($data['five'] ?? $data['one'] ?? null));
     }
 
     public function packages(): array

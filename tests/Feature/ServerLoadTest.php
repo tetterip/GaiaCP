@@ -49,6 +49,8 @@ class ServerLoadTest extends TestCase
         $this->assertSame(100.0, (new ServerLoad(12.0, 4))->percent(), 'processes waiting: shown as full');
         $this->assertSame(37.5, (new ServerLoad(null, 8, 37.5))->percent());
         $this->assertSame(0.15, ServerLoad::number('0.15 / 0.10 / 0.05'));
+        $this->assertSame(0.1, ServerLoad::fiveMinutes('0.15 / 0.10 / 0.05'), 'the 5-minute load, as often as GaiaCP reads it');
+        $this->assertSame(0.7, ServerLoad::fiveMinutes('0.70'));
         $this->assertSame(1.5, ServerLoad::number('1,50'));
         $this->assertNull(ServerLoad::number(''));
     }
@@ -59,8 +61,8 @@ class ServerLoadTest extends TestCase
         $server = Server::factory()->create(['cpu_cores' => 3]);
 
         $this->assertSame(['servers' => 1, 'read' => 1, 'failed' => []], $this->check());
-        $this->assertSame(50.0, (float) $this->latest($server)->percent);
-        $this->assertSame(1.5, (float) $this->latest($server)->load);
+        $this->assertSame(40.0, (float) $this->latest($server)->percent, 'the 5-minute load 1.20 on 3 cores');
+        $this->assertSame(1.2, (float) $this->latest($server)->load);
         $this->assertSame('systemloadavg', $this->whmCalls[0][0]);
     }
 
@@ -73,6 +75,19 @@ class ServerLoadTest extends TestCase
 
         $this->assertNull($this->latest($server)->percent);
         $this->assertSame('—', LoadHistory::percent(LoadHistory::for($server)['now']) ?? '—');
+
+        // The card shows the load and asks for the cores instead of a bare dash
+        $this->actingAs(User::factory()->create());
+        Livewire::test(ServerCapacity::class)
+            ->assertSee('Load 1.20')
+            ->assertSee('Enter the processor cores on the server to see it as a share.');
+
+        // Once they are entered, the readings already kept get their share
+        $server->forceFill(['cpu_cores' => 4])->save();
+        $history = LoadHistory::for($server);
+        $this->assertSame(30.0, $history['now']);
+        $this->assertSame(30.0, $history['hours'][LoadHistory::HOURS - 1]['average']);
+        Livewire::test(ServerCapacity::class)->assertSee('Load average 1.20 on 4 cores.');
     }
 
     public function test_plesk_gives_the_load_in_hundredths_and_its_cores(): void
@@ -82,7 +97,7 @@ class ServerLoadTest extends TestCase
 
         $this->check();
 
-        $this->assertSame(37.5, (float) $this->latest($server)->percent); // 1.50 on 4 cores
+        $this->assertSame(30.0, (float) $this->latest($server)->percent); // the 5-minute 1.20 on 4 cores
         $this->assertSame(4, $server->fresh()->cpu_cores, 'filled in from the panel');
     }
 
@@ -90,14 +105,14 @@ class ServerLoadTest extends TestCase
     {
         $this->fakeHestia();
         $hestia = Server::factory()->hestia()->create(['hostname' => 'hst.test', 'cpu_cores' => 1]);
-        $this->assertSame(21.0, (float) app(PluginManager::class)->serverModule('hestia')->provisioner($hestia)->load()->percent(1));
+        $this->assertSame(6.0, (float) app(PluginManager::class)->serverModule('hestia')->provisioner($hestia)->load()->percent(1));
 
         Http::clearResolvedInstances();
         $this->fakeDirectAdmin();
         $plugins = app(PluginManager::class);
         $plugins->enable($plugins->find('directadmin'));
         $da = Server::factory()->directAdmin()->create(['hostname' => 'da.test', 'cpu_cores' => 2]);
-        $this->assertSame(40.0, $plugins->serverModule('directadmin')->provisioner($da)->load()->percent(2));
+        $this->assertSame(30.0, $plugins->serverModule('directadmin')->provisioner($da)->load()->percent(2));
     }
 
     public function test_virtualmin_cyberpanel_and_proxmox(): void
@@ -179,7 +194,7 @@ class ServerLoadTest extends TestCase
         $this->check();
 
         $this->assertNull($server->fresh()->cpu_alerted_at);
-        $this->assertSame('Server nl1: CPU back to 37.5%', ActivityLog::query()->where('event', 'server.cpu_normal')->value('description'));
+        $this->assertSame('Server nl1: CPU back to 30%', ActivityLog::query()->where('event', 'server.cpu_normal')->value('description'));
         $this->assertArrayHasKey('server.cpu_high', AdminAlerts::EVENTS);
         $this->assertArrayNotHasKey('server.cpu_normal', AdminAlerts::EVENTS);
     }

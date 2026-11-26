@@ -3,13 +3,15 @@
 namespace App\Monitoring;
 
 use App\Models\Server;
+use App\Provisioning\ServerLoad;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
 /**
  * The CPU bar: a server's CPU readings (server_load_readings, every 5 minutes) over the last 24 hours, a square per
  * hour with its average and highest share, oldest first, and the latest reading as "now" (null when the last one is
- * older than STALE_MINUTES, so a panel that stopped answering shows "—").
+ * older than STALE_MINUTES, so a panel that stopped answering shows "—"). A reading kept without a share (a load
+ * average read before the server's processor cores were entered) gets one from the cores the server has now.
  */
 class LoadHistory
 {
@@ -17,7 +19,7 @@ class LoadHistory
 
     public const STALE_MINUTES = 15;
 
-    /** @return array{now: ?float, load: ?float, hours: list<array{label: string, average: ?float, highest: ?float}>} */
+    /** @return array{now: ?float, load: ?float, cores: ?int, hours: list<array{label: string, average: ?float, highest: ?float}>} */
     public static function for(Server $server): array
     {
         $now = CarbonImmutable::now(config('app.timezone'));
@@ -33,11 +35,13 @@ class LoadHistory
         $latest = null;
         foreach ($readings as $reading) {
             $at = CarbonImmutable::parse($reading->checked_at, 'UTC')->setTimezone(config('app.timezone'));
-            $latest = ['at' => $at, 'percent' => $reading->percent === null ? null : (float) $reading->percent, 'load' => $reading->load === null ? null : (float) $reading->load];
+            $load = $reading->load === null ? null : (float) $reading->load;
+            $percent = $reading->percent === null ? (new ServerLoad($load))->percent($server->cpu_cores) : (float) $reading->percent;
+            $latest = ['at' => $at, 'percent' => $percent, 'load' => $load];
 
             $index = (int) floor($first->diffInHours($at, false));
-            if ($index >= 0 && $index < self::HOURS && $reading->percent !== null) {
-                $tally[$index][] = (float) $reading->percent;
+            if ($index >= 0 && $index < self::HOURS && $percent !== null) {
+                $tally[$index][] = $percent;
             }
         }
 
@@ -56,6 +60,7 @@ class LoadHistory
         return [
             'now' => $fresh ? $latest['percent'] : null,
             'load' => $fresh ? $latest['load'] : null,
+            'cores' => $server->cpu_cores ?: null,
             'hours' => $hours,
         ];
     }
