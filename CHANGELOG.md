@@ -5,6 +5,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Dashboard → Servers, CPU: cPanel, Plesk, DirectAdmin and HestiaCP are read by their 5-minute load average, not the
+  last minute's, so a short burst no longer reads as a busy hour. A server without its processor cores shows its load
+  ("Load 1.20") and asks for the cores instead of "—", and the readings already kept get their share once they are
+  entered. Pointing at the CPU row explains why the load reads higher than a panel's CPU usage graph.
+
 ## [0.13.0] - 2026-11-26
 
 - **Changing a hosting plan is easier**: on a service, picking another product changes its label and package with

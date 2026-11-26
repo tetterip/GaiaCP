@@ -4,21 +4,29 @@
      * the uptime or accounts rows: a column per hour as tall as that hour's average share, in its colour (green, amber,
      * red), over a faint full-height track; the latest reading beside the caption.
      *
-     * @var array{now: ?float, load: ?float, hours: list<array{label: string, average: ?float, highest: ?float}>} $history
+     * @var array{now: ?float, load: ?float, cores?: ?int, hours: list<array{label: string, average: ?float, highest: ?float}>} $history
      * @var ?string $caption
      */
     $now = \App\Monitoring\LoadHistory::percent($history['now']);
+    $load = $history['load'] === null ? null : \Illuminate\Support\Number::format($history['load'], 2);
+    // The share is the load average over the cores, which also counts processes waiting for the disk, so it reads higher
+    // than a panel's CPU usage graph; without the cores (cPanel, DirectAdmin, HestiaCP) only the load can be shown.
+    $about = match (true) {
+        $load === null => null,
+        $now === null => __('Load average :load. Enter the processor cores on the server to see it as a share.', ['load' => $load]),
+        default => __('Load average :load on :cores cores. It also counts processes waiting for the disk, so it reads higher than a CPU usage graph.', ['load' => $load, 'cores' => $history['cores'] ?? '?']),
+    };
     $columns = count($history['hours']);
     // Whole pixels, as the uptime and accounts rows (filament.servers.meter), so the three line up; the pixels left over
     // are spread over the gaps, so the chart reaches the right edge
     $whole = 'repeat('.$columns.', round(down, calc((100% - '.(($columns - 1) * 2).'px) / '.$columns.'), 1px))';
 @endphp
-<div class="gx-cpu" style="display: grid; gap: .3rem; min-width: 0;" @if ($history['load'] !== null) title="{{ __('Load average: :load', ['load' => \Illuminate\Support\Number::format($history['load'], 2)]) }}" @endif>
+<div class="gx-cpu" style="display: grid; gap: .3rem; min-width: 0;" @if ($about) title="{{ $about }}" @endif>
     <div style="display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font-size: .75rem; line-height: 1rem;">
         @if ($caption ?? null)
             <span style="opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $caption }}</span>
         @endif
-        <span style="font-variant-numeric: tabular-nums; white-space: nowrap;">{{ $now ?? '—' }}</span>
+        <span style="font-variant-numeric: tabular-nums; white-space: nowrap;">{{ $now ?? ($load === null ? '—' : __('Load :load', ['load' => $load])) }}</span>
     </div>
     <div class="gx-cpu-chart" role="img" aria-label="{{ __('CPU: :percent', ['percent' => $now ?? '—']) }}"
         style="display: grid; grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr)); grid-template-columns: {{ $whole }}; justify-content: space-between; gap: 2px; height: 2.25rem; align-items: end;">

@@ -39,7 +39,8 @@ class DirectAdminProvisioner implements HostingProvisioner, ListsAccounts, Repor
     {
         $data = $this->da->get('LOAD_AVERAGE', timeout: 10);
 
-        return new ServerLoad(ServerLoad::number($data['one'] ?? null));
+        // The 5-minute load, as often as GaiaCP reads it (the 1-minute one jumps with each short burst)
+        return new ServerLoad(ServerLoad::number($data['five'] ?? $data['one'] ?? null));
     }
 
     public function packages(): array

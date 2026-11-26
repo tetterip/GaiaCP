@@ -48,13 +48,14 @@ class PleskProvisioner implements DescribesPackages, HostingProvisioner, Install
     }
 
     /**
-     * The server statistics (server get stat): the load average in hundredths (`load_avg/l1`, 15 = 0.15) and the
+     * The server statistics (server get stat): the load average in hundredths (`load_avg/l5`, 5 minutes, 15 = 0.15) and the
      * processor in `other/cpu`, whose "(N core(s))" gives the cores when Plesk writes it.
      */
     public function load(): ServerLoad
     {
         $stat = $this->plesk->call('server', 'get', ['stat' => []], timeout: 10)[0]->stat ?? null;
-        $l1 = $stat?->load_avg->l1 ?? null;
+        // The 5-minute load, as often as GaiaCP reads it (the 1-minute one jumps with each short burst)
+        $l1 = $stat?->load_avg->l5 ?? $stat?->load_avg->l1 ?? null;
         $cpu = (string) ($stat?->other->cpu ?? '');
 
         return new ServerLoad(

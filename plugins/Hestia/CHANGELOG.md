@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.4.1] - 2026-11-26
+
+- The CPU bar reads the load average of the last 5 minutes (the second number of LOADAVERAGE) instead of the last minute, so a short burst at the moment of reading no longer shows as a busy hour.
+
 ## [1.4.0] - 2026-11-26
 
 - Package sizes: the package pickers show each package's disk quota and bandwidth from `v-list-user-packages` (`DescribesPackages`)
