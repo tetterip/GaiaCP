@@ -178,15 +178,15 @@ API key). On the server, pick the monitoring service and the monitor. Every 5 mi
 ## CPU on the dashboard
 
 Every 5 minutes GaiaCP also asks each active server's panel how busy its processors are, and the dashboard's Servers
-card shows a **CPU, 24 hours** bar under each one: the latest share beside the caption, and a square per hour in the
-colour of that hour's average (green, amber from 70%, red from the CPU warning). Point at a square for the hour's
-average and highest share.
+card shows a **CPU, 24 hours** chart under each one: the latest share beside the caption, and a column per hour, as
+tall as that hour's average and in its colour (green, amber from 70%, red from the CPU warning). Point at a column for
+the hour's average and highest share.
 
 - Proxmox and Virtualmin measure the share themselves. cPanel, Plesk, DirectAdmin, HestiaCP and CyberPanel give the
   **load average**, which GaiaCP divides by the processor cores: a load of 2 on 4 cores is 50%. This is the usual
   reading of a server's CPU, but not quite the same as the CPU % of `top`. A load higher than the cores shows as 100%.
 - cPanel, DirectAdmin and HestiaCP don't say how many cores the server has: type them in **Processor cores** on the
-  server, or the bar stays empty ("—").
+  server, or the chart stays empty ("—").
 - When a server stays at or above Settings → Automation → **CPU warning** (90% by default) for 15 minutes, super
   admins get the bell, once until it calms down. Leave the setting empty to not be warned.
 - These reads stay out of the module log unless they fail. A panel that doesn't answer shows "—".

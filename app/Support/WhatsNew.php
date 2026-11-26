@@ -73,6 +73,15 @@ class WhatsNew
     private static function versions(): array
     {
         return [
+            '0.13.0' => [
+                'summary' => __('See your servers and hosting accounts at a glance, change hosting plans easily, and keep track of refunds, chargebacks and fees from Stripe and PayPal.'),
+                'features' => [
+                    self::feature(Heroicon::OutlinedCpuChip, __('Server CPU on the dashboard')),
+                    self::feature(Heroicon::OutlinedServerStack, __('The account on the server')),
+                    self::feature(Heroicon::OutlinedArrowsUpDown, __('Easier plan changes')),
+                    self::feature(Heroicon::OutlinedReceiptRefund, __('Refunds and chargebacks')),
+                ],
+            ],
             '0.12.0' => [
                 'summary' => __('Clients moving from WHMCS keep their password, free orders activate in one click, and System health fixes speed from the panel.'),
                 'features' => [

@@ -4390,5 +4390,10 @@
     "Not saved: the server did not take the new package": "Non enregistré : le serveur n'a pas accepté le nouveau forfait",
     "Package / service plan on the panel. Saving a new one also sets it on the server.": "Forfait / plan de service sur le panneau. En enregistrer un nouveau l'applique aussi sur le serveur.",
     "Package :package set on the server.": "Forfait :package appliqué sur le serveur.",
-    "The packages every server has. A cPanel reseller prefix is left out: pyrgi is ttrpgr_pyrgi on one server and ttrpeu_pyrgi on another.": "Les forfaits présents sur chaque serveur. Le préfixe de revendeur cPanel est omis : pyrgi est ttrpgr_pyrgi sur un serveur et ttrpeu_pyrgi sur un autre."
+    "The packages every server has. A cPanel reseller prefix is left out: pyrgi is ttrpgr_pyrgi on one server and ttrpeu_pyrgi on another.": "Les forfaits présents sur chaque serveur. Le préfixe de revendeur cPanel est omis : pyrgi est ttrpgr_pyrgi sur un serveur et ttrpeu_pyrgi sur un autre.",
+    "See your servers and hosting accounts at a glance, change hosting plans easily, and keep track of refunds, chargebacks and fees from Stripe and PayPal.": "Voyez vos serveurs et comptes d'hébergement d'un coup d'œil, changez facilement d'offre et suivez remboursements, rétrofacturations et frais de Stripe et PayPal.",
+    "Server CPU on the dashboard": "CPU des serveurs sur le tableau de bord",
+    "The account on the server": "Le compte sur le serveur",
+    "Easier plan changes": "Changements d'offre plus simples",
+    "Refunds and chargebacks": "Remboursements et rétrofacturations"
 }
