@@ -117,7 +117,9 @@ scripts such as analytics only after the visitor accepts. Search engines index t
 **Site title** for your site root (the browser tab, search results and link previews; empty, the page's name and your
 company name) and the **Description** search results and previews show, both per language. Each language of a
 page has its own address (`?lang=el`; none for the default language), and search engines find them all in
-`/sitemap.xml`, which `/robots.txt` points to. Give that sitemap address to Google Search Console. In a subfolder install,
+`/sitemap.xml`, which `/robots.txt` points to. To use Google Search Console, add your client area's address there as a
+URL prefix property, choose the **HTML tag** check and paste the tag into **Google Search Console code** in the same
+section (Bing Webmaster Tools has a field too), save, press Verify, then give it that sitemap address. In a subfolder install,
 search engines only read the `robots.txt` at the domain's root, so submit the sitemap by hand there.
 
 Next: [Support](11-support.md).

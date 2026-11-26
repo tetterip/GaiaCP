@@ -4397,5 +4397,12 @@
     "Server CPU on the dashboard": "Panoda sunucu CPU'su",
     "The account on the server": "Sunucudaki hesap",
     "Easier plan changes": "Daha kolay paket değişikliği",
-    "Refunds and chargebacks": "İadeler ve ters ibrazlar"
+    "Refunds and chargebacks": "İadeler ve ters ibrazlar",
+    "Google Search Console code": "Google Search Console kodu",
+    "Bing Webmaster Tools code": "Bing Webmaster Tools kodu",
+    "In Search Console add a URL prefix property for your client area's address, choose the HTML tag check and paste the tag (or only its code) here, save, then press Verify there. Then submit :url as your sitemap.": "Search Console'da müşteri alanınızın adresiyle bir URL öneki mülkü ekleyin, HTML etiketi doğrulamasını seçin ve etiketi (ya da yalnızca kodunu) buraya yapıştırın, kaydedin ve orada Doğrula'ya basın. Ardından :url adresini site haritası olarak gönderin.",
+    "The same for Bing: choose the HTML meta tag check and paste the tag or its code.": "Bing için de aynısı: HTML meta etiketi doğrulamasını seçin ve etiketi ya da kodunu yapıştırın.",
+    "Paste the meta tag or the code in its content=\"…\".": "Meta etiketini ya da content=\"…\" içindeki kodu yapıştırın.",
+    "Google verification": "Google doğrulaması",
+    "Bing verification": "Bing doğrulaması"
 }

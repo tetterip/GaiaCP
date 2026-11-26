@@ -185,4 +185,27 @@ class SeoTest extends TestCase
         $this->assertStringContainsString("Disallow: /\n", $robots);
         $this->assertStringNotContainsString('Sitemap', $robots);
     }
+
+    public function test_search_console_and_bing_codes_go_in_the_client_area_head(): void
+    {
+        $this->actingAs(User::factory()->create());
+        Livewire::test(ClientAreaSettings::class)
+            ->set('data.seo.google_verification', '<script>alert(1)</script>')
+            ->call('save')
+            ->assertHasErrors(['data.seo.google_verification'])
+            ->set('data.seo.google_verification', ' <meta name="google-site-verification" content="AbC-123_xyz" /> ')
+            ->set('data.seo.bing_verification', '0123456789ABCDEF')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertSame('AbC-123_xyz', config('gaiacp.seo.google_verification'));
+        auth()->logout();
+
+        // Also while the pages are kept out of search results, so the check can pass first; never in /admin
+        config(['gaiacp.seo.index' => false]);
+        $this->get('/login')->assertOk()
+            ->assertSee('<meta name="google-site-verification" content="AbC-123_xyz">', false)
+            ->assertSee('<meta name="msvalidate.01" content="0123456789ABCDEF">', false);
+        $this->get('/admin/login')->assertOk()->assertDontSee('google-site-verification', false);
+    }
 }

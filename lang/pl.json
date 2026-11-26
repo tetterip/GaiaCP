@@ -4397,5 +4397,12 @@
     "Server CPU on the dashboard": "CPU serwerów na pulpicie",
     "The account on the server": "Konto na serwerze",
     "Easier plan changes": "Łatwiejsza zmiana pakietu",
-    "Refunds and chargebacks": "Zwroty i obciążenia zwrotne"
+    "Refunds and chargebacks": "Zwroty i obciążenia zwrotne",
+    "Google Search Console code": "Kod Google Search Console",
+    "Bing Webmaster Tools code": "Kod Bing Webmaster Tools",
+    "In Search Console add a URL prefix property for your client area's address, choose the HTML tag check and paste the tag (or only its code) here, save, then press Verify there. Then submit :url as your sitemap.": "W Search Console dodaj usługę typu prefiks URL z adresem strefy klienta, wybierz weryfikację tagiem HTML i wklej tutaj tag (lub sam kod), zapisz, a potem kliknij tam Zweryfikuj. Następnie prześlij :url jako mapę witryny.",
+    "The same for Bing: choose the HTML meta tag check and paste the tag or its code.": "To samo dla Bing: wybierz weryfikację metatagiem HTML i wklej tag lub jego kod.",
+    "Paste the meta tag or the code in its content=\"…\".": "Wklej metatag lub kod z jego content=\"…\".",
+    "Google verification": "Weryfikacja Google",
+    "Bing verification": "Weryfikacja Bing"
 }

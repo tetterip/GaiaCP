@@ -122,6 +122,8 @@ class Settings
         'public_area.status',
         'seo.title',
         'seo.description',
+        'seo.google_verification',
+        'seo.bing_verification',
         'client_area.email_links',
         'client_area.signup',
         'client_area.terms',

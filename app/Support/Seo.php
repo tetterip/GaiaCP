@@ -136,6 +136,35 @@ class Seo
     }
 
     /** A text as one plain line (tags and line breaks gone), at most 300 characters; null when empty. */
+    /**
+     * The code of a search engine's "HTML tag" check (Google Search Console, Bing Webmaster Tools), from the whole
+     * `<meta … content="…">` tag or the code alone; null when empty or not a code.
+     */
+    public static function verificationCode(mixed $value): ?string
+    {
+        $value = trim((string) $value);
+
+        if (preg_match('/content\s*=\s*["\']([^"\']*)["\']/i', $value, $match)) {
+            $value = trim($match[1]);
+        }
+
+        return preg_match('/^[A-Za-z0-9_\-.:=+\/]{1,200}$/', $value) ? $value : null;
+    }
+
+    /**
+     * The verification meta tags to put in the client area's head, as name => code (Settings → Client area → Search
+     * engines). Shown even while the site is kept out of search results, so the check can pass first.
+     *
+     * @return array<string, string>
+     */
+    public static function verifications(): array
+    {
+        return array_filter([
+            'google-site-verification' => self::verificationCode(config('gaiacp.seo.google_verification')),
+            'msvalidate.01' => self::verificationCode(config('gaiacp.seo.bing_verification')),
+        ]);
+    }
+
     public static function plain(mixed $text): ?string
     {
         $text = trim((string) preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $text), ENT_QUOTES | ENT_HTML5)));

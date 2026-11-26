@@ -291,6 +291,8 @@ return [
         'index' => true,
         'title' => [], // per language code: the site root's browser tab and link preview title; empty = page + company name
         'description' => [], // per language code: the meta / link preview description; empty = the first language's, else none
+        'google_verification' => null, // the code of Google Search Console's "HTML tag" check, put in the client area's head
+        'bing_verification' => null, // the same for Bing Webmaster Tools
     ],
 
     // The public area (App\Support\PublicArea, Settings → Public area): pages visitors see without logging in, in the
