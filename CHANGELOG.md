@@ -19,6 +19,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   now becomes active with its expiry left to the daily sync; a sync or payment that reads no real date keeps the stored
   one and does not renew. Any other unexpected error on one item of an order no longer stops the other items: that item
   stays pending (Services → Module queue) and a retry never registers the domain twice.
+- Fixed: a registered domain could keep the registrar's placeholder nameservers (easy.gr's nodns1.easy.gr on a new .gr)
+  instead of the domain's own or the defaults from Settings → Domains. After registering, GaiaCP reads them back and
+  sets them once more when they differ; if the registrar refuses, the domain is still active and the activity log says so.
 
 ## [0.13.0] - 2026-11-26
 

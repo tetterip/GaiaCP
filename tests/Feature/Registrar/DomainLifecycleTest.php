@@ -121,6 +121,33 @@ class DomainLifecycleTest extends TestCase
         $this->assertNotContains(TestRegistrar::REGISTER, $this->registrarActions());
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
         $this->assertNull($service->domainDetails->expires_at);
+        // The registrar's placeholders are replaced by the default nameservers.
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $this->registrarDomains['acme.gr']['ns']);
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $service->domainDetails->nameservers);
+    }
+
+    public function test_nameservers_the_registrar_did_not_keep_are_set_again(): void
+    {
+        $service = $this->pendingDomain();
+        $this->registrarIgnoresNameservers = true;
+
+        app(DomainLifecycle::class)->activate($service);
+
+        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::REGISTER, TestRegistrar::SYNC, TestRegistrar::GET_NAMESERVERS, TestRegistrar::SAVE_NAMESERVERS], $this->registrarActions());
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $service->refresh()->domainDetails->nameservers);
+    }
+
+    public function test_a_refused_nameserver_change_after_registering_is_logged_and_still_activates(): void
+    {
+        $service = $this->pendingDomain();
+        $this->registrarIgnoresNameservers = true;
+        $this->registrarFailures[TestRegistrar::SAVE_NAMESERVERS] = ['2400' => 'Pending registration'];
+
+        app(DomainLifecycle::class)->activate($service);
+
+        $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
+        $this->assertSame(['nodns1.easy.gr', 'nodns2.easy.gr'], $service->domainDetails->nameservers);
+        $this->assertStringContainsString('Pending registration', ActivityLog::where('event', 'domain.nameservers_not_set')->value('description'));
     }
 
     public function test_sync_without_an_expiry_date_yet_keeps_the_stored_one(): void
