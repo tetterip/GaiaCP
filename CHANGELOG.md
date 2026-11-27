@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The clear cross (×) in dropdowns such as Package sits level with the arrow again, at its normal size.
 - Dashboard → Recent activity and the Activity log show payments, orders, new clients, cancellations, tickets,
   payment notices, reminders and suspensions in the admin's language, the entries already saved too, with dates in
   the Region's format (05/12/2026, not 2026-12-05). The log itself still keeps them in English.
