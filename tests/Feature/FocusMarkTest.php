@@ -52,6 +52,21 @@ class FocusMarkTest extends TestCase
         $this->assertStringContainsString(".fi-select-input-btn:focus-visible {\n        outline: none !important;", $html);
     }
 
+    public function test_the_select_clear_cross_keeps_a_big_target_without_moving_off_the_chevrons_line(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $html = $this->get('/admin')->assertOk()->getContent();
+        $start = strpos($html, '.fi-select-input-value-remove-btn {');
+        $this->assertNotFalse($start);
+        $rule = substr($html, $start, strpos($html, '}', $start) - $start);
+
+        $this->assertStringContainsString('padding: 4px;', $rule);
+        // a negative margin moved the cross 4px above the chevron and the mask painted it 24px wide
+        $this->assertStringNotContainsString('margin', $rule);
+        $this->assertStringContainsString('mask-origin: content-box;', $rule);
+    }
+
     private function assertMarkComesLast(string $html, string $theme): void
     {
         $mark = strpos($html, self::MARK);
