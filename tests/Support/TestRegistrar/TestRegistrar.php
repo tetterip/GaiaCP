@@ -118,8 +118,8 @@ class TestRegistrar implements ChecksAvailability, DomainRegistrar, ListsTldPric
         $this->call(self::REGISTER, $params);
 
         $this->account->registrarDomains[$domain] = [
-            'expires' => now()->addYears($years)->toDateString(),
-            'ns' => array_values(array_filter([$params['ns1'], $params['ns2'], $params['ns3'], $params['ns4']])),
+            'expires' => $this->account->registrarNoExpiryYet ? '0000-00-00 00:00:00' : now()->addYears($years)->toDateString(),
+            'ns' => $this->account->registrarIgnoresNameservers ? ['nodns1.easy.gr', 'nodns2.easy.gr'] : array_values(array_filter([$params['ns1'], $params['ns2'], $params['ns3'], $params['ns4']])),
         ];
     }
 

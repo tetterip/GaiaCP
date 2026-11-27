@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\DomainLifecycle;
 use App\Models\Registrar;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarFactory;
@@ -35,7 +36,9 @@ class RegistrarCheck extends Command
             return self::FAILURE;
         }
 
-        $this->info("{$domain} at {$account->name}: expires {$expiry->toDateString()}");
+        $this->info(($expiry = DomainLifecycle::knownExpiry($expiry))
+            ? "{$domain} at {$account->name}: expires {$expiry->toDateString()}"
+            : "{$domain} at {$account->name}: in the account, no expiry date yet (registration not confirmed by the registry)");
         $this->line('Nameservers: '.($nameservers ? implode(', ', $nameservers) : '(none returned)'));
 
         return self::SUCCESS;

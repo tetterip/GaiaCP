@@ -72,10 +72,15 @@ class DomainLifecycle
         $registrar = $this->account($service, $event);
         $years = $service->registrationYears();
 
-        [$expires, $nameservers] = $this->call($service, $registrar, $event, function (DomainRegistrar $api) use ($service, $details, $type, $years) {
+        // The domain's own nameservers, else the defaults from Settings → Domains.
+        $wanted = $type === DomainRegistrationType::Register ? fn () => $this->nameserversFor($details->nameservers) : null;
+        $nameserversNotSet = null;
+
+        [$expires, $nameservers] = $this->call($service, $registrar, $event, function (DomainRegistrar $api) use ($service, $details, $type, $years, $wanted, &$nameserversNotSet) {
+            // Any reply means the account holds it, even one without a real date yet (knownExpiry()): never register twice.
             if ($this->expiryIn($api, $this->name($service)) === null) {
                 if ($type === DomainRegistrationType::Register) {
-                    $api->register($this->name($service), $years, $service->client, $this->nameserversFor($details->nameservers));
+                    $api->register($this->name($service), $years, $service->client, $wanted());
                 } else {
                     $api->transfer($this->name($service), (string) $details->epp_code ?: throw new ProvisioningException("Enter the EPP code of {$service->domain} to transfer it."), $service->client);
                 }
@@ -87,8 +92,30 @@ class DomainLifecycle
                 return [null, []];
             }
 
-            return [$expires, rescue(fn () => $api->nameservers($this->name($service)), [], report: false)];
+            $nameservers = rescue(fn () => $api->nameservers($this->name($service)), [], report: false);
+
+            // A registrar can keep its own placeholders instead of the nameservers sent (easy.gr's nodns1.easy.gr on a
+            // new .gr), and a retry finds a domain registered without them: set them once more. A refusal never fails
+            // the registration; it is logged, so the admin sets them from the Registrar menu.
+            $want = rescue($wanted, [], report: false);
+
+            if ($nameservers !== [] && $want !== [] && ! self::sameNameservers($nameservers, $want)) {
+                try {
+                    $api->setNameservers($this->name($service), $want);
+                    $nameservers = $want;
+                } catch (ProvisioningException $e) {
+                    $nameserversNotSet = $e->getMessage();
+                }
+            }
+
+            // A registration the registry has not confirmed yet can come back without a date (easy.gr's .gr gives
+            // 0000-00-00): the domain is in the account, its expiry is left to the daily sync.
+            return [self::knownExpiry($expires), $nameservers];
         });
+
+        if ($nameserversNotSet !== null) {
+            ActivityLog::record('domain.nameservers_not_set', "Nameservers of {$service->domain} not set after registering, so it keeps ".implode(', ', $nameservers).": {$nameserversNotSet}", $service, properties: ['registrar_id' => $registrar->id]);
+        }
 
         $details->update([
             'registrar_id' => $registrar->id,
@@ -173,7 +200,7 @@ class DomainLifecycle
         }
 
         [$expires, $nameservers] = $this->call($service, $registrar, 'domain.synced', fn (DomainRegistrar $api) => [
-            $api->expiryDate($this->name($service)),
+            self::knownExpiry($api->expiryDate($this->name($service))) ?? throw new ProvisioningException(self::noExpiryYet($service, $registrar)),
             $api->nameservers($this->name($service)),
         ]);
 
@@ -489,7 +516,8 @@ class DomainLifecycle
             $registrar = $this->account($service, 'domain.renewed');
 
             try {
-                $expires = $this->registrars->forRegistrar($registrar)->expiryDate($this->name($service));
+                $expires = self::knownExpiry($this->registrars->forRegistrar($registrar)->expiryDate($this->name($service)))
+                    ?? throw new ProvisioningException(self::noExpiryYet($service, $registrar));
                 $service->registration()->update(['expires_at' => $expires, 'last_synced_at' => now()]);
             } catch (ProvisioningException $e) {
                 $message = "Could not read the expiry date at the registrar, so it was not renewed: {$e->getMessage()}";
@@ -556,6 +584,31 @@ class DomainLifecycle
 
             throw $e;
         }
+    }
+
+    /**
+     * The expiry a registrar gave, or null when it is not a real date: a registration the registry has not confirmed
+     * yet can come back as 0000-00-00 (Carbon reads it as -0001-11-30, which MySQL refuses) or as the Unix epoch.
+     */
+    public static function knownExpiry(?CarbonInterface $expires): ?CarbonImmutable
+    {
+        return $expires !== null && $expires->year >= 2000 ? CarbonImmutable::instance($expires) : null;
+    }
+
+    private static function noExpiryYet(Service $service, Registrar $registrar): string
+    {
+        return "{$registrar->name} has no expiry date for {$service->domain} yet (the registry may not have confirmed the registration). Try again later.";
+    }
+
+    /**
+     * @param  list<string>  $a
+     * @param  list<string>  $b
+     */
+    private static function sameNameservers(array $a, array $b): bool
+    {
+        $normal = fn (array $list) => collect($list)->map(fn (string $ns) => rtrim(mb_strtolower(trim($ns)), '.'))->sort()->values()->all();
+
+        return $normal($a) === $normal($b);
     }
 
     /** The domain's expiry when the registrar account holds it, else null. */

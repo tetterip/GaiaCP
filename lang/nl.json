@@ -305,6 +305,7 @@
     "Confirm username": "Gebruikersnaam bevestigen",
     "Connect and create the tables": "Verbinden en de tabellen aanmaken",
     "Connected: :domain expires :date": "Verbonden: :domain verloopt op :date",
+    "Connected: :domain is in the account, with no expiry date yet": "Verbonden: :domain staat in het account, nog zonder vervaldatum",
     "Connected: :version": "Verbonden: :version",
     "Connection failed": "Verbinding mislukt",
     "Connections": "Verbindingen",

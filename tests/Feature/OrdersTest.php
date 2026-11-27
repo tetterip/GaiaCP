@@ -19,6 +19,7 @@ use App\Filament\Resources\Orders\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Services\Pages\EditService;
 use App\Models\ActivityLog;
 use App\Models\Client;
+use App\Models\Domain;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Registrar;
@@ -32,6 +33,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Livewire\Livewire;
+use RuntimeException;
 use Tests\FakesRegistrar;
 use Tests\FakesWhm;
 use Tests\Support\TestRegistrar\TestRegistrar;
@@ -118,6 +120,33 @@ class OrdersTest extends TestCase
         $this->assertSame([], app(CompleteOrder::class)->handle($order));
         $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
         $this->assertSame($whmCreates, count(array_filter($this->whmCalls, fn ($c) => $c[0] === 'createacct'))); // hosting not created twice
+    }
+
+    public function test_an_unexpected_error_on_one_item_does_not_stop_the_others(): void
+    {
+        $order = $this->place();
+        $fail = true;
+        Domain::updating(function () use (&$fail) {
+            if ($fail) {
+                throw new RuntimeException('Incorrect date value'); // the database refusing the bookkeeping after registration
+            }
+        });
+
+        $failures = app(CompleteOrder::class)->handle($order);
+
+        $domain = $order->services()->where('type', ServiceType::Domain)->first();
+        $this->assertSame([$domain->id], array_keys($failures));
+        $this->assertStringContainsString('Incorrect date value', $failures[$domain->id]);
+        $this->assertSame(ServiceStatus::Pending, $domain->status);
+        $this->assertArrayHasKey('acme', $this->whmAccounts); // hosting still set up
+        $this->assertSame('domain.registered', ActivityLog::where('event', 'provisioning.failed')->where('service_id', $domain->id)->value('properties')['event']);
+
+        $fail = false;
+
+        // The retry finds the domain in the registrar account: it is not registered (or charged) again.
+        $this->assertSame([], app(CompleteOrder::class)->handle($order));
+        $this->assertCount(1, array_filter($this->registrarActions(), fn ($action) => $action === TestRegistrar::REGISTER));
+        $this->assertSame(OrderStatus::Completed, $order->refresh()->status);
     }
 
     public function test_order_payment_records_first_payments_without_renewing(): void

@@ -305,6 +305,7 @@
     "Confirm username": "Επιβεβαίωση ονόματος χρήστη",
     "Connect and create the tables": "Σύνδεση και δημιουργία πινάκων",
     "Connected: :domain expires :date": "Συνδέθηκε: το :domain λήγει :date",
+    "Connected: :domain is in the account, with no expiry date yet": "Συνδέθηκε: το :domain είναι στον λογαριασμό, χωρίς ημερομηνία λήξης ακόμη",
     "Connected: :version": "Συνδέθηκε: :version",
     "Connection failed": "Η σύνδεση απέτυχε",
     "Connections": "Συνδέσεις",
