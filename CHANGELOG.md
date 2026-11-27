@@ -5,6 +5,7 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The clear cross (×) in dropdowns such as Package sits level with the arrow again, at its normal size.
 - Settings → Client area → Search engines has a **Google Search Console code** and a **Bing Webmaster Tools code**:
   paste the verification tag (or only its code) and the client area's pages carry it, so the site can be verified with
   the HTML tag check, then given `/sitemap.xml`.
