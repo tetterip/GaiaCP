@@ -305,6 +305,7 @@
     "Confirm username": "Kullanıcı adını onayla",
     "Connect and create the tables": "Bağlan ve tabloları oluştur",
     "Connected: :domain expires :date": "Bağlandı: :domain :date tarihinde sona eriyor",
+    "Connected: :domain is in the account, with no expiry date yet": "Bağlandı: :domain hesapta, henüz bitiş tarihi yok",
     "Connected: :version": "Bağlandı: :version",
     "Connection failed": "Bağlantı başarısız",
     "Connections": "Bağlantılar",

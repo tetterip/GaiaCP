@@ -305,6 +305,7 @@
     "Confirm username": "Potwierdź nazwę użytkownika",
     "Connect and create the tables": "Połącz i utwórz tabele",
     "Connected: :domain expires :date": "Połączono: :domain wygasa :date",
+    "Connected: :domain is in the account, with no expiry date yet": "Połączono: :domain jest na koncie, jeszcze bez daty wygaśnięcia",
     "Connected: :version": "Połączono: :version",
     "Connection failed": "Połączenie nie powiodło się",
     "Connections": "Połączenia",

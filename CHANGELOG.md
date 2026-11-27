@@ -14,6 +14,11 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   last minute's, so a short burst no longer reads as a busy hour. A server without its processor cores shows its load
   ("Load 1.20") and asks for the cores instead of "—", and the readings already kept get their share once they are
   entered. Pointing at the CPU row explains why the load reads higher than a panel's CPU usage graph.
+- Fixed: Complete order stopped with "Error loading the page" when easy.gr registered a .gr domain but gave no expiry
+  date yet (`0000-00-00` until the registry confirms it), and the hosting of the same order was not set up. The domain
+  now becomes active with its expiry left to the daily sync; a sync or payment that reads no real date keeps the stored
+  one and does not renew. Any other unexpected error on one item of an order no longer stops the other items: that item
+  stays pending (Services → Module queue) and a retry never registers the domain twice.
 
 ## [0.13.0] - 2026-11-26
 

@@ -72,6 +72,7 @@ class DomainLifecycle
         $years = $service->registrationYears();
 
         [$expires, $nameservers] = $this->call($service, $registrar, $event, function (DomainRegistrar $api) use ($service, $details, $type, $years) {
+            // Any reply means the account holds it, even one without a real date yet (knownExpiry()): never register twice.
             if ($this->expiryIn($api, $this->name($service)) === null) {
                 if ($type === DomainRegistrationType::Register) {
                     $api->register($this->name($service), $years, $service->client, $this->nameserversFor($details->nameservers));
@@ -86,7 +87,9 @@ class DomainLifecycle
                 return [null, []];
             }
 
-            return [$expires, rescue(fn () => $api->nameservers($this->name($service)), [], report: false)];
+            // A registration the registry has not confirmed yet can come back without a date (easy.gr's .gr gives
+            // 0000-00-00): the domain is in the account, its expiry is left to the daily sync.
+            return [self::knownExpiry($expires), rescue(fn () => $api->nameservers($this->name($service)), [], report: false)];
         });
 
         $details->update([
@@ -172,7 +175,7 @@ class DomainLifecycle
         }
 
         [$expires, $nameservers] = $this->call($service, $registrar, 'domain.synced', fn (DomainRegistrar $api) => [
-            $api->expiryDate($this->name($service)),
+            self::knownExpiry($api->expiryDate($this->name($service))) ?? throw new ProvisioningException(self::noExpiryYet($service, $registrar)),
             $api->nameservers($this->name($service)),
         ]);
 
@@ -488,7 +491,8 @@ class DomainLifecycle
             $registrar = $this->account($service, 'domain.renewed');
 
             try {
-                $expires = $this->registrars->forRegistrar($registrar)->expiryDate($this->name($service));
+                $expires = self::knownExpiry($this->registrars->forRegistrar($registrar)->expiryDate($this->name($service)))
+                    ?? throw new ProvisioningException(self::noExpiryYet($service, $registrar));
                 $service->registration()->update(['expires_at' => $expires, 'last_synced_at' => now()]);
             } catch (ProvisioningException $e) {
                 $message = "Could not read the expiry date at the registrar, so it was not renewed: {$e->getMessage()}";
@@ -555,6 +559,20 @@ class DomainLifecycle
 
             throw $e;
         }
+    }
+
+    /**
+     * The expiry a registrar gave, or null when it is not a real date: a registration the registry has not confirmed
+     * yet can come back as 0000-00-00 (Carbon reads it as -0001-11-30, which MySQL refuses) or as the Unix epoch.
+     */
+    public static function knownExpiry(?CarbonInterface $expires): ?CarbonImmutable
+    {
+        return $expires !== null && $expires->year >= 2000 ? CarbonImmutable::instance($expires) : null;
+    }
+
+    private static function noExpiryYet(Service $service, Registrar $registrar): string
+    {
+        return "{$registrar->name} has no expiry date for {$service->domain} yet (the registry may not have confirmed the registration). Try again later.";
     }
 
     /** The domain's expiry when the registrar account holds it, else null. */
