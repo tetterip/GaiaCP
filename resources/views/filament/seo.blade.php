@@ -9,6 +9,9 @@
         $name = config('gaiacp.company.name') ?: 'GaiaCP';
         $indexable = \App\Support\Seo::indexable() && ! \App\Support\Seo::kept();
     @endphp
+    @foreach (\App\Support\Seo::verifications() as $engine => $code)
+        <meta name="{{ $engine }}" content="{{ $code }}">
+    @endforeach
     @if ($indexable)
         <link rel="canonical" href="{{ \App\Support\Seo::canonical() }}">
         @foreach (\App\Support\Seo::alternates() as $hreflang => $href)

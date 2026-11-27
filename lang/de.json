@@ -4397,5 +4397,12 @@
     "Server CPU on the dashboard": "Server-CPU im Dashboard",
     "The account on the server": "Das Konto auf dem Server",
     "Easier plan changes": "Einfachere Tarifwechsel",
-    "Refunds and chargebacks": "Rückerstattungen und Rückbuchungen"
+    "Refunds and chargebacks": "Rückerstattungen und Rückbuchungen",
+    "Google Search Console code": "Google Search Console-Code",
+    "Bing Webmaster Tools code": "Bing Webmaster Tools-Code",
+    "In Search Console add a URL prefix property for your client area's address, choose the HTML tag check and paste the tag (or only its code) here, save, then press Verify there. Then submit :url as your sitemap.": "Fügen Sie in der Search Console eine URL-Präfix-Property mit der Adresse Ihres Kundenbereichs hinzu, wählen Sie die Bestätigung per HTML-Tag, fügen Sie das Tag (oder nur seinen Code) hier ein, speichern Sie und klicken Sie dort auf Bestätigen. Reichen Sie dann :url als Sitemap ein.",
+    "The same for Bing: choose the HTML meta tag check and paste the tag or its code.": "Dasselbe für Bing: Wählen Sie die Bestätigung per HTML-Meta-Tag und fügen Sie das Tag oder seinen Code ein.",
+    "Paste the meta tag or the code in its content=\"…\".": "Fügen Sie das Meta-Tag oder den Code aus content=\"…\" ein.",
+    "Google verification": "Google-Bestätigung",
+    "Bing verification": "Bing-Bestätigung"
 }

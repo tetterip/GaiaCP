@@ -63,7 +63,7 @@ class ClientAreaSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.title', 'seo.description', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
+        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.title', 'seo.description', 'seo.google_verification', 'seo.bing_verification', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
     }
 
     public function form(Schema $schema): Schema
@@ -219,6 +219,18 @@ class ClientAreaSettings extends SettingsFormPage
                             ->label('Let search engines show the login, sign up and order pages')
                             ->helperText(fn (): string => __('Also the public area\'s pages, each in every language. Search engines find them in :url.', ['url' => route('sitemap')])),
                         self::seoTexts(),
+                        TextInput::make('seo.google_verification')
+                            ->label('Google Search Console code')
+                            ->maxLength(500)
+                            ->rule(fn () => self::verificationRule())
+                            ->placeholder('<meta name="google-site-verification" content="…">')
+                            ->helperText(__('In Search Console add a URL prefix property for your client area\'s address, choose the HTML tag check and paste the tag (or only its code) here, save, then press Verify there. Then submit :url as your sitemap.', ['url' => route('sitemap')])),
+                        TextInput::make('seo.bing_verification')
+                            ->label('Bing Webmaster Tools code')
+                            ->maxLength(500)
+                            ->rule(fn () => self::verificationRule())
+                            ->placeholder('<meta name="msvalidate.01" content="…">')
+                            ->helperText(__('The same for Bing: choose the HTML meta tag check and paste the tag or its code.')),
                     ]),
                 Section::make(__('Emails'))
                     ->schema([
@@ -239,6 +251,16 @@ class ClientAreaSettings extends SettingsFormPage
                             ->helperText(fn () => __('Visitors choose a product and its domain at :url without logging in, then sign up (or log in) and place the order on the Order page. Link to it from your website; :url?product=<id> pre-selects a product. Needs "Clients can order" on; with sign up off, only clients who can already log in can finish an order.', ['url' => route('filament.client.cart')])),
                     ]),
             ]);
+    }
+
+    /** A verification code, alone or in the meta tag it comes in. */
+    private static function verificationRule(): Closure
+    {
+        return function (string $attribute, mixed $value, Closure $fail): void {
+            if (filled($value) && Seo::verificationCode($value) === null) {
+                $fail(__('Paste the meta tag or the code in its content="…".'));
+            }
+        };
     }
 
     /** The site title and description, one tab per language (one language: the fields alone). */
@@ -286,11 +308,15 @@ class ClientAreaSettings extends SettingsFormPage
             $values[$key] = array_filter(array_map(fn ($text) => trim((string) $text), (array) ($values[$key] ?? [])), 'filled');
         }
 
+        foreach (['seo.google_verification', 'seo.bing_verification'] as $key) {
+            $values[$key] = Seo::verificationCode($values[$key] ?? null);
+        }
+
         $values = $this->withTermsVersion($values);
         $values['client_area.brand_color'] = filled($values['client_area.brand_color'] ?? null) ? strtolower((string) $values['client_area.brand_color']) : null;
 
         foreach ($values as $key => $value) {
-            if (! in_array($key, ['client_area.theme', 'client_area.brand_color', 'client_area.maintenance_message', 'client_area.maintenance_redirect', 'client_area.incident_message', 'client_area.terms_url', 'client_area.terms_text', 'client_area.terms_version', 'seo.title', 'seo.description'], true)) {
+            if (! in_array($key, ['client_area.theme', 'client_area.brand_color', 'client_area.maintenance_message', 'client_area.maintenance_redirect', 'client_area.incident_message', 'client_area.terms_url', 'client_area.terms_text', 'client_area.terms_version', 'seo.title', 'seo.description', 'seo.google_verification', 'seo.bing_verification'], true)) {
                 $values[$key] = (bool) $value;
             }
         }

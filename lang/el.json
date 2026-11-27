@@ -4397,5 +4397,12 @@
     "Server CPU on the dashboard": "CPU των servers στον πίνακα ελέγχου",
     "The account on the server": "Ο λογαριασμός στον server",
     "Easier plan changes": "Ευκολότερη αλλαγή πακέτου",
-    "Refunds and chargebacks": "Επιστροφές και αμφισβητήσεις χρεώσεων"
+    "Refunds and chargebacks": "Επιστροφές και αμφισβητήσεις χρεώσεων",
+    "Google Search Console code": "Κωδικός Google Search Console",
+    "Bing Webmaster Tools code": "Κωδικός Bing Webmaster Tools",
+    "In Search Console add a URL prefix property for your client area's address, choose the HTML tag check and paste the tag (or only its code) here, save, then press Verify there. Then submit :url as your sitemap.": "Στο Search Console πρόσθεσε ιδιότητα «Πρόθεμα URL» με τη διεύθυνση της περιοχής πελατών, διάλεξε την επαλήθευση «Ετικέτα HTML» και επικόλλησε εδώ την ετικέτα (ή μόνο τον κωδικό της), αποθήκευσε και πάτα «Επαλήθευση» εκεί. Μετά δήλωσε το :url ως sitemap.",
+    "The same for Bing: choose the HTML meta tag check and paste the tag or its code.": "Το ίδιο για το Bing: διάλεξε την επαλήθευση με meta tag HTML και επικόλλησε την ετικέτα ή τον κωδικό της.",
+    "Paste the meta tag or the code in its content=\"…\".": "Επικόλλησε την ετικέτα meta ή τον κωδικό μέσα στο content=\"…\".",
+    "Google verification": "Επαλήθευση Google",
+    "Bing verification": "Επαλήθευση Bing"
 }

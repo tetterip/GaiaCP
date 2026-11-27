@@ -4397,5 +4397,12 @@
     "Server CPU on the dashboard": "Server-CPU op het dashboard",
     "The account on the server": "Het account op de server",
     "Easier plan changes": "Eenvoudiger van pakket wisselen",
-    "Refunds and chargebacks": "Terugbetalingen en chargebacks"
+    "Refunds and chargebacks": "Terugbetalingen en chargebacks",
+    "Google Search Console code": "Google Search Console-code",
+    "Bing Webmaster Tools code": "Bing Webmaster Tools-code",
+    "In Search Console add a URL prefix property for your client area's address, choose the HTML tag check and paste the tag (or only its code) here, save, then press Verify there. Then submit :url as your sitemap.": "Voeg in Search Console een URL-voorvoegsel-property toe met het adres van uw klantenportaal, kies verificatie via HTML-tag en plak hier de tag (of alleen de code), sla op en klik daar op Verifiëren. Dien daarna :url in als sitemap.",
+    "The same for Bing: choose the HTML meta tag check and paste the tag or its code.": "Hetzelfde voor Bing: kies verificatie via HTML-metatag en plak de tag of de code.",
+    "Paste the meta tag or the code in its content=\"…\".": "Plak de metatag of de code uit content=\"…\".",
+    "Google verification": "Google-verificatie",
+    "Bing verification": "Bing-verificatie"
 }
