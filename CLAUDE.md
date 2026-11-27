@@ -229,6 +229,7 @@ Read the file for the area you are changing before you change it; don't read the
   menu labels need `App\Filament\Concerns\Translates*` on the class. `LocalesTest` fails on untranslated text in
   `app/Filament` and on any text missing from `lang/el.json` (add new ones with `gaiacp:translations el --write`, then
   translate them). Activity log messages stay in English
+  (shown translated through `App\Support\ActivityText`: a new or changed message of a shown event updates its template)
 
 - Validate input with Form Requests; authorize every admin route (auth middleware).
 - Keep panel/registrar API calls out of controllers: controllers call a service class,

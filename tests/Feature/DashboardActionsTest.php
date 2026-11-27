@@ -135,14 +135,14 @@ class DashboardActionsTest extends TestCase
         $client = Client::factory()->create(['first_name' => 'Maria', 'last_name' => 'Pappa']);
         $service = Service::factory()->for($client)->create(['domain' => 'maria.gr']);
         ActivityLog::record('payment.recorded', 'Payment of 50.00 recorded', $service);
-        ActivityLog::record('order.placed', 'Order #7 placed with 1 item(s)', client: $client);
+        ActivityLog::record('order.placed', 'Order #7 placed with 1 item', client: $client);
         ActivityLog::record('client.created', 'Client Maria Pappa created', client: $client);
         ActivityLog::record('service.updated', 'Not listed here', $service);
         ActivityLog::record('ticket.client_replied', 'Client replied to ticket T-000001', client: $client);
 
         $widget = new RecentActivity;
         $this->assertSame(
-            ['Client replied to ticket T-000001', 'Client Maria Pappa created', 'Order #7 placed with 1 item(s)', 'Payment of 50.00 recorded'],
+            ['Client replied to ticket T-000001', 'Client Maria Pappa created', 'Order #7 placed with 1 item', 'Payment of 50.00 recorded'],
             array_column($widget->rows(), 'title'),
         );
         $this->assertStringStartsWith('Maria Pappa · ', $widget->rows()[0]['sub']);

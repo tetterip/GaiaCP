@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ActivityLogs\Tables;
 
 use App\Filament\Resources\Services\ServiceResource;
 use App\Models\ActivityLog;
+use App\Support\ActivityText;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -28,6 +29,7 @@ class ActivityLogsTable
                 TextColumn::make('service.label')
                     ->placeholder('—'),
                 TextColumn::make('description')
+                    ->formatStateUsing(fn (ActivityLog $record) => ActivityText::of($record))
                     ->wrap()
                     ->searchable(),
                 TextColumn::make('user.name')

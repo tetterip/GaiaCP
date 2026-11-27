@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Shared;
 
 use App\Filament\Concerns\TranslatesRelationManagerTitle;
 use App\Filament\Resources\ActivityLogs\ActivityLogResource;
+use App\Models\ActivityLog;
+use App\Support\ActivityText;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Icons\Heroicon;
@@ -43,6 +45,7 @@ class ActivityLogsRelationManager extends RelationManager
                 TextColumn::make('event')
                     ->badge(),
                 TextColumn::make('description')
+                    ->formatStateUsing(fn (ActivityLog $record) => ActivityText::of($record))
                     ->wrap(),
                 TextColumn::make('user.name')
                     ->label('By')

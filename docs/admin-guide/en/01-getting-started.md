@@ -137,6 +137,8 @@ The rest of the line still opens its list.
 
 **Recent activity** shows the last eight payments, orders, new clients, cancellations and ticket replies from the
 Activity log, newest first; the buttons over it show one kind only. You see it when you can open the Activity log.
+It and the Activity log show the usual entries in your language, with dates in your region's format; the log
+keeps them in English, so a rarer entry may still read in English.
 
 On the **Servers** card each server has its status dot and, with monitoring, its uptime over 30 days beside its name;
 a server whose accounts reach 85% of its maximum is marked **Nearly full**, and **Full** at the maximum.
