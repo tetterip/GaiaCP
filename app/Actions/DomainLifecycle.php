@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Throwable;
 
 /**
@@ -99,7 +100,7 @@ class DomainLifecycle
         $service->update(['status' => ServiceStatus::Active]);
 
         ActivityLog::record($event, $type === DomainRegistrationType::Register
-            ? "{$service->domain} registered for {$years} year(s) at {$registrar->name}"
+            ? "{$service->domain} registered for {$years} ".Str::plural('year', $years)." at {$registrar->name}"
             : "Transfer of {$service->domain} to {$registrar->name} requested", $service, properties: ['registrar_id' => $registrar->id]);
 
         if ($type === DomainRegistrationType::Register) {
@@ -127,7 +128,7 @@ class DomainLifecycle
             $details->update(['expires_at' => $details->expires_at->addYears($years)]);
         }
 
-        ActivityLog::record('domain.renewed', "{$service->domain} renewed for {$years} year(s) at {$registrar->name}", $service, properties: ['registrar_id' => $registrar->id, 'years' => $years]);
+        ActivityLog::record('domain.renewed', "{$service->domain} renewed for {$years} ".Str::plural('year', $years)." at {$registrar->name}", $service, properties: ['registrar_id' => $registrar->id, 'years' => $years]);
         $this->mailer->domain(MailTemplate::DomainRenewal, $service->load('domainDetails'), $years);
     }
 

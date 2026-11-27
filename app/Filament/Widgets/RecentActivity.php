@@ -7,6 +7,7 @@ use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Services\ServiceResource;
 use App\Filament\Widgets\Concerns\FitsDashboard;
 use App\Models\ActivityLog;
+use App\Support\ActivityText;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Str;
 
@@ -93,7 +94,7 @@ class RecentActivity extends Widget
                 return [
                     'icon' => self::ICONS[$kind],
                     'tone' => self::TONES[$kind],
-                    'title' => Str::limit($log->description, 110),
+                    'title' => Str::limit(ActivityText::of($log), 110),
                     'sub' => collect([$about, $log->created_at->diffForHumans()])->filter()->join(' · '),
                     'url' => match (true) {
                         $kind !== 'clients' && $log->service_id !== null && $services => ServiceResource::getUrl('edit', ['record' => $log->service_id]),
