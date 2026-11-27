@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- Dashboard → Recent activity and the Activity log show payments, orders, new clients, cancellations, tickets,
+  payment notices, reminders and suspensions in the admin's language, the entries already saved too, with dates in
+  the Region's format (05/12/2026, not 2026-12-05). The log itself still keeps them in English.
 - Settings → Client area → Search engines has a **Google Search Console code** and a **Bing Webmaster Tools code**:
   paste the verification tag (or only its code) and the client area's pages carry it, so the site can be verified with
   the HTML tag check, then given `/sitemap.xml`.

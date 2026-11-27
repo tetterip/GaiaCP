@@ -150,7 +150,7 @@ final class TranslationKeys
     /** @return list<string> labels only known once the code runs */
     private static function runtime(): array
     {
-        $keys = [...SettingsCluster::GROUPS, ...ReportsCluster::GROUPS, ...MailTemplate::GROUPS, ...ResetAdminPassword::VIEW_TEXTS, ...self::filamentLabels()];
+        $keys = [...SettingsCluster::GROUPS, ...ReportsCluster::GROUPS, ...MailTemplate::GROUPS, ...ResetAdminPassword::VIEW_TEXTS, ...ActivityText::keys(), ...self::filamentLabels()];
 
         foreach (File::files(app_path('Enums')) as $file) {
             $enum = 'App\\Enums\\'.$file->getFilenameWithoutExtension();

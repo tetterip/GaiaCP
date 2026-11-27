@@ -26,6 +26,7 @@ use App\Support\ProductOptions;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -131,7 +132,8 @@ class PlaceOrder
                 }
             }
 
-            ActivityLog::record('order.placed', "Order #{$order->id} placed with {$order->services()->count()} item(s)".($coupon ? " and coupon {$coupon->code}" : ''), client: $client, properties: array_filter(['order_id' => $order->id, 'coupon_id' => $coupon?->id]));
+            $count = $order->services()->count();
+            ActivityLog::record('order.placed', "Order #{$order->id} placed with {$count} ".Str::plural('item', $count).($coupon ? " and coupon {$coupon->code}" : ''), client: $client, properties: array_filter(['order_id' => $order->id, 'coupon_id' => $coupon?->id]));
 
             return $order;
         });
