@@ -4,23 +4,27 @@ namespace Tests\Feature\Provisioning;
 
 use App\Actions\ServiceLifecycle;
 use App\Enums\ServiceStatus;
+use App\Filament\Resources\Services\Pages\EditService;
 use App\Models\Client;
 use App\Models\ModuleLog;
 use App\Models\Server;
 use App\Models\Service;
+use App\Models\User;
 use App\Provisioning\PackageOptions;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Livewire\Livewire;
 use Tests\FakesHestia;
+use Tests\FakesWhm;
 use Tests\TestCase;
 
 /** HestiaCP: one user per hosting service, with the service's domain, over the access key or password API. */
 class HestiaLifecycleTest extends TestCase
 {
-    use FakesHestia, RefreshDatabase;
+    use FakesHestia, FakesWhm, RefreshDatabase;
 
     private ServiceLifecycle $lifecycle;
 
@@ -140,6 +144,83 @@ class HestiaLifecycleTest extends TestCase
         $this->lifecycle->terminate($service->fresh());
         $this->assertArrayNotHasKey($username, $this->hestiaUsers);
         $this->assertSame(ServiceStatus::Terminated, $service->fresh()->status);
+    }
+
+    public function test_lets_encrypt_covers_the_website_its_aliases_and_its_mail(): void
+    {
+        $service = $this->pending(['domain' => 'φούρνος.gr']);
+        $this->lifecycle->create($service);
+        $username = $service->refresh()->username;
+        $this->hestiaCalls = [];
+
+        $names = $this->lifecycle->issueFreeCertificate($service);
+
+        $this->assertSame(['xn--yxadbght4c.gr', 'www.xn--yxadbght4c.gr', 'mail.xn--yxadbght4c.gr'], $names);
+        $this->assertSame([
+            ['v-add-letsencrypt-domain', [$username, 'xn--yxadbght4c.gr', 'www.xn--yxadbght4c.gr']],
+            ['v-add-letsencrypt-domain', [$username, 'xn--yxadbght4c.gr', '', 'yes']],
+        ], collect($this->hestiaCalls)->where(0, 'v-add-letsencrypt-domain')->map(fn ($call) => [$call[0], $call[1]])->values()->all());
+        $this->assertDatabaseHas('activity_logs', ['event' => 'account.free_certificate']);
+    }
+
+    public function test_lets_encrypt_without_a_mail_domain_or_with_a_failing_one_keeps_the_websites(): void
+    {
+        $this->hestiaUsers['bakery'] = ['PACKAGE' => 'Starter', 'ROLE' => 'user', 'SUSPENDED' => 'no', 'domains' => ['other.gr', 'bakery.gr'], 'mail_domains' => []];
+        $service = $this->pending(['status' => ServiceStatus::Active, 'username' => 'bakery']);
+
+        $this->assertSame(['bakery.gr', 'www.bakery.gr'], $this->lifecycle->issueFreeCertificate($service));
+        $this->assertSame(['bakery.gr'], $this->hestiaCertificates['bakery'], 'the service\'s own domain, not the first one');
+
+        // The mail domain is there, but Let's Encrypt can't reach mail.bakery.gr: the website keeps its certificate
+        $this->hestiaUsers['bakery']['mail_domains'] = ['bakery.gr'];
+        $this->hestiaFailures['v-add-letsencrypt-domain:mail'] = [15, 'Let\'s Encrypt validation status 400 (mail.bakery.gr)'];
+        $this->assertSame(['bakery.gr', 'www.bakery.gr'], $this->lifecycle->issueFreeCertificate($service));
+        $this->assertSame(['bakery.gr', 'bakery.gr'], $this->hestiaCertificates['bakery'], 'renewed, mail left as it was');
+
+        // The website's own certificate failing is the error the admin sees
+        $this->hestiaFailures['v-add-letsencrypt-domain'] = [15, 'DNS problem: NXDOMAIN looking up A for bakery.gr'];
+        $this->expectExceptionMessage('NXDOMAIN');
+        $this->lifecycle->issueFreeCertificate($service);
+    }
+
+    public function test_lets_encrypt_needs_an_active_account_with_a_web_domain(): void
+    {
+        $this->hestiaUsers['bakery'] = ['PACKAGE' => 'Starter', 'ROLE' => 'user', 'SUSPENDED' => 'no', 'domains' => []];
+
+        try {
+            $this->lifecycle->issueFreeCertificate($this->pending(['status' => ServiceStatus::Active, 'username' => 'bakery']));
+            $this->fail('no web domain');
+        } catch (ProvisioningException $e) {
+            $this->assertStringContainsString('has no web domain', $e->getMessage());
+        }
+
+        $this->expectException(ProvisioningException::class);
+        $this->lifecycle->issueFreeCertificate($this->pending(['status' => ServiceStatus::Suspended, 'username' => 'bakery']));
+    }
+
+    public function test_the_account_menu_offers_lets_encrypt_on_hestia_only(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $service = $this->pending();
+        $this->lifecycle->create($service);
+
+        Livewire::test(EditService::class, ['record' => $service->id])
+            ->assertActionVisible('freeCertificate')
+            ->callAction('freeCertificate')
+            ->assertNotified(__('Certificate issued'));
+        $this->assertSame(['bakery.gr', 'mail.bakery.gr'], $this->hestiaCertificates[$service->username]);
+
+        $this->hestiaFailures['v-add-letsencrypt-domain'] = [15, 'DNS problem: NXDOMAIN looking up A for bakery.gr'];
+        Livewire::test(EditService::class, ['record' => $service->id])
+            ->callAction('freeCertificate')
+            ->assertNotified(__('Failed'));
+
+        $service->update(['status' => ServiceStatus::Suspended]);
+        Livewire::test(EditService::class, ['record' => $service->id])->assertActionHidden('freeCertificate');
+
+        // cPanel has AutoSSL of its own: no such action there
+        $this->fakeWhm();
+        Livewire::test(EditService::class, ['record' => Service::factory()->create()->id])->assertActionHidden('freeCertificate');
     }
 
     public function test_unknown_package_is_reported(): void

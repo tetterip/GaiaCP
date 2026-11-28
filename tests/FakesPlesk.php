@@ -22,6 +22,9 @@ trait FakesPlesk
     /** @var array<string, list<int>> subscription domain => traffic of each of its other domains (sites) */
     protected array $pleskSites = [];
 
+    /** @var array<string, string> the server's addresses (ip get), address => shared / exclusive */
+    protected array $pleskIps = ['fe80::1' => 'shared', '203.0.113.5' => 'shared'];
+
     /** @var array<string, string> plan name => guid */
     protected array $pleskPlans = ['Starter' => 'guid-starter', 'Business' => 'guid-business'];
 
@@ -80,7 +83,7 @@ trait FakesPlesk
                     .'<load_avg><l1>150</l1><l5>120</l5><l15>90</l15></load_avg></stat>'];
 
             case 'ip.get':
-                return [$ok.'<addresses><ip_info><ip_address>fe80::1</ip_address><type>shared</type></ip_info><ip_info><ip_address>203.0.113.5</ip_address><type>shared</type></ip_info></addresses>'];
+                return [$ok.'<addresses>'.implode('', array_map(fn (string $ip, string $type) => "<ip_info><ip_address>{$ip}</ip_address><type>{$type}</type></ip_info>", array_keys($this->pleskIps), $this->pleskIps)).'</addresses>'];
 
             case 'service-plan.get':
                 $name = isset($op->filter->name) ? (string) $op->filter->name : null;

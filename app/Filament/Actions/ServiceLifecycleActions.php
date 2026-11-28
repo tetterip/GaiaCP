@@ -37,6 +37,7 @@ class ServiceLifecycleActions
             self::create(),
             self::changePackage(),
             self::changePassword(),
+            self::freeCertificate(),
             ...array_map(self::power(...), ControlsPower::ACTIONS),
             self::suspend(),
             self::unsuspend(),
@@ -172,6 +173,30 @@ class ServiceLifecycleActions
                     ? __('Inside the VPS the new password works after its next restart: no QEMU guest agent answers in it.')
                     : null,
             ));
+    }
+
+    /** "Free SSL (Let's Encrypt)": the panel issues or renews the website's certificate (IssuesFreeCertificates: HestiaCP). */
+    private static function freeCertificate(): Action
+    {
+        return Action::make('freeCertificate')
+            ->label("Free SSL (Let's Encrypt)")
+            ->icon(Heroicon::OutlinedLockClosed)
+            ->visible(fn (Service $record) => app(ServiceLifecycle::class)->issuesFreeCertificates($record))
+            ->requiresConfirmation()
+            ->modalHeading(__("Free SSL (Let's Encrypt)"))
+            ->modalDescription(fn (Service $record) => __('The server asks Let\'s Encrypt for a certificate for :domain and its aliases (www), and for its mail, and uses it for the website. The domain must already point at this server. A certificate it already has is renewed.', ['domain' => $record->domain]))
+            ->modalSubmitActionLabel(__('Issue certificate'))
+            ->action(function (Service $record) {
+                try {
+                    $names = app(ServiceLifecycle::class)->issueFreeCertificate($record);
+                } catch (ProvisioningException $e) {
+                    Notification::make()->title(__('Failed'))->body($e->getMessage())->danger()->persistent()->send();
+
+                    return;
+                }
+
+                Notification::make()->success()->title(__('Certificate issued'))->body(__('For :names', ['names' => implode(', ', $names)]))->send();
+            });
     }
 
     /** Start, Shut down, Restart, Force stop: for a machine (ControlsPower: a Proxmox VPS), while active. */

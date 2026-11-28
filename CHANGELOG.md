@@ -9,6 +9,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   to WordPress**, which opens the site's dashboard already signed in, and **Install WordPress** on the account's domain
   or a folder of it, with the administrator they choose. Settings → Client area → Hosting → WordPress turns it off. Not
   yet tried on real servers.
+- **Panel improvements:** the client area's Quick shortcuts on cPanel add Email forwarders, Autoresponders, Domains and
+  Cron jobs. On HestiaCP the Account menu has **Free SSL (Let's Encrypt)**: a certificate for the account's domain, its
+  www alias and its mail, renewed when run again. On Plesk new subscriptions also get the server's shared IPv6 address
+  when it has one. Not yet tried on real servers.
+- Plugin API: new optional `App\Provisioning\IssuesFreeCertificates` for server panels (the Account menu's Free SSL);
+  `PleskClient` repeats an element given a list of plain values.
 - Plugin API: new optional `App\Provisioning\ManagesWordPress` for server panels, with `WordPressSite`,
   `WordPressInstall` and `WpToolkit`. The module log now masks a response's `Location` header.
 - The admin's sidebar folds to its icons on a computer: the arrow by the logo folds and unfolds it, pointing at an

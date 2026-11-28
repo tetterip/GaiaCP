@@ -83,7 +83,7 @@ class PleskPlugin extends Plugin implements ServerModule
             TextInput::make('shared_ip')
                 ->label('IP for new subscriptions')
                 ->ip()
-                ->helperText(__('Leave empty to use the server\'s first shared IPv4 address.')),
+                ->helperText(__('Leave empty to use the server\'s first shared IPv4 address. New subscriptions also get the server\'s shared IPv6 address, when it has one.')),
         ];
     }
 }

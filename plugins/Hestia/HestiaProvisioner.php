@@ -8,6 +8,7 @@ use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\DescribesPackages;
 use App\Provisioning\HostingProvisioner;
+use App\Provisioning\IssuesFreeCertificates;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
@@ -20,7 +21,7 @@ use App\Support\DomainName;
  * HestiaCP: one HestiaCP user per hosting service (the service's username) on a package, with the service's domain
  * added as its web, DNS and mail domain. The user's password is both the HestiaCP login and the SFTP / SSH password.
  */
-class HestiaProvisioner implements DescribesPackages, HostingProvisioner, ListsAccounts, ReportsLoad
+class HestiaProvisioner implements DescribesPackages, HostingProvisioner, IssuesFreeCertificates, ListsAccounts, ReportsLoad
 {
     /** HestiaCP's own package for the admin user, never one to sell. */
     private const SYSTEM_PACKAGE = 'system';
@@ -113,6 +114,39 @@ class HestiaProvisioner implements DescribesPackages, HostingProvisioner, ListsA
         }
 
         return $domains[0] ?? null;
+    }
+
+    /**
+     * v-add-letsencrypt-domain USER DOMAIN ALIASES for the web domain (the service's, else the user's first), with the
+     * aliases it has (www.…), then USER DOMAIN '' yes for its mail domain when there is one, as HestiaCP's own Edit
+     * web / Edit mail pages do. HestiaCP renews a certificate it already has. A mail certificate that fails (mail.…
+     * not pointing at the server) leaves the website's in place, and mail.… out of the names.
+     */
+    public function issueFreeCertificate(Service $hosting): array
+    {
+        $username = $this->username($hosting);
+        $webDomains = $this->hestia->list('v-list-web-domains', [$username]);
+        $wanted = $hosting->domain ? DomainName::toAscii($hosting->domain) : null;
+        $domain = $wanted !== null && array_key_exists($wanted, $webDomains) ? $wanted : (string) (array_key_first($webDomains) ?? '');
+
+        if ($domain === '') {
+            throw new ProvisioningException("The HestiaCP user {$username} has no web domain for a certificate.");
+        }
+
+        $aliases = array_values(array_filter(array_map('trim', explode(',', (string) ($webDomains[$domain]['ALIAS'] ?? '')))));
+        $this->hestia->run('v-add-letsencrypt-domain', [$username, $domain, implode(',', $aliases)], timeout: 180);
+        $names = [$domain, ...$aliases];
+
+        if (array_key_exists($domain, $this->hestia->list('v-list-mail-domains', [$username]))) {
+            try {
+                $this->hestia->run('v-add-letsencrypt-domain', [$username, $domain, '', 'yes'], timeout: 180);
+                $names[] = "mail.{$domain}";
+            } catch (ProvisioningException) {
+                // The website has its certificate; mail keeps what it had.
+            }
+        }
+
+        return $names;
     }
 
     public function createAccount(Service $service, string $password): void

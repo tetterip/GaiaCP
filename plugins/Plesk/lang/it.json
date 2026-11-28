@@ -4,7 +4,7 @@
     "Databases": "Database",
     "File Manager": "File Manager",
     "IP for new subscriptions": "IP per le nuove subscription",
-    "Leave empty to use the server's first shared IPv4 address.": "Lascia vuoto per usare il primo indirizzo IPv4 condiviso del server.",
+    "Leave empty to use the server's first shared IPv4 address. New subscriptions also get the server's shared IPv6 address, when it has one.": "Lascia vuoto per usare il primo indirizzo IPv4 condiviso del server. I nuovi abbonamenti ricevono anche l'indirizzo IPv6 condiviso del server, se ne ha uno.",
     "Mail": "Posta",
     "Plesk admin login. Leave empty to authenticate with a secret key instead.": "Login admin di Plesk. Lascia vuoto per autenticarti invece con una secret key.",
     "Plesk: the admin password, or a secret key (plesk bin secret_key -c) if the login is empty. Stored encrypted.": "Plesk: la password admin, o una secret key (plesk bin secret_key -c) se il login è vuoto. Salvata cifrata.",

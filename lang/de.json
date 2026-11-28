@@ -4473,5 +4473,10 @@
     "WordPress is being installed": "WordPress wird installiert",
     "You sign in to WordPress with it. Avoid admin: it is the first name attackers try.": "Damit melden Sie sich bei WordPress an. Vermeiden Sie admin: Diesen Namen probieren Angreifer zuerst.",
     "Your WordPress sites can't be shown right now. Please try again later.": "Ihre WordPress-Websites können gerade nicht angezeigt werden. Bitte versuchen Sie es später erneut.",
-    "empty for the domain itself": "leer für die Domain selbst"
+    "empty for the domain itself": "leer für die Domain selbst",
+    "Free SSL (Let's Encrypt)": "Kostenloses SSL (Let's Encrypt)",
+    "The server asks Let's Encrypt for a certificate for :domain and its aliases (www), and for its mail, and uses it for the website. The domain must already point at this server. A certificate it already has is renewed.": "Der Server fordert bei Let's Encrypt ein Zertifikat für :domain und seine Aliase (www) sowie für die E-Mail an und verwendet es für die Website. Die Domain muss bereits auf diesen Server zeigen. Ein vorhandenes Zertifikat wird erneuert.",
+    "Issue certificate": "Zertifikat ausstellen",
+    "Certificate issued": "Zertifikat ausgestellt",
+    "For :names": "Für :names"
 }

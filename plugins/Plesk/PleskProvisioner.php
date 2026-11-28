@@ -163,7 +163,7 @@ class PleskProvisioner implements DescribesPackages, HostingProvisioner, Install
         }
 
         $customerId = $this->findCustomerId($service->client) ?? $this->createCustomer($service, $password);
-        $ip = $this->server->shared_ip ?: $this->firstSharedIp();
+        $ips = $this->subscriptionIps();
 
         // Element order matters to Plesk's schema; status is left out (new subscriptions are active).
         $this->plesk->call('webspace', 'add', [
@@ -171,7 +171,7 @@ class PleskProvisioner implements DescribesPackages, HostingProvisioner, Install
                 'name' => $service->domain,
                 'owner-id' => $customerId,
                 'htype' => 'vrt_hst',
-                'ip_address' => $ip,
+                'ip_address' => $ips,
             ],
             'hosting' => [
                 'vrt_hst' => [
@@ -179,7 +179,7 @@ class PleskProvisioner implements DescribesPackages, HostingProvisioner, Install
                         ['name' => 'ftp_login', 'value' => $service->username],
                         ['name' => 'ftp_password', 'value' => $password],
                     ],
-                    'ip_address' => $ip,
+                    'ip_address' => $ips,
                 ],
             ],
             'plan-name' => $service->package,
@@ -568,17 +568,55 @@ class PleskProvisioner implements DescribesPackages, HostingProvisioner, Install
         return (int) $result[0]->id;
     }
 
-    private function firstSharedIp(): string
+    /**
+     * The addresses of a new subscription: the server's "IP for new subscriptions" or its first shared IPv4, plus its
+     * first shared IPv6 when it has one (not a link-local fe80::), as WHMCS gives them. An IPv6 set as the server's
+     * address is used alone, as before.
+     *
+     * @return list<string>
+     */
+    private function subscriptionIps(): array
+    {
+        $configured = (string) $this->server->shared_ip;
+
+        if ($configured !== '' && filter_var($configured, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            return [$configured];
+        }
+
+        if ($configured !== '') {
+            // The IPv4 is set by hand: a server that can't list its addresses just gets no IPv6, as before.
+            return array_values(array_filter([$configured, rescue(fn () => $this->sharedIps()['ipv6'], null, report: false)]));
+        }
+
+        $shared = $this->sharedIps();
+
+        return array_values(array_filter([
+            $shared['ipv4'] ?? throw new ProvisioningException("No shared IPv4 address found on {$this->server->name}; set one on the server in GaiaCP."),
+            $shared['ipv6'],
+        ]));
+    }
+
+    /** @return array{ipv4: ?string, ipv6: ?string} the first shared address of each kind (ip get) */
+    private function sharedIps(): array
     {
         $result = $this->plesk->call('ip', 'get')[0] ?? null;
+        $found = ['ipv4' => null, 'ipv6' => null];
 
-        foreach ($result->addresses->ip_info ?? [] as $ip) {
-            if ((string) $ip->type === 'shared' && filter_var((string) $ip->ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                return (string) $ip->ip_address;
+        foreach ($result->addresses->ip_info ?? [] as $info) {
+            $ip = (string) $info->ip_address;
+
+            if ((string) $info->type !== 'shared') {
+                continue;
+            }
+
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $found['ipv4'] ??= $ip;
+            } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) && ! preg_match('/^fe[89ab]/i', $ip) && $ip !== '::1') {
+                $found['ipv6'] ??= $ip;
             }
         }
 
-        throw new ProvisioningException("No shared IPv4 address found on {$this->server->name}; set one on the server in GaiaCP.");
+        return $found;
     }
 
     private function setStatus(Service $service, int $status): void

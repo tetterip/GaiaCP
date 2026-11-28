@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Http;
  */
 trait FakesHestia
 {
-    /** @var array<string, array<string, mixed>> username => v-list-user fields (SUSPENDED, PACKAGE, U_DISK, …) plus 'domains' => list<string> */
+    /** @var array<string, array<string, mixed>> username => v-list-user fields (SUSPENDED, PACKAGE, U_DISK, …) plus 'domains' => list<string> (also its mail domains unless 'mail_domains' lists them) */
     protected array $hestiaUsers = [];
+
+    /** @var array<string, list<string>> username => the names it got a Let's Encrypt certificate for (mail.… for mail) */
+    protected array $hestiaCertificates = [];
 
     /** @var list<string> */
     protected array $hestiaPackages = ['default', 'system', 'Starter', 'Business'];
@@ -22,7 +25,7 @@ trait FakesHestia
     /** @var list<array{0: string, 1: list<string>, 2: array<string, string>}> */
     protected array $hestiaCalls = [];
 
-    /** @var array<string, array{0: int, 1: string}> command => [exit code, message] */
+    /** @var array<string, array{0: int, 1: string}> command => [exit code, message]; v-add-letsencrypt-domain:mail fails only the mail certificate */
     protected array $hestiaFailures = [];
 
     protected bool $hestiaPasswordLogin = false;
@@ -72,7 +75,7 @@ trait FakesHestia
 
             case 'v-list-users':
                 return $this->hestiaOk(json_encode(collect($this->hestiaUsers)->map(function (array $fields) {
-                    unset($fields['domains'], $fields['password']);
+                    unset($fields['domains'], $fields['mail_domains'], $fields['password']);
 
                     return $fields;
                 })->all() + ['admin' => ['NAME' => 'System Administrator', 'PACKAGE' => 'default', 'CONTACT' => 'admin@example.com', 'RKEY' => '2K085ASf0BT672D2',
@@ -83,14 +86,37 @@ trait FakesHestia
                     return $missing();
                 }
                 $fields = $this->hestiaUsers[$user];
-                unset($fields['domains']);
+                unset($fields['domains'], $fields['mail_domains']);
 
                 return $this->hestiaOk(json_encode([$user => $fields]));
 
             case 'v-list-web-domains':
                 return $exists
-                    ? $this->hestiaOk(json_encode(array_fill_keys($this->hestiaUsers[$user]['domains'], ['SUSPENDED' => 'no'])))
+                    ? $this->hestiaOk(json_encode(collect($this->hestiaUsers[$user]['domains'])->mapWithKeys(fn (string $domain) => [$domain => [
+                        'IP' => '203.0.113.7', 'ALIAS' => "www.{$domain}", 'SSL' => in_array($domain, $this->hestiaCertificates[$user] ?? [], true) ? 'yes' : 'no', 'SUSPENDED' => 'no',
+                    ]])->all() ?: new \stdClass))
                     : $missing();
+
+            case 'v-list-mail-domains':
+                return $exists
+                    ? $this->hestiaOk(json_encode(array_fill_keys($this->hestiaUsers[$user]['mail_domains'] ?? $this->hestiaUsers[$user]['domains'], ['SUSPENDED' => 'no']) ?: new \stdClass))
+                    : $missing();
+
+            case 'v-add-letsencrypt-domain':
+                // USER DOMAIN [ALIASES] [MAIL]: the web domain's certificate, or with MAIL the mail domain's (mail.DOMAIN)
+                if (! $exists) {
+                    return $missing();
+                }
+                $mail = ($args[3] ?? '') !== '';
+                if ($mail && isset($this->hestiaFailures['v-add-letsencrypt-domain:mail'])) {
+                    return $this->hestiaError(...$this->hestiaFailures['v-add-letsencrypt-domain:mail']);
+                }
+                if (! in_array($args[1], $mail ? ($this->hestiaUsers[$user]['mail_domains'] ?? $this->hestiaUsers[$user]['domains']) : $this->hestiaUsers[$user]['domains'], true)) {
+                    return $this->hestiaError(3, ($mail ? 'mail' : 'web')." domain {$args[1]} doesn't exist");
+                }
+                $this->hestiaCertificates[$user][] = $mail ? "mail.{$args[1]}" : $args[1];
+
+                return $this->hestiaOk();
 
             case 'v-add-user':
                 if ($exists) {

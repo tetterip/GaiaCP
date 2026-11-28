@@ -12,6 +12,7 @@ use App\Provisioning\AccountUsage;
 use App\Provisioning\ControlsPower;
 use App\Provisioning\DescribesMachine;
 use App\Provisioning\HostingProvisioner;
+use App\Provisioning\IssuesFreeCertificates;
 use App\Provisioning\MachineDetails;
 use App\Provisioning\ManagesWordPress;
 use App\Provisioning\OffersShortcuts;
@@ -456,6 +457,38 @@ class ServiceLifecycle
         });
 
         ActivityLog::record('account.power', "Power {$action} for {$service->username} on {$service->server->name}", $service, properties: ['action' => $action]);
+    }
+
+    /**
+     * Has the panel issue a free certificate (Let's Encrypt, IssuesFreeCertificates) for an active account's domain.
+     *
+     * @return list<string> the names the certificate covers
+     */
+    public function issueFreeCertificate(Service $service): array
+    {
+        if (! $this->onPanel($service) || $service->status !== ServiceStatus::Active) {
+            throw new ProvisioningException('Only active hosting services with a server can get a free certificate.');
+        }
+
+        $names = $this->panel($service, 'account.free_certificate', function (HostingProvisioner $panel) use ($service) {
+            if (! $panel instanceof IssuesFreeCertificates) {
+                throw new ProvisioningException("The panel of {$service->server->name} cannot issue free certificates.");
+            }
+
+            return $panel->issueFreeCertificate($service);
+        });
+
+        ActivityLog::record('account.free_certificate', "Free SSL certificate (Let's Encrypt) for ".implode(', ', $names)." on {$service->server->name}", $service, properties: ['names' => $names]);
+
+        return $names;
+    }
+
+    /** Whether the panel of an active account can issue it a free certificate; asks nothing of the panel. */
+    public function issuesFreeCertificates(Service $service): bool
+    {
+        return $this->onPanel($service)
+            && $service->status === ServiceStatus::Active
+            && rescue(fn () => $this->provisioners->forService($service) instanceof IssuesFreeCertificates, false, report: false);
     }
 
     /** Whether the service is a machine (DescribesMachine: a Proxmox VPS) rather than a website; asks nothing of the panel. */

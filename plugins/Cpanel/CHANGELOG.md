@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.10.0] - 2026-11-28
+
+- More Quick shortcuts in the client area: Email forwarders (`Email_Forwarders`), Autoresponders (`Email_AutoResponders`), Domains (`Domains_domains`) and Cron jobs (`Cron_Home`), as WHMCS's cPanel module opens them; not yet tried on a real server
+
 ## [1.9.0] - 2026-11-28
 
 - WordPress in the client area (`ManagesWordPress`): lists the account's WP Toolkit sites, opens one's dashboard signed in and installs a new one, through WP Toolkit's REST API in WHM (`/cgi/wpt/`, with a WHM session); not yet tried on a real server

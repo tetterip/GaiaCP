@@ -1,7 +1,10 @@
 {
+    "Autoresponders": "Respuestas automáticas",
     "Backups": "Copias de seguridad",
     "Creates, suspends and removes hosting accounts on cPanel servers through WHM.": "Crea, suspende y elimina cuentas de hosting en servidores cPanel a través de WHM.",
+    "Cron jobs": "Tareas cron",
     "Email accounts": "Cuentas de email",
+    "Email forwarders": "Reenviadores de correo",
     "File Manager": "Administrador de archivos",
     "MySQL databases": "Bases de datos MySQL",
     "Statistics": "Estadísticas",

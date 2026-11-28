@@ -16,7 +16,10 @@ never calls a panel API directly.
   system user (`ftp_password`), and first the customer login (`customer set` `passwd`) when the customer's login is
   the service's username (the service that made it, as WHMCS's module does for the main service). Usage is
   `webspace get` with `gen_info` / `limits` / `stat` / `disk_usage`, plus `site get` (`parent-name`, `stat`) traffic
-  of the subscription's other domains, which the subscription's own `stat` leaves out.
+  of the subscription's other domains, which the subscription's own `stat` leaves out. A new subscription gets
+  the server's "IP for new subscriptions" (`servers.shared_ip`) or its first shared IPv4, plus its first shared
+  IPv6 from `ip get` (link-local `fe80::` skipped), as `ip_address` twice in `gen_setup` and `vrt_hst` (a list of
+  plain values repeats the element in `PleskClient`); an IPv6 set as `shared_ip` is used alone.
   **The schema is order-sensitive**: `PleskClient` takes ordered arrays. Request shapes follow the official
   `plesk/api-php-lib` (its integration tests run against real Plesk); keep to them when adding calls.
 - **HestiaCP** (`plugins/Hestia`): form POST to `/api/` (port 8083) with `cmd` = a `v-*` command and `arg1`…
@@ -25,7 +28,11 @@ never calls a panel API directly.
   are HTTP 200 text starting `Error:`). Exit code 3 = missing. One HestiaCP user per service (`v-add-user` then
   `v-add-domain`, user removed again if the domain fails); `v-list-user` gives state and usage (MB, "unlimited").
   No one-time login exists, so `loginUrl()` is the login page. A password starting with `/` is refused (HestiaCP
-  reads `/tmp/…` passwords as files)
+  reads `/tmp/…` passwords as files). Account → Free SSL (Let's Encrypt) (`App\Provisioning\IssuesFreeCertificates`,
+  `ServiceLifecycle::issueFreeCertificate()`, logs `account.free_certificate`): `v-add-letsencrypt-domain USER DOMAIN
+  ALIASES` for the service's web domain (else the user's first) with its `ALIAS` list from `v-list-web-domains`, then
+  `USER DOMAIN '' yes` for its mail domain when `v-list-mail-domains` has it (a failure there keeps the website's);
+  HestiaCP renews a certificate it already has
 - **DirectAdmin** (`plugins/DirectAdmin`): legacy API `https://host:2222/CMD_API_<COMMAND>` with HTTP basic auth (the
   admin or a reseller, login key or password); POST forms for changes, GET for reads; replies URL-encoded
   (`list[]=…`, `error=1&text=…&details=…`; a `text/html` reply = wrong port or no API access). One DirectAdmin user per
@@ -152,7 +159,8 @@ never calls a panel API directly.
   then logs `module_queue.gave_up` once (Services bell). Open items go in the daily summary and Needs attention
 - **Quick shortcuts** (`App\Provisioning\OffersShortcuts`, cPanel and Plesk): `shortcuts()` (key => label, icon) and
   `shortcutUrl()`, a one-time sign-in to that page. cPanel: `create_user_session` with `app` = `Email_Accounts`,
-  `FileManager_Home`, `Database_MySQL`, `Database_phpMyAdmin`, `Stats_AWStats`, `Backups_Home`. Plesk: the customer's
+  `Email_Forwarders`, `Email_AutoResponders`, `FileManager_Home`, `Database_MySQL`, `Database_phpMyAdmin`,
+  `Domains_domains`, `Cron_Home`, `Stats_AWStats`, `Backups_Home`. Plesk: the customer's
   `create_session` URL + `&success_redirect_url=` `/smb/email-address/list`, `/smb/app/index`, `/smb/file-manager/list`,
   `/smb/database/list`, `/smb/statistics/details`, `/smb/user/list`. Names and paths follow WHMCS's modules, not yet
   tried on real panels. The client opens one through `services/{service}/panel-login?to=<key>` (an unknown key is a

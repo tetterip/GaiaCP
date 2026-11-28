@@ -47,6 +47,7 @@ can be added.
 - Optional: `App\Provisioning\OffersShortcuts`, `App\Provisioning\ListsAccounts`, `App\Provisioning\ControlsPower`,
   `App\Provisioning\DescribesMachine` (with `App\Provisioning\MachineDetails`), `App\Provisioning\DescribesPackages`
   (with `App\Provisioning\PackageLimits`: each package's disk space and bandwidth in the package pickers), `App\Provisioning\InstallsCertificates`,
+  `App\Provisioning\IssuesFreeCertificates` (Account → Free SSL (Let's Encrypt), as HestiaCP does),
   `App\Provisioning\LimitsUsernameLength`, `App\Provisioning\SharesPanelLogin`, `App\Provisioning\ManagesWordPress` (with
   `App\Provisioning\WordPressSite`, `App\Provisioning\WordPressInstall` and `App\Provisioning\WpToolkit`, the parts of
   WP Toolkit's REST API that cPanel and Plesk share), `App\Provisioning\ReportsLoad` (with

@@ -206,6 +206,19 @@ class ClientHostingSelfServiceTest extends TestCase
         $this->assertStringContainsString('(shortcut: files)', ActivityLog::query()->where('event', 'account.panel_login')->sole()->description);
     }
 
+    public function test_cpanels_email_domain_and_cron_shortcuts_open_their_apps(): void
+    {
+        $this->fakeWhm();
+        $this->whmAccounts['maria'] = false;
+        $this->actingAs($this->user, 'client');
+
+        foreach (['forwarders' => 'Email_Forwarders', 'autoresponders' => 'Email_AutoResponders', 'domains' => 'Domains_domains', 'cron' => 'Cron_Home'] as $key => $app) {
+            $this->whmCalls = [];
+            $this->get($this->loginUrl($this->hosting)."?to={$key}")->assertRedirect();
+            $this->assertSame($app, $this->whmCalls[0][1]['app']);
+        }
+    }
+
     public function test_a_plesk_shortcut_opens_that_page(): void
     {
         $this->fakePlesk();
@@ -249,6 +262,8 @@ class ClientHostingSelfServiceTest extends TestCase
         $this->page()
             ->assertSee(__('Quick shortcuts'))
             ->assertSee(__('File Manager'))
+            ->assertSee(__('Cron jobs'))
+            ->assertSee(__('Email forwarders'))
             ->assertSee(e($this->loginUrl($this->hosting).'?to=files'), false);
     }
 

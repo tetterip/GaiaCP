@@ -169,6 +169,15 @@ class PleskClient
                 continue;
             }
 
+            // A list of plain values repeats the element (ip_address twice: IPv4 and IPv6).
+            if (is_array($value) && $value !== [] && array_is_list($value)) {
+                foreach ($value as $item) {
+                    $this->append($doc, $parent, [$name => $item]);
+                }
+
+                continue;
+            }
+
             $element = $parent->appendChild($doc->createElement($name));
 
             if (is_array($value)) {

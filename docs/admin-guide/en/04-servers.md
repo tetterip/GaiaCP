@@ -70,6 +70,10 @@ Plesk login**; the client gets the same tick in the client area. That login is t
 A subscription moved to another client stays under the old client's Plesk customer: its new client gets no **Log in** to
 Plesk and no tick, until you move the subscription to their own customer in Plesk.
 
+A new subscription gets the server's **IP for new subscriptions** (or its first shared IPv4) and, when Plesk has a
+shared IPv6 address, that one too, so the site answers on both. Put an IPv6 address in that field to give new
+subscriptions only that one.
+
 The client area's **WordPress** part (Settings → Client area → WordPress) uses WP Toolkit's REST API: on Plesk at
 `/api/modules/wp-toolkit/v1/` with the server's login (switch the API on under Tools & Settings → Remote API (REST) if
 Plesk asks), on cPanel inside WHM (`/cgi/wpt/`), through a WHM session that `create_user_session` opens for the token's
@@ -111,6 +115,10 @@ A hosting service's page has an **Account** menu:
   password are generated when left empty and kept encrypted on the service. It also works on an active account, to
   recreate it on another server after a move (the old server is left alone).
 - **Change package** (always sent to the server, even when the service already names that package), **Change password**.
+- On HestiaCP: **Free SSL (Let's Encrypt)** asks for a certificate for the account's domain and its aliases (www), and
+  for its mail (mail.…), and puts it on the website. The domain must already point at the server. Run it again to
+  renew; HestiaCP also renews it by itself. If only the mail one fails, the website keeps its certificate and the
+  message lists the names it covers.
 - **Suspend** and **Unsuspend**: these check the panel first, so they work even if the status was edited by hand.
 - **Terminate**: deletes the account and its files on the server. You type the username to confirm.
 - On a Proxmox VPS: **Start**, **Shut down**, **Restart** and **Force stop** (cuts the power, for a VPS that no longer

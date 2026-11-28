@@ -4473,5 +4473,10 @@
     "WordPress is being installed": "WordPress wordt geïnstalleerd",
     "You sign in to WordPress with it. Avoid admin: it is the first name attackers try.": "Hiermee logt u in bij WordPress. Vermijd admin: dat is de eerste naam die aanvallers proberen.",
     "Your WordPress sites can't be shown right now. Please try again later.": "Uw WordPress-sites kunnen nu niet worden getoond. Probeer het later opnieuw.",
-    "empty for the domain itself": "leeg voor het domein zelf"
+    "empty for the domain itself": "leeg voor het domein zelf",
+    "Free SSL (Let's Encrypt)": "Gratis SSL (Let's Encrypt)",
+    "The server asks Let's Encrypt for a certificate for :domain and its aliases (www), and for its mail, and uses it for the website. The domain must already point at this server. A certificate it already has is renewed.": "De server vraagt bij Let's Encrypt een certificaat aan voor :domain en zijn aliassen (www), en voor de e-mail, en gebruikt het voor de website. Het domein moet al naar deze server wijzen. Een bestaand certificaat wordt vernieuwd.",
+    "Issue certificate": "Certificaat uitgeven",
+    "Certificate issued": "Certificaat uitgegeven",
+    "For :names": "Voor :names"
 }

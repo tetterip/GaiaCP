@@ -92,7 +92,52 @@ class PleskLifecycleTest extends TestCase
         $this->lifecycle->create($this->pending());
 
         $this->assertSame('198.51.100.9', $this->pleskWebspaces['bakery.gr']['ip']);
+        $this->assertSame(['198.51.100.9'], $this->subscriptionIps(), 'a link-local fe80:: is no address for a website');
+    }
+
+    public function test_a_shared_ipv6_is_given_to_new_subscriptions_too(): void
+    {
+        $this->pleskIps = ['fe80::1' => 'shared', '2001:db8::9' => 'exclusive', '203.0.113.5' => 'shared', '2001:db8::5' => 'shared', '2001:db8::6' => 'shared'];
+
+        $this->lifecycle->create($this->pending());
+
+        $this->assertSame(['203.0.113.5', '2001:db8::5'], $this->subscriptionIps());
+        $add = collect($this->pleskCalls)->firstWhere(0, 'webspace.add')[1];
+        $this->assertSame(['name', 'owner-id', 'htype', 'ip_address', 'ip_address'], array_map(fn ($e) => $e->getName(), iterator_to_array($add->gen_setup->children(), false)));
+    }
+
+    public function test_a_configured_ipv4_gets_the_shared_ipv6_and_a_configured_ipv6_stays_alone(): void
+    {
+        $this->pleskIps = ['203.0.113.5' => 'shared', '2001:db8::5' => 'shared'];
+        $this->server->update(['shared_ip' => '198.51.100.9']);
+        $this->lifecycle->create($this->pending());
+        $this->assertSame(['198.51.100.9', '2001:db8::5'], $this->subscriptionIps());
+
+        $this->pleskCalls = [];
+        $this->server->update(['shared_ip' => '2001:db8::77']);
+        $this->lifecycle->create($this->pending(['domain' => 'bakery-shop.gr']));
+        $this->assertSame(['2001:db8::77'], $this->subscriptionIps());
         $this->assertNotContains('ip.get', $this->pleskOperations());
+    }
+
+    public function test_a_configured_ipv4_is_used_when_the_addresses_cannot_be_read(): void
+    {
+        $this->pleskFailures['ip.get'] = [1006, 'Permission denied'];
+        $this->server->update(['shared_ip' => '198.51.100.9']);
+
+        $this->lifecycle->create($this->pending());
+
+        $this->assertSame(['198.51.100.9'], $this->subscriptionIps());
+    }
+
+    /** @return list<string> the addresses of the last webspace.add, in gen_setup and in vrt_hst (which must agree) */
+    private function subscriptionIps(): array
+    {
+        $add = collect($this->pleskCalls)->where(0, 'webspace.add')->last()[1];
+        $ips = array_map('strval', iterator_to_array($add->gen_setup->ip_address, false));
+        $this->assertSame($ips, array_map('strval', iterator_to_array($add->hosting->vrt_hst->ip_address, false)));
+
+        return $ips;
     }
 
     public function test_create_retry_finds_its_own_subscription(): void
