@@ -544,13 +544,39 @@
         animation-delay: calc(var(--gx-i, 0) * 45ms + 150ms);
     }
 
+    /* The CPU columns grow from the base, like the chart's bars */
+    .gx-cpu-fill {
+        transform-origin: bottom;
+        animation: gx-grow .4s cubic-bezier(.2, .8, .3, 1) backwards;
+        animation-delay: calc(var(--gx-i, 0) * 30ms + 150ms);
+    }
+
     @keyframes gx-grow {
         from { transform: scaleY(0); }
+    }
+
+    /* The accounts line grows from the left to its share */
+    .gx-line-fill {
+        transform-origin: left;
+        animation: gx-widen .6s cubic-bezier(.2, .8, .3, 1) .15s backwards;
+    }
+
+    @keyframes gx-widen {
+        from { transform: scaleX(0); }
     }
 
     @keyframes gx-reveal {
         from { clip-path: inset(-20% 100% -20% 0); }
         to { clip-path: inset(-20% 0 -20% 0); }
+    }
+
+    /* The uptime's shapes pop in instead of filling a grey square */
+    .gx-servers .gx-meter [role="img"] > span[data-on][data-shape] {
+        animation-name: gx-pop;
+    }
+
+    @keyframes gx-pop {
+        from { opacity: 0; transform: scale(.4); }
     }
 
     @keyframes gx-light {
@@ -561,6 +587,8 @@
         .gx-bar-orders,
         .gx-bar-completed,
         .gx-income,
+        .gx-cpu-fill,
+        .gx-line-fill,
         .gx-servers .gx-meter [role="img"] > span[data-on] {
             animation: none;
         }
@@ -577,6 +605,16 @@
         display: flex;
         flex-direction: column;
         gap: .6rem;
+    }
+
+    /* A line between servers, so each one's rows read as one block */
+    .gx-server + .gx-server {
+        padding-top: 1.1rem;
+        border-top: 1px solid var(--theme-line, var(--gray-200));
+    }
+
+    .dark .gx-server + .gx-server {
+        border-top-color: var(--theme-line, color-mix(in oklab, var(--color-white) 10%, transparent));
     }
 
     /* The squares fill the card: stacked on a narrow card, side by side once each still gets 22rem */

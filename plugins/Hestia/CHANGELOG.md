@@ -2,6 +2,18 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.4.1] - 2026-11-26
+
+- The CPU bar reads the load average of the last 5 minutes (the second number of LOADAVERAGE) instead of the last minute, so a short burst at the moment of reading no longer shows as a busy hour.
+
+## [1.4.0] - 2026-11-26
+
+- Package sizes: the package pickers show each package's disk quota and bandwidth from `v-list-user-packages` (`DescribesPackages`)
+
+## [1.3.0] - 2026-11-24
+
+- CPU on the dashboard: the load average from `v-list-sys-info` (`ReportsLoad`), read every 5 minutes; the processor cores come from the server form (not yet tried on a real server)
+
 ## [1.2.2] - 2026-11-07
 
 - Compare with the server no longer lists the panel's admin login as an unbilled account (a real HestiaCP 1.10 puts it on the "default" package, with ROLE admin)

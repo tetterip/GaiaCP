@@ -233,6 +233,17 @@
         }
     }
 
+    /* Folded to its icons (admin): a slim pane, a little wider than Filament's rail */
+    @media (min-width: 1024px) {
+        html.fi {
+            --collapsed-sidebar-width: 5rem;
+        }
+
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-sidebar::before {
+            inset-inline: .5rem;
+        }
+    }
+
     @media (max-width: 1023px) {
         .fi-sidebar::before {
             background: var(--glass-pane-strong);

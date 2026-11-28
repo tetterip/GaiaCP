@@ -8,13 +8,17 @@ use App\Models\Server;
 use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
+use App\Provisioning\DescribesPackages;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\InstallsCertificates;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\ManagesWordPress;
 use App\Provisioning\OffersShortcuts;
+use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\WordPressInstall;
 use App\Provisioning\WordPressSite;
@@ -28,7 +32,7 @@ use SimpleXMLElement;
  * login and password come from the client's first hosting service on that
  * server; each subscription's system (FTP) user is the service's username.
  */
-class PleskProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, ManagesWordPress, OffersShortcuts, SharesPanelLogin
+class PleskProvisioner implements DescribesPackages, HostingProvisioner, InstallsCertificates, ListsAccounts, ManagesWordPress, OffersShortcuts, ReportsLoad, SharesPanelLogin
 {
     /** webspace gen_setup status values */
     private const ACTIVE = 0;
@@ -47,11 +51,48 @@ class PleskProvisioner implements HostingProvisioner, InstallsCertificates, List
         return 'Plesk '.((string) ($result[0]->stat->version->plesk_version ?? '') ?: 'unknown version');
     }
 
+    /**
+     * The server statistics (server get stat): the load average in hundredths (`load_avg/l5`, 5 minutes, 15 = 0.15) and the
+     * processor in `other/cpu`, whose "(N core(s))" gives the cores when Plesk writes it.
+     */
+    public function load(): ServerLoad
+    {
+        $stat = $this->plesk->call('server', 'get', ['stat' => []], timeout: 10)[0]->stat ?? null;
+        // The 5-minute load, as often as GaiaCP reads it (the 1-minute one jumps with each short burst)
+        $l1 = $stat?->load_avg->l5 ?? $stat?->load_avg->l1 ?? null;
+        $cpu = (string) ($stat?->other->cpu ?? '');
+
+        return new ServerLoad(
+            $l1 === null || trim((string) $l1) === '' ? null : (float) $l1 / 100,
+            preg_match('/(\d+)\s*core/i', $cpu, $m) ? (int) $m[1] : null,
+        );
+    }
+
     public function packages(): array
     {
-        $results = $this->plesk->call('service-plan', 'get', ['filter' => []], allowNotFound: true, timeout: 8);
+        return array_map('strval', array_keys($this->packageLimits()));
+    }
 
-        return array_values(array_filter(array_map(fn (SimpleXMLElement $r) => (string) $r->name, $results)));
+    /** service-plan get: each plan's limits disk_space and max_traffic, in bytes (-1 = unlimited). */
+    public function packageLimits(): array
+    {
+        $packages = [];
+
+        foreach ($this->plesk->call('service-plan', 'get', ['filter' => []], allowNotFound: true, timeout: 8) as $plan) {
+            if (($name = (string) $plan->name) === '') {
+                continue;
+            }
+
+            $limits = [];
+            foreach ($plan->limits->limit ?? [] as $limit) {
+                $limits[(string) $limit->name] = (int) $limit->value;
+            }
+
+            $bytes = fn (string $key) => isset($limits[$key]) && $limits[$key] > 0 ? $limits[$key] : null;
+            $packages[$name] = new PackageLimits($bytes('disk_space'), $bytes('max_traffic'), isset($limits['disk_space']), isset($limits['max_traffic']));
+        }
+
+        return $packages;
     }
 
     public function accountState(Service $service): AccountState

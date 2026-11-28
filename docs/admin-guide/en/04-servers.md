@@ -52,6 +52,8 @@ See [Keeping GaiaCP safe](12-admins-and-security.md#keeping-gaiacp-safe) for the
 The optional **Capacity and costs** fields help you run the servers:
 
 - **Maximum accounts**: the Servers list shows accounts against it ("33/120") and new orders skip a full server.
+- **Processor cores**: for the CPU share on the dashboard (see [CPU on the dashboard](#cpu-on-the-dashboard)) when
+  the panel gives only the load average. Plesk, CyberPanel and Proxmox fill it in by themselves.
 - **Monthly cost**: Reports → Income forecast and Server revenue show the profit after it.
 - **IP address**: used for new accounts where the panel needs one, by Site checks and by the IP blacklist check.
 - **Status page URL**: opened from the Servers list.
@@ -103,10 +105,12 @@ still let you pick another. When every server is full, setup stops and asks you 
 
 A hosting service's page has an **Account** menu:
 
+- **Log in to cPanel / Plesk / …**: opens the client's own account on the panel in a new tab, signed in, as the client
+  area's button does (active accounts only).
 - **Create on server**: creates the account with the service's domain and package. The username (from the domain) and
   password are generated when left empty and kept encrypted on the service. It also works on an active account, to
   recreate it on another server after a move (the old server is left alone).
-- **Change package**, **Change password**.
+- **Change package** (always sent to the server, even when the service already names that package), **Change password**.
 - **Suspend** and **Unsuspend**: these check the panel first, so they work even if the status was edited by hand.
 - **Terminate**: deletes the account and its files on the server. You type the username to confirm.
 - On a Proxmox VPS: **Start**, **Shut down**, **Restart** and **Force stop** (cuts the power, for a VPS that no longer
@@ -117,6 +121,12 @@ no harm. When a call fails, the service is left as it was, the error shows on sc
 and the dashboard's Needs attention. Turn on Settings → Logs → Logging → **Module log** to see each request and answer
 (passwords masked) when you need to find out why. **Download** on the module log saves the entries it shows as a
 JSON file, to attach to a bug report.
+
+The **On the server** section on the service asks the panel, when the page opens, whether the account is **Active**,
+**Suspended** or **Not found** there, next to the status stored in GaiaCP (**Check again** asks once more). When the two
+differ, a red box says what that means for the client and offers to fix either side: for example Unsuspend on the server,
+or Mark as suspended in GaiaCP (which changes only GaiaCP and emails nobody). A missing account offers Create on server;
+a server that does not answer shows **Unknown** with its error.
 
 The **Usage** section on the service shows disk space and this month's bandwidth against the package's limits, read
 from the panel.
@@ -170,6 +180,24 @@ API key). On the server, pick the monitoring service and the monitor. Every 5 mi
 - super admins get the bell when a server goes down and when it is back;
 - clients with services on it see a notice at the top of the client area while it is down or in maintenance (Settings
   → Client area → Server problems, with your own message).
+
+## CPU on the dashboard
+
+Every 5 minutes GaiaCP also asks each active server's panel how busy its processors are, and the dashboard's Servers
+card shows a **CPU, 24 hours** chart under each one: the latest share beside the caption, and a column per hour, as
+tall as that hour's average and in its colour (green, amber from 70%, red from the CPU warning). Point at a column for
+the hour's average and highest share.
+
+- Proxmox and Virtualmin measure the share themselves. cPanel, Plesk, DirectAdmin, HestiaCP and CyberPanel give the
+  **load average** of the last 5 minutes, which GaiaCP divides by the processor cores: a load of 2 on 4 cores is 50%.
+  The load also counts processes waiting for the disk, so it reads higher than the CPU usage graph of the panel's own
+  monitoring (often by a third or more on a busy hosting server). A load higher than the cores shows as 100%.
+- cPanel, DirectAdmin and HestiaCP don't say how many cores the server has: type them in **Processor cores** on the
+  server. Until then the card shows the load itself ("Load 1.20") and an empty chart; the readings already kept get
+  their share once the cores are entered.
+- When a server stays at or above Settings → Automation → **CPU warning** (90% by default) for 15 minutes, super
+  admins get the bell, once until it calms down. Leave the setting empty to not be warned.
+- These reads stay out of the module log unless they fail. A panel that doesn't answer shows "—".
 
 Two more plugins watch your servers:
 

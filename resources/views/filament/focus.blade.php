@@ -26,11 +26,16 @@
         outline: none !important;
     }
 
-    /* Filament's 16px "Clear selection" cross in selects: a 24px target (WCAG 2.5.8) that takes no more room */
+    /* Filament's 16px "Clear selection" cross in selects: a 24px target (WCAG 2.5.8) that takes no more room. The
+       glyph stays 16px (mask on the content box) and centred on the same spot as before, level with the chevron:
+       no negative margin, which with Filament's top: 50% / translate moved it 4px up */
     .fi-select-input-value-remove-btn {
         padding: 4px;
-        margin: -4px;
         box-sizing: content-box;
+        inset-inline-end: calc(2rem - 4px);
+        mask-origin: content-box;
+        mask-clip: content-box;
+        mask-size: 1rem 1rem;
     }
 
     /* Windows contrast themes drop every shadow, and the themes draw the edges of buttons, fields and cards with

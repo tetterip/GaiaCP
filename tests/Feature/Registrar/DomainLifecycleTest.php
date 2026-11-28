@@ -95,6 +95,98 @@ class DomainLifecycleTest extends TestCase
         $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
     }
 
+    public function test_a_registration_without_an_expiry_date_yet_still_activates(): void
+    {
+        $service = $this->pendingDomain();
+        $this->registrarNoExpiryYet = true; // easy.gr's 0000-00-00 for a .gr the registry has not confirmed
+
+        app(DomainLifecycle::class)->activate($service);
+
+        $details = $service->refresh()->domainDetails;
+        $this->assertSame(ServiceStatus::Active, $service->status);
+        $this->assertNull($details->expires_at); // left to the daily sync
+        $this->assertNull($details->last_synced_at);
+        $this->assertSame('2026-10-09', $details->registered_at->toDateString());
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $details->nameservers);
+        $this->assertTrue(ActivityLog::where('event', 'domain.registered')->exists());
+    }
+
+    public function test_a_retry_of_a_domain_held_without_an_expiry_date_does_not_register_again(): void
+    {
+        $service = $this->pendingDomain();
+        $this->registrarDomains['acme.gr'] = ['expires' => '0000-00-00 00:00:00', 'ns' => ['nodns1.easy.gr', 'nodns2.easy.gr']];
+
+        app(DomainLifecycle::class)->activate($service);
+
+        $this->assertNotContains(TestRegistrar::REGISTER, $this->registrarActions());
+        $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
+        $this->assertNull($service->domainDetails->expires_at);
+        // The registrar's placeholders are replaced by the default nameservers.
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $this->registrarDomains['acme.gr']['ns']);
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $service->domainDetails->nameservers);
+    }
+
+    public function test_nameservers_the_registrar_did_not_keep_are_set_again(): void
+    {
+        $service = $this->pendingDomain();
+        $this->registrarIgnoresNameservers = true;
+
+        app(DomainLifecycle::class)->activate($service);
+
+        $this->assertSame([TestRegistrar::SYNC, TestRegistrar::REGISTER, TestRegistrar::SYNC, TestRegistrar::GET_NAMESERVERS, TestRegistrar::SAVE_NAMESERVERS], $this->registrarActions());
+        $this->assertSame(['ns1.host.gr', 'ns2.host.gr'], $service->refresh()->domainDetails->nameservers);
+    }
+
+    public function test_a_refused_nameserver_change_after_registering_is_logged_and_still_activates(): void
+    {
+        $service = $this->pendingDomain();
+        $this->registrarIgnoresNameservers = true;
+        $this->registrarFailures[TestRegistrar::SAVE_NAMESERVERS] = ['2400' => 'Pending registration'];
+
+        app(DomainLifecycle::class)->activate($service);
+
+        $this->assertSame(ServiceStatus::Active, $service->refresh()->status);
+        $this->assertSame(['nodns1.easy.gr', 'nodns2.easy.gr'], $service->domainDetails->nameservers);
+        $this->assertStringContainsString('Pending registration', ActivityLog::where('event', 'domain.nameservers_not_set')->value('description'));
+    }
+
+    public function test_sync_without_an_expiry_date_yet_keeps_the_stored_one(): void
+    {
+        $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'next_due_date' => '2026-11-01']);
+        $service->domainDetails()->create(['expires_at' => '2026-11-05']);
+        $this->registrarDomains['acme.gr'] = ['expires' => '0000-00-00 00:00:00', 'ns' => ['ns1.x.gr', 'ns2.x.gr']];
+
+        try {
+            app(DomainLifecycle::class)->sync($service);
+            $this->fail('Expected a ProvisioningException');
+        } catch (ProvisioningException $e) {
+            $this->assertStringContainsString('no expiry date for acme.gr yet', $e->getMessage());
+        }
+
+        $this->assertSame('2026-11-05', $service->refresh()->domainDetails->expires_at->toDateString());
+        $this->assertTrue(ActivityLog::where('event', 'provisioning.failed')->exists());
+    }
+
+    public function test_a_payment_does_not_renew_while_the_registrar_has_no_expiry_date(): void
+    {
+        $service = Service::factory()->domain()->create(['domain' => 'acme.gr', 'start_date' => '2025-11-01', 'next_due_date' => '2026-11-01']);
+        $service->domainDetails()->create(['expires_at' => '2026-11-01']);
+        $this->registrarDomains['acme.gr'] = ['expires' => '0000-00-00 00:00:00'];
+
+        app(RecordPayment::class)->handle($service->refresh(), 1500, CarbonImmutable::parse('2026-10-09'), 'bank_transfer');
+
+        $this->assertNotContains(TestRegistrar::RENEW, $this->registrarActions());
+        $this->assertSame('2026-11-01', $service->refresh()->domainDetails->expires_at->toDateString());
+    }
+
+    public function test_known_expiry_drops_dates_that_are_not_real(): void
+    {
+        $this->assertNull(DomainLifecycle::knownExpiry(CarbonImmutable::parse('0000-00-00 00:00:00')));
+        $this->assertNull(DomainLifecycle::knownExpiry(CarbonImmutable::createFromTimestamp(0)));
+        $this->assertNull(DomainLifecycle::knownExpiry(null));
+        $this->assertSame('2028-05-26', DomainLifecycle::knownExpiry(CarbonImmutable::parse('2028-05-26'))->toDateString());
+    }
+
     public function test_a_failed_registration_leaves_the_domain_pending(): void
     {
         $service = $this->pendingDomain();

@@ -5,19 +5,23 @@ namespace Plugins\Cpanel;
 use App\Models\Service;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
+use App\Provisioning\DescribesPackages;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\InstallsCertificates;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\ManagesWordPress;
 use App\Provisioning\OffersShortcuts;
+use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Provisioning\WordPressInstall;
 use App\Provisioning\WordPressSite;
 use App\Provisioning\WpToolkit;
 use App\Support\DomainName;
 
-class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, ManagesWordPress, OffersShortcuts
+class CpanelProvisioner implements DescribesPackages, HostingProvisioner, InstallsCertificates, ListsAccounts, ManagesWordPress, OffersShortcuts, ReportsLoad
 {
     public function __construct(private WhmClient $whm) {}
 
@@ -28,12 +32,34 @@ class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, Lis
         return 'WHM '.($data['version'] ?? 'unknown version');
     }
 
+    /** WHM's load average of the last 5 minutes (systemloadavg); it does not say how many cores the server has. */
+    public function load(): ServerLoad
+    {
+        $data = $this->whm->call('systemloadavg', timeout: 10);
+
+        // The 5-minute load, as often as GaiaCP reads it (the 1-minute one jumps with each short burst)
+        return new ServerLoad(ServerLoad::number($data['five'] ?? $data['one'] ?? null));
+    }
+
     public function packages(): array
+    {
+        return array_map('strval', array_keys($this->packageLimits()));
+    }
+
+    /** WHM's listpkgs: QUOTA (disk) and BWLIMIT (monthly bandwidth) in MB, or "unlimited". */
+    public function packageLimits(): array
     {
         // Also used for form suggestions, so fail fast.
         $data = $this->whm->call('listpkgs', timeout: 8);
+        $packages = [];
 
-        return collect($data['pkg'] ?? [])->pluck('name')->filter()->values()->all();
+        foreach ($data['pkg'] ?? [] as $pkg) {
+            if (filled($pkg['name'] ?? null)) {
+                $packages[(string) $pkg['name']] = PackageLimits::fromMegabytes($pkg['QUOTA'] ?? null, $pkg['BWLIMIT'] ?? null);
+            }
+        }
+
+        return $packages;
     }
 
     public function accountState(Service $service): AccountState
@@ -93,7 +119,7 @@ class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, Lis
         $this->whm->call('createacct', [
             'username' => $this->username($service),
             'domain' => DomainName::toAscii($service->domain),
-            'plan' => $service->package,
+            'plan' => $this->panelPackage($service->package),
             'password' => $password,
             'contactemail' => $service->client->email,
         ], timeout: 180);
@@ -349,12 +375,31 @@ class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, Lis
 
     public function changePackage(Service $service, string $package): void
     {
-        $this->whm->call('changepackage', ['user' => $this->username($service), 'pkg' => $package]);
+        $this->whm->call('changepackage', ['user' => $this->username($service), 'pkg' => $this->panelPackage($package)]);
     }
 
     public function changePassword(Service $service, string $password): void
     {
         $this->whm->call('passwd', ['user' => $this->username($service), 'password' => $password]);
+    }
+
+    /**
+     * The package's name on this server. WHM names a reseller's packages "{reseller}_{name}", so a product can say just
+     * "pyrgi" and be set up on two reseller logins (ttrpgr_pyrgi, ttrpeu_pyrgi), as with WHMCS. A name the server lists
+     * as it is (root's, "default", or one already with a prefix) is used unchanged.
+     */
+    public function panelPackage(string $package): string
+    {
+        $login = $this->whm->username();
+        $prefixed = "{$login}_{$package}";
+
+        if ($login === 'root' || str_starts_with($package, "{$login}_")) {
+            return $package;
+        }
+
+        $names = $this->packages();
+
+        return ! in_array($package, $names, true) && in_array($prefixed, $names, true) ? $prefixed : $package;
     }
 
     private function username(Service $service): string

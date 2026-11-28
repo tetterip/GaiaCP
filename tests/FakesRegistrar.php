@@ -22,6 +22,12 @@ trait FakesRegistrar
     /** @var array<string, array<int|string, string>> */
     public array $registrarFailures = [];
 
+    /** A registration comes back with the zero date easy.gr gives a .gr the registry has not confirmed yet. */
+    public bool $registrarNoExpiryYet = false;
+
+    /** A registration keeps the registrar's own placeholder nameservers, as easy.gr did on a new .gr. */
+    public bool $registrarIgnoresNameservers = false;
+
     /** @var list<array<string, mixed>> {tld, min_period, min_buy, min_ren, transfer, redemption} */
     public array $registrarTldPrices = [];
 

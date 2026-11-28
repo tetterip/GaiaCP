@@ -37,5 +37,6 @@
     "We need to record it by hand; we will do so shortly. There is no need to pay again.": "Bunu elle kaydetmemiz gerekiyor; kısa süre içinde yapacağız. Yeniden ödemenize gerek yok.",
     "Webhook": "Webhook",
     "Webhook url": "Webhook URL'si",
-    "Your PayPal payment went through.": "PayPal ödemeniz gerçekleşti."
+    "Your PayPal payment went through.": "PayPal ödemeniz gerçekleşti.",
+    "PayPal did not give the money back: :status": "PayPal parayı iade etmedi: :status"
 }

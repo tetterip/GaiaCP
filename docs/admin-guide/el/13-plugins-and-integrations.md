@@ -59,7 +59,7 @@
 | | CyberPanel, Virtualmin, Proxmox VE | κλειστό | το ίδιο· το CyberPanel και το Proxmox και στις Ρυθμίσεις → Διασυνδέσεις |
 | Registrars | Enom, Namecheap, NameSilo, Openprovider, ResellerClub, Email Notifications | ανοιχτό | Ρυθμίσεις → Προϊόντα και domains → Registrars |
 | Τρόποι πληρωμής | Τραπεζική μεταφορά, Stripe | ανοιχτό | Ρυθμίσεις → Χρεώσεις → Τρόποι πληρωμής |
-| | PayPal, Nexi XPay, Mastercard Gateway | κλειστό | το ίδιο |
+| | PayPal, Nexi XPay, Mastercard Gateway, Άλλοι τρόποι πληρωμής | κλειστό | το ίδιο |
 | Φόρος | Έλεγχος ΑΦΜ VIES | κλειστό | Ρυθμίσεις → Χρεώσεις → Έλεγχος ΑΦΜ VIES |
 | Πιστοποιητικά SSL | GoGetSSL | κλειστό | Ρυθμίσεις → Διασυνδέσεις → GoGetSSL |
 | Παρακολούθηση | Uptime Kuma, UptimeRobot, Better Stack, Έλεγχος IP σε blacklists, Έλεγχος sites | ανοιχτό | Ρυθμίσεις → Διασυνδέσεις |

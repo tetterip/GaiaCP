@@ -1,0 +1,12 @@
+{
+    "Add a way to pay": "Προσθήκη τρόπου πληρωμής",
+    "Cash at our office": "Μετρητά στο γραφείο μας",
+    "Each one is a payment method of its own: its instructions show on payment notices and their emails, and you pick it when you record a payment. In the instructions, {number} becomes the payment notice's number (the reference to write) and {amount} its total.": "Ο καθένας είναι ξεχωριστός τρόπος πληρωμής: οι οδηγίες του φαίνονται στις ειδοποιήσεις πληρωμής και στα emails τους, και τον διαλέγετε όταν καταχωρίζετε μια πληρωμή. Στις οδηγίες, το {number} γίνεται ο αριθμός της ειδοποίησης πληρωμής (η αιτιολογία που γράφει ο πελάτης) και το {amount} το σύνολό της.",
+    "Instructions": "Οδηγίες",
+    "Methods": "Τρόποι",
+    "Off: no longer offered or shown; payments made with it keep it.": "Ανενεργός: δεν προσφέρεται ούτε φαίνεται πια· οι πληρωμές που έγιναν με αυτόν τον κρατούν.",
+    "Other ways to pay": "Άλλοι τρόποι πληρωμής",
+    "Pay at our office, Mon–Fri 9:00–17:00. Mention {number}.": "Πληρωμή στο γραφείο μας, Δευ–Παρ 9:00–17:00. Αναφέρετε το {number}.",
+    "Your own ways to pay without a gateway (cheque, cash at the office, IRIS to a phone number, Revolut), each with instructions shown on payment notices.": "Δικοί σας τρόποι πληρωμής χωρίς πάροχο πληρωμών (επιταγή, μετρητά στο γραφείο, IRIS σε κινητό, Revolut), ο καθένας με οδηγίες στις ειδοποιήσεις πληρωμής.",
+    "Your own ways to pay without a gateway, each with instructions for the client.": "Δικοί σας τρόποι πληρωμής χωρίς πάροχο πληρωμών, ο καθένας με οδηγίες για τον πελάτη."
+}

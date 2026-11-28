@@ -10,6 +10,7 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\ResetPassword;
 use App\Http\Controllers\Admin\ServerPanelLoginController;
+use App\Http\Controllers\Admin\ServicePanelLoginController;
 use App\Http\Controllers\Admin\TicketAttachmentController;
 use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\AlertWhenCronStops;
@@ -100,6 +101,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages(app(PluginManager::class)->pages())
+            // On a wide screen the menu folds to its icons (the button by the logo; the browser remembers it per admin)
+            ->sidebarCollapsibleOnDesktop()
             // The sidebar's groups, in order (each page and resource names its own)
             ->navigationGroups([
                 NavigationGroup::make()->label(fn (): string => __('Main'))->collapsible(false),
@@ -117,6 +120,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.notification-swipe')->render())
             // Text in a table row that opens a page can be selected and copied
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.selectable-rows')->render())
+            // Dates can be typed as well as picked from the calendar
+            ->renderHook(PanelsRenderHook::BODY_END, fn (): string => view('filament.typeable-dates')->render())
             // The theme says whether the admin's menu is in the top bar or at the foot of the sidebar
             ->userMenu(position: fn () => Themes::userMenuPosition())
             ->defaultAvatarProvider(InitialsAvatar::class)
@@ -132,6 +137,10 @@ class AdminPanelProvider extends PanelProvider
                 Route::get('servers/{server}/panel-login', ServerPanelLoginController::class)
                     ->whereNumber('server')
                     ->name('server-panel-login');
+                // A hosting service's Account → Log in to the client's panel (a new tab)
+                Route::get('services/{service}/panel-login', ServicePanelLoginController::class)
+                    ->whereNumber('service')
+                    ->name('service-panel-login');
                 Route::get('ticket-files/{attachment}', TicketAttachmentController::class)
                     ->whereNumber('attachment')
                     ->name('ticket-file');
@@ -189,6 +198,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WelcomeTour::enabled() ? view('filament.welcome-tour', ['opensNow' => WelcomeTour::opensNow()])->render() : '')
             // What's new: this version's highlights, once per admin after an update, then from the user menu (App\Support\WhatsNew)
             ->renderHook(PanelsRenderHook::BODY_END, fn (): string => filament()->auth()->check() && WhatsNew::enabled() ? view('filament.whats-new', ['opensNow' => WhatsNew::opensNow()])->render() : '')
+            // "‹ Payment notices" over a page's title on a phone, where Filament hides the breadcrumbs (App\Support\BackLink)
+            ->renderHook(PanelsRenderHook::PAGE_HEADER_HEADING_BEFORE, fn (): string => view('filament.back-link')->render())
             ->renderHook(PanelsRenderHook::FOOTER, fn (): string => view('filament.footer')->render())
             // The public demo: what it is and when it is put back, and the demo login on the login page (App\Support\Demo)
             ->renderHook(PanelsRenderHook::BODY_START, fn (): string => Demo::enabled() ? view('filament.demo.bar')->render() : '')

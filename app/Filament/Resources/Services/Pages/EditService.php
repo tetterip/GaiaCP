@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Services\Pages;
 
+use App\Actions\ServiceLifecycle;
 use App\Enums\BillingCycle;
+use App\Enums\ServiceStatus;
 use App\Filament\Actions\CertificateActions;
 use App\Filament\Actions\ChangePriceAction;
 use App\Filament\Actions\ChangeProductAction;
@@ -16,6 +18,7 @@ use App\Invoices\RepriceIssuedNotice;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Service;
+use App\Provisioning\ProvisioningException;
 use App\Support\ProductOptions;
 use Carbon\CarbonImmutable;
 use Filament\Actions\ActionGroup;
@@ -68,6 +71,41 @@ class EditService extends EditRecord
     protected function beforeSave(): void
     {
         $this->dueBefore = $this->getRecord()->getOriginal('next_due_date');
+        $this->setPackageOnServer();
+    }
+
+    /**
+     * A new package picked on an active or suspended hosting account, on the same server, is set on the panel first:
+     * when the panel refuses, nothing is saved.
+     */
+    private function setPackageOnServer(): void
+    {
+        /** @var Service $service */
+        $service = $this->getRecord();
+        $package = trim((string) ($this->data['package'] ?? ''));
+
+        if (! self::setsPackageOnServer($service) || $package === '' || $package === $service->package
+            || (string) ($this->data['server_id'] ?? '') !== (string) $service->server_id) {
+            return;
+        }
+
+        try {
+            app(ServiceLifecycle::class)->changePackage($service, $package);
+        } catch (ProvisioningException $e) {
+            Notification::make()->title(__('Not saved: the server did not take the new package'))->body($e->getMessage())->danger()->persistent()->send();
+            $this->halt();
+        }
+
+        Notification::make()->success()->title(__('Package :package set on the server.', ['package' => $package]))->send();
+    }
+
+    /** Whether saving a new package on this service also sets it on its server. */
+    public static function setsPackageOnServer(?Service $service): bool
+    {
+        return $service !== null
+            && $service->type->needsServer()
+            && $service->server_id !== null
+            && in_array($service->status, [ServiceStatus::Active, ServiceStatus::Suspended], true);
     }
 
     /** An unpaid notice already issued for its next due date (its order's, say) bills the new amount. */

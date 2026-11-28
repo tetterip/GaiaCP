@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.1.0] - 2026-11-24
+
+- CPU on the dashboard: the load average and processor cores from the cloud API's `systemStatus` (`ReportsLoad`), read every 5 minutes (not yet tried on a real server)
+
 ## [1.0.2] - 2026-11-04
 
 - Tested on a real CyberPanel 3.0: a clear message when the API key from Users → API Access is put in the password

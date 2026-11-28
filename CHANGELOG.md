@@ -11,11 +11,87 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
   yet tried on real servers.
 - Plugin API: new optional `App\Provisioning\ManagesWordPress` for server panels, with `WordPressSite`,
   `WordPressInstall` and `WpToolkit`. The module log now masks a response's `Location` header.
+- The admin's sidebar folds to its icons on a computer: the arrow by the logo folds and unfolds it, pointing at an
+  icon shows its name, and a count (pending orders, leads to contact…) shows as a dot. The browser remembers the
+  choice. Looks right in the Gaia, Flat and Glass themes, light and dark; phones keep the drawer.
+- The clear cross (×) in dropdowns such as Package sits level with the arrow again, at its normal size.
+- Dashboard → Recent activity and the Activity log show payments, orders, new clients, cancellations, tickets,
+  payment notices, reminders and suspensions in the admin's language, the entries already saved too, with dates in
+  the Region's format (05/12/2026, not 2026-12-05). The log itself still keeps them in English.
+- Settings → Client area → Search engines has a **Google Search Console code** and a **Bing Webmaster Tools code**:
+  paste the verification tag (or only its code) and the client area's pages carry it, so the site can be verified with
+  the HTML tag check, then given `/sitemap.xml`.
+- On a phone, an admin page opened from a list (a payment notice, client, service, order…) shows a "‹ Payment
+  notices" link over its title back to that list, since the breadcrumbs only show on wider screens.
+- Dashboard → Servers, CPU: cPanel, Plesk, DirectAdmin and HestiaCP are read by their 5-minute load average, not the
+  last minute's, so a short burst no longer reads as a busy hour. A server without its processor cores shows its load
+  ("Load 1.20") and asks for the cores instead of "—", and the readings already kept get their share once they are
+  entered. Pointing at the CPU row explains why the load reads higher than a panel's CPU usage graph.
+- Fixed: Complete order stopped with "Error loading the page" when easy.gr registered a .gr domain but gave no expiry
+  date yet (`0000-00-00` until the registry confirms it), and the hosting of the same order was not set up. The domain
+  now becomes active with its expiry left to the daily sync; a sync or payment that reads no real date keeps the stored
+  one and does not renew. Any other unexpected error on one item of an order no longer stops the other items: that item
+  stays pending (Services → Module queue) and a retry never registers the domain twice.
+- Fixed: a registered domain could keep the registrar's placeholder nameservers (easy.gr's nodns1.easy.gr on a new .gr)
+  instead of the domain's own or the defaults from Settings → Domains. After registering, GaiaCP reads them back and
+  sets them once more when they differ; if the registrar refuses, the domain is still active and the activity log says so.
+
+## [0.13.0] - 2026-11-26
+
+- **Changing a hosting plan is easier**: on a service, picking another product changes its label and package with
+  it (the label only when it was the old product's name), and saving a new package on an active or suspended account
+  also sets it on the server; when the server refuses, nothing is saved. The package lists show each package's disk
+  space and bandwidth (cPanel, Plesk, HestiaCP). A product on several servers lists the packages all of them have; on
+  cPanel reseller logins without the reseller's prefix, so `pyrgi` is set up as `ttrpgr_pyrgi` or `ttrpeu_pyrgi`.
+- Composer: league/csv, symfony/routing, http-kernel, mailer and html-sanitizer updated for new security advisories.
+- Fixed: Account → Change package did nothing on the server, yet said it had, when the service already named that
+  package (after it was changed in the service form). It now always sets it on the server.
+- Plugin API: a server panel may implement `App\Provisioning\DescribesPackages` (optional, with
+  `App\Provisioning\PackageLimits`) to show its packages' sizes.
+- A hosting service's page has an **On the server** section: whether the account is active, suspended or missing on
+  its server, read from the panel when the page opens, next to the status in GaiaCP. When they differ, a red box says
+  what it means for the client and offers to fix either side (Unsuspend / Suspend on the server, or mark it so in
+  GaiaCP without emailing the client); a missing account offers Create on server.
+- Account → **Log in to cPanel / Plesk / …** on an active hosting service: the client's own account on the panel, in a
+  new tab, signed in.
+- Dashboard → Servers: accounts come first, then uptime, then CPU, and every row reaches the right edge of the card,
+  under its number; a line separates one server from the next. The accounts are a thin line, here and in the servers
+  list, that grows with the share and turns from green to orange (70%) and red (85%).
+- **Refunds and chargebacks from Stripe and PayPal**: a refund made in their dashboards, or a chargeback (a client
+  disputing the payment with their bank or PayPal), rings the bell and goes in the activity log, and the payment shows
+  *Chargeback open / won / lost* or *Refunded at the provider*. Nothing changes on its own: you decide whether to
+  record the refund, suspend the service or do nothing. Tick the new events on the Stripe and PayPal webhooks
+  (their settings pages list them).
+- **Refund payment at Stripe or PayPal**: Refund payment on a Stripe or PayPal payment offers *Give it back at … now*,
+  which refunds it there first and records it only once the provider took it (API: `"to": "provider"`).
+- **Provider fees**: what Stripe and PayPal keep of each payment is stored on it. Billing → Payments has a *Provider
+  fee* column with its total, Annual income a *Provider fees* column (once there are any), and the monthly
+  transactions export a fee per payment.
+- **Other ways to pay** (new plugin, off by default): your own ways to be paid without a gateway, such as a cheque,
+  cash at the office, IRIS to a phone number, Revolut or Wise. Each has a name and instructions for the client
+  (`{number}` and `{amount}` fill in the notice's number and total), shown with the payment notices and their emails, and
+  is picked when you record a payment. One already used for payments can be switched off but not removed.
+- Plugin API: a payment module may implement `App\Payments\RefundsAtProvider` to refund at the gateway, and report
+  refunds and chargebacks with `App\Payments\ProviderReports`, and store a gateway's fee with
+  `App\Payments\ProviderFees`.
+
+- The dashboard's Servers card shows each server's **CPU**: the latest share and a square per hour for the last 24
+  hours, read from the panel every 5 minutes (cPanel, Plesk, HestiaCP, DirectAdmin, CyberPanel, Virtualmin, Proxmox).
+  Panels that give only the load average need the server's **Processor cores** (a new field; Plesk, CyberPanel and
+  Proxmox fill it in). The bell rings when a server stays at or above Settings → Automation → **CPU warning** (90%)
+  for 15 minutes.
+- Plugin API: a server panel may implement `App\Provisioning\ReportsLoad` (optional, with `App\Provisioning\ServerLoad`)
+  to show its CPU on the dashboard.
+
 - A client's page has an **Emails** tab: every email sent to the client, or to you about them, with the date,
   subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
   Settings → Email log, once the client has an email.
 - The text of a table row that opens a page (a payment notice's lines, clients, services) can be selected and copied
   by dragging over it; a plain click still opens the row.
+- A date can be typed in its field (`09/04/2028`, `9.4.28`, `090428`, in the Region's format) as well as picked from
+  the calendar.
+- AI domain names for a described business (and other short AI answers) no longer fail with "No suggestions right
+  now": the answer's token limit left no room for the thinking of models such as Claude Opus 5.5.
 
 ## [0.12.1] - 2026-11-23
 

@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Service;
 use App\Providers\AppServiceProvider;
+use App\Provisioning\PackageOptions;
 use App\Provisioning\ProvisioningException;
 use App\Support\Money;
 use Filament\Actions\Action;
@@ -48,7 +49,7 @@ class ChangeProductAction
                         $set('price', $price === null ? null : Money::toDecimal($price));
                     })
                     ->helperText(fn (Get $get) => ($product = $get('product_id') ? Product::find($get('product_id')) : null) && filled($product->package) && $product->package !== $record->package
-                        ? __('Package :from → :to', ['from' => $record->package ?? '-', 'to' => $product->package])
+                        ? __('Package :from → :to', ['from' => PackageOptions::label($record->server_id, $record->package) ?? '-', 'to' => PackageOptions::label($record->server_id, $product->package)])
                         : null),
                 TextInput::make('price')
                     ->label(fn () => __('Price per cycle (:cycle)', ['cycle' => $record->billing_cycle->getLabel()]))

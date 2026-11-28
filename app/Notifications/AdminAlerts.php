@@ -60,6 +60,9 @@ class AdminAlerts
         'invoice.paid' => AdminArea::Billing,
         'invoice.payment_claimed' => AdminArea::Billing,
         'payment.online_unmatched' => AdminArea::Billing,
+        'payment.provider_refunded' => AdminArea::Billing,
+        'payment.disputed' => AdminArea::Billing,
+        'payment.dispute_closed' => AdminArea::Billing,
         'provisioning.failed' => AdminArea::Services,
         'module_queue.gave_up' => AdminArea::Services,
         'service.cancellation_requested' => AdminArea::Services,
@@ -79,6 +82,7 @@ class AdminAlerts
         'quote.declined' => AdminArea::Sales,
         'server.down' => null,
         'server.up' => null,
+        'server.cpu_high' => null,
         'server.accounts_differ' => null,
         'monitoring.failed' => null,
         'blacklist.listed' => null,
@@ -183,6 +187,7 @@ class AdminAlerts
                 'heroicon-o-credit-card', 'danger',
                 ActivityLogResource::getUrl(parameters: ['filters' => ['event' => ['value' => $log->event]]], panel: 'admin'),
             ],
+            'payment.provider_refunded', 'payment.disputed', 'payment.dispute_closed' => self::providerReport($log),
             'provisioning.failed' => [
                 $service ? __('Panel or registrar call failed: :name', ['name' => $service]) : __('Panel or registrar call failed'),
                 Str::limit($log->description, 160),
@@ -278,6 +283,12 @@ class AdminAlerts
                     ? __('Down for :time', ['time' => CarbonInterval::seconds((int) $log->properties['down_seconds'])->cascade()->forHumans(['short' => true, 'parts' => 2])])
                     : null,
                 'heroicon-o-signal', 'success',
+                ServerResource::getUrl(panel: 'admin'),
+            ],
+            'server.cpu_high' => [
+                __('Server :name is busy', ['name' => self::serverName($log)]),
+                __('CPU at :percent for :minutes minutes', ['percent' => ((int) round((float) ($log->properties['percent'] ?? 0))).'%', 'minutes' => (int) ($log->properties['minutes'] ?? 15)]),
+                'heroicon-o-cpu-chip', 'warning',
                 ServerResource::getUrl(panel: 'admin'),
             ],
             'server.accounts_differ' => [
@@ -443,6 +454,40 @@ class AdminAlerts
             ]),
             'heroicon-o-banknotes', 'warning',
             InvoiceResource::getUrl('view', ['record' => $invoice], panel: 'admin'),
+        ];
+    }
+
+    /** @return array{0: ?string, 1: ?string, 2: string, 3: string, 4: ?string} a refund or chargeback at the gateway */
+    private static function providerReport(ActivityLog $log): array
+    {
+        $properties = $log->properties;
+        $currency = (string) ($properties['currency'] ?? 'EUR');
+        $invoice = isset($properties['invoice_id']) ? Invoice::query()->find($properties['invoice_id']) : null;
+        $values = [
+            'provider' => PaymentMethods::label($properties['method'] ?? null),
+            'number' => $invoice !== null ? $invoice->number : ($properties['reference'] ?? ''),
+            'client' => $log->client !== null ? $log->client->name : ($invoice !== null ? $invoice->client->name : ''),
+        ];
+
+        [$title, $body, $color] = match ($log->event) {
+            'payment.provider_refunded' => [
+                __('Refunded at :provider: :number', $values),
+                __(':client got :amount back at :provider. Record it here with Refund payment if it stays refunded.', $values + ['amount' => Money::format((int) ($properties['refunded_cents'] ?? 0), $currency)]),
+                'warning',
+            ],
+            'payment.disputed' => [
+                __('Chargeback: :number', $values),
+                __(':client disputed :amount paid with :provider. Nothing was changed here; answer it at :provider.', $values + ['amount' => Money::format((int) ($properties['amount_cents'] ?? 0), $currency)]),
+                'danger',
+            ],
+            default => ($properties['won'] ?? false)
+                ? [__('Chargeback won: :number', $values), __('The payment stays paid.'), 'success']
+                : [__('Chargeback lost: :number', $values), __(':amount went back to :client. Use Refund payment, and suspend or cancel the service if it ends.', $values + ['amount' => Money::format((int) ($properties['amount_cents'] ?? 0), $currency)]), 'danger'],
+        };
+
+        return [
+            $title, $body, 'heroicon-o-receipt-refund', $color,
+            $log->service_id ? ServiceResource::getUrl('edit', ['record' => $log->service_id], panel: 'admin') : null,
         ];
     }
 

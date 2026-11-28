@@ -2,6 +2,7 @@
 
 namespace App\Filament\Actions;
 
+use App\Actions\DomainLifecycle;
 use App\Models\Registrar;
 use App\Providers\AppServiceProvider;
 use App\Provisioning\ProvisioningException;
@@ -42,7 +43,9 @@ class CheckDomainAction
                 }
 
                 Notification::make()
-                    ->title(__('Connected: :domain expires :date', ['domain' => $domain, 'date' => $expiry->format(AppServiceProvider::dateFormat())]))
+                    ->title(($expiry = DomainLifecycle::knownExpiry($expiry))
+                        ? __('Connected: :domain expires :date', ['domain' => $domain, 'date' => $expiry->format(AppServiceProvider::dateFormat())])
+                        : __('Connected: :domain is in the account, with no expiry date yet', ['domain' => $domain]))
                     ->body(__('Nameservers: :list', ['list' => $nameservers ? implode(', ', $nameservers) : __('(none returned)')]))
                     ->success()
                     ->send();

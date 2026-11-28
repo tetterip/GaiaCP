@@ -39,5 +39,6 @@
     "Webhook": "Webhook",
     "Webhook signing secret": "Μυστικό υπογραφής webhook",
     "Webhook url": "Διεύθυνση webhook",
-    "Your card payment went through.": "Η πληρωμή σας με κάρτα ολοκληρώθηκε."
+    "Your card payment went through.": "Η πληρωμή σας με κάρτα ολοκληρώθηκε.",
+    "Stripe did not give the money back: :status": "Η Stripe δεν επέστρεψε τα χρήματα: :status"
 }

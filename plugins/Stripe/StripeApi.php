@@ -9,7 +9,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 /**
- * The few calls of Stripe's API that card payments need (Checkout Sessions), over HTTPS with the secret key of the
+ * The few calls of Stripe's API that card payments need (Checkout Sessions, refunds), over HTTPS with the secret key of the
  * mode in use. Calls are in the module log (stripe) with the key masked. No Stripe SDK: form-encoded requests.
  */
 class StripeApi
@@ -72,6 +72,27 @@ class StripeApi
     public function checkoutSession(string $id): array
     {
         return $this->send('get_checkout', fn (PendingRequest $http) => $http->get(self::BASE_URL.'/checkout/sessions/'.rawurlencode($id)));
+    }
+
+    /** @return array<string, mixed> a PaymentIntent, with its latest charge's balance transaction (the fee) */
+    public function paymentIntentWithFee(string $id): array
+    {
+        return $this->send('get_payment_intent', fn (PendingRequest $http) => $http->get(self::BASE_URL.'/payment_intents/'.rawurlencode($id).'?expand[]=latest_charge.balance_transaction'));
+    }
+
+    /**
+     * Gives money of a PaymentIntent back. The idempotency key makes a repeated call (after a timeout) return the
+     * first refund instead of giving the money back twice.
+     *
+     * @param  array<string, string|int>  $metadata
+     * @return array<string, mixed> the refund
+     */
+    public function refund(string $paymentIntent, int $amount, string $idempotencyKey, array $metadata = []): array
+    {
+        return $this->send('refund', fn (PendingRequest $http) => $http
+            ->withHeaders(['Idempotency-Key' => $idempotencyKey])
+            ->asForm()
+            ->post(self::BASE_URL.'/refunds', ['payment_intent' => $paymentIntent, 'amount' => $amount, 'metadata' => $metadata]));
     }
 
     /** A read-only call that proves the key works and may use Checkout (Settings → Stripe → Check the key). */

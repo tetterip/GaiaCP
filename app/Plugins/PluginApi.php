@@ -76,12 +76,16 @@ use App\Monitoring\MonitorStatus;
 use App\Monitoring\ServerMonitoring;
 use App\Monitoring\UptimeHistory;
 use App\Payments\PaymentModule;
+use App\Payments\ProviderFees;
+use App\Payments\ProviderReports;
+use App\Payments\RefundsAtProvider;
 use App\Providers\AppServiceProvider;
 use App\Provisioning\AccountState;
 use App\Provisioning\AccountUsage;
 use App\Provisioning\ChecksAvailability;
 use App\Provisioning\ControlsPower;
 use App\Provisioning\DescribesMachine;
+use App\Provisioning\DescribesPackages;
 use App\Provisioning\DomainContact;
 use App\Provisioning\DomainRegistrar;
 use App\Provisioning\EmailsEppCode;
@@ -98,9 +102,12 @@ use App\Provisioning\ManagesRegistrarLock;
 use App\Provisioning\ManagesWordPress;
 use App\Provisioning\ManualRegistrar;
 use App\Provisioning\OffersShortcuts;
+use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\RegistrarModule;
+use App\Provisioning\ReportsLoad;
+use App\Provisioning\ServerLoad;
 use App\Provisioning\ServerModule;
 use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\TldPrice;
@@ -159,6 +166,10 @@ final class PluginApi
         ControlsPower::class,
         DescribesMachine::class,
         MachineDetails::class,
+        DescribesPackages::class,
+        PackageLimits::class,
+        ReportsLoad::class,
+        ServerLoad::class,
         InstallsCertificates::class,
         LimitsUsernameLength::class,
 
@@ -180,6 +191,9 @@ final class PluginApi
 
         // Payments, captcha, monitoring, SSL certificates, chat, AI, themes
         PaymentModule::class,
+        RefundsAtProvider::class,
+        ProviderReports::class,
+        ProviderFees::class,
         RecordInvoicePayment::class,
         PaymentClaims::class,
         PaymentNoticeResource::class,

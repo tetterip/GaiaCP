@@ -103,7 +103,8 @@ class ChangeProduct
         $options = self::options($service, $to);
 
         // The panel first: when it fails (ProvisioningException), nothing else changes.
-        if (filled($to->package) && $to->package !== $service->package) {
+        // Even when the service already names it: that can be edited by hand, so it says nothing about the server.
+        if (filled($to->package)) {
             $this->lifecycle->changePackage($service, $to->package);
         }
 

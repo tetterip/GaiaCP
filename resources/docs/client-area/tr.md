@@ -241,7 +241,7 @@ Destek → Duyurular altında hizmetlerimizle ilgili haberleri paylaşırız: ye
 <!-- if:server_status -->
 ## Sunucu durumu
 
-Destek → Sunucu durumu, sunucularımızın şu anda çalışıp çalışmadığını son 30 gün ve 24 saatin kareleriyle gösterir. Birinde sorun olduğunda, hakkında bildiklerimizle birlikte en üstte yer alır.
+Destek → Sunucu durumu, sunucularımızın şu anda çalışıp çalışmadığını son 30 günün ve 24 saatin her biri için bir işaretle gösterir: çalıştığında yeşil daire, sorun olduğunda sarı üçgen, çöktüğünde kırmızı ters üçgen. Birinde sorun olduğunda, hakkında bildiklerimizle birlikte en üstte yer alır.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Bize ulaşın

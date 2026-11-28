@@ -63,6 +63,53 @@
         }
     }
 
+    /* The admin's menu folded to its icons on a wide screen (sidebarCollapsibleOnDesktop): the top bar keeps only the
+       unfold button over the icons, so the inset area starts where the menu ends; a count shows as a dot on its icon */
+    @media (min-width: 1024px) {
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-topbar-start {
+            width: calc(var(--collapsed-sidebar-width) - 1rem);
+            padding-inline-end: 1rem; /* the button centred over the icons (the top bar's own padding is the other 1rem) */
+            justify-content: center;
+        }
+
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-topbar-start > :not(.fi-topbar-collapse-sidebar-btn-ctn) {
+            display: none;
+        }
+
+        /* The icons centred in the rail, which still scrolls on a short window but without a bar that would push them aside */
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-sidebar-nav {
+            align-items: center;
+            padding-inline: 0;
+            scrollbar-gutter: auto;
+            scrollbar-width: none;
+        }
+
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-sidebar-item:has(.fi-sidebar-item-badge-ctn) > .fi-sidebar-item-btn {
+            position: relative;
+        }
+
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-sidebar-item:has(.fi-sidebar-item-badge-ctn) > .fi-sidebar-item-btn::after {
+            content: "";
+            position: absolute;
+            top: .3rem;
+            inset-inline-end: .3rem;
+            width: .5rem;
+            height: .5rem;
+            border-radius: 999px;
+            background: var(--theme-accent);
+            box-shadow: 0 0 0 2px var(--theme-side);
+        }
+
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-sidebar-footer {
+            margin-inline: .5rem;
+        }
+
+        .fi-body-has-sidebar-collapsible-on-desktop:has(.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])) .fi-sidebar .fi-user-menu-trigger {
+            padding: .4rem;
+            justify-content: center;
+        }
+    }
+
     /* Top bar: a wide search with its shortcut, then Client area and New order */
     /* One gap between the search and every button after it (phone: .5rem, wider: .75rem) */
     .fi-topbar {
@@ -412,6 +459,23 @@
     /* A page's breadcrumb reads as a quiet line over its title */
     .fi-header .fi-breadcrumbs {
         font-size: .8rem;
+    }
+
+    /* On a phone, where Filament hides the breadcrumbs, one link back to the list (App\Support\BackLink) */
+    .fi-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .25rem;
+        margin-bottom: .25rem;
+        font-size: .85rem;
+        font-weight: 500;
+        color: var(--theme-accent);
+    }
+
+    @media (min-width: 640px) {
+        .fi-back-link {
+            display: none;
+        }
     }
 
     .fi :focus-visible {

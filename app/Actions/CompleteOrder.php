@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Enums\AutoSetup;
+use App\Enums\DomainRegistrationType;
 use App\Enums\OrderStatus;
 use App\Enums\ServiceStatus;
 use App\Enums\ServiceType;
@@ -12,13 +13,14 @@ use App\Models\Registrar;
 use App\Models\Server;
 use App\Models\Service;
 use App\Provisioning\ProvisioningException;
+use Throwable;
 
 /**
  * Sets up every pending item of an order (SetUpService): domains first, then hosting, then
  * everything else. Items whose product says "do not set up automatically" are left for the
  * Account / Registrar menu.
  *
- * One failing item does not stop the others; it stays pending with the error in the activity
+ * One failing item does not stop the others, whatever the error; it stays pending with the error in the activity
  * log, and running this again retries only what is still pending. The order is completed once
  * no item is pending.
  */
@@ -115,6 +117,17 @@ class CompleteOrder
                 $this->setUp->handle($service);
             } catch (ProvisioningException $e) {
                 $failures[$service->id] = $e->getMessage(); // already in the activity log
+            } catch (Throwable $e) {
+                // A bug or a database error, perhaps after the panel or registrar call succeeded: the item stays pending
+                // (a retry checks the panel / registrar first, so nothing is set up twice) and the other items go on.
+                report($e);
+                $failures[$service->id] = 'Unexpected error: '.$e->getMessage();
+                $event = match ($service->type) {
+                    ServiceType::Domain => $service->domainDetails?->registration_type === DomainRegistrationType::Transfer ? 'domain.transfer_requested' : 'domain.registered',
+                    ServiceType::Ssl => 'ssl.ordered',
+                    default => 'account.created',
+                };
+                ActivityLog::record('provisioning.failed', "{$event} failed: {$failures[$service->id]}", $service, properties: ['event' => $event]);
             }
         }
 

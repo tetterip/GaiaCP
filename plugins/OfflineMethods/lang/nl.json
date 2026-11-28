@@ -1,0 +1,12 @@
+{
+    "Add a way to pay": "Betaalwijze toevoegen",
+    "Cash at our office": "Contant op ons kantoor",
+    "Each one is a payment method of its own: its instructions show on payment notices and their emails, and you pick it when you record a payment. In the instructions, {number} becomes the payment notice's number (the reference to write) and {amount} its total.": "Elke is een eigen betaalmethode: de instructies staan op de betaalverzoeken en hun e-mails, en u kiest hem bij het vastleggen van een betaling. In de instructies wordt {number} het nummer van het betaalverzoek (de te vermelden referentie) en {amount} het totaal.",
+    "Instructions": "Instructies",
+    "Methods": "Betaalwijzen",
+    "Off: no longer offered or shown; payments made with it keep it.": "Uit: niet meer aangeboden of getoond; betalingen ermee houden hem.",
+    "Other ways to pay": "Andere betaalwijzen",
+    "Pay at our office, Mon–Fri 9:00–17:00. Mention {number}.": "Betaal op ons kantoor, ma–vr 9:00–17:00. Vermeld {number}.",
+    "Your own ways to pay without a gateway (cheque, cash at the office, IRIS to a phone number, Revolut), each with instructions shown on payment notices.": "Uw eigen betaalwijzen zonder betaalprovider (cheque, contant op kantoor, IRIS naar een telefoonnummer, Revolut), elk met instructies op de betaalverzoeken.",
+    "Your own ways to pay without a gateway, each with instructions for the client.": "Uw eigen betaalwijzen zonder betaalprovider, elk met instructies voor de klant."
+}

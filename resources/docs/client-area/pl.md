@@ -241,7 +241,7 @@ W menu Wsparcie → Ogłoszenia publikujemy aktualności o naszych usługach: no
 <!-- if:server_status -->
 ## Status serwerów
 
-Wsparcie → Status serwerów pokazuje, czy nasze serwery teraz działają, z kwadratami ostatnich 30 dni i 24 godzin. Gdy któryś ma problem, jest na górze wraz z tym, co o nim wiemy.
+Wsparcie → Status serwerów pokazuje, czy nasze serwery teraz działają, ze znakiem dla każdego z ostatnich 30 dni i 24 godzin: zielone kółko, gdy działał, żółty trójkąt, gdy miał problemy, czerwony odwrócony trójkąt, gdy nie działał. Gdy któryś ma problem, jest na górze wraz z tym, co o nim wiemy.
 <!-- endif -->
 <!-- if:contact_page -->
 ## Kontakt

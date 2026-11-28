@@ -686,6 +686,15 @@
         animation-delay: calc(var(--gx-i, 0) * 45ms + 150ms);
     }
 
+    /* The uptime's shapes pop in instead of filling a grey square */
+    .gcp-server-uptime .gx-meter [role="img"] > span[data-on][data-shape] {
+        animation-name: gx-pop;
+    }
+
+    @keyframes gx-pop {
+        from { opacity: 0; transform: scale(.4); }
+    }
+
     @keyframes gcp-uptime-light {
         from { background: rgb(127 127 127 / .2); }
     }

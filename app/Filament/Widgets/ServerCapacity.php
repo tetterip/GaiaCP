@@ -5,23 +5,23 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Servers\ServerResource;
 use App\Filament\Widgets\Concerns\FitsDashboard;
 use App\Models\Server;
+use App\Monitoring\LoadHistory;
 use App\Monitoring\MonitorStatus;
 use App\Monitoring\UptimeHistory;
 use App\Plugins\PluginManager;
+use App\Provisioning\ReportsLoad;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Each active server with a dot for its monitor's status and its uptime over 30 days beside its name, its uptime for
- * the last 24 hours and its hosting accounts against the maximum, both as a row of squares (`filament.servers.meter`),
- * and a warning once its accounts reach NEARLY_FULL of the maximum.
+ * Each active server with a dot for its monitor's status and its uptime over 30 days beside its name, then its hosting
+ * accounts against the maximum as a thin line that turns orange and red as it fills (`filament.servers.accounts-bar`),
+ * its uptime for the last 24 hours as a row of marks (`filament.servers.meter`), a warning once its accounts reach NEARLY_FULL of the maximum, and, for a panel that reports it (ReportsLoad), its CPU
+ * over the last 24 hours (`filament.servers.cpu-bar`, App\Monitoring\LoadHistory).
  */
 class ServerCapacity extends Widget
 {
     use FitsDashboard;
-
-    /** The accounts bar has as many squares as the 24-hour uptime bar, so the two line up. */
-    public const SQUARES = 24;
 
     /** The share of a server's maximum accounts from which the card warns. */
     public const NEARLY_FULL = 0.85;
@@ -96,6 +96,15 @@ class ServerCapacity extends Widget
                 ? ($share >= 1 ? __('Full') : __('Nearly full'))
                 : null,
             'full' => $share !== null && $share >= 1,
+            'cpu' => $this->reportsLoad($server, $plugins) ? LoadHistory::for($server) : null,
         ];
+    }
+
+    /** Whether the server's panel tells its CPU load (its plugin on), so its card shows the CPU bar. */
+    private function reportsLoad(Server $server, PluginManager $plugins): bool
+    {
+        $module = $plugins->serverModules()->get((string) $server->type);
+
+        return $module !== null && rescue(fn () => $module->provisioner($server) instanceof ReportsLoad, false, report: false);
     }
 }

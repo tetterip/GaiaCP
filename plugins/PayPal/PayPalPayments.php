@@ -7,6 +7,7 @@ use App\Enums\InvoiceStatus;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
+use App\Payments\ProviderFees;
 use App\Plugins\PluginManager;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
@@ -32,7 +33,7 @@ class PayPalPayments
     /** How long an order whose payment is still clearing (an eCheck, for example) is looked up by recheck(). */
     public const PENDING_DAYS = 30;
 
-    public function __construct(private PayPalApi $paypal, private RecordInvoicePayment $payments) {}
+    public function __construct(private PayPalApi $paypal, private RecordInvoicePayment $payments, private ProviderFees $fees) {}
 
     /** What paying the notice now records: its unpaid lines, with the late fees. */
     public function amountDue(Invoice $invoice): int
@@ -261,6 +262,13 @@ class PayPalPayments
         }
 
         $order->update(['status' => PayPalOrder::PAID, 'paid_at' => now(), 'error' => null]);
+
+        // What PayPal kept of it, when in the payment's currency
+        $fee = PayPalPayments::cents(data_get($capture, 'seller_receivable_breakdown.paypal_fee.value'));
+        $currency = (string) $order->getAttribute('currency');
+        if ($fee !== null && filled($captureId) && strtoupper((string) data_get($capture, 'seller_receivable_breakdown.paypal_fee.currency_code')) === $currency) {
+            $this->fees->record('paypal', $captureId, $fee, $currency);
+        }
 
         ActivityLog::record('paypal.paid', sprintf('PayPal payment of %s received for payment notice %s', Money::format($order->amount_cents, $order->currency), $invoice->number), client: $invoice->client, properties: ['order_id' => $order->order_id, 'capture_id' => $captureId]);
 

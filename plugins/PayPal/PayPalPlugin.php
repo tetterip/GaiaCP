@@ -3,7 +3,9 @@
 namespace Plugins\PayPal;
 
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Payments\PaymentModule;
+use App\Payments\RefundsAtProvider;
 use App\Plugins\Plugin;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -12,8 +14,11 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Livewire\Component;
 
-/** Payments with PayPal: "Pay with PayPal" on the client area's unpaid payment notices (PayPalPayments). */
-class PayPalPlugin extends Plugin implements PaymentModule
+/**
+ * Payments with PayPal: "Pay with PayPal" on the client area's unpaid payment notices (PayPalPayments). Refund payment
+ * can give one back at PayPal; refunds and disputes made at PayPal ring the bell (PayPalReports).
+ */
+class PayPalPlugin extends Plugin implements PaymentModule, RefundsAtProvider
 {
     public function id(): string
     {
@@ -59,6 +64,24 @@ class PayPalPlugin extends Plugin implements PaymentModule
     public function paysOnline(): bool
     {
         return true;
+    }
+
+    /** A capture of an order GaiaCP opened, in the mode in use now (each mode's keys only reach its own payments). */
+    public function canRefundAtProvider(Payment $payment): bool
+    {
+        return $payment->method === 'paypal' && PayPalApi::configured() && filled($payment->reference)
+            && PayPalOrder::query()->where('capture_id', $payment->reference)->where('live', PayPalApi::mode() === 'live')->exists();
+    }
+
+    public function refundAtProvider(Payment $payment): string
+    {
+        $refund = app(PayPalApi::class)->refund((string) $payment->reference, PayPalPayments::value($payment->amount_cents), strtoupper($payment->currency), 'gaiacp-refund-payment-'.$payment->id);
+
+        if (blank($refund['id'] ?? null) || in_array($refund['status'] ?? null, ['CANCELLED', 'FAILED'], true)) {
+            throw new PayPalException(__('PayPal did not give the money back: :status', ['status' => $refund['status'] ?? 'no refund']));
+        }
+
+        return (string) $refund['id'];
     }
 
     public function settingsPage(): ?string

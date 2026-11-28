@@ -58,6 +58,10 @@ The **sidebar** has five groups:
 - **Support**: Tickets, the Knowledge base, Announcements, Downloads and Pages.
 - **System**: the Activity log, Settings and this Help.
 
+On a computer the arrow by the logo folds the sidebar to its icons, for more room on the page: point at an icon to
+see its name, and a dot on it means it has something waiting (the number shows again when you unfold it). The browser
+remembers your choice. On a phone the menu is a drawer as before.
+
 **Settings** (in the sidebar and in your user menu) is a page of cards in groups: General, Billing, Products & domains,
 Client area, Support, Email & notifications, Integrations, AI assistant, Security, System and Logs. Its search box finds a setting by
 name, in your language or in English ("plugin" finds Plugins whatever language the panel is in). Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.
@@ -69,6 +73,10 @@ left or right to remove it, with a finger or by dragging it with the mouse or tr
 Press `?` anywhere to see the keyboard shortcuts: `g` then a letter goes to a page (`g c` Clients, `g d` Dashboard),
 `n` then a letter starts a new record. If you use speech input, or the single keys get in your way, turn them off in
 **Profile** → **Keyboard shortcuts**; the user menu → **Keyboard shortcuts** still shows the list.
+
+A date can be picked from the calendar or typed in its field, in the format of Settings → General → Region
+(`09/04/2028`, `9.4.28` or just `090428`). It is kept on Enter or when you leave the field; a date that does not exist
+puts the old one back.
 
 The version number at the foot of every page (or the user menu → **About GaiaCP**) opens a short About: the version,
 what it runs on (PHP, Laravel, Filament), the licence and links to this guide, Updates and GitHub. Handy when you report a
@@ -133,6 +141,8 @@ The rest of the line still opens its list.
 
 **Recent activity** shows the last eight payments, orders, new clients, cancellations and ticket replies from the
 Activity log, newest first; the buttons over it show one kind only. You see it when you can open the Activity log.
+It and the Activity log show the usual entries in your language, with dates in your region's format; the log
+keeps them in English, so a rarer entry may still read in English.
 
 On the **Servers** card each server has its status dot and, with monitoring, its uptime over 30 days beside its name;
 a server whose accounts reach 85% of its maximum is marked **Nearly full**, and **Full** at the maximum.

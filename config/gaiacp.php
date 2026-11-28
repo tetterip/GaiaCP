@@ -135,6 +135,10 @@ return [
         // package's limit (gaiacp:check-usage, daily at 06:00); empty = off.
         'usage_warning_percent' => env('GAIACP_USAGE_WARNING_PERCENT') === '' ? null : (int) env('GAIACP_USAGE_WARNING_PERCENT', 85),
 
+        // Ring the bell when a server's CPU (gaiacp:check-load, every 5 minutes) stays at or above this % for 15 minutes;
+        // empty = off. The dashboard's CPU bar turns red from here.
+        'cpu_warning_percent' => env('GAIACP_CPU_WARNING_PERCENT') === '' ? null : (int) env('GAIACP_CPU_WARNING_PERCENT', 90),
+
         // Services → Module queue: how many times gaiacp:retry-module-queue (every 15 minutes) tries a failed set up,
         // unsuspend or suspension for non-payment again by itself before it rings the bell; 0 = only by hand.
         'module_retries' => (int) env('GAIACP_MODULE_RETRIES', 3),
@@ -287,6 +291,8 @@ return [
         'index' => true,
         'title' => [], // per language code: the site root's browser tab and link preview title; empty = page + company name
         'description' => [], // per language code: the meta / link preview description; empty = the first language's, else none
+        'google_verification' => null, // the code of Google Search Console's "HTML tag" check, put in the client area's head
+        'bing_verification' => null, // the same for Bing Webmaster Tools
     ],
 
     // The public area (App\Support\PublicArea, Settings → Public area): pages visitors see without logging in, in the

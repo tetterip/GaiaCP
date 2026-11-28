@@ -55,6 +55,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Plugins\Demo\DemoPanel;
 
 /**
  * The public demo's made-up data (App\Support\Demo, gaiacp:demo-reset): a small hosting company with about 25
@@ -754,7 +755,16 @@ class DemoSeeder extends Seeder
                 DB::table('server_monitor_checks')->insert($chunk);
             }
 
-            $server->forceFill(['monitor_status' => 'up', 'monitor_status_since' => $now->subDays($position === 2 ? 9 : 30), 'monitor_checked_at' => $now,
+            // The CPU bar's last day (DemoPanel makes up the readings from then on)
+            $load = [];
+            for ($at = $now->subDay(); $at->lt($now); $at = $at->addMinutes(5)) {
+                $load[] = ['server_id' => $server->id, 'percent' => DemoPanel::percentAt($server->id, $at), 'load' => null, 'checked_at' => $at->utc()];
+            }
+            foreach (array_chunk($load, 500) as $chunk) {
+                DB::table('server_load_readings')->insert($chunk);
+            }
+
+            $server->forceFill(['cpu_cores' => 8, 'monitor_status' => 'up', 'monitor_status_since' => $now->subDays($position === 2 ? 9 : 30), 'monitor_checked_at' => $now,
                 'monitor_uptime' => ['1d' => 1.0, '30d' => $position === 2 ? 0.998 : 1.0]])->save();
         }
     }

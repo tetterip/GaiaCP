@@ -198,6 +198,23 @@ runs the dump statement by statement on MySQL, writes `files/` only under storag
   `PayPal-Request-Id` `capture-<order>` (a retry never takes twice; a failed call goes back to open); a completed
   capture is recorded through `RecordInvoicePayment` (method `paypal`, reference = capture id), a pending one waits as
   `pending` for `PAYMENT.CAPTURE.COMPLETED`; taken but no longer fitting → `unmatched` (`payment.online_unmatched`)
+- Refunds and chargebacks at the gateway: `App\Payments\ProviderReports` (`refunded()` with the provider's running
+  total, `disputed()`, `disputeClosed()`) keeps one `provider_payment_states` row per gateway payment (`method` +
+  `reference`, as on `payments`), under the lock of the payments' services, and logs `payment.provider_refunded` (only
+  for what GaiaCP has not recorded as refunded), `payment.disputed`, `payment.dispute_closed` (bell, Billing; also
+  `GaiaEvent`s). Nothing else changes. `ProviderPaymentState::note()` shows it under the payment's reference. Stripe:
+  `StripeReports` from the signed webhook (`charge.refunded`, `charge.dispute.created` / `closed`, payments of its own
+  checkouts in the event's mode). PayPal: `PayPalReports` reads the refund / capture / dispute from the API before
+  believing it (`PAYMENT.CAPTURE.REFUNDED` / `REVERSED`, `CUSTOMER.DISPUTE.*`; a failed read answers 503 so PayPal
+  sends it again). `RefundPayment::AT_PROVIDER` calls the module's `RefundsAtProvider::refundAtProvider()` (idempotency
+  key `gaiacp-refund-payment-<id>`) inside its transaction, holding the service lock, so the webhook about that refund
+  waits and finds it recorded; a refused refund records nothing
+- Provider fees: `payments.fee_cents` (payment's currency, null = not known), stored once by
+  `App\Payments\ProviderFees::record()`, shared out over the payments of one gateway payment by largest remainder;
+  another currency is not stored. Stripe: `StripeCheckouts::fee()` after recording (PaymentIntent with
+  `latest_charge.balance_transaction`, converted back with its `exchange_rate`), and `fees()` hourly for a week. PayPal:
+  the capture's `seller_receivable_breakdown.paypal_fee` in `settle()`. Shown in Billing → Payments, Annual income
+  (`IncomeReport::monthlyFees()`) and the monthly transactions CSV
 - `plugins/Iris/` (off by default): "Pay with IRIS" on unpaid notices (`IrisPlugin::clientPaymentNoticeActions()`, a modal
   with the bank's fixed QR code as a data: URI, the payee, the IRIS number, the amount due and the notice number as the
   reason); the QR code is a private file (`local` disk, `iris/`, PNG/JPG/WebP). No API: payments recorded by hand

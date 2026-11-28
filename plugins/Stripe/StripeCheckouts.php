@@ -7,6 +7,7 @@ use App\Enums\InvoiceStatus;
 use App\Filament\Client\Resources\PaymentNotices\PaymentNoticeResource;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
+use App\Payments\ProviderFees;
 use App\Plugins\PluginManager;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
@@ -24,7 +25,10 @@ class StripeCheckouts
     /** Just over Stripe's shortest (30): a page left open longer can't be paid, so the amount can't go stale for long. */
     public const EXPIRES_MINUTES = 35;
 
-    public function __construct(private StripeApi $stripe, private RecordInvoicePayment $payments) {}
+    /** How long after a payment its fee is still asked for (the balance transaction can come a little later). */
+    public const FEE_DAYS = 7;
+
+    public function __construct(private StripeApi $stripe, private RecordInvoicePayment $payments, private ProviderFees $fees) {}
 
     /** What paying the notice now records: its unpaid lines, with the late fees. */
     public function amountDue(Invoice $invoice): int
@@ -180,7 +184,62 @@ class StripeCheckouts
 
         ActivityLog::record('stripe.paid', sprintf('Card payment of %s received for payment notice %s', Money::format($checkout->amount_cents, $checkout->currency), $invoice->number), client: $invoice->client, properties: ['session_id' => $checkout->session_id, 'payment_intent' => $paymentIntent]);
 
+        if (filled($paymentIntent)) {
+            $this->fee($paymentIntent, $checkout->currency);
+        }
+
         return $checkout;
+    }
+
+    /**
+     * Stores what Stripe kept of a payment (its balance transaction's fee) on the payments it recorded. Never fails
+     * the payment: a fee Stripe can't tell yet is asked again by fees(). Settled in another currency, the fee is
+     * converted back with the transaction's own rate.
+     */
+    public function fee(string $paymentIntent, string $currency): void
+    {
+        try {
+            $transaction = (array) data_get($this->stripe->paymentIntentWithFee($paymentIntent), 'latest_charge.balance_transaction');
+        } catch (Throwable $e) {
+            if (! $e instanceof StripeException) {
+                report($e);
+            }
+
+            return; // asked again within the hour
+        }
+
+        if (! isset($transaction['fee']) || ! is_numeric($transaction['fee'])) {
+            return; // not settled yet (or not expanded)
+        }
+
+        $settled = strtoupper((string) ($transaction['currency'] ?? ''));
+        $fee = StripeReports::fromStripeAmount((int) $transaction['fee'], $settled);
+
+        if ($settled !== strtoupper($currency)) {
+            $rate = (float) ($transaction['exchange_rate'] ?? 0);
+            if ($rate <= 0) {
+                return;
+            }
+            $fee = (int) round($fee / $rate);
+        }
+
+        $this->fees->record('stripe', $paymentIntent, $fee, $currency);
+    }
+
+    /** Asks Stripe for the fees it could not tell yet, of the payments of the last FEE_DAYS. Hourly. */
+    public function fees(): int
+    {
+        $missing = StripeCheckout::query()->where('status', StripeCheckout::PAID)->whereNotNull('payment_intent')
+            ->where('livemode', StripeApi::mode() === 'live')
+            ->where('paid_at', '>', now()->subDays(self::FEE_DAYS))
+            ->whereExists(fn ($query) => $query->from('payments')->whereColumn('payments.reference', 'stripe_checkouts.payment_intent')
+                ->where('payments.method', 'stripe')->whereNull('payments.fee_cents')->where('payments.amount_cents', '>', 0))
+            ->limit(50)
+            ->get();
+
+        $missing->each(fn (StripeCheckout $checkout) => $this->fee((string) $checkout->payment_intent, $checkout->currency));
+
+        return $missing->count();
     }
 
     /**

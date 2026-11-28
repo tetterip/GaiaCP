@@ -2,6 +2,14 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.3.1] - 2026-11-26
+
+- The CPU bar reads the load average of the last 5 minutes (`five`) instead of the last minute, so a short burst at the moment of reading no longer shows as a busy hour.
+
+## [1.3.0] - 2026-11-24
+
+- CPU on the dashboard: the load average from `CMD_API_LOAD_AVERAGE` (`ReportsLoad`), read every 5 minutes; the processor cores come from the server form (not yet tried on a real server)
+
 ## [1.2.0] - 2026-11-12
 
 - Log in opens DirectAdmin already signed in: a one-time link from its JSON API (`POST /api/login`), else the login page as before

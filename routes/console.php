@@ -165,6 +165,12 @@ Schedule::command('gaiacp:check-monitors')
     ->withoutOverlapping(15)
     ->onOneServer();
 
+// How busy each active server's CPU is (panels that report it), for the dashboard's Servers card
+Schedule::command('gaiacp:check-load')
+    ->everyFiveMinutes()
+    ->withoutOverlapping(15)
+    ->onOneServer();
+
 // The public demo: its made-up data put back every few minutes (GAIACP_DEMO_RESET_MINUTES)
 if (Demo::enabled()) {
     Schedule::command('gaiacp:demo-reset')

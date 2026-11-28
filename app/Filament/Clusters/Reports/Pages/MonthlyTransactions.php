@@ -108,7 +108,7 @@ class MonthlyTransactions extends IncomeReportPage
     public function csv(): StreamedResponse
     {
         return Csv::download($this->csvName(),
-            [__('Date'), __('Client'), __('Service'), __('Domain'), __('Method'), __('Reference'), __('Amount')],
+            [__('Date'), __('Client'), __('Service'), __('Domain'), __('Method'), __('Reference'), __('Amount'), __('Provider fee')],
             $this->payments()->map(fn (Payment $p) => [
                 $p->paid_on->format(AppServiceProvider::dateFormat()),
                 ($p->client ?? $p->service->client)->name,
@@ -117,6 +117,7 @@ class MonthlyTransactions extends IncomeReportPage
                 PaymentMethods::label($p->method),
                 $p->reference,
                 static::decimal($p->amount_cents),
+                $p->fee_cents === null ? '' : static::decimal($p->fee_cents),
             ]));
     }
 }

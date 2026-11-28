@@ -315,6 +315,38 @@ class ServerMonitoringTest extends TestCase
         $this->get(Dashboard::getUrl())->assertOk()->assertSee('gx-status-danger', false)->assertSee('gx-uptime', false);
     }
 
+    public function test_the_lists_accounts_line_is_as_wide_as_the_uptime_marks(): void
+    {
+        $this->actingAs($this->admin);
+        $this->server(['max_accounts' => 120]);
+
+        // Fixed 10px uptime marks (12 hours a row), and the accounts line as wide as those 12 marks with their gaps
+        Livewire::test(ListServers::class)
+            ->assertSee('min-width: 0; width: 142px; max-width: 100%;', false)
+            ->assertSee('gx-line-fill', false)
+            ->assertSee('grid-template-columns: repeat(12, 10px)', false)
+            ->set('uptimeRange', '30d')
+            ->assertSee('grid-template-columns: repeat(15, 10px)', false);
+    }
+
+    public function test_the_uptime_marks_have_a_shape_per_status_unlike_the_accounts_squares(): void
+    {
+        $this->actingAs($this->admin);
+        $server = $this->server(['max_accounts' => 120]);
+        foreach ([[1, 'up'], [3, 'pending'], [5, 'down']] as [$hours, $status]) {
+            DB::table('server_monitor_checks')->insert(['server_id' => $server->id, 'status' => $status, 'checked_at' => now()->utc()->subHours($hours)]);
+        }
+
+        $html = Livewire::test(ListServers::class)->html();
+        foreach (['up', 'warn', 'down', 'none'] as $shape) {
+            $this->assertStringContainsString('data-shape="'.$shape.'"', $html);
+        }
+        // Up is a circle, problems an upright triangle, down an upside-down one; the accounts are a line
+        $this->assertStringContainsString('<path d="M2.5 16h15l-7.5-12.5z"', $html);
+        $this->assertStringContainsString('<path d="M2.5 4h15l-7.5 12.5z"', $html);
+        $this->assertStringContainsString('class="gx-line-fill"', $html);
+    }
+
     public function test_settings_test_connection_uses_what_is_typed(): void
     {
         $this->actingAs($this->admin);

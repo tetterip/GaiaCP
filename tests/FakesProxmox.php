@@ -98,6 +98,14 @@ trait FakesProxmox
             ] + (filled($vm['tags'] ?? null) ? ['tags' => $vm['tags']] : []))->values()->push(['id' => 'lxc/200', 'type' => 'lxc', 'vmid' => 200, 'node' => 'pve1', 'name' => 'ct', 'template' => 0, 'status' => 'running'])->all();
         }
 
+        if ($path === '/nodes') {
+            return [
+                ['node' => 'pve1', 'status' => 'online', 'cpu' => 0.25, 'maxcpu' => 8],
+                ['node' => 'pve2', 'status' => 'online', 'cpu' => 0.75, 'maxcpu' => 8],
+                ['node' => 'pve3', 'status' => 'offline'],
+            ];
+        }
+
         if ($path === '/cluster/nextid') {
             return (string) max(100, ...array_map(fn ($id) => $id < 9000 ? $id + 1 : 100, array_keys($this->proxmoxVms)));
         }

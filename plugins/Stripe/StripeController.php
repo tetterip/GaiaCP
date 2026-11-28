@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 /**
  * Stripe's two ways back: the client's browser after paying (return), and Stripe's signed webhook (webhook). Both
  * hand the session to StripeCheckouts::complete(), which records it once; the browser's visit counts only for what
- * Stripe's API then says about the session, never for the visit itself.
+ * Stripe's API then says about the session, never for the visit itself. The webhook also brings refunds and
+ * chargebacks of those payments (StripeReports).
  */
 class StripeController
 {
@@ -23,9 +24,12 @@ class StripeController
         'checkout.session.async_payment_succeeded',
         'checkout.session.async_payment_failed',
         'checkout.session.expired',
+        'charge.refunded',
+        'charge.dispute.created',
+        'charge.dispute.closed',
     ];
 
-    public function webhook(Request $request, StripeCheckouts $checkouts): JsonResponse
+    public function webhook(Request $request, StripeCheckouts $checkouts, StripeReports $reports): JsonResponse
     {
         abort_unless(app(PluginManager::class)->enabled('stripe'), 404);
 
@@ -37,11 +41,13 @@ class StripeController
             return response()->json(status: 400); // not signed by Stripe with a secret saved here
         }
         $session = (array) data_get($event, 'data.object', []);
+        $type = (string) data_get($event, 'type');
 
-        match (data_get($event, 'type')) {
+        match ($type) {
             'checkout.session.completed', 'checkout.session.async_payment_succeeded' => $checkouts->complete($session),
             'checkout.session.async_payment_failed' => $checkouts->close($session, StripeCheckout::FAILED),
             'checkout.session.expired' => $checkouts->close($session, StripeCheckout::EXPIRED),
+            'charge.refunded', 'charge.dispute.created', 'charge.dispute.closed' => $reports->handle($type, $session, (bool) data_get($event, 'livemode', false)),
             default => null,
         };
 

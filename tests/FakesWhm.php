@@ -23,6 +23,9 @@ trait FakesWhm
     /** @var array<string, string> username => package (plan), listed by listaccts without a search; 'basic' when unset */
     protected array $whmPlans = [];
 
+    /** @var list<array<string, string>> listpkgs' packages: name, QUOTA (disk) and BWLIMIT (bandwidth) in MB or "unlimited" */
+    protected array $whmPackages = [['name' => 'basic', 'QUOTA' => '1024', 'BWLIMIT' => '10240'], ['name' => 'pro', 'QUOTA' => 'unlimited', 'BWLIMIT' => 'unlimited']];
+
     /** @var array<string, string> path => contents of the files saved with UAPI Fileman::save_file_content */
     protected array $whmFiles = [];
 
@@ -57,8 +60,10 @@ trait FakesWhm
             switch ($function) {
                 case 'version':
                     return $ok(['version' => '11.130.0.4']);
+                case 'systemloadavg':
+                    return $ok(['one' => '1.50', 'five' => '1.20', 'fifteen' => '0.90']);
                 case 'listpkgs':
-                    return $ok(['pkg' => [['name' => 'basic'], ['name' => 'pro']]]);
+                    return $ok(['pkg' => $this->whmPackages]);
                 case 'listaccts':
                     if (! isset($params['search'])) {
                         return $ok(['acct' => collect($this->whmAccounts)->map(fn (bool $suspended, string $user) => [
