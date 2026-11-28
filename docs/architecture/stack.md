@@ -374,7 +374,9 @@ How the admin and client panels, users, access, security, branding, themes and l
   (`ThemeContrastTest` checks the numbers). The audit of
   2026-11-04 (WCAG 2.2 AA) and its fixes, one PR per step, are in the maintainer's notes.
   The admin sidebar groups are Main, Billing, Services, System (`AdminPanelProvider::navigationGroups()`, in that
-  order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included); avatars are
+  order; each sidebar page / resource sets `$navigationGroup`, `App\Filament\Pages\Dashboard` included). On a wide screen it folds to its icons (`sidebarCollapsibleOnDesktop()`, kept
+  in the browser's localStorage by Filament; the folded look, the top bar without its logo and counts as a dot, is in
+  `layout.blade.php` under `:has(.fi-main-sidebar:not(.fi-sidebar-open))`; the client area's stays open). Avatars are
   `App\Filament\Avatars\InitialsAvatar` (an SVG data URL, nothing loaded from another site). The dashboard
   (`App\Filament\Pages\Dashboard`: greeting, every card half the width) has `App\Filament\Widgets\` BillingOverview (open balance),
   ActivityChart (orders, completed orders and income per day / month, plain SVG), UpcomingRenewals (a plain widget: the

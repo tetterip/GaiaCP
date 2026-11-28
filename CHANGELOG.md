@@ -5,6 +5,9 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- The admin's sidebar folds to its icons on a computer: the arrow by the logo folds and unfolds it, pointing at an
+  icon shows its name, and a count (pending orders, leads to contact…) shows as a dot. The browser remembers the
+  choice. Looks right in the Gaia, Flat and Glass themes, light and dark; phones keep the drawer.
 - The clear cross (×) in dropdowns such as Package sits level with the arrow again, at its normal size.
 - Dashboard → Recent activity and the Activity log show payments, orders, new clients, cancellations, tickets,
   payment notices, reminders and suspensions in the admin's language, the entries already saved too, with dates in
