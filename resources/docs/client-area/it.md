@@ -54,6 +54,9 @@ Su un account hosting attivo può:
 <!-- if:hosting_usage -->
 - **Vedere quanto spazio su disco e banda usa** questo mese, rispetto a quanto consente il Suo pacchetto.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **Gestire WordPress** (su cPanel e Plesk): la parte **WordPress** elenca i tuoi siti WordPress, e **Accedi a WordPress** apre la bacheca di un sito con l'accesso già fatto. **Installa WordPress** aggiunge un nuovo sito sul tuo dominio, o in una sua cartella, con il nome e la password di amministratore che scegli; compare nell'elenco dopo uno o due minuti.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **Vedere l'uptime del server**: per quanta parte degli ultimi 30 giorni e delle ultime 24 ore il server su cui si trova il Suo account è stato online. Nell'elenco Hosting, un punto prima del dominio mostra lo stato attuale del server: verde quando funziona, rosso quando non risponde, arancione durante la manutenzione. Passi sopra il punto per vedere l'uptime degli ultimi 30 giorni.
 <!-- endif -->

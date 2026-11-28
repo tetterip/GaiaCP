@@ -99,6 +99,7 @@ use App\Provisioning\MachineDetails;
 use App\Provisioning\ManagesChildNameservers;
 use App\Provisioning\ManagesDomainContacts;
 use App\Provisioning\ManagesRegistrarLock;
+use App\Provisioning\ManagesWordPress;
 use App\Provisioning\ManualRegistrar;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PackageLimits;
@@ -110,6 +111,9 @@ use App\Provisioning\ServerLoad;
 use App\Provisioning\ServerModule;
 use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\TldPrice;
+use App\Provisioning\WordPressInstall;
+use App\Provisioning\WordPressSite;
+use App\Provisioning\WpToolkit;
 use App\SignIn\SignIn;
 use App\Support\ClientFields;
 use App\Support\ConnectionChanges;
@@ -153,6 +157,10 @@ final class PluginApi
         PanelAccount::class,
         ProvisioningException::class,
         OffersShortcuts::class,
+        ManagesWordPress::class,
+        WordPressSite::class,
+        WordPressInstall::class,
+        WpToolkit::class,
         SharesPanelLogin::class,
         ListsAccounts::class,
         ControlsPower::class,

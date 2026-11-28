@@ -83,6 +83,7 @@ class Help extends Page
             'hosting_login' => $panels && $on('hosting_login'),
             'hosting_password' => $panels && $on('hosting_password'),
             'hosting_usage' => $panels && $on('hosting_usage'),
+            'hosting_wordpress' => $panels && $on('hosting_wordpress'),
             'hosting_uptime' => $panels && $on('hosting_uptime') && $plugins->monitoringModules()->isNotEmpty(),
             'vps_power' => $plugins->enabled('proxmox') && (bool) config('gaiacp.proxmox.client_power'),
             'incident_notice' => $panels && $on('incident_notice') && $plugins->monitoringModules()->isNotEmpty(),
@@ -123,7 +124,7 @@ class Help extends Page
             'email_link' => SignIn::emailLinks('client'),
             'passkeys' => SignIn::passkeys('client'),
         ];
-        $features['hosting'] = $features['hosting_login'] || $features['hosting_password'] || $features['hosting_usage'] || $features['hosting_uptime'] || $features['vps_power'];
+        $features['hosting'] = $features['hosting_login'] || $features['hosting_password'] || $features['hosting_usage'] || $features['hosting_wordpress'] || $features['hosting_uptime'] || $features['vps_power'];
         $features['domains'] = $features['domain_nameservers'] || $features['domain_epp'] || $features['domain_auto_renew']
             || $features['domain_contacts'] || $features['domain_child_nameservers'] || $features['domain_lock'];
 

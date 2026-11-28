@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.9.0] - 2026-11-28
+
+- WordPress in the client area (`ManagesWordPress`): lists the subscription's WP Toolkit sites, opens one's dashboard signed in and installs a new one, through WP Toolkit's REST API (`/api/modules/wp-toolkit/v1/`); not yet tried on a real server
+
 ## [1.8.1] - 2026-11-26
 
 - The CPU bar reads the load average of the last 5 minutes (`load_avg/l5`) instead of the last minute, so a short burst at the moment of reading no longer shows as a busy hour.

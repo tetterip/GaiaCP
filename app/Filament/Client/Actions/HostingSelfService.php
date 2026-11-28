@@ -12,12 +12,15 @@ use App\Provisioning\ControlsPower;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\WordPressInstall;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
+use Livewire\Component;
 
 /**
  * What a client can do on their own hosting account, each behind its switch under Settings → Client area. Panel calls
@@ -61,6 +64,87 @@ class HostingSelfService
         $panel = rescue(fn () => app(ProvisionerFactory::class)->forServer($record->server), null, report: false);
 
         return $panel instanceof OffersShortcuts ? $panel->shortcuts() : [];
+    }
+
+    /** The WordPress section: an active account on a panel that manages WordPress (WP Toolkit), while its switch is on. */
+    public static function canUseWordPress(Service $record): bool
+    {
+        return config('gaiacp.client_area.hosting_wordpress') && self::onPanel($record)
+            && app(ServiceLifecycle::class)->managesWordPress($record);
+    }
+
+    /**
+     * Install WordPress on the account's domain (or a folder of it), with the administrator the client picks; WP Toolkit
+     * finishes it in a minute or two, then the site shows in the list with its Log in button.
+     */
+    public static function installWordPress(): Action
+    {
+        return Action::make('installWordPress')
+            ->label('Install WordPress')
+            ->icon(Heroicon::OutlinedPlusCircle)
+            ->color('gray')
+            ->visible(fn (Service $record) => self::canUseWordPress($record))
+            ->modalHeading(__('Install WordPress'))
+            ->modalDescription(fn (Service $record) => __('A new WordPress site on :domain. Its files and database are added to your hosting account.', ['domain' => $record->domain]))
+            ->fillForm(fn (Service $record) => ['email' => $record->client?->email])
+            ->schema([
+                TextInput::make('path')
+                    ->label('Folder')
+                    ->prefix(fn (Service $record) => $record->domain.'/')
+                    ->placeholder(__('empty for the domain itself'))
+                    ->maxLength(100)
+                    ->regex('/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/')
+                    ->helperText(fn (Service $record) => __('To install it in a folder, e.g. blog for :domain/blog. The folder should be empty.', ['domain' => $record->domain])),
+                TextInput::make('title')
+                    ->label('Site title')
+                    ->required()
+                    ->maxLength(100),
+                TextInput::make('username')
+                    ->label('Administrator username')
+                    ->required()
+                    ->minLength(3)
+                    ->maxLength(60)
+                    ->regex('/^[A-Za-z0-9_.@-]+$/')
+                    ->notIn(['admin', 'administrator', 'root'])
+                    ->helperText(__('You sign in to WordPress with it. Avoid admin: it is the first name attackers try.')),
+                PasswordInput::make('password')
+                    ->label('Administrator password')
+                    ->required()
+                    ->rule(Password::min(10)->letters()->mixedCase()->numbers())
+                    ->helperText(__('At least 10 characters, with capital and small letters and numbers.')),
+                TextInput::make('email')
+                    ->label('Administrator email')
+                    ->email()
+                    ->required()
+                    ->maxLength(190),
+            ])
+            ->modalSubmitActionLabel(__('Install WordPress'))
+            ->action(function (Service $record, array $data, Component $livewire) {
+                try {
+                    app(ServiceLifecycle::class)->installWordPress($record, new WordPressInstall(
+                        path: (string) ($data['path'] ?? ''),
+                        title: $data['title'],
+                        username: $data['username'],
+                        password: $data['password'],
+                        email: $data['email'],
+                        language: WordPressInstall::languageFor(app()->getLocale()),
+                    ));
+                } catch (ProvisioningException) {
+                    Notification::make()
+                        ->title(__('We could not install WordPress.'))
+                        ->body(__('Please try again later, or contact us.'))
+                        ->danger()->persistent()->send();
+
+                    return;
+                }
+
+                Notification::make()
+                    ->title(__('WordPress is being installed'))
+                    ->body(__('It takes a minute or two. Then it shows in the list, with a button that signs you in.'))
+                    ->success()->persistent()->send();
+
+                $livewire->dispatch('wordpress-installed');
+            });
     }
 
     /** Start, Shut down, Restart of their own machine (ControlsPower: a Proxmox VPS), when its plugin lets clients. */

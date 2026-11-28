@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- **WordPress** on a client's hosting page (cPanel and Plesk, through WP Toolkit): their WordPress sites with **Log in
+  to WordPress**, which opens the site's dashboard already signed in, and **Install WordPress** on the account's domain
+  or a folder of it, with the administrator they choose. Settings → Client area → Hosting → WordPress turns it off. Not
+  yet tried on real servers.
+- Plugin API: new optional `App\Provisioning\ManagesWordPress` for server panels, with `WordPressSite`,
+  `WordPressInstall` and `WpToolkit`. The module log now masks a response's `Location` header.
 - The admin's sidebar folds to its icons on a computer: the arrow by the logo folds and unfolds it, pointing at an
   icon shows its name, and a count (pending orders, leads to contact…) shows as a dot. The browser remembers the
   choice. Looks right in the Gaia, Flat and Glass themes, light and dark; phones keep the drawer.

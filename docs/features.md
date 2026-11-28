@@ -318,7 +318,7 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
     passwords; the client page's Sign-ins tab shows the same with Log out everywhere);
     ✅ domain self-service (nameservers, EPP code, auto renew; switches under Settings → Client area); ✅ hosting
     self-service (password, one-click cPanel / Plesk login and Quick shortcuts to their pages, Open website, disk and
-    bandwidth usage, the server's uptime); ✅ client orders (a cart of products with their domains and
+    bandwidth usage, the server's uptime, WordPress sites with one-click login and Install WordPress through WP Toolkit); ✅ client orders (a cart of products with their domains and
     domains on their own, one order and payment notice, through the same steps as New order); ✅ domain search (the name with
     each TLD sold, free or taken, with its price, from the registrar, RDAP or DNS; spotlight TLDs first, as cards); ✅ "View in the client area" in client emails, Home
     shortcuts and a Help page for clients (EN / EL); ✅ sign up (off until switched on; the email address is confirmed

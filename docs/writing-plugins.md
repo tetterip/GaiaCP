@@ -47,7 +47,8 @@ MyPlugin/
   Quick shortcuts), `ListsAccounts` (Servers → Compare with the server), `ControlsPower` (Start / Shut down / Restart
   for a machine, as `plugins/Proxmox` does), `DescribesMachine` (the service pages show a machine's state, addresses,
   processors, memory and disk in place of usage, and its welcome email is the VPS Welcome Email), `InstallsCertificates` (validates and installs SSL certificates on a
-  hosting account, as cPanel and Plesk do) and `LimitsUsernameLength`.
+  hosting account, as cPanel and Plesk do), `ManagesWordPress` (the client area's WordPress sites, login and install, as
+  cPanel and Plesk do through WP Toolkit) and `LimitsUsernameLength`.
 - A registrar may also implement `App\Provisioning\ChecksAvailability` (the client area's domain search asks it first),
   `EmailsEppCode`, `ManagesDomainContacts` (a domain's contact
   details), `ManagesChildNameservers` (private nameservers) and `ManagesRegistrarLock`; the domain screens offer each

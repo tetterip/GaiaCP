@@ -54,6 +54,9 @@ Etkin bir hosting hesabında şunları yapabilirsiniz:
 <!-- if:hosting_usage -->
 - Bu ay **ne kadar disk alanı ve trafik kullandığını** paketinizin izin verdiğiyle karşılaştırarak görün.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **WordPress'i yönetin** (cPanel ve Plesk'te): **WordPress** bölümü WordPress sitelerinizi listeler, **WordPress'e giriş yap** bir sitenin panelini oturum açılmış olarak açar. **WordPress kur**, alan adınıza veya onun bir klasörüne, seçtiğiniz yönetici adı ve parolasıyla yeni bir site ekler; bir iki dakika sonra listede görünür.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **Sunucunun çalışma süresini görün**: hesabınızın bulunduğu sunucunun son 30 gün ve 24 saatin ne kadarında çalıştığını. Hosting listesinde alan adının önündeki nokta sunucunun şu anki durumunu gösterir: çalışırken yeşil, yanıt vermezken kırmızı, bakım sırasında turuncu. Son 30 günün çalışma süresini görmek için üzerine gelin.
 <!-- endif -->

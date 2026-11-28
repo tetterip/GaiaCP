@@ -12,6 +12,7 @@ use App\Provisioning\DescribesPackages;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\InstallsCertificates;
 use App\Provisioning\ListsAccounts;
+use App\Provisioning\ManagesWordPress;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PackageLimits;
 use App\Provisioning\PanelAccount;
@@ -19,6 +20,9 @@ use App\Provisioning\ProvisioningException;
 use App\Provisioning\ReportsLoad;
 use App\Provisioning\ServerLoad;
 use App\Provisioning\SharesPanelLogin;
+use App\Provisioning\WordPressInstall;
+use App\Provisioning\WordPressSite;
+use App\Provisioning\WpToolkit;
 use SimpleXMLElement;
 
 /**
@@ -28,7 +32,7 @@ use SimpleXMLElement;
  * login and password come from the client's first hosting service on that
  * server; each subscription's system (FTP) user is the service's username.
  */
-class PleskProvisioner implements DescribesPackages, HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts, ReportsLoad, SharesPanelLogin
+class PleskProvisioner implements DescribesPackages, HostingProvisioner, InstallsCertificates, ListsAccounts, ManagesWordPress, OffersShortcuts, ReportsLoad, SharesPanelLogin
 {
     /** webspace gen_setup status values */
     private const ACTIVE = 0;
@@ -353,6 +357,27 @@ class PleskProvisioner implements DescribesPackages, HostingProvisioner, Install
             ->whereIn('domain', $domains)
             ->whereNotIn('status', [ServiceStatus::Terminated, ServiceStatus::Cancelled])
             ->exists();
+    }
+
+    /** WP Toolkit's GET /v1/installations, kept to the subscription's domain and its subdomains. */
+    public function wordPressSites(Service $service): array
+    {
+        return WpToolkit::sitesOf($this->plesk->wpToolkit('GET', 'installations')['json'], $this->domain($service));
+    }
+
+    /** WP Toolkit's POST /v1/installations/{id}/login, which answers with a redirect to the signed in dashboard. */
+    public function wordPressLoginUrl(Service $service, WordPressSite $site, string $clientIp): string
+    {
+        $answer = $this->plesk->wpToolkit('POST', 'installations/'.rawurlencode($site->id).'/login');
+
+        return WpToolkit::loginLink($answer['location'], $answer['json'])
+            ?? throw new ProvisioningException("WP Toolkit gave no login link for {$site->url}.");
+    }
+
+    /** WP Toolkit's POST /v1/installations on the subscription's domain; WP Toolkit finishes it in the background. */
+    public function installWordPress(Service $service, WordPressInstall $install): void
+    {
+        $this->plesk->wpToolkit('POST', 'installations', WpToolkit::installBody($this->domain($service), $install), timeout: 120);
     }
 
     /** create_session for the server's own login ("admin" when it signs in with a secret key alone). */

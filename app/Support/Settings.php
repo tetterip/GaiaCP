@@ -88,6 +88,7 @@ class Settings
         'client_area.hosting_password',
         'client_area.hosting_login',
         'client_area.hosting_usage',
+        'client_area.hosting_wordpress',
         'client_area.hosting_uptime',
         'client_area.orders',
         'client_area.monthly_prices',

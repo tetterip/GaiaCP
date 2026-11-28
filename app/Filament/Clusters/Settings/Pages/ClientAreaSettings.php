@@ -63,7 +63,7 @@ class ClientAreaSettings extends SettingsFormPage
 
     public static function keys(): array
     {
-        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.title', 'seo.description', 'seo.google_verification', 'seo.bing_verification', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
+        return ['client_area.theme', 'client_area.brand_color', 'client_area.domain_nameservers', 'client_area.domain_epp', 'client_area.domain_auto_renew', 'client_area.domain_contacts', 'client_area.domain_child_nameservers', 'client_area.domain_lock', 'client_area.hosting_password', 'client_area.hosting_login', 'client_area.hosting_usage', 'client_area.hosting_wordpress', 'client_area.hosting_uptime', 'client_area.orders', 'client_area.monthly_prices', 'client_area.public_orders', 'client_area.email_links', 'client_area.notifications', 'client_area.email_history', 'client_area.welcome_tour', 'seo.index', 'seo.title', 'seo.description', 'seo.google_verification', 'seo.bing_verification', 'client_area.signup', ...self::TERMS_KEYS, ...self::MAINTENANCE_KEYS, ...self::INCIDENT_KEYS];
     }
 
     public function form(Schema $schema): Schema
@@ -193,6 +193,9 @@ class ClientAreaSettings extends SettingsFormPage
                         Toggle::make('client_area.hosting_usage')
                             ->label('Show usage')
                             ->helperText(__('Disk space and this month\'s bandwidth against the package\'s limits, read from the server. Read only.')),
+                        Toggle::make('client_area.hosting_wordpress')
+                            ->label('WordPress')
+                            ->helperText(__('The account\'s WordPress sites, each with a button that opens its dashboard already signed in, and Install WordPress. Uses WP Toolkit on cPanel and Plesk servers.')),
                         Toggle::make('client_area.hosting_uptime')
                             ->label('Show the server\'s uptime')
                             ->helperText(__('The uptime of the server the account is on, for the last 24 hours and 30 days, from its monitor (Settings → Servers). Only for servers linked to a monitor; the server\'s name is not shown.')),

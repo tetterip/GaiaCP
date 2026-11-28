@@ -54,6 +54,9 @@ Przy aktywnym koncie hostingowym można:
 <!-- if:hosting_usage -->
 - **Sprawdzić, ile miejsca na dysku i transferu zużywa** w tym miesiącu, w porównaniu z tym, na co pozwala pakiet.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **Zarządzać WordPressem** (w cPanel i Plesk): część **WordPress** pokazuje Twoje witryny WordPress, a **Zaloguj się do WordPress** otwiera kokpit witryny już zalogowany. **Zainstaluj WordPress** dodaje nową witrynę w Twojej domenie lub w jej folderze, z wybraną nazwą i hasłem administratora; pojawi się na liście po minucie lub dwóch.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **Sprawdzić dostępność serwera**: przez jaką część ostatnich 30 dni i 24 godzin działał serwer, na którym jest konto. Na liście Hosting kropka przed domeną pokazuje obecny stan serwera: zielona, gdy działa, czerwona, gdy nie odpowiada, pomarańczowa podczas prac konserwacyjnych. Po najechaniu na nią widać dostępność z ostatnich 30 dni.
 <!-- endif -->

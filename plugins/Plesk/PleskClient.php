@@ -63,6 +63,49 @@ class PleskClient
         return $results;
     }
 
+    /**
+     * A call to WP Toolkit's REST API (https://host:8443/api/modules/wp-toolkit/v1/…), with the same login as the XML API
+     * (HTTP Basic, or the secret key as X-API-Key). Redirects are not followed: the login call answers with one.
+     *
+     * @param  array<string, mixed>  $body
+     * @return array{status: int, location: ?string, json: mixed}
+     */
+    public function wpToolkit(string $method, string $path, array $body = [], int $timeout = 30): array
+    {
+        $request = filled($this->server->username)
+            ? Http::withBasicAuth((string) $this->server->username, (string) $this->server->api_token)
+            : Http::withHeaders(['X-API-Key' => (string) $this->server->api_token]);
+
+        $secrets = [(string) $this->server->api_token, ...ModuleLogger::secretsIn($body)];
+
+        try {
+            $response = $request
+                ->withOptions(['verify' => $this->server->verify_tls])
+                ->withMiddleware(ModuleLogger::middleware('plesk', 'wp-toolkit '.$method.' '.$path, $secrets, str_ends_with($path, '/login') ? ['url', 'link', 'loginUrl'] : []))
+                ->acceptJson()
+                ->withoutRedirecting()
+                ->connectTimeout(5)
+                ->timeout($timeout)
+                ->send($method, sprintf('https://%s:%d/api/modules/wp-toolkit/v1/%s', $this->server->hostname, $this->server->port, ltrim($path, '/')), $body === [] ? [] : ['json' => $body]);
+        } catch (ConnectionException $e) {
+            $reason = preg_replace('/\s*\(see https:\/\/curl\.se.*$/s', '', $e->getMessage());
+
+            throw new ProvisioningException("Cannot reach {$this->server->hostname}:{$this->server->port}: {$reason}", previous: $e);
+        }
+
+        if ($response->status() === 404) {
+            throw new ProvisioningException("WP Toolkit is not installed on {$this->server->hostname}, or its REST API is off.");
+        }
+
+        if ($response->status() >= 400) {
+            $error = is_array($response->json()) ? ($response->json('message') ?? $response->json('error') ?? '') : '';
+
+            throw new ProvisioningException(trim("WP Toolkit {$path} failed with HTTP {$response->status()}. ".(is_string($error) ? $error : '')));
+        }
+
+        return ['status' => $response->status(), 'location' => $response->header('Location') ?: null, 'json' => $response->json()];
+    }
+
     /** @param  array<string, mixed>  $body */
     public function packet(string $operator, string $operation, array $body): string
     {

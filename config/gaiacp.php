@@ -331,6 +331,7 @@ return [
         'hosting_password' => true,
         'hosting_login' => true,
         'hosting_usage' => true,
+        'hosting_wordpress' => true, // the account's WordPress sites (WP Toolkit on cPanel and Plesk): list, log in, install
         'hosting_uptime' => true, // the server's uptime (24 hours, 30 days) on a hosting account's page, from its monitor
         'orders' => true,
         'monthly_prices' => true, // the Order pages show each cycle's price per month, with what is billed each cycle under it

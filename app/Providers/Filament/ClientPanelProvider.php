@@ -48,6 +48,7 @@ use App\Http\Controllers\Client\PanelLoginController;
 use App\Http\Controllers\Client\StopViewingController;
 use App\Http\Controllers\Client\TicketAttachmentController;
 use App\Http\Controllers\Client\VisitorTicketFileController;
+use App\Http\Controllers\Client\WordPressLoginController;
 use App\Http\Controllers\SignInLinkController;
 use App\Http\Middleware\ApplyTheme;
 use App\Http\Middleware\Authenticate;
@@ -250,6 +251,10 @@ class ClientPanelProvider extends PanelProvider
                 Route::get('services/{service}/panel-login', PanelLoginController::class)
                     ->whereNumber('service')
                     ->name('services.panel-login');
+                Route::get('services/{service}/wordpress/{site}', WordPressLoginController::class)
+                    ->whereNumber('service')
+                    ->where('site', '[A-Za-z0-9_-]{1,64}')
+                    ->name('services.wordpress-login');
                 Route::get('ticket-files/{attachment}', TicketAttachmentController::class)
                     ->whereNumber('attachment')
                     ->name('ticket-file');
