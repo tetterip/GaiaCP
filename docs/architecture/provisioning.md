@@ -142,6 +142,19 @@ never calls a panel API directly.
   tried on real panels. The client opens one through `services/{service}/panel-login?to=<key>` (an unknown key is a
   404 before any panel call); `ServiceLifecycle::loginUrl($service, $ip, $shortcut)` logs `account.panel_login` with
   "(shortcut: key)". HestiaCP, DirectAdmin, CyberPanel and Virtualmin have no one-time login, so no shortcuts
+- **WordPress** (`App\Provisioning\ManagesWordPress`, cPanel and Plesk, Settings → Client area → WordPress): WP Toolkit's
+  REST API, the same `/v1/` on both (`App\Provisioning\WpToolkit` keeps the shared parts). Plesk: `PleskClient::wpToolkit()`,
+  `https://host:8443/api/modules/wp-toolkit/v1/…` with HTTP Basic (or the secret key as `X-API-Key`). cPanel:
+  `WhmClient::wpToolkit()`, `https://host:2087/cpsess…/cgi/wpt/index.php/v1/…` with the `whostmgrsession` cookie of a WHM
+  session (`create_user_session` `service=whostmgrd` for the token's user, its URL opened once without following the
+  redirect). `GET installations` lists every site the login sees, so `WpToolkit::sitesOf()` keeps the account's main domain
+  and its subdomains (by `domain.name`); `POST installations/{id}/login` answers with a redirect to the signed-in
+  dashboard (the module log masks `Location`); `POST installations` installs (WP Toolkit finishes in the background).
+  `ServiceLifecycle::wordPressSites()` keeps the list 5 minutes (arrays), `wordPressLoginUrl()` reads it again and refuses a
+  site not in it (logs `account.wordpress_login`), `installWordPress()` logs `account.wordpress_installed`. Client area:
+  the hosting page's WordPress section (`App\Livewire\WordPressSites`, lazy; Install WordPress in its header,
+  `HostingSelfService::installWordPress()`), `services/{service}/wordpress/{site}` (`WordPressLoginController`). Endpoint
+  names from WP Toolkit's OpenAPI spec; not yet tried on real servers
 - **Registrars:** `registrars` rows (module, encrypted `credentials`, active, `is_default` = pre-selected for a new
   TLD), edited under Settings → Registrars (default nameservers under Settings → Domains). Prices are per TLD, not per
   registrar: `tlds` (`Tld`, Settings → Domain pricing, `TldResource`: register / transfer / renew cents for each of

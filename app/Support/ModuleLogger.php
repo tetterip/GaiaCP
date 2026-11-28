@@ -16,7 +16,7 @@ use Throwable;
  *
  * Secrets never reach the log: the values the caller passes (API tokens, passwords, EPP codes) are replaced
  * wherever they appear, in plain, URL-encoded and XML-escaped form, and so are the values of auth headers and of
- * form fields, JSON keys and XML elements with a password-like name. Logging never breaks the call it watches.
+ * form fields, JSON keys and XML elements with a password-like name (and a redirect's Location, which can be a one-time login). Logging never breaks the call it watches.
  */
 class ModuleLogger
 {
@@ -26,7 +26,7 @@ class ModuleLogger
     private const SECRET_NAMES = 'password|passwd|pass|pw|api_token|token|secret|epp|epp_code|auth_code|key|pvt|private_key';
 
     /** Headers whose values are always masked. */
-    private const SECRET_HEADERS = ['authorization', 'http_auth_passwd', 'key', 'cookie', 'set-cookie'];
+    private const SECRET_HEADERS = ['authorization', 'http_auth_passwd', 'key', 'cookie', 'set-cookie', 'location'];
 
     /** Longest request or response body kept, in bytes. */
     private const MAX_BODY = 65536;

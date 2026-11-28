@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.7.0] - 2026-11-28
+
+- WordPress in the client area (`ManagesWordPress`): lists the account's WP Toolkit sites, opens one's dashboard signed in and installs a new one, through WP Toolkit's REST API in WHM (`/cgi/wpt/`, with a WHM session); not yet tried on a real server
+
 ## [1.6.0] - 2026-10-27
 
 - SSL certificates on the client's own hosting: the validation file goes into the website's `/.well-known/pki-validation/` (UAPI `Fileman::save_file_content`) and the issued certificate is installed with UAPI `SSL::install_ssl` (`InstallsCertificates`; not yet tried on a real server)

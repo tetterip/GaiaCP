@@ -13,11 +13,14 @@ use App\Provisioning\ControlsPower;
 use App\Provisioning\DescribesMachine;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\MachineDetails;
+use App\Provisioning\ManagesWordPress;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\ProvisionerFactory;
 use App\Provisioning\ProvisioningException;
 use App\Provisioning\SharesPanelLogin;
 use App\Provisioning\UsernameGenerator;
+use App\Provisioning\WordPressInstall;
+use App\Provisioning\WordPressSite;
 use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Support\Facades\Cache;
@@ -37,6 +40,9 @@ class ServiceLifecycle
 {
     /** How long a usage reading is kept before the panel is asked again. */
     public const USAGE_MINUTES = 15;
+
+    /** How long the list of an account's WordPress sites is kept. */
+    public const WORDPRESS_MINUTES = 5;
 
     public function __construct(
         private ProvisionerFactory $provisioners,
@@ -288,6 +294,89 @@ class ServiceLifecycle
             ->usage($service)
             ->readAt(CarbonImmutable::now())
             ->toArray()));
+    }
+
+    /** Whether an active account's panel manages WordPress (ManagesWordPress); asks nothing of the panel. */
+    public function managesWordPress(Service $service): bool
+    {
+        return $this->onPanel($service) && $service->status === ServiceStatus::Active
+            && rescue(fn () => $this->provisioners->forService($service) instanceof ManagesWordPress, false, report: false);
+    }
+
+    /**
+     * The WordPress sites of an active account, read from the panel at most every WORDPRESS_MINUTES ($fresh reads them
+     * now). Only a reading, so it is not logged; a failure throws ProvisioningException.
+     *
+     * @return list<WordPressSite>
+     */
+    public function wordPressSites(Service $service, bool $fresh = false): array
+    {
+        if (! $this->managesWordPress($service)) {
+            throw new ProvisioningException('Only active hosting services on a panel that manages WordPress have WordPress sites.');
+        }
+
+        $key = "service-wordpress:{$service->id}";
+
+        if ($fresh) {
+            Cache::forget($key);
+        }
+
+        $panel = $this->provisioners->forService($service);
+
+        if (! $panel instanceof ManagesWordPress) {
+            throw new ProvisioningException("The panel of {$service->server->name} does not manage WordPress.");
+        }
+
+        // Kept as plain arrays: the cache unserializes no objects.
+        $sites = Cache::remember($key, now()->addMinutes(self::WORDPRESS_MINUTES), fn () => array_map(
+            fn (WordPressSite $site) => $site->toArray(),
+            $panel->wordPressSites($service),
+        ));
+
+        return array_map(WordPressSite::fromArray(...), $sites);
+    }
+
+    /**
+     * A one-time link into the dashboard of one of the account's own WordPress sites (read again from the panel, so a
+     * site of another account is refused). Logged without the link.
+     */
+    public function wordPressLoginUrl(Service $service, string $siteId, string $clientIp): string
+    {
+        $site = collect($this->wordPressSites($service, fresh: true))->first(fn (WordPressSite $site) => $site->id === $siteId)
+            ?? throw new ProvisioningException("{$service->username} has no WordPress site {$siteId}.");
+
+        $url = $this->panel($service, 'account.wordpress_login', function (HostingProvisioner $panel) use ($service, $site, $clientIp) {
+            if (! $panel instanceof ManagesWordPress) {
+                throw new ProvisioningException("The panel of {$service->server->name} does not manage WordPress.");
+            }
+
+            return $panel->wordPressLoginUrl($service, $site, $clientIp);
+        });
+
+        ActivityLog::record('account.wordpress_login', "WordPress login link for {$site->url} created on {$service->server->name}", $service);
+
+        return $url;
+    }
+
+    /** Starts a WordPress install on the account's main domain; the list is read again next time. */
+    public function installWordPress(Service $service, WordPressInstall $install): void
+    {
+        if (! $this->managesWordPress($service)) {
+            throw new ProvisioningException('Only active hosting services on a panel that manages WordPress can install WordPress.');
+        }
+
+        $this->panel($service, 'account.wordpress_installed', function (HostingProvisioner $panel) use ($service, $install) {
+            if (! $panel instanceof ManagesWordPress) {
+                throw new ProvisioningException("The panel of {$service->server->name} does not manage WordPress.");
+            }
+
+            $panel->installWordPress($service, $install);
+        });
+
+        Cache::forget("service-wordpress:{$service->id}");
+
+        $where = rtrim("{$service->domain}/".trim($install->path, '/'), '/');
+        ActivityLog::record('account.wordpress_installed', "WordPress install started on {$where} (admin {$install->username}) on {$service->server->name}", $service);
     }
 
     /**

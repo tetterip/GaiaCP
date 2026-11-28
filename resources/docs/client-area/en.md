@@ -54,6 +54,9 @@ On an active hosting account you can:
 <!-- if:hosting_usage -->
 - **See how much disk space and bandwidth it uses** this month, against what your package allows.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **Manage WordPress** (on cPanel and Plesk): the **WordPress** part lists your WordPress sites, and **Log in to WordPress** opens a site's dashboard already signed in. **Install WordPress** adds a new site on your domain, or in a folder of it, with the administrator name and password you choose; it appears in the list after a minute or two.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **See the server's uptime**: how much of the last 30 days and 24 hours the server your account is on was up. In the Hosting list, a dot before the domain shows the server's state now: green while it works, red while it doesn't respond, orange during maintenance. Point at it to see the last 30 days' uptime.
 <!-- endif -->

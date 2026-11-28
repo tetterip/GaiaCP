@@ -34,6 +34,8 @@ Settings → Client area switches each self-service action on or off:
   Domains list they can tick several domains to change their nameservers or auto renew for all of them at once.
 - **Hosting** (active accounts): **Log in to the control panel** with one click (where the server's panel allows it)
   and open its pages through quick shortcuts, change the password, see disk and bandwidth usage and the server's uptime.
+  **WordPress** (cPanel and Plesk, through WP Toolkit) lists the account's WordPress sites with **Log in to WordPress**,
+  which opens the site's dashboard already signed in, and **Install WordPress** on the account's domain or a folder of it.
 - **Orders**: order products and domains through a cart, which opens from the side and lets them change the billing
   cycle or domain term in place, add add-ons, ask for an upgrade or a cancellation.
 - **Links in emails**: a "View in the client area" button at the end of client emails.

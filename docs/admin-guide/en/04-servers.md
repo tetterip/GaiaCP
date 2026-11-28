@@ -68,6 +68,12 @@ Plesk login**; the client gets the same tick in the client area. That login is t
 A subscription moved to another client stays under the old client's Plesk customer: its new client gets no **Log in** to
 Plesk and no tick, until you move the subscription to their own customer in Plesk.
 
+The client area's **WordPress** part (Settings → Client area → WordPress) uses WP Toolkit's REST API: on Plesk at
+`/api/modules/wp-toolkit/v1/` with the server's login (switch the API on under Tools & Settings → Remote API (REST) if
+Plesk asks), on cPanel inside WHM (`/cgi/wpt/`), through a WHM session that `create_user_session` opens for the token's
+user. It lists only the sites of the account's main domain and its subdomains; a server without WP Toolkit shows the client
+"can't be shown right now". Not yet tried on real servers: try it once on a test account.
+
 On CyberPanel a hosting account is a **website** (the service's domain) owned by a CyberPanel user with the service's
 username; the password is that user's CyberPanel login. Packages read like `Default` (the built-in one) or `admin_Pro` (one an admin added). New websites start on the
 PHP version picked under Settings → Integrations → **CyberPanel** (PHP 8.2 unless you change it).

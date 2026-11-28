@@ -54,6 +54,9 @@ Bij een actief hostingaccount kunt u:
 <!-- if:hosting_usage -->
 - **Zien hoeveel schijfruimte en dataverkeer het gebruikt** deze maand, tegenover wat uw pakket toestaat.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **WordPress beheren** (op cPanel en Plesk): het onderdeel **WordPress** toont uw WordPress-sites, en **Inloggen bij WordPress** opent het dashboard van een site al aangemeld. **WordPress installeren** voegt een nieuwe site toe op uw domein, of in een map ervan, met de beheerdersnaam en het wachtwoord die u kiest; na een of twee minuten staat hij in de lijst.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **De uptime van de server zien**: hoeveel van de laatste 30 dagen en 24 uur de server waarop uw account staat online was. In de lijst Hosting toont een stip vóór het domein de huidige status van de server: groen zolang hij werkt, rood zolang hij niet reageert, oranje tijdens onderhoud. Wijs ernaar om de uptime van de laatste 30 dagen te zien.
 <!-- endif -->

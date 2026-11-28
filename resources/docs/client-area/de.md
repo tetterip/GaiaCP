@@ -54,6 +54,9 @@ Bei einem aktiven Hosting-Konto können Sie:
 <!-- if:hosting_usage -->
 - **Sehen, wie viel Speicherplatz und Traffic es** diesen Monat nutzt, im Verhältnis zu dem, was Ihr Paket erlaubt.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **WordPress verwalten** (auf cPanel und Plesk): Der Bereich **WordPress** listet Ihre WordPress-Websites, und **Bei WordPress anmelden** öffnet das Dashboard einer Website bereits angemeldet. **WordPress installieren** fügt eine neue Website auf Ihrer Domain oder in einem ihrer Ordner hinzu, mit dem Administratornamen und Passwort Ihrer Wahl; sie erscheint nach ein bis zwei Minuten in der Liste.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **Die Verfügbarkeit des Servers sehen**: wie viel der letzten 30 Tage und 24 Stunden der Server, auf dem Ihr Konto liegt, erreichbar war. In der Hosting-Liste zeigt ein Punkt vor der Domain den aktuellen Zustand des Servers: grün, solange er funktioniert, rot, solange er nicht antwortet, orange während einer Wartung. Zeigen Sie darauf, um die Verfügbarkeit der letzten 30 Tage zu sehen.
 <!-- endif -->

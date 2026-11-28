@@ -8,12 +8,16 @@ use App\Provisioning\AccountUsage;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\InstallsCertificates;
 use App\Provisioning\ListsAccounts;
+use App\Provisioning\ManagesWordPress;
 use App\Provisioning\OffersShortcuts;
 use App\Provisioning\PanelAccount;
 use App\Provisioning\ProvisioningException;
+use App\Provisioning\WordPressInstall;
+use App\Provisioning\WordPressSite;
+use App\Provisioning\WpToolkit;
 use App\Support\DomainName;
 
-class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, OffersShortcuts
+class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, ListsAccounts, ManagesWordPress, OffersShortcuts
 {
     public function __construct(private WhmClient $whm) {}
 
@@ -129,6 +133,32 @@ class CpanelProvisioner implements HostingProvisioner, InstallsCertificates, Lis
         $data = $this->whm->call('create_user_session', array_filter(['user' => $this->username($service), 'service' => 'cpaneld', 'app' => $app]));
 
         return (string) ($data['url'] ?? '') ?: throw new ProvisioningException('WHM create_user_session returned no URL.');
+    }
+
+    /** WP Toolkit's GET /v1/installations, kept to the account's main domain and its subdomains. */
+    public function wordPressSites(Service $service): array
+    {
+        return WpToolkit::sitesOf($this->whm->wpToolkit('GET', 'installations')['json'], $this->mainDomain($service));
+    }
+
+    /** WP Toolkit's POST /v1/installations/{id}/login, which answers with a redirect to the signed in dashboard. */
+    public function wordPressLoginUrl(Service $service, WordPressSite $site, string $clientIp): string
+    {
+        $answer = $this->whm->wpToolkit('POST', 'installations/'.rawurlencode($site->id).'/login');
+
+        return WpToolkit::loginLink($answer['location'], $answer['json'])
+            ?? throw new ProvisioningException("WP Toolkit gave no login link for {$site->url}.");
+    }
+
+    /** WP Toolkit's POST /v1/installations on the account's main domain; WP Toolkit finishes it in the background. */
+    public function installWordPress(Service $service, WordPressInstall $install): void
+    {
+        $this->whm->wpToolkit('POST', 'installations', WpToolkit::installBody($this->mainDomain($service), $install), timeout: 120);
+    }
+
+    private function mainDomain(Service $service): string
+    {
+        return $service->domain ?: throw new ProvisioningException('This service has no domain.');
     }
 
     /** WHM's create_user_session for the server's own user (root or a reseller) into WHM itself. */

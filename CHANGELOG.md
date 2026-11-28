@@ -5,6 +5,12 @@ Every release of GaiaCP, newest first. The version number is in the `VERSION` fi
 
 ## [Unreleased]
 
+- **WordPress** on a client's hosting page (cPanel and Plesk, through WP Toolkit): their WordPress sites with **Log in
+  to WordPress**, which opens the site's dashboard already signed in, and **Install WordPress** on the account's domain
+  or a folder of it, with the administrator they choose. Settings → Client area → Hosting → WordPress turns it off. Not
+  yet tried on real servers.
+- Plugin API: new optional `App\Provisioning\ManagesWordPress` for server panels, with `WordPressSite`,
+  `WordPressInstall` and `WpToolkit`. The module log now masks a response's `Location` header.
 - A client's page has an **Emails** tab: every email sent to the client, or to you about them, with the date,
   subject, address and status (a red count for the failed ones), and the text as sent. It shows to admins who may open
   Settings → Email log, once the client has an email.

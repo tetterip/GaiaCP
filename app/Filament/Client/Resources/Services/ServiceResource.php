@@ -15,6 +15,7 @@ use App\Filament\Client\Pages\Order;
 use App\Filament\Client\Resources\Services\Pages\ListServices;
 use App\Filament\Client\Resources\Services\Pages\ViewService;
 use App\Livewire\HostingUsage;
+use App\Livewire\WordPressSites;
 use App\Models\CancellationRequest;
 use App\Models\Service;
 use App\Monitoring\MonitorStatus;
@@ -341,6 +342,17 @@ class ServiceResource extends Resource
                 ->visible(fn (Service $record) => HostingSelfService::shortcuts($record) !== [])
                 ->schema([
                     View::make('filament.client.shortcuts'),
+                ]),
+            // The account's WordPress sites (WP Toolkit on cPanel and Plesk), each opened signed in; Install WordPress
+            Section::make(__('WordPress'))
+                ->key('wordpress')
+                ->columnSpanFull()
+                ->visible(fn (Service $record) => HostingSelfService::canUseWordPress($record))
+                ->headerActions([HostingSelfService::installWordPress()])
+                ->schema([
+                    Livewire::make(WordPressSites::class, fn (Service $record) => ['service' => $record])
+                        ->key('wordPressSites')
+                        ->lazy(),
                 ]),
             // The server's uptime as the admin dashboard shows it: a square per day and per hour, lighting up in turn.
             Section::make(__('Server uptime'))

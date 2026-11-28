@@ -54,6 +54,9 @@ Sur un compte d'hébergement actif, vous pouvez :
 <!-- if:hosting_usage -->
 - **Voir l'espace disque et la bande passante utilisés** ce mois-ci, par rapport à ce que permet votre forfait.
 <!-- endif -->
+<!-- if:hosting_wordpress -->
+- **Gérer WordPress** (sur cPanel et Plesk) : la partie **WordPress** liste vos sites WordPress, et **Se connecter à WordPress** ouvre le tableau de bord d'un site déjà connecté. **Installer WordPress** ajoute un nouveau site sur votre domaine, ou dans un de ses dossiers, avec l'identifiant et le mot de passe d'administrateur de votre choix ; il apparaît dans la liste après une ou deux minutes.
+<!-- endif -->
 <!-- if:hosting_uptime -->
 - **Voir la disponibilité du serveur** : la part des 30 derniers jours et des 24 dernières heures pendant laquelle le serveur de votre compte était en ligne. Dans la liste Hébergement, un point devant le domaine indique l'état actuel du serveur : vert quand il fonctionne, rouge quand il ne répond pas, orange pendant une maintenance. Survolez-le pour voir la disponibilité des 30 derniers jours.
 <!-- endif -->
