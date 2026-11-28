@@ -58,6 +58,10 @@ The **sidebar** has five groups:
 - **Support**: Tickets, the Knowledge base, Announcements, Downloads and Pages.
 - **System**: the Activity log, Settings and this Help.
 
+On a computer the arrow by the logo folds the sidebar to its icons, for more room on the page: point at an icon to
+see its name, and a dot on it means it has something waiting (the number shows again when you unfold it). The browser
+remembers your choice. On a phone the menu is a drawer as before.
+
 **Settings** (in the sidebar and in your user menu) is a page of cards in groups: General, Billing, Products & domains,
 Client area, Support, Email & notifications, Integrations, AI assistant, Security, System and Logs. Its search box finds a setting by
 name, in your language or in English ("plugin" finds Plugins whatever language the panel is in). Each settings page has its own Save; the bar at the bottom tells you when something is not saved yet.

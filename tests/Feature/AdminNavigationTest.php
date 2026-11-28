@@ -80,6 +80,22 @@ class AdminNavigationTest extends TestCase
         $this->get(Dashboard::getUrl())->assertOk()->assertSee('fi-sidebar-footer', false);
     }
 
+    public function test_the_admins_sidebar_folds_to_icons_on_a_wide_screen_in_every_theme(): void
+    {
+        $this->assertTrue(Filament::getPanel('admin')->isSidebarCollapsibleOnDesktop());
+        // The client area's menu is short, so it stays as it is
+        $this->assertFalse(Filament::getPanel('client')->isSidebarCollapsibleOnDesktop());
+
+        foreach (['gaia', 'flat', 'glass'] as $theme) {
+            $this->actingAs(User::factory()->create(['theme' => $theme]));
+            $this->get(Dashboard::getUrl())->assertOk()
+                ->assertSee('fi-body-has-sidebar-collapsible-on-desktop', false)
+                ->assertSee('fi-topbar-open-collapse-sidebar-btn', false)
+                // The folded look: the top bar's logo hidden, counts as a dot on the icon
+                ->assertSee('.fi-main-sidebar:not(.fi-sidebar-open):not([x-cloak])', false);
+        }
+    }
+
     public function test_the_user_menu_items_follow_the_admins_language(): void
     {
         $this->actingAs(User::factory()->create(['locale' => 'el']));

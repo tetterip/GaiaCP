@@ -101,6 +101,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages(app(PluginManager::class)->pages())
+            // On a wide screen the menu folds to its icons (the button by the logo; the browser remembers it per admin)
+            ->sidebarCollapsibleOnDesktop()
             // The sidebar's groups, in order (each page and resource names its own)
             ->navigationGroups([
                 NavigationGroup::make()->label(fn (): string => __('Main'))->collapsible(false),

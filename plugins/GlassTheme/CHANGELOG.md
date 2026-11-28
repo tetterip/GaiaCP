@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.2.4] - 2026-11-28
+
+- The admin's sidebar folded to its icons: a slim glass pane around them
+
 ## [1.2.3] - 2026-11-20
 
 - Its script carries the page's nonce, so it runs under GaiaCP's Content-Security-Policy
