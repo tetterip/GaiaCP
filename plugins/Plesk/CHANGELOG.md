@@ -2,6 +2,10 @@
 
 Every version of this plugin, newest first. The version is in `plugin.json`; it ships with GaiaCP.
 
+## [1.10.0] - 2026-11-28
+
+- New subscriptions also get the server's shared IPv6 address when it has one (from `ip get`, link-local fe80:: left out), next to the IPv4, as WHMCS's Plesk module does; an IPv6 set as the server's IP for new subscriptions is used alone, as before. Not yet tried on a real server
+
 ## [1.9.0] - 2026-11-28
 
 - WordPress in the client area (`ManagesWordPress`): lists the subscription's WP Toolkit sites, opens one's dashboard signed in and installs a new one, through WP Toolkit's REST API (`/api/modules/wp-toolkit/v1/`); not yet tried on a real server

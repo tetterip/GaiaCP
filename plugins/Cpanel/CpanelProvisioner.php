@@ -134,9 +134,13 @@ class CpanelProvisioner implements DescribesPackages, HostingProvisioner, Instal
     /** cPanel app names (create_user_session's `app`), as WHMCS's cPanel module opens them. */
     public const SHORTCUTS = [
         'email' => ['Email accounts', 'heroicon-o-envelope', 'Email_Accounts'],
+        'forwarders' => ['Email forwarders', 'heroicon-o-arrow-uturn-right', 'Email_Forwarders'],
+        'autoresponders' => ['Autoresponders', 'heroicon-o-chat-bubble-bottom-center-text', 'Email_AutoResponders'],
         'files' => ['File Manager', 'heroicon-o-folder-open', 'FileManager_Home'],
         'databases' => ['MySQL databases', 'heroicon-o-circle-stack', 'Database_MySQL'],
         'phpmyadmin' => ['phpMyAdmin', 'heroicon-o-table-cells', 'Database_phpMyAdmin'],
+        'domains' => ['Domains', 'heroicon-o-globe-alt', 'Domains_domains'],
+        'cron' => ['Cron jobs', 'heroicon-o-clock', 'Cron_Home'],
         'statistics' => ['Statistics', 'heroicon-o-chart-bar', 'Stats_AWStats'],
         'backups' => ['Backups', 'heroicon-o-archive-box', 'Backups_Home'],
     ];

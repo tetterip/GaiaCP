@@ -92,6 +92,7 @@ use App\Provisioning\EmailsEppCode;
 use App\Provisioning\GivesNoEppCode;
 use App\Provisioning\HostingProvisioner;
 use App\Provisioning\InstallsCertificates;
+use App\Provisioning\IssuesFreeCertificates;
 use App\Provisioning\LimitsUsernameLength;
 use App\Provisioning\ListsAccounts;
 use App\Provisioning\ListsTldPrices;
@@ -171,6 +172,7 @@ final class PluginApi
         ReportsLoad::class,
         ServerLoad::class,
         InstallsCertificates::class,
+        IssuesFreeCertificates::class,
         LimitsUsernameLength::class,
 
         // Domain registrars

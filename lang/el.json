@@ -4473,5 +4473,10 @@
     "WordPress is being installed": "Το WordPress εγκαθίσταται",
     "You sign in to WordPress with it. Avoid admin: it is the first name attackers try.": "Με αυτό συνδέεστε στο WordPress. Αποφύγετε το admin: είναι το πρώτο όνομα που δοκιμάζουν οι επιτιθέμενοι.",
     "Your WordPress sites can't be shown right now. Please try again later.": "Τα sites WordPress σας δεν μπορούν να εμφανιστούν αυτή τη στιγμή. Δοκιμάστε ξανά αργότερα.",
-    "empty for the domain itself": "κενό για το ίδιο το domain"
+    "empty for the domain itself": "κενό για το ίδιο το domain",
+    "Free SSL (Let's Encrypt)": "Δωρεάν SSL (Let's Encrypt)",
+    "The server asks Let's Encrypt for a certificate for :domain and its aliases (www), and for its mail, and uses it for the website. The domain must already point at this server. A certificate it already has is renewed.": "Ο server ζητά από το Let's Encrypt πιστοποιητικό για το :domain και τα ψευδώνυμά του (www), καθώς και για το email του, και το χρησιμοποιεί για τον ιστότοπο. Το domain πρέπει να δείχνει ήδη σε αυτόν τον server. Αν υπάρχει ήδη πιστοποιητικό, ανανεώνεται.",
+    "Issue certificate": "Έκδοση πιστοποιητικού",
+    "Certificate issued": "Το πιστοποιητικό εκδόθηκε",
+    "For :names": "Για: :names"
 }

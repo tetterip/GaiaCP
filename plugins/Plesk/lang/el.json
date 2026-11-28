@@ -4,7 +4,7 @@
     "Databases": "Βάσεις δεδομένων",
     "File Manager": "Διαχείριση αρχείων",
     "IP for new subscriptions": "IP για νέες συνδρομές",
-    "Leave empty to use the server's first shared IPv4 address.": "Άφησέ το κενό για την πρώτη κοινόχρηστη διεύθυνση IPv4 του server.",
+    "Leave empty to use the server's first shared IPv4 address. New subscriptions also get the server's shared IPv6 address, when it has one.": "Άφησέ το κενό για την πρώτη κοινόχρηστη διεύθυνση IPv4 του server. Οι νέες συνδρομές παίρνουν και την κοινόχρηστη διεύθυνση IPv6 του server, όταν έχει.",
     "Mail": "Email",
     "Plesk admin login. Leave empty to authenticate with a secret key instead.": "Σύνδεση διαχειριστή Plesk. Άφησέ το κενό για πιστοποίηση με secret key.",
     "Plesk: the admin password, or a secret key (plesk bin secret_key -c) if the login is empty. Stored encrypted.": "Plesk: ο κωδικός διαχειριστή, ή ένα secret key (plesk bin secret_key -c) αν η σύνδεση είναι κενή. Αποθηκεύεται κρυπτογραφημένος.",

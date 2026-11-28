@@ -281,7 +281,8 @@ Settings → Stripe for the keys and the webhook), PayPal (off by default, Setti
   every hour and emails it, issues the next one inside the order before each certificate ends (200 days at most) and
   orders the next period when the service is paid beyond it (see [SSL certificates](reference.md#ssl-certificates)).
   When the domain is the client's hosting account on a cPanel or Plesk server, GaiaCP validates it there (a file on
-  cPanel, a DNS record on Plesk) and installs the issued certificate on the account
+  cPanel, a DNS record on Plesk) and installs the issued certificate on the account. A free Let's Encrypt
+  certificate for a HestiaCP account is one click in its Account menu
 - English and Greek: each admin picks a panel language and each client an email language, and email templates can be
   written per language (see [Languages](reference.md#languages))
 

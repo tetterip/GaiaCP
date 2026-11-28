@@ -1,7 +1,10 @@
 {
+    "Autoresponders": "Otomatik yanıtlayıcılar",
     "Backups": "Yedekler",
     "Creates, suspends and removes hosting accounts on cPanel servers through WHM.": "cPanel sunucularında WHM üzerinden hosting hesapları oluşturur, askıya alır ve kaldırır.",
+    "Cron jobs": "Cron görevleri",
     "Email accounts": "E-posta hesapları",
+    "Email forwarders": "E-posta yönlendirmeleri",
     "File Manager": "Dosya Yöneticisi",
     "MySQL databases": "MySQL veritabanları",
     "Statistics": "İstatistikler",

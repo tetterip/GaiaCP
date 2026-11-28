@@ -4473,5 +4473,10 @@
     "WordPress is being installed": "WordPress kuruluyor",
     "You sign in to WordPress with it. Avoid admin: it is the first name attackers try.": "WordPress'e bununla giriş yaparsınız. admin kullanmayın: saldırganların ilk denediği addır.",
     "Your WordPress sites can't be shown right now. Please try again later.": "WordPress siteleriniz şu anda gösterilemiyor. Lütfen daha sonra tekrar deneyin.",
-    "empty for the domain itself": "alan adının kendisi için boş"
+    "empty for the domain itself": "alan adının kendisi için boş",
+    "Free SSL (Let's Encrypt)": "Ücretsiz SSL (Let's Encrypt)",
+    "The server asks Let's Encrypt for a certificate for :domain and its aliases (www), and for its mail, and uses it for the website. The domain must already point at this server. A certificate it already has is renewed.": "Sunucu, :domain ve takma adları (www) ile e-postası için Let's Encrypt'ten sertifika ister ve web sitesinde kullanır. Alan adı zaten bu sunucuyu göstermelidir. Mevcut bir sertifika yenilenir.",
+    "Issue certificate": "Sertifika oluştur",
+    "Certificate issued": "Sertifika oluşturuldu",
+    "For :names": ":names için"
 }
